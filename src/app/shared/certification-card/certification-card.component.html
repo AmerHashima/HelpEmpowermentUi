@@ -1,0 +1,47 @@
+<!-- src\app\shared\certification-card\certification-card.component.html -->
+<div class="certification-card shadow-sm">
+  <div class="certification-image">
+    <img [src]="imgSrc()" [alt]="imgAlt()" />
+
+    <span class="course-duration">
+      <app-tag [title]="courseDuration()"></app-tag>
+    </span>
+  </div>
+
+  <div class="certfication-content d-flex flex-column gap-4">
+    @if(tags().length > 0){
+         <div class="d-flex align-items-center gap-2">
+      @for(tag of tags(); track tag){
+        <app-tag [title]="tag"> </app-tag>
+      }
+    </div>
+    }
+
+    <div class="certification-title">
+      <div class="d-flex flex-column gap-1">
+        <span class="courseName fw-bold">{{ courseName() }}</span>
+        <span class="courseAbbr">{{ courseAbb() }}</span>
+        @if(rateValue()){
+          <div class="rate d-flex align-items-center gap-1">
+          <app-star-rating [value]="rateValue()"></app-star-rating>
+          <span class="rate-value">({{ rateValue() }})</span>
+        </div>
+        }
+      </div>
+    </div>
+
+    @if(hasBtn()){
+   <div class="enroll-btn">
+      <div class="d-flex align-items-center gap-3 w-100">
+        <app-button
+          title="Enroll Now"
+          icon="pi pi-arrow-right"
+          type="main"
+          (click)="enroll()"
+        >
+        </app-button>
+      </div>
+    </div>
+    }
+  </div>
+</div>

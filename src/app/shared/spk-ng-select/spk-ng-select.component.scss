@@ -1,0 +1,48 @@
+/* src\app\shared\spk-ng-select\spk-ng-select.component.scss */
+
+:host {
+  --sm-height: 31px;
+  --sm-font: 0.875rem;
+}
+
+:host ::ng-deep .ng-select {
+  min-height: var(--sm-height);
+  font-size: var(--sm-font);
+}
+
+:host ::ng-deep .ng-select .ng-select-container {
+  height: var(--sm-height);
+  min-height: var(--sm-height);
+  padding: 0 0.5rem;
+  display: flex;
+  align-items: center;
+}
+
+:host ::ng-deep .ng-select .ng-value-container {
+  display: flex;
+  align-items: center;
+  /* ⭐ */
+  padding: 0 !important;
+}
+
+/* value + placeholder */
+:host ::ng-deep .ng-select .ng-value,
+:host ::ng-deep .ng-select .ng-placeholder {
+  display: flex;
+  align-items: center;
+  line-height: normal;
+}
+
+:host ::ng-deep .ng-select .ng-input {
+  display: flex;
+  align-items: center;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+:host ::ng-deep .ng-select .ng-arrow-wrapper,
+:host ::ng-deep .ng-select .ng-clear-wrapper {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}

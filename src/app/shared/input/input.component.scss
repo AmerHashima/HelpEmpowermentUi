@@ -1,0 +1,7 @@
+/* src\app\shared\input\input.component.scss */
+
+
+.input-group.is-invalid {
+  border: 1px solid var(--bs-form-invalid-color);
+  border-radius: 8px;
+}

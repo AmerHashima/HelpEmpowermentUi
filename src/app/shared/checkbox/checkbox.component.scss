@@ -1,0 +1,16 @@
+/* src\app\shared\checkbox\checkbox.component.scss */
+.form-check-input.is-invalid {
+  border-color: var(--bs-form-invalid-border-color);
+  background-image: var(--bs-form-invalid-bg-image);
+  background-position: right calc(0.375em + 0.1875rem) center;
+}
+
+.form-check-input:focus {
+  border-color: var(--bs-primary);
+  box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
+}
+
+/* Optional: subtle invalid state for the whole check */
+.form-check-input.is-invalid~.form-check-label {
+  color: var(--bs-form-invalid-color);
+}

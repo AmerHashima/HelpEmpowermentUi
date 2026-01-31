@@ -1,0 +1,35 @@
+/* src\app\shared\button\button.component.scss */
+@use "variables" as *;
+
+.btn-main {
+  background-color: $primaryColor !important;
+  border: none;
+  color: $lightBgTextColor;
+  font-size: $fs-sm;
+
+  &:hover {
+    background-color: $secondaryColor !important;
+  }
+}
+
+.btn-outline-main {
+  border-color: $primaryColor;
+  font-size: $fs-sm;
+  color: $primaryColor !important;
+
+  &:hover {
+    background-color: $secondaryColor !important;
+    color: $lightBgTextColor !important;
+  }
+}
+
+.btn-second {
+  background-color: #233043 !important;
+  border: none;
+  color: $lightBgTextColor;
+  font-size: $fs-sm;
+
+  &:hover {
+    background-color: $secondaryColor !important;
+  }
+}

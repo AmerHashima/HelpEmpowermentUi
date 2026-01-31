@@ -1,0 +1,103 @@
+/* src\app\shared\Admin Panel\side-nav\side-nav.scss */
+@use 'variables' as *;
+
+.logoBorder {
+  border: 1px solid $borderColor;
+}
+
+.sidebar {
+  width: 250px;
+  background: $siteNavColor;
+  color: $textColor;
+  transition: width 0.3s;
+  position: relative;
+
+
+
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &:hover ::-webkit-scrollbar-thumb,
+  &:has(:hover)::after {
+    background-color: $secondaryColor;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      text-align: center;
+      font-size: $fs-sm;
+      position: relative;
+
+      a {
+        color: $textColor;
+        text-decoration: none;
+        display: block;
+      }
+    }
+  }
+}
+
+.collapsed {
+  width: fit-content;
+}
+
+.collapsed .logo img {
+  width: 80px !important;
+}
+
+.navOptions {
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+.hoverSub {
+  background-color: $sidebarBgColor;
+  color: $iconColor;
+  z-index: 100;
+  min-width: 150px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  display: none;
+}
+
+.hoverSub li {
+  padding: 1rem;
+
+  &:hover {
+    background-color: $secondaryColor;
+    color: $lightBgTextColor;
+  }
+}
+
+.search-popup {
+  background-color: $siteNavColor;
+  padding: 0.4rem !important;
+  z-index: 1000;
+  min-width: 250px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  display: none;
+  position: absolute;
+
+  input {
+    width: 100%;
+    font-size: $fs-sm;
+    border: 1px solid $borderColor;
+    border-radius: 4px;
+    outline: none;
+    color: $textColor;
+    background-color: $bgCard !important;
+  }
+}
+
+.collapseSearch {
+  background-color: $bgCard;
+  color: $textColor;
+}
+
+.pi-search {
+  color: #aaa;
+}

@@ -1,0 +1,9 @@
+<!-- src\app\shared\button\button.component.html -->
+<button [type]="buttonType()"
+	[class.btn-main]="mainBtn()"
+	[class.btn-second]="secondaryBtn() && !mainBtn()"
+	[class.btn-outline-main]="!mainBtn() && !secondaryBtn()"
+	[disabled]="disabled()"
+	class="btn rounded-2">
+	{{btnLabel()}}
+</button>

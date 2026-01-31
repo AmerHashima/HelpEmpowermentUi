@@ -1,0 +1,18 @@
+<!-- src\app\shared\star-rating\star-rating.component.html -->
+<div class="star-rating flex gap-1">
+  @for (star of stars(); track star) {
+    <i
+      class="bi"
+      [class.bi-star-fill]="currentRating() >= star"
+      [class.bi-star-half]="
+        currentRating() < star && currentRating() >= star - 0.5
+      "
+      [class.bi-star]="currentRating() < star - 0.5"
+      [class.mainTextColor]="currentRating() >= star - 0.5"
+      (click)="onClick(star)"
+      (mouseenter)="onMouseEnter(star)"
+      (mouseleave)="onMouseLeave()"
+      [style.cursor]="readOnly() ? 'default' : 'pointer'"
+    ></i>
+  }
+</div>

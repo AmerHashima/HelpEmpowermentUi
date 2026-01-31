@@ -1,0 +1,55 @@
+/* src\app\shared\certification-card\certification-card.component.scss */
+@use 'variables' as *;
+
+.certification-card {
+  border-radius: $borderRadius;
+  transition: transform 1s ease-in-out;
+}
+
+.certification-card:hover {
+  transform: scale(1.05);
+}
+
+.certification-image {
+  border-radius: $borderRadius;
+  position: relative;
+  width: 100%;
+}
+
+.certification-image img {
+  border-radius: $borderRadius;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+}
+
+.course-duration {
+  position: absolute;
+  font-size: $fs-sm;
+  top: 1rem;
+  inset-inline-start: 1rem;
+}
+
+.certfication-content {
+  border-radius: $borderRadius;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  padding: 1rem;
+  box-shadow: $boxShadow;
+}
+
+.enroll-btn .p-button {
+  width: 100%;
+}
+
+.courseAbbr {
+  font-size: $fs-l;
+  color: $paragraphColor;
+}
+
+.rate-value {
+  color: $paragraphColor;
+  font-size: $fs-sm;
+}

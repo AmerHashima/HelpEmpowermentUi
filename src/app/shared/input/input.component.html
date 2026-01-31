@@ -1,0 +1,29 @@
+<!-- src\app\shared\input\input.component.html -->
+<div class="d-flex flex-column gap-1">
+  @if (label()) {
+    <label class="form-label mb-0">{{ label() }}</label>
+  }
+
+  <div class="input-group" [class.is-invalid]="showErrors()">
+    @if (icon()) {
+      <span class="input-group-text">
+        <i [class]="icon()"></i>
+      </span>
+    }
+    <input
+      class="form-control form-control-sm"
+      [type]="type()"
+      [placeholder]="placeholder()"
+      [disabled]="isDisabled()"
+      [value]="value()"
+      (input)="onInput($event)"
+      (blur)="onBlur()"
+    />
+  </div>
+
+  @if (showErrors()) {
+    <div class="invalid-feedback d-block">
+      {{ errorMessage() }}
+    </div>
+  }
+</div>

@@ -1,0 +1,43 @@
+<!-- src\app\components\AdminPanel\certifications\certifications.component.html -->
+<div class="container-fluid"  [hidden]="hidden() || showCertification() || showCreateQuestion()" >
+  <div class="row">
+    <div class="col-12">
+      <div class="w-100 d-flex justify-content-end">
+        <app-button
+          btnLabel="Add New Certification"
+          [mainBtn]="true"
+          (click)="onAddNewCertification()"
+        />
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="row flex-wrap">
+        @for (certification of certifications(); track certification.oid) {
+          <div class="col-12 col-md-6 col-lg-4">
+            <app-certification-card
+              (click)="openCertificationPage(certification)"
+              imgSrc="assets/images/certifications/certfication_1.jpeg"
+              [imgAlt]="certification.courseName"
+              [courseDuration]="'30 MIN'"
+              [courseName]="certification.courseName"
+              [courseAbb]="certification.courseDescription"
+            >
+            </app-certification-card>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid"  [hidden]="!hidden() || showCertification() || showCreateQuestion()" >
+  <div class="row">
+    <div class="col-12">
+      <app-create-certification (cancalEvent)="onCancal()" [oid]="oid"/>
+    </div>
+  </div>
+</div>
+
+<app-certification [hidden]=" !showCertification() || showCreateQuestion()"/>
+
+<app-certification-question [hidden]="!showCreateQuestion()"/>

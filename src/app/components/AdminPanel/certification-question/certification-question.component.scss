@@ -1,0 +1,13 @@
+/* src\app\components\AdminPanel\certification-question\certification-question.component.scss */
+@use 'variables' as *;
+
+h5 {
+  color: $primaryColor;
+  font-weight: bold;
+  font-size: $fs-l;
+}
+
+
+.addAnswer * {
+  color: $primaryColor;
+}

@@ -1,0 +1,7 @@
+/* src\app\components\main\main.scss */
+@use 'variables' as *;
+
+main {
+      background-color: $bgBody;
+      height: calc(100vh - 56px);
+}

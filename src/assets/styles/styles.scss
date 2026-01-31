@@ -1,0 +1,128 @@
+/* src\assets\styles\styles.scss */
+@use 'variables' as *;
+@use './light-theme';
+@use './dark-theme';
+
+html {
+  padding: 0px;
+  margin: 0px;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: $bgBody;
+}
+
+body * {
+  font-family: 'IBM Plex Sans Arabic', sans-serif;
+  font-feature-settings: 'calt' 1, 'liga' 1;
+  unicode-bidi: isolate;
+  text-rendering: optimizeLegibility;
+  direction: inherit;
+}
+
+.drop-shadow {
+  box-shadow: 0px 2px 2px 0px rgba(208, 210, 210, 0.25);
+}
+
+.basic-style {
+  background-color: $siteNavColor;
+  color: $textColor;
+}
+
+.text-site {
+  color: $textColor;
+}
+
+.bg-body {
+  background-color: $bgBody;
+}
+
+h6 {
+  color: $siteNavColor;
+  margin-bottom: 0px;
+}
+
+html .toast-success {
+  background-color: #00857d !important;
+}
+
+html #toast-container.toast-top-right {
+  z-index: 999999999 !important;
+}
+
+.p-datatable-filter-overlay * {
+  font-size: $fs-xs !important;
+  overflow: visible !important;
+
+  .p-button {
+    flex-grow: 1;
+  }
+
+  .p-button-label {
+    padding: 1rem;
+  }
+}
+
+
+.form-control {
+  border-radius: 8px;
+  border: none;
+  border: 1px solid $borderColor;
+  outline: none !important;
+  box-shadow: none !important;
+
+  &:focus {
+    border-color: $primaryColor;
+  }
+}
+
+.ng-select .ng-select-container {
+  border: 1px solid $borderColor;
+}
+
+.input-group-text {
+  background-color: var(--form-control-bg);
+  border: none;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.input-group-text i {
+  color: var(--bs-placeholder-color) !important;
+}
+
+.validationError {
+  color: var(--bs-form-invalid-color);
+  font-size: 0.875em;
+}
+
+.validBorderError {
+  border-color: var(--bs-form-invalid-color);
+  border-radius: 8px;
+}
+
+.ng-select {
+  padding: 0px;
+  border: none;
+}
+
+.ng-select.ng-select-focused:not(.ng-select-opened)>.ng-select-container {
+  border: 1px solid $primaryColor;
+  box-shadow: none;
+}
+
+.ng-input input:focus {
+  border-color: $primaryColor;
+}
+
+.validBorderError.ng-select .ng-select-container {
+  border: 1px solid var(--bs-form-invalid-color);
+}
+
+
+label {
+  font-weight: normal;
+  color: $labelColor;
+  font-size: $fs-sm;
+}

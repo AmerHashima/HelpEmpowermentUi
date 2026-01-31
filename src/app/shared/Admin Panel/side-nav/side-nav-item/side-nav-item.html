@@ -1,0 +1,40 @@
+<!-- src\app\shared\Admin Panel\side-nav\side-nav-item\side-nav-item.html -->
+<div>
+  <!-- Nav Item -->
+  <div class="d-flex align-items-center  rounded-2  w-100 mb-1 sidebar "
+    [ngClass]="NavitemComponentData().classes" [class.justify-content-center]="NavitemComponentData().isCollapsed"
+    [routerLink]="NavitemComponentData().route" [title]="NavitemComponentData().navItemName"
+    routerLinkActive="router-link-active" (click)="NavitemComponentData().subItems ? toggleSubnav() : null">
+
+    <!-- icon slot -->
+    <ng-content></ng-content>
+
+    <!-- label -->
+    <span class="fw-light ps-2" [class.d-none]="NavitemComponentData().isCollapsed">
+      {{ NavitemComponentData().navItemName | titlecase}}
+    </span>
+
+    <!-- chevron if subnav exists -->
+    @if (NavitemComponentData().subItems && !NavitemComponentData().isCollapsed) {
+    <i class="fa ms-auto" [ngClass]="showSubnav ? 'pi pi-angle-down' : 'pi pi-angle-left'">
+    </i>
+    }
+  </div>
+
+  <!-- Subnav -->
+  @if (showSubnav && NavitemComponentData().subItems?.length && ! NavitemComponentData().isCollapsed) {
+  <ul class="subnav" [ngClass]="{ 'collapsed-subnav': NavitemComponentData().isCollapsed }">
+    @for (subItem of NavitemComponentData().subItems; track subItem) {
+    <li>
+      <div class="d-flex align-items-center subnav-item" [routerLink]="subItem.route"
+        routerLinkActive="router-link-active">
+        <i [ngClass]="subItem.icon" class="pe-2 small"></i>
+        <span class="small fw-light">
+          {{ lang()== 'ar' ? subItem.nameAr:subItem.name | titlecase}}
+        </span>
+      </div>
+    </li>
+    }
+  </ul>
+  }
+</div>

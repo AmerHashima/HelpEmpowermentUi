@@ -1,0 +1,73 @@
+/* src\app\shared\Admin Panel\navbar\navbar.scss */
+@use 'variables' as *;
+
+nav {
+  background-color: $siteNavColor;
+  color: $textColor;
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 100;
+}
+
+.icon-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 50%;
+  background-color: $bghover;
+  cursor: pointer;
+
+  .bi {
+    font-size: $fs-sm;
+    color: $primaryColor !important;
+  }
+}
+
+
+.icon-circle:hover {
+  background-color: $secondaryColor;
+
+  .bi {
+    color: $lightBgTextColor !important;
+  }
+}
+
+.borderNotify {
+  padding-inline-start: .3rem;
+}
+
+.pi-moon {
+  transform: rotateY(180deg) translateY(-1px);
+}
+
+:host-context(html[dir="ltr"]) .pi-moon {
+  transform: rotateY(0deg) translateY(-1px);
+}
+
+.img-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.img-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+:host-context(html[dir="ltr"]) .pi-arrow-left,
+:host-context(html[dir="ltr"]) .pi-align-right {
+  transform: rotate(180deg);
+}
+
+span {
+  font-size: $fs-sm;
+}

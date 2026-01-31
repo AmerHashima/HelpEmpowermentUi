@@ -1,0 +1,43 @@
+<!-- src\app\shared\spk-ng-select\spk-ng-select.component.html -->
+<div class="d-flex flex-column gap-1">
+  @if (label(); as lbl) {
+  <label class="form-label mb-0" [for]="id()">
+    {{ lbl }}
+  </label>
+  }
+  <ng-select
+    [items]="options()"
+    [bindLabel]="bindLabel()"
+    [bindValue]="bindValue()"
+    [id]="id()"
+    [ngClass]="mainClass()"
+    [class]="selectClass()"
+    [class.validBorderError]="showErrors"
+    [(ngModel)]="value"
+    (ngModelChange)="handleSelectionChange($event)"
+    [multiple]="multiple() || multi()"
+    [placeholder]="placeholder()"
+    [disabled]="disabled()"
+    [clearable]="clearable()"
+    [searchable]="searchable()"
+    [hideSelected]="hideSelected()"
+    [addTag]="addTag()"
+    [maxSelectedItems]="maxSelectedItems()"
+    appendTo="body"
+    (blur)="onTouched()"
+    [virtualScroll]="options().length > 150"
+  >
+    <ng-content></ng-content>
+  </ng-select>
+
+  @if(showErrors){
+  <div class="validationError mt-1">
+    @for(msg of errorMessages ; track msg){
+    <div >
+      {{ msg }}
+    </div>
+  }
+  </div>
+}
+</div>
+

@@ -1,0 +1,21 @@
+/* src\app\shared\tag\tag.component.scss */
+@use 'variables' as *;
+
+.tag-card {
+    width: fit-content;
+    background-color: $secondaryColor;
+    color: $lightBgTextColor;
+    border-radius: $borderRadius;
+    padding-inline: .5rem;
+}
+
+.tag-card:hover {
+    background-color: $lightBgTextColor;
+    color: $secondaryColor;
+    box-shadow: $boxShadow
+}
+
+.tag-card span {
+    color: inherit;
+    font-size: $fs-sm;
+}

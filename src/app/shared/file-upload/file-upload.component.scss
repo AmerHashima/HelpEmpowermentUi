@@ -1,0 +1,57 @@
+@use 'variables' as *;
+
+/* src\app\shared\file-upload\file-upload.component.scss */
+.custom-card {
+  border: none;
+  padding: 0rem;
+}
+
+.custom-card .card-body {
+  padding: 0rem;
+
+}
+
+:host ::ng-deep .filepond--list-scroller {
+  margin: 0 !important;
+  height: 0 !important;
+}
+
+:host ::ng-deep .filepond--wrapper {
+  min-height: unset !important;
+}
+
+:host ::ng-deep .filepond--panel-root {
+  background-color: transparent;
+  border: 1px solid $borderColor;
+  border-radius: 0.375rem; // bootstrap
+}
+
+/* Text */
+:host ::ng-deep .filepond--drop-label {
+  color: $secondaryColor;
+  font-size: 0.875rem;
+  padding: 0.25rem 0.5rem;
+}
+
+:host ::ng-deep .filepond--root {
+  margin-bottom: 0;
+}
+
+/* Hopper spacing */
+:host ::ng-deep .filepond--hopper {
+  padding: 0;
+}
+
+/* Hide credits */
+:host ::ng-deep .filepond--credits {
+  display: none !important;
+}
+
+:host ::ng-deep .filepond--item {
+  top: 10px;
+}
+
+h5,
+li {
+  font-size: $fs-sm;
+}

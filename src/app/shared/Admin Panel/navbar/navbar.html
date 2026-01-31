@@ -1,0 +1,27 @@
+<!-- src\app\shared\Admin Panel\navbar\navbar.html -->
+<nav class="d-flex align-items-center justify-content-between p-3">
+  <div class="d-flex align-items-center gap-1" (click)="toggleSidebar()">
+    @if(isCollapse()){
+    <i class="pi pi-arrow-left"></i>
+    }
+    @else {
+    <i class="pi pi-align-right"></i>
+    }
+    <span class="ps-2">{{page() | translate | titlecase}}</span>
+  </div>
+
+  <div class="d-flex align-items-center gap-1 ">
+        <div class="borderNotify" (click)="switchTheme()">
+      <span class="icon-circle"><i class="bi bi-moon"></i></span>
+    </div>
+      <div class="borderNotify" (click)="switchLang()">
+      <span class="icon-circle"><i class="bi bi-globe"></i></span>
+    </div>
+    <div class="borderNotify">
+      <span class="icon-circle"><i class="bi bi-bell"></i></span>
+    </div>
+    <span class="img-circle ">
+      <img src="assets/images/navBar/user.jpg" alt="User" />
+    </span>
+  </div>
+</nav>

@@ -1,0 +1,25 @@
+<!-- src\app\shared\radio\radio.component.html -->
+<div class="mb-3">
+  @if (label()) {
+    <label class="form-label">{{ label() }}</label>
+  }
+
+  @for (opt of options(); track opt.value) {
+    <div class="form-check">
+      <input
+        class="form-check-input"
+        type="radio"
+        [name]="name()"
+        [id]="'radio-' + name() + '-' + opt.value"
+        [value]="opt.value"
+        [checked]="isSelected(opt.value)"
+        [disabled]="isGroupDisabled() || opt.disabled"
+        (change)="select(opt.value)"
+        (blur)="onBlur()"
+      />
+      <label class="form-check-label" [for]="'radio-' + name() + '-' + opt.value">
+        {{ opt.label }}
+      </label>
+    </div>
+  }
+</div>

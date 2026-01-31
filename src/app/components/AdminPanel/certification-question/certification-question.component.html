@@ -1,0 +1,229 @@
+<!-- src\app\components\AdminPanel\certification-question\certification-question.component.html -->
+<form
+  [formGroup]="form"
+  (ngSubmit)="onSubmit()"
+  class="d-flex flex-column gap-4 p-3"
+>
+  <div class="container-fluid">
+    <div class="row g-3">
+      <div class="col-12">
+        <div class="d-flex flex-column p-3 shadow rounded-3 fw-bold">
+          <h5>Certification Info</h5>
+          <div class="row gx-2">
+            <div class="col-lg-3">
+              <spk-ng-select
+                formControlName="certification"
+                label="Certification"
+                [options]="certificationOptions"
+                [multiple]="false"
+                placeholder="Choose Certification"
+                selectClass="form-control  w-100"
+              />
+            </div>
+            <div class="col-lg-3">
+              <spk-ng-select
+                formControlName="examNo"
+                label="Exam No."
+                [options]="examNo"
+                [multiple]="false"
+                placeholder="Choose Exam Number"
+                selectClass="form-control w-100"
+              />
+            </div>
+            <div class="col-lg-3">
+              <spk-ng-select
+                formControlName="examMode"
+                label="Exam Mode"
+                [options]="examModes"
+                [multiple]="false"
+                placeholder="Choose Exam Mode"
+                selectClass="form-control w-100"
+              />
+            </div>
+            <div class="col-lg-3">
+              <spk-ng-select
+                formControlName="questionType"
+                label="Question Type"
+                [options]="questionTypes"
+                [multiple]="false"
+                placeholder="Choose Question Type"
+                selectClass="form-control w-100"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <div class="d-flex flex-column p-3 shadow rounded-3 fw-bold">
+          <h5>Question Details</h5>
+          <div class="row g-2 flex-wrap">
+            <div class="col-12 col-lg-8">
+              <app-input
+                formControlName="questionHeader"
+                label="Question Header"
+                type="text"
+                placeholder=""
+                icon=""
+                [errorMessages]="{
+                  required: 'Question header is required',
+                  minlength: 'Question header is too short',
+                  maxlength: `Question header can't exceed 20 charahcter`,
+                }"
+              />
+            </div>
+             <div class="col-12 col-md-6 col-lg-2">
+              <app-input
+                formControlName="questionOrder"
+                label="Question Order"
+                type="text"
+                placeholder=""
+                icon=""
+                [errorMessages]="{
+                  required: 'Question order is required',
+                  minlength: 'Question order is too short',
+                  maxlength: `Question order can't exceed 20 charahcter`,
+                }"
+              />
+            </div>
+            <div class="col-12 col-md-6 col-lg-2">
+              <spk-ng-select
+                formControlName="questionMark"
+                label="Question Mark"
+                [options]="questionMarks"
+                [multiple]="false"
+                placeholder="Choose Question Mark"
+                selectClass="form-control form-control-sm w-100"
+              />
+            </div>
+            <div class="col-12">
+              <div class="upload">
+                <label for="">attachments</label>
+                <app-file-upload
+                  formControlName="files"
+                  [multiple]="false"
+                  label="Upload files"
+                ></app-file-upload>
+              </div>
+            </div>
+
+            @if (addAnswersFlag()) {
+              <div class="col-12">
+                <div
+                  class="addAnswer d-flex align-items-center justify-content-end"
+                  (click)="onActivateAddAnswerSection()"
+                >
+                  <i class="bi bi-plus-circle-fill pe-2"></i>
+                  <span>Add Answers</span>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+      @if (!addAnswersFlag()) {
+        <div class="col-12">
+          <div class="d-flex flex-column p-3 shadow rounded-3 fw-bold">
+            <h5>Answers</h5>
+
+            <div formArrayName="answers" class="row g-3">
+              @for(group of answersArray.controls; let i = $index;track i){
+                  <div
+                class="col-12"
+                [formGroupName]="i"
+              >
+                <div class="d-flex align-items-start gap-2">
+                  <app-checkbox
+                    formControlName="answers"
+                    [options]="checkboxOptions"
+                    label=""
+                  ></app-checkbox>
+
+                  <app-input
+                    class="w-100"
+                    formControlName="answer"
+                    label=""
+                    type="text"
+                    placeholder="Answer"
+                    icon=""
+                    [errorMessages]="{
+                      required: 'Answer is required',
+                      minlength: 'Answer is too short',
+                      maxlength: `Answer can't exceed 20 characters`,
+                    }"
+                  ></app-input>
+
+                  <!-- Optional remove button -->
+                  @if (answersArray.length > 1) {
+                    <i
+                      class="bi bi-x-circle-fill text-danger mt-2"
+                      (click)="removeAnswer(i)"
+                      style="cursor: pointer"
+                    ></i>
+                  }
+                </div>
+              </div>
+              }
+
+            </div>
+
+            <!-- Add button -->
+            <div
+              class="addAnswer d-flex align-items-center justify-content-end mt-2"
+              (click)="onAddAnotherAnswerSection()"
+              style="cursor: pointer"
+            >
+              <i class="bi bi-plus-circle-fill pe-2"></i>
+              <span>Add Another Answer</span>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="col-12">
+          <div class="d-flex flex-column p-3 shadow rounded-3 fw-bold">
+            <h5>Answers</h5>
+            <div class="row g-3 flex-wrap">
+              <div class="col-12">
+                <div class="d-flex align-items-start">
+                  <div class="d-flex align-items-start justify-content-center">
+                    <app-checkbox
+                      formControlName="answers"
+                      [options]="checkboxOptions"
+                      label=""
+                    ></app-checkbox>
+                  </div>
+
+                  <app-input
+                    class="w-100"
+                    formControlName="answer"
+                    label=""
+                    type="text"
+                    placeholder=""
+                    icon=""
+                    [errorMessages]="{
+                      required: ' Answer is required',
+                      minlength: 'Answer is too short',
+                      maxlength: `Answer can't exceed 20 charahcter`,
+                    }"
+                  />
+                </div>
+              </div>
+              <div class="col-12">
+                <div
+                  class="addAnswer d-flex align-items-center justify-content-end"
+                  (click)="onAddAnotherAnswerSection()"
+                >
+                  <i class="bi bi-plus-circle-fill pe-2"></i>
+                  <span>Add Another Answers</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> -->
+      }
+      <div class="d-flex justify-content-end gap-2">
+        <app-button btnLabel="Cancel" [mainBtn]="false" (click)="cancel()" />
+        <app-button btnLabel="Done" buttonType="submit" />
+      </div>
+    </div>
+  </div>
+</form>
