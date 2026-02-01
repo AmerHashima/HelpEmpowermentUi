@@ -1,0 +1,25 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches:
+      - main   # الفرع اللي تحب تعمل منه deploy
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Setup SSH
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H 144.91.127.150 >> ~/.ssh/known_hosts   # IP السيرفر بتاعك
+
+    - name: Pull and Restart on Server
+      run: |
+        ssh -i ~/.ssh/id_rsa root@144.91.127.150 "cd /root/HelpEmpowerment && git pull origin main && docker compose up -d --build"
