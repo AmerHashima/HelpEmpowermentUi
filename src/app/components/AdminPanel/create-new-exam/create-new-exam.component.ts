@@ -31,7 +31,6 @@ export class CreateNewExamComponent {
   status = [
     { label: 'Active', value: true },
     { label: 'Inactive', value: false },
-
   ];
 
   form = this.fb.group({

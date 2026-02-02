@@ -9,30 +9,32 @@ import { SideNav } from '../../../shared/Admin Panel/side-nav/side-nav';
   selector: 'app-admin-layout',
   imports: [Main, Navbar, SideNav],
   templateUrl: './admin-layout.component.html',
-  styleUrls: ['./admin-layout.component.scss'] // ✅ يجب أن تكون styleUrls
+  styleUrls: ['./admin-layout.component.scss']
 })
-export class AdminLayoutComponent implements OnInit {
-  constructor(private apiService: ApiService) { }
+// export class AdminLayoutComponent implements OnInit {
+export class AdminLayoutComponent  {
 
-  ngOnInit(): void {
-    this.loadHeaders();
-  }
+  // constructor(private apiService: ApiService) { }
 
-  private loadHeaders(): void {
-    const body = {
-      filters: [],
-      sort: [],
-      pagination: {
-        getAll: true,
-        pageNumber: 1,
-        pageSize: 10
-      },
-      columns: []
-    };
+  // ngOnInit(): void {
+  //   this.loadHeaders();
+  // }
 
-    this.apiService.get<any>('WeatherForecast').subscribe({
-      next: (response) => console.log('headers search response', response),
-      error: (error) => console.error('headers search error', error)
-    });
-  }
+  // private loadHeaders(): void {
+  //   const body = {
+  //     filters: [],
+  //     sort: [],
+  //     pagination: {
+  //       getAll: true,
+  //       pageNumber: 1,
+  //       pageSize: 10
+  //     },
+  //     columns: []
+  //   };
+
+  //   this.apiService.get<any>('WeatherForecast').subscribe({
+  //     next: (response) => console.log('headers search response', response),
+  //     error: (error) => console.error('headers search error', error)
+  //   });
+  // }
 }

@@ -21,7 +21,6 @@ export class InputComponent implements ControlValueAccessor, AfterViewInit {
   icon = input<string | undefined>();
   errorMessages = input<Record<string, string>>({});
   readOnly = input<boolean>(false);
-
   // Value signals
   value = signal('');
   isDisabled = signal(false);

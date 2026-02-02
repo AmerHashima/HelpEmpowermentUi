@@ -1,0 +1,33 @@
+
+
+  <div class="container-fluid">
+  <div class="row g-3">
+    <div class="col-12">
+      <div class="w-100 d-flex justify-content-end">
+        <app-button
+          btnLabel="Add New Certification"
+          [mainBtn]="true"
+          (click)="onAddNewCertification()"
+        />
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="row g-3 flex-wrap">
+        @for (certification of certifications(); track certification.oid) {
+          <div class="col-12 col-md-6 col-lg-4">
+            <app-certification-card
+              (click)="openCertificationPage(certification)"
+              imgSrc="assets/images/certifications/certfication_1.jpeg"
+              [imgAlt]="certification.courseName"
+              [courseDuration]="'30 MIN'"
+              [courseName]="certification.courseName"
+              [courseAbb]="certification.courseDescription"
+            >
+            </app-certification-card>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+

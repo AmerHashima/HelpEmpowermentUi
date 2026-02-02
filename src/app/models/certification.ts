@@ -5,13 +5,16 @@ export interface Certification {
   courseDescription: string,
   courseLevelLookupId: string
   courseCategoryLookupId: string
-  createdBy: string
+  createdBy: string,
+  isActive: boolean,
+
 }
 
 export interface APICertification {
+  oid: string,
   courseLevelName: string,
   courseCategoryName: string,
-  isActive: true,
+  isActive: boolean,
   courseCode: string,
   courseName: string,
   courseDescription: string,

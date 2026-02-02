@@ -42,7 +42,7 @@ export const updateCertification = (
   const mappedCertification: Certification = mapApiCertificationToCertification(certification);
   return (state) => ({
     certifications: [
-      ...state.certifications.filter(u => u.courseCode !== mappedCertification.courseCode),
+      ...state.certifications.filter(u => u.oid !== mappedCertification.oid),
       mappedCertification,
     ],
   });
@@ -107,8 +107,11 @@ export const setSuccess = (success: boolean): PartialStateUpdater<certificationS
   });
 };
 
-export const setOperation = (operation: string): PartialStateUpdater<certificationState> => {
+export const setSelectedCertification = (certification: Certification): PartialStateUpdater<certificationState> => {
   return (state) => ({
-    operationType: operation,
+    selectedCertification: certification,
   });
 };
+
+
+

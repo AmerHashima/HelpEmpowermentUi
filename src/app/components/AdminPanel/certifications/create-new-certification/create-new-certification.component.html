@@ -1,4 +1,3 @@
-<!-- src\app\components\AdminPanel\create-new-certification\create-new-certification.component.html -->
 <form
   [formGroup]="form"
   (ngSubmit)="onSubmit()"
@@ -47,12 +46,13 @@
         }"
       />
     </div>
-
     <div class="col-lg-4">
       <spk-ng-select
         formControlName="courseLevelLookupId"
         label="Course Level"
-        [options]="courseLevels"
+        [options]="courseLevels$ | async"
+        bindLabel="lookupNameEn"
+        bindValue="oid"
         [multiple]="false"
         placeholder="Choose Course Level"
         selectClass="form-control "
@@ -62,7 +62,9 @@
       <spk-ng-select
         formControlName="courseCategoryLookupId"
         label="Course Category"
-        [options]="courseCategories"
+        [options]="courseCategories$ | async"
+        bindLabel="lookupNameEn"
+        bindValue="oid"
         [multiple]="false"
         placeholder="Choose Course Category"
         selectClass="form-control"
@@ -72,24 +74,53 @@
       <spk-ng-select
         formControlName="createdBy"
         label="Creator"
+        bindLabel="label"
+        bindValue="value"
         [options]="users"
         [multiple]="false"
         placeholder="Choose User"
         selectClass="form-control"
       />
     </div>
-    <div class="col-12">
+      <div class="col-lg-4">
+      <spk-ng-select
+        formControlName="isActive"
+        label="Status"
+        [options]="status"
+        bindLabel="label"
+        bindValue="value"
+        [multiple]="false"
+        placeholder="Choose Status"
+        selectClass="form-control"
+      />
+    </div>
+    <!-- <div class="col-12">
       <label for="" class="mb-2">Course Image</label>
       <app-file-upload
         formControlName="files"
         [multiple]="true"
         label="Upload certification images"
       ></app-file-upload>
-    </div>
+    </div> -->
   </div>
 
-  <div class="d-flex justify-content-end gap-2">
-    <app-button btnLabel="Cancel" [mainBtn]="false" (click)="cancel()" />
-    <app-button btnLabel="Add Certification" buttonType="submit" />
-  </div>
+<div class="d-flex justify-content-end gap-2">
+  <app-button
+    btnLabel="Cancel"
+    [mainBtn]="false"
+    (click)="cancel()"
+  />
+
+  @if (isEdit()) {
+    <app-button
+      btnLabel="Update Certification"
+      buttonType="submit"
+    />
+  } @else {
+    <app-button
+      btnLabel="Add Certification"
+      buttonType="submit"
+    />
+  }
+</div>
 </form>

@@ -1,8 +1,21 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-12">
-      <div class="w-100 d-flex justify-content-end">
-        <app-button
+      <div class="w-100 d-flex justify-content-end gap-2">
+
+         <app-button
+          btnLabel="Delete Certification"
+          [mainBtn]="false"
+          [secondaryBtn]="true"
+          (click)="onDeleteCertification()"
+        />
+         <app-button
+          btnLabel="Edit Certification"
+          [mainBtn]="false"
+          [secondaryBtn]="false"
+          (click)="onEditCertification()"
+        />
+         <app-button
           btnLabel="Add New Exam"
           [mainBtn]="true"
           (click)="onAddNewExam()"
@@ -12,11 +25,11 @@
     <div class="col-12">
       <div class="d-flex flex-column">
         <h5 class="certificationName">
-          {{ certification().courseName }} Certification
+          {{ certification()?.courseName }} Certification
         </h5>
         <span class="certificationAbbr">Project Management Professional</span>
         <p class="certificationDescription">
-          {{ certification().courseDescription }}
+          {{ certification()?.courseDescription }}
         </p>
         <div class="row g-3 fleex-wrap">
           <!-- @for(exam of exams() ; let index=$index ; track index){

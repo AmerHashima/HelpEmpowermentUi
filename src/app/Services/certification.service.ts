@@ -73,10 +73,12 @@ export class CertificationService {
       .put<ApiResponse<APICertification>>('Courses', id, body)
       .pipe(
         map((response: ApiResponse<APICertification>) => {
+          console.log('response', response);
           if (!response.success) {
             const msg = response.errors?.join(', ') || response.message || 'API failed to update certification';
             throw new Error(msg);
           }
+
           return response.data;
         })
       );
@@ -190,7 +192,7 @@ export class CertificationService {
 
   private getLookupByHeaderId(headerId: string, errorContext: string): Observable<any> {
     return this.apiService
-      .getSingle('AppLookups/details/header', headerId)
+      .getSingle('AppLookups/headers/code', headerId)
       .pipe(
         map((response: any) => {
           if (!response?.success) {
@@ -201,28 +203,28 @@ export class CertificationService {
 
             throw new Error(msg);
           }
-          return response.data;
+          return response.data.details;
         }),
       );
   }
 
   getCourseLevels(): Observable<any> {
     return this.getLookupByHeaderId(
-      '11111111-1111-1111-1111-111111111111',
+      'COURSE_LEVEL',
       'course levels'
     );
   }
 
   getCourseCategories(): Observable<any> {
     return this.getLookupByHeaderId(
-      '22222222-2222-2222-2222-222222222222',
+      'COURSE_CATEGORY',
       'course categories'
     );
   }
 
   getQuestionTypes(): Observable<any> {
     return this.getLookupByHeaderId(
-      '33333333-3333-3333-3333-333333333333',
+      'QUESTION_TYPE',
       'question types'
     );
   }

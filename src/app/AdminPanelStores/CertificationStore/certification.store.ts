@@ -14,7 +14,7 @@ import {
   setPageUpdater,
   setSortUpdater,
   setSuccess,
-  setOperation
+  setSelectedCertification
 }
   from './certification.updaters';
 import { APICertification, Certification } from '../../models/certification';
@@ -33,7 +33,7 @@ export const CertificationsStore = signalStore(
 
       if (search().trim()) {
         filters.push({
-          propertyName: 'courseCode',
+          propertyName: 'oid',
           value: search().trim(),
           operation: 3,
         });
@@ -94,7 +94,9 @@ export const CertificationsStore = signalStore(
     setSuccess(success: boolean) {
       patchState(store, setSuccess(success));
     },
-
+    setSelectedCertification(certification: Certification) {
+      patchState(store, setSelectedCertification(certification));
+    },
   })),
   withMethods((store, certifcationService = inject(CertificationService)) => ({
     queryCertifications: rxMethod<RequestBody>(
@@ -133,8 +135,6 @@ export const CertificationsStore = signalStore(
               tap((certifcation: APICertification) => {
                 patchState(store, addCertification(certifcation));
                 patchState(store, setSuccess(true));
-                patchState(store, setOperation('createCertification'));
-
               }),
               catchError((err) => {
                 patchState(store, setError(err?.msg ?? 'Failed to add Certification'));
@@ -150,7 +150,12 @@ export const CertificationsStore = signalStore(
           tap(() => patchState(store, activateLoading)),
           switchMap(({ id, body }) =>
             certifcationService.updateCertification(id, body).pipe(
-              tap((certification: APICertification) => patchState(store, updateCertification(certification))),
+              // tap((certification: APICertification) => patchState(store, updateCertification(certification))),
+              tap((certifcation: APICertification) => {
+                console.log('in tap update store');
+                patchState(store, updateCertification(certifcation));
+                patchState(store, setSuccess(true));
+              }),
               catchError((err) => {
                 patchState(store, setError(err?.msg ?? 'Failed to update certification'));
                 return EMPTY;
@@ -166,8 +171,6 @@ export const CertificationsStore = signalStore(
           switchMap((id) =>
             certifcationService.getCertification(id).pipe(
               tap((Certification: APICertification) => patchState(store, getCertification(Certification))),
-              tap(() => patchState(store, setSuccess(true))),
-
               catchError((err) => {
                 patchState(store, setError(err?.msg ?? 'Failed to load Certification'));
                 return EMPTY;
@@ -194,7 +197,6 @@ export const CertificationsStore = signalStore(
       )
     };
   }),
-
   withHooks({
     onInit(store) {
       effect(() => {

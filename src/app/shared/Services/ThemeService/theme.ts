@@ -33,7 +33,9 @@ export class Theme {
       const defaultTheme = savedTheme === 'light' || savedTheme === 'dark'
         ? savedTheme
         : prefersLight ? 'light' : 'dark';
-      this.setTheme(defaultTheme);
+      // this.setTheme(defaultTheme);
+      this.setTheme('light');
+
     }
 
     // Listen to system preference changes
