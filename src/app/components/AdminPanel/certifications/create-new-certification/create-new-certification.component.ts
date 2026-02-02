@@ -10,6 +10,8 @@ import { CertificationsStore } from '../../../../AdminPanelStores/CertificationS
 import { Certification } from '../../../../models/certification';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
+
 @Component({
   selector: 'app-create-certification',
   imports: [SpkNgSelectComponent, ReactiveFormsModule, ButtonComponent,
@@ -21,6 +23,8 @@ export class CreateNewCertificationComponent {
   private certificationService = inject(CertificationService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private location = inject(Location);
+
   fb = inject(FormBuilder);
   store = inject(CertificationsStore);
   // id: string = '';
@@ -47,7 +51,7 @@ export class CreateNewCertificationComponent {
     // files: [[] as File[]]
   });
 
-  certification= this.store.selectedCertification;
+  certification = this.store.selectedCertification;
   isEdit = computed(() => !!this.certification()?.oid);
 
 
@@ -129,7 +133,10 @@ export class CreateNewCertificationComponent {
     this.form.markAsUntouched();
     this.form.reset();
     this.store.setSelectedCertification(null as any);
-    this.router.navigate(['/admin/certifications']);
+    // if (this.isEdit())
+    //   this.location.back();
+    // else
+      this.router.navigate(['/admin/certifications']);
   }
 }
 

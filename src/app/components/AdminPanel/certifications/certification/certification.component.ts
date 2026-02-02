@@ -15,13 +15,11 @@ import { ActivatedRoute } from '@angular/router';
   styleUrl: './certification.component.scss'
 })
 export class CertificationComponent {
-  certificationStore=inject(CertificationsStore);
+  certificationStore = inject(CertificationsStore);
   certificationService = inject(CertificationService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   certification = this.certificationStore.selectedCertification
-  readonly addNewExamEmitter = output<void>();
-  readonly addNewQuestionEmitter = output<any>();
 
   readonly exams$ = computed(() => {
     const oid = this.certification()?.oid;
@@ -40,31 +38,35 @@ export class CertificationComponent {
   }
 
   onAddNewExam() {
-    this.addNewExamEmitter.emit();
+    console.log('navigate to create new exam');
+    const certId = this.certification()?.oid;
+    if (certId)
+      this.router.navigate(['/admin/certifications', certId, 'exams', 'create']);
   }
   onAddNewQuestion(exam: any) {
-    this.addNewQuestionEmitter.emit(exam);
+    console.log('navigate to create new question');
+    const certId = this.certification()?.oid;
+    if (certId)
+      this.router.navigate(['/admin/certifications', certId, 'exams', 'question', 'create']);
   }
   onDeleteExam(exam: any) {
+    this.certificationService.deleteExam(exam.oid).subscribe({});
   }
 
-  onEditCertification(){
+  onEditCertification() {
     const cert = this.certification();
     if (cert && cert.oid) {
-      console.log('in edit');
       this.certificationStore.setSelectedCertification(cert);
-      // this.certificationStore.setSelectedOperation('edit');
       this.router.navigate(['/admin/certifications', cert.oid, 'edit']);
 
     }
   }
-  onDeleteCertification(){
+  onDeleteCertification() {
     const cert = this.certification();
     if (cert && cert.oid) {
-      console.log('in delete');
       this.certificationStore.deleteCertification(cert.oid);
       this.router.navigate(['/admin/certifications']);
+    }
   }
-}
 
 }

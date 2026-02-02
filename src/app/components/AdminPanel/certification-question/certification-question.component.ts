@@ -4,6 +4,7 @@ import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } fr
 import { ButtonComponent } from '../../../shared/button/button.component';
 import { InputComponent } from '../../../shared/input/input.component';
 import { FileUploadComponent } from '../../../shared/file-upload/file-upload.component';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-certification-question',
@@ -13,6 +14,7 @@ import { FileUploadComponent } from '../../../shared/file-upload/file-upload.com
   styleUrl: './certification-question.component.scss'
 })
 export class CertificationQuestionComponent {
+  private location = inject(Location);
   addAnswersFlag = signal<boolean>(true);
   addChoiceAnswersFlag = signal<boolean>(false);
   addDragQuestionsFlag = signal<boolean>(false);
@@ -186,7 +188,11 @@ export class CertificationQuestionComponent {
       this.addChoiceAnswersFlag.set(true)
     else this.addDragQuestionsFlag.set(true);
   }
-  cancel() { }
+  cancel() {
+    this.form.markAsUntouched();
+    this.form.reset();
+    this.location.back();
+  }
   onSubmit() {
     console.log(this.form.value);
   }

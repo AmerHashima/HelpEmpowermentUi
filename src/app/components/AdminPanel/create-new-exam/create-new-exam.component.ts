@@ -6,6 +6,9 @@ import { ButtonComponent } from '../../../shared/button/button.component';
 import { InputComponent } from '../../../shared/input/input.component';
 import { SpkNgSelectComponent } from '../../../shared/spk-ng-select/spk-ng-select.component';
 import { AsyncPipe } from '@angular/common';
+import { Location } from '@angular/common';
+import { CertificationsStore } from '../../../AdminPanelStores/CertificationStore/certification.store';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -16,6 +19,10 @@ import { AsyncPipe } from '@angular/common';
 })
 export class CreateNewExamComponent {
   private certificationService = inject(CertificationService);
+  private certificationStore = inject(CertificationsStore);
+  private route = inject(ActivatedRoute);
+  private location = inject(Location);
+
   fb = inject(FormBuilder);
   // store = inject(CertificationsStore);
 
@@ -42,11 +49,17 @@ export class CreateNewExamComponent {
     isActive: [true, [Validators.required]],
   });
 
-  @Output() onExamCancalEvent = new EventEmitter<any>();
-  certification = input<Certification>({} as Certification);
-
-
+  // @Output() onExamCancalEvent = new EventEmitter<any>();
+  // certification = input<Certification>({} as Certification);
+  certification=this.certificationStore.selectedCertification;
   constructor(){
+    effect(() => {
+      const certId = this.route.snapshot.paramMap.get('id');
+      if (!this.certification() && certId) {
+        this.certificationStore.getCertification(certId);
+      }
+    });
+
     effect(() => {
       const certification = this.certification();
       if (certification) {
@@ -95,6 +108,10 @@ export class CreateNewExamComponent {
   cancel() {
     this.form.markAsUntouched();
     this.form.reset();
-    this.onExamCancalEvent.emit();
+    this.goBack();
+  }
+
+  goBack() {
+    this.location.back();
   }
 }

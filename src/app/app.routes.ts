@@ -8,6 +8,8 @@ import { CertificationsComponent } from './components/AdminPanel/certifications/
 import { CertificationsListComponent } from './components/AdminPanel/certifications/certifications-list/certifications-list.component';
 import { CertificationComponent } from './components/AdminPanel/certifications/certification/certification.component';
 import { CreateNewCertificationComponent } from './components/AdminPanel/certifications/create-new-certification/create-new-certification.component';
+import { CreateNewExamComponent } from './components/AdminPanel/create-new-exam/create-new-exam.component';
+import { CertificationQuestionComponent } from './components/AdminPanel/certification-question/certification-question.component';
 
 export const routes: Routes = [
   {
@@ -27,6 +29,8 @@ export const routes: Routes = [
         data: { breadcrumb: 'Dashboard' },
       },
 
+
+
       {
         path: 'certifications',
         component: CertificationsComponent,
@@ -43,6 +47,16 @@ export const routes: Routes = [
             data: { breadcrumb: 'Create' },
           },
           {
+            path: ':id/exams/create',
+            component: CreateNewExamComponent,
+            data: { breadcrumb: 'Create Exam' },
+          },
+          {
+            path: ':id/exams/question/create',
+            component: CertificationQuestionComponent,
+            data: { breadcrumb: 'Create Question' },
+          },
+          {
             path: ':id/edit',
             component: CreateNewCertificationComponent,
             data: { breadcrumb: 'Edit' },
@@ -55,6 +69,7 @@ export const routes: Routes = [
 
         ],
       },
+
 
       {
         path: '',
