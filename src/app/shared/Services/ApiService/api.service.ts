@@ -45,7 +45,8 @@ export default class ApiService {
 
 
   put<T>(url: string, id: string, body: any): Observable<T> {
-    const fullUrl = `${this.baseUrl}/${url}/${id}`;
+    // const fullUrl = `${this.baseUrl}/${url}/${id}`;
+    const fullUrl = `${this.baseUrl}/${url}`;
     return this.http.put<T>(fullUrl, body, { headers: this.createHeaders() });
   }
 

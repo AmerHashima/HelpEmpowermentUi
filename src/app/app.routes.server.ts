@@ -15,9 +15,10 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Client,
   },
   {
-    path: 'admin/certifications',
+    path: 'admin/certifications/**',
     renderMode: RenderMode.Client,
   },
+
   {
     path: 'about',
     renderMode: RenderMode.Prerender,

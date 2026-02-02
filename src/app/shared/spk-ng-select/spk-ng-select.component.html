@@ -1,4 +1,3 @@
-<!-- src\app\shared\spk-ng-select\spk-ng-select.component.html -->
 <div class="d-flex flex-column gap-1">
   @if (label(); as lbl) {
   <label class="form-label mb-0" [for]="id()">
@@ -25,8 +24,9 @@
     [maxSelectedItems]="maxSelectedItems()"
     appendTo="body"
     (blur)="onTouched()"
-    [virtualScroll]="options().length > 150"
-  >
+ >
+      <!-- [virtualScroll]="options()!.length > 150" -->
+
     <ng-content></ng-content>
   </ng-select>
 

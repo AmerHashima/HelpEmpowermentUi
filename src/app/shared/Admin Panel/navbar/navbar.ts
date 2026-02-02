@@ -4,16 +4,22 @@ import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Theme } from '../../Services/ThemeService/theme';
 import { Shared } from "../../Services/shared/shared"
+import { Observable } from 'rxjs';
+import { BreadcrumbItem, BreadcrumbService } from '../../../Services/breadcrumb.service';
+import { RouterModule } from '@angular/router';
 
 
 @Component({
   selector: 'app-navbar',
-  imports: [TranslateModule, CommonModule],
+  imports: [TranslateModule, CommonModule, RouterModule],
   templateUrl: './navbar.html',
   styleUrls: ['./navbar.scss'],
   standalone: true
 })
 export class Navbar {
+
+  breadcrumbService= inject(BreadcrumbService);
+  breadcrumbs$: Observable<BreadcrumbItem[]>= this.breadcrumbService.breadcrumbs$;
   private shared = inject(Shared);
   private theme = inject(Theme);
   private translateService = inject(TranslateService);

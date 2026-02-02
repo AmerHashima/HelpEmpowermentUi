@@ -1,4 +1,3 @@
-<!-- src\app\components\AdminPanel\certification-question\certification-question.component.html -->
 <form
   [formGroup]="form"
   (ngSubmit)="onSubmit()"
@@ -7,7 +6,7 @@
   <div class="container-fluid">
     <div class="row g-3">
       <div class="col-12">
-        <div class="d-flex flex-column p-3 shadow rounded-3 fw-bold">
+        <div class="d-flex flex-column p-3 shadow-sm rounded-3 fw-bold">
           <h5>Certification Info</h5>
           <div class="row gx-2">
             <div class="col-lg-3">
@@ -55,7 +54,7 @@
       </div>
 
       <div class="col-12">
-        <div class="d-flex flex-column p-3 shadow rounded-3 fw-bold">
+        <div class="d-flex flex-column p-3 shadow-sm rounded-3 fw-bold">
           <h5>Question Details</h5>
           <div class="row g-2 flex-wrap">
             <div class="col-12 col-lg-8">
@@ -72,7 +71,7 @@
                 }"
               />
             </div>
-             <div class="col-12 col-md-6 col-lg-2">
+            <div class="col-12 col-md-6 col-lg-2">
               <app-input
                 formControlName="questionOrder"
                 label="Question Order"
@@ -121,50 +120,44 @@
           </div>
         </div>
       </div>
-      @if (!addAnswersFlag()) {
+      @if (addChoiceAnswersFlag()) {
         <div class="col-12">
-          <div class="d-flex flex-column p-3 shadow rounded-3 fw-bold">
+          <div class="d-flex flex-column p-3 shadow-sm rounded-3 fw-bold">
             <h5>Answers</h5>
 
-            <div formArrayName="answers" class="row g-3">
-              @for(group of answersArray.controls; let i = $index;track i){
-                  <div
-                class="col-12"
-                [formGroupName]="i"
-              >
-                <div class="d-flex align-items-start gap-2">
-                  <app-checkbox
-                    formControlName="answers"
-                    [options]="checkboxOptions"
-                    label=""
-                  ></app-checkbox>
+            <div formArrayName="answers" class="row g-2">
+              @for (group of answersArray.controls; let i = $index; track i) {
+                <div class="col-12" [formGroupName]="i">
+                  <div class="d-flex align-items-start gap-2">
+                    <input
+                      type="checkbox"
+                      formControlName="correctAnswer"
+                      class="form-check-input mt-1"
+                    />
+                    <app-input
+                      class="w-100"
+                      formControlName="answer"
+                      label=""
+                      type="text"
+                      placeholder="Answer"
+                      icon=""
+                      [errorMessages]="{
+                        required: 'Answer is required',
+                        minlength: 'Answer is too short',
+                        maxlength: `Answer can't exceed 20 characters`,
+                      }"
+                    ></app-input>
 
-                  <app-input
-                    class="w-100"
-                    formControlName="answer"
-                    label=""
-                    type="text"
-                    placeholder="Answer"
-                    icon=""
-                    [errorMessages]="{
-                      required: 'Answer is required',
-                      minlength: 'Answer is too short',
-                      maxlength: `Answer can't exceed 20 characters`,
-                    }"
-                  ></app-input>
-
-                  <!-- Optional remove button -->
-                  @if (answersArray.length > 1) {
-                    <i
-                      class="bi bi-x-circle-fill text-danger mt-2"
-                      (click)="removeAnswer(i)"
-                      style="cursor: pointer"
-                    ></i>
-                  }
+                    @if (answersArray.length > 1) {
+                      <i
+                        class="bi bi-x-circle-fill text-danger mt-2"
+                        (click)="removeAnswer(i)"
+                        style="cursor: pointer"
+                      ></i>
+                    }
+                  </div>
                 </div>
-              </div>
               }
-
             </div>
 
             <!-- Add button -->
@@ -178,47 +171,179 @@
             </div>
           </div>
         </div>
-        <!-- <div class="col-12">
-          <div class="d-flex flex-column p-3 shadow rounded-3 fw-bold">
-            <h5>Answers</h5>
-            <div class="row g-3 flex-wrap">
-              <div class="col-12">
-                <div class="d-flex align-items-start">
-                  <div class="d-flex align-items-start justify-content-center">
-                    <app-checkbox
-                      formControlName="answers"
-                      [options]="checkboxOptions"
-                      label=""
-                    ></app-checkbox>
-                  </div>
+      }
+      @if (addDragQuestionsFlag()) {
+        <div class="col-12">
+          <div class="d-flex flex-column p-3 shadow-sm rounded-3 fw-bold">
+            <h5>Drag Questions</h5>
 
-                  <app-input
-                    class="w-100"
-                    formControlName="answer"
-                    label=""
-                    type="text"
-                    placeholder=""
-                    icon=""
-                    [errorMessages]="{
-                      required: ' Answer is required',
-                      minlength: 'Answer is too short',
-                      maxlength: `Answer can't exceed 20 charahcter`,
-                    }"
-                  />
+            <div formArrayName="dragQuestions" class="row g-2">
+              @for (
+                group of dragQuestionsArray.controls;
+                let i = $index;
+                track i
+              ) {
+                <div class="col-12" [formGroupName]="i">
+                  <div class="d-flex align-items-start gap-2">
+                    <app-input
+                      class="w-100"
+                      formControlName="dragQuestion"
+                      label=""
+                      type="text"
+                      placeholder="Question"
+                      icon=""
+                      [errorMessages]="{
+                        required: 'Drag question is required',
+                        minlength: 'Drag question  is too short',
+                        maxlength: `Drag question  can't exceed 20 characters`,
+                      }"
+                    ></app-input>
+
+                    <!-- Optional remove button -->
+                    @if (dragQuestionsArray.length > 1 && !addDragAnswersFlag()) {
+                      <i
+                        class="bi bi-x-circle-fill text-danger mt-2"
+                        (click)="removeDragQuestion(i)"
+                        style="cursor: pointer"
+                      ></i>
+                    }
+                  </div>
                 </div>
-              </div>
-              <div class="col-12">
+              }
+            </div>
+
+            <!-- Add button -->
+            @if (!addDragAnswersFlag()) {
+              <div class="d-flex align-items-center justify-content-end gap-3">
                 <div
-                  class="addAnswer d-flex align-items-center justify-content-end"
-                  (click)="onAddAnotherAnswerSection()"
+                  class="addQuestion d-flex align-items-center justify-content-end mt-2"
+                  (click)="onAddAnotherDragQuestion()"
+                  style="cursor: pointer"
                 >
                   <i class="bi bi-plus-circle-fill pe-2"></i>
-                  <span>Add Another Answers</span>
+                  <span>Add Another Question</span>
+                </div>
+                <div
+                  class="doneQuestion d-flex align-items-center justify-content-end mt-2"
+                  (click)="DoneWithDragQuestion()"
+                  style="cursor: pointer"
+                >
+                  <i class="bi bi-check-circle-fill pe-2"></i>
+                  <span>Done with Question</span>
                 </div>
               </div>
-            </div>
+            }
           </div>
-        </div> -->
+        </div>
+      }
+
+      @if (addDragAnswersFlag()) {
+        <div class="col-12">
+          <div class="d-flex flex-column p-3 shadow-sm rounded-3 fw-bold">
+            <h5>Drag Answers</h5>
+
+            <div formArrayName="dragAnswers" class="row g-2">
+              @for (
+                group of dragAnswersArray.controls;
+                let i = $index;
+                track i
+              ) {
+                <div class="col-12" [formGroupName]="i">
+                  <div class="d-flex align-items-start gap-2">
+                    <app-input
+                      class="w-100"
+                      formControlName="answer"
+                      label=""
+                      type="text"
+                      placeholder="Answer"
+                      icon=""
+                      [errorMessages]="{
+                        required: 'Answer is required',
+                        minlength: 'Answer is too short',
+                        maxlength: `Answer can't exceed 20 characters`,
+                      }"
+                    ></app-input>
+
+                    <!-- Optional remove button -->
+                    @if (dragAnswersArray.length > 1 && !linkDragAnswerAndQuestionFlag()) {
+                      <i
+                        class="bi bi-x-circle-fill text-danger mt-2"
+                        (click)="removeDragAnswer(i)"
+                        style="cursor: pointer"
+                      ></i>
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+
+            @if (!linkDragAnswerAndQuestionFlag()) {
+              <div class="d-flex align-items-center justify-content-end gap-3">
+                <div
+                  class="addQuestion d-flex align-items-center justify-content-end mt-2"
+                  (click)="onAddAnotherDragAnswer()"
+                  style="cursor: pointer"
+                >
+                  <i class="bi bi-plus-circle-fill pe-2"></i>
+                  <span>Add Another Drag Answer</span>
+                </div>
+                <div
+                  class="doneQuestion d-flex align-items-center justify-content-end mt-2"
+                  (click)="DoneWithDragAnswer()"
+                  style="cursor: pointer"
+                >
+                  <i class="bi bi-check-circle-fill pe-2"></i>
+                  <span>Done with Drag Answers</span>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      @if (linkDragAnswerAndQuestionFlag()) {
+        <div class="col-12">
+          <div class="d-flex flex-column p-3 shadow-sm rounded-3 fw-bold">
+            <h5>Connect Answer with Questions</h5>
+
+          <div formArrayName="dragQuestions" class="row g-2">
+  @for (group of dragQuestionsArray.controls; let i = $index; track $index) {
+    <div class="col-12" [formGroupName]="i">
+      <div class="row g-3 align-items-end">
+
+        <!-- The question / drop target -->
+        <div class="col-6">
+          <app-input
+            class="w-100"
+            formControlName="dragQuestion"
+            [label]="`Question ${i + 1}`"
+            type="text"
+            placeholder="Enter drop target text..."
+            icon=""
+            [readOnly]="true"
+          ></app-input>
+        </div>
+
+        <!-- Correct answer selector -->
+        <div class="col-6">
+          <spk-ng-select
+            formControlName="correctDragAnswer"
+            label="Correct Drag Item"
+            [options]="dragAnswers"
+            [multiple]="false"
+            bindLabel="label"
+            bindValue="value"
+            placeholder="Select correct draggable item"
+            selectClass="form-control w-100"
+          />
+        </div>
+
+      </div>
+    </div>
+  }
+</div>
+          </div>
+        </div>
       }
       <div class="d-flex justify-content-end gap-2">
         <app-button btnLabel="Cancel" [mainBtn]="false" (click)="cancel()" />

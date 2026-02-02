@@ -1,4 +1,3 @@
-// src\app\AdminPanelStores\CertificationStore\certification.updaters.ts
 import { PartialStateUpdater } from "@ngrx/signals";
 import { certificationState } from "../../models/certification.state";
 // import { ApiUser } from "../models/api-user";
@@ -43,7 +42,7 @@ export const updateCertification = (
   const mappedCertification: Certification = mapApiCertificationToCertification(certification);
   return (state) => ({
     certifications: [
-      ...state.certifications.filter(u => u.courseCode !== mappedCertification.courseCode),
+      ...state.certifications.filter(u => u.oid !== mappedCertification.oid),
       mappedCertification,
     ],
   });
@@ -101,3 +100,18 @@ export const setSortUpdater = (active: string, direction: 'asc' | 'desc' | ''): 
     page: 1,
   });
 }
+
+export const setSuccess = (success: boolean): PartialStateUpdater<certificationState> => {
+  return (state) => ({
+    success: success,
+  });
+};
+
+export const setSelectedCertification = (certification: Certification): PartialStateUpdater<certificationState> => {
+  return (state) => ({
+    selectedCertification: certification,
+  });
+};
+
+
+

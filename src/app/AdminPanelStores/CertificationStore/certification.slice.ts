@@ -1,4 +1,3 @@
-// src\app\AdminPanelStores\CertificationStore\certification.slice.ts
 import { certificationState } from "../../models/certification.state";
 
 export const initialCertificationState: certificationState = {
@@ -6,7 +5,7 @@ export const initialCertificationState: certificationState = {
   selectedCertification: null,
   loading: false,
   error: null,
-
+  success: false,
   page: 1,
   pageSize: 10,
   total: 0,

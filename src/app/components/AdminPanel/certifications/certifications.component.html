@@ -1,5 +1,5 @@
-<!-- src\app\components\AdminPanel\certifications\certifications.component.html -->
-<div class="container-fluid"  [hidden]="hidden() || showCertification() || showCreateQuestion()" >
+<!-- <div class="container-fluid"  [hidden]="hidden() || showCertification() || showCreateQuestion() || showCreateExam() " > -->
+  <!-- <div class="container-fluid">
   <div class="row">
     <div class="col-12">
       <div class="w-100 d-flex justify-content-end">
@@ -28,9 +28,9 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
 
-<div class="container-fluid"  [hidden]="!hidden() || showCertification() || showCreateQuestion()" >
+<!-- <div class="container-fluid"  [hidden]="!hidden() || showCertification() || showCreateQuestion() || showCreateExam()" >
   <div class="row">
     <div class="col-12">
       <app-create-certification (cancalEvent)="onCancal()" [oid]="oid"/>
@@ -38,6 +38,24 @@
   </div>
 </div>
 
-<app-certification [hidden]=" !showCertification() || showCreateQuestion()"/>
+<div class="container-fluid"  [hidden]="!showCreateExam()" >
+  <div class="row">
+    <div class="col-12">
+      <app-create-new-exam (onExamCancalEvent)="onExamCancel()" [certification]="certification()"/>
+    </div>
+  </div>
+</div>
 
-<app-certification-question [hidden]="!showCreateQuestion()"/>
+<app-certification [hidden]=" !showCertification() || showCreateQuestion() || showCreateExam()"
+[certification]="certification()"
+(addNewExamEmitter)="addNewExam()"
+(addNewQuestionEmitter)="addNewQuestion($event)"
+/> -->
+
+
+
+<!-- <app-certification-question [hidden]="!showCreateQuestion() || showCreateExam()"/> -->
+
+
+<router-outlet></router-outlet>
+

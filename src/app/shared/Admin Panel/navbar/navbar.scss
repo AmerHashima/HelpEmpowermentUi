@@ -71,3 +71,21 @@ nav {
 span {
   font-size: $fs-sm;
 }
+
+.breadcrumb-item {
+    color:$lightBgTextColor !important;
+  text-decoration: none !important;
+    font-size: $fs-sm;
+}
+
+.breadcrumb-item *{
+    color:rgb(214, 204, 204) !important;
+
+  text-decoration: none !important;
+  font-size: $fs-sm;
+}
+
+
+.breadcrumb-item + .breadcrumb-item::before{
+    color:rgb(214, 204, 204) !important;
+}

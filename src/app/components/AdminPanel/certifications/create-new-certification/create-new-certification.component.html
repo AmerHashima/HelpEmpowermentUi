@@ -1,0 +1,126 @@
+<form
+  [formGroup]="form"
+  (ngSubmit)="onSubmit()"
+  class="d-flex flex-column gap-4 p-3"
+>
+  <div class="row flex-wrap g-2">
+    <div class="col-lg-4">
+      <app-input
+        formControlName="courseCode"
+        label="Course Code"
+        type="text"
+        placeholder=""
+        icon=""
+        [errorMessages]="{
+          required: 'Code is required',
+          minlength: 'Code is too short',
+          maxlength: `Code can't exceed 20 charahcter`,
+        }"
+      />
+    </div>
+    <div class="col-lg-4">
+      <app-input
+        formControlName="courseName"
+        label="Course Name"
+        type="text"
+        placeholder=""
+        icon=""
+        [errorMessages]="{
+          required: 'Name is required',
+          minlength: 'Name is too short',
+          maxlength: `Name can't exceed 20 charahcter`,
+        }"
+      />
+    </div>
+    <div class="col-lg-4">
+      <app-input
+        formControlName="courseDescription"
+        label="Course Description"
+        type="text"
+        placeholder=""
+        icon=""
+        [errorMessages]="{
+          required: 'Description is required',
+          minlength: 'Description is too short',
+          maxlength: `Description can't exceed 20 charahcter`,
+        }"
+      />
+    </div>
+    <div class="col-lg-4">
+      <spk-ng-select
+        formControlName="courseLevelLookupId"
+        label="Course Level"
+        [options]="courseLevels$ | async"
+        bindLabel="lookupNameEn"
+        bindValue="oid"
+        [multiple]="false"
+        placeholder="Choose Course Level"
+        selectClass="form-control "
+      />
+    </div>
+    <div class="col-lg-4">
+      <spk-ng-select
+        formControlName="courseCategoryLookupId"
+        label="Course Category"
+        [options]="courseCategories$ | async"
+        bindLabel="lookupNameEn"
+        bindValue="oid"
+        [multiple]="false"
+        placeholder="Choose Course Category"
+        selectClass="form-control"
+      />
+    </div>
+    <div class="col-lg-4">
+      <spk-ng-select
+        formControlName="createdBy"
+        label="Creator"
+        bindLabel="label"
+        bindValue="value"
+        [options]="users"
+        [multiple]="false"
+        placeholder="Choose User"
+        selectClass="form-control"
+      />
+    </div>
+      <div class="col-lg-4">
+      <spk-ng-select
+        formControlName="isActive"
+        label="Status"
+        [options]="status"
+        bindLabel="label"
+        bindValue="value"
+        [multiple]="false"
+        placeholder="Choose Status"
+        selectClass="form-control"
+      />
+    </div>
+    <!-- <div class="col-12">
+      <label for="" class="mb-2">Course Image</label>
+      <app-file-upload
+        formControlName="files"
+        [multiple]="true"
+        label="Upload certification images"
+      ></app-file-upload>
+    </div> -->
+  </div>
+
+<div class="d-flex justify-content-end gap-2">
+  <app-button
+    btnLabel="Cancel"
+    [mainBtn]="false"
+    (click)="cancel()"
+  />
+
+  @if (isEdit()) {
+    <app-button
+      btnLabel="Update Certification"
+      buttonType="submit"
+    />
+  } @else {
+    <app-button
+      btnLabel="Add Certification"
+      buttonType="submit"
+    />
+  }
+</div>
+</form>

@@ -7,7 +7,27 @@
     @else {
     <i class="pi pi-align-right"></i>
     }
-    <span class="ps-2">{{page() | translate | titlecase}}</span>
+    <!-- <span class="ps-2">{{page() | translate | titlecase}}</span> -->
+      <nav aria-label="breadcrumb" class="ps-2">
+        <ol class="breadcrumb breadcrumb-style2 mb-0">
+          <li
+            class="breadcrumb-item"
+            *ngFor="let crumb of breadcrumbs$ | async; let last = last"
+            [ngClass]="{ active: last }"
+            [attr.aria-current]="last ? 'page' : null"
+          >
+            <ng-container *ngIf="!last; else lastCrumb">
+              <a [routerLink]="[crumb.url]">
+                {{ crumb.label }}
+              </a>
+            </ng-container>
+
+            <ng-template #lastCrumb>
+              {{ crumb.label }}
+            </ng-template>
+          </li>
+        </ol>
+      </nav>
   </div>
 
   <div class="d-flex align-items-center gap-1 ">
