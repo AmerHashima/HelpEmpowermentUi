@@ -1,4 +1,3 @@
-// src\app\shared\input\input.component.ts
 import {
   Component, signal, computed, input,
   Optional, Self, AfterViewInit, inject,
@@ -21,6 +20,7 @@ export class InputComponent implements ControlValueAccessor, AfterViewInit {
   placeholder = input<string>('');
   icon = input<string | undefined>();
   errorMessages = input<Record<string, string>>({});
+  readOnly = input<boolean>(false);
 
   // Value signals
   value = signal('');

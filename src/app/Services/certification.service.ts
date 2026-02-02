@@ -1,10 +1,9 @@
-// src\app\Services\certification.service.ts
 import { Injectable } from '@angular/core';
 import ApiService from '../shared/Services/ApiService/api.service';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { ApiResponse, ApiSearchResponse } from '../models/apiResponse';
-import { APICertification, Certification } from '../models/certification';
+import { APICertification, APIExam, Certification, courseExam } from '../models/certification';
 import { RequestBody } from '../models/rquest';
 
 @Injectable({
@@ -13,7 +12,7 @@ import { RequestBody } from '../models/rquest';
 export class CertificationService {
   constructor(private apiService: ApiService) { }
 
-
+  // certification api calls
   getCertifications(): Observable<APICertification[]> {
     return this.apiService.get<ApiResponse<APICertification[]>>('Courses').pipe(
       map((response: ApiResponse<APICertification[]>) => {
@@ -24,6 +23,7 @@ export class CertificationService {
       })
     );
   }
+
 
   createCertification(body: Certification): Observable<APICertification> {
     return this.apiService
@@ -48,6 +48,21 @@ export class CertificationService {
             const msg = response.errors?.join(', ') || response.message || 'API failed to load certification';
             throw new Error(msg);
           }
+          return response.data;
+        })
+      );
+  }
+
+  getCertificationExams(id: string): Observable<APIExam[]> {
+    return this.apiService
+      .getSingle<ApiResponse<APIExam[]>>('CoursesMasterExams/course', id)
+      .pipe(
+        map((response: ApiResponse<APIExam[]>) => {
+          if (!response.success) {
+            const msg = response.errors?.join(', ') || response.message || 'API failed to load CERTIFICATION EXAMS';
+            throw new Error(msg);
+          }
+          console.log('response.data', response.data);
           return response.data;
         })
       );
@@ -97,4 +112,120 @@ export class CertificationService {
         })
       );
   }
+
+  //ecam api calls
+
+
+  createExam(body: courseExam): Observable<APIExam> {
+    return this.apiService
+      .post<ApiResponse<APIExam>>('CoursesMasterExams', body)
+      .pipe(
+        map((response: ApiResponse<APIExam>) => {
+          if (!response.success) {
+            const msg = response.errors?.join(', ') || response.message || 'API failed to create exam';
+            throw new Error(msg);
+          }
+          return response.data;
+        })
+      );
+  }
+
+  getExam(id: string): Observable<APIExam> {
+    return this.apiService
+      .getSingle<ApiResponse<APIExam>>('CoursesMasterExams', id)
+      .pipe(
+        map((response: ApiResponse<APIExam>) => {
+          if (!response.success) {
+            const msg = response.errors?.join(', ') || response.message || 'API failed to load exam';
+            throw new Error(msg);
+          }
+          return response.data;
+        })
+      );
+  }
+
+  updateExam(id: string, body: courseExam): Observable<APIExam> {
+    return this.apiService
+      .put<ApiResponse<APIExam>>('CoursesMasterExams', id, body)
+      .pipe(
+        map((response: ApiResponse<APIExam>) => {
+          if (!response.success) {
+            const msg = response.errors?.join(', ') || response.message || 'API failed to update exam';
+            throw new Error(msg);
+          }
+          return response.data;
+        })
+      );
+  }
+
+  deleteExam(id: string): Observable<boolean> {
+    return this.apiService
+      .delete<ApiResponse<boolean>>('CoursesMasterExams', id)
+      .pipe(
+        map((response: ApiResponse<boolean>) => {
+          if (!response.success) {
+            const msg = response.errors?.join(', ') || response.message || 'API failed to delete certification';
+            throw new Error(msg);
+          }
+          return response.data;
+        })
+      );
+  }
+  searchExams(body: RequestBody): Observable<{ certifications: APIExam[]; total: number }> {
+    return this.apiService
+      .query<ApiSearchResponse<APIExam>>('CoursesMasterExams/search', body)
+      .pipe(
+        map((response: ApiSearchResponse<APIExam>) => {
+          if (!response.success) {
+            const msg = response.message || 'API failed to query';
+            throw new Error(msg);
+          }
+          return {
+            certifications: response.data ?? [],
+            total: response.totalPages ?? 0,
+          };
+        })
+      );
+  }
+
+  private getLookupByHeaderId(headerId: string, errorContext: string): Observable<any> {
+    return this.apiService
+      .getSingle('AppLookups/details/header', headerId)
+      .pipe(
+        map((response: any) => {
+          if (!response?.success) {
+            const msg =
+              response?.errors?.join(', ') ||
+              response?.message ||
+              `Failed to load ${errorContext}`;
+
+            throw new Error(msg);
+          }
+          return response.data;
+        }),
+      );
+  }
+
+  getCourseLevels(): Observable<any> {
+    return this.getLookupByHeaderId(
+      '11111111-1111-1111-1111-111111111111',
+      'course levels'
+    );
+  }
+
+  getCourseCategories(): Observable<any> {
+    return this.getLookupByHeaderId(
+      '22222222-2222-2222-2222-222222222222',
+      'course categories'
+    );
+  }
+
+  getQuestionTypes(): Observable<any> {
+    return this.getLookupByHeaderId(
+      '33333333-3333-3333-3333-333333333333',
+      'question types'
+    );
+  }
+
+
 }
