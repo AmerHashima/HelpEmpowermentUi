@@ -26,6 +26,6 @@ jobs:
           cd /root/HelpEmpowermentUi &&
           git fetch origin &&
           git reset --hard origin/main &&
-          &&cd /root/HelpEmpowerment &&
+          cd /root/HelpEmpowerment &&
           docker compose up -d --build
         "
