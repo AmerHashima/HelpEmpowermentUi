@@ -1,37 +1,31 @@
-name: Deploy Frontend
+name: Deploy to Server
 
 on:
   push:
     branches:
-      - main   # أو master حسب الفرع الأساسي
+      - main   # أو master حسب الفرع اللي انت شغال عليه
 
 jobs:
-  deploy-frontend:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout repository
-      - name: Checkout repository
-        uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      # 2️⃣ Setup SSH
-      - name: Setup SSH
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan -H 144.91.127.150 >> ~/.ssh/known_hosts
+    - name: Setup SSH
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H 144.91.127.150 >> ~/.ssh/known_hosts
 
-      # 3️⃣ Pull frontend & build
-      - name: Deploy Frontend (Angular)
-        run: |
-          ssh -i ~/.ssh/id_ed25519 root@144.91.127.150 "
-            set -e
-            echo '✅ Deploying frontend...'
-            cd /root/HelpEmpowermentUi
-            git fetch origin
-            git reset --hard origin/main
-            npm install
-            ng build --prod
-            echo '✅ Frontend deployed successfully!'
-          "
+    - name: Pull and Restart on Server
+      run: |
+        ssh -i ~/.ssh/id_rsa root@144.91.127.150 "
+          cd /root/HelpEmpowermentUi &&
+          git fetch origin &&
+          git reset --hard origin/main &&
+          &&cd /root/HelpEmpowerment &&
+          docker compose up -d --build
+        "
