@@ -1,23 +1,3 @@
-<!-- <div>
-  @if (courseFeatures.length === 0) {
-    <div class="d-flex align-items-center gap-1">
-      <span>No course features found for this certification yet.</span>
-      <span
-        class="courseLink"
-        data-bs-toggle="modal"
-        data-bs-target="#CertificationModal"
-        >Add Course Features</span
-      >
-    </div>
-  } @else {
-    <div class="row g-3">
-      @for (feature of courseFeatures; let index = $index; track index) {
-        <span>Feature</span>
-      }
-    </div>
-  }
-</div> -->
-
 <div *ngIf="courseFeatures$() | async as courseFeatures">
   <div
     *ngIf="courseFeatures.length === 0"
@@ -26,8 +6,8 @@
     <span>No course features found for this certification yet.</span>
     <span
       class="courseLink"
-      data-bs-toggle="modal"
-      data-bs-target="#CertificationModal"
+        (click)="AddFeatures()"
+
     >
       Add Course Features
     </span>
@@ -43,110 +23,104 @@
           >
           <span>{{ feature.featureDescription }}</span>
         </div>
-        <div>
-
-        </div>
+        <div></div>
       </div>
     </div>
-     <div
-          class="addAnswer d-flex align-items-center justify-content-end mt-2"
-          (click)="AddFeature(courseFeatures.length)"
-          style="cursor: pointer"
-        >
-          <i class="bi bi-plus-circle-fill pe-2"></i>
-          <span>Add Feature</span>
-        </div>
+    <div
+      class="addAnswer d-flex align-items-center justify-content-end mt-2"
+      (click)="AddFeature(courseFeatures.length)"
+      style="cursor: pointer"
+    >
+      <i class="bi bi-plus-circle-fill pe-2"></i>
+      <span>Add Feature</span>
+    </div>
   </div>
 </div>
 
-@if(showModelFlag()){
-<form
-  [formGroup]="form"
-  (ngSubmit)="onSubmit()"
-  v
-  class="modal fade"
-  id="CertificationModal"
-  tabindex="-1"
-  aria-labelledby="CertificationModal"
-  aria-hidden="true"
-  #certModal
->
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">
-          Add New Features
-        </h1>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="modal-body px-4 py-2">
-        <div class="d-flex flex-column gap-4">
-          <div class="row flex-wrap g-3" formArrayName="features">
-            @for (group of featureArrays.controls; let i = $index; track i) {
-              <div class="border-bottom row g-2 pb-4">
-                <div class="col-12" [formGroupName]="i">
-                  <app-input
-                    formControlName="featureHeader"
-                    [label]="`Feature ${i + 1} Header`"
-                    type="text"
-                    placeholder=""
-                    icon=""
-                    [errorMessages]="{
-                      required: 'Header is required',
-                    }"
-                  />
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div
+    class="modal fade"
+    id="CertificationModal"
+    tabindex="-1"
+    aria-labelledby="CertificationModal"
+    aria-hidden="true"
+    #certModal
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">
+            Add New Features
+          </h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body px-4 py-2">
+          <div class="d-flex flex-column gap-4">
+            <div class="row flex-wrap g-3" formArrayName="features">
+              @for (group of featureArrays.controls; let i = $index; track i) {
+                <div class="border-bottom row g-2 pb-4">
+                  <div class="col-12" [formGroupName]="i">
+                    <app-input
+                      formControlName="featureHeader"
+                      [label]="`Feature ${i + 1} Header`"
+                      type="text"
+                      placeholder=""
+                      icon=""
+                      [errorMessages]="{
+                        required: 'Header is required',
+                      }"
+                    />
+                  </div>
+                  <div class="col-12" [formGroupName]="i">
+                    <app-textarea
+                      formControlName="featureDescription"
+                      [label]="`Feature ${i + 1} Description`"
+                      placeholder=""
+                      [errorMessages]="{
+                        required: 'Description is required',
+                      }"
+                    ></app-textarea>
+                  </div>
+                  <div class="col-12" [formGroupName]="i">
+                    <app-input
+                      formControlName="orderNo"
+                      [label]="`Feature ${i + 1} Order Number`"
+                      type="text"
+                      placeholder=""
+                      icon=""
+                      [errorMessages]="{
+                        required: 'Order No is required',
+                      }"
+                    />
+                  </div>
                 </div>
-                <div class="col-12" [formGroupName]="i">
-                  <app-textarea
-                    formControlName="featureDescription"
-                    [label]="`Feature ${i + 1} Description`"
-                    placeholder=""
-                    [errorMessages]="{
-                      required: 'Description is required',
-                    }"
-                  ></app-textarea>
-                </div>
-                <div class="col-12" [formGroupName]="i">
-                  <app-input
-                    formControlName="orderNo"
-                    [label]="`Feature ${i + 1} Order Number`"
-                    type="text"
-                    placeholder=""
-                    icon=""
-                    [errorMessages]="{
-                      required: 'Order No is required',
-                    }"
-                  />
-                </div>
-              </div>
-            }
+              }
+            </div>
+          </div>
+          <div
+            class="addAnswer d-flex align-items-center justify-content-end mt-2"
+            (click)="onAddAnotherFeature()"
+            style="cursor: pointer"
+          >
+            <i class="bi bi-plus-circle-fill pe-2"></i>
+            <span>Add Another Feature</span>
           </div>
         </div>
-        <div
-          class="addAnswer d-flex align-items-center justify-content-end mt-2"
-          (click)="onAddAnotherFeature()"
-          style="cursor: pointer"
-        >
-          <i class="bi bi-plus-circle-fill pe-2"></i>
-          <span>Add Another Feature</span>
+        <div class="modal-footer">
+          <app-button
+            data-bs-dismiss="modal"
+            btnLabel="Close"
+            [mainBtn]="false"
+            [secondaryBtn]="true"
+          />
+          <app-button btnLabel="Save" [mainBtn]="true" buttonType="submit" />
         </div>
-      </div>
-      <div class="modal-footer">
-        <app-button
-          data-bs-dismiss="modal"
-          btnLabel="Close"
-          [mainBtn]="false"
-          [secondaryBtn]="true"
-        />
-        <app-button btnLabel="Save" [mainBtn]="true" buttonType="submit" />
       </div>
     </div>
   </div>
 </form>
-}
-

@@ -20,7 +20,6 @@ export class CertificationsFeaturesComponent {
   private store = inject(CertificationsStore);
   private route = inject(ActivatedRoute);
   private certificationService = inject(CertificationService);
-  showModelFlag=signal<boolean>(false);
   certification = this.store.selectedCertification;
   courseId = computed(() => this.certification()?.oid)
   @ViewChild('certModal') modalRef!: ElementRef;
@@ -47,12 +46,11 @@ export class CertificationsFeaturesComponent {
       if (id && !this.certification()) {
         this.store.getCertification(id);
       }
-
-
-      if (this.certification() && this.featureArrays.length === 0 && !this.featureIndex()) {
-        console.log('in');
-        this.featureArrays.push(this.createFeatureGroup());
-      }
+      // if (this.certification() && this.featureArrays.length === 0 && !this.featureIndex()) {
+      // if (this.featureArrays.length === 0 && !this.featureIndex()) {
+      //   console.log('in');
+      //   this.featureArrays.push(this.createFeatureGroup());
+      // }
     });
 
     effect(() => {
@@ -66,6 +64,7 @@ export class CertificationsFeaturesComponent {
     this.modalRef.nativeElement.addEventListener(
       'hidden.bs.modal',
       () => {
+        console.log('add eveent listener');
         this.resetFeaturesForm();
       }
     );
@@ -86,9 +85,10 @@ export class CertificationsFeaturesComponent {
     return this.form.get('features') as FormArray;
   }
   resetFeaturesForm(): void {
+    console.log('in reset');
     this.choiceAnswerOrderCounter = 0;
     this.featureArrays.clear();
-    this.featureArrays.push(this.createFeatureGroup());
+    // this.featureArrays.push(this.createFeatureGroup());
     this.form.markAsPristine();
     this.form.markAsUntouched();
   }
@@ -98,7 +98,14 @@ export class CertificationsFeaturesComponent {
   }
 
   onSubmit() {
-    const features = this.form.value.features;
+    const features: any[] = this.form.value.features ?? [];
+
+    const updatedFeatures = features.map((feature: any) => ({
+      ...feature,
+      courseOid: feature.courseOid || this.courseId()
+    }));
+
+    console.log(updatedFeatures);
     if (!features || features.length === 0) return;
 
     const requests = features.map((feature: any) =>
@@ -153,4 +160,10 @@ export class CertificationsFeaturesComponent {
     this.featureIndex.set(length-1);
     this.openModal();
   }
+
+  AddFeatures(){
+      this.featureArrays.push(this.createFeatureGroup());
+    this.openModal();
+  }
+
 }
