@@ -13,28 +13,4 @@ import { SideNav } from '../../../shared/Admin Panel/side-nav/side-nav';
 })
 // export class AdminLayoutComponent implements OnInit {
 export class AdminLayoutComponent  {
-
-  // constructor(private apiService: ApiService) { }
-
-  // ngOnInit(): void {
-  //   this.loadHeaders();
-  // }
-
-  // private loadHeaders(): void {
-  //   const body = {
-  //     filters: [],
-  //     sort: [],
-  //     pagination: {
-  //       getAll: true,
-  //       pageNumber: 1,
-  //       pageSize: 10
-  //     },
-  //     columns: []
-  //   };
-
-  //   this.apiService.get<any>('WeatherForecast').subscribe({
-  //     next: (response) => console.log('headers search response', response),
-  //     error: (error) => console.error('headers search error', error)
-  //   });
-  // }
 }

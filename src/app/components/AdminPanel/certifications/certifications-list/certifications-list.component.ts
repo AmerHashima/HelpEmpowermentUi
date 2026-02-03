@@ -22,7 +22,6 @@ export class CertificationsListComponent {
   }
 
   openCertificationPage(certification: Certification) {
-    console.log('open certification', certification);
     this.store.setSelectedCertification(certification);
     this.router.navigate(['/admin/certifications', certification.oid]);
   }

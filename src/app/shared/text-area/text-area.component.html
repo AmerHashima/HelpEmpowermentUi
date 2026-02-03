@@ -1,0 +1,30 @@
+<div class="d-flex flex-column gap-1">
+  @if (label()) {
+    <label class="form-label mb-0">{{ label() }}</label>
+  }
+
+  <div class="input-group" [class.is-invalid]="showErrors()">
+    @if (icon()) {
+      <span class="input-group-text">
+        <i [class]="icon()"></i>
+      </span>
+    }
+
+    <textarea
+      class="form-control form-control-sm"
+      [placeholder]="placeholder()"
+      [rows]="rows()"
+      [disabled]="isDisabled()"
+      [readOnly]="readOnly()"
+      [value]="value()"
+      (input)="onInput($event)"
+      (blur)="onBlur()"
+    ></textarea>
+  </div> <!-- correctly closes input-group -->
+
+  @if (showErrors()) {
+    <div class="invalid-feedback d-block">
+      {{ errorMessage() }}
+    </div>
+  }
+</div>

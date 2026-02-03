@@ -38,16 +38,15 @@ export class CertificationComponent {
   }
 
   onAddNewExam() {
-    console.log('navigate to create new exam');
     const certId = this.certification()?.oid;
     if (certId)
       this.router.navigate(['/admin/certifications', certId, 'exams', 'create']);
   }
   onAddNewQuestion(exam: any) {
-    console.log('navigate to create new question');
     const certId = this.certification()?.oid;
     if (certId)
-      this.router.navigate(['/admin/certifications', certId, 'exams', 'question', 'create']);
+      this.router.navigate(['/admin/certifications', certId, 'exams',exam.oid, 'question', 'create'
+]);
   }
   onDeleteExam(exam: any) {
     this.certificationService.deleteExam(exam.oid).subscribe({});

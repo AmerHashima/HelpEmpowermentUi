@@ -37,7 +37,6 @@ export class CreateNewCertificationComponent {
   status = [
     { label: 'Active', value: true },
     { label: 'Inactive', value: false },
-
   ];
 
   form = this.fb.group({
@@ -57,7 +56,6 @@ export class CreateNewCertificationComponent {
 
   constructor() {
     const certificationId = this.route.snapshot.paramMap.get('id');
-    console.log('certificationId', certificationId);
     effect(() => {
       if (certificationId && !this.certification()) {
         this.store.getCertification(certificationId);
@@ -110,8 +108,6 @@ export class CreateNewCertificationComponent {
     this.store.addCertification(this.getPayload());
   }
   editCertificaion() {
-    console.log('in edit certification');
-    console.log('oid', this.certification()?.oid);
     this.store.updateCertification({ id: this.certification()?.oid!, body: this.getPayload() });
   }
 

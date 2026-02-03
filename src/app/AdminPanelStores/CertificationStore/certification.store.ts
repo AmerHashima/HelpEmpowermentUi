@@ -152,7 +152,6 @@ export const CertificationsStore = signalStore(
             certifcationService.updateCertification(id, body).pipe(
               // tap((certification: APICertification) => patchState(store, updateCertification(certification))),
               tap((certifcation: APICertification) => {
-                console.log('in tap update store');
                 patchState(store, updateCertification(certifcation));
                 patchState(store, setSuccess(true));
               }),

@@ -13,7 +13,9 @@
               <spk-ng-select
                 formControlName="certification"
                 label="Certification"
-                [options]="certificationOptions"
+                [options]="certifications()"
+                bindLabel="courseName"
+                bindValue="oid"
                 [multiple]="false"
                 placeholder="Choose Certification"
                 selectClass="form-control  w-100"
@@ -21,9 +23,11 @@
             </div>
             <div class="col-lg-3">
               <spk-ng-select
-                formControlName="examNo"
+                formControlName="coursesMasterExamOid"
                 label="Exam No."
-                [options]="examNo"
+                [options]="(exams$ | async) ?? []"
+                bindLabel="indexLabel"
+                bindValue="oid"
                 [multiple]="false"
                 placeholder="Choose Exam Number"
                 selectClass="form-control w-100"
@@ -33,7 +37,9 @@
               <spk-ng-select
                 formControlName="examMode"
                 label="Exam Mode"
-                [options]="examModes"
+                [options]="examModes$ | async"
+                bindLabel="lookupNameEn"
+                bindValue="oid"
                 [multiple]="false"
                 placeholder="Choose Exam Mode"
                 selectClass="form-control w-100"
@@ -41,9 +47,11 @@
             </div>
             <div class="col-lg-3">
               <spk-ng-select
-                formControlName="questionType"
+                formControlName="questionTypeLookupId"
                 label="Question Type"
                 [options]="questionTypes"
+                bindLabel="lookupNameEn"
+                bindValue="oid"
                 [multiple]="false"
                 placeholder="Choose Question Type"
                 selectClass="form-control w-100"
@@ -57,8 +65,18 @@
         <div class="d-flex flex-column p-3 shadow-sm rounded-3 fw-bold">
           <h5>Question Details</h5>
           <div class="row g-2 flex-wrap">
-            <div class="col-12 col-lg-8">
-              <app-input
+            <div class="col-12">
+              <app-textarea
+                formControlName="questionText"
+                label="Question Header"
+                placeholder="Enter question"
+                [errorMessages]="{
+                  required: 'Question header is required',
+                  minlength: 'Question header is too short',
+                  maxlength: `Question header can't exceed 20 charahcter`,
+                }"
+              ></app-textarea>
+              <!-- <app-input
                 formControlName="questionHeader"
                 label="Question Header"
                 type="text"
@@ -69,11 +87,11 @@
                   minlength: 'Question header is too short',
                   maxlength: `Question header can't exceed 20 charahcter`,
                 }"
-              />
+              /> -->
             </div>
-            <div class="col-12 col-md-6 col-lg-2">
+            <div class="col-12 col-md-3">
               <app-input
-                formControlName="questionOrder"
+                formControlName="orderNo"
                 label="Question Order"
                 type="text"
                 placeholder=""
@@ -85,17 +103,31 @@
                 }"
               />
             </div>
-            <div class="col-12 col-md-6 col-lg-2">
+            <div class="col-12 col-md-3">
               <spk-ng-select
-                formControlName="questionMark"
+                formControlName="questionScore"
                 label="Question Mark"
                 [options]="questionMarks"
+                bindLabel="label"
+                bindValue="value"
                 [multiple]="false"
                 placeholder="Choose Question Mark"
                 selectClass="form-control form-control-sm w-100"
               />
             </div>
-            <div class="col-12">
+            <div class="col-md-3">
+              <spk-ng-select
+                formControlName="isActive"
+                label="Status"
+                [options]="status"
+                bindLabel="label"
+                bindValue="value"
+                [multiple]="false"
+                placeholder="Choose Status"
+                selectClass="form-control"
+              />
+            </div>
+            <!-- <div class="col-12">
               <div class="upload">
                 <label for="">attachments</label>
                 <app-file-upload
@@ -104,7 +136,7 @@
                   label="Upload files"
                 ></app-file-upload>
               </div>
-            </div>
+            </div> -->
 
             @if (addAnswersFlag()) {
               <div class="col-12">
@@ -131,12 +163,12 @@
                   <div class="d-flex align-items-start gap-2">
                     <input
                       type="checkbox"
-                      formControlName="correctAnswer"
+                      formControlName="isCorrect"
                       class="form-check-input mt-1"
                     />
                     <app-input
                       class="w-100"
-                      formControlName="answer"
+                      formControlName="answerText"
                       label=""
                       type="text"
                       placeholder="Answer"
@@ -200,7 +232,9 @@
                     ></app-input>
 
                     <!-- Optional remove button -->
-                    @if (dragQuestionsArray.length > 1 && !addDragAnswersFlag()) {
+                    @if (
+                      dragQuestionsArray.length > 1 && !addDragAnswersFlag()
+                    ) {
                       <i
                         class="bi bi-x-circle-fill text-danger mt-2"
                         (click)="removeDragQuestion(i)"
@@ -265,7 +299,10 @@
                     ></app-input>
 
                     <!-- Optional remove button -->
-                    @if (dragAnswersArray.length > 1 && !linkDragAnswerAndQuestionFlag()) {
+                    @if (
+                      dragAnswersArray.length > 1 &&
+                      !linkDragAnswerAndQuestionFlag()
+                    ) {
                       <i
                         class="bi bi-x-circle-fill text-danger mt-2"
                         (click)="removeDragAnswer(i)"
@@ -306,42 +343,44 @@
           <div class="d-flex flex-column p-3 shadow-sm rounded-3 fw-bold">
             <h5>Connect Answer with Questions</h5>
 
-          <div formArrayName="dragQuestions" class="row g-2">
-  @for (group of dragQuestionsArray.controls; let i = $index; track $index) {
-    <div class="col-12" [formGroupName]="i">
-      <div class="row g-3 align-items-end">
+            <div formArrayName="dragQuestions" class="row g-2">
+              @for (
+                group of dragQuestionsArray.controls;
+                let i = $index;
+                track $index
+              ) {
+                <div class="col-12" [formGroupName]="i">
+                  <div class="row g-3 align-items-end">
+                    <!-- The question / drop target -->
+                    <div class="col-6">
+                      <app-input
+                        class="w-100"
+                        formControlName="dragQuestion"
+                        [label]="`Question ${i + 1}`"
+                        type="text"
+                        placeholder="Enter drop target text..."
+                        icon=""
+                        [readOnly]="true"
+                      ></app-input>
+                    </div>
 
-        <!-- The question / drop target -->
-        <div class="col-6">
-          <app-input
-            class="w-100"
-            formControlName="dragQuestion"
-            [label]="`Question ${i + 1}`"
-            type="text"
-            placeholder="Enter drop target text..."
-            icon=""
-            [readOnly]="true"
-          ></app-input>
-        </div>
-
-        <!-- Correct answer selector -->
-        <div class="col-6">
-          <spk-ng-select
-            formControlName="correctDragAnswer"
-            label="Correct Drag Item"
-            [options]="dragAnswers"
-            [multiple]="false"
-            bindLabel="label"
-            bindValue="value"
-            placeholder="Select correct draggable item"
-            selectClass="form-control w-100"
-          />
-        </div>
-
-      </div>
-    </div>
-  }
-</div>
+                    <!-- Correct answer selector -->
+                    <div class="col-6">
+                      <spk-ng-select
+                        formControlName="correctDragAnswer"
+                        label="Correct Drag Item"
+                        [options]="dragAnswers"
+                        [multiple]="false"
+                        bindLabel="label"
+                        bindValue="value"
+                        placeholder="Select correct draggable item"
+                        selectClass="form-control w-100"
+                      />
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
           </div>
         </div>
       }

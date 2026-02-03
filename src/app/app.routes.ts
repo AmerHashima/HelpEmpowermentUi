@@ -9,7 +9,7 @@ import { CertificationsListComponent } from './components/AdminPanel/certificati
 import { CertificationComponent } from './components/AdminPanel/certifications/certification/certification.component';
 import { CreateNewCertificationComponent } from './components/AdminPanel/certifications/create-new-certification/create-new-certification.component';
 import { CreateNewExamComponent } from './components/AdminPanel/create-new-exam/create-new-exam.component';
-import { CertificationQuestionComponent } from './components/AdminPanel/certification-question/certification-question.component';
+import { CertificationQuestionComponent } from './components/AdminPanel/certifications/certification-question/certification-question.component';
 
 export const routes: Routes = [
   {
@@ -52,7 +52,7 @@ export const routes: Routes = [
             data: { breadcrumb: 'Create Exam' },
           },
           {
-            path: ':id/exams/question/create',
+            path: ':id/exams/:examId/question/create',
             component: CertificationQuestionComponent,
             data: { breadcrumb: 'Create Question' },
           },

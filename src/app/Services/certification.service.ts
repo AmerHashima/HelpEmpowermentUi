@@ -53,16 +53,15 @@ export class CertificationService {
       );
   }
 
-  getCertificationExams(id: string): Observable<APIExam[]> {
+  getCertificationExams(id: string): Observable<any[]> {
     return this.apiService
-      .getSingle<ApiResponse<APIExam[]>>('CoursesMasterExams/course', id)
+      .getSingle<ApiResponse<any[]>>('CoursesMasterExams/course', id)
       .pipe(
-        map((response: ApiResponse<APIExam[]>) => {
+        map((response: ApiResponse<any[]>) => {
           if (!response.success) {
             const msg = response.errors?.join(', ') || response.message || 'API failed to load CERTIFICATION EXAMS';
             throw new Error(msg);
           }
-          console.log('response.data', response.data);
           return response.data;
         })
       );
@@ -73,7 +72,6 @@ export class CertificationService {
       .put<ApiResponse<APICertification>>('Courses', id, body)
       .pipe(
         map((response: ApiResponse<APICertification>) => {
-          console.log('response', response);
           if (!response.success) {
             const msg = response.errors?.join(', ') || response.message || 'API failed to update certification';
             throw new Error(msg);
@@ -229,5 +227,25 @@ export class CertificationService {
     );
   }
 
+  getExamModes(): Observable<any> {
+    return this.getLookupByHeaderId(
+      'Exam_Modes',
+      'exam modes'
+    );
+  }
+
+  createQuestion(body: any): Observable<any> {
+    return this.apiService
+      .post<ApiResponse<any>>('CourseQuestions', body)
+      .pipe(
+        map((response: ApiResponse<any>) => {
+          if (!response.success) {
+            const msg = response.errors?.join(', ') || response.message || 'API failed to create certification';
+            throw new Error(msg);
+          }
+          return response.data;
+        })
+      );
+  }
 
 }

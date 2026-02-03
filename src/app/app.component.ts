@@ -13,27 +13,4 @@ import ApiService from './shared/Services/ApiService/api.service';
 export class AppComponent {
 
   title = 'Help Empowerment';
-  // constructor(private apiService: ApiService) { }
-
-  // ngOnInit(): void {
-  //   this.loadHeaders();
-  // }
-
-  // private loadHeaders(): void {
-  //   const body = {
-  //     filters: [],
-  //     sort: [],
-  //     pagination: {
-  //       getAll: true,
-  //       pageNumber: 1,
-  //       pageSize: 10
-  //     },
-  //     columns: []
-  //   };
-
-    // this.apiService.get<any>('WeatherForecast').subscribe({
-    //   next: (response) => console.log('headers search response', response),
-    //   error: (error) => console.error('headers search error', error)
-    // });
-  // }
 }
