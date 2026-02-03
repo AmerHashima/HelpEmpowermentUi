@@ -1,0 +1,88 @@
+<div class="d-flex align-item-center justify-content-between">
+  <mat-form-field *ngIf="showFilter" appearance="outline">
+  <input
+    matInput
+    placeholder="Search..."
+    (keyup)="onFilter($event)"
+  />
+</mat-form-field>
+  <app-button btnLabel="Add New" [mainBtn]="true" (click)="onAddNew()" />
+</div>
+
+<table mat-table [dataSource]="data" matSort class="mat-elevation-z8">
+
+  <!-- Dynamic Columns -->
+  <ng-container *ngFor="let col of columns; let colIndex = index" [matColumnDef]="col.field">
+
+    <!-- Header -->
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+      {{ col.header }}
+    </th>
+
+    <!-- Cell -->
+    <td mat-cell *matCellDef="let row; let rowIndex = index">
+
+      <!-- Make first column clickable -->
+      <ng-container *ngIf="colIndex === 0">
+
+        <span *ngIf="col.type === 'text'" class="clickable" (click)="onFirstCellClick(row, rowIndex, colIndex)">
+          {{ getCellValue(row, col) }}
+        </span>
+
+        <span *ngIf="col.type === 'date'" class="clickable" (click)="onFirstCellClick(row, rowIndex, colIndex)">
+          {{ row[col.field] | date : col.format || 'mediumDate' }}
+        </span>
+
+      </ng-container>
+
+      <!-- Non-first columns -->
+      <ng-container *ngIf="colIndex !== 0">
+        <span *ngIf="col.type === 'text'">
+          {{ getCellValue(row, col) }}
+        </span>
+        <span *ngIf="col.type === 'date'">
+          {{ row[col.field] | date : col.format || 'mediumDate' }}
+        </span>
+      </ng-container>
+
+      <!-- BADGE (all rows, any column) -->
+      <span *ngIf="col.type === 'badge'" class="badge" [ngClass]="getBadgeClass(row[col.field], col)">
+        {{ getBadgeLabel(row[col.field], col) }}
+      </span>
+
+      <!-- BUTTONS (all rows, any column) -->
+      <ng-container *ngIf="col.type === 'buttons'">
+        <button mat-icon-button color="primary" (click)="onEdit(row)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="onDelete(row)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </ng-container>
+
+    </td>
+  </ng-container>
+
+  <!-- Header Row -->
+  <tr mat-header-row *matHeaderRowDef="columnKeys; sticky: stickyHeader"></tr>
+
+  <!-- Data Row -->
+  <tr mat-row *matRowDef="let row; columns: columnKeys"></tr>
+
+   <tr class="mat-row" *matNoDataRow>
+    <td class="mat-cell text-center" [attr.colspan]="columnKeys.length">
+      No data available
+    </td>
+  </tr>
+</table>
+
+<!-- Paginator -->
+<mat-paginator
+  *ngIf="showPaginator"
+  [length]="totalCount"
+  [pageSize]="pageSize"
+  [pageSizeOptions]="pageSizeOptions"
+  showFirstLastButtons
+  (page)="pageChange.emit($event)"
+>
+</mat-paginator>
