@@ -2,20 +2,19 @@
   <div class="row">
     <div class="col-12">
       <div class="w-100 d-flex justify-content-end gap-2">
-
-         <app-button
+        <app-button
           btnLabel="Delete Certification"
           [mainBtn]="false"
           [secondaryBtn]="true"
           (click)="onDeleteCertification()"
         />
-         <app-button
+        <app-button
           btnLabel="Edit Certification"
           [mainBtn]="false"
           [secondaryBtn]="false"
           (click)="onEditCertification()"
         />
-         <app-button
+        <app-button
           btnLabel="Add New Exam"
           [mainBtn]="true"
           (click)="onAddNewExam()"
@@ -32,138 +31,211 @@
           {{ certification()?.courseDescription }}
         </p>
         <div class="row g-3 fleex-wrap">
-          <!-- @for(exam of exams() ; let index=$index ; track index){
-                <div
-            class="col-md-6 col-lg-4 col-xl-3 "
-          >
-            <div class="certificationExamCard d-flex flex-column shadow-sm rounded-2 p-3 gap-3">
-               <div class="d-flex align-items-center gap-1">
-              <span class="iconCircle"
-                ><i class="bi bi-pencil-square"></i
-              ></span>
-              <span class="examName fw-bold">Exam {{exam}}</span>
-            </div>
-            <div class="d-flex gap-3 justify-content-center examDetails py-2">
-              <div class="d-flex flex-column align-items-center justify-content-center">
-                <div class="d-flex align-items-center gap-1">
-                  <span><i class="bi bi-question-circle"></i></span>
-                  <span class="fw-bold">Questions</span>
-                </div>
-                <span>100</span>
-              </div>
-              <div class="line"></div>
-              <div class="d-flex flex-column  align-items-center justify-content-center">
-                <div class="d-flex align-items-center gap-1">
-                  <span><i class="bi bi-clock"></i></span>
-                  <span class="fw-bold">Duration</span>
-                </div>
-                <span>230 min</span>
-              </div>
-            </div>
-            <div class="d-flex align-items-center justify-content-center gap-2">
-              <app-button
-                btnLabel="Add New Question"
-                [mainBtn]="true"
-                (click)="onAddNewQuestion(exam)"
-              />
-              <app-button
-                btnLabel="Delete Exam"
-                [secondaryBtn]="true"
-                [mainBtn]="false"
-                (click)="onDeleteExam(exam)"
-              />
-            </div>
-            </div>
-          </div>
-          } -->
-
-          @if (exams$(); as examsObs) {
-            @if (examsObs | async; as exams) {
-              @if (exams.length === 0) {
-                <!-- <div class="alert alert-secondary text-center p-2 small">
+          <div class="accordion accordion-flush" id="certificationAccordion">
+            <div class="accordion-item mb-3 shadow">
+              <h2 class="accordion-header">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#flush-collapseOne"
+                  aria-expanded="false"
+                  aria-controls="flush-collapseOne"
+                >
+                  Certification Exams
+                </button>
+              </h2>
+              <div
+                id="flush-collapseOne"
+                class="accordion-collapse collapse"
+                data-bs-parent="#accordionFlushExample"
+              >
+                <div class="accordion-body">
+                  @if (exams$(); as examsObs) {
+                    @if (examsObs | async; as exams) {
+                      @if (exams.length === 0) {
+                        <!-- <div class="alert alert-secondary text-center p-2 small">
                   No exams found for this certification yet.
                 </div> -->
-              } @else {
-                <div class="row g-3">
-                  @for (
-                    exam of exams;
-                    let index = $index;
-                    track exam.oid ?? index
-                  ) {
-                    <div class="col-md-6 col-lg-4 col-xl-3">
-                      <div
-                        class="certificationExamCard d-flex flex-column shadow-sm rounded-2 p-3 gap-3"
-                      >
-                        <div class="d-flex align-items-center gap-1">
-                          <span class="iconCircle">
-                            <i class="bi bi-pencil-square"></i>
-                          </span>
-                          <span class="examName fw-bold">
-                            {{
-                               "Exam " + (index + 1)
-                            }}
-                          </span>
-                        </div>
+                      } @else {
+                        <div class="row g-3">
+                          @for (
+                            exam of exams;
+                            let index = $index;
+                            track exam.oid ?? index
+                          ) {
+                            <div class="col-md-6 col-xl-4 col-xxl-3">
+                              <div
+                                class="certificationExamCard d-flex flex-column shadow-sm rounded-2 p-3 gap-3"
+                              >
+                                <div class="d-flex align-items-center gap-1">
+                                  <span class="iconCircle">
+                                    <i class="bi bi-pencil-square"></i>
+                                  </span>
+                                  <span class="examName fw-bold">
+                                    {{ "Exam " + (index + 1) }}
+                                  </span>
+                                </div>
 
-                        <div
-                          class="d-flex gap-3 justify-content-center examDetails py-2"
-                        >
-                          <div
-                            class="d-flex flex-column align-items-center justify-content-center"
-                          >
-                            <div class="d-flex align-items-center gap-1">
-                              <span><i class="bi bi-question-circle"></i></span>
-                              <span class="fw-bold">Questions</span>
-                            </div>
-                            <span>{{ exam.questionCount  }}</span>
-                          </div>
+                                <div
+                                  class="d-flex gap-3 justify-content-center examDetails py-2"
+                                >
+                                  <div
+                                    class="d-flex flex-column align-items-center justify-content-center"
+                                  >
+                                    <div
+                                      class="d-flex align-items-center gap-1"
+                                    >
+                                      <span
+                                        ><i class="bi bi-question-circle"></i
+                                      ></span>
+                                      <span class="fw-bold">Questions</span>
+                                    </div>
+                                    <span>{{ exam.questionCount }}</span>
+                                  </div>
 
-                          <div class="line"></div>
+                                  <div class="line"></div>
 
-                          <div
-                            class="d-flex flex-column align-items-center justify-content-center"
-                          >
-                            <div class="d-flex align-items-center gap-1">
-                              <span><i class="bi bi-clock"></i></span>
-                              <span class="fw-bold">Duration</span>
-                            </div>
-                            <!-- <span>{{
+                                  <div
+                                    class="d-flex flex-column align-items-center justify-content-center"
+                                  >
+                                    <div
+                                      class="d-flex align-items-center gap-1"
+                                    >
+                                      <span><i class="bi bi-clock"></i></span>
+                                      <span class="fw-bold">Duration</span>
+                                    </div>
+                                    <!-- <span>{{
                               exam.durationMinutes
                                 ? exam.durationMinutes + " min"
                                 : "—"
                             }}</span> -->
-                            <span>230 min</span>
-                          </div>
-                        </div>
+                                    <span>230 min</span>
+                                  </div>
+                                </div>
 
-                        <div
-                          class="d-flex align-items-center justify-content-center gap-2"
-                        >
-                          <app-button
-                            btnLabel="Add New Question"
-                            [mainBtn]="true"
-                            (click)="onAddNewQuestion(exam)"
-                          />
-                          <app-button
-                            btnLabel="Delete Exam"
-                            [secondaryBtn]="true"
-                            [mainBtn]="false"
-                            (click)="onDeleteExam(exam)"
-                          />
+                                <div
+                                  class="d-flex align-items-center justify-content-center gap-2"
+                                >
+                                  <app-button
+                                    btnLabel="Add New Question"
+                                    [mainBtn]="true"
+                                    (click)="onAddNewQuestion(exam)"
+                                  />
+                                  <app-button
+                                    btnLabel="Delete Exam"
+                                    [secondaryBtn]="true"
+                                    [mainBtn]="false"
+                                    (click)="onDeleteExam(exam)"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          }
                         </div>
+                      }
+                    } @else {
+                      <!-- Loading state -->
+                      <div class="text-center my-5">
+                        <div
+                          class="spinner-border text-primary"
+                          role="status"
+                        ></div>
+                        <p class="mt-2">Loading exams...</p>
                       </div>
+                    }
+                  }
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item mb-3 shadow">
+              <h2 class="accordion-header">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#flush-collapseTwo"
+                  aria-expanded="false"
+                  aria-controls="flush-collapseTwo"
+                >
+                  Course Features
+                </button>
+              </h2>
+              <div
+                id="flush-collapseTwo"
+                class="accordion-collapse collapse"
+                data-bs-parent="#accordionFlushExample"
+              >
+                <div class="accordion-body">
+                  <app-certifications-features/>
+                  <!-- @if (courseFeatures.length === 0) {
+                    <div class="d-flex align-items-center gap-1">
+                      <span
+                        >No course features found for this certification
+                        yet.</span
+                      >
+                      <span class="courseLink" (click)="addCourseFeature()"
+                        >Add Course Features</span
+                      >
+                    </div>
+                  } @else {
+                    <div class="row g-3">
+                      @for (
+                        feature of courseFeatures;
+                        let index = $index;
+                          track index
+                      ) {
+                        <span>Feature</span>
+                      }
+                    </div>
+                  } -->
+                </div>
+              </div>
+            </div>
+             <div class="accordion-item mb-3 shadow">
+              <h2 class="accordion-header">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#flush-collapseTwo"
+                  aria-expanded="false"
+                  aria-controls="flush-collapseTwo"
+                >
+                  Course Contents
+                </button>
+              </h2>
+              <div
+                id="flush-collapseTwo"
+                class="accordion-collapse collapse"
+                data-bs-parent="#accordionFlushExample"
+              >
+                <div class="accordion-body">
+                  @if (courseContents.length === 0) {
+                    <div class="d-flex align-items-center gap-1">
+                      <span
+                        >No course contents found for this certification
+                        yet.</span
+                      >
+                      <span class="courseLink" (click)="addCourseContent()"
+                        >Add Course Content</span
+                      >
+                    </div>
+                  } @else {
+                    <div class="row g-3">
+                      @for (
+                        content of courseContents;
+                        let index = $index;
+                          track index
+                      ) {
+                        <span>Feature</span>
+                      }
                     </div>
                   }
                 </div>
-              }
-            } @else {
-              <!-- Loading state -->
-              <div class="text-center my-5">
-                <div class="spinner-border text-primary" role="status"></div>
-                <p class="mt-2">Loading exams...</p>
               </div>
-            }
-          }
+            </div>
+          </div>
         </div>
       </div>
     </div>

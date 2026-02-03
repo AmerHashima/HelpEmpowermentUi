@@ -7,10 +7,11 @@ import { CertificationService } from '../../../../Services/certification.service
 import { CertificationsStore } from '../../../../AdminPanelStores/CertificationStore/certification.store';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
+import { CertificationsFeaturesComponent } from '../certifications-features/certifications-features.component';
 
 @Component({
   selector: 'app-certification',
-  imports: [ButtonComponent, AsyncPipe],
+  imports: [ButtonComponent, AsyncPipe, CertificationsFeaturesComponent],
   templateUrl: './certification.component.html',
   styleUrl: './certification.component.scss'
 })
@@ -20,7 +21,7 @@ export class CertificationComponent {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   certification = this.certificationStore.selectedCertification
-
+  courseContents=[];
   readonly exams$ = computed(() => {
     const oid = this.certification()?.oid;
     return oid
@@ -67,5 +68,10 @@ export class CertificationComponent {
       this.router.navigate(['/admin/certifications']);
     }
   }
+
+  // addCourseFeature(){
+
+  // }
+  addCourseContent(){}
 
 }

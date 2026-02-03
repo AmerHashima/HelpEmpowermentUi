@@ -18,6 +18,7 @@ export class CertificationsListComponent {
 
 
   onAddNewCertification() {
+    this.store.setSelectedCertification({} as Certification);
     this.router.navigate(['/admin/certifications/create']);
   }
 

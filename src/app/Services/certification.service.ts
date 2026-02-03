@@ -53,19 +53,58 @@ export class CertificationService {
       );
   }
 
-  getCertificationExams(id: string): Observable<any[]> {
+  getByCourse<T>(endpoint: string, courseId: string): Observable<T[]> {
     return this.apiService
-      .getSingle<ApiResponse<any[]>>('CoursesMasterExams/course', id)
+      .getSingle<ApiResponse<T[]>>(`${endpoint}/course`, courseId)
       .pipe(
-        map((response: ApiResponse<any[]>) => {
+        map((response: ApiResponse<T[]>) => {
           if (!response.success) {
-            const msg = response.errors?.join(', ') || response.message || 'API failed to load CERTIFICATION EXAMS';
+            const msg =
+              response.errors?.join(', ') || response.message || 'API call failed';
             throw new Error(msg);
           }
           return response.data;
         })
       );
   }
+
+  getCertificationExams(id: string): Observable<any[]> {
+    return this.getByCourse<any>('CoursesMasterExams', id);
+  }
+
+  // For features
+  getCertificationFeatures(id: string): Observable<any[]> {
+    return this.getByCourse<any>('CourseFeatures', id);
+  }
+
+  // getCertificationExams(id: string): Observable<any[]> {
+  //   return this.apiService
+  //     .getSingle<ApiResponse<any[]>>('CoursesMasterExams/course', id)
+  //     .pipe(
+  //       map((response: ApiResponse<any[]>) => {
+  //         if (!response.success) {
+  //           const msg = response.errors?.join(', ') || response.message || 'API failed to load CERTIFICATION EXAMS';
+  //           throw new Error(msg);
+  //         }
+  //         return response.data;
+  //       })
+  //     );
+  // }
+
+  // getCertificationFeatures(id: string): Observable<any[]> {
+  //   return this.apiService
+  //     .getSingle<ApiResponse<any[]>>('CourseFeatures/course', id)
+  //     .pipe(
+  //       map((response: ApiResponse<any[]>) => {
+  //         if (!response.success) {
+  //           const msg = response.errors?.join(', ') || response.message || 'API failed to load certification features';
+  //           throw new Error(msg);
+  //         }
+  //         return response.data;
+  //       })
+  //     );
+  // }
+
 
   updateCertification(id: string, body: Certification): Observable<APICertification> {
     return this.apiService
@@ -248,4 +287,17 @@ export class CertificationService {
       );
   }
 
+  createCourseFeature(body: any): Observable<any> {
+    return this.apiService
+      .post<ApiResponse<any>>('CourseFeatures', body)
+      .pipe(
+        map((response: ApiResponse<any>) => {
+          if (!response.success) {
+            const msg = response.errors?.join(', ') || response.message || 'API failed to create certification';
+            throw new Error(msg);
+          }
+          return response.data;
+        })
+      );
+  }
 }

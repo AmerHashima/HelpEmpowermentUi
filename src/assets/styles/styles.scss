@@ -132,3 +132,37 @@ label {
   border-color: $primaryColor;
   box-shadow: none;
 }
+.accordion *{
+  font-size: $fs-sm;
+}
+.accordion-button{
+   outline: none !important;
+  box-shadow: none !important;
+    background-color: $primaryColor;
+    padding:.8rem;
+    color:$lightBgTextColor;
+    border-radius: 8px !important;
+}
+.accordion-button:not(.collapsed) {
+  border-bottom-left-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+  border-radius: 8px;
+  background-color: $primaryColor;
+  color:$lightBgTextColor;
+  box-shadow: none;
+}
+
+
+.accordion-button::after {
+  content: '';
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');
+  background-size: 1rem;
+   color:$lightBgTextColor;
+}
+
+.addAnswer * {
+  color: $primaryColor;
+}
