@@ -1,0 +1,29 @@
+@if (isOpen()) {
+  <div class="modal-backdrop fade show"></div>
+
+  <div class="modal fade show d-block" tabindex="-1" role="dialog" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title">{{ title() }}</h5>
+          <button
+            type="button"
+            class="btn-close"
+            aria-label="Close"
+            (click)="close.emit()"
+          ></button>
+        </div>
+
+        <div class="modal-body pb-2">
+          <ng-content></ng-content>
+        </div>
+
+        <!-- <div class="modal-footer">
+          <ng-content select="[modal-footer]"></ng-content>
+        </div> -->
+
+      </div>
+    </div>
+  </div>
+}

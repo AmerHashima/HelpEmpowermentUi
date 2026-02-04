@@ -1,4 +1,4 @@
-<div *ngIf="courseFeatures() as courseFeatures">
+<!-- <div *ngIf="courseFeatures() as courseFeatures">
   <div *ngIf="courseFeatures.length === 0" class="d-flex flex-column align-items-center text-center gap-2 py-4">
     <i class="bi bi-list-check fs-2 text-secondary"></i>
     <span class="text-muted">
@@ -121,3 +121,61 @@
     </div>
   </div>
 </form>
+
+ -->
+
+<app-certification-common
+  [items]="courseFeatures"
+  [entityName]="entityName"
+  [formFactory]="formFactory"
+  [createFn]="createFeature"
+  [updateFn]="updateFeature"
+  [deleteFn]="deleteFeatureFn"
+>
+
+
+  <div item class="d-flex align-items-center justify-content-between py-3 border-bottom">
+
+    <div class="d-flex align-items-center gap-3 flex-grow-1">
+      <span class="badge bg-light text-dark px-3 py-1 fw-medium">
+        Order
+      </span>
+      <div>
+        <strong class="d-block">Feature Header</strong>
+        <small class="text-muted">Feature description placeholder</small>
+      </div>
+    </div>
+  </div>
+
+  <div form  class="row g-3">
+    <div class="col-12">
+      <app-input
+        formControlName="featureHeader"
+        label="Feature Header"
+        type="text"
+        placeholder="e.g. Hands-on Projects, Real-World Scenarios"
+        [errorMessages]="{ required: 'Feature header is required' }"
+      />
+    </div>
+
+    <div class="col-12">
+      <app-textarea
+        formControlName="featureDescription"
+        label="Feature Description"
+        [rows]="3"
+        placeholder="Describe what the learner will gain or experience..."
+        [errorMessages]="{ required: 'Description is required' }"
+      />
+    </div>
+
+    <div class="col-12">
+      <app-input
+        formControlName="orderNo"
+        label="Display Order"
+        type="number"
+        [errorMessages]="{ required: 'Order number is required' }"
+      />
+    </div>
+  </div>
+
+</app-certification-common>
