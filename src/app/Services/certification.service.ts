@@ -77,34 +77,6 @@ export class CertificationService {
     return this.getByCourse<any>('CourseFeatures', id);
   }
 
-  // getCertificationExams(id: string): Observable<any[]> {
-  //   return this.apiService
-  //     .getSingle<ApiResponse<any[]>>('CoursesMasterExams/course', id)
-  //     .pipe(
-  //       map((response: ApiResponse<any[]>) => {
-  //         if (!response.success) {
-  //           const msg = response.errors?.join(', ') || response.message || 'API failed to load CERTIFICATION EXAMS';
-  //           throw new Error(msg);
-  //         }
-  //         return response.data;
-  //       })
-  //     );
-  // }
-
-  // getCertificationFeatures(id: string): Observable<any[]> {
-  //   return this.apiService
-  //     .getSingle<ApiResponse<any[]>>('CourseFeatures/course', id)
-  //     .pipe(
-  //       map((response: ApiResponse<any[]>) => {
-  //         if (!response.success) {
-  //           const msg = response.errors?.join(', ') || response.message || 'API failed to load certification features';
-  //           throw new Error(msg);
-  //         }
-  //         return response.data;
-  //       })
-  //     );
-  // }
-
 
   updateCertification(id: string, body: Certification): Observable<APICertification> {
     return this.apiService

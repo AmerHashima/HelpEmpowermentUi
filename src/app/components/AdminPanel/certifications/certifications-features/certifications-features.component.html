@@ -1,15 +1,21 @@
 <div *ngIf="courseFeatures$() | async as courseFeatures">
   <div
     *ngIf="courseFeatures.length === 0"
-    class="d-flex align-items-center gap-1"
+    class="d-flex flex-column align-items-center text-center gap-2 py-4"
   >
-    <span>No course features found for this certification yet.</span>
-    <span
-      class="courseLink"
-        (click)="AddFeatures()"
+    <i class="bi bi-list-check fs-2 text-secondary"></i>
 
+    <span class="text-muted">
+      No course features found for this certification yet.
+    </span>
+
+    <span
+      class="courseLink fw-semibold"
+      role="button"
+      tabindex="0"
+      (click)="AddFeatures()"
     >
-      Add Course Features
+      + Add Course Features
     </span>
   </div>
 

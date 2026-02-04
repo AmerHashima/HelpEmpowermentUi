@@ -4,10 +4,11 @@ import { CertificationCardComponent } from '../../../../shared/certification-car
 import { CertificationsStore } from '../../../../AdminPanelStores/CertificationStore/certification.store';
 import { Router } from '@angular/router';
 import { Certification } from '../../../../models/certification';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-certifications-list',
-  imports: [ButtonComponent, CertificationCardComponent],
+  imports: [ButtonComponent, CertificationCardComponent,JsonPipe],
   templateUrl: './certifications-list.component.html',
   styleUrl: './certifications-list.component.scss'
 })

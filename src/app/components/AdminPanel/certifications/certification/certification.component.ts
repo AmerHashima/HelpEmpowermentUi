@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, output } from '@angular/core';
+import { Component, computed, effect, inject, linkedSignal, output } from '@angular/core';
 import { APIExam } from '../../../../models/certification';
 import { ButtonComponent } from '../../../../shared/button/button.component';
 import { AsyncPipe } from '@angular/common';
@@ -22,7 +22,7 @@ export class CertificationComponent {
   private route = inject(ActivatedRoute);
   certification = this.certificationStore.selectedCertification
   courseContents=[];
-  readonly exams$ = computed(() => {
+  readonly exams$ = linkedSignal(() => {
     const oid = this.certification()?.oid;
     return oid
       ? this.certificationService.getCertificationExams(oid)

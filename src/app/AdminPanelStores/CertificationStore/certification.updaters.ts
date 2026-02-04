@@ -64,7 +64,7 @@ export const deleteCertification = (
 ): PartialStateUpdater<certificationState> => {
   return (state) => ({
     certifications: [
-      ...state.certifications.filter(u => u.courseCode !== id),
+      ...state.certifications.filter(u => u.oid !== id),
     ],
   });
 };

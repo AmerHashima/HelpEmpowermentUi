@@ -54,9 +54,19 @@
                   @if (exams$(); as examsObs) {
                     @if (examsObs | async; as exams) {
                       @if (exams.length === 0) {
-                        <!-- <div class="alert alert-secondary text-center p-2 small">
-                  No exams found for this certification yet.
-                </div> -->
+                        <div class="d-flex justify-content-center">
+                          <div
+                            class="card text-center p-4 border-0"
+                            style="max-width: 420px"
+                          >
+                            <i class="bi bi-journal-x fs-1 text-muted mb-3"></i>
+                            <h6 class="fw-semibold mb-1">No exams yet</h6>
+                            <p class="text-muted small mb-3">
+                              This certification doesn’t have any exams added
+                              yet.
+                            </p>
+                          </div>
+                        </div>
                       } @else {
                         <div class="row g-3">
                           @for (
@@ -167,7 +177,7 @@
                 data-bs-parent="#accordionFlushExample"
               >
                 <div class="accordion-body">
-                  <app-certifications-features/>
+                  <app-certifications-features />
                   <!-- @if (courseFeatures.length === 0) {
                     <div class="d-flex align-items-center gap-1">
                       <span
@@ -192,7 +202,7 @@
                 </div>
               </div>
             </div>
-             <div class="accordion-item mb-3 shadow">
+            <div class="accordion-item mb-3 shadow">
               <h2 class="accordion-header">
                 <button
                   class="accordion-button collapsed"
@@ -226,7 +236,7 @@
                       @for (
                         content of courseContents;
                         let index = $index;
-                          track index
+                        track index
                       ) {
                         <span>Feature</span>
                       }
