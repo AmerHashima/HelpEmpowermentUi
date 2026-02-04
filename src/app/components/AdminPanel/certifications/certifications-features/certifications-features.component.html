@@ -1,42 +1,30 @@
-<div *ngIf="courseFeatures$() | async as courseFeatures">
-  <div
-    *ngIf="courseFeatures.length === 0"
-    class="d-flex flex-column align-items-center text-center gap-2 py-4"
-  >
+<div *ngIf="courseFeatures() as courseFeatures">
+  <div *ngIf="courseFeatures.length === 0" class="d-flex flex-column align-items-center text-center gap-2 py-4">
     <i class="bi bi-list-check fs-2 text-secondary"></i>
-
     <span class="text-muted">
       No course features found for this certification yet.
     </span>
-
-    <span
-      class="courseLink fw-semibold"
-      role="button"
-      tabindex="0"
-      (click)="AddFeatures()"
-    >
+    <span class="courseLink fw-semibold" role="button" tabindex="0" (click)="AddFeatures()">
       + Add Course Features
     </span>
   </div>
 
   <div *ngIf="courseFeatures.length > 0" class="row g-3">
     <div *ngFor="let feature of courseFeatures; let i = index" class="col-12">
-      <div class="d-flex">
+      <div class="d-flex align-items-center justify-content-between">
         <div>
-          <span
-            ><strong>Feature {{ i + 1 }}:</strong>
-            {{ feature.featureHeader }}</span
-          >
+          <span><strong>Feature {{ i + 1 }}:</strong> {{ feature.featureHeader }}</span>
           <span>{{ feature.featureDescription }}</span>
         </div>
-        <div></div>
+        <div class="d-flex align-items-center gap-2">
+          <i class="bi bi-trash" (click)="deleteFeature(feature)"></i>
+          <i class="bi bi-pencil-square" (click)="editFeature(feature)"></i>
+        </div>
       </div>
     </div>
-    <div
-      class="addAnswer d-flex align-items-center justify-content-end mt-2"
-      (click)="AddFeature(courseFeatures.length)"
-      style="cursor: pointer"
-    >
+
+    <div class="addAnswer d-flex align-items-center justify-content-end mt-2"
+    (click)="AddFeature(courseFeatures.length)" style="cursor: pointer">
       <i class="bi bi-plus-circle-fill pe-2"></i>
       <span>Add Feature</span>
     </div>

@@ -23,15 +23,15 @@ export class CertificationsFeaturesComponent {
   certification = this.store.selectedCertification;
   courseId = computed(() => this.certification()?.oid)
   @ViewChild('certModal') modalRef!: ElementRef;
-
+  readonly courseFeatures = signal<any[]>([]);
   choiceAnswerOrderCounter = 0;
   featureIndex = signal<number>(0);
-  readonly courseFeatures$ = computed(() => {
-    const oid = this.certification()?.oid;
-    return oid
-      ? this.certificationService.getCertificationFeatures(oid)
-      : of([] as any[]);
-  });
+  // readonly courseFeatures$ = computed(() => {
+  //   const oid = this.certification()?.oid;
+  //   return oid
+  //     ? this.certificationService.getCertificationFeatures(oid)
+  //     : of([] as any[]);
+  // });
 
   fb = inject(FormBuilder);
   form = this.fb.group({
@@ -46,17 +46,20 @@ export class CertificationsFeaturesComponent {
       if (id && !this.certification()) {
         this.store.getCertification(id);
       }
-      // if (this.certification() && this.featureArrays.length === 0 && !this.featureIndex()) {
-      // if (this.featureArrays.length === 0 && !this.featureIndex()) {
-      //   console.log('in');
-      //   this.featureArrays.push(this.createFeatureGroup());
-      // }
     });
 
     effect(() => {
-      if (this.featureIndex()) {
+      if(this.featureIndex()) {
         this.featureArrays.push(this.createFeatureGroup(this.featureIndex()));
       }
+    });
+    effect(() => {
+      const oid = this.certification()?.oid;
+      if (!oid) return;
+      this.certificationService.getCertificationFeatures(oid).subscribe({
+        next: (features) => this.courseFeatures.set(features || []),
+        error: (err) => console.error(err)
+      });
     });
   }
 
@@ -64,7 +67,6 @@ export class CertificationsFeaturesComponent {
     this.modalRef.nativeElement.addEventListener(
       'hidden.bs.modal',
       () => {
-        console.log('add eveent listener');
         this.resetFeaturesForm();
       }
     );
@@ -85,10 +87,8 @@ export class CertificationsFeaturesComponent {
     return this.form.get('features') as FormArray;
   }
   resetFeaturesForm(): void {
-    console.log('in reset');
     this.choiceAnswerOrderCounter = 0;
     this.featureArrays.clear();
-    // this.featureArrays.push(this.createFeatureGroup());
     this.form.markAsPristine();
     this.form.markAsUntouched();
   }
@@ -105,16 +105,15 @@ export class CertificationsFeaturesComponent {
       courseOid: feature.courseOid || this.courseId()
     }));
 
-    console.log(updatedFeatures);
     if (!features || features.length === 0) return;
 
     const requests = features.map((feature: any) =>
       {
       return this.certificationService.createCourseFeature(feature);}
     );
-
     forkJoin(requests).subscribe({
-      next: () => {
+      next: (createdFeatures) => {
+        this.courseFeatures.update((prev) => [...prev, ...createdFeatures]);
         this.resetFeaturesForm();
         this.closeModal();
       },
@@ -156,14 +155,30 @@ export class CertificationsFeaturesComponent {
   }
 
   AddFeature(length: number) {
-    this.choiceAnswerOrderCounter=length-1;
-    this.featureIndex.set(length-1);
+    this.choiceAnswerOrderCounter=length;
+    this.featureIndex.set(length);
     this.openModal();
   }
 
   AddFeatures(){
-      this.featureArrays.push(this.createFeatureGroup());
+    this.featureArrays.push(this.createFeatureGroup());
     this.openModal();
   }
+
+  deleteFeature(feature:any){
+    const featureId=feature.oid;
+    this.certificationService.deleteCourseFeature(featureId).subscribe({
+      next: () => {
+        this.courseFeatures.update((prev) =>
+          prev.filter((f) => f.oid !== featureId)
+        );
+      },
+      error: (err) => console.error('Failed to delete feature', err),
+    });
+  }
+  editFeature(feature: any) {
+
+  }
+
 
 }

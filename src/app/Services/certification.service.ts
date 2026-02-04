@@ -272,4 +272,17 @@ export class CertificationService {
         })
       );
   }
+  deleteCourseFeature(id: string): Observable<boolean> {
+    return this.apiService
+      .delete<ApiResponse<boolean>>('CourseFeatures', id)
+      .pipe(
+        map((response: ApiResponse<boolean>) => {
+          if (!response.success) {
+            const msg = response.errors?.join(', ') || response.message || 'API failed to delete feature';
+            throw new Error(msg);
+          }
+          return response.data;
+        })
+      );
+  }
 }
