@@ -12,8 +12,11 @@
   <div *ngIf="courseFeatures.length > 0" class="row g-3">
     <div *ngFor="let feature of courseFeatures; let i = index" class="col-12">
       <div class="d-flex align-items-center justify-content-between">
-        <div>
-          <span><strong>Feature {{ i + 1 }}:</strong> {{ feature.featureHeader }}</span>
+        <div class="d-flex align-items-center">
+          <span class="d-flex align-items-center">
+            <i class="bi bi-pin pe-1"></i>
+             <strong class="pe-1">{{ feature.featureHeader }}:</strong>
+             </span>
           <span>{{ feature.featureDescription }}</span>
         </div>
         <div class="d-flex align-items-center gap-2">
@@ -61,7 +64,7 @@
                   <div class="col-12" [formGroupName]="i">
                     <app-input
                       formControlName="featureHeader"
-                      [label]="`Feature ${i + 1} Header`"
+                      [label]="`Feature Header`"
                       type="text"
                       placeholder=""
                       icon=""
@@ -73,7 +76,7 @@
                   <div class="col-12" [formGroupName]="i">
                     <app-textarea
                       formControlName="featureDescription"
-                      [label]="`Feature ${i + 1} Description`"
+                      [label]="`Feature Description`"
                       placeholder=""
                       [errorMessages]="{
                         required: 'Description is required',
@@ -83,7 +86,7 @@
                   <div class="col-12" [formGroupName]="i">
                     <app-input
                       formControlName="orderNo"
-                      [label]="`Feature ${i + 1} Order Number`"
+                      [label]="`Feature Order Number`"
                       type="text"
                       placeholder=""
                       icon=""

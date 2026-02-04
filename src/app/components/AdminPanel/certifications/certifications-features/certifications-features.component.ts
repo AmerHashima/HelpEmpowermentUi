@@ -97,29 +97,39 @@ export class CertificationsFeaturesComponent {
     this.featureArrays.push(this.createFeatureGroup());
   }
 
+
+
   onSubmit() {
     const features: any[] = this.form.value.features ?? [];
-
-    const updatedFeatures = features.map((feature: any) => ({
-      ...feature,
-      courseOid: feature.courseOid || this.courseId()
-    }));
-
     if (!features || features.length === 0) return;
 
-    const requests = features.map((feature: any) =>
-      {
-      return this.certificationService.createCourseFeature(feature);}
-    );
+    const requests = features.map((feature: any) => {
+      if (feature.oid) {
+        return this.certificationService.updateCourseFeature(feature.oid, feature);
+      } else {
+        return this.certificationService.createCourseFeature(feature);
+      }
+    });
+
     forkJoin(requests).subscribe({
-      next: (createdFeatures) => {
-        this.courseFeatures.update((prev) => [...prev, ...createdFeatures]);
+      next: (results) => {
+        this.courseFeatures.update((prev) => {
+          const updated = [...prev];
+          results.forEach((res: any) => {
+            const idx = updated.findIndex((f) => f.oid === res.oid);
+            if (idx > -1) {
+              updated[idx] = res; // update existing
+            } else {
+              updated.push(res); // add new
+            }
+          });
+          return updated;
+        });
+
         this.resetFeaturesForm();
         this.closeModal();
       },
-      error: (err) => {
-        console.error('Failed to save features', err);
-      }
+      error: (err) => console.error('Failed to save features', err),
     });
   }
   async closeModal() {
@@ -177,7 +187,19 @@ export class CertificationsFeaturesComponent {
     });
   }
   editFeature(feature: any) {
+    this.resetFeaturesForm();
 
+    const group = this.fb.group({
+      courseOid: [feature.courseOid || this.courseId(), Validators.required],
+      featureHeader: [feature.featureHeader, Validators.required],
+      featureDescription: [feature.featureDescription, Validators.required],
+      orderNo: [feature.orderNo, Validators.required],
+      oid: [feature.oid] // keep oid for updating later
+    });
+
+    this.featureArrays.push(group);
+
+    this.openModal();
   }
 
 
