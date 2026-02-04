@@ -25,7 +25,7 @@
               <spk-ng-select
                 formControlName="coursesMasterExamOid"
                 label="Exam No."
-                [options]="(exams$ | async) ?? []"
+                [options]="exams()"
                 bindLabel="indexLabel"
                 bindValue="oid"
                 [multiple]="false"

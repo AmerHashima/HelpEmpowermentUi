@@ -34,6 +34,7 @@ export interface courseExam {
   courseName: string,
   courseLevelLookupId: string,
   courseCategoryLookupId: string,
+  questionCount?: number,
   isActive: boolean,
   createdBy: string
 }

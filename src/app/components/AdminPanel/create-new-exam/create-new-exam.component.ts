@@ -9,6 +9,7 @@ import { AsyncPipe } from '@angular/common';
 import { Location } from '@angular/common';
 import { CertificationsStore } from '../../../AdminPanelStores/CertificationStore/certification.store';
 import { ActivatedRoute } from '@angular/router';
+import { ExamsStore } from '../../../AdminPanelStores/ExamsStore/exam.store';
 
 
 @Component({
@@ -20,6 +21,8 @@ import { ActivatedRoute } from '@angular/router';
 export class CreateNewExamComponent {
   private certificationService = inject(CertificationService);
   private certificationStore = inject(CertificationsStore);
+  private examStore = inject(ExamsStore);
+
   private route = inject(ActivatedRoute);
   private location = inject(Location);
 
@@ -49,13 +52,13 @@ export class CreateNewExamComponent {
     isActive: [true, [Validators.required]],
   });
 
-  // @Output() onExamCancalEvent = new EventEmitter<any>();
-  // certification = input<Certification>({} as Certification);
+
   certification=this.certificationStore.selectedCertification;
   constructor(){
     effect(() => {
       const certId = this.route.snapshot.paramMap.get('id');
       if (!this.certification() && certId) {
+        console.log('in first effect')
         this.certificationStore.getCertification(certId);
       }
     });
@@ -63,6 +66,7 @@ export class CreateNewExamComponent {
     effect(() => {
       const certification = this.certification();
       if (certification) {
+        console.log('in second effect')
         this.form.patchValue({
           courseName: certification.courseName,
           courseLevelLookupId: certification.courseLevelLookupId,
@@ -71,6 +75,13 @@ export class CreateNewExamComponent {
           courseOid: certification.oid,
           isActive: false,
         });
+      }
+    });
+
+    effect(() => {
+      if (this.examStore.success()) {
+         this.cancel();
+         this.examStore.setSuccess(false);
       }
     });
   }
@@ -86,9 +97,7 @@ export class CreateNewExamComponent {
 
   }
   createExam() {
-    this.certificationService.createExam(this.getPayload()).subscribe({
-      next:()=>{this.cancel();}
-    });
+    this.examStore.addExam(this.getPayload());
   }
 
 

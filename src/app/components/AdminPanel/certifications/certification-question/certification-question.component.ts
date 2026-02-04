@@ -1,4 +1,4 @@
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { AsyncPipe, JsonPipe, Location } from '@angular/common';
@@ -12,6 +12,7 @@ import { FileUploadComponent } from '../../../../shared/file-upload/file-upload.
 import { TextareaComponent } from '../../../../shared/text-area/text-area.component';
 import { CertificationsStore } from '../../../../AdminPanelStores/CertificationStore/certification.store';
 import { CertificationService } from '../../../../Services/certification.service';
+import { ExamsStore } from '../../../../AdminPanelStores/ExamsStore/exam.store';
 
 @Component({
   selector: 'app-certification-question',
@@ -25,6 +26,7 @@ export class CertificationQuestionComponent {
   private location = inject(Location);
   private route=inject(ActivatedRoute);
   private store = inject(CertificationsStore);
+  private examsStore=inject(ExamsStore);
   private certificationService = inject(CertificationService);
   private certificationStore = inject(CertificationsStore);
   addAnswersFlag = signal<boolean>(true);
@@ -43,13 +45,19 @@ export class CertificationQuestionComponent {
 
 
 
-  exams$ = this.certificationService.getCertificationExams(this.certificationId!).pipe(
-    map(exams => (exams ?? []).map((exam, idx) => ({
-      ...exam,
-      indexLabel: `${idx + 1}`
-    })))
-  );
+  // exams$ = this.certificationService.getCertificationExams(this.certificationId!).pipe(
+  //   map(exams => (exams ?? []).map((exam, idx) => ({
+  //     ...exam,
+  //     indexLabel: `${idx + 1}`
+  //   })))
+  // );
 
+  exams = computed(() => {
+    return this.examsStore.exams().map((exam, idx) => ({
+      ...exam,
+      indexLabel: `${idx + 1}`,
+    }));
+  });
   questionMarks = [
     { label: "1", value: 1 },
     { label: "2", value: 2 },

@@ -8,6 +8,7 @@ import { CertificationsStore } from '../../../../AdminPanelStores/CertificationS
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { CertificationsFeaturesComponent } from '../certifications-features/certifications-features.component';
+import { ExamsStore } from '../../../../AdminPanelStores/ExamsStore/exam.store';
 
 @Component({
   selector: 'app-certification',
@@ -17,17 +18,14 @@ import { CertificationsFeaturesComponent } from '../certifications-features/cert
 })
 export class CertificationComponent {
   certificationStore = inject(CertificationsStore);
+  examsStore = inject(ExamsStore);
+
   certificationService = inject(CertificationService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   certification = this.certificationStore.selectedCertification
   courseContents=[];
-  readonly exams$ = linkedSignal(() => {
-    const oid = this.certification()?.oid;
-    return oid
-      ? this.certificationService.getCertificationExams(oid)
-      : of([] as APIExam[]);
-  });
+  exams = computed(() => this.examsStore.exams());
 
   constructor() {
     effect(() => {
@@ -43,6 +41,11 @@ export class CertificationComponent {
     if (certId)
       this.router.navigate(['/admin/certifications', certId, 'exams', 'create']);
   }
+  openExamDetails(exam:any){
+    const certId = this.certification()?.oid;
+    if (certId)
+      this.router.navigate(['/admin/certifications', certId, 'exams', 'exam',exam.oid]);
+  }
   onAddNewQuestion(exam: any) {
     const certId = this.certification()?.oid;
     if (certId)
@@ -50,7 +53,7 @@ export class CertificationComponent {
 ]);
   }
   onDeleteExam(exam: any) {
-    this.certificationService.deleteExam(exam.oid).subscribe({});
+    this.examsStore.deleteExam(exam.oid);
   }
 
   onEditCertification() {

@@ -50,112 +50,91 @@
                 class="accordion-collapse collapse"
                 data-bs-parent="#accordionFlushExample"
               >
-                <div class="accordion-body">
-                  @if (exams$(); as examsObs) {
-                    @if (examsObs | async; as exams) {
-                      @if (exams.length === 0) {
-                        <div class="d-flex justify-content-center">
-                          <div
-                            class="card text-center p-4 border-0"
-                            style="max-width: 420px"
-                          >
-                            <i class="bi bi-journal-x fs-1 text-muted mb-3"></i>
-                            <h6 class="fw-semibold mb-1">No exams yet</h6>
-                            <p class="text-muted small mb-3">
-                              This certification doesn’t have any exams added
-                              yet.
-                            </p>
-                          </div>
-                        </div>
-                      } @else {
-                        <div class="row g-3">
-                          @for (
-                            exam of exams;
-                            let index = $index;
-                            track exam.oid ?? index
-                          ) {
-                            <div class="col-md-6 col-xl-4 col-xxl-3">
-                              <div
-                                class="certificationExamCard d-flex flex-column shadow-sm rounded-2 p-3 gap-3"
-                              >
-                                <div class="d-flex align-items-center gap-1">
-                                  <span class="iconCircle">
-                                    <i class="bi bi-pencil-square"></i>
-                                  </span>
-                                  <span class="examName fw-bold">
-                                    {{ "Exam " + (index + 1) }}
-                                  </span>
-                                </div>
+              <div class="accordion-body">
+  @if (exams(); as exams) {
+    @if (exams.length === 0) {
+      <div class="d-flex justify-content-center">
+        <div
+          class="card text-center p-4 border-0"
+          style="max-width: 420px"
+        >
+          <i class="bi bi-journal-x fs-1 text-muted mb-3"></i>
+          <h6 class="fw-semibold mb-1">No exams yet</h6>
+          <p class="text-muted small mb-3">
+            This certification doesn’t have any exams added yet.
+          </p>
+        </div>
+      </div>
+    } @else {
+      <div class="row g-3">
+        @for (
+          exam of exams;
+          let index = $index;
+          track exam.oid ?? index
+        ) {
+          <div class="col-md-6 col-xl-4 col-xxl-3">
+            <div
+              class="certificationExamCard d-flex flex-column shadow-sm rounded-2 p-3 gap-3"
+            >
+              <div class="d-flex align-items-center gap-1" (click)="openExamDetails(exam)">
+                <span class="iconCircle">
+                  <i class="bi bi-pencil-square"></i>
+                </span>
+                <span class="examName fw-bold">
+                  {{ "Exam " + (index + 1) }}
+                </span>
+              </div>
 
-                                <div
-                                  class="d-flex gap-3 justify-content-center examDetails py-2"
-                                >
-                                  <div
-                                    class="d-flex flex-column align-items-center justify-content-center"
-                                  >
-                                    <div
-                                      class="d-flex align-items-center gap-1"
-                                    >
-                                      <span
-                                        ><i class="bi bi-question-circle"></i
-                                      ></span>
-                                      <span class="fw-bold">Questions</span>
-                                    </div>
-                                    <span>{{ exam.questionCount }}</span>
-                                  </div>
-
-                                  <div class="line"></div>
-
-                                  <div
-                                    class="d-flex flex-column align-items-center justify-content-center"
-                                  >
-                                    <div
-                                      class="d-flex align-items-center gap-1"
-                                    >
-                                      <span><i class="bi bi-clock"></i></span>
-                                      <span class="fw-bold">Duration</span>
-                                    </div>
-                                    <!-- <span>{{
-                              exam.durationMinutes
-                                ? exam.durationMinutes + " min"
-                                : "—"
-                            }}</span> -->
-                                    <span>230 min</span>
-                                  </div>
-                                </div>
-
-                                <div
-                                  class="d-flex align-items-center justify-content-center gap-2"
-                                >
-                                  <app-button
-                                    btnLabel="Add New Question"
-                                    [mainBtn]="true"
-                                    (click)="onAddNewQuestion(exam)"
-                                  />
-                                  <app-button
-                                    btnLabel="Delete Exam"
-                                    [secondaryBtn]="true"
-                                    [mainBtn]="false"
-                                    (click)="onDeleteExam(exam)"
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                          }
-                        </div>
-                      }
-                    } @else {
-                      <!-- Loading state -->
-                      <div class="text-center my-5">
-                        <div
-                          class="spinner-border text-primary"
-                          role="status"
-                        ></div>
-                        <p class="mt-2">Loading exams...</p>
-                      </div>
-                    }
-                  }
+              <div
+                class="d-flex gap-3 justify-content-center examDetails py-2"
+              >
+                <div
+                  class="d-flex flex-column align-items-center justify-content-center"
+                >
+                  <div class="d-flex align-items-center gap-1">
+                    <i class="bi bi-question-circle"></i>
+                    <span class="fw-bold">Questions</span>
+                  </div>
+                  <span>{{ exam.questionCount }}</span>
                 </div>
+
+                <div class="line"></div>
+
+                <div
+                  class="d-flex flex-column align-items-center justify-content-center"
+                >
+                  <div class="d-flex align-items-center gap-1">
+                    <i class="bi bi-clock"></i>
+                    <span class="fw-bold">Duration</span>
+                  </div>
+                  <span>
+                      30 min
+                  </span>
+                </div>
+              </div>
+
+              <div
+                class="d-flex align-items-center justify-content-center gap-2"
+              >
+                <app-button
+                  btnLabel="Add New Question"
+                  [mainBtn]="true"
+                  (click)="onAddNewQuestion(exam)"
+                />
+                <app-button
+                  btnLabel="Delete Exam"
+                  [secondaryBtn]="true"
+                  [mainBtn]="false"
+                  (click)="onDeleteExam(exam)"
+                />
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  }
+</div>
               </div>
             </div>
             <div class="accordion-item mb-3 shadow">

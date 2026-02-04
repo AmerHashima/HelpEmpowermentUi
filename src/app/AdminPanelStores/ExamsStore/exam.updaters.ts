@@ -1,7 +1,8 @@
 // src/app/AdminPanelStores/ExamsStore/exams.updaters.ts
 
 import { APIExam } from "../../models/certification";
-import { ExamState } from "./exam.state";
+import { ExamState } from './exam.state';
+import { ServerRoute } from '@angular/ssr';
 
 
 export const setExams = (exams: APIExam[]) => (state: ExamState) => ({
@@ -34,4 +35,17 @@ export const setError = (error: string) => (state: ExamState) => ({
   ...state,
   error,
   loading: false,
+});
+
+export const setSuccess = (success: boolean) => (state: ExamState) => ({
+  ...state,
+  success,
+});
+
+
+
+
+export const updateExam = (updatedExam: APIExam) => (state: ExamState) => ({
+  ...state,
+  exams: state.exams.map((e) => (e.oid === updatedExam.oid ? updatedExam : e)),
 });
