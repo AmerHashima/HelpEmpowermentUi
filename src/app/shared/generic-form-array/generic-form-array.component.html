@@ -1,0 +1,39 @@
+<form [formGroup]="form" (ngSubmit)="handleSubmit()">
+  <div formArrayName="rows">
+    @for (group of rows.controls; let i = $index; track i) {
+      <div [formGroupName]="i" class="mb-4 pb-3 border-bottom position-relative">
+
+        <ng-container
+          *ngTemplateOutlet="rowTemplate; context: { $implicit: group, $index: i }"
+        ></ng-container>
+
+        @if (rows.length > minRows()) {
+          <button
+            type="button"
+            class="btn btn-sm btn-outline-danger position-absolute top-0 end-0 m-2"
+            (click)="removeRow(i)"
+          >
+            ×
+          </button>
+        }
+      </div>
+    }
+  </div>
+
+  @if (allowAddMore()) {
+    <div class="text-end mt-3">
+      <button type="button" class="btn btn-sm btn-outline-primary" (click)="addRow()">
+        + Add another {{ entityName() | lowercase }}
+      </button>
+    </div>
+  }
+
+  <div class="d-flex gap-3 justify-content-end mt-4">
+    <button type="button" class="btn btn-secondary" (click)="cancel.emit()">
+      Cancel
+    </button>
+    <button type="submit" class="btn btn-primary" >
+      Save
+    </button>
+  </div>
+</form>

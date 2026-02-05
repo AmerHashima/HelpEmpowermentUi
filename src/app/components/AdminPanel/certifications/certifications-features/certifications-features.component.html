@@ -1,4 +1,4 @@
-<!-- <div *ngIf="courseFeatures() as courseFeatures">
+<div *ngIf="courseFeatures() as courseFeatures">
   <div *ngIf="courseFeatures.length === 0" class="d-flex flex-column align-items-center text-center gap-2 py-4">
     <i class="bi bi-list-check fs-2 text-secondary"></i>
     <span class="text-muted">
@@ -122,9 +122,84 @@
   </div>
 </form>
 
- -->
 
-<app-certification-common
+
+<!-- <div *ngIf="courseFeatures() as features">
+  <div *ngIf="features.length === 0" class="text-center py-4">
+    <i class="bi bi-list-check fs-2 text-secondary"></i>
+    <p class="text-muted mt-2">No features yet</p>
+    <span class="fw-semibold cursor-pointer" (click)="openAddModal()">+ Add Feature</span>
+  </div>
+
+  <div *ngIf="features.length > 0" class="row g-3">
+    @for (feature of features; track feature.oid) {
+      <div class="col-12">
+        <div class="d-flex align-items-center justify-content-between">
+          <div class="d-flex align-items-center">
+            <span class="badge bg-light me-2">{{ feature.orderNo }}</span>
+            <strong>{{ feature.featureHeader }}</strong>
+            <span class="text-muted ms-2">{{ feature.featureDescription }}</span>
+          </div>
+          <div class="d-flex gap-2">
+            <i class="bi bi-pencil-square text-primary cursor-pointer" (click)="openEditModal(feature)"></i>
+            <i class="bi bi-trash text-danger cursor-pointer" (click)="deleteFeature(feature)"></i>
+          </div>
+        </div>
+      </div>
+    }
+    <div class="text-end mt-3">
+      <span class="fw-semibold cursor-pointer" (click)="openAddModal()">+ Add Feature</span>
+    </div>
+  </div>
+</div>
+
+<app-generic-modal
+  [isOpen]="showModal()"
+  [title]="modalTitle()"
+  (close)="closeModal()"
+>
+  <app-generic-form-array
+    [formFactory]="formFactory"
+    [initialItems]="initialFeatures()"
+    [entityName]="'Feature'"
+    [minRows]="1"
+    [allowAddMore]="true"
+    (submit)="saveFeatures($event)"
+    (cancel)="closeModal()"
+  >
+    <ng-template #row let-group let-idx="$index">
+      <div class="row g-3">
+
+        <div class="col-12">
+          <app-input
+            formControlName="featureHeader"
+            label="Feature Header"
+            placeholder="e.g. Hands-on Projects"
+          />
+        </div>
+
+        <div class="col-12">
+          <app-textarea
+            formControlName="featureDescription"
+            label="Feature Description"
+            [rows]="3"
+          />
+        </div>
+
+        <div class="col-12">
+          <app-input
+            type="number"
+            formControlName="orderNo"
+            label="Display Order"
+          />
+        </div>
+
+      </div>
+    </ng-template>
+  </app-generic-form-array>
+</app-generic-modal> -->
+
+<!-- <app-certification-common
   [items]="courseFeatures"
   [entityName]="entityName"
   [formFactory]="formFactory"
@@ -178,4 +253,4 @@
     </div>
   </div>
 
-</app-certification-common>
+</app-certification-common> -->
