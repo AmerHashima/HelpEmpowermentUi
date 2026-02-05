@@ -52,6 +52,7 @@
                 [options]="questionTypes"
                 bindLabel="lookupNameEn"
                 bindValue="oid"
+                (change)="onSelectedQuestionType($event)"
                 [multiple]="false"
                 placeholder="Choose Question Type"
                 selectClass="form-control w-100"
@@ -137,22 +138,11 @@
                 ></app-file-upload>
               </div>
             </div> -->
-
-            @if (addAnswersFlag()) {
-              <div class="col-12">
-                <div
-                  class="addAnswer d-flex align-items-center justify-content-end"
-                  (click)="onActivateAddAnswerSection()"
-                >
-                  <i class="bi bi-plus-circle-fill pe-2"></i>
-                  <span>Add Answers</span>
-                </div>
-              </div>
-            }
           </div>
         </div>
       </div>
-      @if (addChoiceAnswersFlag()) {
+      <!-- @if (addChoiceAnswersFlag()) { -->
+      @if (activeSection() === "MCQ" || activeSection() === 'TRUE_FALSE') {
         <div class="col-12">
           <div class="d-flex flex-column p-3 shadow-sm rounded-3 fw-bold">
             <h5>Answers</h5>
@@ -204,7 +194,8 @@
           </div>
         </div>
       }
-      @if (addDragQuestionsFlag()) {
+      <!-- @if (addDragQuestionsFlag()) { -->
+      @if (activeSection() === "MATCHING") {
         <div class="col-12">
           <div class="d-flex flex-column p-3 shadow-sm rounded-3 fw-bold">
             <h5>Drag Questions</h5>
@@ -219,7 +210,7 @@
                   <div class="d-flex align-items-start gap-2">
                     <app-input
                       class="w-100"
-                      formControlName="dragQuestion"
+                      formControlName="answerText"
                       label=""
                       type="text"
                       placeholder="Question"
@@ -271,7 +262,7 @@
         </div>
       }
 
-      @if (addDragAnswersFlag()) {
+      @if (activeSection() === "MATCHING" && addDragAnswersFlag()) {
         <div class="col-12">
           <div class="d-flex flex-column p-3 shadow-sm rounded-3 fw-bold">
             <h5>Drag Answers</h5>
@@ -286,7 +277,7 @@
                   <div class="d-flex align-items-start gap-2">
                     <app-input
                       class="w-100"
-                      formControlName="answer"
+                      formControlName="answerText"
                       label=""
                       type="text"
                       placeholder="Answer"
@@ -338,7 +329,7 @@
         </div>
       }
 
-      @if (linkDragAnswerAndQuestionFlag()) {
+      @if (activeSection() === "MATCHING" && linkDragAnswerAndQuestionFlag()) {
         <div class="col-12">
           <div class="d-flex flex-column p-3 shadow-sm rounded-3 fw-bold">
             <h5>Connect Answer with Questions</h5>
