@@ -346,7 +346,7 @@
                     <div class="col-6">
                       <app-input
                         class="w-100"
-                        formControlName="dragQuestion"
+                        formControlName="answerText"
                         [label]="`Question ${i + 1}`"
                         type="text"
                         placeholder="Enter drop target text..."
@@ -358,12 +358,12 @@
                     <!-- Correct answer selector -->
                     <div class="col-6">
                       <spk-ng-select
-                        formControlName="correctDragAnswer"
+                        formControlName="correctAnswerOid"
                         label="Correct Drag Item"
-                        [options]="dragAnswers"
+                        [options]="apiAnswers"
                         [multiple]="false"
-                        bindLabel="label"
-                        bindValue="value"
+                        bindLabel="answerText"
+                        bindValue="oid"
                         placeholder="Select correct draggable item"
                         selectClass="form-control w-100"
                       />

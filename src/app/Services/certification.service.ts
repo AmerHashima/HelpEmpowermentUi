@@ -259,6 +259,21 @@ export class CertificationService {
       );
   }
 
+  updateQuestion(id: string, body: any): Observable<any> {
+    return this.apiService
+      .put<ApiResponse<any>>('CourseQuestions', id, body)
+      .pipe(
+        map((response: ApiResponse<APICertification>) => {
+          if (!response.success) {
+            const msg = response.errors?.join(', ') || response.message || 'API failed to update certification';
+            throw new Error(msg);
+          }
+
+          return response.data;
+        })
+      );
+  }
+
   createCourseFeature(body: any): Observable<any> {
     return this.apiService
       .post<ApiResponse<any>>('CourseFeatures', body)
