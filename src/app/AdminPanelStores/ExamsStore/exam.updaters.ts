@@ -1,5 +1,6 @@
 // src/app/AdminPanelStores/ExamsStore/exams.updaters.ts
 
+import { PartialStateUpdater } from "@ngrx/signals";
 import { APIExam } from "../../models/certification";
 import { ExamState } from './exam.state';
 import { ServerRoute } from '@angular/ssr';
@@ -20,6 +21,15 @@ export const deleteExam = (id: string) => (state: ExamState) => ({
   exams: state.exams.filter(e => e.oid !== id),
 });
 
+export const getExam = (
+  exam: APIExam
+): PartialStateUpdater<ExamState> => {
+  // const mappedCertification: Certification = mapApiCertificationToCertification(certification);
+  return () => ({
+    // selectedExam: mappedExam
+    selectedExam: exam
+  });
+};
 export const activateLoading = (state: ExamState) => ({
   ...state,
   loading: true,

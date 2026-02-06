@@ -19,7 +19,8 @@ import {
   deleteExam as deleteExamUpdater,
   addExam,
   updateExam,
-  setSuccess, } from './exam.updaters';
+  setSuccess,
+  getExam, } from './exam.updaters';
 import { initialExamsState } from './exam.slice';
 import { APIExam, courseExam } from '../../models/certification';
 
@@ -87,6 +88,21 @@ export const ExamsStore = signalStore(
           )
         ),
 
+            getExam: rxMethod<string>(
+                pipe(
+                  tap(() => patchState(store, activateLoading)),
+                  switchMap((id) =>
+                    service.getExam(id).pipe(
+                      tap((exam: APIExam) => patchState(store, getExam(exam))),
+                      catchError((err) => {
+                        patchState(store, setError(err?.msg ?? 'Failed to load exam'));
+                        return EMPTY;
+                      }),
+                      finalize(() => patchState(store, deactivateLoading))
+                    )
+                  )
+                )
+              ),
     deleteExam: rxMethod<string>(
       switchMap((examId) => {
         patchState(store, activateLoading);

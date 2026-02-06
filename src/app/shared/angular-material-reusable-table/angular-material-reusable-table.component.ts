@@ -1,5 +1,4 @@
 import { Component, Input, ViewChild, AfterViewInit, Output, EventEmitter } from '@angular/core';
-import { ButtonComponent } from 'src/app/common/button/button.component';
 import { CommonModule } from '@angular/common'; // <-- Needed for *ngIf and *ngFor
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -10,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { ButtonComponent } from '../button/button.component';
 // import { MatTableDataSource } from '@angular/material/table';
 @Component({
   selector: 'app-reusable-material-table',

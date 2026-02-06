@@ -14,6 +14,7 @@ import { CertificationsStore } from '../../../../AdminPanelStores/CertificationS
 import { CertificationService } from '../../../../Services/certification.service';
 import { ExamsStore } from '../../../../AdminPanelStores/ExamsStore/exam.store';
 import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
+import { QuestionsStore } from '../../../../AdminPanelStores/QuestionStores/questions.store';
 
 @Component({
   selector: 'app-certification-question',
@@ -28,6 +29,7 @@ export class CertificationQuestionComponent {
   private route=inject(ActivatedRoute);
   private store = inject(CertificationsStore);
   private examsStore=inject(ExamsStore);
+  private questionStore=inject(QuestionsStore);
   private certificationService = inject(CertificationService);
   private certificationStore = inject(CertificationsStore);
   private toast=inject(ToastingMessagesService);

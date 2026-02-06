@@ -3,7 +3,7 @@ import ApiService from '../shared/Services/ApiService/api.service';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { ApiResponse, ApiSearchResponse } from '../models/apiResponse';
-import { APICertification, APIExam, Certification, courseExam } from '../models/certification';
+import { APICertification, APICourseQuestion, APIExam, Certification, courseExam } from '../models/certification';
 import { RequestBody } from '../models/rquest';
 
 @Injectable({
@@ -273,7 +273,50 @@ export class CertificationService {
         })
       );
   }
+  searchQuestion(body: RequestBody): Observable<{ questions: APICourseQuestion[]; total: number }> {
+    return this.apiService
+      .query<ApiSearchResponse<APICourseQuestion>>('CourseQuestions/search', body)
+      .pipe(
+        map((response: ApiSearchResponse<APICourseQuestion>) => {
+          if (!response.success) {
+            const msg = response.message || 'API failed to query';
+            throw new Error(msg);
+          }
+          return {
+            questions: response.data ?? [],
+            total: response.totalPages ?? 0,
+          };
+        })
+      );
+  }
 
+  getQuestion(id: string): Observable<APICourseQuestion> {
+    return this.apiService
+      .getSingle<ApiResponse<APICourseQuestion>>('CourseQuestions', id)
+      .pipe(
+        map((response: ApiResponse<APICourseQuestion>) => {
+          if (!response.success) {
+            const msg = response.errors?.join(', ') || response.message || 'API failed to load QUESTIONS';
+            throw new Error(msg);
+          }
+          return response.data;
+        })
+      );
+  }
+
+  deleteQuestion(id: string): Observable<boolean> {
+    return this.apiService
+      .delete<ApiResponse<boolean>>('CourseQuestions', id)
+      .pipe(
+        map((response: ApiResponse<boolean>) => {
+          if (!response.success) {
+            const msg = response.errors?.join(', ') || response.message || 'API failed to delete question';
+            throw new Error(msg);
+          }
+          return response.data;
+        })
+      );
+  }
   createCourseFeature(body: any): Observable<any> {
     return this.apiService
       .post<ApiResponse<any>>('CourseFeatures', body)
