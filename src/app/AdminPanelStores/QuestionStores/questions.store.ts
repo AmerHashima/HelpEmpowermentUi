@@ -42,6 +42,7 @@ import {
 import { CertificationService } from '../../Services/certification.service';
 import { APICourseQuestion, courseQuestion } from '../../models/certification';
 import { createQueryRequest } from '../CertificationStore/store.helper';
+import { mapApiQuestionsToCourseQuestions } from './question.mapper';
 
 type UpdateQuestionPayload = {
   id: string;
@@ -117,7 +118,7 @@ export const QuestionsStore = signalStore(
       patchState(store, setSuccess(success));
     },
 
-    setSelectedQuestion(question: courseQuestion) {
+    setSelectedQuestion(question: courseQuestion|null) {
       patchState(store, setSelectedQuestion(question));
     },
 
@@ -138,7 +139,7 @@ export const QuestionsStore = signalStore(
             tap((res: { questions: APICourseQuestion[]; total: number }) => {
               patchState(store, (s) => ({
                 ...s,
-                questions: res.questions,
+                questions: mapApiQuestionsToCourseQuestions(res.questions),
                 total: res.total ?? 0,
               }));
             }),

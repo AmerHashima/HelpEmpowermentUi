@@ -1,4 +1,3 @@
-import { CertificationsStore } from './../../../AdminPanelStores/CertificationStore/certification.store';
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { ExamsStore } from '../../../AdminPanelStores/ExamsStore/exam.store';
 import { CertificationService } from '../../../Services/certification.service';
@@ -7,11 +6,11 @@ import { ReusableMaterialTableComponent } from '../../../shared/angular-material
 import { QuestionsStore } from '../../../AdminPanelStores/QuestionStores/questions.store';
 import { Filter, Sort } from '../../../models/rquest';
 import { ButtonComponent } from '../../../shared/button/button.component';
-import { JsonPipe } from '@angular/common';
+import {  NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-exam-details',
-  imports: [ReusableMaterialTableComponent, ButtonComponent,  JsonPipe],
+  imports: [ReusableMaterialTableComponent, ButtonComponent,NgIf],
   templateUrl: './exam-details.component.html',
   styleUrl: './exam-details.component.scss'
 })
@@ -74,9 +73,13 @@ export class ExamDetailsComponent {
 
   onAddNewQuestion() {
     const examId = this.exam()?.oid;
-    if (examId)
+    console.log('examId',examId);
+    if (examId){
+      this.questionStore.setSelectedQuestion(null);
       this.router.navigate(['/admin/certifications', this.certId, 'exams', examId, 'question', 'create'
       ]);
+    }
+
   }
   onDeleteQuestion(question: any) {
     this.questionStore.deleteQuestion(question.oid);
@@ -109,6 +112,7 @@ export class ExamDetailsComponent {
 
 
   onOpenSingleQuestion(question:any){
+    this.questionStore.setSelectedQuestion(question);
     this.router.navigate(['/admin/certifications', this.certId,'questions', question.oid]);
   }
 }

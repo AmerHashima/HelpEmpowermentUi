@@ -2,6 +2,7 @@ import { PartialStateUpdater } from '@ngrx/signals';
 import { QuestionState } from "./question.state";
 import { APICourseQuestion, courseQuestion } from '../../models/certification';
 import { Filter } from '../../models/rquest';
+import { mapApiQuestionsToCourseQuestions, mapApiQuestionToCourseQuestion } from './question.mapper';
 
 
 /* ===================== Loading ===================== */
@@ -25,13 +26,13 @@ export const setError = (err: any): PartialStateUpdater<QuestionState> => {
 export const setQuestions = (
   questions: APICourseQuestion[]
 ): PartialStateUpdater<QuestionState> => {
-  // const mappedQuestions = mapAPICourseQuestionsToQuestions(questions);
-  // return () => ({
-  //   questions: mappedQuestions,
-  // });
+  const mappedQuestions = mapApiQuestionsToCourseQuestions(questions);
   return () => ({
-    questions,
+    questions: mappedQuestions,
   });
+  // return () => ({
+  //   questions,
+  // });
 };
 
 /* ===================== Add Question ===================== */
@@ -39,10 +40,10 @@ export const setQuestions = (
 export const addQuestion = (
   question: APICourseQuestion
 ): PartialStateUpdater<QuestionState> => {
-  // const mappedQuestion: Question = mapAPICourseQuestionToQuestion(question);
+  const mappedQuestion: courseQuestion = mapApiQuestionToCourseQuestion(question);
   return (state) => ({
-    // questions: [...state.questions, mappedQuestion],
-    questions: [...state.questions, question],
+    questions: [...state.questions, mappedQuestion],
+    // questions: [...state.questions, question],
 
   });
 };
@@ -52,14 +53,14 @@ export const addQuestion = (
 export const updateQuestion = (
   question: APICourseQuestion
 ): PartialStateUpdater<QuestionState> => {
-  // const mappedQuestion: Question = mapAPICourseQuestionToQuestion(question);
+  const mappedQuestion: courseQuestion = mapApiQuestionToCourseQuestion(question);
   return (state) => ({
     questions: [
-      // ...state.questions.filter(q => q.oid !== mappedQuestion.oid),
-      ...state.questions.filter(q => q.oid !== question.oid),
+      ...state.questions.filter(q => q.oid !== mappedQuestion.oid),
+      // ...state.questions.filter(q => q.oid !== question.oid),
 
-      // mappedQuestion,
-      question
+      mappedQuestion,
+      // question
     ],
   });
 };
@@ -69,16 +70,15 @@ export const updateQuestion = (
 export const getQuestion = (
   question: APICourseQuestion
 ): PartialStateUpdater<QuestionState> => {
-  // const mappedQuestion: Question = mapAPICourseQuestionToQuestion(question);
+  const mappedQuestion: courseQuestion = mapApiQuestionToCourseQuestion(question);
+  console.log('mappedQuestion', mappedQuestion);
   return () => ({
-    // selectedQuestion: mappedQuestion,
-    selectedQuestion: question,
-
+    selectedQuestion: mappedQuestion,
   });
 };
 
 export const setSelectedQuestion = (
-  question: courseQuestion
+  question: courseQuestion | null
 ): PartialStateUpdater<QuestionState> => {
   return () => ({
     selectedQuestion: question,
@@ -100,10 +100,10 @@ export const deleteQuestion = (
 export const displaySearchResult = (
   questions: APICourseQuestion[]
 ): PartialStateUpdater<QuestionState> => {
-  // const mappedQuestions = mapAPICourseQuestionsToQuestions(questions);
+  const mappedQuestions = mapApiQuestionsToCourseQuestions(questions);
   return () => ({
-    // questions: mappedQuestions,
-    questions: questions,
+    questions: mappedQuestions,
+    // questions: questions,
 
   });
 };
@@ -159,6 +159,8 @@ export const setFiltersUpdater = (
 ): PartialStateUpdater<QuestionState> => {
   return () => ({
     filters,
-    page: 1, 
+    page: 1,
   });
 };
+
+

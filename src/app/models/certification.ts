@@ -1,3 +1,4 @@
+
 export interface Certification {
   oid?: string,
   courseCode: string,
@@ -61,6 +62,7 @@ export interface courseQuestion {
   questionText: string,
   questionTypeLookupId: string,
   questionScore: number,
+  questionTypeName?: any,
   orderNo: number,
   isActive: boolean,
   correctAnswer: boolean,
@@ -71,11 +73,21 @@ export interface courseQuestion {
 }
 export interface courseAnswer {
   oid?: string,
+  questionId?:string,
   answerText: string,
+  question_Ask:boolean,
+  correctAnswerOid:any,
   isCorrect: boolean,
   orderNo: number,
   createdBy: string
+  createdAt?:string
+  updatedAt?:string,
+  updatedBy?:string
 }
+
+
+
+
 
 
 export interface APICourseQuestion {
@@ -102,7 +114,9 @@ export interface APIAnswer {
   oid: string
   questionId: string,
   answerText: string,
+  question_Ask:boolean,
   isCorrect: boolean,
+  correctAnswerOid:any
   orderNo: number,
   createdAt: string,
   createdBy: string,

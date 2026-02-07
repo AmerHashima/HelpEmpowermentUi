@@ -32,8 +32,12 @@ export default class ApiService {
     });
   }
 
-  getSingle<T>(url: string, id: string,): Observable<T> {
-    const fullUrl = `${this.baseUrl}/${url}/${id}`;
+  getSingle<T>(url: string, id: string,type?:string): Observable<T> {
+    let fullUrl='' ;
+    if(type == 'question')
+      fullUrl = `${this.baseUrl}/${url}/${id}/with-answers`;
+    else
+     fullUrl = `${this.baseUrl}/${url}/${id}`;
     return this.http.get<T>(fullUrl, { headers: this.createHeaders() });
   }
 

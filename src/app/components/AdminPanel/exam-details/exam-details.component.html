@@ -1,43 +1,48 @@
-<div class="container-fluid">
-  <div class="row">
-    <!-- <div class="col-12">
-      <div class="w-100 d-flex justify-content-end gap-2">
-        <app-button
-          btnLabel="Delete Exam"
-          [mainBtn]="false"
-          [secondaryBtn]="true"
-          (click)="onDeleteExam()"
-        />
-
+<div class="container-fluid py-3">
+  <div class="row mb-3">
+    <div class="col-12 d-flex justify-content-between align-items-center">
+      <h5 class="fw-bold mb-0">
+        {{ exam()?.courseName || "Exam" }} Certification
+      </h5>
+      @if(questions().length == 0) {
         <app-button
           btnLabel="Add New Question"
           [mainBtn]="true"
-          (click)="onAddNewQuestion(exam())"
-        />
-      </div>
-    </div> -->
-    <div class="col-12">
-      <div class="d-flex flex-column">
-        <h5 class="certificationName">
-          {{ exam()?.courseName }} Certification
-        </h5>
+          (click)="onAddNewQuestion()"
+        ></app-button>
+      }
+    </div>
+  </div>
 
-      <app-reusable-material-table
-      [columns]="columns"
-      [btnLabel]="'Add New Question'"
-      [data]="questions()"
-      [totalCount]="total()"
-      [pageSize]="pageSize()"
-      (pageChange)="onPageChange($event)"
-      (filterChange)="onFilterChange($event)"
-      (sortChange)="onSortChange($event)"
-      (editRow)="onOpenSingleQuestion($event)"
-      (deleteRow)="onDeleteQuestion($event)"
-      (onFirstCellClickChange)="onOpenSingleQuestion($event)"
-      (onAddNewChange)="onAddNewQuestion()"
-    >
-    </app-reusable-material-table>
-      </div>
+  <div class="row">
+    <div class="col-12">
+      <ng-container *ngIf="(questions() ?? []).length > 0; else noQuestions">
+        <app-reusable-material-table
+          [columns]="columns"
+          [btnLabel]="'Add New Question'"
+          [data]="questions()"
+          [totalCount]="total()"
+          [pageSize]="pageSize()"
+          (pageChange)="onPageChange($event)"
+          (filterChange)="onFilterChange($event)"
+          (sortChange)="onSortChange($event)"
+          (editRow)="onOpenSingleQuestion($event)"
+          (deleteRow)="onDeleteQuestion($event)"
+          (onFirstCellClickChange)="onOpenSingleQuestion($event)"
+          (onAddNewChange)="onAddNewQuestion()"
+        ></app-reusable-material-table>
+      </ng-container>
+
+      <!-- Empty state -->
+      <ng-template #noQuestions>
+        <div class="text-center py-5 text-secondary">
+          <i class="bi bi-question-circle fs-1 mb-3"></i>
+          <p class="fs-5 mb-0">No questions found for this exam.</p>
+          <small class="text-muted"
+            >Click "Add New Question" to create the first one.</small
+          >
+        </div>
+      </ng-template>
     </div>
   </div>
 </div>

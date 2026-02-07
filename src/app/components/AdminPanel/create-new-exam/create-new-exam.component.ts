@@ -1,7 +1,7 @@
-import { Component, effect, EventEmitter, inject, input, Output } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { CertificationService } from '../../../Services/certification.service';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Certification, courseExam } from '../../../models/certification';
+import {  courseExam } from '../../../models/certification';
 import { ButtonComponent } from '../../../shared/button/button.component';
 import { InputComponent } from '../../../shared/input/input.component';
 import { SpkNgSelectComponent } from '../../../shared/spk-ng-select/spk-ng-select.component';

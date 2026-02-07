@@ -1,8 +1,6 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-
 import { AsyncPipe, JsonPipe, Location } from '@angular/common';
-
 import { ActivatedRoute, Router } from '@angular/router';
 import { concatMap, defer, EMPTY, from, map } from 'rxjs';
 import { SpkNgSelectComponent } from '../../../../shared/spk-ng-select/spk-ng-select.component';
@@ -15,7 +13,6 @@ import { CertificationService } from '../../../../Services/certification.service
 import { ExamsStore } from '../../../../AdminPanelStores/ExamsStore/exam.store';
 import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
 import { QuestionsStore } from '../../../../AdminPanelStores/QuestionStores/questions.store';
-import { APICourseQuestion } from '../../../../models/certification';
 
 @Component({
   selector: 'app-certification-question',
@@ -45,7 +42,7 @@ export class CertificationQuestionComponent {
   questionTypes:any[]=[];
   selectedType= signal<'MCQ' | 'TRUE_FALSE' | 'MATCHING'|null>(null);;
   requestPayload = signal<any>({});
-  activeSection = signal<'MCQ' | 'TRUE_FALSE' | 'MATCHING' | null>(null);
+  activeSection = signal<'MCQ' | 'TRUE_FALSE' | 'MATCHING' | 'True/False' | "Multiple Choice Question" |null>(null);
   certifications = this.certificationStore.certifications;
   certification=this.certificationStore.selectedCertification;
   certificationId = this.route.snapshot.paramMap.get('id');
@@ -97,16 +94,96 @@ export class CertificationQuestionComponent {
   apiQuestions:any[]=[];
   private choiceAnswerOrderCounter = 0;
   private questionId = '';
+  question = computed(() => this.questionStore.selectedQuestion());
   constructor() {
     this.certificationService.getQuestionTypes().subscribe(types => {
       this.questionTypes = types;
     })
+
     effect(() => {
       if (this.certificationId && !this.certification()) {
         this.store.getCertification(this.certificationId);
       }
     });
 
+    effect(() => {
+      this.questionId = this.route.snapshot.paramMap.get('questionId')!;
+      console.log('questionId', this.questionId);
+      console.log('this.question()', this.question());
+      if (!this.question() && this.questionId) {
+        console.log('on get qyestion')
+        console.log('questionId', this.questionId);
+        this.questionStore.getQuestion(this.questionId);
+      }
+    });
+
+
+    // effect(() => {
+    //   const question = this.question();
+    //   console.log('question', question);
+    //   if (question && question.oid) {
+    //     console.log('in paych')
+    //     this.form.patchValue({
+    //       certification: this.certification()?.oid,
+    //       coursesMasterExamOid: question.coursesMasterExamOid,
+    //       examMode:'',
+    //       questionTypeLookupId: question.questionTypeLookupId,
+    //       questionText: question.questionText,
+    //       orderNo: String(question.orderNo),
+    //       questionScore: question.questionScore,
+    //       isActive: question.isActive,
+    //       correctAnswer: question.correctAnswer,
+    //       question: question.question,
+    //       correctChoiceOid:  null,
+    //       // files: [[] as File[]],
+    //       createdBy: question.createdBy,
+    //       answers: question.answers,
+    //       dragQuestions: [],
+    //       dragAnswers: []
+    //     });
+    //     this.activeSection.set(question.questionTypeName);
+    //   }
+    // });
+
+
+    effect(() => {
+      const question = this.question();
+      if (question) {
+        // Reset counter for correct orderNo assignment
+        this.choiceAnswerOrderCounter = 0;
+
+        // Build answers array
+        const answersArray = this.fb.array(
+          question.answers?.map(a => this.createGroup(false, a.correctAnswerOid, a)) || [this.createGroup(false)]
+        );
+
+        // Patch form
+        this.form.patchValue({
+          certification: this.certification()?.oid,
+          coursesMasterExamOid: question.coursesMasterExamOid,
+          examMode: '',
+          questionTypeLookupId: question.questionTypeLookupId,
+          questionText: question.questionText,
+          orderNo: String(question.orderNo),
+          questionScore: question.questionScore,
+          isActive: question.isActive,
+          correctAnswer: question.correctAnswer,
+          question: question.question,
+          correctChoiceOid: null,
+          createdBy: question.createdBy,
+        });
+
+        // Replace form arrays
+        this.form.setControl('answers', answersArray);
+
+        // Same for drag questions/answers if needed
+        // this.form.setControl('dragQuestions', ...)
+        // this.form.setControl('dragAnswers', ...)
+
+        // Set the active section
+        this.activeSection.set(question.questionTypeName as any);
+      }
+    });
 
     effect(() => {
       const certification = this.certification();
@@ -131,8 +208,8 @@ export class CertificationQuestionComponent {
         this.toast.showToast('Question created successfully', 'success');
         console.log('Question created successfully:');
         this.cancel();
-        this.store.setSuccess(false);
-        this.router.navigate(['/admin/certifications', this.certification()?.oid!, 'exams', 'exam', this,this.examId]);
+        this.questionStore.setSuccess(false);
+        this.router.navigate(['/admin/certifications', this.certification()?.oid!, 'exams', 'exam',this.examId]);
 
         // this.location.back();
       }
@@ -156,17 +233,33 @@ export class CertificationQuestionComponent {
 
 
 
-  createGroup(question: boolean, correctAnswerOid?:string): FormGroup {
+  // createGroup(question: boolean, correctAnswerOid?:string): FormGroup {
+  //   const group = this.fb.group({
+  //     answerText: [
+  //       '',
+  //       [Validators.required, Validators.minLength(2), Validators.maxLength(20)],
+  //     ],
+  //     question_Ask: [question],
+  //     correctAnswerOid: [correctAnswerOid ?correctAnswerOid:null, Validators.required],
+  //     isCorrect: [false],
+  //     orderNo: [this.choiceAnswerOrderCounter, Validators.required],
+  //     createdBy: ['3fa85f64-5717-4562-b3fc-2c963f66afa6', Validators.required],
+  //   });
+
+  //   this.choiceAnswerOrderCounter++;
+  //   return group;
+  // }
+  createGroup(question: boolean, correctAnswerOid?: string, existingAnswer?: any): FormGroup {
     const group = this.fb.group({
       answerText: [
-        '',
+        existingAnswer?.answerText || '',
         [Validators.required, Validators.minLength(2), Validators.maxLength(20)],
       ],
-      question_Ask: [question],
-      correctAnswerOid: [correctAnswerOid ?correctAnswerOid:null, Validators.required],
-      isCorrect: [false],
-      orderNo: [this.choiceAnswerOrderCounter, Validators.required],
-      createdBy: ['3fa85f64-5717-4562-b3fc-2c963f66afa6', Validators.required],
+      question_Ask: [existingAnswer?.question_Ask ?? question],
+      correctAnswerOid: [existingAnswer?.correctAnswerOid ?? (correctAnswerOid ?? null), Validators.required],
+      isCorrect: [existingAnswer?.isCorrect ?? false],
+      orderNo: [existingAnswer?.orderNo ?? this.choiceAnswerOrderCounter, Validators.required],
+      createdBy: [existingAnswer?.createdBy || '3fa85f64-5717-4562-b3fc-2c963f66afa6', Validators.required],
     });
 
     this.choiceAnswerOrderCounter++;
@@ -241,7 +334,6 @@ export class CertificationQuestionComponent {
 
   onSubmit() {
     const payload = this.getPayload();
-    console.log('questionId', this.questionId);
     if (this.selectedType() != 'MATCHING') this.questionStore.addQuestion(payload);
     else{
       const questionsWithAnswers = this.getUpdateQuestionPayload();

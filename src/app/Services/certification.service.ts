@@ -306,7 +306,8 @@ export class CertificationService {
 
   getQuestion(id: string): Observable<APICourseQuestion> {
     return this.apiService
-      .getSingle<ApiResponse<APICourseQuestion>>('CourseQuestions', id)
+      // .getSingle<ApiResponse<APICourseQuestion>>('CourseQuestions', id)
+      .getSingle<ApiResponse<APICourseQuestion>>('CourseQuestions', id,'question')
       .pipe(
         map((response: ApiResponse<APICourseQuestion>) => {
           if (!response.success) {
