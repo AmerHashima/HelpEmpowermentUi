@@ -10,6 +10,7 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { computed, effect, inject } from '@angular/core';
 import {
   catchError,
+  concatMap,
   debounceTime,
   distinctUntilChanged,
   EMPTY,
@@ -181,10 +182,11 @@ export const QuestionsStore = signalStore(
       updateQuestion: rxMethod<UpdateQuestionPayload>(
         pipe(
           tap(() => patchState(store, activateLoading)),
-          switchMap(({ id, body }) =>
+          // swiychMap(({ id, body }) =>
+          concatMap(({ id, body }) =>
             service.updateQuestion(id, body).pipe(
-              tap((question: APICourseQuestion) => {
-                patchState(store, updateQuestion(question));
+              tap((questiupdateon: APICourseQuestion) => {
+                patchState(store, updateQuestion(questiupdateon));
                 // patchState(store, setSuccess(true));
               }),
               catchError((err) => {

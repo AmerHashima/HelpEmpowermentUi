@@ -339,16 +339,36 @@ export class CertificationQuestionComponent {
       const questionsWithAnswers = this.getUpdateQuestionPayload();
       console.log(questionsWithAnswers);
 
+      // Replace your entire from().pipe().subscribe() block with:
+      // from(questionsWithAnswers)
+      //   .pipe(
+      //     concatMap((q) =>
+      //       defer(() =>
+      //         this.questionStore.updateQuestion({ id: q.oid, body: q })  // ← RETURN the Observable!
+      //           .pipe(
+      //             catchError((err) => {
+      //               console.error(`Failed ${q.oid}:`, err);
+      //               return EMPTY;  // Continue to next, don't stop batch
+      //             })
+      //           )
+      //       )
+      //     )
+      //   )
+      //   .subscribe({
+      //     complete: () => {
+      //       this.toast.showToast('All questions updated successfully', 'success');
+      //       this.location.back();
+      //     },
+      //     error: (err) => {
+      //       this.toast.showToast('Batch update failed', 'error');
+      //       console.error('Final error:', err);
+      //     }
+      //   });
       from(questionsWithAnswers)
         .pipe(
           concatMap(q =>
-            defer(() => {
-              this.questionStore.updateQuestion({
-                id: q.oid,
-                body: q
-              });
-              return EMPTY;
-            })
+            // Trigger the rxMethod side-effect (fire & forget per item)
+            this.questionStore.updateQuestion({ id: q.oid, body: q }) && EMPTY
           )
         )
         .subscribe({
