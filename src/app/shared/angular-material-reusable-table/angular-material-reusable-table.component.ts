@@ -32,7 +32,7 @@ import { ButtonComponent } from '../button/button.component';
 export class ReusableMaterialTableComponent implements AfterViewInit {
   @Input() columns: any[] = [];
   @Input() data: any[] = [];
-
+  @Input() btnLabel:string='Add New'
   @Input() totalCount = 0;
   @Input() pageSize = 10;
   @Input() pageSizeOptions: number[] = [10, 20, 50];

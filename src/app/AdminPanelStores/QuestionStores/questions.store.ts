@@ -37,6 +37,7 @@ import {
   setSortUpdater,
   setSuccess,
   setSelectedQuestion,
+  setFiltersUpdater,
 } from './question.updaters';
 import { CertificationService } from '../../Services/certification.service';
 import { APICourseQuestion, courseQuestion } from '../../models/certification';
@@ -44,7 +45,9 @@ import { createQueryRequest } from '../CertificationStore/store.helper';
 
 type UpdateQuestionPayload = {
   id: string;
-  body: courseQuestion;
+  // body: courseQuestion;
+  body: any;
+
 };
 
 export const QuestionsStore = signalStore(
@@ -52,12 +55,13 @@ export const QuestionsStore = signalStore(
   withState(initialQuestionState),
 
   /* ===================== Computed ===================== */
-  withComputed(({ page, pageSize, search, sortBy, sortDirection, total }) => ({
+  withComputed(({ page, pageSize, search, sortBy, sortDirection, total,filters }) => ({
     queryRequest: computed<RequestBody>(() => {
-      const filters: Filter[] = [];
-
+      const filtersInner: Filter[] = [
+        ...(filters() ?? [])
+      ];
       if (search().trim()) {
-        filters.push({
+        filtersInner.push({
           propertyName: 'questionText',
           value: search().trim(),
           operation: 3,
@@ -79,7 +83,7 @@ export const QuestionsStore = signalStore(
       };
 
       return createQueryRequest({
-        filters,
+        filters: filtersInner,
         sort,
         pagination,
         columns: [],
@@ -115,6 +119,10 @@ export const QuestionsStore = signalStore(
 
     setSelectedQuestion(question: courseQuestion) {
       patchState(store, setSelectedQuestion(question));
+    },
+
+    setFilters(filters: Filter[]) {
+      patchState(store, setFiltersUpdater(filters));
     },
   })),
 
@@ -176,7 +184,7 @@ export const QuestionsStore = signalStore(
             service.updateQuestion(id, body).pipe(
               tap((question: APICourseQuestion) => {
                 patchState(store, updateQuestion(question));
-                patchState(store, setSuccess(true));
+                // patchState(store, setSuccess(true));
               }),
               catchError((err) => {
                 patchState(store, setError(err?.msg ?? 'Failed to update question'));
@@ -223,11 +231,11 @@ export const QuestionsStore = signalStore(
   }),
 
   /* ===================== Init ===================== */
-  withHooks({
-    onInit(store) {
-      effect(() => {
-        store.queryQuestions(store.queryRequest());
-      });
-    },
-  })
+  // withHooks({
+  //   onInit(store) {
+  //     effect(() => {
+  //       store.queryQuestions(store.queryRequest());
+  //     });
+  //   },
+  // })
 );

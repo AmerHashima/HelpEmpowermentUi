@@ -9,7 +9,7 @@ export const initialQuestionState: QuestionState = {
   page: 1,
   pageSize: 10,
   total: 0,
-
+  filters: [],
   search: '',
   sortBy: 'oid',
   sortDirection: 'asc',

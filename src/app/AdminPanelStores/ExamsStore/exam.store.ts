@@ -20,7 +20,8 @@ import {
   addExam,
   updateExam,
   setSuccess,
-  getExam, } from './exam.updaters';
+  getExam,
+  setSelectedExam, } from './exam.updaters';
 import { initialExamsState } from './exam.slice';
 import { APIExam, courseExam } from '../../models/certification';
 
@@ -120,6 +121,9 @@ export const ExamsStore = signalStore(
         );
       })
     ),
+        setSelectedExam(exam: any) {
+          patchState(store, setSelectedExam(exam));
+        },
       setSuccess(success: boolean) {
           patchState(store, setSuccess(success));
         },

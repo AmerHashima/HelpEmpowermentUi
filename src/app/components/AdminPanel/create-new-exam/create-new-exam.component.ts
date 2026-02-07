@@ -58,7 +58,6 @@ export class CreateNewExamComponent {
     effect(() => {
       const certId = this.route.snapshot.paramMap.get('id');
       if (!this.certification() && certId) {
-        console.log('in first effect')
         this.certificationStore.getCertification(certId);
       }
     });

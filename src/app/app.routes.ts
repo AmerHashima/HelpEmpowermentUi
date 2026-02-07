@@ -48,6 +48,11 @@ export const routes: Routes = [
             data: { breadcrumb: 'Create' },
           },
           {
+            path: ':id/questions/:questionId',
+            component: CertificationQuestionComponent,
+            data: { breadcrumb: 'Question Details' },
+          },
+          {
             path: ':id/exams/create',
             component: CreateNewExamComponent,
             data: { breadcrumb: 'Create Exam' },

@@ -43,8 +43,10 @@ export class CertificationComponent {
   }
   openExamDetails(exam:any){
     const certId = this.certification()?.oid;
-    if (certId)
-      this.router.navigate(['/admin/certifications', certId, 'exams', 'exam',exam.oid]);
+    if (certId){
+      this.examsStore.setSelectedExam(exam);
+      this.router.navigate(['/admin/certifications', certId, 'exams', 'exam', exam.oid]);
+    }
   }
   onAddNewQuestion(exam: any) {
     const certId = this.certification()?.oid;
@@ -61,7 +63,6 @@ export class CertificationComponent {
     if (cert && cert.oid) {
       this.certificationStore.setSelectedCertification(cert);
       this.router.navigate(['/admin/certifications', cert.oid, 'edit']);
-
     }
   }
   onDeleteCertification() {

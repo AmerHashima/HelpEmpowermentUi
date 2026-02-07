@@ -1,16 +1,17 @@
+import { CertificationsStore } from './../../../AdminPanelStores/CertificationStore/certification.store';
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { ExamsStore } from '../../../AdminPanelStores/ExamsStore/exam.store';
 import { CertificationService } from '../../../Services/certification.service';
 import { ActivatedRoute, Router } from '@angular/router';
-// import { ReusableMaterialTableComponent } from '../../../shared/angular-material-reusable-table/angular-material-reusable-table.component';
+import { ReusableMaterialTableComponent } from '../../../shared/angular-material-reusable-table/angular-material-reusable-table.component';
 import { QuestionsStore } from '../../../AdminPanelStores/QuestionStores/questions.store';
-import { Sort } from '../../../models/rquest';
+import { Filter, Sort } from '../../../models/rquest';
 import { ButtonComponent } from '../../../shared/button/button.component';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-exam-details',
-  // imports: [ReusableMaterialTableComponent],
-  imports:[ButtonComponent],
+  imports: [ReusableMaterialTableComponent, ButtonComponent,  JsonPipe],
   templateUrl: './exam-details.component.html',
   styleUrl: './exam-details.component.scss'
 })
@@ -50,18 +51,31 @@ export class ExamDetailsComponent {
         this.examsStore.getExam(id);
       }
     });
+
+
+    effect(() => {
+      const exam = this.exam();
+      if (exam) {
+        const filters :Filter[]= [
+          {
+            propertyName: "coursesMasterExamOid",
+            value: exam.oid!,
+            operation: 0
+          }
+        ]
+        this.questionStore.setFilters(filters);
+        const req=this.questionStore.queryRequest();
+        this.questionStore.queryQuestions(req);
+      }
+    });
   }
 
 
-  openQuestionDetails(exam: any) {
-    // const certId = this.certification()?.oid;
-    // if (certId)
-    //   this.router.navigate(['/admin/certifications', certId, 'exams', 'exam', exam.oid]);
-  }
-  onAddNewQuestion(exam: any) {
+
+  onAddNewQuestion() {
     const examId = this.exam()?.oid;
     if (examId)
-      this.router.navigate(['/admin/certifications', this.certId, 'exams', exam.oid, 'question', 'create'
+      this.router.navigate(['/admin/certifications', this.certId, 'exams', examId, 'question', 'create'
       ]);
   }
   onDeleteQuestion(question: any) {
@@ -93,17 +107,8 @@ export class ExamDetailsComponent {
     this.questionStore.setSort(sort);
   }
 
-  handleEdit(row: any) {
-    // this.oid = row.oid;
-    // this.toggleHidden();
-    // this.breadcrumb.setBreadcrumbs([
-    //   { label: 'Users', url: '/users' },
-    //   { label: 'Edit User', url: '' }
-    // ]);
-  }
 
-  handleDelete(row: any) {
-    // this.store.deleteUser(row.oid)
+  onOpenSingleQuestion(question:any){
+    this.router.navigate(['/admin/certifications', this.certId,'questions', question.oid]);
   }
-
 }

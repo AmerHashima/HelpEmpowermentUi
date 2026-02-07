@@ -3,8 +3,8 @@ import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } fr
 
 import { AsyncPipe, JsonPipe, Location } from '@angular/common';
 
-import { ActivatedRoute } from '@angular/router';
-import { map } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { concatMap, defer, EMPTY, from, map } from 'rxjs';
 import { SpkNgSelectComponent } from '../../../../shared/spk-ng-select/spk-ng-select.component';
 import { ButtonComponent } from '../../../../shared/button/button.component';
 import { InputComponent } from '../../../../shared/input/input.component';
@@ -15,6 +15,7 @@ import { CertificationService } from '../../../../Services/certification.service
 import { ExamsStore } from '../../../../AdminPanelStores/ExamsStore/exam.store';
 import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
 import { QuestionsStore } from '../../../../AdminPanelStores/QuestionStores/questions.store';
+import { APICourseQuestion } from '../../../../models/certification';
 
 @Component({
   selector: 'app-certification-question',
@@ -33,6 +34,7 @@ export class CertificationQuestionComponent {
   private certificationService = inject(CertificationService);
   private certificationStore = inject(CertificationsStore);
   private toast=inject(ToastingMessagesService);
+  private router=inject(Router);
   addAnswersFlag = signal<boolean>(true);
   addChoiceAnswersFlag = signal<boolean>(false);
   addDragQuestionsFlag = signal<boolean>(false);
@@ -92,6 +94,7 @@ export class CertificationQuestionComponent {
     correctDragAnswer: [[]]
   });
  apiAnswers = [];
+  apiQuestions:any[]=[];
   private choiceAnswerOrderCounter = 0;
   private questionId = '';
   constructor() {
@@ -122,6 +125,20 @@ export class CertificationQuestionComponent {
     });
 
     effect(() => {
+      const success = this.questionStore.success();
+      if (success)
+      {
+        this.toast.showToast('Question created successfully', 'success');
+        console.log('Question created successfully:');
+        this.cancel();
+        this.store.setSuccess(false);
+        this.router.navigate(['/admin/certifications', this.certification()?.oid!, 'exams', 'exam', this,this.examId]);
+
+        // this.location.back();
+      }
+    });
+
+    effect(() => {
       const type = this.selectedType();
       switch (type) {
         case 'MCQ':
@@ -137,9 +154,7 @@ export class CertificationQuestionComponent {
 
   }
 
-  createAnswerGroup(): FormGroup {
-    return this.createGroup(false);
-  }
+
 
   createGroup(question: boolean, correctAnswerOid?:string): FormGroup {
     const group = this.fb.group({
@@ -157,7 +172,9 @@ export class CertificationQuestionComponent {
     this.choiceAnswerOrderCounter++;
     return group;
   }
-
+  createAnswerGroup(): FormGroup {
+    return this.createGroup(false);
+  }
   createDragQuestionGroup(): FormGroup {
     return this.createGroup(true);
   }
@@ -190,6 +207,7 @@ export class CertificationQuestionComponent {
   removeAnswer(index: number): void {
     this.answersArray.removeAt(index);
   }
+
   removeDragQuestion(index: number): void {
     this.dragQuestionsArray.removeAt(index);
   }
@@ -202,13 +220,16 @@ export class CertificationQuestionComponent {
   }
 
   DoneWithDragAnswer() {
-    const payload = this.getDragAnswerPayload();
+    // const payload = this.getDragAnswerPayload();    const payload = this.getDragAnswerPayload();
+    const payload = this.getDragQuestionPayload();
+    console.log('new payload', payload);
     this.certificationService.createQuestion(payload).subscribe({
       next: (response) => {
-        console.log('response',response);
         this.questionId=response.oid;
-        console.log(response.answers);
-        this.apiAnswers =response.answers;
+        this.apiQuestions = response.answers.filter((answer: any) => answer.question_Ask);
+        this.apiAnswers = response.answers.filter((answer: any) => !answer.question_Ask);
+        console.log('apiAnswers', this.apiAnswers)
+        console.log('apiQuestions', this.apiQuestions)
         this.linkDragAnswerAndQuestionFlag.set(true);
       },
     });
@@ -220,21 +241,34 @@ export class CertificationQuestionComponent {
 
   onSubmit() {
     const payload = this.getPayload();
-    console.log('payload', payload);
     console.log('questionId', this.questionId);
+    if (this.selectedType() != 'MATCHING') this.questionStore.addQuestion(payload);
+    else{
+      const questionsWithAnswers = this.getUpdateQuestionPayload();
+      console.log(questionsWithAnswers);
 
-    const request$ =
-      this.selectedType() === 'MATCHING'
-        ? this.certificationService.updateQuestion(this.questionId, payload)
-        : this.certificationService.createQuestion(payload);
+      from(questionsWithAnswers)
+        .pipe(
+          concatMap(q =>
+            defer(() => {
+              this.questionStore.updateQuestion({
+                id: q.oid,
+                body: q
+              });
+              return EMPTY;
+            })
+          )
+        )
+        .subscribe({
+          complete: () => {
+            this.toast.showToast('All questions updated successfully', 'success');
+            this.location.back();
+          }
+        });
+      // this.questionStore.updateQuestion({ id: this.questionId, body: payload })
 
-    request$.subscribe({
-      next: (value) => {
-        this.toast.showToast('Question created successfully', 'success');
-        console.log('Question created successfully:', value);
-        this.location.back();
-      },
-    });
+    }
+
   }
 
   cancel() {
@@ -250,6 +284,7 @@ export class CertificationQuestionComponent {
       case 'TRUE_FALSE':
         return this.getChoicePayload();
       default:
+        // return this.getUpdateQuestionPayload();
         return this.getDragQuestionPayload()
     }
   }
@@ -266,7 +301,6 @@ export class CertificationQuestionComponent {
 
   getDragQuestionPayload() {
     const raw = this.form.getRawValue();
-
     const questionAnswers = this.mapAnswers(raw.dragQuestions, {
       question_Ask: true,
       isCorrect: false,
@@ -275,9 +309,26 @@ export class CertificationQuestionComponent {
     return {
       oid: this.questionId,
       ...this.buildBasePayload(raw),
-      answers: [...questionAnswers, ...this.apiAnswers],
+      // answers: [...questionAnswers, ...this.apiAnswers],
+      answers: [...questionAnswers, ...this.mapAnswers(raw.dragAnswers)],
+
     };
   }
+
+  getUpdateQuestionPayload() {
+    const raw = this.form.getRawValue();
+    return raw.dragQuestions.map((a: any,index:number) => ({
+      oid: this.apiQuestions[index].oid,
+      questionId: this.questionId,
+      answerText: a.answerText,
+      question_Ask: true,
+      correctAnswerOid: a.correctAnswerOid,
+      isCorrect: a.isCorrect,
+      orderNo: a.orderNo,
+      updatedBy: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+    }));
+  }
+
 
   getDragAnswerPayload() {
     const raw = this.form.getRawValue();

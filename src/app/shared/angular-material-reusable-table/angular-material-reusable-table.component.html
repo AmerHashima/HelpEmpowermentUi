@@ -6,7 +6,7 @@
     (keyup)="onFilter($event)"
   />
 </mat-form-field>
-  <app-button btnLabel="Add New" [mainBtn]="true" (click)="onAddNew()" />
+  <app-button [btnLabel]="btnLabel" [mainBtn]="true" (click)="onAddNew()" />
 </div>
 
 <table mat-table [dataSource]="data" matSort class="mat-elevation-z8">

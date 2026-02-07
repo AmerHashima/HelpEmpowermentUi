@@ -1,4 +1,5 @@
 import { courseQuestion } from "../../models/certification";
+import { Filter } from "../../models/rquest";
 
 export interface QuestionState {
   questions: courseQuestion[];
@@ -11,5 +12,6 @@ export interface QuestionState {
   total: number;
   search: string;
   sortBy: string;
+filters: Filter[];
   sortDirection: 'asc' | 'desc' | '';
 }

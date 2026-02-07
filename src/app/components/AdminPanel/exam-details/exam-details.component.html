@@ -1,6 +1,6 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="col-12">
+    <!-- <div class="col-12">
       <div class="w-100 d-flex justify-content-end gap-2">
         <app-button
           btnLabel="Delete Exam"
@@ -15,27 +15,28 @@
           (click)="onAddNewQuestion(exam())"
         />
       </div>
-    </div>
+    </div> -->
     <div class="col-12">
       <div class="d-flex flex-column">
         <h5 class="certificationName">
           {{ exam()?.courseName }} Certification
         </h5>
 
-      <!-- <app-reusable-material-table
+      <app-reusable-material-table
       [columns]="columns"
+      [btnLabel]="'Add New Question'"
       [data]="questions()"
       [totalCount]="total()"
       [pageSize]="pageSize()"
       (pageChange)="onPageChange($event)"
       (filterChange)="onFilterChange($event)"
       (sortChange)="onSortChange($event)"
-      (editRow)="handleEdit($event)"
-      (deleteRow)="handleDelete($event)"
-      (onFirstCellClickChange)="handleSingleUserNavigation($event)"
-      (onAddNewChange)="handleAddNewUser()"
+      (editRow)="onOpenSingleQuestion($event)"
+      (deleteRow)="onDeleteQuestion($event)"
+      (onFirstCellClickChange)="onOpenSingleQuestion($event)"
+      (onAddNewChange)="onAddNewQuestion()"
     >
-    </app-reusable-material-table> -->
+    </app-reusable-material-table>
       </div>
     </div>
   </div>

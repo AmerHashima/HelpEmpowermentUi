@@ -30,6 +30,14 @@ export const getExam = (
     selectedExam: exam
   });
 };
+
+export const setSelectedExam = (
+  exam: any
+): PartialStateUpdater<ExamState> => {
+  return () => ({
+    selectedExam: exam,
+  });
+};
 export const activateLoading = (state: ExamState) => ({
   ...state,
   loading: true,

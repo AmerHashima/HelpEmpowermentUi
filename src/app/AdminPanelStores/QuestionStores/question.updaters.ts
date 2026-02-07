@@ -1,6 +1,7 @@
 import { PartialStateUpdater } from '@ngrx/signals';
 import { QuestionState } from "./question.state";
 import { APICourseQuestion, courseQuestion } from '../../models/certification';
+import { Filter } from '../../models/rquest';
 
 
 /* ===================== Loading ===================== */
@@ -150,5 +151,14 @@ export const setSuccess = (
 ): PartialStateUpdater<QuestionState> => {
   return () => ({
     success,
+  });
+};
+
+export const setFiltersUpdater = (
+  filters: Filter[]
+): PartialStateUpdater<QuestionState> => {
+  return () => ({
+    filters,
+    page: 1, 
   });
 };
