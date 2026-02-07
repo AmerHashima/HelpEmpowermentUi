@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { CertificationsFeaturesComponent } from '../certifications-features/certifications-features.component';
 import { ExamsStore } from '../../../../AdminPanelStores/ExamsStore/exam.store';
+import { QuestionsStore } from '../../../../AdminPanelStores/QuestionStores/questions.store';
 
 @Component({
   selector: 'app-certification',
@@ -18,6 +19,7 @@ import { ExamsStore } from '../../../../AdminPanelStores/ExamsStore/exam.store';
 })
 export class CertificationComponent {
   certificationStore = inject(CertificationsStore);
+  questionStore = inject(QuestionsStore);
   examsStore = inject(ExamsStore);
 
   certificationService = inject(CertificationService);
@@ -50,9 +52,12 @@ export class CertificationComponent {
   }
   onAddNewQuestion(exam: any) {
     const certId = this.certification()?.oid;
-    if (certId)
-      this.router.navigate(['/admin/certifications', certId, 'exams',exam.oid, 'question', 'create'
-]);
+    if (certId){
+      this.questionStore.setSelectedQuestion(null);
+      this.router.navigate(['/admin/certifications', certId, 'exams', exam.oid, 'question', 'create'
+      ]);
+    }
+
   }
   onDeleteExam(exam: any) {
     this.examsStore.deleteExam(exam.oid);

@@ -142,8 +142,12 @@
         </div>
       </div>
       <!-- @if (addChoiceAnswersFlag()) { -->
-      @if (activeSection() === "MCQ" || activeSection() === 'TRUE_FALSE' || activeSection() == 'True/False' ||
-      activeSection() == "Multiple Choice Question") {
+      @if (
+        activeSection() === "MCQ" ||
+        activeSection() === "TRUE_FALSE" ||
+        activeSection() == "True/False" ||
+        activeSection() == "Multiple Choice Question"
+      ) {
         <div class="col-12">
           <div class="d-flex flex-column p-3 shadow-sm rounded-3 fw-bold">
             <h5>Answers</h5>
@@ -196,7 +200,7 @@
         </div>
       }
       <!-- @if (addDragQuestionsFlag()) { -->
-      @if (activeSection() === "MATCHING") {
+      @if (activeSection() === "MATCHING" || activeSection() === "Matching") {
         <div class="col-12">
           <div class="d-flex flex-column p-3 shadow-sm rounded-3 fw-bold">
             <h5>Drag Questions</h5>
@@ -225,7 +229,9 @@
 
                     <!-- Optional remove button -->
                     @if (
-                      dragQuestionsArray.length > 1 && !addDragAnswersFlag()
+                      (dragQuestionsArray.length > 1 &&
+                        !addDragAnswersFlag()) ||
+                      editMode
                     ) {
                       <i
                         class="bi bi-x-circle-fill text-danger mt-2"
@@ -239,7 +245,8 @@
             </div>
 
             <!-- Add button -->
-            @if (!addDragAnswersFlag()) {
+
+            @if (!addDragAnswersFlag() || editMode) {
               <div class="d-flex align-items-center justify-content-end gap-3">
                 <div
                   class="addQuestion d-flex align-items-center justify-content-end mt-2"
@@ -249,21 +256,26 @@
                   <i class="bi bi-plus-circle-fill pe-2"></i>
                   <span>Add Another Question</span>
                 </div>
-                <div
-                  class="doneQuestion d-flex align-items-center justify-content-end mt-2"
-                  (click)="DoneWithDragQuestion()"
-                  style="cursor: pointer"
-                >
-                  <i class="bi bi-check-circle-fill pe-2"></i>
-                  <span>Done with Question</span>
-                </div>
+                @if (!editMode) {
+                  <div
+                    class="doneQuestion d-flex align-items-center justify-content-end mt-2"
+                    (click)="DoneWithDragQuestion()"
+                    style="cursor: pointer"
+                  >
+                    <i class="bi bi-check-circle-fill pe-2"></i>
+                    <span>Done with Question</span>
+                  </div>
+                }
               </div>
             }
           </div>
         </div>
       }
 
-      @if (activeSection() === "MATCHING" && addDragAnswersFlag()) {
+      @if (
+        (activeSection() === "MATCHING" || activeSection() === "Matching") &&
+        addDragAnswersFlag()
+      ) {
         <div class="col-12">
           <div class="d-flex flex-column p-3 shadow-sm rounded-3 fw-bold">
             <h5>Drag Answers</h5>
@@ -292,8 +304,9 @@
 
                     <!-- Optional remove button -->
                     @if (
-                      dragAnswersArray.length > 1 &&
-                      !linkDragAnswerAndQuestionFlag()
+                      (dragAnswersArray.length > 1 &&
+                        !linkDragAnswerAndQuestionFlag()) ||
+                      editMode
                     ) {
                       <i
                         class="bi bi-x-circle-fill text-danger mt-2"
@@ -306,7 +319,7 @@
               }
             </div>
 
-            @if (!linkDragAnswerAndQuestionFlag()) {
+            @if (!linkDragAnswerAndQuestionFlag() || editMode) {
               <div class="d-flex align-items-center justify-content-end gap-3">
                 <div
                   class="addQuestion d-flex align-items-center justify-content-end mt-2"
@@ -330,7 +343,10 @@
         </div>
       }
 
-      @if (activeSection() === "MATCHING" && linkDragAnswerAndQuestionFlag()) {
+      <!-- @if (
+        (activeSection() === "MATCHING" || activeSection() === "Matching") &&
+        linkDragAnswerAndQuestionFlag()
+      ) {
         <div class="col-12">
           <div class="d-flex flex-column p-3 shadow-sm rounded-3 fw-bold">
             <h5>Connect Answer with Questions</h5>
@@ -373,7 +389,7 @@
             </div>
           </div>
         </div>
-      }
+      } -->
       <div class="d-flex justify-content-end gap-2">
         <app-button btnLabel="Cancel" [mainBtn]="false" (click)="cancel()" />
         <app-button btnLabel="Done" buttonType="submit" />
