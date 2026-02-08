@@ -21,9 +21,11 @@ import {
   updateExam,
   setSuccess,
   getExam,
-  setSelectedExam, } from './exam.updaters';
+  setSelectedExam,
+} from './exam.updaters';
 import { initialExamsState } from './exam.slice';
 import { APIExam, courseExam } from '../../models/certification';
+import { ToastingMessagesService } from '../../shared/Services/ToastingMessages/toasting-messages.service';
 
 type updatedExamPayLoad = {
   id: string;
@@ -32,7 +34,7 @@ type updatedExamPayLoad = {
 export const ExamsStore = signalStore(
   withState(initialExamsState),
 
-  withMethods((store, service = inject(CertificationService)) => ({
+  withMethods((store, service = inject(CertificationService), toasting = inject(ToastingMessagesService)) => ({
     loadExams: rxMethod<string>(
       switchMap((certificationOid) => {
         patchState(store, activateLoading);
@@ -53,80 +55,88 @@ export const ExamsStore = signalStore(
       })
     ),
 
-      addExam: rxMethod<courseExam>(
-            pipe(
-              tap(() => patchState(store, activateLoading)),
-              switchMap((body) =>
-                service.createExam(body).pipe(
-                  tap((exam: APIExam) => {
-                    patchState(store, addExam(exam));
-                    patchState(store, setSuccess(true));
-                  }),
-                  catchError((err) => {
-                    patchState(store, setError(err?.msg ?? 'Failed to add exam'));
-                    return EMPTY;
-                  }),
-                  finalize(() => patchState(store, deactivateLoading))
-                )
-              )
-            )
-          ),
-    updateExam: rxMethod<updatedExamPayLoad>(
-          pipe(
-            tap(() => patchState(store, activateLoading)),
-            switchMap(({ id, body }) =>
-              service.updateExam(id, body).pipe(
-                tap((exam: APIExam) => {
-                  patchState(store, updateExam(exam));
-                }),
-                catchError((err) => {
-                  patchState(store, setError(err?.msg ?? 'Failed to update exam'));
-                  return EMPTY;
-                }),
-                finalize(() => patchState(store, deactivateLoading))
-              )
-            )
+    addExam: rxMethod<courseExam>(
+      pipe(
+        tap(() => patchState(store, activateLoading)),
+        switchMap((body) =>
+          service.createExam(body).pipe(
+            tap((exam: APIExam) => {
+              patchState(store, addExam(exam));
+              toasting.showToast('Exam has been added', 'success')
+              patchState(store, setSuccess(true));
+            }),
+            catchError((err) => {
+              patchState(store, setError(err?.msg ?? 'Failed to add exam'));
+              toasting.showToast('Exam failed to be added', 'error')
+              return EMPTY;
+            }),
+            finalize(() => patchState(store, deactivateLoading))
           )
-        ),
+        )
+      )
+    ),
+    updateExam: rxMethod<updatedExamPayLoad>(
+      pipe(
+        tap(() => patchState(store, activateLoading)),
+        switchMap(({ id, body }) =>
+          service.updateExam(id, body).pipe(
+            tap((exam: APIExam) => {
+              patchState(store, updateExam(exam));
+              toasting.showToast('Exam has been updated', 'success')
 
-            getExam: rxMethod<string>(
-                pipe(
-                  tap(() => patchState(store, activateLoading)),
-                  switchMap((id) =>
-                    service.getExam(id).pipe(
-                      tap((exam: APIExam) => patchState(store, getExam(exam))),
-                      catchError((err) => {
-                        patchState(store, setError(err?.msg ?? 'Failed to load exam'));
-                        return EMPTY;
-                      }),
-                      finalize(() => patchState(store, deactivateLoading))
-                    )
-                  )
-                )
-              ),
+            }),
+            catchError((err) => {
+              patchState(store, setError(err?.msg ?? 'Failed to update exam'));
+              toasting.showToast('Exam failed to be updated', 'error')
+              return EMPTY;
+            }),
+            finalize(() => patchState(store, deactivateLoading))
+          )
+        )
+      )
+    ),
+
+    getExam: rxMethod<string>(
+      pipe(
+        tap(() => patchState(store, activateLoading)),
+        switchMap((id) =>
+          service.getExam(id).pipe(
+            tap((exam: APIExam) => patchState(store, getExam(exam))),
+            catchError((err) => {
+              patchState(store, setError(err?.msg ?? 'Failed to load exam'));
+              toasting.showToast('Exam failed to be loaded', 'error')
+              return EMPTY;
+            }),
+            finalize(() => patchState(store, deactivateLoading))
+          )
+        )
+      )
+    ),
     deleteExam: rxMethod<string>(
       switchMap((examId) => {
         patchState(store, activateLoading);
 
         return service.deleteExam(examId).pipe(
           tap(() => patchState(store, deleteExamUpdater(examId))),
+          tap(() => toasting.showToast('Exam has been deleted', 'success')),
           catchError((err) => {
             patchState(
               store,
               setError(err?.message || 'Failed to delete exam')
             );
+            toasting.showToast('Exam failed to be deleted', 'error')
             return EMPTY;
           }),
           finalize(() => patchState(store, deactivateLoading))
         );
       })
     ),
-        setSelectedExam(exam: any) {
-          patchState(store, setSelectedExam(exam));
-        },
-      setSuccess(success: boolean) {
-          patchState(store, setSuccess(success));
-        },
+    setSelectedExam(exam: any) {
+      patchState(store, setSelectedExam(exam));
+    },
+    setSuccess(success: boolean) {
+      patchState(store, setSuccess(success));
+    },
   })),
 
   withHooks({

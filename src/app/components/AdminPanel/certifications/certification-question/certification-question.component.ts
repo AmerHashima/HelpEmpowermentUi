@@ -2,7 +2,7 @@ import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AsyncPipe, JsonPipe, Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { concatMap, defer, EMPTY, from, map } from 'rxjs';
+import { catchError, concatMap, defer, EMPTY, forkJoin, from, map, Observable, of } from 'rxjs';
 import { SpkNgSelectComponent } from '../../../../shared/spk-ng-select/spk-ng-select.component';
 import { ButtonComponent } from '../../../../shared/button/button.component';
 import { InputComponent } from '../../../../shared/input/input.component';
@@ -94,10 +94,21 @@ export class CertificationQuestionComponent {
   private choiceAnswerOrderCounter = 0;
   questionId = '';
   question = computed(() => this.questionStore.selectedQuestion());
+  pendingQuestionType = signal<any>(null);
   constructor() {
+    // this.certificationService.getQuestionTypes().subscribe(types => {
+    //   this.questionTypes = types;
+    // })
+
     this.certificationService.getQuestionTypes().subscribe(types => {
       this.questionTypes = types;
-    })
+
+      const pending = this.pendingQuestionType();
+      if (pending) {
+        this.applyQuestionType(pending);
+        this.pendingQuestionType.set(null);
+      }
+    });
 
     effect(() => {
       if (this.certificationId && !this.certification()) {
@@ -118,17 +129,11 @@ export class CertificationQuestionComponent {
 
     effect(() => {
       const question = this.question();
-
-      // ← Exit early if no question (very important!)
       if (!question) {
         console.log("No question yet → skipping");
         return;
       }
-
-      // Add this line to see how many times we actually process a question
-      console.log("Processing question:", question.oid || "no-id", "— answers count:", question.answers?.length);
-
-      this.editMode = true;               // ← or .set(true) if it's a signal
+      this.editMode = true;
       this.choiceAnswerOrderCounter = 0;
 
       // Patch the simple fields (you can keep your existing patchValue)
@@ -147,6 +152,7 @@ export class CertificationQuestionComponent {
         createdBy: question.createdBy,
       });
 
+      // this.onSelectedQuestionType(question.questionTypeLookupId);
       // ───────────────────────────────────────────────
       //   DRAG-DROP PART — only build arrays here
       // ───────────────────────────────────────────────
@@ -154,9 +160,6 @@ export class CertificationQuestionComponent {
 
         const questions = question.answers?.filter(a => a.question_Ask) ?? [];
         const answers = question.answers?.filter(a => !a.question_Ask) ?? [];
-
-        console.log("Filtered questions:", questions.length);
-        console.log("Filtered answers  :", answers.length);
 
         const dragQuestions = this.fb.array(
           questions.map(a => this.createGroup(true, a.correctAnswerOid, a))
@@ -166,90 +169,24 @@ export class CertificationQuestionComponent {
           answers.map(a => this.createGroup(false, null, a))
         );
 
-        console.log("dragQuestions controls:", dragQuestions.length);
-        console.log("dragAnswers controls  :", dragAnswers.length);
-
         this.form.setControl('dragQuestions', dragQuestions);
         this.form.setControl('dragAnswers', dragAnswers);
 
         this.addDragAnswersFlag.set(true);
       } else {
+        console.log('apuanswers()',question.answers);
         const answersArray = this.fb.array(
           question.answers?.map(a => this.createGroup(false, null, a))
         );
+        console.log('answersArray', answersArray);
         this.form.setControl('answers', answersArray);
       }
-
       this.activeSection.set(question.questionTypeName as any);
     }
 
     );
 
-    //     effect(() => {
-    //       const question = this.question();
-    //       if (question) {
-    //         this.editMode=true;
-    //         // Reset counter for correct orderNo assignment
-    //         console.log('question.answers',question.answers);
-    //         this.choiceAnswerOrderCounter = 0;
-    //         // Build answers arra
 
-
-    //         // Patch form
-    //         this.form.patchValue({
-    //           certification: this.certification()?.oid,
-    //           coursesMasterExamOid: question.coursesMasterExamOid,
-    //           examMode: '',
-    //           questionTypeLookupId: question.questionTypeLookupId,
-    //           questionText: question.questionText,
-    //           orderNo: String(question.orderNo),
-    //           questionScore: question.questionScore,
-    //           isActive: question.isActive,
-    //           correctAnswer: question.correctAnswer,
-    //           question: question.question,
-    //           correctChoiceOid: null,
-    //           createdBy: question.createdBy,
-    //         });
-
-    //         // Replace form arrays
-
-
-    //         if (question.questionTypeName == 'True/False' || question.questionTypeName == "Multiple Choice Question") {
-    //           // createGroup(question: boolean, correctAnswerOid ?: string, existingAnswer ?: any): FormGroup {
-
-    //           const answersArray = this.fb.array(
-    //             question.answers?.map(a => this.createGroup(false, null, a))
-    //           );
-    //           this.form.setControl('answers', answersArray);
-    //         } else {
-    //           const dragQuestions = this.fb.array(
-    //             question.answers?.filter(a => a.question_Ask).map(a => this.createGroup(true, a.correctAnswerOid, a))
-    //           );
-    //           this.form.setControl('dragQuestions', dragQuestions);
-    //           const dragAnswers = this.fb.array(
-    //             question.answers?.filter(a => !a.question_Ask).map(a => this.createGroup(false, null, a))
-    //           );
-    //           console.log(question.answers?.filter(a => !a.question_Ask).map(a => this.createGroup(false, null, a))
-    // );
-    //           console.log(question.answers?.filter(a => a.question_Ask).map(a => this.createGroup(true, a.correctAnswerOid, a)));
-    //           console.log('dragAnswers', dragAnswers);
-    //           console.log('dragQuestions', dragQuestions);
-
-    //           this.form.setControl('dragAnswers', dragAnswers);
-    //           this.addDragAnswersFlag.set(true);
-    //           // this.linkDragAnswerAndQuestionFlag.set(true);
-    //         }
-
-    //         // Same for drag questions/answers if needed
-    //         // this.form.setControl('dragQuestions', ...)
-    //         // this.form.setControl('dragAnswers', ...)
-
-    //         this.activeSection.set(question.questionTypeName as any);
-
-    //         // Set the active section
-    //         // this.activeSection.set(question.questionTypeName as any);
-    //       }
-    //     });
 
     effect(() => {
       const certification = this.certification();
@@ -281,8 +218,9 @@ export class CertificationQuestionComponent {
     });
 
     effect(() => {
-      console.log('on select reset');
       const type = this.selectedType();
+      console.log('in select effect');
+      console.log('selectedType',this.selectedType())
       if (this.editMode) return;
       switch (type) {
         case 'MCQ':
@@ -317,18 +255,44 @@ export class CertificationQuestionComponent {
   //   return group;
   // }
   createGroup(question: boolean, correctAnswerOid?: any, existingAnswer?: any): FormGroup {
-    const group = this.fb.group({
+    // const group = this.fb.group({
+    //   answerText: [
+    //     existingAnswer?.answerText || '',
+    //     [Validators.required, Validators.minLength(2), Validators.maxLength(20)],
+    //   ],
+    //   question_Ask: [existingAnswer?.question_Ask ?? question],
+    //   correctAnswerOid: [existingAnswer?.correctAnswerOid ?? (correctAnswerOid ?? null), Validators.required],
+    //   isCorrect: [existingAnswer?.isCorrect ?? false],
+    //   orderNo: [existingAnswer?.orderNo ?? this.choiceAnswerOrderCounter, Validators.required],
+    //   createdBy: [existingAnswer?.createdBy || '3fa85f64-5717-4562-b3fc-2c963f66afa6', Validators.required],
+    // });
+    console.log('existingAnswer', existingAnswer);
+    const controls: any = {
       answerText: [
-        existingAnswer?.answerText || '',
+        existingAnswer?.answerText ?? '',
         [Validators.required, Validators.minLength(2), Validators.maxLength(20)],
       ],
       question_Ask: [existingAnswer?.question_Ask ?? question],
-      correctAnswerOid: [existingAnswer?.correctAnswerOid ?? (correctAnswerOid ?? null), Validators.required],
+      correctAnswerOid: [
+        existingAnswer?.correctAnswerOid ?? (correctAnswerOid ?? null),
+        Validators.required
+      ],
       isCorrect: [existingAnswer?.isCorrect ?? false],
-      orderNo: [existingAnswer?.orderNo ?? this.choiceAnswerOrderCounter, Validators.required],
-      createdBy: [existingAnswer?.createdBy || '3fa85f64-5717-4562-b3fc-2c963f66afa6', Validators.required],
-    });
+      orderNo: [
+        existingAnswer?.orderNo ?? this.choiceAnswerOrderCounter,
+        Validators.required
+      ],
+      createdBy: [
+        existingAnswer?.createdBy ?? '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+        Validators.required
+      ],
+    };
 
+    if (existingAnswer?.oid) {
+      controls.oid = [existingAnswer.oid];
+    }
+
+    const group = this.fb.group(controls);
     this.choiceAnswerOrderCounter++;
     return group;
   }
@@ -364,15 +328,44 @@ export class CertificationQuestionComponent {
     this.dragAnswersArray.push(this.createDragAnswerGroup());
   }
 
-  removeAnswer(index: number): void {
+  removeAnswer(index: number, group:any): void {
     this.answersArray.removeAt(index);
+    if(this.editMode && group.value.oid){
+      const answerOid = group.value.oid;
+      this.questionStore.deleteAnswer(answerOid);
+    }
   }
 
-  removeDragQuestion(index: number): void {
+  removeDragQuestion(index: number, group: any): void {
+    console.log('group', group.value);
+
     this.dragQuestionsArray.removeAt(index);
+    if (this.editMode && group.value.oid) {
+      const answerOid = group.value.oid;
+      this.questionStore.deleteAnswer(answerOid);
+    }
   }
-  removeDragAnswer(index: number): void {
+  removeDragAnswer(index: number, group: any): void {
     this.dragAnswersArray.removeAt(index);
+    if (this.editMode && group.value.oid) {
+      const answerOid = group.value.oid;
+      const dragQuestion = this.question()?.answers.filter(a => a.correctAnswerOid == answerOid)[0];
+      const questionPayload={
+        oid: dragQuestion?.oid,
+        questionId: dragQuestion?.questionId,
+        question_Ask: dragQuestion?.question_Ask,
+        correctAnswerOid: null,
+        answerText: dragQuestion?.answerText,
+        isCorrect: dragQuestion?.isCorrect,
+        orderNo: dragQuestion?.orderNo,
+        updatedBy: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+      }
+      this.questionStore.updateQuestion({
+        id: questionPayload.oid!,
+        body: questionPayload
+      })
+      this.questionStore.deleteAnswer(answerOid);
+    }
   }
 
   DoneWithDragQuestion() {
@@ -382,6 +375,7 @@ export class CertificationQuestionComponent {
   DoneWithDragAnswer() {
     // const payload = this.getDragAnswerPayload();    const payload = this.getDragAnswerPayload();
     const payload = this.getDragQuestionPayload();
+    if(!this.editMode)
     this.certificationService.createQuestion(payload).subscribe({
       next: (response) => {
         this.questionId = response.oid;
@@ -392,6 +386,9 @@ export class CertificationQuestionComponent {
         this.linkDragAnswerAndQuestionFlag.set(true);
       },
     });
+    else{
+
+    }
   }
 
   onActivateAddAnswerSection() {
@@ -400,21 +397,122 @@ export class CertificationQuestionComponent {
 
   onSubmit() {
     const payload = this.getPayload();
-    if (this.selectedType() != 'MATCHING') this.questionStore.addQuestion(payload);
-    else {
-      const questionsWithAnswers = this.getUpdateQuestionPayload();
-      from(questionsWithAnswers)
-        .pipe(
-          concatMap(q =>
-            this.questionStore.updateQuestion({ id: q.oid, body: q }) && EMPTY
+    if(!this.editMode){
+      if (this.selectedType() != 'MATCHING') this.questionStore.addQuestion(payload);
+      else {
+        const questionsWithAnswers = this.getUpdateQuestionPayload();
+        from(questionsWithAnswers)
+          .pipe(
+            concatMap(q =>
+              this.questionStore.updateQuestion({ id: q.oid, body: q }) && EMPTY
+            ),
           )
-        )
-        .subscribe({
-          complete: () => {
-            this.toast.showToast('All questions updated successfully', 'success');
+          .subscribe({
+            complete: () => {
+              this.toast.showToast('All questions updated successfully', 'success');
+              console.log('finish add action');
+              this.router.navigate(['/admin/certifications', this.certification()?.oid!, 'exams', 'exam', this.examId]);
+              // this.location.back();
+            }
+          });
+      }
+    } else {
+      console.log('answespayload',payload);
+      const answersToUpdate = payload.answers.filter(a => !!a.oid).map(a => ({ ...a, questionId: this.questionId }));
+      const answersToCreate = payload.answers.filter(a => !a.oid).map(a => ({ ...a, questionId: this.questionId }))
+
+
+      console.log('answersToUpdate', answersToUpdate);
+      console.log('answersToCreate', answersToCreate);
+
+      if (this.selectedType() !== 'MATCHING') {
+
+        // from([...answersToUpdate, ...answersToCreate]).pipe(
+        //   concatMap(item => {
+        //     if (item.oid) {
+        //       this.questionStore.updateQuestion({ id: item.oid!, body: item });
+        //     } else {
+        //       this.questionStore.addAnswer(item);
+        //     }
+        //     return EMPTY;
+        //   }),
+        //   // Optional: catchError on the whole chain if you want
+        //   catchError(err => {
+        //     console.error('Batch operation failed', err);
+        //     return EMPTY;
+        //   })
+        // ).subscribe({
+        //   complete: () => {
+        //     this.questionStore.getQuestion(this.questionId) && EMPTY
+        //     this.toast.showToast('All questions updated and created successfully', 'success');
+        //     this.location.back();
+        //   }
+        // })
+
+
+        const operations: Observable<any>[] = [];
+
+        for (const item of [...answersToUpdate, ...answersToCreate]) {
+          let op: Observable<any>;
+
+          if (item.oid) {
+            op = this.questionStore.updateQuestion$({ id: item.oid!, body: item });
+          } else {
+            op = this.questionStore.addAnswer$(item);
+          }
+
+          // Very important: prevent one failure from killing everything
+          op = op.pipe(
+            catchError(err => {
+              console.warn('One save failed, continuing others', err);
+              // You can show per-item toast here if you want
+              return of(null);   // or EMPTY if you don't care about the value
+            })
+          );
+
+          operations.push(op);
+        }
+
+        forkJoin(operations).subscribe({
+          next: (results) => {
+            console.log('All finished');
+            this.toast.showToast('All updates and answers saved', 'success');
+            const qid = this.questionId;
+            if (qid) {
+              this.questionStore.getQuestion(qid);
+            }
             this.location.back();
+          },
+          error: (err) => {
+            // This should now be very rare — only if something outside catchError throws
+            console.error('Unexpected forkJoin error', err);
+            this.toast.showToast('Save operation failed unexpectedly', 'error');
+            // decide if you want to navigate or stay
           }
         });
+
+        // from(answersToUpdate)
+        //   .pipe(
+        //     concatMap(q =>
+        //       this.questionStore.updateQuestion({ id: q.oid!, body: q }) && EMPTY
+        //     ),
+        //     concatMap(() =>
+        //       from(answersToCreate).pipe(
+        //         concatMap(a =>
+        //           this.questionStore.addAnswer(a) && EMPTY
+        //         )
+        //       )
+        //     ),concatMap(q =>
+        //       this.questionStore.getQuestion(this.questionId) && EMPTY
+        //     ),
+        //   )
+        //   .subscribe({
+        //     complete: () => {
+        //       this.toast.showToast('All questions updated and created successfully', 'success');
+        //       this.location.back();
+        //     }
+        //   });
+      }
     }
 
   }
@@ -426,6 +524,7 @@ export class CertificationQuestionComponent {
   }
 
   getPayload() {
+    console.log('this.selectedType()', this.selectedType());
     switch (this.selectedType()) {
       case 'MCQ':
         return this.getChoicePayload();
@@ -438,9 +537,11 @@ export class CertificationQuestionComponent {
 
 
   getChoicePayload() {
+    console.log('in load');
     const raw = this.form.getRawValue();
-
+    console.log('rawAnswers', raw.answers);
     return {
+      ...(this.questionId && { oid:this.questionId }),
       ...this.buildBasePayload(raw),
       answers: this.mapAnswers(raw.answers),
     };
@@ -477,15 +578,6 @@ export class CertificationQuestionComponent {
   }
 
 
-  // getDragAnswerPayload() {
-  //   const raw = this.form.getRawValue();
-
-  //   return {
-  //     ...this.buildBasePayload(raw),
-  //     answers: this.mapAnswers(raw.dragAnswers),
-  //   };
-  // }
-
   private buildBasePayload(raw: any) {
     return {
       coursesMasterExamOid: raw.coursesMasterExamOid,
@@ -507,7 +599,9 @@ export class CertificationQuestionComponent {
       isCorrect: boolean;
     }>
   ) {
+    console.log('source',source);
     return source.map((a: any) => ({
+      ...(a.oid && { oid: a.oid }),
       answerText: a.answerText,
       question_Ask: overrides?.question_Ask ?? a.question_Ask,
       correctAnswerOid: a.correctAnswerOid ?? null,
@@ -516,12 +610,35 @@ export class CertificationQuestionComponent {
       createdBy: a.createdBy,
     }));
   }
+  // onSelectedQuestionType(questionType: any) {
+  //   console.log('this.questionTypes', this.questionTypes)
+  //   console.log('questionType', questionType);
+  //   if(this.questionTypes.length == 0 ) return;
+  //   const type = (this.questionTypes.filter(question => question.oid == questionType))[0];
+  //   console.log('type', type);
+  //   this.selectedType.set(type.lookupValue);
+  //   console.log('in seekect',)
+  //   this.onActivateAddAnswerSection();
+  // }
+
   onSelectedQuestionType(questionType: any) {
-    const type = (this.questionTypes.filter(question => question.oid == questionType))[0];
+    if (this.questionTypes.length === 0) {
+      this.pendingQuestionType.set(questionType);
+      return;
+    }
+
+    this.applyQuestionType(questionType);
+  }
+  private applyQuestionType(questionType: any) {
+      console.log('this.questionTypes', this.questionTypes)
+      console.log('questionType', questionType);
+    const type = this.questionTypes.find(q => q.oid === questionType);
+    if (!type) return;
+      console.log('type', type);
     this.selectedType.set(type.lookupValue);
+      console.log('in seekect',)
     this.onActivateAddAnswerSection();
   }
-
   private resetMatchingState() {
     // reset flags
     this.addDragQuestionsFlag.set(false);

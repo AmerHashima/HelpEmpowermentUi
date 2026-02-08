@@ -52,6 +52,7 @@
               "node_modules/@ng-select/ng-select/themes/default.theme.css",
               "node_modules/filepond/dist/filepond.min.css",
               "node_modules/bootstrap-icons/font/bootstrap-icons.css",
+                "node_modules/ngx-toastr/toastr.css",
               "src/assets/styles/styles.scss"
             ],
             "scripts": [

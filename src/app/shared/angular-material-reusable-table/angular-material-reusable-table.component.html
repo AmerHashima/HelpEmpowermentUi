@@ -44,6 +44,9 @@
           {{ row[col.field] | date : col.format || 'mediumDate' }}
         </span>
       </ng-container>
+           <!-- <span *ngIf="col.type === 'answers'" >
+            {{ getCellValue(row, col).length }} Answers
+          </span> -->
 
       <!-- BADGE (all rows, any column) -->
       <span *ngIf="col.type === 'badge'" class="badge" [ngClass]="getBadgeClass(row[col.field], col)">

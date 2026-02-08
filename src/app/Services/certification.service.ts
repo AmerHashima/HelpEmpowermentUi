@@ -332,6 +332,33 @@ export class CertificationService {
         })
       );
   }
+
+  deleteAnswer(id: string): Observable<boolean> {
+    return this.apiService
+      .delete<ApiResponse<boolean>>('CourseAnswers', id)
+      .pipe(
+        map((response: ApiResponse<boolean>) => {
+          if (!response.success) {
+            const msg = response.errors?.join(', ') || response.message || 'API failed to delete answer';
+            throw new Error(msg);
+          }
+          return response.data;
+        })
+      );
+  }
+  createAnswer(body: any): Observable<any> {
+    return this.apiService
+      .post<ApiResponse<any>>('CourseAnswers', body)
+      .pipe(
+        map((response: ApiResponse<any>) => {
+          if (!response.success) {
+            const msg = response.errors?.join(', ') || response.message || 'API failed to create answer';
+            throw new Error(msg);
+          }
+          return response.data;
+        })
+      );
+  }
   createCourseFeature(body: any): Observable<any> {
     return this.apiService
       .post<ApiResponse<any>>('CourseFeatures', body)

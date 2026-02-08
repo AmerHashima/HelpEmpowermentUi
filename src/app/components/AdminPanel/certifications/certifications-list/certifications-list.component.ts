@@ -14,6 +14,7 @@ import { JsonPipe } from '@angular/common';
 })
 export class CertificationsListComponent {
   private store = inject(CertificationsStore);
+  loading =this.store.loading;
   private router = inject(Router);
   certifications = computed(() => this.store.certifications());
 

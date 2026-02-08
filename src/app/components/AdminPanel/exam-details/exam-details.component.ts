@@ -29,6 +29,8 @@ export class ExamDetailsComponent {
   columns = [
     { field: 'orderNo', header: 'No.', type: 'text' },
     { field: 'questionText', header: 'Question', type: 'text' },
+    { field: 'questionTypeName', header: 'Question Type.', type: 'text' },
+    // { field: 'answers', header: 'Answers', type: 'answers' },
     {
       field: 'isActive',
       header: 'Status',
@@ -55,6 +57,7 @@ export class ExamDetailsComponent {
     effect(() => {
       const exam = this.exam();
       if (exam) {
+        console.log('examId', exam);
         const filters :Filter[]= [
           {
             propertyName: "coursesMasterExamOid",
@@ -62,7 +65,7 @@ export class ExamDetailsComponent {
             operation: 0
           }
         ]
-        this.questionStore.setFilters(filters);
+        this.questionStore.setFilters([...filters]);
         const req=this.questionStore.queryRequest();
         this.questionStore.queryQuestions(req);
       }

@@ -19,6 +19,7 @@ import {
   from './certification.updaters';
 import { APICertification, Certification } from '../../models/certification';
 import { createQueryRequest } from './store.helper';
+import { ToastingMessagesService } from '../../shared/Services/ToastingMessages/toasting-messages.service';
 
 type UpdateUserPayload = {
   id: string;
@@ -126,6 +127,7 @@ export const CertificationsStore = signalStore(
   })),
   withMethods((store) => {
     const certifcationService = inject(CertificationService);
+    const toasting=inject(ToastingMessagesService);
     return {
       addCertification: rxMethod<Certification>(
         pipe(
@@ -134,10 +136,13 @@ export const CertificationsStore = signalStore(
             certifcationService.createCertification(body).pipe(
               tap((certifcation: APICertification) => {
                 patchState(store, addCertification(certifcation));
+                toasting.showToast('Certification has been added', 'success')
                 patchState(store, setSuccess(true));
               }),
+
               catchError((err) => {
                 patchState(store, setError(err?.msg ?? 'Failed to add Certification'));
+                toasting.showToast('Certification failed to be added', 'error')
                 return EMPTY;
               }),
               finalize(() => patchState(store, deactivateLoading))
@@ -153,10 +158,13 @@ export const CertificationsStore = signalStore(
               // tap((certification: APICertification) => patchState(store, updateCertification(certification))),
               tap((certifcation: APICertification) => {
                 patchState(store, updateCertification(certifcation));
+                toasting.showToast('Certification has been updated', 'success')
                 patchState(store, setSuccess(true));
               }),
               catchError((err) => {
                 patchState(store, setError(err?.msg ?? 'Failed to update certification'));
+                toasting.showToast('Certification failed to be updated', 'error')
+
                 return EMPTY;
               }),
               finalize(() => patchState(store, deactivateLoading))
@@ -172,6 +180,7 @@ export const CertificationsStore = signalStore(
               tap((Certification: APICertification) => patchState(store, getCertification(Certification))),
               catchError((err) => {
                 patchState(store, setError(err?.msg ?? 'Failed to load Certification'));
+                toasting.showToast('Certification failed to be loaded', 'error')
                 return EMPTY;
               }),
               finalize(() => patchState(store, deactivateLoading))
@@ -185,8 +194,11 @@ export const CertificationsStore = signalStore(
           switchMap((id) =>
             certifcationService.deleteCertification(id).pipe(
               tap(() => patchState(store, deleteCertification(id))),
+              tap(() => toasting.showToast('Certification has been deleted', 'success')),
+
               catchError((err) => {
                 patchState(store, setError(err.message || 'Delete failed'));
+                toasting.showToast('Certification failed to be deleted', 'error')
                 return EMPTY
               }),
               finalize(() => patchState(store, deactivateLoading))

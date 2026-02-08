@@ -13,9 +13,13 @@ export class ToastingMessagesService {
   ) { }
 
   showToast(toastMessage: string, type: 'success' | 'error' | 'info' | 'warning') {
-    const titleKey = `TOAST.${type.toUpperCase()}`;
-    const translatedTitle = this.translateService.instant(titleKey);
-    const message = this.translateService.instant(toastMessage);
+    // const titleKey = `TOAST.${type.toUpperCase()}`;
+    // const translatedTitle = this.translateService.instant(titleKey);
+    const translatedTitle = type;
+
+    // const message = this.translateService.instant(toastMessage);
+    const message = toastMessage;
+
     this._ToastrService.clear();
     switch (type) {
       case 'success':

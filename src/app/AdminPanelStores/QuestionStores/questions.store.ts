@@ -41,9 +41,11 @@ import {
   setFiltersUpdater,
 } from './question.updaters';
 import { CertificationService } from '../../Services/certification.service';
-import { APICourseQuestion, courseQuestion } from '../../models/certification';
+import { APIAnswer, APICourseQuestion, courseQuestion } from '../../models/certification';
 import { createQueryRequest } from '../CertificationStore/store.helper';
 import { mapApiQuestionsToCourseQuestions } from './question.mapper';
+import { ToastrService } from 'ngx-toastr';
+import { ToastingMessagesService } from '../../shared/Services/ToastingMessages/toasting-messages.service';
 
 type UpdateQuestionPayload = {
   id: string;
@@ -133,10 +135,11 @@ export const QuestionsStore = signalStore(
     queryQuestions: rxMethod<RequestBody>(
       pipe(
         debounceTime(350),
-        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
+        // distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
         tap(() => patchState(store, activateLoading)),
         switchMap((request) =>
           service.searchQuestion(request).pipe(
+            tap(() => console.log('in query questions')),
             tap((res: { questions: APICourseQuestion[]; total: number }) => {
               patchState(store, (s) => ({
                 ...s,
@@ -153,11 +156,28 @@ export const QuestionsStore = signalStore(
         )
       )
     ),
+
+    getQuestion: rxMethod<string>(
+      pipe(
+        tap(() => patchState(store, activateLoading)),
+        switchMap((id) =>
+          service.getQuestion(id).pipe(
+            tap((q: APICourseQuestion) => patchState(store, getQuestion(q))),
+            catchError((err) => {
+              patchState(store, setError(err?.msg ?? 'Failed to load question'));
+              return EMPTY;
+            }),
+            finalize(() => patchState(store, deactivateLoading))
+          )
+        )
+      )
+    ),
   })),
 
   /* ===================== CRUD ===================== */
   withMethods((store) => {
     const service = inject(CertificationService);
+    const toasting = inject(ToastingMessagesService);
 
     return {
       addQuestion: rxMethod<courseQuestion>(
@@ -167,10 +187,12 @@ export const QuestionsStore = signalStore(
             service.createQuestion(body).pipe(
               tap((question: APICourseQuestion) => {
                 patchState(store, addQuestion(question));
+                tap(() => toasting.showToast('Question has been deleted', 'success')),
                 patchState(store, setSuccess(true));
               }),
               catchError((err) => {
                 patchState(store, setError(err?.msg ?? 'Failed to add question'));
+                toasting.showToast('Question failed to be added', 'error')
                 return EMPTY;
               }),
               finalize(() => patchState(store, deactivateLoading))
@@ -186,9 +208,15 @@ export const QuestionsStore = signalStore(
           concatMap(({ id, body }) =>
             service.updateQuestion(id, body).pipe(
               tap((questiupdateon: APICourseQuestion) => {
-                patchState(store, updateQuestion(questiupdateon));
+
+                // patchState(store, updateQuestion(questiupdateon));
                 // patchState(store, setSuccess(true));
               }),
+              // tap(() => {
+              //   const question = store.selectedQuestion();
+              //   if (!question?.oid) return;
+              //   store.getQuestion(question.oid);
+              // }),
               catchError((err) => {
                 patchState(store, setError(err?.msg ?? 'Failed to update question'));
                 return EMPTY;
@@ -199,14 +227,17 @@ export const QuestionsStore = signalStore(
         )
       ),
 
-      getQuestion: rxMethod<string>(
+
+      deleteQuestion: rxMethod<string>(
         pipe(
           tap(() => patchState(store, activateLoading)),
           switchMap((id) =>
-            service.getQuestion(id).pipe(
-              tap((q: APICourseQuestion) => patchState(store, getQuestion(q))),
+            service.deleteQuestion(id).pipe(
+              tap(() => patchState(store, deleteQuestion(id))),
+              tap(() => toasting.showToast('Question has been deleted','success')),
               catchError((err) => {
-                patchState(store, setError(err?.msg ?? 'Failed to load question'));
+                patchState(store, setError(err?.message ?? 'Delete failed'));
+                toasting.showToast('Question failed to be deleted', 'error')
                 return EMPTY;
               }),
               finalize(() => patchState(store, deactivateLoading))
@@ -215,14 +246,27 @@ export const QuestionsStore = signalStore(
         )
       ),
 
-      deleteQuestion: rxMethod<string>(
+    };
+  }),
+  withMethods((store) => {
+    const service = inject(CertificationService);
+     const toasting=inject(ToastingMessagesService);
+    return {
+      addAnswer: rxMethod<courseQuestion>(
         pipe(
           tap(() => patchState(store, activateLoading)),
-          switchMap((id) =>
-            service.deleteQuestion(id).pipe(
-              tap(() => patchState(store, deleteQuestion(id))),
+          concatMap((body) =>
+            service.createAnswer(body).pipe(
+              tap(() => {
+                 console.log('createSyccessfully');
+              }),
+              // tap(() => {
+              //   const question = store.selectedQuestion();
+              //   if (!question?.oid) return;
+              //   store.getQuestion(question.oid);
+              // }),
               catchError((err) => {
-                patchState(store, setError(err?.message ?? 'Delete failed'));
+                patchState(store, setError(err?.msg ?? 'Failed to add answer'));
                 return EMPTY;
               }),
               finalize(() => patchState(store, deactivateLoading))
@@ -230,6 +274,56 @@ export const QuestionsStore = signalStore(
           )
         )
       ),
+      deleteAnswer: rxMethod<string>(
+        pipe(
+          tap(() => patchState(store, activateLoading)),
+          concatMap((id) =>
+            service.deleteAnswer(id).pipe(
+              // tap(() => patchState(store, deleteAnswer(id))),
+              tap(() => toasting.showToast('Answer has been deleted', 'success')),
+              tap(() => {
+                const question = store.selectedQuestion();
+                if (!question?.oid) return;
+                store.getQuestion(question.oid);
+              }),
+              catchError((err) => {
+                patchState(store, setError(err?.message ?? 'Delete failed'));
+                toasting.showToast('Answer failed to be deleted', 'error')
+                return EMPTY;
+              }),
+              finalize(() => patchState(store, deactivateLoading))
+            )
+          )
+        )
+      ),
+      updateQuestion$(payload: any) {
+        patchState(store, activateLoading);
+        return service.updateQuestion(payload.id, payload.body).pipe(
+          tap(updated => console.log('update sucess')),
+
+          // tap(updated => patchState(store, updateQuestion(updated))),
+          catchError(err => {
+            patchState(store, setError(err?.message ?? 'Update failed'));
+            console.log(err?.message);
+            console.log('update failed')
+            return of(null);
+          }),
+          finalize(() => patchState(store, deactivateLoading))
+        );
+      },
+
+addAnswer$(answer: any) {
+        return service.createAnswer(answer).pipe(
+          tap(() => {
+            // console.log('created');
+          }),
+          catchError(err => {
+            patchState(store, setError(err?.message ?? 'failed to add failed'));
+            return of(null);
+          }),
+          finalize(() => patchState(store, deactivateLoading))
+        );
+      }
     };
   }),
 

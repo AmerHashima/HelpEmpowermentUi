@@ -71,6 +71,14 @@ export class SpkNgSelectComponent implements ControlValueAccessor {
   // ────────────────────────────────────────────────
   writeValue(value: any): void {
     this.value = value;
+    if (value !== undefined && value !== null) {
+      // notify Angular forms
+      this.onChange(value);
+
+      // trigger your custom outputs
+      this.change.emit(value);
+      this.selectedChange.emit(value);
+    }
   }
 
   registerOnChange(fn: (value: any) => void): void {

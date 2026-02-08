@@ -178,7 +178,7 @@
                     @if (answersArray.length > 1) {
                       <i
                         class="bi bi-x-circle-fill text-danger mt-2"
-                        (click)="removeAnswer(i)"
+                        (click)="removeAnswer(i,group)"
                         style="cursor: pointer"
                       ></i>
                     }
@@ -235,7 +235,7 @@
                     ) {
                       <i
                         class="bi bi-x-circle-fill text-danger mt-2"
-                        (click)="removeDragQuestion(i)"
+                        (click)="removeDragQuestion(i,group)"
                         style="cursor: pointer"
                       ></i>
                     }
@@ -310,7 +310,7 @@
                     ) {
                       <i
                         class="bi bi-x-circle-fill text-danger mt-2"
-                        (click)="removeDragAnswer(i)"
+                        (click)="removeDragAnswer(i,group)"
                         style="cursor: pointer"
                       ></i>
                     }
@@ -343,7 +343,7 @@
         </div>
       }
 
-      <!-- @if (
+      @if (
         (activeSection() === "MATCHING" || activeSection() === "Matching") &&
         linkDragAnswerAndQuestionFlag()
       ) {
@@ -389,7 +389,7 @@
             </div>
           </div>
         </div>
-      } -->
+      }
       <div class="d-flex justify-content-end gap-2">
         <app-button btnLabel="Cancel" [mainBtn]="false" (click)="cancel()" />
         <app-button btnLabel="Done" buttonType="submit" />

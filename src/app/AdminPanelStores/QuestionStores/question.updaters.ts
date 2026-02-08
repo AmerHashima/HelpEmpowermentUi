@@ -53,7 +53,10 @@ export const addQuestion = (
 export const updateQuestion = (
   question: APICourseQuestion
 ): PartialStateUpdater<QuestionState> => {
+  console.log('mapperqUESTION', question);
   const mappedQuestion: courseQuestion = mapApiQuestionToCourseQuestion(question);
+  console.log('aftermapperqUESTION', mappedQuestion);
+
   return (state) => ({
     questions: [
       ...state.questions.filter(q => q.oid !== mappedQuestion.oid),
@@ -94,6 +97,8 @@ export const deleteQuestion = (
     questions: state.questions.filter(q => q.oid !== id),
   });
 };
+
+
 
 /* ===================== Search Result ===================== */
 
