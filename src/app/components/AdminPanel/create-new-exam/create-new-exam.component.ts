@@ -65,7 +65,6 @@ export class CreateNewExamComponent {
     effect(() => {
       const certification = this.certification();
       if (certification) {
-        console.log('in second effect')
         this.form.patchValue({
           courseName: certification.courseName,
           courseLevelLookupId: certification.courseLevelLookupId ?? null,

@@ -54,13 +54,6 @@ export const CertificationsStore = signalStore(
         pageNumber: page() - 1,
         pageSize: pageSize(),
       };
-
-      console.log({
-        filters,
-        sort,
-        pagination,
-        columns: [],
-      })
       return createQueryRequest({
         filters,
         sort,

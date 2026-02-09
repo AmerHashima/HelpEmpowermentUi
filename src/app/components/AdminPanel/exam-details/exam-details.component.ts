@@ -49,7 +49,6 @@ export class ExamDetailsComponent {
       const id = this.route.snapshot.paramMap.get('examId');
        this.certId = this.route.snapshot.paramMap.get('id');
       if (id && !this.exam()) {
-        console.log('in exam details route effect');
         this.examsStore.getExam(id);
       }
     });
@@ -58,7 +57,6 @@ export class ExamDetailsComponent {
     effect(() => {
       const exam = this.exam();
       if (exam) {
-        console.log('examId', exam);
         const filters :Filter[]= [
           {
             propertyName: "coursesMasterExamOid",
@@ -77,7 +75,6 @@ export class ExamDetailsComponent {
 
   onAddNewQuestion() {
     const examId = this.exam()?.oid;
-    console.log('examId',examId);
     if (examId){
       this.questionStore.setSelectedQuestion(null);
       this.router.navigate(['/admin/certifications', this.certId, 'exams', examId, 'question', 'create'
@@ -117,7 +114,6 @@ export class ExamDetailsComponent {
 
   onOpenSingleQuestion(question:any){
     this.questionStore.setSelectedQuestion(question);
-    console.log('openExamIdQuestion',this.exam()?.oid);
     this.router.navigate(['/admin/certifications', this.certId,'questions', question.oid]);
   }
 }
