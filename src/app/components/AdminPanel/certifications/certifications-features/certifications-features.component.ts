@@ -187,7 +187,7 @@ export class CertificationsFeaturesComponent {
       featureHeader: [feature.featureHeader, Validators.required],
       featureDescription: [feature.featureDescription, Validators.required],
       orderNo: [feature.orderNo, Validators.required],
-      oid: [feature.oid] // keep oid for updating later
+      oid: [feature.oid] 
     });
 
     this.featureArrays.push(group);

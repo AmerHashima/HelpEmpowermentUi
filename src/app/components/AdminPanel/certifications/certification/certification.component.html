@@ -48,7 +48,7 @@
               <div
                 id="flush-collapseOne"
                 class="accordion-collapse collapse"
-                data-bs-parent="#accordionFlushExample"
+                data-bs-parent="#certificationAccordion"
               >
               <div class="accordion-body">
   @if (exams(); as exams) {
@@ -153,31 +153,10 @@
               <div
                 id="flush-collapseTwo"
                 class="accordion-collapse collapse"
-                data-bs-parent="#accordionFlushExample"
+                data-bs-parent="#certificationAccordion"
               >
                 <div class="accordion-body">
                   <app-certifications-features />
-                  <!-- @if (courseFeatures.length === 0) {
-                    <div class="d-flex align-items-center gap-1">
-                      <span
-                        >No course features found for this certification
-                        yet.</span
-                      >
-                      <span class="courseLink" (click)="addCourseFeature()"
-                        >Add Course Features</span
-                      >
-                    </div>
-                  } @else {
-                    <div class="row g-3">
-                      @for (
-                        feature of courseFeatures;
-                        let index = $index;
-                          track index
-                      ) {
-                        <span>Feature</span>
-                      }
-                    </div>
-                  } -->
                 </div>
               </div>
             </div>
@@ -187,40 +166,20 @@
                   class="accordion-button collapsed"
                   type="button"
                   data-bs-toggle="collapse"
-                  data-bs-target="#flush-collapseTwo"
+                  data-bs-target="#flush-collapseThree"
                   aria-expanded="false"
-                  aria-controls="flush-collapseTwo"
+                  aria-controls="flush-collapseThree"
                 >
                   Course Contents
                 </button>
               </h2>
               <div
-                id="flush-collapseTwo"
+                id="flush-collapseThree"
                 class="accordion-collapse collapse"
-                data-bs-parent="#accordionFlushExample"
+                data-bs-parent="#certificationAccordion"
               >
                 <div class="accordion-body">
-                  @if (courseContents.length === 0) {
-                    <div class="d-flex align-items-center gap-1">
-                      <span
-                        >No course contents found for this certification
-                        yet.</span
-                      >
-                      <span class="courseLink" (click)="addCourseContent()"
-                        >Add Course Content</span
-                      >
-                    </div>
-                  } @else {
-                    <div class="row g-3">
-                      @for (
-                        content of courseContents;
-                        let index = $index;
-                        track index
-                      ) {
-                        <span>Feature</span>
-                      }
-                    </div>
-                  }
+                   <app-certification-contents/>
                 </div>
               </div>
             </div>

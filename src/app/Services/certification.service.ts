@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import ApiService from '../shared/Services/ApiService/api.service';
 import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { ApiResponse, ApiSearchResponse } from '../models/apiResponse';
 import { APICertification, APICourseQuestion, APIExam, Certification, courseExam } from '../models/certification';
 import { RequestBody } from '../models/rquest';
+import { AnyAaaaRecord } from 'dns';
 
 @Injectable({
   providedIn: 'root'
@@ -124,6 +125,59 @@ export class CertificationService {
       );
   }
 
+  //content
+  getCertificationContents(id: string): Observable<any[]> {
+    console.log('writie api cal')
+    return of([null]);
+  }
+
+  createCourseContent(body: any): Observable<any> {
+    return this.apiService
+      .post<ApiResponse<any>>('CourseContents', body)
+      .pipe(
+        map((response: ApiResponse<any>) => {
+          if (!response.success) {
+            const msg = response.errors?.join(', ') || response.message || 'API failed to create course content';
+            throw new Error(msg);
+          }
+          return response.data;
+        })
+      );
+  }
+  updateCourseContent(id: string, body: any): Observable<any> {
+    return this.apiService
+      .put<ApiResponse<any>>('CourseContents', id, body)
+      .pipe(
+        map((response: ApiResponse<any>) => {
+          if (!response.success) {
+            const msg = response.errors?.join(', ') || response.message || 'API failed to update course content';
+            throw new Error(msg);
+          }
+
+          return response.data;
+        })
+      );
+  }
+
+  deleteCourseContent(id: string): Observable<boolean> {
+    return this.apiService
+      .delete<ApiResponse<boolean>>('CourseContents', id)
+      .pipe(
+        map((response: ApiResponse<boolean>) => {
+          if (!response.success) {
+            const msg = response.errors?.join(', ') || response.message || 'API failed to delete content';
+            throw new Error(msg);
+          }
+          return response.data;
+        })
+      );
+  }
+  // outlines
+
+  getCertificationOutlines(id: string): Observable<any[]> {
+    return this.getByCourse<any>('CourseOutlines', id);
+
+  }
   //ecam api calls
 
 

@@ -178,6 +178,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   box-sizing: border-box;
 }
 
+.courseLink{
+  color: $primaryColor;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
 html[dir="ltr"],
 html[dir="ltr"] body {
   direction: ltr !important;

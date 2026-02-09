@@ -1,1 +1,124 @@
-<p>certification-contents works!</p>
+<div *ngIf="courseContents() as courseContents">
+  <div *ngIf="courseContents.length === 0" class="d-flex flex-column align-items-center text-center gap-2 py-4">
+    <i class="bi bi-list-check fs-2 text-secondary"></i>
+    <span class="text-muted">
+      No course contents found for this certification yet.
+    </span>
+    <span class="courseLink fw-semibold" role="button" tabindex="0" (click)="AddContents()">
+      + Add Course Content
+    </span>
+  </div>
+
+  <div *ngIf="courseContents.length > 0" class="row g-3">
+    <div *ngFor="let content of courseContents; let i = index" class="col-12">
+      <div class="d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center">
+          <span class="d-flex align-items-center">
+            <i class="bi bi-pin pe-1"></i>
+             <strong class="pe-1">{{ content.titleEn }}:</strong>
+             </span>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+          <i class="bi bi-trash" (click)="deleteContent(content)"></i>
+          <i class="bi bi-pencil-square" (click)="editContent(content)"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="addAnswer d-flex align-items-center justify-content-end mt-2"
+    (click)="AddContent(courseContents.length)" style="cursor: pointer">
+      <i class="bi bi-plus-circle-fill pe-2"></i>
+      <span>Add Content</span>
+    </div>
+  </div>
+</div>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div
+    class="modal fade"
+    id="CertificationContentModal"
+    tabindex="-1"
+    aria-labelledby="CertificationContentModal"
+    aria-hidden="true"
+    #contentModal
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">
+            Add New Contents
+          </h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body px-4 py-2">
+          <div class="d-flex flex-column gap-4">
+            <div class="row flex-wrap g-3" formArrayName="contents">
+              @for (group of contentArrays.controls; let i = $index; track i) {
+                <div class="border-bottom row g-2 pb-4">
+                  <div class="col-12" [formGroupName]="i">
+                    <app-input
+                      formControlName="titleEn"
+                      [label]="`English Title`"
+                      type="text"
+                      placeholder=""
+                      icon=""
+                      [errorMessages]="{
+                        required: 'Field is required',
+                      }"
+                    />
+                  </div>
+                  <div class="col-12" [formGroupName]="i">
+                    <app-input
+                      formControlName="titleAr"
+                      [label]="`Arabic Title`"
+                      type="text"
+                      placeholder=""
+                      icon=""
+                      [errorMessages]="{
+                        required: 'Field is required',
+                      }"
+                    />
+                  </div>
+                  <div class="col-12" [formGroupName]="i">
+                    <app-input
+                      formControlName="orderNo"
+                      [label]="`Feature Order Number`"
+                      type="text"
+                      placeholder=""
+                      icon=""
+                      [errorMessages]="{
+                        required: 'Order No is required',
+                      }"
+                    />
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+          <div
+            class="addAnswer d-flex align-items-center justify-content-end mt-2"
+            (click)="onAddAnotherContent()"
+            style="cursor: pointer"
+          >
+            <i class="bi bi-plus-circle-fill pe-2"></i>
+            <span>Add Another Content</span>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <app-button
+            data-bs-dismiss="modal"
+            btnLabel="Close"
+            [mainBtn]="false"
+            [secondaryBtn]="true"
+          />
+          <app-button btnLabel="Save" [mainBtn]="true" buttonType="submit" />
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

@@ -10,10 +10,11 @@ import { ActivatedRoute } from '@angular/router';
 import { CertificationsFeaturesComponent } from '../certifications-features/certifications-features.component';
 import { ExamsStore } from '../../../../AdminPanelStores/ExamsStore/exam.store';
 import { QuestionsStore } from '../../../../AdminPanelStores/QuestionStores/questions.store';
+import { CertificationContentsComponent } from '../certification-contents/certification-contents.component';
 
 @Component({
   selector: 'app-certification',
-  imports: [ButtonComponent, AsyncPipe, CertificationsFeaturesComponent],
+  imports: [ButtonComponent, AsyncPipe, CertificationsFeaturesComponent, CertificationContentsComponent],
   templateUrl: './certification.component.html',
   styleUrl: './certification.component.scss'
 })
@@ -78,9 +79,6 @@ export class CertificationComponent {
     }
   }
 
-  // addCourseFeature(){
 
-  // }
-  addCourseContent(){}
 
 }
