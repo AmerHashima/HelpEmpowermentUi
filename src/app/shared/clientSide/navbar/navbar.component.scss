@@ -1,0 +1,281 @@
+@use 'variables' as *;
+/* === NAVBAR BASE === */
+.clientNavbar {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  background-color: $bgNav;
+  box-shadow:$boxShadow;
+  z-index: 1000;
+
+  display: flex;
+  flex-direction: column;
+}
+
+/* === TOP BAR === */
+.clientNavbar .top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 1.5rem;
+  background-color: $bgNav;
+}
+
+/* Logo */
+.clientNavbar .top-bar .logo {
+  height: 80px;
+  object-fit: contain;
+}
+
+/* Right actions (search, theme, language, auth) */
+.clientNavbar .top-bar .right-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Search input */
+.clientNavbar .top-bar .search {
+  position: relative;
+}
+.clientNavbar .top-bar .search input {
+  padding: 0.5rem 2rem 0.5rem 0.5rem;
+  border: 1px solid $placeHolderColor;
+  border-radius: $borderRadius;
+  font-size: $fs-sm;
+  color:$inputText;
+  background-color: $inputBg;
+}
+.clientNavbar .top-bar .search input:focus {
+  outline: none;
+  border-color:$primaryColor;
+}
+.clientNavbar .top-bar .search i {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color:$iconColor;
+}
+
+/* Theme toggle */
+.clientNavbar .top-bar .theme-toggle {
+  padding: 0.5rem;
+  border-radius: $borderRadius;
+  color: $iconColor;
+  cursor: pointer;
+}
+.clientNavbar .top-bar .theme-toggle:hover {
+  background-color: $secondaryColor;
+  color:$lightBgTextColor;
+}
+
+/* Dropdowns */
+.clientNavbar .top-bar .dropdown {
+  position: relative;
+}
+.clientNavbar .top-bar .dropdown i {
+  cursor: pointer;
+  color:$navTextColor;
+  padding: 0.4rem;
+  border-radius: $borderRadius
+}
+.clientNavbar .top-bar .dropdown ul {
+  display: block;
+  position: absolute;
+  // right: 0;
+  top: 100%;
+  background-color: $inputBg;
+  list-style: none;
+  padding: 0.5rem 0;
+  margin: 0;
+  border-radius: $borderRadius;
+  box-shadow:$boxShadow;
+  min-width:180px;
+  z-index: 1001;
+}
+
+.clientNavbar .top-bar .dropdown ul li {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  color:$dropdownNacColor;
+}
+.clientNavbar .top-bar .dropdown ul li:hover {
+  background-color: $secondaryColor;
+    color:$lightBgTextColor !important;
+  font-weight: $bold;
+  *{
+  color:$lightBgTextColor !important;
+  }
+}
+
+/* === MAIN MENU === */
+.clientNavbar .menu {
+  display: flex;
+  gap: 0.5rem;
+  background-color: $bgNav;
+  padding: 0.5rem 1.5rem;
+  list-style: none;
+  margin: 0;
+}
+
+.clientNavbar .menu li {
+  position: relative;
+}
+
+.clientNavbar .menu li a {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  // color: $iconColor;
+    color: $navTextColor;
+  text-decoration: none;
+  border-radius: $borderRadius
+}
+
+.clientNavbar .menu li a:hover {
+  background-color: $secondaryColor;
+  color: $lightBgTextColor;
+  *{
+  color: $lightBgTextColor;
+  }
+}
+/* Parent menu with children */
+.clientNavbar .menu li.has-children > div > a {
+  justify-content: space-between;
+}
+
+/* Dropdown submenu */
+.clientNavbar .menu li.has-children ul {
+  display: block;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: $inputBg;
+  border-radius: $borderRadius;
+  min-width:300px;
+  padding: 0.5rem 0;
+  box-shadow: $boxShadow;
+  z-index: 1001;
+}
+.clientNavbar .menu li.has-children ul li {
+  padding: 0.5rem 1rem;
+  color:$dropdownNacColor;
+}
+.clientNavbar .menu li.has-children ul li:hover {
+  background-color: $secondaryColor;
+  color: $lightBgTextColor;
+  font-weight: $bold;
+  *{
+      color: $lightBgTextColor;
+  }
+}
+
+/* Active menu items */
+.clientNavbar .menu li.active > a,
+.clientNavbar .top-bar .dropdown ul li.active {
+  color: $primaryColor;
+  font-weight: $bold;
+}
+
+
+/* Icons in menu */
+.clientNavbar i {
+  font-size: 1rem;
+    color: $navTextColor;
+}
+
+
+.clientNavbar .top-bar .theme-toggle{
+  color:$navTextColor;
+}
+
+ul{
+  list-style:none;
+}
+
+
+@media (max-width: 992px) {
+
+  /* Navbar container stays column, top-bar horizontal */
+  .clientNavbar {
+    flex-direction: column;
+  }
+
+  /* Top-bar horizontal with flex-wrap */
+  .clientNavbar .top-bar {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    gap: 0.5rem;
+  }
+
+  /* Logo */
+  .clientNavbar .top-bar .logo {
+    height: 50px;
+    flex: 0 0 auto;
+  }
+
+  /* Right-actions (search + icons) in a row */
+  .clientNavbar .top-bar .right-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 1 1 auto;
+    justify-content: space-between;
+    min-width: 0;
+  }
+
+  /* Search input smaller but visible */
+  .clientNavbar .top-bar .search {
+    flex: 1 1 auto;
+    min-width: 120px;
+    position: relative;
+  }
+
+  .clientNavbar .top-bar .search input {
+    width: 100%;
+    padding: 0.4rem 1.8rem 0.4rem 0.5rem;
+    font-size: 0.85rem;
+  }
+
+  .clientNavbar .top-bar .search i {
+    right: 0.4rem;
+  }
+
+  /* Theme, Language, Auth icons */
+  .clientNavbar .top-bar .dropdown i,
+  .clientNavbar .top-bar .theme-toggle {
+    padding: 0.3rem 0.5rem;
+    font-size: 1rem;
+  }
+
+  /* Dropdown menus below their icon */
+  .clientNavbar .top-bar .dropdown ul {
+    top: calc(100% + 0.2rem);
+  }
+
+  /* Main menu */
+  .clientNavbar .menu {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    padding: 0.3rem 1rem;
+    justify-content: center;
+  }
+
+  .clientNavbar .menu li a {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+  }
+
+  /* Submenus below parent */
+  .clientNavbar .menu li.has-children ul {
+    position: absolute;
+    top: 100%;
+    min-width: 200px;
+  }
+}

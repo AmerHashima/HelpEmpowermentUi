@@ -1,0 +1,28 @@
+{
+  "menu": {
+    "home": "Home",
+    "about": "About Us",
+    "certifications": "Certifications",
+    "contact": "Contact",
+    "calendar": "calendar",
+    "services": "services",
+    "articles": "articles",
+    "faq": "faq",
+    "certifications_children": {
+      "PMP": "Project Management Professional (PMP)",
+      "CAMP": "Certified Associate in Project Management (CAPM)"
+    },
+    "services_children": {
+      "manpower": "Manpower",
+      "PMO": "PMO Setup & Operation",
+      "Maturityassessment":"Project Management Maturity Assessment",
+      "pmis":"Project Management Information System (PMIS)",
+      "training":"Customized Training",
+      "CAMP":"Certified Associate in Project Management (CAPM)"
+    }
+  },
+  "auth": {
+    "login": "Login",
+    "signup": "Sign Up"
+  }
+}

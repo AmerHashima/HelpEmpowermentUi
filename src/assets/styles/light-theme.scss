@@ -1,14 +1,21 @@
 /* src\assets\styles\light-theme.scss */
-:root .light-theme {
+:root .light-theme,:root[data-theme="light"] {
   --primary-color: #AD1457;
-  --secondary-color: #EC407A;
+    --secondary-color: #EC407A;
+    --dropdownNacColor:#80939f;
+  --bgNav:#fff;
+   --inputFieldBgColor: #fff;
+  --inputFieldtextColor: var(--icon-color);
+  --navTextColor:#80939f;
   --border-color: rgb(217, 217, 217);
   --light-bg-text-color: #fff;
-  --light-text-colo: #233043;
+  --light-text-color: #233043;
   --label-color: #797979;
   --paragraph-color: #6D8493;
   --placeHolderColor: #797979;
   --bgBody: #F9FAFB;
+
+
   --btnTextColor: #fff;
   --btnBgColor: #AD1457;
   // --iconColor: #F7FDF9;

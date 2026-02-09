@@ -1,0 +1,16 @@
+{
+  "menu": {
+    "home": "الرئيسية",
+    "about": "من نحن",
+    "certifications": "الشهادات",
+    "contact": "تواصل معنا",
+    "certifications_children": {
+      "PMP": "إدارة المشاريع الاحترافية (PMP)",
+      "CAMP": "مساعد معتمد في إدارة المشاريع (CAPM)"
+    }
+  },
+  "auth": {
+    "login": "تسجيل الدخول",
+    "signup": "إنشاء حساب"
+  }
+}

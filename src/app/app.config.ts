@@ -10,7 +10,8 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { provideToastr } from 'ngx-toastr';
 import { HttpLoaderFactory } from '../translate-loader';
 export const appConfig: ApplicationConfig = {
-  providers: [provideZoneChangeDetection({ eventCoalescing: true }),
+  providers: [
+  provideZoneChangeDetection({ eventCoalescing: true }),
   provideRouter(routes),
   provideAnimations(),
   provideToastr({
@@ -21,9 +22,8 @@ export const appConfig: ApplicationConfig = {
     progressBar: true,
     newestOnTop: false,
   }),
-  provideRouter(routes),
   provideClientHydration(withEventReplay()),
-  provideZoneChangeDetection({ eventCoalescing: true }),
+
   provideHttpClient(),
   {
     provide: TranslateLoader,

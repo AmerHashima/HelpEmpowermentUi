@@ -11,27 +11,44 @@ import { CreateNewCertificationComponent } from './components/AdminPanel/certifi
 import { CreateNewExamComponent } from './components/AdminPanel/create-new-exam/create-new-exam.component';
 import { CertificationQuestionComponent } from './components/AdminPanel/certifications/certification-question/certification-question.component';
 import { ExamDetailsComponent } from './components/AdminPanel/exam-details/exam-details.component';
+import { HomeComponent } from './components/ClientSide/home/home.component';
+import { ClientSideLayoutComponent } from './shared/client-side-layout/client-side-layout.component';
+import { NotFoundComponent } from './shared/not-found/not-found.component';
 
 export const routes: Routes = [
-  {
-    path: '',
-    redirectTo: 'admin/certifications',
+    {  path: '',
+    redirectTo: 'en',   // default language
     pathMatch: 'full',
   },
-
+  {
+    path: ':lang',
+    component: ClientSideLayoutComponent,
+    children: [
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
+      {
+        path: 'home',
+        component: HomeComponent,
+      },
+      {
+        path: 'about',
+        component: AboutComponent,
+      }
+    ]},
   {
     path: 'admin',
     component: AdminLayoutComponent,
     data: { breadcrumb: 'Admin' },
     children: [
       {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full',
+      },
+      {
         path: 'dashboard',
         component: DashboardComponent,
         data: { breadcrumb: 'Dashboard' },
       },
-
-
-
       {
         path: 'certifications',
         component: CertificationsComponent,
@@ -80,25 +97,10 @@ export const routes: Routes = [
 
         ],
       },
-
-
-      {
-        path: '',
-        redirectTo: 'dashboard',
-        pathMatch: 'full',
-      },
     ],
   },
-
-  {
-    path: 'about',
-    component: AboutComponent,
-    data: { breadcrumb: 'About' },
-  },
-
-  // 404 fallback
   {
     path: '**',
-    redirectTo: '',
+    component:NotFoundComponent,
   },
 ];

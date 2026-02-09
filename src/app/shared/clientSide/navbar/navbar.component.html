@@ -1,0 +1,73 @@
+<nav class="clientNavbar w-100  d-flex flex-column">
+  <div class="top-bar">
+    <img src="assets/images/clientNavbar/logo.png" alt="Logo" class="logo" />
+
+    <div class="right-actions">
+      <div class="search">
+        <i class="bi bi-search"></i>
+        <input [placeholder]="'search' | translate" />
+      </div>
+
+     <div class="d-flex align-items-center">
+       <i class="bi bi-moon theme-toggle" (click)="toggleTheme()"></i>
+
+      <!-- Language -->
+      <div class="dropdown">
+        <i class="bi bi-globe" (click)="toggleDropdown('lang')"></i>
+        <ul *ngIf="openDropdown() === 'lang'">
+          <li (click)="changeLang('en')" class="text-center">English</li>
+          <li (click)="changeLang('ar')"  class="text-center">العربية</li>
+        </ul>
+      </div>
+
+      <!-- Auth -->
+      <div class="dropdown">
+        <i class="bi bi-box-arrow-in-right" (click)="toggleDropdown('auth')"></i>
+        <ul *ngIf="openDropdown() === 'auth'" class="shadow">
+          <li (click)="navigate('/' + lang() + '/login')">
+            <i class="bi bi-box-arrow-in-right"></i>
+            {{ 'auth.login' | translate }}
+          </li>
+          <li (click)="navigate('/' + lang() + '/signup')">
+            <i class="bi bi-person-plus"></i>
+            {{ 'auth.signup' | translate }}
+          </li>
+        </ul>
+      </div>
+     </div>
+    </div>
+  </div>
+
+  <ul class="menu">
+    <li
+      *ngFor="let item of menu()"
+      [class.active]="currentPath() === item.path"
+      [class.has-children]="item.children"
+    >
+      <!-- Parent without children -->
+      <a *ngIf="!item.children" (click)="navigate(item.path!)">
+        <i [class]="item.icon"></i>
+        {{ item.translateKey | translate }}
+      </a>
+
+      <!-- Parent with children (dropdown) -->
+      <div *ngIf="item.children">
+        <a (click)="toggleDropdown(item.key)">
+          <i [class]="item.icon"></i>
+          {{ item.translateKey | translate }}
+          <i class="bi bi-chevron-down"></i>
+        </a>
+
+        <ul *ngIf="openDropdown() === item.key" class="shadow">
+          <li
+            *ngFor="let child of item.children"
+            (click)="navigate(child.path)"
+          >
+            <i [class]="child.icon"></i>
+            {{ child.translateKey | translate }}
+          </li>
+        </ul>
+      </div>
+    </li>
+  </ul>
+</nav>

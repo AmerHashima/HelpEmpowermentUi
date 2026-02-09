@@ -189,3 +189,11 @@ html[dir="ltr"] body {
   direction: ltr !important;
   text-align: left;
 }
+
+html[dir='ltr'] .clientNavbar .top-bar .dropdown ul {
+  right: 0px;
+}
+
+html[dir='rtl'] .clientNavbar .top-bar .dropdown ul {
+  left: 0px;
+}
