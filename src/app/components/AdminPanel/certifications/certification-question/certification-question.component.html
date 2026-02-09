@@ -108,9 +108,7 @@
             placeholder="Select mark"
             selectClass="form-control w-100"
           ></spk-ng-select>
-        </div> -->
-
-        <div class="col-12 col-md-4">
+        </div> --> <div class="col-12 col-md-4">
           <spk-ng-select
             formControlName="isActive"
             label="Status"
@@ -121,6 +119,15 @@
             selectClass="form-control w-100"
           ></spk-ng-select>
         </div>
+  <div class="col-12">
+          <app-textarea
+            formControlName="questionExplanation"
+            label="Question Explanation"
+            placeholder="Enter the explanation here..."
+            
+          ></app-textarea>
+        </div>
+       
 
         <!-- Uncomment if file upload is actually used -->
         <!--
@@ -208,10 +215,10 @@
       </div>
     </div>
   </ng-container>
-
+<div class="row">
   <!--      Matching / Drag-Drop    -->
   @if (activeSection()?.toLowerCase()?.includes("match")) {
-    <div class="card shadow-sm mt-4">
+    <div class="card col-6 shadow-sm mt-4">
       <div class="card-header fw-bold">
         <h5 class="mb-0">Drag Questions (Left side)</h5>
       </div>
@@ -274,7 +281,7 @@
 
     <!-- ─── Drag Answers ─── -->
     @if (addDragAnswersFlag()) {
-      <div class="card shadow-sm mt-4">
+      <div class="card col-6 shadow-sm mt-4">
         <div class="card-header fw-bold">
           <h5 class="mb-0">Drag Answers (Right side / draggable items)</h5>
         </div>
@@ -381,5 +388,5 @@
       btnLabel="{{ editMode ? 'Update Question' : 'Create Question' }}"
       buttonType="submit"
     />
-  </div>
+  </div></div>
 </form>

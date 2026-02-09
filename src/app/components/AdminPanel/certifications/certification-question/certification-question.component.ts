@@ -114,6 +114,7 @@ export class CertificationQuestionComponent {
     coursesMasterExamOid: ['', Validators.required],
     questionTypeLookupId: ['', Validators.required],
     questionText: ['', [Validators.required]],
+    questionExplanation: [''],
     orderNo: ['', Validators.required],
     questionScore: [1],
     isActive: [true, Validators.required],
@@ -364,6 +365,7 @@ export class CertificationQuestionComponent {
       coursesMasterExamOid: question.coursesMasterExamOid,
       questionTypeLookupId: question.questionTypeLookupId,
       questionText: question.questionText,
+      questionExplanation: question.questionExplanation,
       orderNo: String(question.orderNo),
       questionScore: question.questionScore,
       isActive: question.isActive,
@@ -452,6 +454,7 @@ export class CertificationQuestionComponent {
       orderNo: raw.orderNo,
       isActive: raw.isActive,
       correctAnswer: raw.correctAnswer,
+      questionExplanation: raw.questionExplanation,
       question: raw.question,
       correctChoiceOid: raw.correctChoiceOid,
       createdBy: raw.createdBy,
@@ -469,6 +472,7 @@ export class CertificationQuestionComponent {
       correctAnswerOid: a.correctAnswerOid ?? null,
       isCorrect: overrides.isCorrect ?? a.isCorrect ?? false,
       orderNo: a.orderNo,
+      questionExplanation: a.questionExplanation,
       createdBy: a.createdBy,
     }));
   }
@@ -523,6 +527,8 @@ export class CertificationQuestionComponent {
           correctAnswerOid: q.correctAnswerOid ?? null,
           isCorrect: q.isCorrect ?? false,
           orderNo: q.orderNo,
+          questionExplanation: q.questionExplanation,
+
           updatedBy: DEFAULT_USER_ID
         };
         console.log('submit payload', payload);
