@@ -49,6 +49,7 @@ export class ExamDetailsComponent {
       const id = this.route.snapshot.paramMap.get('examId');
        this.certId = this.route.snapshot.paramMap.get('id');
       if (id && !this.exam()) {
+        console.log('in exam details route effect');
         this.examsStore.getExam(id);
       }
     });
@@ -116,6 +117,7 @@ export class ExamDetailsComponent {
 
   onOpenSingleQuestion(question:any){
     this.questionStore.setSelectedQuestion(question);
+    console.log('openExamIdQuestion',this.exam()?.oid);
     this.router.navigate(['/admin/certifications', this.certId,'questions', question.oid]);
   }
 }

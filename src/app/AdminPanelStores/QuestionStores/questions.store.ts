@@ -147,6 +147,7 @@ export const QuestionsStore = signalStore(
                 total: res.total ?? 0,
               }));
             }),
+            tap(() => console.log('in query questions',store.questions())),
             catchError((err) => {
               patchState(store, setError(err?.message ?? 'Failed to load questions'));
               return of({ questions: [], total: 0 });
@@ -297,11 +298,13 @@ export const QuestionsStore = signalStore(
         )
       ),
       updateQuestion$(payload: any) {
+        console.log('updatePayload',payload);
         patchState(store, activateLoading);
         return service.updateQuestion(payload.id, payload.body).pipe(
-          tap(updated => console.log('update sucess')),
-
-          // tap(updated => patchState(store, updateQuestion(updated))),
+          // tap(updated => console.log('ubefore pdateed', store.selectedQuestion())),
+          tap(updated => console.log('update sucess',updated)),
+          // tap(updated => patchState(store, updateQuestion(updated, updated.questionId))),
+          // tap(updated => console.log('updateed', store.selectedQuestion())),
           catchError(err => {
             patchState(store, setError(err?.message ?? 'Update failed'));
             console.log(err?.message);

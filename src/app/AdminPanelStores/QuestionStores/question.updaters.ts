@@ -49,24 +49,57 @@ export const addQuestion = (
 };
 
 /* ===================== Update Question ===================== */
+export const updateQuestion =
+  (answer: any, questionId: string): PartialStateUpdater<QuestionState> =>
+    (state) => {
+      const updatedQuestions = state.questions.map(q =>
+        q.oid !== questionId
+          ? q
+          : {
+            ...q,
+            answers: [
+              ...q.answers.filter(a => a.oid !== answer.oid),
+              answer,
+            ],
+          }
+      );
 
-export const updateQuestion = (
-  question: APICourseQuestion
-): PartialStateUpdater<QuestionState> => {
-  console.log('mapperqUESTION', question);
-  const mappedQuestion: courseQuestion = mapApiQuestionToCourseQuestion(question);
-  console.log('aftermapperqUESTION', mappedQuestion);
+      const updatedSelectedQuestion =
+        state.selectedQuestion?.oid === questionId
+          ? {
+            ...state.selectedQuestion,
+            answers: [
+              ...state.selectedQuestion.answers.filter(a => a.oid !== answer.oid),
+              answer,
+            ],
+          }
+          : state.selectedQuestion;
 
-  return (state) => ({
-    questions: [
-      ...state.questions.filter(q => q.oid !== mappedQuestion.oid),
-      // ...state.questions.filter(q => q.oid !== question.oid),
 
-      mappedQuestion,
-      // question
-    ],
-  });
-};
+      return {
+        questions: updatedQuestions,
+        selectedQuestion: updatedSelectedQuestion
+      };
+    };
+
+// export const updateQuestion = (
+//   answers: any,
+//   updateQuestion:string
+// ): PartialStateUpdater<QuestionState> => {
+//   // console.log('mapperqUESTION', question);
+//   // const mappedQuestion: courseQuestion = mapApiQuestionToCourseQuestion(question);
+//   // console.log('aftermapperqUESTION', mappedQuestion);
+//   console.log('updateQuestionId', updateQuestion);
+//   return (state) => ({
+//     questions: [
+//       ...state.questions.filter(q => q.oid !== updateQuestion),
+//       // ...state.questions.filter(q => q.oid !== question.oid),
+
+//       ...state.questions.filter(q => q.oid == updateQuestion).map((x) => ({ ...x, answers: answers })),
+//       // question
+//     ],
+//   });
+// };
 
 /* ===================== Get / Select Question ===================== */
 

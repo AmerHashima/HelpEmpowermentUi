@@ -40,9 +40,9 @@ export class CreateNewCertificationComponent {
   ];
 
   form = this.fb.group({
-    courseCode: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
-    courseName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
-    courseDescription: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(20)]],
+    courseCode: ['', [Validators.required]],
+    courseName: ['', [Validators.required]],
+    courseDescription: ['', [Validators.required]],
     courseLevelLookupId: ['', [Validators.required]],
     courseCategoryLookupId: ['', [Validators.required]],
     createdBy: ['3fa85f64-5717-4562-b3fc-2c963f66afa6', [Validators.required]],
