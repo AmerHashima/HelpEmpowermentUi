@@ -3,7 +3,14 @@
   (ngSubmit)="onSubmit()"
   class="d-flex flex-column gap-4 p-3"
 >
-  <div class="row flex-wrap g-2">
+
+  <div class="card shadow-sm">
+    <div class="card-header fw-bold">
+      <h5 class="mb-0">Certification Details</h5>
+    </div>
+    <div class="card-body"
+    >
+       <div class="row flex-wrap g-2">
     <div class="col-lg-4">
       <app-input
         formControlName="courseCode"
@@ -94,15 +101,30 @@
         selectClass="form-control"
       />
     </div>
-    <!-- <div class="col-12">
+  </div>
+
+  </div>
+</div>
+
+  <div class="card shadow-sm">
+    <div class="card-header fw-bold">
+      <h5 class="mb-0">Certification Attachment</h5>
+    </div>
+    <div class="card-body"
+    >
+       <div class="row flex-wrap g-2">
+    <div class="col-12">
       <label for="" class="mb-2">Course Image</label>
       <app-file-upload
         formControlName="files"
-        [multiple]="true"
+        [multiple]="false"
         label="Upload certification images"
       ></app-file-upload>
-    </div> -->
+    </div>
   </div>
+
+  </div>
+</div>
 
 <div class="d-flex justify-content-end gap-2">
   <app-button

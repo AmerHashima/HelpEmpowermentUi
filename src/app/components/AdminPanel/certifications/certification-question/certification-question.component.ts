@@ -692,6 +692,7 @@ export class CertificationQuestionComponent {
     answers: this.fb.array([]),
     dragQuestions: this.fb.array([]),
     dragAnswers: this.fb.array([]),
+     files: [[] as File[]],
   });
 
   get answersArray(): FormArray { return this.form.get('answers') as FormArray; }

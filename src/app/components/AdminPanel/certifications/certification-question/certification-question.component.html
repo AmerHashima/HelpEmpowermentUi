@@ -442,7 +442,16 @@
             }"
           ></app-textarea>
         </div>
-
+           <div class="col-12">
+              <div class="upload">
+                <label for="">Attachments</label>
+                <app-file-upload
+                  formControlName="files"
+                  [multiple]="false"
+                  label="Upload files"
+                ></app-file-upload>
+              </div>
+            </div>
         <div class="col-12 col-md-4">
           <app-input
             formControlName="orderNo"

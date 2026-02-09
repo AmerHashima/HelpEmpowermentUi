@@ -47,7 +47,7 @@ export class CreateNewCertificationComponent {
     courseCategoryLookupId: ['', [Validators.required]],
     createdBy: ['3fa85f64-5717-4562-b3fc-2c963f66afa6', [Validators.required]],
     isActive: [true, [Validators.required]],
-    // files: [[] as File[]]
+    files: [[] as File[]]
   });
 
   certification = this.store.selectedCertification;
