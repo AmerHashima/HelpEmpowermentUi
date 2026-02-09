@@ -1,3 +1,4 @@
+// src\app\AdminPanelStores\QuestionStores\questions.store.ts
 import {
   signalStore,
   withState,
@@ -59,7 +60,7 @@ export const QuestionsStore = signalStore(
   withState(initialQuestionState),
 
   /* ===================== Computed ===================== */
-  withComputed(({ page, pageSize, search, sortBy, sortDirection, total,filters }) => ({
+  withComputed(({ page, pageSize, search, sortBy, sortDirection, total, filters }) => ({
     queryRequest: computed<RequestBody>(() => {
       const filtersInner: Filter[] = [
         ...(filters() ?? [])
@@ -121,7 +122,7 @@ export const QuestionsStore = signalStore(
       patchState(store, setSuccess(success));
     },
 
-    setSelectedQuestion(question: courseQuestion|null) {
+    setSelectedQuestion(question: courseQuestion | null) {
       patchState(store, setSelectedQuestion(question));
     },
 
@@ -147,7 +148,7 @@ export const QuestionsStore = signalStore(
                 total: res.total ?? 0,
               }));
             }),
-            tap(() => console.log('in query questions',store.questions())),
+            tap(() => console.log('in query questions', store.questions())),
             catchError((err) => {
               patchState(store, setError(err?.message ?? 'Failed to load questions'));
               return of({ questions: [], total: 0 });
@@ -189,7 +190,7 @@ export const QuestionsStore = signalStore(
               tap((question: APICourseQuestion) => {
                 patchState(store, addQuestion(question));
                 tap(() => toasting.showToast('Question has been deleted', 'success')),
-                patchState(store, setSuccess(true));
+                  patchState(store, setSuccess(true));
               }),
               catchError((err) => {
                 patchState(store, setError(err?.msg ?? 'Failed to add question'));
@@ -235,7 +236,7 @@ export const QuestionsStore = signalStore(
           switchMap((id) =>
             service.deleteQuestion(id).pipe(
               tap(() => patchState(store, deleteQuestion(id))),
-              tap(() => toasting.showToast('Question has been deleted','success')),
+              tap(() => toasting.showToast('Question has been deleted', 'success')),
               catchError((err) => {
                 patchState(store, setError(err?.message ?? 'Delete failed'));
                 toasting.showToast('Question failed to be deleted', 'error')
@@ -251,7 +252,7 @@ export const QuestionsStore = signalStore(
   }),
   withMethods((store) => {
     const service = inject(CertificationService);
-     const toasting=inject(ToastingMessagesService);
+    const toasting = inject(ToastingMessagesService);
     return {
       addAnswer: rxMethod<courseQuestion>(
         pipe(
@@ -259,7 +260,7 @@ export const QuestionsStore = signalStore(
           concatMap((body) =>
             service.createAnswer(body).pipe(
               tap(() => {
-                 console.log('createSyccessfully');
+                console.log('createSyccessfully');
               }),
               // tap(() => {
               //   const question = store.selectedQuestion();
@@ -298,11 +299,11 @@ export const QuestionsStore = signalStore(
         )
       ),
       updateQuestion$(payload: any) {
-        console.log('updatePayload',payload);
+        console.log('updatePayload', payload);
         patchState(store, activateLoading);
         return service.updateQuestion(payload.id, payload.body).pipe(
           // tap(updated => console.log('ubefore pdateed', store.selectedQuestion())),
-          tap(updated => console.log('update sucess',updated)),
+          tap(updated => console.log('update sucess', updated)),
           // tap(updated => patchState(store, updateQuestion(updated, updated.questionId))),
           // tap(updated => console.log('updateed', store.selectedQuestion())),
           catchError(err => {
@@ -315,7 +316,7 @@ export const QuestionsStore = signalStore(
         );
       },
 
-addAnswer$(answer: any) {
+      addAnswer$(answer: any) {
         return service.createAnswer(answer).pipe(
           tap(() => {
             // console.log('created');

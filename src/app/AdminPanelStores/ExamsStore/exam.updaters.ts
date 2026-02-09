@@ -1,4 +1,4 @@
-// src/app/AdminPanelStores/ExamsStore/exams.updaters.ts
+// src\app\AdminPanelStores\ExamsStore\exam.updaters.ts
 
 import { PartialStateUpdater } from "@ngrx/signals";
 import { APIExam } from "../../models/certification";

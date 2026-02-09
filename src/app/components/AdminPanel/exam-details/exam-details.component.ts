@@ -1,3 +1,4 @@
+// src\app\components\AdminPanel\exam-details\exam-details.component.ts
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { ExamsStore } from '../../../AdminPanelStores/ExamsStore/exam.store';
 import { CertificationService } from '../../../Services/certification.service';
@@ -6,17 +7,17 @@ import { ReusableMaterialTableComponent } from '../../../shared/angular-material
 import { QuestionsStore } from '../../../AdminPanelStores/QuestionStores/questions.store';
 import { Filter, Sort } from '../../../models/rquest';
 import { ButtonComponent } from '../../../shared/button/button.component';
-import {  NgIf } from '@angular/common';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-exam-details',
-  imports: [ReusableMaterialTableComponent, ButtonComponent,NgIf],
+  imports: [ReusableMaterialTableComponent, ButtonComponent, NgIf],
   templateUrl: './exam-details.component.html',
   styleUrl: './exam-details.component.scss'
 })
 export class ExamDetailsComponent {
   examsStore = inject(ExamsStore);
-  questionStore=inject(QuestionsStore);
+  questionStore = inject(QuestionsStore);
   certificationService = inject(CertificationService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
@@ -25,7 +26,7 @@ export class ExamDetailsComponent {
   pageSize = computed(() => this.questionStore.pageSize());
   loading = computed(() => this.questionStore.loading());
   questions = computed(() => this.questionStore.questions());
-  certId:any='';
+  certId: any = '';
   columns = [
     { field: 'orderNo', header: 'No.', type: 'text' },
     { field: 'questionText', header: 'Question', type: 'text' },
@@ -47,7 +48,7 @@ export class ExamDetailsComponent {
   constructor() {
     effect(() => {
       const id = this.route.snapshot.paramMap.get('examId');
-       this.certId = this.route.snapshot.paramMap.get('id');
+      this.certId = this.route.snapshot.paramMap.get('id');
       if (id && !this.exam()) {
         this.examsStore.getExam(id);
       }
@@ -57,7 +58,7 @@ export class ExamDetailsComponent {
     effect(() => {
       const exam = this.exam();
       if (exam) {
-        const filters :Filter[]= [
+        const filters: Filter[] = [
           {
             propertyName: "coursesMasterExamOid",
             value: exam.oid!,
@@ -65,7 +66,7 @@ export class ExamDetailsComponent {
           }
         ]
         this.questionStore.setFilters([...filters]);
-        const req=this.questionStore.queryRequest();
+        const req = this.questionStore.queryRequest();
         this.questionStore.queryQuestions(req);
       }
     });
@@ -75,7 +76,7 @@ export class ExamDetailsComponent {
 
   onAddNewQuestion() {
     const examId = this.exam()?.oid;
-    if (examId){
+    if (examId) {
       this.questionStore.setSelectedQuestion(null);
       this.router.navigate(['/admin/certifications', this.certId, 'exams', examId, 'question', 'create'
       ]);
@@ -112,8 +113,8 @@ export class ExamDetailsComponent {
   }
 
 
-  onOpenSingleQuestion(question:any){
+  onOpenSingleQuestion(question: any) {
     this.questionStore.setSelectedQuestion(question);
-    this.router.navigate(['/admin/certifications', this.certId,'questions', question.oid]);
+    this.router.navigate(['/admin/certifications', this.certId, 'questions', question.oid]);
   }
 }

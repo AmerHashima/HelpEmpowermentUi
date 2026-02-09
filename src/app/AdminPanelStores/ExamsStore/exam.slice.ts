@@ -1,9 +1,10 @@
+// src\app\AdminPanelStores\ExamsStore\exam.slice.ts
 import { ExamState } from "./exam.state";
 
 export const initialExamsState: ExamState = {
   exams: [],
-  selectedExam:null,
-  success:false,
+  selectedExam: null,
+  success: false,
   loading: false,
   error: null,
 };

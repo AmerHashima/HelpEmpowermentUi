@@ -1,4 +1,4 @@
-// src/app/AdminPanelStores/ExamsStore/exams.store.ts
+// src\app\AdminPanelStores\ExamsStore\exam.store.ts
 import {
   signalStore,
   withState,

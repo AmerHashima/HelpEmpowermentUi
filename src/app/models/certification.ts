@@ -4,11 +4,13 @@ export interface Certification {
   oid?: string,
   courseCode: string,
   courseName: string,
+  durationMinutes: number,
   courseDescription: string,
   courseLevelLookupId: string | null,
   courseCategoryLookupId: string | null,
   createdBy: string,
   isActive: boolean,
+  questionCount: number,
 
 }
 
@@ -19,6 +21,9 @@ export interface APICertification {
   isActive: boolean,
   courseCode: string,
   courseName: string,
+  durationMinutes: number,
+  questionCount: number,
+
   courseDescription: string,
   courseLevelLookupId: string | null,
   courseCategoryLookupId: string | null,
@@ -37,6 +42,8 @@ export interface courseExam {
   courseLevelLookupId: string | null,
   courseCategoryLookupId: string | null,
   questionCount?: number,
+  durationMinutes?: number,
+
   isActive: boolean,
   createdBy: string
 }
@@ -52,6 +59,8 @@ export interface APIExam {
   courseCategoryName: string | null,
   isActive: boolean,
   questionCount: number,
+  durationMinutes: number,
+
   createdAt: string,
   createdBy: string,
   updatedAt: string,

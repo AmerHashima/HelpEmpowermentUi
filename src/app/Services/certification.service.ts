@@ -1,3 +1,4 @@
+// src\app\Services\certification.service.ts
 import { Injectable } from '@angular/core';
 import ApiService from '../shared/Services/ApiService/api.service';
 import { map } from 'rxjs/operators';
@@ -361,7 +362,7 @@ export class CertificationService {
   getQuestion(id: string): Observable<APICourseQuestion> {
     return this.apiService
       // .getSingle<ApiResponse<APICourseQuestion>>('CourseQuestions', id)
-      .getSingle<ApiResponse<APICourseQuestion>>('CourseQuestions', id,'question')
+      .getSingle<ApiResponse<APICourseQuestion>>('CourseQuestions', id, 'question')
       .pipe(
         map((response: ApiResponse<APICourseQuestion>) => {
           if (!response.success) {

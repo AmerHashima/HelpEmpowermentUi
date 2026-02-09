@@ -1,7 +1,8 @@
+// src\app\shared\input\input.component.ts
 import {
   Component, signal, computed, input,
   Optional, Self, AfterViewInit, inject,
-  DestroyRef
+  DestroyRef, Output, EventEmitter
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -21,6 +22,8 @@ export class InputComponent implements ControlValueAccessor, AfterViewInit {
   icon = input<string | undefined>();
   errorMessages = input<Record<string, string>>({});
   readOnly = input<boolean>(false);
+
+  @Output() inputClick = new EventEmitter<MouseEvent>();
   // Value signals
   value = signal('');
   isDisabled = signal(false);
@@ -104,6 +107,10 @@ export class InputComponent implements ControlValueAccessor, AfterViewInit {
   onBlur(): void {
     this.isTouched.set(true);
     this.onTouched();
+  }
+
+  onClick(event: MouseEvent): void {
+    this.inputClick.emit(event);
   }
 }
 

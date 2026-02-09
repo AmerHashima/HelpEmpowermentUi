@@ -1,3 +1,4 @@
+// src\app\components\AdminPanel\certifications\certification\certification.component.ts
 import { Component, computed, effect, inject, linkedSignal, output } from '@angular/core';
 import { APIExam } from '../../../../models/certification';
 import { ButtonComponent } from '../../../../shared/button/button.component';
@@ -27,7 +28,7 @@ export class CertificationComponent {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   certification = this.certificationStore.selectedCertification
-  courseContents=[];
+  courseContents = [];
   exams = computed(() => this.examsStore.exams());
 
   constructor() {
@@ -44,16 +45,16 @@ export class CertificationComponent {
     if (certId)
       this.router.navigate(['/admin/certifications', certId, 'exams', 'create']);
   }
-  openExamDetails(exam:any){
+  openExamDetails(exam: any) {
     const certId = this.certification()?.oid;
-    if (certId){
+    if (certId) {
       this.examsStore.setSelectedExam(exam);
       this.router.navigate(['/admin/certifications', certId, 'exams', 'exam', exam.oid]);
     }
   }
   onAddNewQuestion(exam: any) {
     const certId = this.certification()?.oid;
-    if (certId){
+    if (certId) {
       this.questionStore.setSelectedQuestion(null);
       this.router.navigate(['/admin/certifications', certId, 'exams', exam.oid, 'question', 'create'
       ]);

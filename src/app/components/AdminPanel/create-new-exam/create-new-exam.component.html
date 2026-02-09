@@ -1,11 +1,12 @@
+<!-- src\app\components\AdminPanel\create-new-exam\create-new-exam.component.html -->
 <form
   [formGroup]="form"
   (ngSubmit)="onSubmit()"
   class="d-flex flex-column gap-4 p-3"
 >
   <div class="row flex-wrap g-2">
- <div class="col-lg-4">
-      <app-input
+ <!-- <div class="col-lg-4"> -->
+      <!-- <app-input
         formControlName="courseOid"
         label="Course Id"
         type="text"
@@ -16,7 +17,7 @@
           required: 'Course Id is required',
         }"
       />
-    </div>
+    </div> -->
     <div class="col-lg-4">
       <app-input
         formControlName="courseName"
@@ -27,6 +28,30 @@
         [readOnly]="true"
         [errorMessages]="{
           required: 'Course Name is required',
+        }"
+      />
+    </div>
+       <div class="col-lg-4">
+      <app-input
+        formControlName="durationMinutes"
+        label="Duration In Minutes"
+        type="text"
+        placeholder=""
+        icon=""
+        [errorMessages]="{
+          required: 'Duration In Minutes is required',
+        }"
+      />
+    </div>
+       <div class="col-lg-4">
+      <app-input
+        formControlName="questionCount"
+        label="Question Count"
+        type="text"
+        placeholder=""
+        icon=""
+        [errorMessages]="{
+          required: 'Question Count is required',
         }"
       />
     </div>
@@ -54,7 +79,7 @@
         selectClass="form-control"
       />
     </div> -->
-    <div class="col-lg-4">
+    <!-- <div class="col-lg-4">
       <spk-ng-select
         formControlName="createdBy"
         label="Creator"
@@ -63,7 +88,7 @@
         placeholder="Choose User"
         selectClass="form-control"
       />
-    </div>
+    </div> -->
       <div class="col-lg-4">
       <spk-ng-select
         formControlName="isActive"
