@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 
-import { AboutComponent } from './components/about/about.component';
+import { AboutComponent } from './components/ClientSide/about/about.component';
 import { AdminLayoutComponent } from './components/AdminPanel/admin-layout/admin-layout.component';
 import { DashboardComponent } from './components/AdminPanel/dashboard/dashboard.component';
 
