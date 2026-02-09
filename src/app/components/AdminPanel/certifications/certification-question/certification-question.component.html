@@ -442,18 +442,18 @@
             }"
           ></app-textarea>
         </div>
-           <div class="col-12">
-              <div class="upload">
-                <label for="">Attachments</label>
-                <div class="px-3">
-                  <app-file-upload
-                  formControlName="files"
-                  [multiple]="false"
-                  label="Upload files"
-                ></app-file-upload>
-                </div>
-              </div>
+        <div class="col-12">
+          <div class="upload">
+            <div class="px-3">
+              <label for="">Attachments</label>
+              <app-file-upload
+                formControlName="files"
+                [multiple]="false"
+                label="Upload files"
+              ></app-file-upload>
             </div>
+          </div>
+        </div>
         <div class="col-12 col-md-4">
           <app-input
             formControlName="orderNo"
@@ -740,7 +740,6 @@
       </div>
     }
   }
-
 
   <!--         Actions            -->
   <div class="d-flex justify-content-end gap-3 mt-4">

@@ -29,10 +29,10 @@ export class CreateNewExamComponent {
   fb = inject(FormBuilder);
   // store = inject(CertificationsStore);
 
-  courseLevels$ = this.certificationService.getCourseLevels();
+  // courseLevels$ = this.certificationService.getCourseLevels();
 
 
-  courseCategories$ = this.certificationService.getCourseCategories();
+  // courseCategories$ = this.certificationService.getCourseCategories();
 
   users = [
     { label: 'Ahmed Ali', value: '3fa85f64-5717-4562-b3fc-2c963f66afa6' },
@@ -46,8 +46,8 @@ export class CreateNewExamComponent {
   form = this.fb.group({
     courseOid: ['', [Validators.required]],
     courseName: ['', [Validators.required]],
-    courseLevelLookupId: ['', [Validators.required]],
-    courseCategoryLookupId: ['', [Validators.required]],
+    courseLevelLookupId: [null as string | null],
+    courseCategoryLookupId: [null as string | null],
     createdBy: ['', [Validators.required]],
     isActive: [true, [Validators.required]],
   });
@@ -68,8 +68,8 @@ export class CreateNewExamComponent {
         console.log('in second effect')
         this.form.patchValue({
           courseName: certification.courseName,
-          courseLevelLookupId: certification.courseLevelLookupId,
-          courseCategoryLookupId: certification.courseCategoryLookupId,
+          courseLevelLookupId: certification.courseLevelLookupId ?? null,
+          courseCategoryLookupId: certification.courseCategoryLookupId ?? null,
           createdBy: certification.createdBy,
           courseOid: certification.oid,
           isActive: false,
@@ -104,8 +104,8 @@ export class CreateNewExamComponent {
     const v = this.form.getRawValue();
     const payload: courseExam = {
       courseName: v.courseName!,
-      courseLevelLookupId: v.courseLevelLookupId!,
-      courseCategoryLookupId: v.courseCategoryLookupId!,
+      courseLevelLookupId: v.courseLevelLookupId ?? null,
+      courseCategoryLookupId: v.courseCategoryLookupId ?? null,
       createdBy: v.createdBy!,
       isActive: v.isActive!,
       courseOid: v.courseOid!,

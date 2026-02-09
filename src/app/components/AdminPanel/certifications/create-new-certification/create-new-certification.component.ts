@@ -27,9 +27,8 @@ export class CreateNewCertificationComponent {
 
   fb = inject(FormBuilder);
   store = inject(CertificationsStore);
-  // id: string = '';
-  courseLevels$ = this.certificationService.getCourseLevels();
-  courseCategories$ = this.certificationService.getCourseCategories();
+  // courseLevels$ = this.certificationService.getCourseLevels();
+  // courseCategories$ = this.certificationService.getCourseCategories();
   users = [
     { label: 'Ahmed Ali', value: '3fa85f64-5717-4562-b3fc-2c963f66afa6' },
   ];
@@ -43,8 +42,10 @@ export class CreateNewCertificationComponent {
     courseCode: ['', [Validators.required]],
     courseName: ['', [Validators.required]],
     courseDescription: ['', [Validators.required]],
-    courseLevelLookupId: ['', [Validators.required]],
-    courseCategoryLookupId: ['', [Validators.required]],
+    // courseLevelLookupId: ['', [Validators.required]],
+    // courseCategoryLookupId: ['', [Validators.required]],
+    courseLevelLookupId: [null as string | null],
+    courseCategoryLookupId: [null as string | null],
     createdBy: ['3fa85f64-5717-4562-b3fc-2c963f66afa6', [Validators.required]],
     isActive: [true, [Validators.required]],
     files: [[] as File[]]
@@ -71,8 +72,8 @@ export class CreateNewCertificationComponent {
         courseCode: certification.courseCode,
         courseName: certification.courseName,
         courseDescription: certification.courseDescription,
-        courseLevelLookupId: certification.courseLevelLookupId,
-        courseCategoryLookupId: certification.courseCategoryLookupId,
+        courseLevelLookupId: certification.courseLevelLookupId ?? null,
+        courseCategoryLookupId: certification.courseCategoryLookupId ?? null,
         createdBy: certification.createdBy,
         isActive: certification.isActive,
       });
@@ -118,8 +119,8 @@ export class CreateNewCertificationComponent {
       courseCode: v.courseCode!,
       courseName: v.courseName!,
       courseDescription: v.courseDescription!,
-      courseLevelLookupId: v.courseLevelLookupId!,
-      courseCategoryLookupId: v.courseCategoryLookupId!,
+      courseLevelLookupId: v.courseLevelLookupId ?? null,
+      courseCategoryLookupId: v.courseCategoryLookupId ?? null,
       createdBy: v.createdBy!,
       isActive: v.isActive!,
     };
