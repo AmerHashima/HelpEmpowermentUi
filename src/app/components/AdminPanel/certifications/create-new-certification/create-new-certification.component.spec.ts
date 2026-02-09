@@ -1,4 +1,4 @@
-// src\app\components\AdminPanel\create-new-certification\create-new-certification.component.spec.ts
+// src\app\components\AdminPanel\certifications\create-new-certification\create-new-certification.component.spec.ts
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CreateNewCertificationComponent } from './create-new-certification.component';
