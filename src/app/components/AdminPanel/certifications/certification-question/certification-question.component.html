@@ -445,11 +445,13 @@
            <div class="col-12">
               <div class="upload">
                 <label for="">Attachments</label>
-                <app-file-upload
+                <div class="px-3">
+                  <app-file-upload
                   formControlName="files"
                   [multiple]="false"
                   label="Upload files"
                 ></app-file-upload>
+                </div>
               </div>
             </div>
         <div class="col-12 col-md-4">

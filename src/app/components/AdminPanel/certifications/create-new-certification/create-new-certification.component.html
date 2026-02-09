@@ -115,11 +115,13 @@
   <div class="row flex-wrap g-2">
     <div class="col-12">
       <label for="" class="mb-2">Course Image</label>
-      <app-file-upload
+      <div class="px-3">
+         <app-file-upload
         formControlName="files"
         [multiple]="false"
         label="Upload certification images"
       ></app-file-upload>
+      </div>
     </div>
   </div>
 
