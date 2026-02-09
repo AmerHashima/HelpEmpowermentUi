@@ -1,3 +1,4 @@
+// src\app\components\AdminPanel\certifications\create-new-certification\create-new-certification.component.ts
 import { Component, computed, effect, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AsyncPipe } from '@angular/common';
@@ -133,7 +134,7 @@ export class CreateNewCertificationComponent {
     // if (this.isEdit())
     //   this.location.back();
     // else
-      this.router.navigate(['/admin/certifications']);
+    this.router.navigate(['/admin/certifications']);
   }
 }
 
