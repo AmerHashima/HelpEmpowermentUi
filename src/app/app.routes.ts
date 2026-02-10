@@ -1,5 +1,5 @@
 // src\app\app.routes.ts
-import { Routes } from '@angular/router';
+import { CanMatchFn, Routes } from '@angular/router';
 
 import { AboutComponent } from './components/ClientSide/about/about.component';
 import { AdminLayoutComponent } from './components/AdminPanel/admin-layout/admin-layout.component';
@@ -36,13 +36,19 @@ import { RegisterComponent } from './components/ClientSide/auth/register/registe
 import { ProfileComponent } from './components/ClientSide/auth/profile/profile.component';
 import { AuthComponent } from './components/ClientSide/auth/auth.component';
 
+export const validLangGuard: CanMatchFn = (route, segments) => {
+  const lang = segments[0]?.path;
+  return lang === 'en' || lang === 'ar';
+};
+
 export const routes: Routes = [
     {  path: '',
-    redirectTo: 'en',   // default language
+    redirectTo: 'en',
     pathMatch: 'full',
   },
   {
-    path: ':lang',
+   path:':lang',
+    canMatch: [validLangGuard],
     component: ClientSideLayoutComponent,
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
