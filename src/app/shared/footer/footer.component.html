@@ -1,2 +1,18 @@
-<!-- src\app\shared\footer\footer.component.html -->
-<p>footer works!</p>
+<footer
+  class="footer-parent  d-flex flex-column align-content-center justify-content-center gap-2"
+>
+  <div class="footer-video d-flex align-items-center justify-content-center">
+    <img
+      [src]="footerImage"
+      [alt]="'footer.image' | translate"
+    />
+  </div>
+
+  <div class="checker-mover"></div>
+
+  <div class="footer-content d-flex justify-content-center">
+    <p>
+      {{ 'footer.copyright' | translate }}
+    </p>
+  </div>
+</footer>

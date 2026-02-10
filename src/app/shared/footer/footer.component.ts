@@ -1,12 +1,15 @@
-// src\app\shared\footer\footer.component.ts
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-footer',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule, TranslatePipe],
   templateUrl: './footer.component.html',
-  styleUrl: './footer.component.scss'
+  styleUrls: ['./footer.component.scss'],
 })
 export class FooterComponent {
-
+  footerImage = 'assets/images/footer/footer.png';
 }
+

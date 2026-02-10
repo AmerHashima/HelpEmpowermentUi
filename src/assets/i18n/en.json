@@ -24,5 +24,9 @@
   "auth": {
     "login": "Login",
     "signup": "Sign Up"
+  },
+  "footer": {
+    "image": "Footer image",
+    "copyright": "© 2024 Help Empowerment. All rights reserved."
   }
 }
