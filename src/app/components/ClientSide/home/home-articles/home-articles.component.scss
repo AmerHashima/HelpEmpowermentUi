@@ -1,0 +1,14 @@
+.articles-cards{
+    display: flex;
+    flex-direction: column;
+    align-items:stretch;
+    justify-content: center;
+    gap:2rem;
+}
+
+
+@media screen and (min-width:992px) {
+   .articles-cards{
+    flex-direction: row;
+}
+}

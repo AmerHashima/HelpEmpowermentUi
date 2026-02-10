@@ -28,5 +28,27 @@
   "footer": {
     "image": "Footer image",
     "copyright": "© 2024 Help Empowerment. All rights reserved."
+  },
+  "articles": {
+    "published": {
+      "march_2025": "March 10, 2025",
+      "february_2025": "February 10, 2025"
+    },
+    "read_time": {
+      "8_min": "8 MIN READ",
+      "6_min": "6 MIN READ"
+    },
+    "article1": {
+      "title": "CAPM Study Plan",
+      "summary": "Passing the CAPM exam requires a structured Methodology, much like managing a real project. Based on my experience and observing many candidates, I recommend dividing your preparation into five clear phases."
+    },
+    "article2": {
+      "title": "PMP Study Plan",
+      "summary": "Passing the PMP exam requires a structured Methodology, much like managing a real project. Based on my experience and observing many candidates, I recommend dividing your preparation into five clear Phases"
+    },
+    "article3": {
+      "title": "CAPM Study Plan",
+      "summary": "Passing the CAPM exam requires a structured Methodology, much like managing a real project. Based on my experience and observing many candidates, I recommend dividing your preparation into five clear phases."
+    }
   }
 }

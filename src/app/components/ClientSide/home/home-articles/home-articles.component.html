@@ -1,0 +1,19 @@
+<div class="articles-cards pt-4">
+      @for (article of articlesData(); track $index) {
+        <div class="certification-card-wrapper flex-grow-1 ">
+          <app-article-card
+            [imgSrc]="getImageSrc($index)"
+            [imgAlt]="article.imgAlt"
+            [date]="article.date"
+            [publishTime]="article.publishTime"
+            [title]="article.title"
+            [description]="article.description"
+            (onClick)="onArticleClick(article, $index)"
+          />
+        </div>
+      } @empty {
+        <div class="text-center py-5 text-muted fs-5">
+          {{ 'No articles available at the moment' | translate }}
+        </div>
+      }
+    </div>

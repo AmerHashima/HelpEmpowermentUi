@@ -7,12 +7,14 @@ import { SiteButtonComponent } from '../../../shared/clientSide/site-button/site
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { Shared } from '../../../shared/Services/shared/shared';
 import { CertificationCardsComponent } from '../../../shared/clientSide/certification-cards/certification-cards.component';
+import { HomeArticlesComponent } from './home-articles/home-articles.component';
 
 @Component({
   selector: 'app-home',
   standalone:true,
   imports: [PageBannerComponent,FeatureComponent,SocialLinksComponent,
-    SiteButtonComponent, TranslateModule, TranslatePipe, CertificationCardsComponent],
+    SiteButtonComponent, TranslateModule, TranslatePipe, CertificationCardsComponent,
+    HomeArticlesComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
