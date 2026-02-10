@@ -7,7 +7,6 @@
   background-color: $bgNav;
   box-shadow:$boxShadow;
   z-index: 1000;
-
   display: flex;
   flex-direction: column;
 }
@@ -220,14 +219,14 @@ ul{
   }
 
   /* Right-actions (search + icons) in a row */
-  .clientNavbar .top-bar .right-actions {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    flex: 1 1 auto;
-    justify-content: space-between;
-    min-width: 0;
-  }
+  // .clientNavbar .top-bar .right-actions {
+  //   display: flex;
+  //   align-items: center;
+  //   gap: 0.5rem;
+  //   flex: 1 1 auto;
+  //   justify-content: space-between;
+  //   min-width: 0;
+  // }
 
   /* Search input smaller but visible */
   .clientNavbar .top-bar .search {

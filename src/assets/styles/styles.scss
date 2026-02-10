@@ -51,18 +51,18 @@ html #toast-container.toast-top-right {
   z-index: 999999999 !important;
 }
 
-.p-datatable-filter-overlay * {
-  font-size: $fs-xs !important;
-  overflow: visible !important;
+// .p-datatable-filter-overlay * {
+//   font-size: $fs-xs !important;
+//   overflow: visible !important;
 
-  .p-button {
-    flex-grow: 1;
-  }
+//   .p-button {
+//     flex-grow: 1;
+//   }
 
-  .p-button-label {
-    padding: 1rem;
-  }
-}
+//   .p-button-label {
+//     padding: 1rem;
+//   }
+// }
 
 
 .form-control {

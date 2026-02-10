@@ -100,7 +100,9 @@ h2:hover{
   width: 80%;
 }
 
-
+.accordion-body p{
+  color:$paraTextColor;
+}
 
 @media screen and (min-width:1200px) {
   .Homebanner{
