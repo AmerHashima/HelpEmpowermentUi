@@ -185,7 +185,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 .darkText {
-  color: var(--headerDarkColor);
+  color: $headerColor;
 }
 
 .mainTextColor {
@@ -212,11 +212,27 @@ h1{
   line-height: 100%;
   margin-bottom:8px;
 }
+h2{
+    font-size:1.5rem;
+  font-weight:bold;
+  line-height: 100%;
+  margin-bottom:8px;
+  text-align: center;
+}
 p{
   color:$paraTextColor;
   width: 80%;
   line-height: 150%;
   margin: 0px;
+}
+.courseName{
+  font-weight: bold;
+  font-size: 1.5rem;
+  color:$headerColor
+}
+.sectionSubHeader{
+  font-style: italic;
+  color:$headerColor;
 }
 .page-width{
   width:90%;
@@ -227,10 +243,13 @@ p{
 h1{
   font-size:5rem;
 }
+h2{
+    font-size:2.5rem;
+  }
 }
 
 @media screen and (min-width:1400px){
   .page-width{
-  width:85%;
+  width:80%;
 }
 }

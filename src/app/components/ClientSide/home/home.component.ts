@@ -6,12 +6,13 @@ import { SocialLinksComponent } from '../../../shared/clientSide/social-links/so
 import { SiteButtonComponent } from '../../../shared/clientSide/site-button/site-button.component';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { Shared } from '../../../shared/Services/shared/shared';
+import { CertificationCardsComponent } from '../../../shared/clientSide/certification-cards/certification-cards.component';
 
 @Component({
   selector: 'app-home',
   standalone:true,
   imports: [PageBannerComponent,FeatureComponent,SocialLinksComponent,
-    SiteButtonComponent,TranslateModule,TranslatePipe],
+    SiteButtonComponent, TranslateModule, TranslatePipe, CertificationCardsComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
