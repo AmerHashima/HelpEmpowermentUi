@@ -1,3 +1,4 @@
+<!-- src\app\components\AdminPanel\certifications\create-new-certification\create-new-certification.component.html -->
 <form
   [formGroup]="form"
   (ngSubmit)="onSubmit()"
@@ -9,7 +10,7 @@
     </div>
     <div class="card-body px-3">
       <div class="row flex-wrap g-2">
-        <div class="col-lg-4">
+        <!-- <div class="col-lg-4">
           <app-input
             formControlName="courseCode"
             label="Course Code"
@@ -22,7 +23,7 @@
               maxlength: `Code can't exceed 20 charahcter`,
             }"
           />
-        </div>
+        </div> -->
         <div class="col-lg-4">
           <app-input
             formControlName="courseName"
@@ -37,7 +38,7 @@
             }"
           />
         </div>
-        <div class="col-lg-4">
+        <!-- <div class="col-lg-4">
           <app-input
             formControlName="courseDescription"
             label="Course Description"
@@ -50,7 +51,7 @@
               maxlength: `Description can't exceed 20 charahcter`,
             }"
           />
-        </div>
+        </div> -->
         <!-- <div class="col-lg-4">
           <spk-ng-select
             formControlName="courseLevelLookupId"
@@ -75,7 +76,7 @@
             selectClass="form-control"
           />
         </div> -->
-        <div class="col-lg-4">
+        <!-- <div class="col-lg-4">
           <spk-ng-select
             formControlName="createdBy"
             label="Creator"
@@ -86,7 +87,7 @@
             placeholder="Choose User"
             selectClass="form-control"
           />
-        </div>
+        </div> -->
         <div class="col-lg-4">
           <spk-ng-select
             formControlName="isActive"
@@ -103,7 +104,7 @@
     </div>
   </div>
 
-  <div class="card shadow-sm">
+  <!-- <div class="card shadow-sm">
     <div class="card-header fw-bold">
       <h5 class="mb-0">Certification Attachment</h5>
     </div>
@@ -121,7 +122,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 
   <div class="d-flex justify-content-end gap-2">
     <app-button btnLabel="Cancel" [mainBtn]="false" (click)="cancel()" />

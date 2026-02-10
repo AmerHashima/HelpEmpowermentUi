@@ -1,3 +1,4 @@
+// src\app\components\AdminPanel\certifications\create-new-certification\create-new-certification.component.ts
 import { Component, computed, effect, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AsyncPipe } from '@angular/common';
@@ -39,9 +40,11 @@ export class CreateNewCertificationComponent {
   ];
 
   form = this.fb.group({
-    courseCode: ['', [Validators.required]],
+    courseCode: [''],
     courseName: ['', [Validators.required]],
-    courseDescription: ['', [Validators.required]],
+    courseDescription: [''],
+    durationMinutes: [0],
+    questionCount: [0],
     // courseLevelLookupId: ['', [Validators.required]],
     // courseCategoryLookupId: ['', [Validators.required]],
     courseLevelLookupId: [null as string | null],
@@ -72,9 +75,11 @@ export class CreateNewCertificationComponent {
         courseCode: certification.courseCode,
         courseName: certification.courseName,
         courseDescription: certification.courseDescription,
+        durationMinutes: certification.durationMinutes,
         courseLevelLookupId: certification.courseLevelLookupId ?? null,
         courseCategoryLookupId: certification.courseCategoryLookupId ?? null,
         createdBy: certification.createdBy,
+        questionCount: certification.questionCount,
         isActive: certification.isActive,
       });
     });
@@ -119,9 +124,11 @@ export class CreateNewCertificationComponent {
       courseCode: v.courseCode!,
       courseName: v.courseName!,
       courseDescription: v.courseDescription!,
+      durationMinutes: v.durationMinutes!,
       courseLevelLookupId: v.courseLevelLookupId ?? null,
       courseCategoryLookupId: v.courseCategoryLookupId ?? null,
       createdBy: v.createdBy!,
+      questionCount: v.questionCount!,
       isActive: v.isActive!,
     };
     return payload;
@@ -133,7 +140,7 @@ export class CreateNewCertificationComponent {
     // if (this.isEdit())
     //   this.location.back();
     // else
-      this.router.navigate(['/admin/certifications']);
+    this.router.navigate(['/admin/certifications']);
   }
 }
 

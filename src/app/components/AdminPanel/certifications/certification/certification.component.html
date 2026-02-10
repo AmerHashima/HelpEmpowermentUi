@@ -1,3 +1,4 @@
+<!-- src\app\components\AdminPanel\certifications\certification\certification.component.html -->
 <div class="container-fluid">
   <div class="row">
     <div class="col-12">
@@ -35,11 +36,11 @@
             <div class="accordion-item mb-3 shadow">
               <h2 class="accordion-header">
                 <button
-                  class="accordion-button collapsed"
+                  class="accordion-button"
                   type="button"
                   data-bs-toggle="collapse"
                   data-bs-target="#flush-collapseOne"
-                  aria-expanded="false"
+                  aria-expanded="true"
                   aria-controls="flush-collapseOne"
                 >
                   Certification Exams
@@ -47,7 +48,7 @@
               </h2>
               <div
                 id="flush-collapseOne"
-                class="accordion-collapse collapse"
+                class="accordion-collapse collapse show"
                 data-bs-parent="#certificationAccordion"
               >
               <div class="accordion-body">
@@ -107,9 +108,8 @@
                     <i class="bi bi-clock"></i>
                     <span class="fw-bold">Duration</span>
                   </div>
-                  <span>
-                      230 min
-                  </span>
+                                  <span>{{ exam.durationMinutes }}</span>
+
                 </div>
               </div>
 
@@ -137,7 +137,7 @@
 </div>
               </div>
             </div>
-            <div class="accordion-item mb-3 shadow">
+            <!-- <div class="accordion-item mb-3 shadow">
               <h2 class="accordion-header">
                 <button
                   class="accordion-button collapsed"
@@ -182,7 +182,7 @@
                    <app-certification-contents/>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>

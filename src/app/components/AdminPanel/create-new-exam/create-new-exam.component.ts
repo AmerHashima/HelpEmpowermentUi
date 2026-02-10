@@ -1,7 +1,8 @@
+// src\app\components\AdminPanel\create-new-exam\create-new-exam.component.ts
 import { Component, effect, inject } from '@angular/core';
 import { CertificationService } from '../../../Services/certification.service';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
-import {  courseExam } from '../../../models/certification';
+import { courseExam } from '../../../models/certification';
 import { ButtonComponent } from '../../../shared/button/button.component';
 import { InputComponent } from '../../../shared/input/input.component';
 import { SpkNgSelectComponent } from '../../../shared/spk-ng-select/spk-ng-select.component';
@@ -14,7 +15,7 @@ import { ExamsStore } from '../../../AdminPanelStores/ExamsStore/exam.store';
 
 @Component({
   selector: 'app-create-new-exam',
-  imports: [ButtonComponent,InputComponent,SpkNgSelectComponent,AsyncPipe,ReactiveFormsModule],
+  imports: [ButtonComponent, InputComponent, SpkNgSelectComponent, AsyncPipe, ReactiveFormsModule],
   templateUrl: './create-new-exam.component.html',
   styleUrl: './create-new-exam.component.scss'
 })
@@ -44,17 +45,19 @@ export class CreateNewExamComponent {
   ];
 
   form = this.fb.group({
-    courseOid: ['', [Validators.required]],
+    courseOid: [''],
     courseName: ['', [Validators.required]],
+    durationMinutes: [0],
+    questionCount: [0],
     courseLevelLookupId: [null as string | null],
     courseCategoryLookupId: [null as string | null],
-    createdBy: ['', [Validators.required]],
+    createdBy: [''],
     isActive: [true, [Validators.required]],
   });
 
 
-  certification=this.certificationStore.selectedCertification;
-  constructor(){
+  certification = this.certificationStore.selectedCertification;
+  constructor() {
     effect(() => {
       const certId = this.route.snapshot.paramMap.get('id');
       if (!this.certification() && certId) {
@@ -69,6 +72,8 @@ export class CreateNewExamComponent {
           courseName: certification.courseName,
           courseLevelLookupId: certification.courseLevelLookupId ?? null,
           courseCategoryLookupId: certification.courseCategoryLookupId ?? null,
+          questionCount: certification.questionCount ?? 0,
+          durationMinutes: certification.durationMinutes ?? 0,
           createdBy: certification.createdBy,
           courseOid: certification.oid,
           isActive: false,
@@ -78,8 +83,8 @@ export class CreateNewExamComponent {
 
     effect(() => {
       if (this.examStore.success()) {
-         this.cancel();
-         this.examStore.setSuccess(false);
+        this.cancel();
+        this.examStore.setSuccess(false);
       }
     });
   }
@@ -89,7 +94,7 @@ export class CreateNewExamComponent {
       return;
     }
 
-    if (this.form.valid ) {
+    if (this.form.valid) {
       this.createExam();
     }
 
@@ -104,6 +109,8 @@ export class CreateNewExamComponent {
     const payload: courseExam = {
       courseName: v.courseName!,
       courseLevelLookupId: v.courseLevelLookupId ?? null,
+      durationMinutes: v.durationMinutes ?? 0,
+      questionCount: v.questionCount ?? 0,
       courseCategoryLookupId: v.courseCategoryLookupId ?? null,
       createdBy: v.createdBy!,
       isActive: v.isActive!,

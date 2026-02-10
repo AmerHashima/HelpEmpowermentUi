@@ -1,4 +1,4 @@
-// src\app\components\AdminPanel\certification-question\certification-question.component.spec.ts
+// src\app\components\AdminPanel\certifications\certification-question\certification-question.component.spec.ts
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CertificationQuestionComponent } from './certification-question.component';

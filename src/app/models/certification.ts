@@ -1,13 +1,16 @@
+// src\app\models\certification.ts
 
 export interface Certification {
   oid?: string,
   courseCode: string,
   courseName: string,
+  durationMinutes: number,
   courseDescription: string,
-  courseLevelLookupId: string |null,
-  courseCategoryLookupId: string|null,
+  courseLevelLookupId: string | null,
+  courseCategoryLookupId: string | null,
   createdBy: string,
   isActive: boolean,
+  questionCount: number,
 
 }
 
@@ -18,9 +21,12 @@ export interface APICertification {
   isActive: boolean,
   courseCode: string,
   courseName: string,
+  durationMinutes: number,
+  questionCount: number,
+
   courseDescription: string,
   courseLevelLookupId: string | null,
-  courseCategoryLookupId: string |null,
+  courseCategoryLookupId: string | null,
   createdBy: string
   createdAt: string,
   updatedAt: string,
@@ -33,9 +39,11 @@ export interface courseExam {
   oid?: string,
   courseOid: string,
   courseName: string,
-  courseLevelLookupId: string |null,
-  courseCategoryLookupId: string |null,
+  courseLevelLookupId: string | null,
+  courseCategoryLookupId: string | null,
   questionCount?: number,
+  durationMinutes?: number,
+
   isActive: boolean,
   createdBy: string
 }
@@ -51,6 +59,8 @@ export interface APIExam {
   courseCategoryName: string | null,
   isActive: boolean,
   questionCount: number,
+  durationMinutes: number,
+
   createdAt: string,
   createdBy: string,
   updatedAt: string,
@@ -73,16 +83,16 @@ export interface courseQuestion {
 }
 export interface courseAnswer {
   oid?: string,
-  questionId?:string,
+  questionId?: string,
   answerText: string,
-  question_Ask:boolean,
-  correctAnswerOid:any,
+  question_Ask: boolean,
+  correctAnswerOid: any,
   isCorrect: boolean,
   orderNo: number,
   createdBy: string
-  createdAt?:string
-  updatedAt?:string,
-  updatedBy?:string
+  createdAt?: string
+  updatedAt?: string,
+  updatedBy?: string
 }
 
 
@@ -114,9 +124,9 @@ export interface APIAnswer {
   oid: string
   questionId: string,
   answerText: string,
-  question_Ask:boolean,
+  question_Ask: boolean,
   isCorrect: boolean,
-  correctAnswerOid:any
+  correctAnswerOid: any
   orderNo: number,
   createdAt: string,
   createdBy: string,

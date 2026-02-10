@@ -8,6 +8,8 @@ export function mapApiCertificationToCertification(api: APICertification): Certi
     courseCode: api.courseCode,
     courseName: api.courseName,
     courseDescription: api.courseDescription,
+    durationMinutes: api.durationMinutes,
+    questionCount: api.questionCount,
     courseLevelLookupId: api.courseLevelLookupId,
     courseCategoryLookupId: api.courseCategoryLookupId,
     createdBy: api.createdBy,

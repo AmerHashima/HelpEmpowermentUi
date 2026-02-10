@@ -1,376 +1,4 @@
-<!-- <form
-  [formGroup]="form"
-  (ngSubmit)="onSubmit()"
-  class="d-flex flex-column gap-4 p-3"
->
-  <div class="container-fluid">
-    <div class="row g-3">
-      <div class="col-12">
-        <div class="d-flex flex-column p-3 shadow-sm rounded-3 fw-bold">
-          <h5>Certification Info</h5>
-          <div class="row gx-2">
-            <div class="col-lg-4">
-              <spk-ng-select
-                formControlName="certification"
-                label="Certification"
-                [options]="certifications()"
-                bindLabel="courseName"
-                bindValue="oid"
-                [multiple]="false"
-                placeholder="Choose Certification"
-                selectClass="form-control  w-100"
-              />
-            </div>
-            <div class="col-lg-4">
-              <spk-ng-select
-                formControlName="coursesMasterExamOid"
-                label="Exam No."
-                [options]="exams()"
-                bindLabel="indexLabel"
-                bindValue="oid"
-                [multiple]="false"
-                placeholder="Choose Exam Number"
-                selectClass="form-control w-100"
-              />
-            </div>
-
-            <div class="col-lg-4">
-              <spk-ng-select
-                formControlName="questionTypeLookupId"
-                label="Question Type"
-                [options]="questionTypes"
-                bindLabel="lookupNameEn"
-                bindValue="oid"
-                (change)="onSelectedQuestionType($event)"
-                [multiple]="false"
-                placeholder="Choose Question Type"
-                selectClass="form-control w-100"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-12">
-        <div class="d-flex flex-column p-3 shadow-sm rounded-3 fw-bold">
-          <h5>Question Details</h5>
-          <div class="row g-2 flex-wrap">
-            <div class="col-12">
-              <app-textarea
-                formControlName="questionText"
-                label="Question Header"
-                placeholder="Enter question"
-                [errorMessages]="{
-                  required: 'Question header is required',
-                  minlength: 'Question header is too short',
-                  maxlength: `Question header can't exceed 20 charahcter`,
-                }"
-              ></app-textarea>
-            </div>
-            <div class="col-12 col-md-4">
-              <app-input
-                formControlName="orderNo"
-                label="Question Order"
-                type="text"
-                placeholder=""
-                icon=""
-                [errorMessages]="{
-                  required: 'Question order is required',
-                  minlength: 'Question order is too short',
-                  maxlength: `Question order can't exceed 20 charahcter`,
-                }"
-              />
-            </div>
-            <div class="col-12 col-md-4">
-              <spk-ng-select
-                formControlName="questionScore"
-                label="Question Mark"
-                [options]="questionMarks"
-                bindLabel="label"
-                bindValue="value"
-                [multiple]="false"
-                placeholder="Choose Question Mark"
-                selectClass="form-control form-control-sm w-100"
-              />
-            </div>
-            <div class="col-md-4">
-              <spk-ng-select
-                formControlName="isActive"
-                label="Status"
-                [options]="status"
-                bindLabel="label"
-                bindValue="value"
-                [multiple]="false"
-                placeholder="Choose Status"
-                selectClass="form-control"
-              />
-            </div>
-             <div class="col-12">
-              <div class="upload">
-                <label for="">attachments</label>
-                <app-file-upload
-                  formControlName="files"
-                  [multiple]="false"
-                  label="Upload files"
-                ></app-file-upload>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      @if (
-        activeSection() === "MCQ" ||
-        activeSection() === "TRUE_FALSE" ||
-        activeSection() == "True/False" ||
-        activeSection() == "Multiple Choice Question"
-      ) {
-        <div class="col-12">
-          <div class="d-flex flex-column p-3 shadow-sm rounded-3 fw-bold">
-            <h5>Answers</h5>
-
-            <div formArrayName="answers" class="row g-2">
-              @for (group of answersArray.controls; let i = $index; track i) {
-                <div class="col-12" [formGroupName]="i">
-                  <div class="d-flex align-items-start gap-2">
-                    <input
-                      type="checkbox"
-                      formControlName="isCorrect"
-                      class="form-check-input mt-1"
-                    />
-                    <app-input
-                      class="w-100"
-                      formControlName="answerText"
-                      label=""
-                      type="text"
-                      placeholder="Answer"
-                      icon=""
-                      [errorMessages]="{
-                        required: 'Answer is required',
-                        minlength: 'Answer is too short',
-                        maxlength: `Answer can't exceed 20 characters`,
-                      }"
-                    ></app-input>
-
-                    @if (answersArray.length > 1) {
-                      <i
-                        class="bi bi-x-circle-fill text-danger mt-2"
-                        (click)="removeAnswer(i,group)"
-                        style="cursor: pointer"
-                      ></i>
-                    }
-                  </div>
-                </div>
-              }
-            </div>
-
-            <div
-              class="addAnswer d-flex align-items-center justify-content-end mt-2"
-              (click)="onAddAnotherAnswerSection()"
-              style="cursor: pointer"
-            >
-              <i class="bi bi-plus-circle-fill pe-2"></i>
-              <span>Add Another Answer</span>
-            </div>
-          </div>
-        </div>
-      }
-      @if (activeSection() === "MATCHING" || activeSection() === "Matching") {
-        <div class="col-12">
-          <div class="d-flex flex-column p-3 shadow-sm rounded-3 fw-bold">
-            <h5>Drag Questions</h5>
-
-            <div formArrayName="dragQuestions" class="row g-2">
-              @for (
-                group of dragQuestionsArray.controls;
-                let i = $index;
-                track i
-              ) {
-                <div class="col-12" [formGroupName]="i">
-                  <div class="d-flex align-items-start gap-2">
-                    <app-input
-                      class="w-100"
-                      formControlName="answerText"
-                      label=""
-                      type="text"
-                      placeholder="Question"
-                      icon=""
-                      [errorMessages]="{
-                        required: 'Drag question is required',
-                        minlength: 'Drag question  is too short',
-                        maxlength: `Drag question  can't exceed 20 characters`,
-                      }"
-                    ></app-input>
-
-                    @if (
-                      (dragQuestionsArray.length > 1 &&
-                        !addDragAnswersFlag()) ||
-                      editMode
-                    ) {
-                      <i
-                        class="bi bi-x-circle-fill text-danger mt-2"
-                        (click)="removeDragQuestion(i,group)"
-                        style="cursor: pointer"
-                      ></i>
-                    }
-                  </div>
-                </div>
-              }
-            </div>
-
-
-            @if (!addDragAnswersFlag() || editMode) {
-              <div class="d-flex align-items-center justify-content-end gap-3">
-                <div
-                  class="addQuestion d-flex align-items-center justify-content-end mt-2"
-                  (click)="onAddAnotherDragQuestion()"
-                  style="cursor: pointer"
-                >
-                  <i class="bi bi-plus-circle-fill pe-2"></i>
-                  <span>Add Another Question</span>
-                </div>
-                @if (!editMode) {
-                  <div
-                    class="doneQuestion d-flex align-items-center justify-content-end mt-2"
-                    (click)="DoneWithDragQuestion()"
-                    style="cursor: pointer"
-                  >
-                    <i class="bi bi-check-circle-fill pe-2"></i>
-                    <span>Done with Question</span>
-                  </div>
-                }
-              </div>
-            }
-          </div>
-        </div>
-      }
-
-      @if (
-        (activeSection() === "MATCHING" || activeSection() === "Matching") &&
-        addDragAnswersFlag()
-      ) {
-        <div class="col-12">
-          <div class="d-flex flex-column p-3 shadow-sm rounded-3 fw-bold">
-            <h5>Drag Answers</h5>
-
-            <div formArrayName="dragAnswers" class="row g-2">
-              @for (
-                group of dragAnswersArray.controls;
-                let i = $index;
-                track i
-              ) {
-                <div class="col-12" [formGroupName]="i">
-                  <div class="d-flex align-items-start gap-2">
-                    <app-input
-                      class="w-100"
-                      formControlName="answerText"
-                      label=""
-                      type="text"
-                      placeholder="Answer"
-                      icon=""
-                      [errorMessages]="{
-                        required: 'Answer is required',
-                        minlength: 'Answer is too short',
-                        maxlength: `Answer can't exceed 20 characters`,
-                      }"
-                    ></app-input>
-
-                    @if (
-                      (dragAnswersArray.length > 1 &&
-                        !linkDragAnswerAndQuestionFlag()) ||
-                      editMode
-                    ) {
-                      <i
-                        class="bi bi-x-circle-fill text-danger mt-2"
-                        (click)="removeDragAnswer(i,group)"
-                        style="cursor: pointer"
-                      ></i>
-                    }
-                  </div>
-                </div>
-              }
-            </div>
-
-            @if (!linkDragAnswerAndQuestionFlag() || editMode) {
-              <div class="d-flex align-items-center justify-content-end gap-3">
-                <div
-                  class="addQuestion d-flex align-items-center justify-content-end mt-2"
-                  (click)="onAddAnotherDragAnswer()"
-                  style="cursor: pointer"
-                >
-                  <i class="bi bi-plus-circle-fill pe-2"></i>
-                  <span>Add Another Drag Answer</span>
-                </div>
-                <div
-                  class="doneQuestion d-flex align-items-center justify-content-end mt-2"
-                  (click)="DoneWithDragAnswer()"
-                  style="cursor: pointer"
-                >
-                  <i class="bi bi-check-circle-fill pe-2"></i>
-                  <span>Done with Drag Answers</span>
-                </div>
-              </div>
-            }
-          </div>
-        </div>
-      }
-
-      @if (
-        (activeSection() === "MATCHING" || activeSection() === "Matching") &&
-        linkDragAnswerAndQuestionFlag()
-      ) {
-        <div class="col-12">
-          <div class="d-flex flex-column p-3 shadow-sm rounded-3 fw-bold">
-            <h5>Connect Answer with Questions</h5>
-
-            <div formArrayName="dragQuestions" class="row g-2">
-              @for (
-                group of dragQuestionsArray.controls;
-                let i = $index;
-                track $index
-              ) {
-                <div class="col-12" [formGroupName]="i">
-                  <div class="row g-3 align-items-end">
-                    <div class="col-6">
-                      <app-input
-                        class="w-100"
-                        formControlName="answerText"
-                        [label]="`Question ${i + 1}`"
-                        type="text"
-                        placeholder="Enter drop target text..."
-                        icon=""
-                        [readOnly]="true"
-                      ></app-input>
-                    </div>
-
-                    <div class="col-6">
-                      <spk-ng-select
-                        formControlName="correctAnswerOid"
-                        label="Correct Drag Item"
-                        [options]="apiAnswers"
-                        [multiple]="false"
-                        bindLabel="answerText"
-                        bindValue="oid"
-                        placeholder="Select correct draggable item"
-                        selectClass="form-control w-100"
-                      />
-                    </div>
-                  </div>
-                </div>
-              }
-            </div>
-          </div>
-        </div>
-      }
-      <div class="d-flex justify-content-end gap-2">
-        <app-button btnLabel="Cancel" [mainBtn]="false" (click)="cancel()" />
-        <app-button btnLabel="Done" buttonType="submit" />
-      </div>
-    </div>
-  </div>
-</form>
-
- -->
-
+<!-- src\app\components\AdminPanel\certifications\certification-question\certification-question.component.html -->
 <form
   [formGroup]="form"
   (ngSubmit)="onSubmit()"
@@ -389,6 +17,8 @@
             label="Certification"
             [options]="certifications()"
             bindLabel="courseName"
+                        [disabled]="true"
+
             bindValue="oid"
             placeholder="Choose Certification"
             selectClass="form-control w-100"
@@ -401,6 +31,8 @@
             label="Exam No."
             [options]="examsWithIndex()"
             bindLabel="indexLabel"
+            [disabled]="true"
+
             bindValue="oid"
             placeholder="Choose Exam Number"
             selectClass="form-control w-100"
@@ -466,7 +98,7 @@
           ></app-input>
         </div>
 
-        <div class="col-12 col-md-4">
+        <!-- <div class="col-12 col-md-4">
           <spk-ng-select
             formControlName="questionScore"
             label="Score / Mark"
@@ -476,9 +108,7 @@
             placeholder="Select mark"
             selectClass="form-control w-100"
           ></spk-ng-select>
-        </div>
-
-        <div class="col-12 col-md-4">
+        </div> --> <div class="col-12 col-md-4">
           <spk-ng-select
             formControlName="isActive"
             label="Status"
@@ -489,6 +119,15 @@
             selectClass="form-control w-100"
           ></spk-ng-select>
         </div>
+  <div class="col-12">
+          <app-textarea
+            formControlName="questionExplanation"
+            label="Question Explanation"
+            placeholder="Enter the explanation here..."
+            
+          ></app-textarea>
+        </div>
+       
 
         <!-- Uncomment if file upload is actually used -->
         <!--
@@ -541,6 +180,7 @@
                   formControlName="answerText"
                   label="Answer {{ i + 1 }}"
                   placeholder="Enter answer text..."
+                  (inputClick)="onAnswerInputClick(i)"
                   [errorMessages]="{
                     required: 'Answer text is required',
                     minlength: 'Too short',
@@ -575,10 +215,10 @@
       </div>
     </div>
   </ng-container>
-
+<div class="row">
   <!--      Matching / Drag-Drop    -->
   @if (activeSection()?.toLowerCase()?.includes("match")) {
-    <div class="card shadow-sm mt-4">
+    <div class="card col-6 shadow-sm mt-4">
       <div class="card-header fw-bold">
         <h5 class="mb-0">Drag Questions (Left side)</h5>
       </div>
@@ -641,7 +281,7 @@
 
     <!-- ─── Drag Answers ─── -->
     @if (addDragAnswersFlag()) {
-      <div class="card shadow-sm mt-4">
+      <div class="card col-6 shadow-sm mt-4">
         <div class="card-header fw-bold">
           <h5 class="mb-0">Drag Answers (Right side / draggable items)</h5>
         </div>
@@ -748,5 +388,5 @@
       btnLabel="{{ editMode ? 'Update Question' : 'Create Question' }}"
       buttonType="submit"
     />
-  </div>
+  </div></div>
 </form>
