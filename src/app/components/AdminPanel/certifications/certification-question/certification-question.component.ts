@@ -19,7 +19,7 @@ import { CertificationService } from '../../../../Services/certification.service
 import { ExamsStore } from '../../../../AdminPanelStores/ExamsStore/exam.store';
 import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
 import { QuestionsStore } from '../../../../AdminPanelStores/QuestionStores/questions.store';
-import { LibreTranslateService } from '../../../../Services/translate.service';
+import { TranslateService } from '../../../../Services/translate.service';
 
 type QuestionType = 'MCQ' | 'MATCHING' | null;
 type SectionType = QuestionType | 'Multiple Choice Question' | 'Matching';
@@ -62,7 +62,7 @@ export class CertificationQuestionComponent {
   private router = inject(Router);
   private toast = inject(ToastingMessagesService);
   private destroyRef = inject(DestroyRef);
-  private translateService = inject(LibreTranslateService);
+  private translateService = inject(TranslateService);
 
   private certificationStore = inject(CertificationsStore);
   private examsStore = inject(ExamsStore);
@@ -404,7 +404,6 @@ export class CertificationQuestionComponent {
             return of(null);
           }
           return this.translateService.translateEnToAr(text).pipe(
-            map(response => response?.data?.translations?.[0]?.translatedText ?? ''),
             catchError(() => of(''))
           );
         }),
