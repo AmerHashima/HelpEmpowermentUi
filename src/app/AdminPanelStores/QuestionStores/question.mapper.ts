@@ -1,3 +1,4 @@
+// src\app\AdminPanelStores\QuestionStores\question.mapper.ts
 import { APIAnswer, APICourseQuestion, courseAnswer, courseQuestion } from "../../models/certification";
 
 
@@ -7,6 +8,7 @@ export function mapApiQuestionToCourseQuestion(api: APICourseQuestion): courseQu
     oid: api.oid,
     coursesMasterExamOid: api.coursesMasterExamOid,
     questionText: api.questionText,
+    questionText_Ar: api.questionText_Ar,
     questionTypeLookupId: api.questionTypeLookupId,
     questionScore: api.questionScore,
     questionTypeName: api.questionTypeName,
@@ -25,6 +27,7 @@ export function mapApiAnswerToCourseAnswer(api: APIAnswer): courseAnswer {
     oid: api.oid,
     questionId: api.questionId,
     answerText: api.answerText,
+    answerText_Ar: api.answerText_Ar,
     question_Ask: api.question_Ask,
     correctAnswerOid: api.correctAnswerOid,
     isCorrect: api.isCorrect,

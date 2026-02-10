@@ -73,6 +73,17 @@
               maxlength: 'Question is too long (max 500 characters)',
             }"
           ></app-textarea>
+        </div><div class="col-12">
+          <app-textarea
+            formControlName="questionText_Ar"
+            label="Question Text Ar"
+            placeholder="Enter the question here..."
+            [errorMessages]="{
+              required: 'Question text is required',
+              minlength: 'Question is too short',
+              maxlength: 'Question is too long (max 500 characters)',
+            }"
+          ></app-textarea>
         </div>
         <div class="col-12">
           <div class="upload">
@@ -122,7 +133,7 @@
   <div class="col-12">
           <app-textarea
             formControlName="questionExplanation"
-            label="Question Explanation"
+            label=" Explanation"
             placeholder="Enter the explanation here..."
             
           ></app-textarea>
@@ -150,9 +161,8 @@
   <ng-container
     *ngIf="
       activeSection() === 'MCQ' ||
-      activeSection() === 'Multiple Choice Question' ||
-      activeSection() === 'TRUE_FALSE' ||
-      activeSection() === 'True/False'
+      activeSection() === 'Multiple Choice Question' 
+
     "
   >
     <div class="card shadow-sm">

@@ -70,6 +70,7 @@ export interface courseQuestion {
   oid?: string,
   coursesMasterExamOid: string,
   questionText: string,
+  questionText_Ar: string,
   questionTypeLookupId: string,
   questionScore: number,
   questionTypeName?: any,
@@ -85,6 +86,7 @@ export interface courseAnswer {
   oid?: string,
   questionId?: string,
   answerText: string,
+  answerText_Ar: string,
   question_Ask: boolean,
   correctAnswerOid: any,
   isCorrect: boolean,
@@ -104,6 +106,7 @@ export interface APICourseQuestion {
   oid: string,
   coursesMasterExamOid: string,
   examName: string,
+  questionText_Ar: string,
   questionText: string,
   questionTypeLookupId: string,
   questionTypeName: string,
@@ -124,6 +127,8 @@ export interface APIAnswer {
   oid: string
   questionId: string,
   answerText: string,
+  answerText_Ar: string,
+
   question_Ask: boolean,
   isCorrect: boolean,
   correctAnswerOid: any

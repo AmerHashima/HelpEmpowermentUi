@@ -1,11 +1,12 @@
 // src\app\components\AdminPanel\certifications\certification-question\certification-question.component.ts
 
 
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, DestroyRef, computed, effect, inject, signal } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AsyncPipe, JsonPipe, Location, NgIf } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { catchError, concatMap, forkJoin, from, map, Observable, of } from 'rxjs';
+import { catchError, concatMap, debounceTime, distinctUntilChanged, filter, forkJoin, from, map, Observable, of, switchMap, tap } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { SpkNgSelectComponent } from '../../../../shared/spk-ng-select/spk-ng-select.component';
 import { ButtonComponent } from '../../../../shared/button/button.component';
@@ -18,12 +19,14 @@ import { CertificationService } from '../../../../Services/certification.service
 import { ExamsStore } from '../../../../AdminPanelStores/ExamsStore/exam.store';
 import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
 import { QuestionsStore } from '../../../../AdminPanelStores/QuestionStores/questions.store';
+import { LibreTranslateService } from '../../../../Services/translate.service';
 
-type QuestionType = 'MCQ' | 'TRUE_FALSE' | 'MATCHING' | null;
-type SectionType = QuestionType | 'True/False' | 'Multiple Choice Question' | 'Matching';
+type QuestionType = 'MCQ' | 'MATCHING' | null;
+type SectionType = QuestionType | 'Multiple Choice Question' | 'Matching';
 
 interface AnswerGroup {
   answerText: string;
+  answerText_Ar: string;
   question_Ask: boolean;
   correctAnswerOid: string | null;
   isCorrect: boolean;
@@ -58,6 +61,8 @@ export class CertificationQuestionComponent {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private toast = inject(ToastingMessagesService);
+  private destroyRef = inject(DestroyRef);
+  private translateService = inject(LibreTranslateService);
 
   private certificationStore = inject(CertificationsStore);
   private examsStore = inject(ExamsStore);
@@ -91,6 +96,7 @@ export class CertificationQuestionComponent {
   editMode = false;
   questionId = '';
   choiceAnswerOrderCounter = 0;
+  private lastAutoTranslatedAr = '';
 
   pendingQuestionType = signal<any>(null);
   apiAnswers = signal<any[]>([]);
@@ -114,6 +120,7 @@ export class CertificationQuestionComponent {
     coursesMasterExamOid: ['', Validators.required],
     questionTypeLookupId: ['', Validators.required],
     questionText: ['', [Validators.required]],
+    questionText_Ar: [''],
     questionExplanation: [''],
     orderNo: ['', Validators.required],
     questionScore: [1],
@@ -136,6 +143,7 @@ export class CertificationQuestionComponent {
   constructor() {
     this.loadQuestionTypes();
     this.setupEffects();
+    this.setupAutoTranslation();
   }
 
   private loadQuestionTypes(): void {
@@ -218,7 +226,7 @@ export class CertificationQuestionComponent {
 
       this.resetFormArrays();
 
-      if (type === 'MCQ' || type === 'TRUE_FALSE') {
+      if (type === 'MCQ') {
         this.answersArray.push(this.createAnswerGroup(false));
       } else if (type === 'MATCHING') {
         this.dragQuestionsArray.push(this.createDragQuestionGroup());
@@ -365,6 +373,7 @@ export class CertificationQuestionComponent {
       coursesMasterExamOid: question.coursesMasterExamOid,
       questionTypeLookupId: question.questionTypeLookupId,
       questionText: question.questionText,
+      questionText_Ar: question.questionText_Ar,
       questionExplanation: question.questionExplanation,
       orderNo: String(question.orderNo),
       questionScore: question.questionScore,
@@ -374,6 +383,40 @@ export class CertificationQuestionComponent {
       correctChoiceOid: null,
       createdBy: question.createdBy,
     });
+
+    this.lastAutoTranslatedAr = question.questionText_Ar ?? '';
+  }
+
+  private setupAutoTranslation(): void {
+    const questionTextControl = this.form.get('questionText');
+    const questionTextArControl = this.form.get('questionText_Ar');
+    if (!questionTextControl || !questionTextArControl) return;
+
+    questionTextControl.valueChanges
+      .pipe(
+        debounceTime(500),
+        map(value => String(value ?? '').trim()),
+        distinctUntilChanged(),
+        switchMap(text => {
+          const currentAr = String(questionTextArControl.value ?? '').trim();
+          if (!text) return of('');
+          if (currentAr && currentAr !== this.lastAutoTranslatedAr) {
+            return of(null);
+          }
+          return this.translateService.translateEnToAr(text).pipe(
+            map(response => response?.data?.translations?.[0]?.translatedText ?? ''),
+            catchError(() => of(''))
+          );
+        }),
+        filter(translated => translated !== null),
+        tap(translated => {
+          if (!translated) return;
+          this.lastAutoTranslatedAr = translated;
+          questionTextArControl.setValue(translated, { emitEvent: false });
+        }),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe();
   }
 
   private populateAnswersOrDragItems(question: any): void {
@@ -449,6 +492,8 @@ export class CertificationQuestionComponent {
     return {
       coursesMasterExamOid: raw.coursesMasterExamOid,
       questionText: raw.questionText,
+      questionText_Ar: raw.questionText_Ar,
+
       questionTypeLookupId: raw.questionTypeLookupId,
       questionScore: raw.questionScore,
       orderNo: raw.orderNo,
@@ -468,6 +513,7 @@ export class CertificationQuestionComponent {
     return source.map((a: any) => ({
       ...(a.oid && { oid: a.oid }),
       answerText: a.answerText,
+      answerText_Ar: a.answerText_Ar,
       question_Ask: overrides.question_Ask ?? a.question_Ask ?? false,
       correctAnswerOid: a.correctAnswerOid ?? null,
       isCorrect: overrides.isCorrect ?? a.isCorrect ?? false,
@@ -523,6 +569,8 @@ export class CertificationQuestionComponent {
           oid: original.oid,
           questionId: this.questionId,
           answerText: q.answerText,
+          answerText_Ar: q.answerText_Ar,
+
           question_Ask: true,
           correctAnswerOid: q.correctAnswerOid ?? null,
           isCorrect: q.isCorrect ?? false,
