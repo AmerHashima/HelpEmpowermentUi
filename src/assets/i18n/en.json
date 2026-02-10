@@ -15,10 +15,10 @@
     "services_children": {
       "manpower": "Manpower",
       "PMO": "PMO Setup & Operation",
-      "Maturityassessment":"Project Management Maturity Assessment",
-      "pmis":"Project Management Information System (PMIS)",
-      "training":"Customized Training",
-      "CAMP":"Certified Associate in Project Management (CAPM)"
+      "Maturityassessment": "Project Management Maturity Assessment",
+      "pmis": "Project Management Information System (PMIS)",
+      "training": "Customized Training",
+      "CAMP": "Certified Associate in Project Management (CAPM)"
     }
   },
   "auth": {
@@ -50,5 +50,18 @@
       "title": "CAPM Study Plan",
       "summary": "Passing the CAPM exam requires a structured Methodology, much like managing a real project. Based on my experience and observing many candidates, I recommend dividing your preparation into five clear phases."
     }
+  },
+  "faq": {
+    "question1": "What services do you offer?",
+    "answer1": "We empower both individuals and organizations through two main channels:\n\nFor Individuals: Professional certifications (like PMP and CAPM) to advance your career.\n\nFor Organizations: Comprehensive solutions including PMO Setup, Maturity Assessments, PMIS implementation, manpower support, and fully customized training programs.",
+    "question2": "How is your exam simulator unique?",
+    "answer2": "Our simulator features two intelligent modes:\n\n- Practice Mode: Learn without pressure. Answer questions and get immediate feedback with detailed explanations.\n\n- Exam Mode: Experience the real test. Complete timed exams and receive a personalized report highlighting your strengths and areas for improvement.\n\nIt also automatically creates a \"Lesson Learned\" review list from your incorrect answers for focused study.",
+    "question3": "Can I try the simulator before purchasing?",
+    "answer3": "Yes. We offer a free demo with 10 sample questions where you can test both Practice and Exam modes to experience the quality firsthand.",
+    "question4": "Is your content up-to-date with certification standards?",
+    "answer4": "Absolutely. Our material is continuously updated to match the latest exam content outlines. Combined with our practical application focus, we prepare you not just to pass the exam, but to apply the knowledge effectively in real-world scenarios.",
+    "question5": "How do I join your professional community?",
+    "answer5": "When you enroll in any of our programs, you gain access to our support network. For corporate clients, this extends to strategic services that move beyond theory into execution, providing end-to-end support for your organizational goals."
   }
+
 }

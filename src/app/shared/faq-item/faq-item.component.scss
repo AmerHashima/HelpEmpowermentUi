@@ -1,0 +1,120 @@
+@use "variables" as *;
+.faq.card {
+  padding-top: 1rem;
+  width: 100%;
+  border: none !important;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background: var(--card-bg, #ffffff);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+.accordion.accordion-flush {
+  width: 100%;
+}
+
+// Accordion Item
+.accordion-item {
+  border-bottom: 1px solid $borderColor;
+  background: transparent;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.accordion-button {
+  background-color: $lightBgTextColor;
+  box-shadow: $boxShadow;
+  padding: 1rem 1.5rem;
+  font-size: 1.1rem;
+  color: $headerColor;
+  font-weight: 500;
+  border-radius: $borderRadius !important;
+
+  &:focus {
+    z-index: 3;
+  }
+
+  &:not(.collapsed) {
+    background-color: $primaryColor;
+    font-weight: $bold;
+    border-bottom-left-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+
+    * {
+      color: $lightBgTextColor;
+    }
+  }
+
+  .d-flex {
+    width: 100%;
+  }
+}
+
+// Icon inside header
+.fa-circle-question {
+  color: $headerColor;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.question {
+  font-weight: $bold;
+  color: var(--headerDarkColor, #212529);
+  flex: 1;
+  text-align: start;
+  white-space: normal;
+}
+
+.accordion-body {
+  background-color: $lightBgTextColor;
+  padding: 1.25rem 1.75rem;
+  color: $paragraphColor;
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+:host-context([dir="rtl"]),
+[dir="rtl"] {
+  .accordion-button {
+    text-align: right;
+    flex-direction: row-reverse;
+
+    .d-flex {
+      flex-direction: row-reverse;
+    }
+  }
+
+  .accordion-button::after {
+    transform: rotate(180deg) !important;
+  }
+
+  .fa-circle-question {
+    margin-right: 0;
+    margin-left: 0.75rem;
+  }
+}
+
+.accordion-collapse {
+  transition: height 0.35s ease;
+}
+
+.bi-question-circle-fill {
+  font-size: 1rem;
+}
+
+.accordion-button::after {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23#{escape($headerColor)}'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+  transition: transform 0.35s ease;
+}
+
+.accordion-button:not(.collapsed)::after {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23#{escape($headerColor)}'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+  transform: rotate(-180deg);
+}
+
+.accordion-button:not(.collapsed)::after {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+  transform: rotate(-180deg);
+}

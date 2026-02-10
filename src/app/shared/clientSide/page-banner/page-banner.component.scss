@@ -99,47 +99,20 @@ h2:hover{
 .HomeParagraph {
   width: 80%;
 }
-.faqHomeSection{
-  padding:1rem 0rem 3rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap:2rem;
-}
-.faqHomeSection h1{
-  font-size: 2.5rem;
-}
-.faqHomeSection .content {
-    gap: 12px;
-}
 
-.faqHomeSection .p-button{
-  width: 100%;
-}
-.faqTitle{
-  width:70%;
-}
 
 
 @media screen and (min-width:1200px) {
   .Homebanner{
     padding-top: 0px;
   }
-  
-  .Homebanner,.faqHomeSection{
+
+  .Homebanner{
     flex-direction: row;
     gap:.1rem;
   }
 
   .Homebanner .content {
     order:0
-}
-.faqHomeSection{
-  align-items: start;
-  gap:2rem;
-}
-
-.faqHomeSection .p-button{
-  width: 70%;
 }
 }
