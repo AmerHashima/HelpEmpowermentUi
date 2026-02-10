@@ -1,0 +1,20 @@
+<button
+      type="{{ htmlType() }}"
+      class="btn text-center"
+      [ngClass]="{
+        'btn-primary':   type() === 'main',
+        'btn-outline-primary': type() === 'secondary'
+      }"
+      [style]="{
+        'direction': isRTL() ? 'rtl' : 'ltr',
+        'display': 'flex',
+        'align-items': 'center',
+        'gap': '0.5rem'
+      }"
+      (click)="onClick.emit()"
+    >
+      <span>{{ title() | translate }}</span>
+      @if (icon()) {
+        <i [class]="icon()"></i>
+      }
+    </button>

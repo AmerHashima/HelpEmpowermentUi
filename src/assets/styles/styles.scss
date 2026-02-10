@@ -184,6 +184,14 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   font-weight: 500;
 }
 
+.darkText {
+  color: var(--headerDarkColor);
+}
+
+.mainTextColor {
+  color: var(--primary-color);
+}
+
 html[dir="ltr"],
 html[dir="ltr"] body {
   direction: ltr !important;
@@ -196,4 +204,33 @@ html[dir='ltr'] .clientNavbar .top-bar .dropdown ul {
 
 html[dir='rtl'] .clientNavbar .top-bar .dropdown ul {
   left: 0px;
+}
+
+h1{
+  font-size:3rem;
+  font-weight:bold;
+  line-height: 100%;
+  margin-bottom:8px;
+}
+p{
+  color:$paraTextColor;
+  width: 80%;
+  line-height: 150%;
+  margin: 0px;
+}
+.page-width{
+  width:90%;
+  margin: 0 auto;
+}
+
+@media screen and (min-width:1200px){
+h1{
+  font-size:5rem;
+}
+}
+
+@media screen and (min-width:1400px){
+  .page-width{
+  width:85%;
+}
 }

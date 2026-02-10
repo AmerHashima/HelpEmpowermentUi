@@ -1,0 +1,17 @@
+<div class="Homebanner" [class.rtl]="isRTL()">
+  <div class="content d-flex flex-column flex-grow-1">
+    <ng-content select="[content]"></ng-content>
+  </div>
+
+  @if (media()) {
+    <div class="intro-video flex-grow-1 ">
+      <div
+        class="image-wrapper shadow"
+        [style.--rotate-y]="isRTL() ? '8deg' : '-8deg'"
+        [style.--rotate-y-hover]="isRTL() ? '5deg' : '-5deg'"
+      >
+        <ng-content select="[media]"></ng-content>
+      </div>
+    </div>
+  }
+</div>

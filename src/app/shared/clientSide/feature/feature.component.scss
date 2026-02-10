@@ -1,0 +1,15 @@
+@use 'variables' as *;
+.feature-card {
+    width: fit-content;
+    background-color:$featureTagBg;
+    border-radius:$borderRadius;
+    padding:.5rem 1rem;
+}
+
+.feature-card i{
+    color:$featureTagIcon;
+}
+
+.feature-card span{
+    color:$primaryColor;
+}
