@@ -342,6 +342,21 @@ export class CertificationService {
         })
       );
   }
+
+  updateCourseQuestion(body: any): Observable<any> {
+    return this.apiService
+      .put<ApiResponse<any>>('CourseQuestions', body?.oid ?? '', body)
+      .pipe(
+        map((response: ApiResponse<APICertification>) => {
+          if (!response.success) {
+            const msg = response.errors?.join(', ') || response.message || 'API failed to update question';
+            throw new Error(msg);
+          }
+
+          return response.data;
+        })
+      );
+  }
   searchQuestion(body: RequestBody): Observable<{ questions: APICourseQuestion[]; total: number }> {
     return this.apiService
       .query<ApiSearchResponse<APICourseQuestion>>('CourseQuestions/search', body)

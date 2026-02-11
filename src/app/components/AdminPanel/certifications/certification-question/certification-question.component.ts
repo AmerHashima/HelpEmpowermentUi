@@ -121,7 +121,7 @@ export class CertificationQuestionComponent {
     questionTypeLookupId: ['', Validators.required],
     questionText: ['', [Validators.required]],
     questionText_Ar: [''],
-    questionExplanation: [''],
+    questionExplination: [''],
     orderNo: ['', Validators.required],
     questionScore: [1],
     isActive: [true, Validators.required],
@@ -405,7 +405,7 @@ export class CertificationQuestionComponent {
       questionTypeLookupId: question.questionTypeLookupId,
       questionText: question.questionText,
       questionText_Ar: question.questionText_Ar,
-      questionExplanation: question.questionExplanation,
+      questionExplination: question.questionExplination,
       orderNo: String(question.orderNo),
       questionScore: question.questionScore,
       isActive: question.isActive,
@@ -529,7 +529,7 @@ export class CertificationQuestionComponent {
       orderNo: raw.orderNo,
       isActive: raw.isActive,
       correctAnswer: raw.correctAnswer,
-      questionExplanation: raw.questionExplanation,
+      questionExplination: raw.questionExplination,
       question: raw.question,
       correctChoiceOid: raw.correctChoiceOid,
       createdBy: raw.createdBy,
@@ -548,7 +548,7 @@ export class CertificationQuestionComponent {
       correctAnswerOid: a.correctAnswerOid ?? null,
       isCorrect: overrides.isCorrect ?? a.isCorrect ?? false,
       orderNo: a.orderNo,
-      questionExplanation: a.questionExplanation,
+      questionExplination: a.questionExplination,
       createdBy: a.createdBy,
     }));
   }
@@ -587,34 +587,15 @@ export class CertificationQuestionComponent {
   }
 
   private updateMatchingQuestions(): void {
-    const questions = this.dragQuestionsArray.controls.map(c => c.getRawValue());
+    const payload = this.getDragQuestionPayload();
+    payload.answers = (payload.answers ?? []).map((a: any) => ({
+      ...a,
+      questionId: this.questionId || a.questionId,
+      updatedBy: DEFAULT_USER_ID
+    }));
 
-    from(questions).pipe(
-      concatMap((q, index) => {
-        const original = this.question()?.answers?.filter(a => a.question_Ask)?.[index];
-        console.log('original', original);
-        if (!original?.oid) return of(null);
-
-        const payload = {
-          oid: original.oid,
-          questionId: this.questionId,
-          answerText: q.answerText,
-          answerText_Ar: q.answerText_Ar,
-
-          question_Ask: true,
-          correctAnswerOid: q.correctAnswerOid ?? null,
-          isCorrect: q.isCorrect ?? false,
-          orderNo: q.orderNo,
-          questionExplanation: q.questionExplanation,
-
-          updatedBy: DEFAULT_USER_ID
-        };
-        console.log('submit payload', payload);
-        this.questionStore.updateQuestion({ id: payload.oid, body: payload });
-        return of(null);
-      })
-    ).subscribe({
-      complete: () => {
+    this.certificationService.updateCourseQuestion(payload).subscribe({
+      next: () => {
         this.toast.showToast('Matching questions updated successfully', 'success');
         this.location.back();
       },
@@ -626,39 +607,22 @@ export class CertificationQuestionComponent {
   }
 
   private updateExistingQuestionAndAnswers(): void {
-    const raw = this.form.getRawValue();
-    const answers = raw.answers ?? [];
+    const payload = this.buildPayload();
+    payload.updatedBy = DEFAULT_USER_ID;
+    payload.answers = (payload.answers ?? []).map((a: any) => ({
+      ...a,
+      questionId: this.questionId || a.questionId,
+      updatedBy: DEFAULT_USER_ID
+    }));
 
-    const toUpdate = answers
-      .filter((a: any) => a.oid)
-      .map((a: any) => ({
-        ...a,
-        questionId: this.questionId,
-        updatedBy: DEFAULT_USER_ID,
-        updatedAt: new Date().toISOString(),
-      }));
-
-    const toCreate = answers
-      .filter((a: any) => !a.oid)
-      .map((a: any) => ({
-        ...a,
-        questionId: this.questionId,
-      }));
-
-    const operations = [
-      ...toUpdate.map(a => this.questionStore.updateQuestion$({ id: a.oid, body: a })
-        .pipe(catchError(() => of(null)))),
-      ...toCreate.map(a => this.questionStore.addAnswer$(a)
-        .pipe(catchError(() => of(null))))
-    ];
-
-    forkJoin(operations).subscribe(results => {
-      const failed = results.filter(r => r === null).length;
-      if (failed > 0) {
-        this.toast.showToast(`${failed} operation(s) failed`, 'warning');
-      } else {
+    this.certificationService.updateCourseQuestion(payload).subscribe({
+      next: () => {
         this.toast.showToast('Question updated successfully', 'success');
         this.location.back();
+      },
+      error: (err) => {
+        console.error('Update failed', err);
+        this.toast.showToast('Failed to update question', 'error');
       }
     });
   }
