@@ -62,6 +62,19 @@
     "answer4": "Absolutely. Our material is continuously updated to match the latest exam content outlines. Combined with our practical application focus, we prepare you not just to pass the exam, but to apply the knowledge effectively in real-world scenarios.",
     "question5": "How do I join your professional community?",
     "answer5": "When you enroll in any of our programs, you gain access to our support network. For corporate clients, this extends to strategic services that move beyond theory into execution, providing end-to-end support for your organizational goals."
+  },
+  "log": {
+    "welcomeBack": "Welcome Back",
+    "enterCredentials": "Please enter your credentials to login",
+    "or": "OR",
+    "emailLabel": "Email Address",
+    "emailPlaceholder": "Enter your email",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "rememberMe": "Remember me",
+    "loginButton": "Login",
+    "noAccount": "Don't have an account?",
+    "signUp": "Sign up"
   }
 
 }

@@ -25,11 +25,11 @@
       <div class="dropdown">
         <i class="bi bi-box-arrow-in-right" (click)="toggleDropdown('auth')"></i>
         <ul *ngIf="openDropdown() === 'auth'" class="shadow">
-          <li (click)="navigate('/' + lang() + '/login')">
+          <li (click)="navigate('/' + lang() + '/auth/login')">
             <i class="bi bi-box-arrow-in-right"></i>
             {{ 'auth.login' | translate }}
           </li>
-          <li (click)="navigate('/' + lang() + '/signup')">
+          <li (click)="navigate('/' + lang() + '/auth/signup')">
             <i class="bi bi-person-plus"></i>
             {{ 'auth.signup' | translate }}
           </li>

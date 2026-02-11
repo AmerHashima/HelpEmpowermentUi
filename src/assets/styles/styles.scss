@@ -1,7 +1,7 @@
 /* src\assets\styles\styles.scss */
-@use 'variables' as *;
-@use './light-theme';
-@use './dark-theme';
+@use "variables" as *;
+@use "./light-theme";
+@use "./dark-theme";
 
 html {
   padding: 0px;
@@ -14,8 +14,10 @@ body {
 }
 
 body * {
-  font-family: 'IBM Plex Sans Arabic', sans-serif;
-  font-feature-settings: 'calt' 1, 'liga' 1;
+  font-family: "IBM Plex Sans Arabic", sans-serif;
+  font-feature-settings:
+    "calt" 1,
+    "liga" 1;
   unicode-bidi: isolate;
   text-rendering: optimizeLegibility;
   direction: inherit;
@@ -51,19 +53,36 @@ html #toast-container.toast-top-right {
   z-index: 999999999 !important;
 }
 
-// .p-datatable-filter-overlay * {
-//   font-size: $fs-xs !important;
-//   overflow: visible !important;
+  .form-check-label{
+    color:$paraTextColor !important;
+  }
 
-//   .p-button {
-//     flex-grow: 1;
-//   }
+.form .input-group {
+  border: 1px solid $borderColor;
+  background-color: $inputBg !important;
+  color:$inputText !important;
+  border-radius: $borderRadius;
 
-//   .p-button-label {
-//     padding: 1rem;
-//   }
-// }
+  .input-group-text {
+    background-color: transparent !important;
+    color:$placeHolderColor !important;
+  }
+  .form-control {
+    background-color: transparent !important;
+    border: none;
+    color:inherit !important;
+    &::placeholder{
+      color:$placeHolderColor;
+    }
+  }
 
+  &:focus-within {
+    border-color: $primaryColor !important;
+    .bi{
+      color:$primaryColor !important;
+    }
+  }
+}
 
 .form-control {
   border-radius: 8px;
@@ -88,9 +107,9 @@ html #toast-container.toast-top-right {
   box-shadow: none !important;
 }
 
-.input-group-text i {
-  color: var(--bs-placeholder-color) !important;
-}
+// .input-group-text i {
+//   color: var(--bs-placeholder-color) !important;
+// }
 
 .validationError {
   color: var(--bs-form-invalid-color);
@@ -107,7 +126,7 @@ html #toast-container.toast-top-right {
   border: none;
 }
 
-.ng-select.ng-select-focused:not(.ng-select-opened)>.ng-select-container {
+.ng-select.ng-select-focused:not(.ng-select-opened) > .ng-select-container {
   border: 1px solid $primaryColor;
   box-shadow: none;
 }
@@ -120,57 +139,65 @@ html #toast-container.toast-top-right {
   border: 1px solid var(--bs-form-invalid-color);
 }
 
-
 label {
   font-weight: normal;
   color: $labelColor;
   font-size: $fs-sm;
 }
 
+.form-check-input{
+  box-shadow: none;
+  outline:none;
+}
 .form-check-input:checked {
- background-color: $primaryColor;
+  background-color: $primaryColor;
   border-color: $primaryColor;
   box-shadow: none;
 }
-.accordion *{
+.accordion * {
   font-size: $fs-sm;
 }
-.accordion-button{
-   outline: none !important;
+.accordion-button {
+  outline: none !important;
   box-shadow: none !important;
-    background-color: $primaryColor;
-    padding:.8rem;
-    color:$lightBgTextColor;
-    border-radius: 8px !important;
+  background-color: $primaryColor;
+  padding: 0.8rem;
+  color: $lightBgTextColor;
+  border-radius: 8px !important;
 }
 .accordion-button:not(.collapsed) {
   border-bottom-left-radius: 0px !important;
   border-bottom-right-radius: 0px !important;
   border-radius: 8px;
   background-color: $primaryColor;
-  color:$lightBgTextColor;
+  color: $lightBgTextColor;
   box-shadow: none;
 }
 
-
 .accordion-button::after {
-  content: '';
+  content: "";
   display: inline-block;
   width: 1rem;
   height: 1rem;
   background-image: url('data:image/svg+xml;utf8,<svg fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');
   background-size: 1rem;
-   color:$lightBgTextColor;
+  color: $lightBgTextColor;
 }
 
 .addAnswer * {
   color: $primaryColor;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-.card-header h5{
-  color:$primaryColor;
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+.card-header h5 {
+  color: $primaryColor;
   font-weight: bold;
   font-size: 1.2rem;
 }
@@ -178,7 +205,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   box-sizing: border-box;
 }
 
-.courseLink{
+.courseLink {
   color: $primaryColor;
   text-decoration: underline;
   font-weight: 500;
@@ -198,67 +225,67 @@ html[dir="ltr"] body {
   text-align: left;
 }
 
-html[dir='ltr'] .clientNavbar .top-bar .dropdown ul {
+html[dir="ltr"] .clientNavbar .top-bar .dropdown ul {
   right: 0px;
 }
 
-html[dir='rtl'] .clientNavbar .top-bar .dropdown ul {
+html[dir="rtl"] .clientNavbar .top-bar .dropdown ul {
   left: 0px;
 }
 
-h1{
-  font-size:3rem;
-  font-weight:bold;
+h1 {
+  font-size: 3rem;
+  font-weight: bold;
   line-height: 100%;
-  margin-bottom:8px;
+  margin-bottom: 8px;
 }
-h2{
-    font-size:1.5rem;
-  font-weight:bold;
+h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
   line-height: 100%;
-  margin-bottom:8px;
+  margin-bottom: 8px;
   text-align: center;
 }
-h3{
-    font-size:1rem;
-  font-weight:bold;
+h3 {
+  font-size: 1rem;
+  font-weight: bold;
   line-height: 100%;
-  margin-bottom:8px;
+  margin-bottom: 8px;
 }
-p{
-  color:$paraTextColor;
+p {
+  color: $paraTextColor;
   width: 80%;
   line-height: 150%;
   margin: 0px;
 }
-.courseName{
+.courseName {
   font-weight: bold;
   font-size: 1.5rem;
-  color:$headerColor
+  color: $headerColor;
 }
-.sectionSubHeader{
+.sectionSubHeader {
   font-style: italic;
-  color:$headerColor;
+  color: $headerColor;
 }
-.page-width{
-  width:90%;
+.page-width {
+  width: 90%;
   margin: 0 auto;
 }
 
-@media screen and (min-width:1200px){
-h1{
-  font-size:5rem;
-}
-h2{
-    font-size:2.5rem;
+@media screen and (min-width: 1200px) {
+  h1 {
+    font-size: 5rem;
   }
-  h3{
-    font-size:1.5rem;
-}
+  h2 {
+    font-size: 2.5rem;
+  }
+  h3 {
+    font-size: 1.5rem;
+  }
 }
 
-@media screen and (min-width:1400px){
-  .page-width{
-  width:80%;
-}
+@media screen and (min-width: 1400px) {
+  .page-width {
+    width: 80%;
+  }
 }
