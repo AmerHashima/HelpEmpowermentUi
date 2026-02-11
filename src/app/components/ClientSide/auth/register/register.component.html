@@ -1,1 +1,116 @@
-<p>register works!</p>
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-6 ">
+      <section class="form w-100 d-flex flex-column align-items-stretch gap-3 my-4 p-5 rounded">
+        <div class="d-flex flex-column gap-2 w-100">
+          <h3 class="m-0 ">{{ "register.started" | translate }}</h3>
+          <p>{{ "register.joinMessage" | translate }}</p>
+        </div>
+
+        <form
+          #registerForm="ngForm"
+          (ngSubmit)="onSubmit()"
+          class="register-form mb-0"
+        >
+          <div class="d-flex flex-column gap-3">
+            <div class="row">
+              <div class="col-12 col-lg-8">
+                      <app-input
+              name="firstName"
+              [(ngModel)]="credentials.firstName"
+              required
+              [label]="'log.firstNameLabel' | translate"
+              [placeholder]="'log.firstNamePlaceholder' | translate"
+              [icon]="'bi bi-user'"
+              [errorMessages]="{
+                required: 'First Name is required' | translate,
+              }"
+            ></app-input>
+              </div>
+                <div class="col-12 col-lg-6">
+
+               <app-input
+              name="lastName"
+              [(ngModel)]="credentials.lastName"
+              required
+              [label]="'log.lastNameLabel' | translate"
+              [placeholder]="'log.lastNamePlaceholder' | translate"
+              [icon]="'bi bi-user'"
+              [errorMessages]="{
+                required: 'Last Name is required' | translate,
+              }"
+            ></app-input>
+              </div>
+            </div>
+            <app-input
+              name="email"
+              [(ngModel)]="credentials.email"
+              required
+              email
+              [label]="'log.emailLabel' | translate"
+              [placeholder]="'log.emailPlaceholder' | translate"
+              [icon]="'bi bi-envelope'"
+              [errorMessages]="{
+                required: 'Email is required' | translate,
+                email: 'Invalid email format' | translate,
+              }"
+            ></app-input>
+
+            <app-input
+              name="password"
+              [(ngModel)]="credentials.password"
+              required
+              minlength="6"
+              [label]="'log.passwordLabel' | translate"
+              [placeholder]="'log.passwordPlaceholder' | translate"
+              [icon]="'bi bi-lock'"
+              [type]="'password'"
+              [errorMessages]="{
+                required: 'Password is required' | translate,
+                minlength: 'At least 6 characters' | translate,
+              }"
+            ></app-input>
+               <app-input
+              name="confirmPassword"
+              [(ngModel)]="credentials.confirmPassword"
+              required
+              minlength="6"
+              [label]="'log.passwordLabel' | translate"
+              [placeholder]="'log.passwordPlaceholder' | translate"
+              [icon]="'bi bi-lock'"
+              [type]="'password'"
+              [errorMessages]="{
+                required: 'Password is required' | translate,
+                minlength: 'At least 6 characters' | translate,
+              }"
+            ></app-input>
+            <label class="form-check">
+              <input
+                name="terms"
+                [(ngModel)]="credentials.terms"
+                type="checkbox"
+                class="form-check-input"
+              />
+              <span class="form-check-label">I agree to the Terms & Conditions and Privacy Policy</span>
+            </label>
+
+
+            <app-site-button
+              title="register.registerButton"
+              type="main"
+              htmlType="submit"
+              [icon]="isRTL() ? 'bi bi-arrow-left' : 'bi bi-arrow-right'"
+              [isRTL]="isRTL()"
+            ></app-site-button>
+          </div>
+        </form>
+
+        <p class="d-flex align-items-center justify-content-center">
+          <span class="pe-1">Already have an account?</span>
+          <span   [routerLink]="`${lang()}/auth/login`"
+          class="mainTextColor fw-bold text-decoration-underline">Login</span>
+        </p>
+      </section>
+    </div>
+  </div>
+</div>

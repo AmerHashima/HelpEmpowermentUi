@@ -10,7 +10,7 @@
         <form
           #loginForm="ngForm"
           (ngSubmit)="onLoginSubmit()"
-          class="login-form w-full"
+          class="login-form mb-0"
         >
           <div class="d-flex flex-column gap-3">
             <app-input
@@ -65,7 +65,9 @@
 
         <p class="d-flex align-items-center justify-content-center">
           <span class="pe-1">Don't have an account?</span>
-          <span class="mainTextColor fw-bold text-decoration-underline">Register</span>
+          <span class="mainTextColor fw-bold text-decoration-underline"
+          [routerLink]="`${lang()}/auth/register`"
+          >Register</span>
         </p>
       </section>
     </div>

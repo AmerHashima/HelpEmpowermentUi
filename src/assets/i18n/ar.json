@@ -63,7 +63,12 @@
         "loginButton": "تسجيل الدخول",
         "noAccount": "ليس لديك حساب؟",
         "signUp": "إنشاء حساب"
-      }
+      },
+      "404": "٤٠٤",
+      "Oops! Page not found": "أوه! الصفحة غير موجودة",
+      "The page you are looking for might have been removed, had its name changed or is temporarily unavailable.": "الصفحة التي تبحث عنها قد تم حذفها، أو تغيير اسمها، أو أنها غير متاحة مؤقتًا.",
+      "Back to Home": "العودة إلى الصفحة الرئيسية",
+      "Go Back": "رجوع"
 
 
 }

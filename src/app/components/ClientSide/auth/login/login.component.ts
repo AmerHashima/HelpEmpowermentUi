@@ -16,13 +16,12 @@ import { CheckboxComponent } from '../../../../shared/checkbox/checkbox.componen
   imports: [
     CommonModule,
     RouterLink,
-    FormItemComponent,
     FormsModule,
     InputComponent,
     TranslateModule,
     TranslatePipe,
-    NgIf,
     SiteButtonComponent,
+    RouterLink
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
@@ -30,7 +29,7 @@ import { CheckboxComponent } from '../../../../shared/checkbox/checkbox.componen
 export class LoginComponent {
   private shared = inject(Shared);
   isRTL = this.shared.isRtl;
-
+  lang=this.shared.lang;
 
   credentials = {
     email: '',

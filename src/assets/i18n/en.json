@@ -75,6 +75,13 @@
     "loginButton": "Login",
     "noAccount": "Don't have an account?",
     "signUp": "Sign up"
-  }
+  },
+
+    "404": "404",
+    "Oops! Page not found": "Oops! Page not found",
+    "The page you are looking for might have been removed, had its name changed or is temporarily unavailable.": "The page you are looking for might have been removed, had its name changed or is temporarily unavailable.",
+    "Back to Home": "Back to Home",
+    "Go Back": "Go Back"
+  
 
 }
