@@ -143,8 +143,22 @@
       "SECTION_TAG_TEXT": "We deliver guaranteed outcomes including faster data-driven decisions, complete portfolio visibility, 70% time savings on report generation, and enhanced collaboration, ensuring measurable improvements in efficiency and transparency.",
       "ENROLL_TITLE_1": "Ready to Empower Your Organization?",
       "ENROLL_TITLE_2": "Contact us today for a custom PMIS solution designed for your success"
-    }
-  
+    },
+      "assessment": {
+        "MAIN_TITLE": "Project Management Maturity Assessment",
+        "MAIN_DESCRIPTION": "A project management maturity assessment evaluates your organization's project management processes, tools, and practices, providing insights to improve efficiency and effectiveness.",
+        "ENROLL_TITLE_1": "Interested in a PM Maturity Assessment?",
+        "ENROLL_TITLE_2": "Contact us today to schedule your assessment and unlock your organization's full potential.",
+        "mainObjectiveTitle": "Main Objectives",
+        "mainObjectiveDescription": "The main objectives of conducting a project management maturity assessment include understanding current practices, identifying gaps, and recommending improvements.",
+        "methodologyTitle": "Assessment Methodology",
+        "methodologyText": "Our methodology involves surveys, interviews, document reviews, and observations to analyze project management practices and recommend improvements.",
+        "standardsTitle": "Industry Standards & Best Practices",
+        "standardsText": "Our assessments are aligned with OPM3 (Organizational Project Management Maturity Model) and P3M3 (Portfolio, Program, and Project Management Maturity Model) to ensure best practices and measurable improvements.",
+        "SECTION_TAG_HEADER": "At Help Empowerment",
+        "SECTION_TAG_TEXT": "We have conducted PM Maturity Assessments numerous times for diverse clients. We recommend that every organization perform this assessment annually to measure progress and development in their project management activities."
+      }
+
 
 
 }
