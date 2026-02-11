@@ -198,7 +198,19 @@
                   }"
                 ></app-input>
               </div>
-
+ <div class="flex-grow-1">
+                <app-input
+                  formControlName="answerText_Ar"
+                  label="answerText_Ar {{ i + 1 }}"
+                  placeholder="Enter answer text..."
+                  (inputClick)="onAnswerInputClick(i)"
+                  [errorMessages]="{
+                    required: 'Answer text is required',
+                    minlength: 'Too short',
+                    maxlength: 'Too long (max 200 characters)',
+                  }"
+                ></app-input>
+              </div>
               @if (answersArray.length > 1) {
                 <button
                   type="button"
@@ -251,7 +263,17 @@
                   maxlength: 'Too long',
                 }"
               ></app-input>
-
+ <app-input
+                class="flex-grow-1"
+                formControlName="answerText_Ar"
+                label="Question / Prompt {{ i + 1 }}"
+                placeholder="Enter text to be matched..."
+                [errorMessages]="{
+                  required: 'This field is required',
+                  minlength: 'Too short',
+                  maxlength: 'Too long',
+                }"
+              ></app-input>
               @if (dragQuestionsArray.length > 1) {
                 <button
                   type="button"
@@ -367,6 +389,14 @@
                 <div class="col-md-6">
                   <app-input
                     formControlName="answerText"
+                    label="Question / Prompt {{ i + 1 }}"
+                    [readOnly]="true"
+                    wrapperClass="mb-0"
+                  ></app-input>
+                </div>
+                <div class="col-md-6">
+                  <app-input
+                    formControlName="answerText_Ar"
                     label="Question / Prompt {{ i + 1 }}"
                     [readOnly]="true"
                     wrapperClass="mb-0"

@@ -252,6 +252,7 @@ export class CertificationQuestionComponent {
       answerText: [existing?.answerText ?? '', [
         Validators.required,
       ]],
+      answerText_Ar: [existing?.answerText_Ar ?? ''],
       question_Ask: [existing?.question_Ask ?? isQuestion],
       correctAnswerOid: [existing?.correctAnswerOid ?? null],
       isCorrect: [existing?.isCorrect ?? false],
@@ -261,6 +262,36 @@ export class CertificationQuestionComponent {
 
     if (existing?.oid) {
       (group as FormGroup<any>).addControl('oid', this.fb.control(existing.oid));
+    }
+
+    const answerTextControl = group.get('answerText');
+    const answerTextArControl = group.get('answerText_Ar');
+    if (answerTextControl && answerTextArControl) {
+      let lastAutoTranslatedAr = String(existing?.answerText_Ar ?? '').trim();
+      answerTextControl.valueChanges
+        .pipe(
+          debounceTime(400),
+          map(value => String(value ?? '').trim()),
+          distinctUntilChanged(),
+          switchMap(text => {
+            const currentAr = String(answerTextArControl.value ?? '').trim();
+            if (!text) return of('');
+            if (currentAr && currentAr !== lastAutoTranslatedAr) {
+              return of(null);
+            }
+            return this.translateService.translateEnToAr(text).pipe(
+              catchError(() => of(''))
+            );
+          }),
+          filter(translated => translated !== null),
+          tap(translated => {
+            if (!translated) return;
+            lastAutoTranslatedAr = translated;
+            answerTextArControl.setValue(translated, { emitEvent: false });
+          }),
+          takeUntilDestroyed(this.destroyRef)
+        )
+        .subscribe();
     }
 
     this.choiceAnswerOrderCounter++;
