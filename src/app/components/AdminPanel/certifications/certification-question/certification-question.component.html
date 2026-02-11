@@ -413,16 +413,6 @@
       </div>
     }
   }
-
-  <!--         Actions            -->
-  <div class="d-flex justify-content-end gap-3 mt-4">
-    <app-button btnLabel="Cancel" [mainBtn]="false" (click)="cancel()" />
-    <app-button
-      btnLabel="{{ editMode ? 'Update Question' : 'Create Question' }}"
-      buttonType="submit"
-    />
-  </div>
-</div>
   <div class="card shadow-sm">
       <div
         class="card-header fw-bold d-flex justify-content-between align-items-center"
@@ -440,4 +430,14 @@
         </div>
       </div>
     </div>
+  <!--         Actions            -->
+  <div class="d-flex justify-content-end gap-3 mt-4">
+    <app-button btnLabel="Cancel" [mainBtn]="false" (click)="cancel()" />
+    <app-button
+      btnLabel="{{ editMode ? 'Update Question' : 'Create Question' }}"
+      buttonType="submit"
+    />
+  </div>
+</div>
+
 </form>
