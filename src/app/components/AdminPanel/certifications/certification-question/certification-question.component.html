@@ -130,14 +130,7 @@
             selectClass="form-control w-100"
           ></spk-ng-select>
         </div>
-  <div class="col-12">
-          <app-textarea
-            formControlName="questionExplanation"
-            label=" Explanation"
-            placeholder="Enter the explanation here..."
-            
-          ></app-textarea>
-        </div>
+
        
 
         <!-- Uncomment if file upload is actually used -->
@@ -428,5 +421,23 @@
       btnLabel="{{ editMode ? 'Update Question' : 'Create Question' }}"
       buttonType="submit"
     />
-  </div></div>
+  </div>
+</div>
+  <div class="card shadow-sm">
+      <div
+        class="card-header fw-bold d-flex justify-content-between align-items-center"
+      >
+        <h5 class="mb-0">Explanation</h5>
+      </div>
+      <div class="card-body">
+        <div class="col-12">
+          <app-textarea
+            formControlName="questionExplanation"
+            label=" Explanation"
+            placeholder="Enter the explanation here..."
+            
+          ></app-textarea>
+        </div>
+      </div>
+    </div>
 </form>
