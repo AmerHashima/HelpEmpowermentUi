@@ -329,7 +329,17 @@
                     maxlength: 'Too long',
                   }"
                 ></app-input>
-
+       <app-input
+                  class="flex-grow-1"
+                  formControlName="answerText_Ar"
+                  label="Answer Ar / Item {{ i + 1 }}"
+                  placeholder="Enter draggable answer text..."
+                  [errorMessages]="{
+                    required: 'This field is required',
+                    minlength: 'Too short',
+                    maxlength: 'Too long',
+                  }"
+                ></app-input>
                 @if (dragAnswersArray.length > 1) {
                   <button
                     type="button"
