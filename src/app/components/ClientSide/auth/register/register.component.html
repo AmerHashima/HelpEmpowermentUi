@@ -1,45 +1,46 @@
 <div class="container-fluid">
   <div class="row justify-content-center">
-    <div class="col-12 col-lg-6 ">
-      <section class="form w-100 d-flex flex-column align-items-stretch gap-3 my-4 p-5 rounded">
+    <div class="col-12 col-lg-8">
+      <section
+        class="form w-100 d-flex flex-column align-items-stretch gap-3 my-4 p-5 rounded"
+      >
         <div class="d-flex flex-column gap-2 w-100">
-          <h3 class="m-0 ">{{ "register.started" | translate }}</h3>
+          <h3 class="m-0">{{ "register.started" | translate }}</h3>
           <p>{{ "register.joinMessage" | translate }}</p>
         </div>
 
         <form
           #registerForm="ngForm"
-          (ngSubmit)="onSubmit()"
+          (ngSubmit)="onRegister()"
           class="register-form mb-0"
         >
           <div class="d-flex flex-column gap-3">
             <div class="row">
-              <div class="col-12 col-lg-8">
-                      <app-input
-              name="firstName"
-              [(ngModel)]="credentials.firstName"
-              required
-              [label]="'log.firstNameLabel' | translate"
-              [placeholder]="'log.firstNamePlaceholder' | translate"
-              [icon]="'bi bi-user'"
-              [errorMessages]="{
-                required: 'First Name is required' | translate,
-              }"
-            ></app-input>
+              <div class="col-12 col-lg-6">
+                <app-input
+                  name="firstName"
+                  [(ngModel)]="credentials.firstName"
+                  required
+                  [label]="'register.firstNameLabel' | translate"
+                  [placeholder]="'register.firstNamePlaceholder' | translate"
+                  [icon]="'bi bi-person'"
+                  [errorMessages]="{
+                    required: 'First Name is required' | translate,
+                  }"
+                ></app-input>
               </div>
-                <div class="col-12 col-lg-6">
-
-               <app-input
-              name="lastName"
-              [(ngModel)]="credentials.lastName"
-              required
-              [label]="'log.lastNameLabel' | translate"
-              [placeholder]="'log.lastNamePlaceholder' | translate"
-              [icon]="'bi bi-user'"
-              [errorMessages]="{
-                required: 'Last Name is required' | translate,
-              }"
-            ></app-input>
+              <div class="col-12 col-lg-6">
+                <app-input
+                  name="lastName"
+                  [(ngModel)]="credentials.lastName"
+                  required
+                  [label]="'register.lastNameLabel' | translate"
+                  [placeholder]="'register.lastNamePlaceholder' | translate"
+                  [icon]="'bi bi-person'"
+                  [errorMessages]="{
+                    required: 'Last Name is required' | translate,
+                  }"
+                ></app-input>
               </div>
             </div>
             <app-input
@@ -56,6 +57,35 @@
               }"
             ></app-input>
 
+            <div class="field" [dir]="isRTL() ? 'rtl' : 'ltr'">
+              <label for="phone">{{ "register.phoneLabel" | translate }}</label>
+
+              <ngxsmk-tel-input
+                name="phone"
+                [(ngModel)]="credentials.phone"
+                #phone="ngModel"
+                required
+                phoneValidation
+                [dir]="isRTL() ? 'rtl' : 'ltr'"
+                [preferredCountries]="['EG', 'SA', 'AE', 'US']"
+                [initialCountry]="'EG'"
+                [i18n]="arabicLabels"
+                [localizedCountries]="arabicCountries"
+              ></ngxsmk-tel-input>
+
+              <div
+                class="error"
+                *ngIf="phone?.invalid && (phone?.dirty || phone?.touched)"
+              >
+                <div *ngIf="phone?.errors?.['required']">
+                  {{ "register.phoneRequired" | translate }}
+                </div>
+                <div *ngIf="phone?.errors?.['invalidNumber']">
+                  {{ "register.phoneInvalid" | translate }}
+                </div>
+              </div>
+            </div>
+
             <app-input
               name="password"
               [(ngModel)]="credentials.password"
@@ -70,7 +100,7 @@
                 minlength: 'At least 6 characters' | translate,
               }"
             ></app-input>
-               <app-input
+            <app-input
               name="confirmPassword"
               [(ngModel)]="credentials.confirmPassword"
               required
@@ -91,9 +121,10 @@
                 type="checkbox"
                 class="form-check-input"
               />
-              <span class="form-check-label">I agree to the Terms & Conditions and Privacy Policy</span>
+              <span class="form-check-label"
+                >I agree to the Terms & Conditions and Privacy Policy</span
+              >
             </label>
-
 
             <app-site-button
               title="register.registerButton"
@@ -106,9 +137,12 @@
         </form>
 
         <p class="d-flex align-items-center justify-content-center">
-          <span class="pe-1">Already have an account?</span>
-          <span   [routerLink]="`${lang()}/auth/login`"
-          class="mainTextColor fw-bold text-decoration-underline">Login</span>
+          <span class="pe-1">{{ "register.loginMessage" | translate }}</span>
+          <span
+            [routerLink]="`/${lang()}/auth/login`"
+            class="mainTextColor fw-bold text-decoration-underline"
+            >{{ "Login" | translate }}</span
+          >
         </p>
       </section>
     </div>

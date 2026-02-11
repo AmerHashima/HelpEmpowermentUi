@@ -53,10 +53,13 @@ html #toast-container.toast-top-right {
   z-index: 999999999 !important;
 }
 
-  .form-check-label{
+  .form-check-label,label{
     color:$paraTextColor !important;
   }
 
+  .form h3{
+    color:$primaryColor;
+  }
 .form .input-group {
   border: 1px solid $borderColor;
   background-color: $inputBg !important;
@@ -289,3 +292,6 @@ p {
     width: 80%;
   }
 }
+
+
+

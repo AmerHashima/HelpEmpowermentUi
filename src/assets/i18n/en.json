@@ -81,7 +81,36 @@
     "Oops! Page not found": "Oops! Page not found",
     "The page you are looking for might have been removed, had its name changed or is temporarily unavailable.": "The page you are looking for might have been removed, had its name changed or is temporarily unavailable.",
     "Back to Home": "Back to Home",
-    "Go Back": "Go Back"
-  
+    "Go Back": "Go Back",
+    "Login":"Login",
+    "register": {
+      "started": "Get Started Now",
+      "joinMessage": "Start your journey with us",
+      "firstNameLabel": "First Name",
+      "firstNamePlaceholder": "Enter your first name",
+      "lastNameLabel": "Last Name",
+      "lastNamePlaceholder": "Enter your last name",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Enter your password",
+      "registerButton": "Create Account",
+      "termsCheckbox": "I agree to the Terms & Conditions and Privacy Policy",
+        "confirmPasswordLabel": "Confirm Password",
+        "confirmPasswordPlaceholder": "Enter Confirm Password",
+        "loginMessage":"Already have an account?",
+        "phoneLabel": "Phone Number",
+        "phoneRequired": "Phone number is required",
+        "phoneInvalid": "Please enter a valid phone number",
+        "phonePlaceholder": "Enter your phone number"
+    },
+    "contact": {
+      "sendUs": "Send Us a Message",
+      "anyQuestion": "Have any questions? We'd love to hear from you.",
+      "fullNameLabel": "Full Name",
+      "fullNamePlaceholder": "Enter your full name",
+      "messageLabel": "Message",
+      "messagePlaceholder": "Write your message here...",
+      "contactBtn": "Send Message"
+    }
+
 
 }
