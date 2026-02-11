@@ -7,7 +7,5 @@
         <p class="titledSectionParag">{{ text() | translate }}</p>
       }
 
-      @if (content()) {
-        <ng-container [ngTemplateOutlet]="content()!"></ng-container>
-      }
+      <ng-content></ng-content>
     </section>

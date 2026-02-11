@@ -132,7 +132,19 @@
     "organizationnamePlaceholder": "Enter your organization name",
     "notesLabel": "Notes",
     "enrollBtn": "Submit Enrollment"
-  }
+  },
+    "PMIS": {
+      "MAIN_TITLE": "Empower Your Decisions with Smarter Data Insights",
+      "MAIN_DESCRIPTION": "Help Empowerment transforms your project management with a customized Project Management Information System (PMIS) that serves as the central system for all your projects and programs. We deliver more than software, we provide a complete ecosystem that unifies your tools, data, and teams into one powerful platform.",
+      "WHAT_WE_DELIVER_TITLE": "What We Deliver",
+      "WHAT_WE_DELIVER_SUBTITLE": "A complete ecosystem that unifies your tools, data, and teams into one powerful platform",
+      "KEY_BENEFITS_TITLE": "Key Benefits of PMIS:",
+      "SECTION_TAG_HEADER": "At \"Help Empowerment\"",
+      "SECTION_TAG_TEXT": "We deliver guaranteed outcomes including faster data-driven decisions, complete portfolio visibility, 70% time savings on report generation, and enhanced collaboration, ensuring measurable improvements in efficiency and transparency.",
+      "ENROLL_TITLE_1": "Ready to Empower Your Organization?",
+      "ENROLL_TITLE_2": "Contact us today for a custom PMIS solution designed for your success"
+    }
+  
 
 
 }
