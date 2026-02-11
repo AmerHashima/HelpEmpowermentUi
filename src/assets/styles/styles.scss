@@ -275,6 +275,30 @@ p {
   margin: 0 auto;
 }
 
+
+.contactCard{
+    padding:1rem 1.5rem;
+    display: flex;
+    align-items:center;
+    gap:1rem;
+    background-color: $primaryColor;
+    color:$lightBgTextColor;
+    border-radius: $borderRadius;
+}
+
+.contactCard:hover{
+    background-color: $secondaryColor;
+}
+
+.contactCard i {
+  font-size:1.4rem;
+}
+
+.contactCard .key{
+  font-size:1rem;
+  font-weight: $bold
+}
+
 @media screen and (min-width: 1200px) {
   h1 {
     font-size: 5rem;

@@ -1,1 +1,74 @@
-/* src\app\components\contact\contact.component.scss */
+@use 'variables' as *;
+.contact{
+    width:100%;
+    padding-top:2rem;
+    padding-bottom:2rem;
+    display: flex;
+    flex-direction: column;
+    gap:3rem;
+}
+
+.contact .Homebanner{
+    min-height:auto !important;
+    gap:2rem;
+}
+
+
+.contactForm{
+    padding-inline:0px !important;
+    width: 100% !important;
+}
+
+.contact .content{
+    width: 100% !important;
+}
+
+.contact .intro-video{
+    width: 100% !important;
+}
+
+.card-wrapper {
+  flex: 1;
+  display: flex;
+}
+
+.card-wrapper > * {
+  flex: 1;
+}
+.card-wrapper + .contatctCard{
+  flex: 1;
+}
+
+h4{
+    font-size: 1.4rem;
+    margin:0px;
+    color:$headerColor;
+}
+
+.map{
+    width: 100%;
+    height: 500px;
+}
+
+.map iframe{
+    border-radius: $borderRadius;
+    border:none;
+}
+.location{
+    color:$primaryColor;
+}
+
+.contactCards{
+    flex-direction: column;
+    width: 100%;
+}
+.contact h3{
+    color:$headerColor;
+}
+
+@media screen and (min-width:992px) {
+   .contactCards{
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+}
