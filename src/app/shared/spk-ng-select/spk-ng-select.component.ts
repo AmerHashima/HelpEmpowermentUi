@@ -1,3 +1,4 @@
+// src\app\shared\spk-ng-select\spk-ng-select.component.ts
 import { Component, ElementRef, input, output, Renderer2 } from '@angular/core';
 import { ControlValueAccessor, FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -71,14 +72,6 @@ export class SpkNgSelectComponent implements ControlValueAccessor {
   // ────────────────────────────────────────────────
   writeValue(value: any): void {
     this.value = value;
-    if (value !== undefined && value !== null) {
-      // notify Angular forms
-      this.onChange(value);
-
-      // trigger your custom outputs
-      this.change.emit(value);
-      this.selectedChange.emit(value);
-    }
   }
 
   registerOnChange(fn: (value: any) => void): void {

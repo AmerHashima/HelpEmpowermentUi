@@ -190,6 +190,7 @@ export class CertificationQuestionComponent {
 
       this.patchBasicQuestionFields(q);
       this.populateAnswersOrDragItems(q);
+      this.selectedType.set(this.resolveSelectedType(q.questionTypeName));
       this.activeSection.set(q.questionTypeName as SectionType);
     });
 
@@ -254,7 +255,9 @@ export class CertificationQuestionComponent {
       ]],
       answerText_Ar: [existing?.answerText_Ar ?? ''],
       question_Ask: [existing?.question_Ask ?? isQuestion],
-      correctAnswerOid: [existing?.correctAnswerOid ?? null],
+      correctAnswerOid: [
+        existing?.correctAnswerOid != null ? String(existing.correctAnswerOid) : null
+      ],
       isCorrect: [existing?.isCorrect ?? false],
       orderNo: [existing?.orderNo ?? this.choiceAnswerOrderCounter, Validators.required],
       createdBy: [existing?.createdBy ?? DEFAULT_USER_ID, Validators.required],
@@ -455,29 +458,48 @@ export class CertificationQuestionComponent {
       this.form.setControl('answers', this.fb.array(answerControls));
     } else {
       console.log('question', question);
-      const questions = question.answers?.filter((a: any) => a.question_Ask) ?? [];
-      const answers = question.answers?.filter((a: any) => !a.question_Ask) ?? [];
+      const sortByOrder = (items: any[]) =>
+        items.slice().sort((a, b) => (a?.orderNo ?? 0) - (b?.orderNo ?? 0));
 
-      this.form.setControl('dragQuestions', this.fb.array(
+      const questions = sortByOrder(question.answers?.filter((a: any) => a.question_Ask) ?? [])
+        .map((q: any) => ({
+          ...q,
+          oid: q?.oid != null ? String(q.oid) : q.oid
+        }));
+      const answers = sortByOrder(question.answers?.filter((a: any) => !a.question_Ask) ?? [])
+        .map((a: any) => ({
+          ...a,
+          oid: a?.oid != null ? String(a.oid) : a.oid
+        }));
+
+      (this.form as FormGroup<any>).setControl('dragQuestions', this.fb.array(
         questions.map((q: any) => this.createDragQuestionGroup(q))
       ));
 
-      this.form.setControl('dragAnswers', this.fb.array(
+      (this.form as FormGroup<any>).setControl('dragAnswers', this.fb.array(
         answers.map((a: any) => this.createDragAnswerGroup(a))
       ));
       this.addDragAnswersFlag.set(true);
+      this.apiQuestions = questions;
       this.apiAnswers.set(answers);
       console.log('questions', questions);
-      this.dragQuestionsArray.controls.forEach((ctrl, index) => {
-        const originalQuestion = questions[index];
-        if (originalQuestion?.correctAnswerOid) {
-          ctrl.patchValue({
-            correctAnswerOid: originalQuestion.correctAnswerOid
-          });
-        }
-      });
+      this.syncCorrectAnswerSelections(questions, answers);
       this.linkDragAnswerAndQuestionFlag.set(true);
     }
+  }
+
+  private syncCorrectAnswerSelections(questions: any[], answers: any[]): void {
+    setTimeout(() => {
+      this.dragQuestionsArray.controls.forEach((ctrl, index) => {
+        const originalQuestion = questions[index];
+        if (originalQuestion?.correctAnswerOid == null) return;
+        const desiredValue = String(originalQuestion.correctAnswerOid);
+        const hasMatch = answers.some(a => String(a?.oid) === desiredValue);
+        const value = hasMatch ? desiredValue : String(answers[index]?.oid ?? '');
+        if (!value) return;
+        ctrl.get('correctAnswerOid')?.setValue(value, { emitEvent: false });
+      });
+    }, 0);
   }
 
   // Submit / Cancel
@@ -555,27 +577,40 @@ export class CertificationQuestionComponent {
 
   private getDragQuestionPayload() {
     const raw = this.form.getRawValue();
+    const apiAnswers = this.apiAnswers();
+    const apiQuestions = this.apiQuestions ?? [];
 
     const questionAnswers = this.mapAnswers(raw.dragQuestions, {
       question_Ask: true,
       isCorrect: false,
-    });
+    }).map((q: any, index: number) => ({
+      ...q,
+      oid: q.oid ?? apiQuestions[index]?.oid ?? null
+    }));
 
     const dragAnswers = this.mapAnswers(raw.dragAnswers, {
       question_Ask: false,
-    });
+    }).map((a: any, index: number) => ({
+      ...a,
+      oid: a.oid ?? apiAnswers[index]?.oid ?? null
+    }));
+
+    const questionsWithLinks = questionAnswers.map((q: any, index: number) => ({
+      ...q,
+      correctAnswerOid: dragAnswers[index]?.oid ?? null
+    }));
 
     return {
       oid: this.questionId || undefined,
       ...this.buildBasePayload(raw),
-      answers: [...questionAnswers, ...dragAnswers],
+      answers: [...questionsWithLinks, ...dragAnswers],
     };
   }
 
   private buildPayload(): any {
     const raw = this.form.getRawValue();
 
-    if (this.selectedType() === 'MATCHING') {
+    if (this.isMatchingSection()) {
       return this.getDragQuestionPayload();
     }
 
@@ -584,6 +619,20 @@ export class CertificationQuestionComponent {
       ...this.buildBasePayload(raw),
       answers: this.mapAnswers(raw.answers || [], { question_Ask: false }),
     };
+  }
+
+  private isMatchingSection(): boolean {
+    const section = String(this.activeSection() ?? '').toLowerCase();
+    if (section.includes('match')) return true;
+    const type = String(this.selectedType() ?? '').toLowerCase();
+    return type === 'matching' || type === 'match' || type === 'matchin';
+  }
+
+  private resolveSelectedType(typeName?: string | null): QuestionType {
+    const name = String(typeName ?? '').toLowerCase();
+    if (name.includes('match')) return 'MATCHING';
+    if (name.includes('multiple choice') || name.includes('true/false')) return 'MCQ';
+    return null;
   }
 
   private updateMatchingQuestions(): void {
