@@ -1,0 +1,9 @@
+@use 'variables' as *;
+.enrollForm{
+      padding:1rem;
+      border-radius:$borderRadius;
+}
+
+.enrollForm .serviceTitle{
+      color:$headerColor;
+}

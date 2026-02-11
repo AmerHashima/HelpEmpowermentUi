@@ -110,7 +110,29 @@
       "messageLabel": "Message",
       "messagePlaceholder": "Write your message here...",
       "contactBtn": "Send Message"
-    }
+    },
+    "PMO": {
+      "DESCRIPTION": "The service involves establishing a Project Management Office (PMO) within the organization to centralize project management functions, standardize processes, and provide governance and support for projects. This includes defining the PMO's structure, roles and responsibilities, processes, tools, and methodologies tailored to meet the organization's specific needs and goals.",
+      "IMPACT_TITLE": "Impact of a PMO",
+      "IMPACT_TEXT": "The impact of a Project Management Office (PMO) extends beyond just improving project performance; it also enhances the organization's competitive position and ensures a tangible return on investment. These documented statistics reflect why the PMO has become a cornerstone of success for ambitious organizations worldwide.",
+      "PROVEN_RESULTS_TITLE": "Proven Results",
+      "PROVEN_RESULTS_SUBTITLE": "Recent global reports and studies from trusted sources demonstrate the tangible impact of an effective PMO on organizational performance. Below are the most prominent statistics and their sources:",
+      "OUR_SERVICES_TITLE": "Our Services",
+      "OUR_SERVICES_TEXT": "Our services are tailored to design a PMO that fits your specific operational environment, integrating the best practices from both traditional and Agile approaches, and ensuring the delivery of tangible value and measurable results.",
+      "HELP_EMPOWERMENT_HEADER": "At \"Help Empowerment\"",
+      "HELP_EMPOWERMENT_TEXT": "we believe that every organization deserves a Project Management Office (PMO) specifically designed to align with its unique vision and strategic needs. We recognize the importance of adopting Agile methodologies to enhance flexibility and the ability to quickly respond to market changes.",
+      "ENROLL_MESSAGE": "Do not hesitate to contact us. Together, we will develop an integrated solution that guarantees the achievement of your organization's goals and enhances the efficiency of your operations."
+    },
+  "enroll": {
+    "enroll": "Enroll Now",
+    "message": "Fill in the form below and our team will contact you shortly.",
+    "fullnameLabel": "Full Name",
+    "fullnamePlaceholder": "Enter your full name",
+    "organizationnameLabel": "Organization Name",
+    "organizationnamePlaceholder": "Enter your organization name",
+    "notesLabel": "Notes",
+    "enrollBtn": "Submit Enrollment"
+  }
 
 
 }

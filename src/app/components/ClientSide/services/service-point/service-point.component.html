@@ -1,0 +1,25 @@
+<section class="d-flex flex-column gap-3">
+      <div class="d-flex flex-column gap-1">
+        @if (mainTitle()) {
+          <h5 class="fw-bold mainTextColor mb-1">{{ mainTitle() | translate }}</h5>
+        }
+        @if (subTitle()) {
+          <p>{{ subTitle() | translate }}</p>
+        }
+      </div>
+
+      <div class="d-flex flex-column gap-2">
+        @for (item of cardPointsInfo(); track $index) {
+          <div class="serviceCardPoint shadow-sm rounded">
+            <app-service-card
+              [icon]="item.icon"
+              [header]="item.header"
+              [text]="item.text"
+              [newClass]="item['newClass'] ?? ''"
+            />
+          </div>
+        } @empty {
+          <p class="text-center text-muted">{{ 'NO_POINTS_AVAILABLE' | translate }}</p>
+        }
+      </div>
+    </section>
