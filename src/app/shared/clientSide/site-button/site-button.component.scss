@@ -1,0 +1,24 @@
+@use "variables" as *;
+button{
+  border-bottom: $borderRadius !important;
+  padding:.5rem 1.2rem;
+}
+.btn-primary {
+  background-color: $primaryColor !important;
+  color: $lightBgTextColor !important;
+  border: none;
+  &:hover {
+    background-color: $secondaryColor !important;
+  }
+}
+
+
+.btn-outline-primary{
+  background-color: $btnDarkbg !important;
+  color: $btnDarkText !important;
+  border: none;
+  &:hover {
+    background-color: $secondaryColor !important;
+      color: $lightBgTextColor !important;
+  }
+}

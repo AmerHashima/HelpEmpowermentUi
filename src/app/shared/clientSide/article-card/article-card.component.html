@@ -1,0 +1,45 @@
+ <div
+      class="certification-card articleCard shadow h-100"
+      [class.rtl]="isRTL()"
+    >
+      <!-- Image -->
+      <div class="certification-image">
+        <img [src]="imgSrc()" [alt]="imgAlt() | translate" />
+      </div>
+
+      <!-- Content -->
+      <div class="certfication-content d-flex flex-column gap-3 p-3">
+        <!-- Date & time -->
+        <div class="date d-flex align-items-center gap-2  small">
+          <span>{{ date() | translate }}</span>
+          <span>·</span>
+          <span>{{ publishTime() | translate  }}</span>
+        </div>
+
+        <!-- Title & description -->
+        <div class="d-flex flex-column gap-3">
+          <div class="d-flex  flex-column gap-1">
+            <h3 class="articleName courseName mb-1">
+              {{ title() | translate }}
+            </h3>
+            <p class="articleDesc  w-100  mb-0">
+              {{ description() | translate }}
+            </p>
+          </div>
+
+          <!-- Read more link -->
+          <div
+            class="learnMore d-flex align-items-center justify-content-end gap-2 "
+            role="button"
+            tabindex="0"
+            (click)="onClick.emit()"
+            (keyup.enter)="onClick.emit()"
+          >
+            <span>{{ 'Read More' | translate }}</span>
+            <i
+              [ngClass]="isRTL() ? 'bi bi-arrow-left' : 'bi bi-arrow-right'"
+            ></i>
+          </div>
+        </div>
+      </div>
+    </div>

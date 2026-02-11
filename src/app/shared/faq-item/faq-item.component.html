@@ -1,0 +1,46 @@
+  <div
+      class="faq  border-0  overflow-hidden"
+      [class.rtl]="isRTL()"
+    >
+      <div class="accordion accordion-flush" id="faqAccordion">
+        @for (item of questions(); track $index) {
+          <div class="accordion-item   shadow-sm mb-3">
+            <h2 class="accordion-header">
+              <button
+                class="accordion-button"
+                [class.collapsed]="$index !== 0"
+                type="button"
+                data-bs-toggle="collapse"
+                [attr.data-bs-target]="'#collapse' + $index"
+                [attr.aria-expanded]="$index === 0"
+                [attr.aria-controls]="'collapse' + $index"
+              >
+                <div class="d-flex align-items-center gap-2 w-100">
+                  <i class="bi bi-question-circle-fill  darkText"></i>
+                  <span class="question">
+                    {{ item.question | translate }}
+                  </span>
+                </div>
+              </button>
+
+            </h2>
+
+            <!-- Answer / Content -->
+            <div
+              id="collapse{{ $index }}"
+              class="accordion-collapse collapse"
+              [class.show]="$index === 0"
+              [attr.data-bs-parent]="'#faqAccordion'"
+            >
+              <div class="accordion-body">
+                <p class="mb-0">{{ item.answer | translate }}</p>
+              </div>
+            </div>
+          </div>
+        } @empty {
+          <p class="p-4 text-center ">
+            {{ 'No questions available' | translate }}
+          </p>
+        }
+      </div>
+    </div>

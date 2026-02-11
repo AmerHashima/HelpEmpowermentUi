@@ -1,0 +1,18 @@
+@use 'variables' as *;
+
+.bi{
+  font-size:1rem;
+}
+.social-link-button{
+    box-shadow: none;
+    background-color: $socialLinkBg;
+    color:$socialLinkText;
+    border:none;
+    padding:.8rem 1rem;
+    border-radius: $borderRadius;
+}
+
+.social-link-button:hover{
+    background-color: $secondaryColor;
+    color:$lightBgTextColor;
+}

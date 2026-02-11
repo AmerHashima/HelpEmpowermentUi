@@ -1,0 +1,77 @@
+@use "variables" as *;
+
+.service-card {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+  background-color: var(--service-card-color);
+  border-radius: $borderRadius;
+  padding: 1rem;
+}
+
+.service-card h6 {
+  margin: 0px;
+  font-size: 0.9rem;
+  color: $headerColor;
+}
+
+.service-card p {
+  font-size: 0.9rem;
+  width: 100%;
+}
+
+.service-card i,
+.serviceTag i {
+  font-size: 1.2rem;
+}
+
+.serviceCardIcon {
+  background-color: $primaryColor;
+  padding: 1rem;
+  color: $lightBgTextColor;
+  border-radius: $borderRadius;
+}
+
+.service-card:hover {
+  background-color: $secondaryColor;
+}
+
+.service-card:hover h6,
+.service-card:hover p {
+  color: $lightBgTextColor;
+}
+
+.service-card:hover .serviceCardIcon {
+  background-color: $lightBgTextColor;
+  color: $primaryColor;
+}
+
+.serviceSourceText {
+  font-weight: $bold;
+  font-size: $fs-sm;
+  color: $iconColor;
+}
+
+.service-card:hover .serviceSourceText {
+  color: $lightBgTextColor;
+}
+
+.serviceTag {
+  background-color: $primaryColor;
+}
+
+.serviceTag * {
+  color: $lightBgTextColor !important;
+}
+
+.serviceTag .serviceCardIcon {
+  background-color: $lightBgTextColor !important;
+  i{
+      color: $primaryColor !important;
+  }
+}
+
+.serviceTag:hover .serviceCardIcon  i {
+  color: $secondaryColor !important;
+}

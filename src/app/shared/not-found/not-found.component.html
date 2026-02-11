@@ -1,1 +1,21 @@
-<p>not-found works!</p>
+<div class="not-found-container">
+  <div class="content">
+    <h1>{{"404" | translate}}</h1>
+    <h2>{{"Oops! Page not found" | translate}}</h2>
+
+    <p>
+      {{"The page you are looking for might have been removed,
+      had its name changed or is temporarily unavailable." | translate}}
+    </p>
+
+    <div class="actions">
+      <button [routerLink]="`/${lang()}/home`" class="btn btn-primary">
+        {{"Back to Home" | translate}}
+      </button>
+
+      <button (click)="goBack()" class="btn btn-outline">
+        {{"Go Back" | translate}}
+      </button>
+    </div>
+  </div>
+</div>

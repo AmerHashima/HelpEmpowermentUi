@@ -1,0 +1,59 @@
+<div class="certification-cards gap-4">
+      @for (item of certifications(); track $index) {
+        <div class="certification-card-wrapper flex-grow-1">
+          <div class="certification-card shadow">
+
+            <!-- Image + duration tag -->
+            <div class="certification-image">
+              <img [src]="getImage($index)" [alt]="item.imgAlt | translate" />
+              <span class="course-duration">
+                <app-tag [title]="item.courseDuration | translate" />
+              </span>
+            </div>
+
+            <!-- Content -->
+            <div class="certfication-content d-flex flex-column gap-4">
+              <!-- Tags row -->
+              <div class="d-flex align-items-center gap-2">
+                @for (tag of item.tags; track tag) {
+                  <app-tag [title]="tag | translate" />
+                }
+              </div>
+
+              <!-- Title + abbr + rating -->
+              <div class="certification-title">
+                <div class="d-flex flex-column gap-0">
+                  <div class="d-flex align-items-center justify-content-between">
+                  <span class="courseName">{{ item.courseName | translate }}</span>
+                  <div class="d-flex align-items-center gap-1">
+                    <i class="bi bi-patch-check-fill"></i>
+                    <span class="CertificationBage">Certification</span>
+                  </div>
+                  </div>
+                  <span class="courseAbbr">{{ item.courseAbb | translate }}</span>
+
+                  <div class="rate d-flex align-items-center gap-1">
+                    <app-star-rating [value]="item.rateValue" />
+                    <span class="rate-value">({{ item.rateValue }})</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Enroll button -->
+              <div class="enroll-btn w-100">
+                <div class="d-flex align-items-center justify-content-center gap-3 w-100 ">
+                  <app-site-button
+                    class="w-100 text-center"
+                    title="Enroll Now"
+                    [icon]="isRTL() ? 'bi bi-arrow-left' : 'bi bi-arrow-right'"
+                    type="main"
+                    (onClick)="onEnroll(item)"
+                  />
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      }
+    </div>

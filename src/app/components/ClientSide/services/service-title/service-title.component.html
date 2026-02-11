@@ -1,0 +1,11 @@
+<section class="d-flex flex-column gap-2">
+      @if (mainTitle()) {
+        <h5 class="mainTextColor fw-bold mb-1">{{ mainTitle() | translate }}</h5>
+      }
+
+      @if (text()) {
+        <p class="titledSectionParag">{{ text() | translate }}</p>
+      }
+
+      <ng-content></ng-content>
+    </section>

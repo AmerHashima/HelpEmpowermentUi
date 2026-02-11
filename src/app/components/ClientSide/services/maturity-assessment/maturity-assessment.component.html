@@ -1,1 +1,54 @@
-<p>maturity-assessment works!</p>
+<div class="container-fluid">
+  <div class="row g-lg-5">
+    <div class="col-12 col-xl-8">
+      <div class="serviceContent flex-grow-1">
+        <app-services-page
+         [mainTitle]="'assessment.MAIN_TITLE'"
+          [mainParagraph]="'assessment.MAIN_DESCRIPTION'"
+          [pointSection]="mainObjective"
+          [titledSection2]="methodology"
+                    [titledSection3]="standards"
+          [sectionTag]="TagSection"
+        />
+      </div>
+    </div>
+
+    <div class="col-12 col-xl-4">
+      <div class="shadow-sm rounded p-2">
+        <app-enroll-form>
+          <p form-title class="serviceTitle d-flex flex-column gap-1">
+            <span>{{ "assessment.ENROLL_TITLE_1" | translate }}</span>
+            <span>{{ "assessment.ENROLL_TITLE_2" | translate }}</span>
+          </p>
+        </app-enroll-form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #mainObjective>
+  <app-service-point
+    mainTitle="assessment.mainObjectiveTitle"
+    subTitle="assessment.mainObjectiveDescription"
+    [cardPointsInfo]="serviceAssesmentCardsInfo"
+  />
+</ng-template>
+
+<ng-template #methodology>
+  <app-service-title mainTitle="assesment.methodologyTitle" text="assessment.methodologyText">
+  </app-service-title>
+</ng-template>
+
+<ng-template #standards>
+  <app-service-title mainTitle="assesment.standardsTitle" text="assessment.standardsText">
+  </app-service-title>
+</ng-template>
+
+<ng-template #TagSection>
+  <app-service-card
+    newClass="serviceTag"
+    icon="bi bi-kanban-fill"
+    header="assessment.SECTION_TAG_HEADER"
+    text="assessment.SECTION_TAG_TEXT"
+  />
+</ng-template>

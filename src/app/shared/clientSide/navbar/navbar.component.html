@@ -1,5 +1,6 @@
-<nav class="clientNavbar w-100  d-flex flex-column">
-  <div class="top-bar">
+<nav class="clientNavbar w-100">
+ <div class="page-width">
+   <div class="top-bar">
     <img src="assets/images/clientNavbar/logo.png" alt="Logo" class="logo" />
 
     <div class="right-actions">
@@ -8,7 +9,7 @@
         <input [placeholder]="'search' | translate" />
       </div>
 
-     <div class="d-flex align-items-center">
+     <div class="d-flex align-items-center flex-nowrap">
        <i class="bi bi-moon theme-toggle" (click)="toggleTheme()"></i>
 
       <!-- Language -->
@@ -24,11 +25,11 @@
       <div class="dropdown">
         <i class="bi bi-box-arrow-in-right" (click)="toggleDropdown('auth')"></i>
         <ul *ngIf="openDropdown() === 'auth'" class="shadow">
-          <li (click)="navigate('/' + lang() + '/login')">
+          <li (click)="navigate('/' + lang() + '/auth/login')">
             <i class="bi bi-box-arrow-in-right"></i>
             {{ 'auth.login' | translate }}
           </li>
-          <li (click)="navigate('/' + lang() + '/signup')">
+          <li (click)="navigate('/' + lang() + '/auth/register')">
             <i class="bi bi-person-plus"></i>
             {{ 'auth.signup' | translate }}
           </li>
@@ -70,4 +71,5 @@
       </div>
     </li>
   </ul>
+ </div>
 </nav>

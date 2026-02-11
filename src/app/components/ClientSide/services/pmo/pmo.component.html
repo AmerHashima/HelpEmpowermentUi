@@ -1,1 +1,54 @@
-<p>pmo works!</p>
+<div class="container-fluid">
+  <div class="row g-lg-5">
+    <div class="col-12 col-xl-8">
+      <div class="serviceContent flex-grow-1">
+        <app-services-page
+          [mainParagraph]="'PMO.DESCRIPTION'"
+          [titledSection]="impactSection"
+          [pointSection]="provenResultsSection"
+          [titledSection2]="ourServicesSection"
+          [sectionTag]="helpEmpowermentTag"
+        />
+      </div>
+    </div>
+    <div class="col-12 col-xl-4">
+      <div class="shadow-sm rounded p-2">
+        <app-enroll-form>
+          <p form-title class="serviceTitle d-flex flex-column gap-1">
+            <span>
+              {{ "PMO.ENROLL_MESSAGE" | translate }}
+            </span>
+          </p>
+        </app-enroll-form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #impactSection>
+  <app-service-title mainTitle="PMO.IMPACT_TITLE" text="PMO.IMPACT_TEXT" />
+</ng-template>
+
+<ng-template #provenResultsSection>
+  <app-service-point
+    mainTitle="PMO.PROVEN_RESULTS_TITLE"
+    subTitle="PMO.PROVEN_RESULTS_SUBTITLE"
+    [cardPointsInfo]="pmoCardsInfo"
+  />
+</ng-template>
+
+<ng-template #ourServicesSection>
+  <app-service-title
+    mainTitle="PMO.OUR_SERVICES_TITLE"
+    text="PMO.OUR_SERVICES_TEXT"
+  />
+</ng-template>
+
+<ng-template #helpEmpowermentTag>
+  <app-service-card
+    newClass="serviceTag"
+    icon="bi bi-kanban-fill"
+    header="PMO.HELP_EMPOWERMENT_HEADER"
+    text="PMO.HELP_EMPOWERMENT_TEXT"
+  />
+</ng-template>

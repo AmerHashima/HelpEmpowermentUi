@@ -1,0 +1,22 @@
+<div class="service-card" [ngClass]="newClass()">
+      @if (icon()) {
+        <span class="serviceCardIcon">
+          <i [class]="icon()"></i>
+        </span>
+      }
+
+      <div class="d-flex flex-column gap-2">
+        @if (header()) {
+          <h6>{{ header() | translate }}</h6>
+        }
+
+        <div class="d-flex flex-column gap-1">
+          @if (text()) {
+            <p>{{ text() | translate }}</p>
+          }
+          @if (source()) {
+            <span class="serviceSourceText">{{ source() | translate }}</span>
+          }
+        </div>
+      </div>
+    </div>

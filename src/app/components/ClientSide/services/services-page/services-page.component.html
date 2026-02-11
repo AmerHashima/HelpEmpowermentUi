@@ -1,0 +1,33 @@
+<section class="d-flex flex-column gap-3 py-5">
+      @if (mainTitle()) {
+        <h5 class="mainTextColor fw-bold">{{ mainTitle() | translate }}</h5>
+      }
+
+      @if (mainParagraph()) {
+        <p>{{ mainParagraph() | translate }}</p>
+      }
+
+      @if (secondParagraph()) {
+        <p>{{ secondParagraph() | translate }}</p>
+      }
+
+      @if (titledSection()) {
+        <ng-container [ngTemplateOutlet]="titledSection()!"></ng-container>
+      }
+
+      @if (pointSection()) {
+        <ng-container [ngTemplateOutlet]="pointSection()!"></ng-container>
+      }
+
+      @if (titledSection2()) {
+        <ng-container [ngTemplateOutlet]="titledSection2()!"></ng-container>
+      }
+
+      @if (titledSection3()) {
+        <ng-container [ngTemplateOutlet]="titledSection3()!"></ng-container>
+      }
+
+      @if (sectionTag()) {
+        <ng-container [ngTemplateOutlet]="sectionTag()!"></ng-container>
+      }
+    </section>

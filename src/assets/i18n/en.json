@@ -15,10 +15,10 @@
     "services_children": {
       "manpower": "Manpower",
       "PMO": "PMO Setup & Operation",
-      "Maturityassessment":"Project Management Maturity Assessment",
-      "pmis":"Project Management Information System (PMIS)",
-      "training":"Customized Training",
-      "CAMP":"Certified Associate in Project Management (CAPM)"
+      "Maturityassessment": "Project Management Maturity Assessment",
+      "pmis": "Project Management Information System (PMIS)",
+      "training": "Customized Training",
+      "CAMP": "Certified Associate in Project Management (CAPM)"
     }
   },
   "auth": {
@@ -28,5 +28,137 @@
   "footer": {
     "image": "Footer image",
     "copyright": "© 2024 Help Empowerment. All rights reserved."
-  }
+  },
+  "articles": {
+    "published": {
+      "march_2025": "March 10, 2025",
+      "february_2025": "February 10, 2025"
+    },
+    "read_time": {
+      "8_min": "8 MIN READ",
+      "6_min": "6 MIN READ"
+    },
+    "article1": {
+      "title": "CAPM Study Plan",
+      "summary": "Passing the CAPM exam requires a structured Methodology, much like managing a real project. Based on my experience and observing many candidates, I recommend dividing your preparation into five clear phases."
+    },
+    "article2": {
+      "title": "PMP Study Plan",
+      "summary": "Passing the PMP exam requires a structured Methodology, much like managing a real project. Based on my experience and observing many candidates, I recommend dividing your preparation into five clear Phases"
+    },
+    "article3": {
+      "title": "CAPM Study Plan",
+      "summary": "Passing the CAPM exam requires a structured Methodology, much like managing a real project. Based on my experience and observing many candidates, I recommend dividing your preparation into five clear phases."
+    }
+  },
+  "faq": {
+    "question1": "What services do you offer?",
+    "answer1": "We empower both individuals and organizations through two main channels:\n\nFor Individuals: Professional certifications (like PMP and CAPM) to advance your career.\n\nFor Organizations: Comprehensive solutions including PMO Setup, Maturity Assessments, PMIS implementation, manpower support, and fully customized training programs.",
+    "question2": "How is your exam simulator unique?",
+    "answer2": "Our simulator features two intelligent modes:\n\n- Practice Mode: Learn without pressure. Answer questions and get immediate feedback with detailed explanations.\n\n- Exam Mode: Experience the real test. Complete timed exams and receive a personalized report highlighting your strengths and areas for improvement.\n\nIt also automatically creates a \"Lesson Learned\" review list from your incorrect answers for focused study.",
+    "question3": "Can I try the simulator before purchasing?",
+    "answer3": "Yes. We offer a free demo with 10 sample questions where you can test both Practice and Exam modes to experience the quality firsthand.",
+    "question4": "Is your content up-to-date with certification standards?",
+    "answer4": "Absolutely. Our material is continuously updated to match the latest exam content outlines. Combined with our practical application focus, we prepare you not just to pass the exam, but to apply the knowledge effectively in real-world scenarios.",
+    "question5": "How do I join your professional community?",
+    "answer5": "When you enroll in any of our programs, you gain access to our support network. For corporate clients, this extends to strategic services that move beyond theory into execution, providing end-to-end support for your organizational goals."
+  },
+  "log": {
+    "welcomeBack": "Welcome Back",
+    "enterCredentials": "Please enter your credentials to login",
+    "or": "OR",
+    "emailLabel": "Email Address",
+    "emailPlaceholder": "Enter your email",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "rememberMe": "Remember me",
+    "loginButton": "Login",
+    "noAccount": "Don't have an account?",
+    "signUp": "Sign up"
+  },
+
+    "404": "404",
+    "Oops! Page not found": "Oops! Page not found",
+    "The page you are looking for might have been removed, had its name changed or is temporarily unavailable.": "The page you are looking for might have been removed, had its name changed or is temporarily unavailable.",
+    "Back to Home": "Back to Home",
+    "Go Back": "Go Back",
+    "Login":"Login",
+    "register": {
+      "started": "Get Started Now",
+      "joinMessage": "Start your journey with us",
+      "firstNameLabel": "First Name",
+      "firstNamePlaceholder": "Enter your first name",
+      "lastNameLabel": "Last Name",
+      "lastNamePlaceholder": "Enter your last name",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Enter your password",
+      "registerButton": "Create Account",
+      "termsCheckbox": "I agree to the Terms & Conditions and Privacy Policy",
+        "confirmPasswordLabel": "Confirm Password",
+        "confirmPasswordPlaceholder": "Enter Confirm Password",
+        "loginMessage":"Already have an account?",
+        "phoneLabel": "Phone Number",
+        "phoneRequired": "Phone number is required",
+        "phoneInvalid": "Please enter a valid phone number",
+        "phonePlaceholder": "Enter your phone number"
+    },
+    "contact": {
+      "sendUs": "Send Us a Message",
+      "anyQuestion": "Have any questions? We'd love to hear from you.",
+      "fullNameLabel": "Full Name",
+      "fullNamePlaceholder": "Enter your full name",
+      "messageLabel": "Message",
+      "messagePlaceholder": "Write your message here...",
+      "contactBtn": "Send Message"
+    },
+    "PMO": {
+      "DESCRIPTION": "The service involves establishing a Project Management Office (PMO) within the organization to centralize project management functions, standardize processes, and provide governance and support for projects. This includes defining the PMO's structure, roles and responsibilities, processes, tools, and methodologies tailored to meet the organization's specific needs and goals.",
+      "IMPACT_TITLE": "Impact of a PMO",
+      "IMPACT_TEXT": "The impact of a Project Management Office (PMO) extends beyond just improving project performance; it also enhances the organization's competitive position and ensures a tangible return on investment. These documented statistics reflect why the PMO has become a cornerstone of success for ambitious organizations worldwide.",
+      "PROVEN_RESULTS_TITLE": "Proven Results",
+      "PROVEN_RESULTS_SUBTITLE": "Recent global reports and studies from trusted sources demonstrate the tangible impact of an effective PMO on organizational performance. Below are the most prominent statistics and their sources:",
+      "OUR_SERVICES_TITLE": "Our Services",
+      "OUR_SERVICES_TEXT": "Our services are tailored to design a PMO that fits your specific operational environment, integrating the best practices from both traditional and Agile approaches, and ensuring the delivery of tangible value and measurable results.",
+      "HELP_EMPOWERMENT_HEADER": "At \"Help Empowerment\"",
+      "HELP_EMPOWERMENT_TEXT": "we believe that every organization deserves a Project Management Office (PMO) specifically designed to align with its unique vision and strategic needs. We recognize the importance of adopting Agile methodologies to enhance flexibility and the ability to quickly respond to market changes.",
+      "ENROLL_MESSAGE": "Do not hesitate to contact us. Together, we will develop an integrated solution that guarantees the achievement of your organization's goals and enhances the efficiency of your operations."
+    },
+  "enroll": {
+    "enroll": "Enroll Now",
+    "message": "Fill in the form below and our team will contact you shortly.",
+    "fullnameLabel": "Full Name",
+    "fullnamePlaceholder": "Enter your full name",
+    "organizationnameLabel": "Organization Name",
+    "organizationnamePlaceholder": "Enter your organization name",
+    "notesLabel": "Notes",
+    "enrollBtn": "Submit Enrollment"
+  },
+    "PMIS": {
+      "MAIN_TITLE": "Empower Your Decisions with Smarter Data Insights",
+      "MAIN_DESCRIPTION": "Help Empowerment transforms your project management with a customized Project Management Information System (PMIS) that serves as the central system for all your projects and programs. We deliver more than software, we provide a complete ecosystem that unifies your tools, data, and teams into one powerful platform.",
+      "WHAT_WE_DELIVER_TITLE": "What We Deliver",
+      "WHAT_WE_DELIVER_SUBTITLE": "A complete ecosystem that unifies your tools, data, and teams into one powerful platform",
+      "KEY_BENEFITS_TITLE": "Key Benefits of PMIS:",
+      "SECTION_TAG_HEADER": "At \"Help Empowerment\"",
+      "SECTION_TAG_TEXT": "We deliver guaranteed outcomes including faster data-driven decisions, complete portfolio visibility, 70% time savings on report generation, and enhanced collaboration, ensuring measurable improvements in efficiency and transparency.",
+      "ENROLL_TITLE_1": "Ready to Empower Your Organization?",
+      "ENROLL_TITLE_2": "Contact us today for a custom PMIS solution designed for your success"
+    },
+      "assessment": {
+        "MAIN_TITLE": "Project Management Maturity Assessment",
+        "MAIN_DESCRIPTION": "A project management maturity assessment evaluates your organization's project management processes, tools, and practices, providing insights to improve efficiency and effectiveness.",
+        "ENROLL_TITLE_1": "Interested in a PM Maturity Assessment?",
+        "ENROLL_TITLE_2": "Contact us today to schedule your assessment and unlock your organization's full potential.",
+        "mainObjectiveTitle": "Main Objectives",
+        "mainObjectiveDescription": "The main objectives of conducting a project management maturity assessment include understanding current practices, identifying gaps, and recommending improvements.",
+        "methodologyTitle": "Assessment Methodology",
+        "methodologyText": "Our methodology involves surveys, interviews, document reviews, and observations to analyze project management practices and recommend improvements.",
+        "standardsTitle": "Industry Standards & Best Practices",
+        "standardsText": "Our assessments are aligned with OPM3 (Organizational Project Management Maturity Model) and P3M3 (Portfolio, Program, and Project Management Maturity Model) to ensure best practices and measurable improvements.",
+        "SECTION_TAG_HEADER": "At Help Empowerment",
+        "SECTION_TAG_TEXT": "We have conducted PM Maturity Assessments numerous times for diverse clients. We recommend that every organization perform this assessment annually to measure progress and development in their project management activities."
+      }
+
+
+
 }

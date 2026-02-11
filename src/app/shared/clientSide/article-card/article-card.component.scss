@@ -1,0 +1,43 @@
+@use 'variables' as *;
+
+.date{
+    font-size:$fs-sm;
+    color:$paraTextColor;
+}
+
+.articleCard{
+  transition: transform 1s ease-in-out;
+  border-radius:$borderRadius;
+
+  img{
+    border-top-left-radius: $borderRadius;
+    border-top-right-radius: $borderRadius;
+    max-height: 400px;
+  }
+}
+.articleName{
+    color:$primaryColor;
+}
+
+.articleCard:hover{
+  transform: scale(1.035) translateY(-8px);
+    background-color:$secondaryColor;
+}
+
+.articleCard:hover *{
+    color:$lightBgTextColor !important;
+}
+
+img{
+  width: 100%;
+}
+
+.learnMore{
+  span{
+      color:$primaryColor;
+  font-weight: $bold;
+  }
+ i{
+    color:$primaryColor;
+ }
+}
