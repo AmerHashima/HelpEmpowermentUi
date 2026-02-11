@@ -1,1 +1,39 @@
-<p>training works!</p>
+<div class="container-fluid">
+  <div class="row g-lg-5">
+    <div class="col-12 col-xl-8">
+      <div class="serviceContent flex-grow-1">
+        <app-services-page
+          [mainTitle]="'training.MAIN_TITLE'"
+          [mainParagraph]="'training.MAIN_DESCRIPTION'"
+          [secondParagraph]="'training.SECOND_DESCRIPTION'"
+          [titledSection2]="Examples"
+        />
+      </div>
+    </div>
+
+    <div class="col-12 col-xl-4">
+      <div class="shadow-sm rounded p-2">
+        <app-enroll-form>
+          <p form-title class="serviceTitle d-flex flex-column gap-1">
+            <span>{{ "training.ENROLL_TITLE_1" | translate }}</span>
+          </p>
+        </app-enroll-form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<ng-template #Examples>
+<app-service-title mainTitle="training.ExamplesTitle">
+    <div class="examples d-flex flex-column gap-2">
+      @for (item of examples; track item.text) {
+        <p class="d-flex align-items-center gap-2">
+          <i [class]="item.icon"></i>
+          <span>{{ item.text | translate }}</span>
+        </p>
+      }
+    </div>
+  </app-service-title>
+</ng-template>

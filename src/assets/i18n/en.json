@@ -1,3 +1,4 @@
+
 {
   "menu": {
     "home": "Home",
@@ -17,8 +18,7 @@
       "PMO": "PMO Setup & Operation",
       "Maturityassessment": "Project Management Maturity Assessment",
       "pmis": "Project Management Information System (PMIS)",
-      "training": "Customized Training",
-      "CAMP": "Certified Associate in Project Management (CAPM)"
+      "training": "Customized Training"
     }
   },
   "auth": {
@@ -157,6 +157,13 @@
         "standardsText": "Our assessments are aligned with OPM3 (Organizational Project Management Maturity Model) and P3M3 (Portfolio, Program, and Project Management Maturity Model) to ensure best practices and measurable improvements.",
         "SECTION_TAG_HEADER": "At Help Empowerment",
         "SECTION_TAG_TEXT": "We have conducted PM Maturity Assessments numerous times for diverse clients. We recommend that every organization perform this assessment annually to measure progress and development in their project management activities."
+      },
+      "training": {
+        "MAIN_TITLE": "Tailored Excellence: Build Your Own Training Solution",
+        "MAIN_DESCRIPTION": "Move beyond one-size-fits-all programs. Our Customized Training service is a collaborative partnership designed to address your organization's unique challenges, culture, and strategic objectives directly. We don't just deliver courses; we co-create targeted learning experiences that drive measurable performance improvement and align perfectly with your business goals.",
+        "SECOND_DESCRIPTION": "We work closely with your leadership and subject-matter experts to analyze gaps, define precise learning outcomes, and develop a curriculum that resonates with your team. From integrating your real-world case studies and internal methodologies to aligning with your specific software and workflows, we ensure every module is relevant, practical, and immediately applicable.",
+        "ENROLL_TITLE_1": "Let's build the program your team needs together. Contact us to start a conversation about your goals.",
+       "ExamplesTitle":"Training Examples:"
       }
 
 

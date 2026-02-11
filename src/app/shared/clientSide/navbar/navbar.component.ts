@@ -316,7 +316,7 @@ export class ClientNavbarComponent {
       icon: 'bi bi-briefcase',
       children: [
         {
-          translateKey: 'menu.services_children.CAMP',
+          translateKey: 'menu.services_children.manpower',
           icon: 'bi bi-tower-observation',
           path: `/${this.lang()}/services/manpower`,
         },
