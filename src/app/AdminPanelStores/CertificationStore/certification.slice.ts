@@ -12,6 +12,6 @@ export const initialCertificationState: certificationState = {
   total: 0,
 
   search: '',
-  sortBy: 'oidorderNo,
+  sortBy: 'orderNo',
   sortDirection: 'asc',
 };
