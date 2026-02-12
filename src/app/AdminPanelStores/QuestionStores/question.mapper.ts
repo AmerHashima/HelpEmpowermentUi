@@ -8,6 +8,7 @@ export function mapApiQuestionToCourseQuestion(api: APICourseQuestion): courseQu
     oid: api.oid,
     coursesMasterExamOid: api.coursesMasterExamOid,
     questionText: api.questionText,
+    questionExplination: api.questionExplination,
     questionText_Ar: api.questionText_Ar,
     questionTypeLookupId: api.questionTypeLookupId,
     questionScore: api.questionScore,

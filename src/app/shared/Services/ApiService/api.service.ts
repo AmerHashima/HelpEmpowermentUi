@@ -1,14 +1,20 @@
 // src\app\shared\Services\ApiService\api.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, finalize, tap } from 'rxjs';
 import { environment } from '../../../../environments/environment';
+import { ToastingMessagesService } from '../ToastingMessages/toasting-messages.service';
+import { LoadingService } from '../Loading/loading.service';
 
 @Injectable({ providedIn: 'root' })
 export default class ApiService {
   private readonly baseUrl: string = environment.baseUrl;
   // private token='';
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private toasting: ToastingMessagesService,
+    private loader: LoadingService
+  ) {
 
   }
 
@@ -27,47 +33,80 @@ export default class ApiService {
   // get<T>(url: string, params?: Record<string, any>, token?: string): Observable<T> {
   // const httpParams = new HttpParams({ fromObject: params || {} });
   get<T>(url: string): Observable<T> {
+    this.loader.start();
     return this.http.get<T>(`${this.baseUrl}/${url}`, {
       headers: this.createHeaders(),
-    });
+    }).pipe(
+      finalize(() => this.loader.stop())
+    );
   }
 
-  getSingle<T>(url: string, id: string,type?:string): Observable<T> {
-    let fullUrl='' ;
-    if(type == 'question')
+  getSingle<T>(url: string, id: string, type?: string): Observable<T> {
+    let fullUrl = '';
+    if (type == 'question')
       fullUrl = `${this.baseUrl}/${url}/${id}/with-answers`;
     else
-     fullUrl = `${this.baseUrl}/${url}/${id}`;
-    return this.http.get<T>(fullUrl, { headers: this.createHeaders() });
+      fullUrl = `${this.baseUrl}/${url}/${id}`;
+    this.loader.start();
+    return this.http.get<T>(fullUrl, { headers: this.createHeaders() }).pipe(
+      finalize(() => this.loader.stop())
+    );
   }
 
-  post<T>(url: string, body: any): Observable<T> {
+  post<T>(url: string, body: any, successMessage: string = 'Success'): Observable<T> {
+    this.loader.start();
     return this.http.post<T>(`${this.baseUrl}/${url}`, body, {
       headers: this.createHeaders(),
-    });
+    }).pipe(
+      tap(() => {
+        if (successMessage && !url.includes('search') && !url.includes('en-to-ar')) {
+          this.toasting.showToast(successMessage, 'success');
+        }
+      }),
+      finalize(() => this.loader.stop())
+    );
   }
 
 
-  put<T>(url: string, id: string, body: any): Observable<T> {
+  put<T>(url: string, id: string, body: any, successMessage: string = 'Success'): Observable<T> {
     // const fullUrl = `${this.baseUrl}/${url}/${id}`;
     const fullUrl = `${this.baseUrl}/${url}`;
-    return this.http.put<T>(fullUrl, body, { headers: this.createHeaders() });
+    this.loader.start();
+    return this.http.put<T>(fullUrl, body, { headers: this.createHeaders() }).pipe(
+      tap(() => {
+        if (successMessage) {
+          this.toasting.showToast(successMessage, 'success');
+        }
+      }),
+      finalize(() => this.loader.stop())
+    );
   }
 
   // delete<T>(url: string, params?: Record<string, any>, token?: string): Observable<T> {
-  delete<T>(url: string, id: string): Observable<T> {
+  delete<T>(url: string, id: string, successMessage: string = 'Success'): Observable<T> {
     // const httpParams = new HttpParams({ fromObject: params || {} });
     const fullUrl = `${this.baseUrl}/${url}/${id}`;
+    this.loader.start();
     return this.http.delete<T>(fullUrl, {
       // params: httpParams,
       headers: this.createHeaders(),
-    });
+    }).pipe(
+      tap(() => {
+        if (successMessage) {
+          this.toasting.showToast(successMessage, 'success');
+        }
+      }),
+      finalize(() => this.loader.stop())
+    );
   }
 
   query<T>(url: string, body: any): Observable<T> {
+    this.loader.start();
     return this.http.post<T>(`${this.baseUrl}/${url}`, body, {
       headers: this.createHeaders(),
-    });
+    }).pipe(
+      finalize(() => this.loader.stop())
+    );
   }
 
 }

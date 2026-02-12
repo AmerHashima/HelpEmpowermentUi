@@ -130,14 +130,7 @@
             selectClass="form-control w-100"
           ></spk-ng-select>
         </div>
-  <div class="col-12">
-          <app-textarea
-            formControlName="questionExplanation"
-            label=" Explanation"
-            placeholder="Enter the explanation here..."
-            
-          ></app-textarea>
-        </div>
+
        
 
         <!-- Uncomment if file upload is actually used -->
@@ -198,7 +191,19 @@
                   }"
                 ></app-input>
               </div>
-
+ <div class="flex-grow-1">
+                <app-input
+                  formControlName="answerText_Ar"
+                  label="answerText_Ar {{ i + 1 }}"
+                  placeholder="Enter answer text..."
+                  (inputClick)="onAnswerInputClick(i)"
+                  [errorMessages]="{
+                    required: 'Answer text is required',
+                    minlength: 'Too short',
+                    maxlength: 'Too long (max 200 characters)',
+                  }"
+                ></app-input>
+              </div>
               @if (answersArray.length > 1) {
                 <button
                   type="button"
@@ -251,7 +256,17 @@
                   maxlength: 'Too long',
                 }"
               ></app-input>
-
+ <app-input
+                class="flex-grow-1"
+                formControlName="answerText_Ar"
+                label="Question / Prompt {{ i + 1 }}"
+                placeholder="Enter text to be matched..."
+                [errorMessages]="{
+                  required: 'This field is required',
+                  minlength: 'Too short',
+                  maxlength: 'Too long',
+                }"
+              ></app-input>
               @if (dragQuestionsArray.length > 1) {
                 <button
                   type="button"
@@ -314,7 +329,17 @@
                     maxlength: 'Too long',
                   }"
                 ></app-input>
-
+       <app-input
+                  class="flex-grow-1"
+                  formControlName="answerText_Ar"
+                  label="Answer Ar / Item {{ i + 1 }}"
+                  placeholder="Enter draggable answer text..."
+                  [errorMessages]="{
+                    required: 'This field is required',
+                    minlength: 'Too short',
+                    maxlength: 'Too long',
+                  }"
+                ></app-input>
                 @if (dragAnswersArray.length > 1) {
                   <button
                     type="button"
@@ -372,6 +397,14 @@
                     wrapperClass="mb-0"
                   ></app-input>
                 </div>
+                <!-- <div class="col-md-6">
+                  <app-input
+                    formControlName="answerText_Ar"
+                    label="Question / Prompt {{ i + 1 }}"
+                    [readOnly]="true"
+                    wrapperClass="mb-0"
+                  ></app-input>
+                </div> -->
                 <div class="col-md-6">
                   <spk-ng-select
                     formControlName="correctAnswerOid"
@@ -390,7 +423,23 @@
       </div>
     }
   }
-
+  <div class="card shadow-sm">
+      <div
+        class="card-header fw-bold d-flex justify-content-between align-items-center"
+      >
+        <h5 class="mb-0">Explanation</h5>
+      </div>
+      <div class="card-body">
+        <div class="col-12">
+          <app-textarea
+            formControlName="questionExplination"
+            label=" Explanation"
+            placeholder="Enter the explanation here..."
+            
+          ></app-textarea>
+        </div>
+      </div>
+    </div>
   <!--         Actions            -->
   <div class="d-flex justify-content-end gap-3 mt-4">
     <app-button btnLabel="Cancel" [mainBtn]="false" (click)="cancel()" />
@@ -398,5 +447,7 @@
       btnLabel="{{ editMode ? 'Update Question' : 'Create Question' }}"
       buttonType="submit"
     />
-  </div></div>
+  </div>
+</div>
+
 </form>

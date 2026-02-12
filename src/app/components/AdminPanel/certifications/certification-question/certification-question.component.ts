@@ -121,7 +121,7 @@ export class CertificationQuestionComponent {
     questionTypeLookupId: ['', Validators.required],
     questionText: ['', [Validators.required]],
     questionText_Ar: [''],
-    questionExplanation: [''],
+    questionExplination: [''],
     orderNo: ['', Validators.required],
     questionScore: [1],
     isActive: [true, Validators.required],
@@ -190,6 +190,7 @@ export class CertificationQuestionComponent {
 
       this.patchBasicQuestionFields(q);
       this.populateAnswersOrDragItems(q);
+      this.selectedType.set(this.resolveSelectedType(q.questionTypeName));
       this.activeSection.set(q.questionTypeName as SectionType);
     });
 
@@ -252,8 +253,11 @@ export class CertificationQuestionComponent {
       answerText: [existing?.answerText ?? '', [
         Validators.required,
       ]],
+      answerText_Ar: [existing?.answerText_Ar ?? ''],
       question_Ask: [existing?.question_Ask ?? isQuestion],
-      correctAnswerOid: [existing?.correctAnswerOid ?? null],
+      correctAnswerOid: [
+        existing?.correctAnswerOid != null ? String(existing.correctAnswerOid) : null
+      ],
       isCorrect: [existing?.isCorrect ?? false],
       orderNo: [existing?.orderNo ?? this.choiceAnswerOrderCounter, Validators.required],
       createdBy: [existing?.createdBy ?? DEFAULT_USER_ID, Validators.required],
@@ -261,6 +265,36 @@ export class CertificationQuestionComponent {
 
     if (existing?.oid) {
       (group as FormGroup<any>).addControl('oid', this.fb.control(existing.oid));
+    }
+
+    const answerTextControl = group.get('answerText');
+    const answerTextArControl = group.get('answerText_Ar');
+    if (answerTextControl && answerTextArControl) {
+      let lastAutoTranslatedAr = String(existing?.answerText_Ar ?? '').trim();
+      answerTextControl.valueChanges
+        .pipe(
+          debounceTime(400),
+          map(value => String(value ?? '').trim()),
+          distinctUntilChanged(),
+          switchMap(text => {
+            const currentAr = String(answerTextArControl.value ?? '').trim();
+            if (!text) return of('');
+            if (currentAr && currentAr !== lastAutoTranslatedAr) {
+              return of(null);
+            }
+            return this.translateService.translateEnToAr(text).pipe(
+              catchError(() => of(''))
+            );
+          }),
+          filter(translated => translated !== null),
+          tap(translated => {
+            if (!translated) return;
+            lastAutoTranslatedAr = translated;
+            answerTextArControl.setValue(translated, { emitEvent: false });
+          }),
+          takeUntilDestroyed(this.destroyRef)
+        )
+        .subscribe();
     }
 
     this.choiceAnswerOrderCounter++;
@@ -374,7 +408,7 @@ export class CertificationQuestionComponent {
       questionTypeLookupId: question.questionTypeLookupId,
       questionText: question.questionText,
       questionText_Ar: question.questionText_Ar,
-      questionExplanation: question.questionExplanation,
+      questionExplination: question.questionExplination,
       orderNo: String(question.orderNo),
       questionScore: question.questionScore,
       isActive: question.isActive,
@@ -424,29 +458,48 @@ export class CertificationQuestionComponent {
       this.form.setControl('answers', this.fb.array(answerControls));
     } else {
       console.log('question', question);
-      const questions = question.answers?.filter((a: any) => a.question_Ask) ?? [];
-      const answers = question.answers?.filter((a: any) => !a.question_Ask) ?? [];
+      const sortByOrder = (items: any[]) =>
+        items.slice().sort((a, b) => (a?.orderNo ?? 0) - (b?.orderNo ?? 0));
 
-      this.form.setControl('dragQuestions', this.fb.array(
+      const questions = sortByOrder(question.answers?.filter((a: any) => a.question_Ask) ?? [])
+        .map((q: any) => ({
+          ...q,
+          oid: q?.oid != null ? String(q.oid) : q.oid
+        }));
+      const answers = sortByOrder(question.answers?.filter((a: any) => !a.question_Ask) ?? [])
+        .map((a: any) => ({
+          ...a,
+          oid: a?.oid != null ? String(a.oid) : a.oid
+        }));
+
+      (this.form as FormGroup<any>).setControl('dragQuestions', this.fb.array(
         questions.map((q: any) => this.createDragQuestionGroup(q))
       ));
 
-      this.form.setControl('dragAnswers', this.fb.array(
+      (this.form as FormGroup<any>).setControl('dragAnswers', this.fb.array(
         answers.map((a: any) => this.createDragAnswerGroup(a))
       ));
       this.addDragAnswersFlag.set(true);
+      this.apiQuestions = questions;
       this.apiAnswers.set(answers);
       console.log('questions', questions);
-      this.dragQuestionsArray.controls.forEach((ctrl, index) => {
-        const originalQuestion = questions[index];
-        if (originalQuestion?.correctAnswerOid) {
-          ctrl.patchValue({
-            correctAnswerOid: originalQuestion.correctAnswerOid
-          });
-        }
-      });
+      this.syncCorrectAnswerSelections(questions, answers);
       this.linkDragAnswerAndQuestionFlag.set(true);
     }
+  }
+
+  private syncCorrectAnswerSelections(questions: any[], answers: any[]): void {
+    setTimeout(() => {
+      this.dragQuestionsArray.controls.forEach((ctrl, index) => {
+        const originalQuestion = questions[index];
+        if (originalQuestion?.correctAnswerOid == null) return;
+        const desiredValue = String(originalQuestion.correctAnswerOid);
+        const hasMatch = answers.some(a => String(a?.oid) === desiredValue);
+        const value = hasMatch ? desiredValue : String(answers[index]?.oid ?? '');
+        if (!value) return;
+        ctrl.get('correctAnswerOid')?.setValue(value, { emitEvent: false });
+      });
+    }, 0);
   }
 
   // Submit / Cancel
@@ -498,7 +551,7 @@ export class CertificationQuestionComponent {
       orderNo: raw.orderNo,
       isActive: raw.isActive,
       correctAnswer: raw.correctAnswer,
-      questionExplanation: raw.questionExplanation,
+      questionExplination: raw.questionExplination,
       question: raw.question,
       correctChoiceOid: raw.correctChoiceOid,
       createdBy: raw.createdBy,
@@ -517,34 +570,47 @@ export class CertificationQuestionComponent {
       correctAnswerOid: a.correctAnswerOid ?? null,
       isCorrect: overrides.isCorrect ?? a.isCorrect ?? false,
       orderNo: a.orderNo,
-      questionExplanation: a.questionExplanation,
+      questionExplination: a.questionExplination,
       createdBy: a.createdBy,
     }));
   }
 
   private getDragQuestionPayload() {
     const raw = this.form.getRawValue();
+    const apiAnswers = this.apiAnswers();
+    const apiQuestions = this.apiQuestions ?? [];
 
     const questionAnswers = this.mapAnswers(raw.dragQuestions, {
       question_Ask: true,
       isCorrect: false,
-    });
+    }).map((q: any, index: number) => ({
+      ...q,
+      oid: q.oid ?? apiQuestions[index]?.oid ?? null
+    }));
 
     const dragAnswers = this.mapAnswers(raw.dragAnswers, {
       question_Ask: false,
-    });
+    }).map((a: any, index: number) => ({
+      ...a,
+      oid: a.oid ?? apiAnswers[index]?.oid ?? null
+    }));
+
+    const questionsWithLinks = questionAnswers.map((q: any, index: number) => ({
+      ...q,
+      correctAnswerOid: dragAnswers[index]?.oid ?? null
+    }));
 
     return {
       oid: this.questionId || undefined,
       ...this.buildBasePayload(raw),
-      answers: [...questionAnswers, ...dragAnswers],
+      answers: [...questionsWithLinks, ...dragAnswers],
     };
   }
 
   private buildPayload(): any {
     const raw = this.form.getRawValue();
 
-    if (this.selectedType() === 'MATCHING') {
+    if (this.isMatchingSection()) {
       return this.getDragQuestionPayload();
     }
 
@@ -555,35 +621,30 @@ export class CertificationQuestionComponent {
     };
   }
 
+  private isMatchingSection(): boolean {
+    const section = String(this.activeSection() ?? '').toLowerCase();
+    if (section.includes('match')) return true;
+    const type = String(this.selectedType() ?? '').toLowerCase();
+    return type === 'matching' || type === 'match' || type === 'matchin';
+  }
+
+  private resolveSelectedType(typeName?: string | null): QuestionType {
+    const name = String(typeName ?? '').toLowerCase();
+    if (name.includes('match')) return 'MATCHING';
+    if (name.includes('multiple choice') || name.includes('true/false')) return 'MCQ';
+    return null;
+  }
+
   private updateMatchingQuestions(): void {
-    const questions = this.dragQuestionsArray.controls.map(c => c.getRawValue());
+    const payload = this.getDragQuestionPayload();
+    payload.answers = (payload.answers ?? []).map((a: any) => ({
+      ...a,
+      questionId: this.questionId || a.questionId,
+      updatedBy: DEFAULT_USER_ID
+    }));
 
-    from(questions).pipe(
-      concatMap((q, index) => {
-        const original = this.question()?.answers?.filter(a => a.question_Ask)?.[index];
-        console.log('original', original);
-        if (!original?.oid) return of(null);
-
-        const payload = {
-          oid: original.oid,
-          questionId: this.questionId,
-          answerText: q.answerText,
-          answerText_Ar: q.answerText_Ar,
-
-          question_Ask: true,
-          correctAnswerOid: q.correctAnswerOid ?? null,
-          isCorrect: q.isCorrect ?? false,
-          orderNo: q.orderNo,
-          questionExplanation: q.questionExplanation,
-
-          updatedBy: DEFAULT_USER_ID
-        };
-        console.log('submit payload', payload);
-        this.questionStore.updateQuestion({ id: payload.oid, body: payload });
-        return of(null);
-      })
-    ).subscribe({
-      complete: () => {
+    this.certificationService.updateCourseQuestion(payload).subscribe({
+      next: () => {
         this.toast.showToast('Matching questions updated successfully', 'success');
         this.location.back();
       },
@@ -595,39 +656,22 @@ export class CertificationQuestionComponent {
   }
 
   private updateExistingQuestionAndAnswers(): void {
-    const raw = this.form.getRawValue();
-    const answers = raw.answers ?? [];
+    const payload = this.buildPayload();
+    payload.updatedBy = DEFAULT_USER_ID;
+    payload.answers = (payload.answers ?? []).map((a: any) => ({
+      ...a,
+      questionId: this.questionId || a.questionId,
+      updatedBy: DEFAULT_USER_ID
+    }));
 
-    const toUpdate = answers
-      .filter((a: any) => a.oid)
-      .map((a: any) => ({
-        ...a,
-        questionId: this.questionId,
-        updatedBy: DEFAULT_USER_ID,
-        updatedAt: new Date().toISOString(),
-      }));
-
-    const toCreate = answers
-      .filter((a: any) => !a.oid)
-      .map((a: any) => ({
-        ...a,
-        questionId: this.questionId,
-      }));
-
-    const operations = [
-      ...toUpdate.map(a => this.questionStore.updateQuestion$({ id: a.oid, body: a })
-        .pipe(catchError(() => of(null)))),
-      ...toCreate.map(a => this.questionStore.addAnswer$(a)
-        .pipe(catchError(() => of(null))))
-    ];
-
-    forkJoin(operations).subscribe(results => {
-      const failed = results.filter(r => r === null).length;
-      if (failed > 0) {
-        this.toast.showToast(`${failed} operation(s) failed`, 'warning');
-      } else {
+    this.certificationService.updateCourseQuestion(payload).subscribe({
+      next: () => {
         this.toast.showToast('Question updated successfully', 'success');
         this.location.back();
+      },
+      error: (err) => {
+        console.error('Update failed', err);
+        this.toast.showToast('Failed to update question', 'error');
       }
     });
   }

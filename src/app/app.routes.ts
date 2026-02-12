@@ -42,12 +42,13 @@ export const validLangGuard: CanMatchFn = (route, segments) => {
 };
 
 export const routes: Routes = [
-    {  path: '',
+  {
+    path: '',
     redirectTo: 'en',
     pathMatch: 'full',
   },
   {
-   path:':lang',
+    path: ':lang',
     canMatch: [validLangGuard],
     component: ClientSideLayoutComponent,
     children: [
@@ -79,22 +80,22 @@ export const routes: Routes = [
       {
         path: 'certifications',
         component: clientCertifications,
-        children:[
-          {
-            path:'',
-            redirectTo:"pmp",
-            pathMatch: 'full',
-          },
-          {
-               path:"PMP",
-               component:PmpComponent
-          },
-          {
-            path: "CAMP",
-            component: CampComponent
-          }
+        // children:[
+        //   {
+        //     path:'',
+        //     redirectTo:"pmp",
+        //     pathMatch: 'full',
+        //   },
+        //   {
+        //        path:"PMP",
+        //        component:PmpComponent
+        //   },
+        //   {
+        //     path: "CAMP",
+        //     component: CampComponent
+        //   }
 
-        ]
+        // ]
       },
       {
         path: 'services',
@@ -109,7 +110,7 @@ export const routes: Routes = [
           {
             path: "manpower",
             component: ManpowerComponent,
-            children:[
+            children: [
               {
                 path: '',
                 redirectTo: "post-vacancy",
@@ -118,7 +119,7 @@ export const routes: Routes = [
               },
               {
                 path: 'post-vacancy',
-                component:PostVacnacyComponent
+                component: PostVacnacyComponent
               },
               {
                 path: 'job-seeker',
@@ -152,7 +153,7 @@ export const routes: Routes = [
           {
             path: '',
             redirectTo: "login",
-            pathMatch:"full"
+            pathMatch: "full"
           },
           {
             path: "login",
@@ -168,7 +169,8 @@ export const routes: Routes = [
           },
         ]
       },
-    ]},
+    ]
+  },
   {
     path: 'admin',
     component: AdminLayoutComponent,
@@ -236,6 +238,6 @@ export const routes: Routes = [
   },
   {
     path: '**',
-    component:NotFoundComponent,
+    component: NotFoundComponent,
   },
 ];

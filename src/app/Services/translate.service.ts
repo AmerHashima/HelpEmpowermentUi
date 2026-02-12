@@ -15,18 +15,28 @@ export class TranslateService {
     private endpoint = 'Translate/en-to-ar';
 
     constructor(private apiService: ApiService) { }
-
     translateEnToAr(text: string): Observable<string> {
         return this.apiService
-            .post<TranslateResponse>(this.endpoint, { text })
+            .post<TranslateResponse>(this.endpoint, { text: text })
             .pipe(
                 map((response: TranslateResponse) => {
                     const translated = response?.translatedText ?? '';
-                    if (!translated) {
-                        throw new Error('Translate API returned empty result');
-                    }
                     return translated;
                 })
             );
     }
+
+    // translateEnToAr(text: string): Observable<string> {
+    //     return this.apiService
+    //         .post<TranslateResponse>(this.endpoint, { text })
+    //         .pipe(
+    //             map((response: TranslateResponse) => {
+    //                 const translated = response?.translatedText ?? '';
+    //                 if (!translated) {
+    //                     throw new Error('Translate API returned empty result');
+    //                 }
+    //                 return translated;
+    //             })
+    //         );
+    // }
 }

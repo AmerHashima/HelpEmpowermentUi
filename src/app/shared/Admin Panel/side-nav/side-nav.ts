@@ -40,32 +40,32 @@ export class SideNav {
   smallScreen = signal(false);
 
   sectionOneNavItems: Navitem[] = [
-    {
-      name: 'Dashboard',
-      nameAr: 'لوحة التحكم',
-      icon: 'bi bi-house-door',
-      route: 'dashboard'
-    },
+    // {
+    //   name: 'Dashboard',
+    //   nameAr: 'لوحة التحكم',
+    //   icon: 'bi bi-house-door',
+    //   route: 'dashboard'
+    // },
     {
       name: 'Certifications',
       nameAr: 'الشهادات',
       icon: 'bi bi-patch-check-fill',
       route: 'certifications',
-      subItems: [
-        { name: 'PMP', nameAr: 'الأطباء', icon: 'bi bi-patch-check-fill', route: 'pmp' },
-        { name: 'CAMP', nameAr: 'إضافةطبيب جديد', icon: 'bi bi-patch-check-fill', route: 'camp' },
-      ]
+      // subItems: [
+      //   { name: 'PMP', nameAr: 'الأطباء', icon: 'bi bi-patch-check-fill', route: 'pmp' },
+      //   { name: 'CAMP', nameAr: 'إضافةطبيب جديد', icon: 'bi bi-patch-check-fill', route: 'camp' },
+      // ]
     },
-    {
-      name: 'Services',
-      nameAr: 'الخدمات',
-      icon: 'bi bi-bullseye',
-      route: 'services',
-      subItems: [
-        { name: 'service 1', nameAr: 'خدمة ١', icon: 'bi bi-bullseye', route: 'service1' },
-        { name: 'service 2', nameAr: 'خدمة ٢', icon: 'bi bi-bullseye', route: 'service2' },
-      ]
-    },
+    // {
+    //   name: 'Services',
+    //   nameAr: 'الخدمات',
+    //   icon: 'bi bi-bullseye',
+    //   route: 'services',
+    //   subItems: [
+    //     { name: 'service 1', nameAr: 'خدمة ١', icon: 'bi bi-bullseye', route: 'service1' },
+    //     { name: 'service 2', nameAr: 'خدمة ٢', icon: 'bi bi-bullseye', route: 'service2' },
+    //   ]
+    // },
 
   ];
 
