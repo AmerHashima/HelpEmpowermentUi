@@ -8,33 +8,6 @@
   line-height: 130%;
 }
 
-.certificationPrice span {
-  font-size: 2rem;
-  font-weight:$bold;
-}
-
-.certificationPrice {
-  padding-top: 0.5rem;
-}
-
-.certifictionRate {
-  font-size: $fs-sm;
-  color: $paragraphColor;
-}
-
-.enrollTag img {
-  height: 40px !important;
-}
-
-.enrollTag span {
-  color: $paragraphColor;
-  font-weight: $bold;
-}
-.certification .rating {
-  padding-inline-end: 2rem;
-  flex-direction: column;
-  gap: 0.5rem;
-}
 .CertifticationBenfitsSubTitle {
   text-align: center;
 }
@@ -136,14 +109,6 @@
   }
 }
 @media screen and (min-width: 992px) {
-  .certification .rating {
-    flex-direction: row;
-    gap: 1rem;
-  }
-  .certification .enrollTag,
-  .certification .enrollTag img {
-    order: 1;
-  }
   .examModeCard {
     width: 70%;
   }

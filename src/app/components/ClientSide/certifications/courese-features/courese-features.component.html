@@ -1,0 +1,21 @@
+<div class="w-100">
+  <app-accordion [title]="'Course Features' | translate">
+    <div class="d-flex flex-column gap-2">
+      @for(item of courseFeature(); let i = $index; track item){
+          <div
+        class="feature-item flex flex-column gap-1"
+      >
+        <div class="d-flex align-items-start gap-1">
+        <i class="featureIcon bi bi-pin-angle mainTextColor pt-1"></i>
+        <div class="d-flex flex-column gap-1">
+        <span class="featureTitle darkText">{{ item.title | translate }}</span>
+        <span class="featureDescription">{{ item.description | translate }}</span>
+        </div>
+        </div>
+
+      </div>
+      }
+
+    </div>
+  </app-accordion>
+</div>

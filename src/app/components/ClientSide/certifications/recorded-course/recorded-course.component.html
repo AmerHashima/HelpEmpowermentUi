@@ -1,1 +1,80 @@
-<p>recorded-course works!</p>
+
+<div class="certification pagePadding">
+  <!-- Banner - shown only if not purchased -->
+  <ng-container *ngIf="!hasBought()" >
+    <app-page-banner [isRTL]="isRTL()" [media]="true">
+      <!-- Content projection -->
+      <div content class="d-flex flex-column gap-3 pe-xl-5">
+        <div class="d-flex flex-column gap-3">
+          <h3 class="CertificationHeader">
+            <span class="darkText">
+              {{ "recordedCourse.masterPmp" | translate }}
+            </span>
+            <span class="mainTextColor">
+              {{ "recordedCourse.title" | translate }}
+            </span>
+          </h3>
+
+          <p>
+            {{ "recordedCourse.description" | translate }}
+          </p>
+
+          <div class="d-flex justify-content-between rating">
+            <div class="d-flex align-items-center enrollTag gap-1">
+              <img [src]="enrollImage" alt="Enroll image" />
+              <span>2,500+ {{ "common.enrolled" | translate }}</span>
+            </div>
+
+            <div class="d-flex align-items-center gap-1">
+              <app-star-rating [value]="4.9"></app-star-rating>
+              <span class="certifictionRate">(4.9)</span>
+            </div>
+          </div>
+
+          <div class="certificationPrice">
+            <span class="darkText">3000 EGP</span>
+          </div>
+
+          <div class="d-flex align-content-center gap-3">
+            <app-site-button
+              title="examSimulator.buyNow"
+              [icon]="isRTL() ? 'bi bi-arrow-left' : 'bi bi-arrow-right'"
+              type="main"
+              (click)="buyNow()"
+            ></app-site-button>
+
+            <app-site-button
+              title="examSimulator.addToCart"
+              [icon]="isRTL() ? 'bi bi-arrow-left' : 'bi bi-arrow-right'"
+              type="secondary"
+              (click)="addToCart()"
+            ></app-site-button>
+          </div>
+        </div>
+      </div>
+
+    <img
+      media
+      [src]="recoedImage"
+      alt="contact Image"
+      class="Homebanner-video shadow w-100 h-100"
+    />
+    </app-page-banner>
+  </ng-container>
+
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-8">
+        <div>
+          <app-courese-outline [courseOutline]="courseOutlines()"></app-courese-outline>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div>
+          <app-courese-features [courseFeature]="courseFeatures()"></app-courese-features>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>

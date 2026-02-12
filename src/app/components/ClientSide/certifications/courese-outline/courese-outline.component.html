@@ -1,0 +1,14 @@
+<div class="w-100">
+  <app-accordion [title]="'courseOutline' | translate">
+    <div class="course-outline-grid row gy-2">
+      @for (item of courseOutline(); track item) {
+        <div class="col-sm-6 col-lg-12 col-xl-6">
+          <div class="outline-item d-flex align-items-center gap-2">
+            <i class="bi bi-check-circle mainTextColor"></i>
+            <span class="darkText">{{ item | translate }}</span>
+          </div>
+        </div>
+      }
+    </div>
+  </app-accordion>
+</div>

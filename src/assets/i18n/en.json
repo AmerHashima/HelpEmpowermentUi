@@ -238,5 +238,11 @@
         "duration": "Duration",
         "loading": "Loading...",
         "noResults": "No results found"
-      }
+      },
+      "recordedCourse":{
+        "masterPmp":"Learn PMP mastery on your own schedule,",
+        "title":" your journey to PMP can begin right now",
+        "description":"World-class PMP training that fits your calendar, not the other way around. Access proven PMP strategies from certified experts, available 24/7. Master every domain of the PMBOK®️ Guide at the pace that works for you. Pause, rewind, and revisit complex topics until they click—on your terms. A structured path to certification designed for busy professionals. Downloadable resources, templates, and study guides to reinforce learning."
+      },
+      "courseOutline":"Course Outline"
 }

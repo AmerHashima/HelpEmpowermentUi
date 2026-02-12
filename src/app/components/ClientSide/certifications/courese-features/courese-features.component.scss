@@ -1,0 +1,11 @@
+@use 'variables' as *;
+.featureTitle{
+    font-weight: $bold;
+    font-size: $fs-sm
+}
+.featureIcon{
+        font-size: $fs-sm
+}
+.featureDescription{
+        font-size: $fs-sm;
+}

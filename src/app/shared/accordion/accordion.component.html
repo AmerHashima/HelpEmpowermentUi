@@ -1,0 +1,38 @@
+<div class="accordion-wrapper">
+  <div class="accordion accordion-flush" [id]="accordionId">
+    <div class="accordion-item">
+
+      <h2 class="accordion-header">
+        <button
+          class="accordion-button"
+          type="button"
+          data-bs-toggle="collapse"
+          [attr.data-bs-target]="'#' + collapseId"
+          aria-expanded="true"
+          [attr.aria-controls]="collapseId"
+        >
+          {{ title() | translate }}
+        </button>
+      </h2>
+
+      <div
+        [id]="collapseId"
+        class="accordion-collapse collapse show"
+        [attr.data-bs-parent]="'#' + accordionId"
+      >
+        <div class="accordion-body">
+
+          <ng-container *ngIf="typeof content() === 'string'; else templateContent">
+            {{ content() }}
+          </ng-container>
+
+          <ng-template #templateContent>
+            <ng-content></ng-content>
+          </ng-template>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

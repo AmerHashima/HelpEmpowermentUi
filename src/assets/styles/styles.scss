@@ -359,6 +359,35 @@ p {
   color:$secondaryColor !important;
 }
 
+
+.certificationPrice span {
+  font-size: 2rem;
+  font-weight:$bold;
+}
+
+.certificationPrice {
+  padding-top: 0.5rem;
+}
+
+.certifictionRate {
+  font-size: $fs-sm;
+  color: $paragraphColor;
+}
+
+.enrollTag img {
+  height: 40px !important;
+}
+
+.enrollTag span {
+  color: $paragraphColor;
+  font-weight: $bold;
+}
+.certification .rating {
+  padding-inline-end: 2rem;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
 @media screen and (min-width: 1200px) {
   h1 {
     font-size: 5rem;
@@ -368,6 +397,14 @@ p {
   }
   h3 {
     font-size: 1.5rem;
+  }
+    .certification .rating {
+    flex-direction: row;
+    gap: 1rem;
+  }
+  .certification .enrollTag,
+  .certification .enrollTag img {
+    order: 1;
   }
 }
 
