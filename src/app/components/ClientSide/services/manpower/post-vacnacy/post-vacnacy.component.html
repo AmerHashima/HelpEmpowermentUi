@@ -113,14 +113,15 @@
                   </div>
                   <div class="col-12 col-lg-6 ">
                     <div class="upload  h-100">
-                      <div class="h-100 d-flex flex-column">
+                      <div class="h-100 d-flex flex-column gap-2">
                         <label for="">or Upload files</label>
                         <app-file-upload
                           name="attachments"
                           [(ngModel)]="vacancy.attachments"
                           [multiple]="true"
-                          label="Drag files here to upload"
+                          label="Drop your CV here or click to upload"
                           class="flex-grow-1"
+                          [heightClass]="'h-100'"
                         ></app-file-upload>
                       </div>
                     </div>

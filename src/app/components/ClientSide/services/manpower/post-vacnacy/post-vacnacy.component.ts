@@ -7,7 +7,6 @@ import { Shared } from '../../../../../shared/Services/shared/shared';
 import { SiteButtonComponent } from '../../../../../shared/clientSide/site-button/site-button.component';
 import { FormsModule } from '@angular/forms';
 import { SpkNgSelectComponent } from '../../../../../shared/spk-ng-select/spk-ng-select.component';
-import { NgIf } from '@angular/common';
 import { PhoneInputComponent } from '../../../../../shared/phone/phone.component';
 
 @Component({

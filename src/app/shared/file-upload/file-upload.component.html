@@ -1,8 +1,9 @@
-<div class="row h-100">
-  <div class="col-12 h-100">
-    <div class="card custom-card mb-0 h-100">
+<div class="row" [ngClass]="heightClass">
+  <div class="col-12 " [ngClass]="heightClass">
+    <div class="card custom-card mb-0" [ngClass]="heightClass">
       <div class="card-body h-100 d-flex flex-column">
-        <file-pond #myPond class="flex-grow-1 h-100"
+        <file-pond #myPond class="flex-grow-1"
+        [ngClass]="heightClass"
           [options]="pondOptions"
           [files]="pondFiles"
           (oninit)="pondHandleInit()"

@@ -13,11 +13,12 @@ import { FilePondModule } from 'ngx-filepond';
 import * as FilePond from 'filepond';
 
 import { FilePondFile, FilePondInitialFile } from 'filepond';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-file-upload',
   standalone: true,
-  imports: [FilePondModule],
+  imports: [FilePondModule,NgClass],
   templateUrl: './file-upload.component.html',
   styleUrl: './file-upload.component.scss',
   providers: [
@@ -31,7 +32,7 @@ import { FilePondFile, FilePondInitialFile } from 'filepond';
 export class FileUploadComponent implements ControlValueAccessor {
 
   @ViewChild('myPond') myPond!: any;
-
+  @Input() heightClass: string = '';
   @Input() multiple = true;
   @Input() label = 'Drop files here to Upload...';
 

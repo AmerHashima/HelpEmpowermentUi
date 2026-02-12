@@ -181,8 +181,21 @@
         "notesLabel": "Additional Notes",
         "notesPlaceholder": "Add any additional information here",
         "vacancyBtn": "Post Vacancy"
+      },
+      "job": {
+        "title": "Post Your Job Application",
+        "subTitle": "Let employers find your talent – upload your details and CV now.",
+        "fullnameLabel": "Full Name",
+        "fullnamePlaceholder": "Enter your full name",
+        "fieldLabel": "Job Field",
+        "currentPositionLabel": "Current Position",
+        "currentPositionPlaceholder": "e.g. Senior Frontend Developer",
+        "experienceLabel": "Experience Level",
+        "currentSalaryLabel": "Current Salary",
+        "currentSalaryPlaceholder": "Enter your current monthly/yearly salary",
+        "expectedSalaryLabel": "Expected Salary",
+        "expectedSalaryPlaceholder": "Enter your desired salary",
+        "uploadCVLabel": "Upload CV",
+        "jobBtn": "Submit Application"
       }
-
-
-
 }

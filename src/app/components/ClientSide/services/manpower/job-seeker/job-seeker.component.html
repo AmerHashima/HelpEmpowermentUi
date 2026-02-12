@@ -1,1 +1,144 @@
-<p>job-seeker works!</p>
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-10">
+      <section class="form w-100 d-flex flex-column align-items-stretch gap-3 my-4 p-5 rounded">
+        <div class="d-flex flex-column gap-2 w-100">
+          <h3 class="m-0">{{ "job.title" | translate }}</h3>
+          <p>{{ "job.subTitle" | translate }}</p>
+        </div>
+
+        <form #jobForm="ngForm" (ngSubmit)="onPostJob()" class="vacancy-form mb-0">
+          <div class="d-flex flex-column gap-3">
+            <div class="row gy-2 gx-3">
+              <!-- Full Name -->
+              <div class="col-12 col-lg-6">
+                <app-input
+                  name="fullname"
+                  [(ngModel)]="job.fullname"
+                  required
+                  [label]="'job.fullnameLabel' | translate"
+                  [placeholder]="'job.fullnamePlaceholder' | translate"
+                  [icon]="'bi bi-person'"
+                  [errorMessages]="{ required: 'Full Name is required' | translate }"
+                ></app-input>
+              </div>
+
+              <!-- Job Field -->
+              <div class="col-12 col-lg-6">
+                <spk-ng-select
+                  name="field"
+                  [(ngModel)]="job.field"
+                  [options]="jobFields"
+                  bindLabel="name"
+                  bindValue="oid"
+                  label="job.fieldLabel"
+                  required
+                ></spk-ng-select>
+              </div>
+
+              <!-- Email -->
+              <div class="col-12 col-lg-6">
+                <app-input
+                  name="email"
+                  [(ngModel)]="job.email"
+                  required
+                  email
+                  [label]="'log.emailLabel' | translate"
+                  [placeholder]="'log.emailPlaceholder' | translate"
+                  [icon]="'bi bi-envelope'"
+                  [errorMessages]="{
+                    required: 'Email is required' | translate,
+                    email: 'Invalid email format' | translate
+                  }"
+                ></app-input>
+              </div>
+
+              <!-- Phone (your reusable component) -->
+              <div class="col-12 col-lg-6">
+                <app-phone-input
+                  name="phone"
+                  [(ngModel)]="job.phone"
+                  [required]="true"
+                  [labelKey]="'register.phoneLabel'"
+                ></app-phone-input>
+              </div>
+
+              <!-- Current Position -->
+              <div class="col-12 col-lg-6">
+                <app-input
+                  name="currentPosition"
+                  [(ngModel)]="job.currentPosition"
+                  required
+                  [label]="'job.currentPositionLabel' | translate"
+                  [placeholder]="'job.currentPositionPlaceholder' | translate"
+                  [icon]="'bi bi-person-workspace'"
+                  [errorMessages]="{ required: 'Current Position is required' | translate }"
+                ></app-input>
+              </div>
+
+              <!-- Experience -->
+              <div class="col-12 col-lg-6">
+                <spk-ng-select
+                  name="experience"
+                  [(ngModel)]="job.experience"
+                  [options]="experiences"
+                  bindLabel="name"
+                  bindValue="oid"
+                  label="job.experienceLabel"
+                  required
+                ></spk-ng-select>
+              </div>
+
+              <!-- Current Salary -->
+              <div class="col-12 col-lg-6">
+                <app-input
+                  name="currentSalary"
+                  [(ngModel)]="job.currentSalary"
+                  required
+                  [label]="'job.currentSalaryLabel' | translate"
+                  [placeholder]="'job.currentSalaryPlaceholder' | translate"
+                  [icon]="'bi bi-currency-dollar'"
+                  [errorMessages]="{ required: 'Current Salary is required' | translate }"
+                ></app-input>
+              </div>
+
+              <!-- Expected Salary -->
+              <div class="col-12 col-lg-6">
+                <app-input
+                  name="expectedSalary"
+                  [(ngModel)]="job.expectedSalary"
+                  required
+                  [label]="'job.expectedSalaryLabel' | translate"
+                  [placeholder]="'job.expectedSalaryPlaceholder' | translate"
+                  [icon]="'bi bi-currency-dollar'"
+                  [errorMessages]="{ required: 'Expected Salary is required' | translate }"
+                ></app-input>
+              </div>
+
+              <div class="col-12">
+                <div class="upload">
+                    <label for="" class="mb-2">{{ 'job.uploadCVLabel' | translate }}</label>
+                    <app-file-upload
+                      name="attachments"
+                      [(ngModel)]="job.attachments"
+                      [multiple]="false"
+                      label="Drag your CV here to upload (PDF, DOC, DOCX)"
+                      accept=".pdf,.doc,.docx"
+                    ></app-file-upload>
+                </div>
+              </div>
+            </div>
+
+            <app-site-button
+              title="job.jobBtn"
+              type="main"
+              htmlType="submit"
+              [icon]="isRTL() ? 'bi bi-arrow-left' : 'bi bi-arrow-right'"
+              [isRTL]="isRTL()"
+            ></app-site-button>
+          </div>
+        </form>
+      </section>
+    </div>
+  </div>
+</div>
