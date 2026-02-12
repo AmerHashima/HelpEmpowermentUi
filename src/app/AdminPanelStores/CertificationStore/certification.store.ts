@@ -1,4 +1,4 @@
-// src\app\management\user\userStore\userStore.ts
+// src\app\AdminPanelStores\CertificationStore\certification.store.ts
 import { signalStore, withState, withMethods, patchState, withHooks, withComputed } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { computed, effect, inject } from '@angular/core';
@@ -120,7 +120,7 @@ export const CertificationsStore = signalStore(
   })),
   withMethods((store) => {
     const certifcationService = inject(CertificationService);
-    const toasting=inject(ToastingMessagesService);
+    const toasting = inject(ToastingMessagesService);
     return {
       addCertification: rxMethod<Certification>(
         pipe(
