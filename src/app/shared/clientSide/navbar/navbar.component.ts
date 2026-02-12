@@ -295,12 +295,12 @@ export class ClientNavbarComponent {
         {
           translateKey: 'menu.certifications_children.PMP',
           icon: 'bi bi-clipboard-check',
-          path: `/${this.lang()}/certifications/PMP`,
+          path: `/${this.lang()}/certifications/pmp`,
         },
         {
           translateKey: 'menu.certifications_children.CAMP',
           icon: 'bi bi-clipboard',
-          path: `/${this.lang()}/certifications/CAMP`,
+          path: `/${this.lang()}/certifications/camp`,
         },
       ],
     },

@@ -1,0 +1,159 @@
+@use 'variables' as *;
+.expirteContainer{
+    padding-top:35px;
+    padding-bottom:2px;
+}
+
+.expirte-card {
+  padding: calc(2rem + 17px) 2rem 1rem;
+  border-radius: $borderRadius;
+  position: relative;
+  width:100%;
+}
+
+
+.expirte-card:hover {
+  background-color:$secondaryColor;
+}
+
+.expirte-card::before {
+  position: absolute;
+  content: "";
+  width: 5px;
+  /* height: 92px; */
+  height:50%;
+  background-color: $primaryColor;
+  border-radius: $borderRadius;
+  inset-inline-start: -2.5px;
+  top: calc(2rem );
+}
+
+.expirte-card:hover::before {
+  background-color: $lightBgTextColor;
+  // box-shadow: var(--shadow-x) 4px 12px var(--hover-color);
+    box-shadow: $boxShadow;
+
+}
+
+.card-content{
+    height: 100%;
+}
+
+
+.card-icon {
+  position: relative;
+  margin-top: -85px;
+  inset-inline-start: 0px;
+  width: 70px;
+  height: 70px;
+  background-color: $primaryColor;
+  color: $lightBgTextColor;
+  border-radius: $borderRadius;
+}
+
+.card-icon .icon {
+  font-size: 1.2rem;
+}
+
+.expirte-card:hover .card-icon {
+  background-color: $lightBgTextColor;
+  box-shadow: 2px 4px 12px #623a3a;
+}
+
+.expirte-card:hover .card-icon .icon {
+  color: $secondaryColor;
+}
+.card-content h3 {
+  color:$headerColor;
+  margin: 0;
+  line-height: 150%;
+  font-size: var(--cardFontSize);
+}
+
+.card-content p{
+  margin: 0;
+}
+
+.learnMore {
+  color: $primaryColor;
+}
+
+.expirte-card:hover p,
+.expirte-card:hover h3,
+.expirte-card:hover .learnMore {
+  color:$lightBgTextColor;
+}
+
+.learnMore span {
+  font-weight: $bold;
+}
+
+.learnMore:hover * {
+  color: $secondaryColor;
+}
+
+.p-carousel-indicators{
+    display: none;
+}
+
+.custom-carousel .p-carousel-container
+{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap:1rem;
+}
+
+.Expirte-card-wrapper {
+  height: 100%;
+}
+
+.Expirte-card-wrapper > * {
+  flex: 1 1 auto;
+}
+
+
+.Expirte-card-wrapper,
+.Expirte-card-wrapper .expirte-card {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  margin-inline: .25rem;
+}
+
+.Expirte-card-wrapper .card-content .flex-grow-1 {
+  flex: 1 1 auto;
+}
+
+.p-carousel-next,.p-carousel-prev{
+  background-color: $lightBgTextColor;
+  color:$primaryColor;
+  box-shadow: $boxShadow
+}
+
+.p-carousel-next:hover,.p-carousel-prev:hover{
+  color: $lightBgTextColor;
+  background:$secondaryColor;
+  box-shadow:$boxShadow;
+}
+
+
+[dir="rtl"] .custom-carousel .p-carousel-prev {
+  transform: rotate(180deg);
+}
+
+[dir="rtl"] .custom-carousel .p-carousel-next {
+  transform: rotate(180deg);
+}
+
+[dir="rtl"] .custom-carousel .p-carousel-items-content,
+[dir="rtl"] .custom-carousel .p-carousel-content {
+  direction: rtl !important;
+}
+
+[dir="rtl"] .custom-carousel .p-carousel-items-container {
+  transform: translate3d(200%, 0px, 0px) !important;
+}
+
+
+

@@ -53,6 +53,9 @@ html #toast-container.toast-top-right {
   z-index: 999999999 !important;
 }
 
+.bg-site{
+  background-color: #C02C61;
+}
   .form-check-label,label{
     color:$paraTextColor !important;
   }
@@ -349,6 +352,11 @@ p {
 
 .calendar h5{
   font-size:1.2rem;
+}
+
+.examModeCard .btn.btn-primary:hover{
+  background-color: $lightBgTextColor !important;
+  color:$secondaryColor !important;
 }
 
 @media screen and (min-width: 1200px) {

@@ -204,5 +204,39 @@
         "moreDetails":"More Details",
         "upcomingEvents":"Upcoming Events",
         "unlockMessage":"Unlock your next level, join our courses and gain the skills to turn your goals into reality."
+      },
+      "examSimulator": {
+        "masterPmp": "Master the PMP exam environment.",
+        "realisticSimulation": "Your most realistic exam simulation begins now.",
+        "description": "The closest experience to the real exam, available whenever you need it. Build unshakable exam-day confidence with full-length simulated tests designed by PMP-certified experts. Practice with hundreds of realistic, scenario-based questions that mirror PMI's style and complexity. Learn from detailed answer explanations that don't just tell you what's right—they show you why. Track your progress across every domain and identify exactly where to focus your final study efforts. A structured simulation path designed for your success. 9 Exams – 1,620 Questions – Practice Mode & Exam Mode – Reports & Lesson learned Questions – 9 months access",
+        "buyNow": "Buy Now",
+        "addToCart": "Add to cart",
+        "everythingYouNeed": "Everything You Need to Pass",
+        "masterPmpQuestions": "Master the PMP exam with 1,640 realistic questions designed to ensure your success",
+        "tryBeforeBuy": "Try Before you Buy",
+        "experienceFree": "Experience the Exam Simulator for Free",
+        "testBothModes": "Test both Practice Mode and Exam Mode to see how our simulator helps you succeed",
+        "freeExam": "Free Exam",
+        "freePreviewDescription": "Start with a free 10-question preview. The paid version delivers more of that great experience",
+        "practiceAndExamMode": "Practice Mode - Exam Mode",
+        "reportsAndLessons": "Reports - Lesson Learned Questions",
+        "startFreeExam": "Start Free Exam - Try Now"
+      },
+      "exam": {
+        "practiceAndExamMode": "Practice Mode - Exam Mode",
+        "reportsAndLessons": "Reports - Lesson Learned Questions"
+      },
+      "common": {
+        "required": "This field is required",
+        "invalidFormat": "Invalid format",
+        "submit": "Submit",
+        "startNow": "Start Now",
+        "learnMore": "Learn More",
+        "enrolled": "enrolled",
+        "freeAccess": "Free Access",
+        "questions": "Questions",
+        "duration": "Duration",
+        "loading": "Loading...",
+        "noResults": "No results found"
       }
 }
