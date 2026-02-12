@@ -5,13 +5,12 @@ import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/s
 import { InputComponent } from '../../../../shared/input/input.component';
 import { TextareaComponent } from '../../../../shared/text-area/text-area.component';
 import { FormsModule } from '@angular/forms';
-import { NgxsmkTelInputComponent } from 'ngxsmk-tel-input';
-import { NgIf } from '@angular/common';
+import { PhoneInputComponent } from '../../../../shared/phone/phone.component';
 
 @Component({
   selector: 'app-enroll-form',
   imports: [TranslateModule,TranslatePipe,SiteButtonComponent,InputComponent,
-    TextareaComponent,FormsModule,NgxsmkTelInputComponent,NgIf
+    TextareaComponent,FormsModule,PhoneInputComponent
   ],
   templateUrl: './enroll-form.component.html',
   styleUrl: './enroll-form.component.scss'

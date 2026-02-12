@@ -5,7 +5,7 @@ import { NgTemplateOutlet } from '@angular/common';
 
 @Component({
   selector: 'app-service-title',
-  imports: [TranslateModule,TranslatePipe,NgTemplateOutlet],
+  imports: [TranslateModule,TranslatePipe],
   templateUrl: './service-title.component.html',
   styleUrl: './service-title.component.scss'
 })

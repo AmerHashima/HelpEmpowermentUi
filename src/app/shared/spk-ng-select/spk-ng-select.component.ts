@@ -4,16 +4,14 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { CommonModule } from '@angular/common';
 import { Optional, Self } from '@angular/core';
 import { NgControl } from '@angular/forms';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 
-// interface Option {
-//   label: string;
-//   value: any;
-// }
+
 
 @Component({
   selector: 'spk-ng-select',
   standalone: true,
-  imports: [NgSelectModule, FormsModule, CommonModule],
+  imports: [NgSelectModule, FormsModule, CommonModule,TranslateModule,TranslatePipe],
   templateUrl: './spk-ng-select.component.html',
   styleUrl: './spk-ng-select.component.scss',
 

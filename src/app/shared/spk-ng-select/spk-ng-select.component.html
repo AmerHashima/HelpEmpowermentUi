@@ -1,7 +1,7 @@
 <div class="d-flex flex-column gap-1">
   @if (label(); as lbl) {
   <label class="form-label mb-0" [for]="id()">
-    {{ lbl }}
+    {{ lbl | translate}}
   </label>
   }
   <ng-select

@@ -111,6 +111,12 @@ export const routes: Routes = [
             component: ManpowerComponent,
             children:[
               {
+                path: '',
+                redirectTo: "post-vacancy",
+                pathMatch: 'full',
+
+              },
+              {
                 path: 'post-vacancy',
                 component:PostVacnacyComponent
               },

@@ -1,9 +1,9 @@
-<div class="d-flex flex-column gap-1">
+<div class="d-flex flex-column gap-1 h-100">
   @if (label()) {
     <label class="form-label mb-0">{{ label() }}</label>
   }
 
-  <div class="input-group" [class.is-invalid]="showErrors()">
+  <div class="input-group h-100 " [class.is-invalid]="showErrors()">
     @if (icon()) {
       <span class="input-group-text">
         <i [class]="icon()"></i>

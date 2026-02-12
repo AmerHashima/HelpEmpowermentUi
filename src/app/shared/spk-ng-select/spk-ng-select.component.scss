@@ -1,5 +1,5 @@
 /* src\app\shared\spk-ng-select\spk-ng-select.component.scss */
-
+@use 'variables' as *;
 :host {
   --sm-height: 31px;
   --sm-font: 0.875rem;
@@ -16,7 +16,10 @@
   padding: 0 0.5rem;
   display: flex;
   align-items: center;
+  background-color: $inputBg !important;
+  color:$inputText !important;
 }
+
 
 :host ::ng-deep .ng-select .ng-value-container {
   display: flex;

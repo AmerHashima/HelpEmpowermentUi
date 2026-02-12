@@ -206,6 +206,11 @@ body {
 }
 .card-body .filepond--root {
   box-sizing: border-box;
+  background-color: $inputBg;
+  color:$inputText;
+  *{
+      color:$inputText !important;
+  }
 }
 
 .courseLink {
@@ -302,6 +307,11 @@ p {
 .enrollForm .serviceTitle {
   color: $paragraphColor;
   width: 100%;
+}
+
+.ng-dropdown-panel ,   .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+   background-color: $inputBg !important;
+  color:$inputText !important;
 }
 @media screen and (min-width: 1200px) {
   h1 {

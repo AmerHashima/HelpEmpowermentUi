@@ -3,14 +3,13 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { PageBannerComponent } from '../../../shared/clientSide/page-banner/page-banner.component';
 import { Shared } from '../../../shared/Services/shared/shared';
 import { TextareaComponent } from '../../../shared/text-area/text-area.component';
-import { NgxsmkTelInputComponent } from 'ngxsmk-tel-input';
 import { InputComponent } from '../../../shared/input/input.component';
 import { SiteButtonComponent } from '../../../shared/clientSide/site-button/site-button.component';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
-import { NgIf } from '@angular/common';
 import { ContactCardComponent } from './contact-card/contact-card.component';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { PhoneInputComponent } from '../../../shared/phone/phone.component';
 interface ContactInfo {
   icon: string;
   header: string;
@@ -19,8 +18,9 @@ interface ContactInfo {
 @Component({
   selector: 'app-contact',
   standalone:true,
-  imports: [PageBannerComponent,TextareaComponent,NgxsmkTelInputComponent,InputComponent,
-    SiteButtonComponent,FormsModule,TranslateModule,TranslatePipe,NgIf,ContactCardComponent
+  imports: [PageBannerComponent,TextareaComponent,InputComponent,
+    SiteButtonComponent,FormsModule,TranslateModule,TranslatePipe,ContactCardComponent,
+    PhoneInputComponent
   ],
   templateUrl: './contact.component.html',
   styleUrl: './contact.component.scss'
@@ -52,19 +52,6 @@ isRTL=this.shared.isRtl;
     }
   ]);
 
-  arabicLabels = {
-    searchPlaceholder: 'ابحث عن دولة أو رمز الاتصال',
-    noCountrySelected: 'لم يتم اختيار دولة',
-    noResultsFound: 'لا توجد نتائج',
-    selectCountry: 'اختر الدولة'
-  };
-
-  arabicCountries = {
-    EG: 'مصر',
-    SA: 'السعودية',
-    AE: 'الإمارات العربية المتحدة',
-    US: 'الولايات المتحدة الأمريكية'
-  }
   contact = {
     fullName: '',
     email: '',

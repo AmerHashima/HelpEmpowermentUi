@@ -1,0 +1,17 @@
+<ul class="nav nav-tabs custom-tabs">
+  @for (tab of tabs; track $index) {
+    <li class="nav-item">
+      <a
+        class="nav-link"
+        [routerLink]="tab.route"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        @if (tab.icon) {
+          <i class="{{ tab.icon }} me-2"></i>
+        }
+        {{ tab.header }}
+      </a>
+    </li>
+  }
+</ul>

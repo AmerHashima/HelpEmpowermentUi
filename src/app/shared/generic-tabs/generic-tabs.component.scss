@@ -1,0 +1,51 @@
+@use 'variables' as *;
+
+.custom-tabs {
+  border:none;
+  gap: 0.5rem;
+  justify-content: center;
+
+  .nav-item {
+    margin-bottom: -2px;
+  }
+
+  .nav-link {
+    border: none;
+    border-radius: 0;
+    color: #6c757d;
+    font-weight: 500;
+    padding: 0.75rem 1.25rem;
+    position: relative;
+    transition: all 0.3s ease;
+
+    i {
+      font-size: 1rem;
+    }
+
+    &:hover {
+      color: $lightBgTextColor;
+      background-color: $secondaryColor
+    }
+
+    &.active {
+      color: $primaryColor;
+      background-color: transparent;
+    }
+
+    /* Animated underline */
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0%;
+      height: 3px;
+      background-color: $primaryColor;;
+      transition: width 0.3s ease;
+    }
+
+    &.active::after {
+      width: 100%;
+    }
+  }
+}

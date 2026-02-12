@@ -164,6 +164,23 @@
         "SECOND_DESCRIPTION": "We work closely with your leadership and subject-matter experts to analyze gaps, define precise learning outcomes, and develop a curriculum that resonates with your team. From integrating your real-world case studies and internal methodologies to aligning with your specific software and workflows, we ensure every module is relevant, practical, and immediately applicable.",
         "ENROLL_TITLE_1": "Let's build the program your team needs together. Contact us to start a conversation about your goals.",
        "ExamplesTitle":"Training Examples:"
+      },
+      "vacancy": {
+        "mainTitle": "Post a Vacancy",
+        "title": "Looking to Hire the Right Talent?",
+        "subTitle": "Fill out the form below and our team will help you find the best candidates for your organization.",
+        "fullnameLabel": "Full Name",
+        "fullnamePlaceholder": "Enter your full name",
+        "companyNameLabel": "Company Name",
+        "companyNamePlaceholder": "Enter your company name",
+        "roleLabel": "Job Role / Position",
+        "rolePlaceholder": "Enter the job role",
+        "experienceLabel": "Required Experience Level",
+        "jobDescriptionLabel": "Job Description",
+        "jobDescriptionPlaceholder": "Describe the job responsibilities and requirements",
+        "notesLabel": "Additional Notes",
+        "notesPlaceholder": "Add any additional information here",
+        "vacancyBtn": "Post Vacancy"
       }
 
 

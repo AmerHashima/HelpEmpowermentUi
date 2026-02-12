@@ -57,7 +57,8 @@ export class FileUploadComponent implements ControlValueAccessor {
   writeValue(files: File[] | null): void {
     if (!files || !files.length) {
       this.pondFiles = [];
-      this.myPond?.removeFiles();
+      // this.myPond?.removeFiles();
+      this.myPond?.pond?.removeFiles();
       return;
     }
 
@@ -116,7 +117,8 @@ export class FileUploadComponent implements ControlValueAccessor {
   /* ===== Public API (optional) ===== */
 
   clearFiles() {
-    this.myPond?.removeFiles();
+    // this.myPond?.removeFiles();
+    this.myPond?.pond?.removeFiles();
     this.onChange([]);
   }
 

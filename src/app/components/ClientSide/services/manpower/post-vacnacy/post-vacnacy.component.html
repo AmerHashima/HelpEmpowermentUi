@@ -1,1 +1,153 @@
-<p>post-vacnacy works!</p>
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-10">
+      <section
+        class="form w-100 d-flex flex-column align-items-stretch gap-3 my-4 p-5 rounded"
+      >
+        <!-- <h4 class="m-0 fw-bold darkText">
+          {{ "vacancy.mainTitle" | translate }}
+        </h4> -->
+
+        <div class="d-flex flex-column gap-2 w-100">
+          <h3 class="m-0">{{ "vacancy.title" | translate }}</h3>
+          <p>{{ "vacancy.subTitle" | translate }}</p>
+        </div>
+
+        <form
+          #vacancyForm="ngForm"
+          (ngSubmit)="onPostVacancy()"
+          class="vacancy-form mb-0"
+        >
+          <div class="d-flex flex-column gap-3">
+            <div class="row gy-2 gx-3">
+              <div class="col-12 col-lg-6">
+                <app-input
+                  name="fullname"
+                  [(ngModel)]="vacancy.fullname"
+                  required
+                  [label]="'vacancy.fullnameLabel' | translate"
+                  [placeholder]="'vacancy.fullnamePlaceholder' | translate"
+                  [icon]="'bi bi-person'"
+                  [errorMessages]="{
+                    required: 'Full Name is required' | translate,
+                  }"
+                ></app-input>
+              </div>
+              <div class="col-12 col-lg-6">
+                <app-input
+                  name="companyName"
+                  [(ngModel)]="vacancy.companyName"
+                  required
+                  [label]="'vacancy.companyNameLabel' | translate"
+                  [placeholder]="'vacancy.companyNamePlaceholder' | translate"
+                  [icon]="'bi bi-building'"
+                  [errorMessages]="{
+                    required: 'Company Name is required' | translate,
+                  }"
+                ></app-input>
+              </div>
+              <div class="col-12 col-lg-6">
+                <app-input
+                  name="email"
+                  [(ngModel)]="vacancy.email"
+                  required
+                  email
+                  [label]="'log.emailLabel' | translate"
+                  [placeholder]="'log.emailPlaceholder' | translate"
+                  [icon]="'bi bi-envelope'"
+                  [errorMessages]="{
+                    required: 'Email is required' | translate,
+                    email: 'Invalid email format' | translate,
+                  }"
+                ></app-input>
+              </div>
+              <div class="col-12 col-lg-6">
+                <app-phone-input
+                  name="phone"
+                  [(ngModel)]="vacancy.phone"
+                  [required]="true"
+                  [labelKey]="'register.phoneLabel' | translate"
+                >
+                </app-phone-input>
+              </div>
+              <div class="col-12 col-lg-6">
+                <app-input
+                  name="role"
+                  [(ngModel)]="vacancy.role"
+                  required
+                  [label]="'vacancy.roleLabel' | translate"
+                  [placeholder]="'vacancy.rolePlaceholder' | translate"
+                  [icon]="'bi bi-person-workspace'"
+                  [errorMessages]="{
+                    required: 'Field is required' | translate,
+                  }"
+                ></app-input>
+              </div>
+              <div class="col-12 col-lg-6">
+                <spk-ng-select
+                  name="experience"
+                  [(ngModel)]="vacancy.experience"
+                  [options]="experiences"
+                  bindLabel="name"
+                  bindValue="oid"
+                  label="vacancy.experienceLabel"
+                  required
+                >
+                </spk-ng-select>
+              </div>
+              <div class="col-12">
+                <div class="row align-items-stretch">
+                  <div class="col-12 col-lg-6">
+                    <div class=" h-100">
+                      <app-textarea
+                        name="jobDescription"
+                        [(ngModel)]="vacancy.jobDescription"
+                        [label]="'vacancy.jobDescriptionLabel' | translate"
+                        [placeholder]="
+                          'vacancy.jobDescriptionPlaceholder' | translate
+                        "
+                        [icon]="'bi bi-person-workspace'"
+                        class="h-100"
+                      ></app-textarea>
+                    </div>
+                  </div>
+                  <div class="col-12 col-lg-6 ">
+                    <div class="upload  h-100">
+                      <div class="h-100 d-flex flex-column">
+                        <label for="">or Upload files</label>
+                        <app-file-upload
+                          name="attachments"
+                          [(ngModel)]="vacancy.attachments"
+                          [multiple]="true"
+                          label="Drag files here to upload"
+                          class="flex-grow-1"
+                        ></app-file-upload>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <app-textarea
+                  name="notes"
+                  [(ngModel)]="vacancy.notes"
+                  [label]="'vacancy.notesLabel' | translate"
+                  [placeholder]="'vacancynotesPlaceholder' | translate"
+                  [icon]="'bi bi-person-workspace'"
+                ></app-textarea>
+              </div>
+            </div>
+
+            <app-site-button
+              title="vacancy.vacancyBtn"
+              type="main"
+              htmlType="submit"
+              [icon]="isRTL() ? 'bi bi-arrow-left' : 'bi bi-arrow-right'"
+              [isRTL]="isRTL()"
+            ></app-site-button>
+          </div>
+        </form>
+      </section>
+    </div>
+  </div>
+</div>

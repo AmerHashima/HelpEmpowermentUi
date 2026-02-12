@@ -40,34 +40,13 @@
               }"
             ></app-input>
 
-            <div class="field" [dir]="isRTL() ? 'rtl' : 'ltr'">
-              <label for="phone">{{ "register.phoneLabel" | translate }}</label>
-
-              <ngxsmk-tel-input
-                name="contact"
-                [(ngModel)]="contact.phone"
-                #phone="ngModel"
-                required
-                phoneValidation
-                [dir]="isRTL() ? 'rtl' : 'ltr'"
-                [preferredCountries]="['EG', 'SA', 'AE', 'US']"
-                [initialCountry]="'EG'"
-                [i18n]="arabicLabels"
-                [localizedCountries]="arabicCountries"
-              ></ngxsmk-tel-input>
-
-              <div
-                class="error"
-                *ngIf="phone?.invalid && (phone?.dirty || phone?.touched)"
-              >
-                <div *ngIf="phone?.errors?.['required']">
-                  {{ "register.phoneRequired" | translate }}
-                </div>
-                <div *ngIf="phone?.errors?.['invalidNumber']">
-                  {{ "register.phoneInvalid" | translate }}
-                </div>
-              </div>
-            </div>
+             <app-phone-input
+                  name="phone"
+                  [(ngModel)]="contact.phone"
+                   [required]="true"
+                  [labelKey]="'register.phoneLabel' | translate"
+                >
+                </app-phone-input>
 
             <app-textarea
               name="message"

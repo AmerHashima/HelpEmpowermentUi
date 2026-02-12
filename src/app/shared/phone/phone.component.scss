@@ -1,0 +1,70 @@
+// phone-input.component.scss
+
+.field {
+  // Main container
+  margin-bottom: 1.25rem;
+
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #333; // or your theme color
+  }
+
+  // The ngxsmk-tel-input wrapper (main container)
+  :host ::ng-deep .ngxsmk-tel-input-container {
+    background-color: #f8f9fa !important;           // ← light gray background
+    border: 1px solid #ced4da !important;
+    border-radius: 0.375rem;
+    transition: all 0.2s ease;
+
+    &:focus-within,
+    &:hover {
+      background-color: #ffffff !important;         // white when focused/hovered
+      border-color: #80bdff !important;
+      box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25) !important;
+    }
+  }
+
+  // Flag dropdown button
+  ::ng-deep .country-selector {
+    background-color: transparent !important;
+    border-right: 1px solid #ced4da !important;
+
+    &:hover {
+      background-color: #e9ecef !important;
+    }
+  }
+
+  // Input field itself
+  ::ng-deep input[type="tel"] {
+    background-color: transparent !important;       // inherit from container
+    border: none !important;
+    padding: 0.5rem 0.75rem !important;
+    color: #212529 !important;
+
+    &::placeholder {
+      color: #6c757d !important;
+    }
+
+    &:focus {
+      outline: none !important;
+    }
+  }
+
+  // Error state
+  .error {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+  }
+}
+
+[dir="rtl"] .field {
+  text-align: right;
+
+  ::ng-deep .country-selector {
+    border-right: none !important;
+    border-left: 1px solid #ced4da !important;
+  }
+}
