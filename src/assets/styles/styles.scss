@@ -313,6 +313,44 @@ p {
    background-color: $inputBg !important;
   color:$inputText !important;
 }
+
+.calendar .Homebanner {
+  min-height: auto !important;
+}
+
+.calendar h6 {
+  font-size: 1rem;
+  color:$headerColor;
+
+}
+
+.calendarGrid {
+  width: 100%;
+  padding: 0px;
+  margin: 0px;
+}
+
+
+.calendarCard {
+  display: flex;
+ flex-direction: column;
+ width: 100%;
+  gap: 1rem;
+  box-sizing: border-box;
+  padding: 1rem;
+  border-radius: $borderRadius;
+  background-color: $primaryColor;
+  color: $lightBgTextColor;
+}
+
+.calendarCard:hover {
+  background-color: $secondaryColor;
+}
+
+.calendar h5{
+  font-size:1.2rem;
+}
+
 @media screen and (min-width: 1200px) {
   h1 {
     font-size: 5rem;

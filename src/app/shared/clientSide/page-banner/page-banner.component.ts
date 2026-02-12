@@ -10,4 +10,5 @@ export class PageBannerComponent {
   isRTL = input<boolean>(false);
   media = input<any>();
   content = input<any>();
+  isGrow = input<boolean>(true);
 }

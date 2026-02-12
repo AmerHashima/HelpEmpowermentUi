@@ -1,2 +1,31 @@
-<!-- src\app\components\calendar\calendar.component.html -->
-<p>calendar works!</p>
+<div class="d-flex flex-column gap-3">
+  <app-page-banner [isRTL]="isRTL()" [media]="true" [isGrow]="false">
+    <div content class="d-flex flex-column gap-3">
+      <h6 class="mb-0 fw-bold">
+        {{ "calendar.unlockMessage" | translate }}
+      </h6>
+      <h5 class="mb-0 fw-bold">{{ "calendar.upcomingEvents" | translate }}</h5>
+
+        <div class="calendarGrid row px-0 g-3">
+          @for (item of calendarData; let i = $index; track item) {
+            <div class="col-6">
+              <app-calendar-card
+                [title]="item.title"
+                [icon]="item.icon"
+                [startDate]="item.startDate"
+                [endDate]="item.endDate"
+                (cardClick)="onCardClick(item)"
+              ></app-calendar-card>
+            </div>
+          }
+      </div>
+    </div>
+
+    <img
+      media
+      src="assets/images/contact/contact.jpeg"
+      alt="contactImage"
+      class="Homebanner-video shadow w-100 h-100"
+    />
+  </app-page-banner>
+</div>

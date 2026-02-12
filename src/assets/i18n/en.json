@@ -197,5 +197,12 @@
         "expectedSalaryPlaceholder": "Enter your desired salary",
         "uploadCVLabel": "Upload CV",
         "jobBtn": "Submit Application"
+      },
+      "calendar":{
+        "startDate":"Start Date",
+        "endDate":"End Date",
+        "moreDetails":"More Details",
+        "upcomingEvents":"Upcoming Events",
+        "unlockMessage":"Unlock your next level, join our courses and gain the skills to turn your goals into reality."
       }
 }

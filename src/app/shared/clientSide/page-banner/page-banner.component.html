@@ -1,5 +1,5 @@
 <div class="Homebanner" [class.rtl]="isRTL()">
-  <div class="content d-flex flex-column flex-grow-1">
+  <div class="content d-flex flex-column " [class.flex-grow-1]="isGrow()">
     <ng-content select="[content]"></ng-content>
   </div>
 

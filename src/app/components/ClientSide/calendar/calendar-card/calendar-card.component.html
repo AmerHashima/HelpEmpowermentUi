@@ -1,0 +1,34 @@
+<div class="calendarCard">
+  <div class="title d-flex gap-1 align-items-center">
+    <i [class]="icon"></i>
+    <span>{{ title }}</span>
+  </div>
+
+  <div class="eventTime d-flex flex-column gap-1">
+    <div class="d-flex gap-1 align-items-center">
+      <i class="bi bi-calendar"></i>
+      <div class="d-flex gap-1">
+        <span>{{ 'calendar.startDate' | translate }} :</span>
+        <span>{{ startDate }}</span>
+      </div>
+    </div>
+
+    <div class="d-flex gap-1 align-items-center">
+      <i class="bi bi-calendar"></i>
+      <div class="d-flex gap-1">
+        <span>{{ 'calendar.endDate' | translate }} :</span>
+        <span>{{ endDate }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="details d-flex gap-1 align-items-center justify-content-end"
+    (click)="onDetailsClick()"
+    role="button"
+    tabindex="0"
+  >
+    <span>{{ 'calendar.moreDetails' | translate }}</span>
+    <i [class]="detailsArrowIcon"></i>
+  </div>
+</div>
