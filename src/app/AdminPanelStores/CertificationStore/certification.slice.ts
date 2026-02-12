@@ -1,3 +1,4 @@
+// src\app\AdminPanelStores\CertificationStore\certification.slice.ts
 import { certificationState } from "../../models/certification.state";
 
 export const initialCertificationState: certificationState = {
@@ -11,6 +12,6 @@ export const initialCertificationState: certificationState = {
   total: 0,
 
   search: '',
-  sortBy: 'oid',
+  sortBy: 'orderNo',
   sortDirection: 'asc',
 };

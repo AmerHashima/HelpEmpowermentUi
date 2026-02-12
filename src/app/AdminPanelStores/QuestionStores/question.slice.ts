@@ -1,3 +1,4 @@
+// src\app\AdminPanelStores\QuestionStores\question.slice.ts
 import { QuestionState } from "./question.state";
 
 export const initialQuestionState: QuestionState = {
@@ -11,6 +12,6 @@ export const initialQuestionState: QuestionState = {
   total: 0,
   filters: [],
   search: '',
-  sortBy: 'oid',
+  sortBy: 'orderNo',
   sortDirection: 'asc',
 };
