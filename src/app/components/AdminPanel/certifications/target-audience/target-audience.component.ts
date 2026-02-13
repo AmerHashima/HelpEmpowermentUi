@@ -1,6 +1,7 @@
-import { Component, input } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { AccordionComponent } from '../../../../shared/accordion/accordion.component';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { Shared } from '../../../../shared/Services/shared/shared';
 
 @Component({
   selector: 'app-target-audience',
@@ -9,7 +10,21 @@ import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
   styleUrl: './target-audience.component.scss'
 })
 export class TargetAudienceComponent {
-  targetAudiences = input.required<string[]>();
+  private shared = inject(Shared);
+  certification = this.shared.currentCertificate;
 
+
+  targetAudiences = computed(() => {
+    if (this.certification() == 'pmp')
+      return [
+        "Experienced project managers ",
+        "PMO members",
+        "Consultant",
+        "Department Heads",
+        "Team leads",
+      ];
+    else
+      return [];
+  })
   readonly accordionTitle = 'Target Audience';
 }

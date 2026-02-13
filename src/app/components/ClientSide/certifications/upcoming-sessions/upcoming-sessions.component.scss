@@ -1,0 +1,34 @@
+@use 'variables' as *;
+.session-card {
+  background: transparent;
+  border-radius: 12px;
+  transition: all 0.25s ease;
+
+  &:hover {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    transform: translateY(-3px);
+  }
+
+  .badge {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: $paraTextColor;
+    border-color: $borderColor;
+  }
+
+  .session-title h6 {
+    color: $headerColor;
+    font-size: 1.15rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .session-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .session-datetime {
+    justify-content: center;
+  }
+}

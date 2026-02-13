@@ -244,5 +244,11 @@
         "title":" your journey to PMP can begin right now",
         "description":"World-class PMP training that fits your calendar, not the other way around. Access proven PMP strategies from certified experts, available 24/7. Master every domain of the PMBOK®️ Guide at the pace that works for you. Pause, rewind, and revisit complex topics until they click—on your terms. A structured path to certification designed for busy professionals. Downloadable resources, templates, and study guides to reinforce learning."
       },
+        "liveCourse": {
+          "masterPmp": "Transform your career with live PMP guidance,",
+          "title": " Your interactive path to certification begins now.",
+          "description": "Real-time instruction that brings the PMBOK®️ Guide to life in your own projects. Get direct, personalized answers from expert instructors who guide you through every complex topic. Connect your PMP study directly to your current role—learn strategies you can apply immediately to enhance your real-world project management practice. Collaborate with peers facing similar challenges in a dynamic, supportive cohort. A structured yet adaptive live journey designed to certify you and elevate your professional impact from day one."
+        },
       "courseOutline":"Course Outline"
 }
+

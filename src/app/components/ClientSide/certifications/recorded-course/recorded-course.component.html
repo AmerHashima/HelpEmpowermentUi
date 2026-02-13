@@ -61,7 +61,7 @@
     </app-page-banner>
   </ng-container>
   <ng-container *ngIf="hasBought()">
-    <app-course-player [lessons]="courseLessons()" />
+    <app-course-player />
   </ng-container>
 
   <div class="container-fluid">
@@ -69,35 +69,30 @@
       <div class="col-lg-9">
         <div class="row">
           <div class="col-12">
-            <app-courese-outline
-              [courseOutline]="courseOutlines()"
-            ></app-courese-outline>
+            <app-courese-outline/>
           </div>
         </div>
         <div class="col-12">
-          <app-courese-content
-            [courseCon]="courseContent()"
-          ></app-courese-content>
+          <app-courese-content/>
+
         </div>
         @if (hasBought()) {
           <div class="col-12">
-            <app-resources [resources]="courseResource()"></app-resources>
+            <app-resources />
           </div>
         }
         <div class="col-12">
-          <app-instructor-info [instructor]="instructor" />
+          <app-instructor-info />
         </div>
       </div>
       <div class="col-lg-3">
         <div class="row">
           <div class="col-12">
-            <app-courese-features
-              [courseFeature]="courseFeatures()"
-            ></app-courese-features>
+            <app-courese-features/>
           </div>
         </div>
         <div class="col-12">
-          <app-target-audience [targetAudiences]="targetAudiences()" />
+          <app-target-audience  />
         </div>
       </div>
     </div>

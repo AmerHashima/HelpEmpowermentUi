@@ -4,6 +4,6 @@ import { Injectable, signal } from '@angular/core';
   providedIn: 'root'
 })
 export class AuthService {
-  hasBought=signal<boolean>(true);
+  hasBought=signal<boolean>(false);
   constructor() { }
 }

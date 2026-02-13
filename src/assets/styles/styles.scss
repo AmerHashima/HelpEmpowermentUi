@@ -390,6 +390,11 @@ p {
 .text-muted{
   color:$paraTextColor;
 }
+.CertificationHeader {
+  font-size: 1.8rem;
+  margin: 0px;
+  line-height: 130%;
+}
 @media screen and (min-width: 1200px) {
   h1 {
     font-size: 5rem;
