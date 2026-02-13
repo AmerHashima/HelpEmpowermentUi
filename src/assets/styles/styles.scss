@@ -359,6 +359,14 @@ p {
   color:$secondaryColor !important;
 }
 
+.webinarRegister .btn.btn-primary{
+  background-color: $lightBgTextColor !important;
+  color:$primaryColor !important;
+  &:hover{
+    color:$lightBgTextColor !important;
+  }
+}
+
 
 .certificationPrice span {
   font-size: 2rem;

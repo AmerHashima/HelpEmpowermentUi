@@ -1,34 +1,60 @@
-    <app-page-banner [isRTL]="isRTL()" [media]="true">
-      <!-- Content projection -->
-      <div content class="d-flex flex-column gap-3 pe-xl-5">
-        <div class="d-flex flex-column gap-3">
-          <h3 class="CertificationHeader">
-            <span class="darkText">
-              {{ "webinar.masterPmp" | translate }}
-            </span>
-            <span class="mainTextColor">
-              {{ "webinar.title" | translate }}
-            </span>
-          </h3>
+<app-page-banner [isRTL]="isRTL()" [media]="true">
+  <!-- Content projection -->
+  <div content class="d-flex flex-column gap-3 pe-xl-5">
+    <div class="d-flex flex-column gap-3">
+      <h3 class="CertificationHeader">
+        <span class="darkText">
+          {{ "webinar.masterPmp" | translate }}
+        </span>
+        <span class="mainTextColor">
+          {{ "webinar.title" | translate }}
+        </span>
+      </h3>
 
-          <p>
-            {{ "webinar.description" | translate }}
-          </p>
-        </div>
+      <p>
+        {{ "webinar.description" | translate }}
+      </p>
+    </div>
+  </div>
+
+  <img
+    media
+    [src]="courseImage"
+    alt="contact Image"
+    class="Homebanner-video shadow w-100 h-100"
+  />
+</app-page-banner>
+
+
+<div class="container-fluid">
+  <div class="row ">
+    <div class="col-12">
+       <div class="col-12">
+        <app-upcoming-sessions [type]="'webinar'" [title]="'Upcoming Webinars'"/>
       </div>
-
-      <img
-        media
-        [src]="courseImage"
-        alt="contact Image"
-        class="Homebanner-video shadow w-100 h-100"
-      />
-    </app-page-banner>
-
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-12">
-          
-        </div>
+      <div class="col-12">
+        <app-courese-features [type]="'webinar'" title="Webinar Agenda"/>
       </div>
     </div>
+    <div class="col-12">
+        <div class="col-l2">
+                <app-courese-features [type]="'takeAway'" title="Key Takeaways"/>
+          </div>
+           <div class="col-12">
+                <app-courese-features [type]="'audience'" title="Target Audience"/>
+          </div>
+        </div>
+    <div class="col-12 ">
+       <div class="webinarRegister  mx-auto d-flex flex-column gap-3 bg-site rounded-3 justify-content-center align-items-center py-4">
+          <span class="registerBtn">{{"Secure Your Free Spot Now—Seats Are Limited!" | translate}}</span>
+              <app-site-button
+              title="Register Now"
+              type="main"
+              [icon]="isRTL() ? 'bi bi-arrow-left' : 'bi bi-arrow-right'"
+              [isRTL]="isRTL()"
+            ></app-site-button>
+       </div>
+    </div>
+    </div>
+  </div>
+

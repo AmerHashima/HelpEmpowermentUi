@@ -1,0 +1,16 @@
+@use 'variables' as *;
+.registerBtn{
+  color:$lightBgTextColor;
+  font-size:1.5rem;
+  font-weight: $bold;
+}
+
+.webinarRegister{
+  width:100%;
+}
+
+@media screen and (min-width:992px) {
+.webinarRegister{
+  width:70%;
+}
+}

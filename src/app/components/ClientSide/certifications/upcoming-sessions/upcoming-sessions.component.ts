@@ -1,4 +1,4 @@
-import { Component, inject, input, signal } from '@angular/core';
+import { Component, computed, inject, input, signal } from '@angular/core';
 import { AccordionComponent } from '../../../../shared/accordion/accordion.component';
 import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/site-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -22,7 +22,16 @@ export class UpcomingSessionsComponent {
     private auth = inject(AuthService);
     isRTL = this.shared.isRtl;
     hasBought = this.auth.hasBought;
-  sessions = signal<Session[]>([
+    sessions=computed(()=>{
+      if(this.type() == 'webinar')
+      return [
+        {
+          date: 'Jan 15, 2026',
+          time: '10:00 AM - 2:00 PM EST',
+          title: "The PMP Blueprint: Your Roadmap from Application to Exam Success"
+        },];
+      else
+        return [
     {
       date: 'Jan 15, 2026',
       time: '10:00 AM - 2:00 PM EST',
@@ -38,11 +47,17 @@ export class UpcomingSessionsComponent {
       time: '10:00 AM - 2:00 PM EST',
       title: 'Project Integration Management'
     }
-  ]);
+  ]
+    })
 
   title = input<string>('Upcoming Live Sessions');
+  type = input<string>('Live Sessions');
 
   bookNow(session:any){
+
+  }
+
+  registerNow(session: any) {
 
   }
 }
