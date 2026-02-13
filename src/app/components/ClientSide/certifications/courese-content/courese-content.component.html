@@ -1,1 +1,29 @@
-<p>courese-content works!</p>
+<div class="w-100">
+  <app-accordion [title]="accordionTitle">
+    <div class="courseInnerContent d-flex flex-column gap-2">
+      @for (item of courseCon(); let i = $index; track item) {
+        <div
+          class="d-flex align-items-center justify-content-between gap-1 course-item"
+        >
+          <!-- Checkbox + Title -->
+          <div class="d-flex align-items-center gap-1">
+            <app-simple-checkbox
+              [id]="getSafeName(item.title)"
+              [label]="item.title | translate"
+              [(checked)]="checkedState()[getSafeName(item.title)]"
+              (checkedChange)="
+                onCheckboxChange(getSafeName(item.title), $event)
+              "
+            />
+          </div>
+
+          <!-- Duration -->
+          <div class="d-flex align-items-center gap-2 courseDuration">
+            <i class="bi bi-camera-video"></i>
+            <span>{{ item.duration }}</span>
+          </div>
+        </div>
+      }
+    </div>
+  </app-accordion>
+</div>

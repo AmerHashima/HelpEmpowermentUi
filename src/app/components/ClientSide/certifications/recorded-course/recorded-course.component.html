@@ -68,8 +68,14 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-lg-9">
-        <div>
-          <app-courese-outline [courseOutline]="courseOutlines()"></app-courese-outline>
+        <div class="row">
+          <div class="col-12">
+                      <app-courese-outline [courseOutline]="courseOutlines()"></app-courese-outline>
+
+          </div>
+        </div>
+        <div class="col-12">
+          <app-courese-content [courseCon]="courseContent()"></app-courese-content>
         </div>
       </div>
       <div class="col-lg-3">
