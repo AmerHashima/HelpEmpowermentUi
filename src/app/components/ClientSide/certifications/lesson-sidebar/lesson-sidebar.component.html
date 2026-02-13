@@ -1,0 +1,40 @@
+<div class="lessons-sidebar">
+  <h6 class="sidebar-title mb-3">Course Lessons</h6>
+
+  <div class="lessons-list" [style.max-height.px]="maxSidebarHeight">
+    @for (lesson of lessons(); let i = $index; track lesson.id) {
+      <div
+        class="lesson-item d-flex align-items-center gap-2 p-1 mb-2 rounded"
+        [class.active]="lesson.id === currentLesson()?.id"
+        [class.locked]="!lesson.unlocked"
+        [class.watched]="lesson.watched"
+        (click)="onSelectLesson(lesson)"
+        role="button"
+        tabindex="0"
+        (keydown.enter)="onSelectLesson(lesson)"
+        (keydown.space)="onSelectLesson(lesson)"
+      >
+        <!-- Status icon -->
+        <i
+          class="bi"
+          [ngClass]="{
+            'bi-check-circle-fill text-success': lesson.watched,
+            'bi-play-circle text-primary': lesson.unlocked && !lesson.watched,
+            'bi-lock text-muted': !lesson.unlocked,
+          }"
+        >
+        </i>
+
+        <!-- Lesson info -->
+        <div class="flex-grow-1 d-flex align-items-center justify-content-between">
+          <div class="lesson-title">
+            {{ lesson.title || "Lesson " + (i + 1) }}
+          </div>
+          <div class="lesson-meta  small">
+            {{ lesson.duration || "Duration: 45 min" }}
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

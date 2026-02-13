@@ -1,0 +1,26 @@
+.course-player {
+
+background-color: transparent;
+  .video-player {
+
+    background: black;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .lesson-sidebar {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    overflow-y: auto;
+  }
+
+  @media (max-width: 992px) {
+    // flex-direction: column;
+
+    // .lesson-sidebar {
+    //   max-width: 100%;
+    //   min-width: auto;
+    // }
+  }
+}

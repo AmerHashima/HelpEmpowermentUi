@@ -1,5 +1,5 @@
 
-<div class="certification pagePadding">
+<div class="certification d-flex gap-5 flex-column py-5">
   <!-- Banner - shown only if not purchased -->
   <ng-container *ngIf="!hasBought()" >
     <app-page-banner [isRTL]="isRTL()" [media]="true">
@@ -61,16 +61,18 @@
     />
     </app-page-banner>
   </ng-container>
-
+  <ng-container *ngIf="hasBought()" >
+   <app-course-player [lessons]="courseLessons()" />
+  </ng-container>
 
   <div class="container-fluid">
     <div class="row">
-      <div class="col-lg-8">
+      <div class="col-lg-9">
         <div>
           <app-courese-outline [courseOutline]="courseOutlines()"></app-courese-outline>
         </div>
       </div>
-      <div class="col-lg-4">
+      <div class="col-lg-3">
         <div>
           <app-courese-features [courseFeature]="courseFeatures()"></app-courese-features>
         </div>

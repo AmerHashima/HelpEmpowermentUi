@@ -1,36 +1,3 @@
-// @use 'variables' as *;
-// .accordion-wrapper {
-//   margin-bottom: 1.5rem;
-
-//   .accordion-button {
-//     font-weight: 500;
-//     color: #1e293b;
-//     background-color: #F4F4F4;
-
-//     &:not(.collapsed) {
-//       background-color: #F4F4F4;
-//       color: $headerColor;
-//       box-shadow: inset 0 -1px 0 rgba(0,0,0,.125);
-//     }
-
-//     &:focus {
-//       box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.25);
-//     }
-//   }
-
-//   .accordion-body {
-//     color: $headerColor;
-//     line-height: 1.6;
-//   }
-// }
-
-// :host-context([dir="rtl"]) {
-//   .accordion-button::after {
-//     margin-right: auto;
-//     margin-left: 0;
-//   }
-// }
-
 @use 'variables' as *;
 
 .accordion-wrapper {
@@ -38,8 +5,8 @@
 
   .accordion-button {
     font-weight: 500;
-    color: #1e293b;
-    background-color: #F4F4F4;
+    color: $headerColor;
+    background-color: $accordionBg;
 
     // Always show arrow
     &::after {
@@ -48,7 +15,7 @@
     }
 
     &:not(.collapsed) {
-      background-color: #F4F4F4;
+      background-color: $accordionBg;
       color: $headerColor;
       box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .125);
     }
