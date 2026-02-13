@@ -1,0 +1,44 @@
+<div class="w-100">
+  <app-accordion [title]="accordionTitle">
+    <div class="courseInnerContent d-flex flex-column gap-1">
+      @for (item of resources(); track $index) {
+        <div
+          class="resource-item d-flex align-items-center justify-content-between gap-1"
+        >
+          <!-- Icon + Name -->
+          <div class="d-flex gap-1 align-items-center">
+            @switch (item.type) {
+              @case ("pdf") {
+                <i class="bi bi-file-earmark-pdf"></i>
+              }
+              @case ("image") {
+                <i class="bi bi-file-earmark-image"></i>
+              }
+              @case ("presentation") {
+                <i class="bi bi-file-earmark-slides"></i>
+              }
+              @default {
+                <i class="bi bi-file-earmark"></i>
+              }
+            }
+            <span class="resourceName">{{ item.name }}</span>
+          </div>
+
+          <!-- Download link -->
+          <a
+            [href]="item.src"
+            download
+            class="downloadIcon"
+            title="Download"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <i class="bi bi-cloud-download"></i>
+          </a>
+        </div>
+      } @empty {
+        <div class="text-center text-muted py-4">No resources available</div>
+      }
+    </div>
+  </app-accordion>
+</div>

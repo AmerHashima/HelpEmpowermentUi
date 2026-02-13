@@ -9,8 +9,8 @@ import { Component, effect, input, output, signal } from '@angular/core';
 export class SimpleCheckboxComponent {
   id = input<string>('');
   label = input<string>('');
-  checked = input<boolean>(false);           // ← renamed from checkedInput
-  checkedChange = output<boolean>();         // ← for two-way binding
+  checked = input<boolean>(false);
+  checkedChange = output<boolean>();         
 
   internalChecked = signal(false);
 

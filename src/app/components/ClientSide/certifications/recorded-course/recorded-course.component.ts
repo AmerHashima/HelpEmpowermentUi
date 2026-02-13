@@ -11,12 +11,13 @@ import { CoureseOutlineComponent } from '../courese-outline/courese-outline.comp
 import { CoureseFeaturesComponent } from '../courese-features/courese-features.component';
 import { CouresePlayerComponent, Lesson } from '../courese-player/courese-player.component';
 import { CoureseContentComponent } from '../courese-content/courese-content.component';
+import { ResourcesComponent } from '../course-resources/course-resources.component';
 
 @Component({
   selector: 'app-recorded-course',
   imports: [PageBannerComponent,SiteButtonComponent,StarRatingComponent,TranslateModule,
     TranslatePipe, NgIf, CoureseOutlineComponent,CoureseFeaturesComponent,CouresePlayerComponent,
-    CoureseContentComponent
+    CoureseContentComponent, ResourcesComponent
   ],
   templateUrl: './recorded-course.component.html',
   styleUrl: './recorded-course.component.scss'
@@ -532,6 +533,74 @@ export class RecordedCourseComponent {
 
   })
 
+  courseResource  = computed(() => {
+    if (this.certification() == 'pmp')
+      return [
+        {
+          type: "pdf",
+          name: "PMP Study Guide",
+          src: "/resources/pmp-study-guide.pdf",
+        },
+        {
+          type: "presentation",
+          name: "PMP Framework Overview",
+          src: "/resources/pmp-framework.pptx",
+        },
+        {
+          type: "image",
+          name: "49 Processes Chart",
+          src: "/resources/49-processes.png",
+        },
+        {
+          type: "pdf",
+          name: "Agile Practice Guide",
+          src: "/resources/agile-practice-guide.pdf",
+        },
+        {
+          type: "presentation",
+          name: "Risk Management Slides",
+          src: "/resources/risk-management.pptx",
+        },
+        {
+          type: "image",
+          name: "Process Groups Flow",
+          src: "/resources/process-groups-flow.jpg",
+        },
+      ];
+    else
+      return [
+        {
+          type: "pdf",
+          name: "PMP Study Guide",
+          src: "/resources/pmp-study-guide.pdf",
+        },
+        {
+          type: "presentation",
+          name: "PMP Framework Overview",
+          src: "/resources/pmp-framework.pptx",
+        },
+        {
+          type: "image",
+          name: "49 Processes Chart",
+          src: "/resources/49-processes.png",
+        },
+        {
+          type: "pdf",
+          name: "Agile Practice Guide",
+          src: "/resources/agile-practice-guide.pdf",
+        },
+        {
+          type: "presentation",
+          name: "Risk Management Slides",
+          src: "/resources/risk-management.pptx",
+        },
+        {
+          type: "image",
+          name: "Process Groups Flow",
+          src: "/resources/process-groups-flow.jpg",
+        },
+      ];
+  })
 
   enrollImage = 'assets/images/enroll.png';
   recoedImage ="assets/images/recordedCourse.jpeg";
