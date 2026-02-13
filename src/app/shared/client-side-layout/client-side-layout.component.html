@@ -1,4 +1,4 @@
-<div class="d-flex align-items-stretch flex-column justify-content-between h-100">
+<!-- <div class="d-flex align-items-stretch flex-column justify-content-between h-100">
   <app-client-navbar />
   <div class="mainContainer">
     <div class="page-width">
@@ -6,4 +6,37 @@
     </div>
   </div>
   <app-footer/>
+</div> -->
+
+<div
+  class="d-flex align-items-stretch flex-column justify-content-between h-100"
+>
+  @if (isFullPage) {
+    <!-- Full page mode (no navbar/footer/banner) -->
+    <div class="mainContainer">
+      <div class="page-width">
+        <app-client-main-layout />
+      </div>
+    </div>
+    <app-footer />
+  } @else {
+    <!-- Normal layout -->
+    <app-client-navbar />
+
+    <div class="mainContainer">
+      <!-- Optional banner (skip on no-layout routes) -->
+      @if (!isNoLayout) {
+        <div class="pagesBanner">
+          <span>{{ "pages." + pageKey | translate }}</span>
+        </div>
+      }
+
+      <div class="page-width">
+        <app-client-main-layout />
+      </div>
+      <app-footer />
+    </div>
+  }
 </div>
+
+

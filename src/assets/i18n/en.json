@@ -333,5 +333,23 @@
         "supportTitle": "Always-On Technical Support:",
         "supportDesc": "Get instant help when you need it."
       },
+      "pages":{
+        "about":"About US",
+        "contact":"Contact US",
+        "login":"Login",
+        "register":"Register",
+        "calendar":"Calendar",
+        "faq":"FAQ",
+        "articles":"Articles",
+        "post-vacancy":"Post Vacnacy",
+        "job-seeker":"JOb Seeker",
+          "pmo": "PMO Setup & Operation",
+          "maturity-assessment": "Project Management Maturity Assessment",
+          "pmis": "Project Management Information System (PMIS)",
+          "training": "Customized Training",
+          "pmp":"PMP",
+          "camp":"CAMP"
+
+      },
   "courseOutline": "Course Outline"
 }

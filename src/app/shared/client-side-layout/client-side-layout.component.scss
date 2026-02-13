@@ -1,5 +1,15 @@
+@use 'variables' as *;
 .mainContainer{
   padding-top: 165px;
+}
+
+.pagesBanner{
+  background-color: $secondaryColor;
+  text-align: center;
+  padding:.5rem;
+  span{
+    color:$lightBgTextColor;
+  }
 }
 
 
