@@ -45,6 +45,11 @@ export class CertificationsComponent {
       route: `/${this.lang()}/certifications/${this.currentCertification()}/articles`
     },
     {
+      header: 'FAQS',
+      icon: 'bi bi-question-circle',
+      route: `/${this.lang()}/certifications/${this.currentCertification()}/faq`
+    },
+    {
       header: 'Reviews',
       icon: 'bi bi-star',
       route: `/${this.lang()}/certifications/${this.currentCertification()}/reviews`

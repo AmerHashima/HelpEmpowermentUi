@@ -1,5 +1,4 @@
-import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, computed, inject } from '@angular/core';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 
 import { Shared } from '../../../../shared/Services/shared/shared';
@@ -18,7 +17,7 @@ import { FaqItemComponent } from '../../../../shared/faq-item/faq-item.component
 })
 export class HomeFAQComponent {
   protected readonly shared = inject(Shared);
-
+ private currentCertification=this.shared.currentCertificate
   // You need to provide this array – can come from service, input, or static
   questions = [
     {
@@ -43,6 +42,62 @@ export class HomeFAQComponent {
     },
 
   ];
+
+  pmpQuestions = [
+    {
+      question: 'pmpFaq.question1',
+      answer: 'pmpFaq.answer1'
+    },
+    {
+      question: 'pmpFaq.question2',
+      answer: 'pmpFaq.answer2'
+    },
+    {
+      question: 'pmpFaq.question3',
+      answer: 'pmpFaq.answer3'
+    },
+    {
+      question: 'pmpFaq.question4',
+      answer: 'pmpFaq.answer4'
+    },
+    {
+      question: 'pmpFaq.question5',
+      answer: 'pmpFaq.answer5'
+    },
+
+  ];
+
+campQuestions = [
+    {
+      question: 'campFaq.question1',
+    answer: 'campFaq.answer1'
+    },
+    {
+      question: 'campFaq.question2',
+      answer: 'campFaq.answer2'
+    },
+    {
+      question: 'campFaq.question3',
+      answer: 'campFaq.answer3'
+    },
+    {
+      question: 'campFaq.question4',
+      answer: 'campFaq.answer4'
+    },
+    {
+      question: 'campFaq.question5',
+      answer: 'campFaq.answer5'
+    },
+
+  ];
+
+  displayedQuestions=computed(()=>{
+    if(this.currentCertification() == 'pmp')
+      return this.pmpQuestions;
+    else if (this.currentCertification() == 'camp')
+      return this.campQuestions;
+    else return this.questions;
+  })
 
   onContactSupport() {
     // Replace with real action

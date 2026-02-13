@@ -14,4 +14,7 @@ export class PmpComponent {
  constructor(){
   this.shared.currentCertificate.set('pmp');
  }
+  ngOnDestroy(): void {
+    this.shared.currentCertificate.set('');
+  }
 }

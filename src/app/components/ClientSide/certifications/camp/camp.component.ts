@@ -13,4 +13,7 @@ export class CampComponent {
   constructor() {
     this.shared.currentCertificate.set('camp');
   }
+  ngOnDestroy(): void {
+    this.shared.currentCertificate.set('');
+  }
 }

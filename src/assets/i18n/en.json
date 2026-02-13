@@ -1,4 +1,3 @@
-
 {
   "menu": {
     "home": "Home",
@@ -76,53 +75,52 @@
     "noAccount": "Don't have an account?",
     "signUp": "Sign up"
   },
-
-    "404": "404",
-    "Oops! Page not found": "Oops! Page not found",
-    "The page you are looking for might have been removed, had its name changed or is temporarily unavailable.": "The page you are looking for might have been removed, had its name changed or is temporarily unavailable.",
-    "Back to Home": "Back to Home",
-    "Go Back": "Go Back",
-    "Login":"Login",
-    "register": {
-      "started": "Get Started Now",
-      "joinMessage": "Start your journey with us",
-      "firstNameLabel": "First Name",
-      "firstNamePlaceholder": "Enter your first name",
-      "lastNameLabel": "Last Name",
-      "lastNamePlaceholder": "Enter your last name",
-      "passwordLabel": "Password",
-      "passwordPlaceholder": "Enter your password",
-      "registerButton": "Create Account",
-      "termsCheckbox": "I agree to the Terms & Conditions and Privacy Policy",
-        "confirmPasswordLabel": "Confirm Password",
-        "confirmPasswordPlaceholder": "Enter Confirm Password",
-        "loginMessage":"Already have an account?",
-        "phoneLabel": "Phone Number",
-        "phoneRequired": "Phone number is required",
-        "phoneInvalid": "Please enter a valid phone number",
-        "phonePlaceholder": "Enter your phone number"
-    },
-    "contact": {
-      "sendUs": "Send Us a Message",
-      "anyQuestion": "Have any questions? We'd love to hear from you.",
-      "fullNameLabel": "Full Name",
-      "fullNamePlaceholder": "Enter your full name",
-      "messageLabel": "Message",
-      "messagePlaceholder": "Write your message here...",
-      "contactBtn": "Send Message"
-    },
-    "PMO": {
-      "DESCRIPTION": "The service involves establishing a Project Management Office (PMO) within the organization to centralize project management functions, standardize processes, and provide governance and support for projects. This includes defining the PMO's structure, roles and responsibilities, processes, tools, and methodologies tailored to meet the organization's specific needs and goals.",
-      "IMPACT_TITLE": "Impact of a PMO",
-      "IMPACT_TEXT": "The impact of a Project Management Office (PMO) extends beyond just improving project performance; it also enhances the organization's competitive position and ensures a tangible return on investment. These documented statistics reflect why the PMO has become a cornerstone of success for ambitious organizations worldwide.",
-      "PROVEN_RESULTS_TITLE": "Proven Results",
-      "PROVEN_RESULTS_SUBTITLE": "Recent global reports and studies from trusted sources demonstrate the tangible impact of an effective PMO on organizational performance. Below are the most prominent statistics and their sources:",
-      "OUR_SERVICES_TITLE": "Our Services",
-      "OUR_SERVICES_TEXT": "Our services are tailored to design a PMO that fits your specific operational environment, integrating the best practices from both traditional and Agile approaches, and ensuring the delivery of tangible value and measurable results.",
-      "HELP_EMPOWERMENT_HEADER": "At \"Help Empowerment\"",
-      "HELP_EMPOWERMENT_TEXT": "we believe that every organization deserves a Project Management Office (PMO) specifically designed to align with its unique vision and strategic needs. We recognize the importance of adopting Agile methodologies to enhance flexibility and the ability to quickly respond to market changes.",
-      "ENROLL_MESSAGE": "Do not hesitate to contact us. Together, we will develop an integrated solution that guarantees the achievement of your organization's goals and enhances the efficiency of your operations."
-    },
+  "404": "404",
+  "Oops! Page not found": "Oops! Page not found",
+  "The page you are looking for might have been removed, had its name changed or is temporarily unavailable.": "The page you are looking for might have been removed, had its name changed or is temporarily unavailable.",
+  "Back to Home": "Back to Home",
+  "Go Back": "Go Back",
+  "Login": "Login",
+  "register": {
+    "started": "Get Started Now",
+    "joinMessage": "Start your journey with us",
+    "firstNameLabel": "First Name",
+    "firstNamePlaceholder": "Enter your first name",
+    "lastNameLabel": "Last Name",
+    "lastNamePlaceholder": "Enter your last name",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "registerButton": "Create Account",
+    "termsCheckbox": "I agree to the Terms & Conditions and Privacy Policy",
+    "confirmPasswordLabel": "Confirm Password",
+    "confirmPasswordPlaceholder": "Enter Confirm Password",
+    "loginMessage": "Already have an account?",
+    "phoneLabel": "Phone Number",
+    "phoneRequired": "Phone number is required",
+    "phoneInvalid": "Please enter a valid phone number",
+    "phonePlaceholder": "Enter your phone number"
+  },
+  "contact": {
+    "sendUs": "Send Us a Message",
+    "anyQuestion": "Have any questions? We'd love to hear from you.",
+    "fullNameLabel": "Full Name",
+    "fullNamePlaceholder": "Enter your full name",
+    "messageLabel": "Message",
+    "messagePlaceholder": "Write your message here...",
+    "contactBtn": "Send Message"
+  },
+  "PMO": {
+    "DESCRIPTION": "The service involves establishing a Project Management Office (PMO) within the organization to centralize project management functions, standardize processes, and provide governance and support for projects. This includes defining the PMO's structure, roles and responsibilities, processes, tools, and methodologies tailored to meet the organization's specific needs and goals.",
+    "IMPACT_TITLE": "Impact of a PMO",
+    "IMPACT_TEXT": "The impact of a Project Management Office (PMO) extends beyond just improving project performance; it also enhances the organization's competitive position and ensures a tangible return on investment. These documented statistics reflect why the PMO has become a cornerstone of success for ambitious organizations worldwide.",
+    "PROVEN_RESULTS_TITLE": "Proven Results",
+    "PROVEN_RESULTS_SUBTITLE": "Recent global reports and studies from trusted sources demonstrate the tangible impact of an effective PMO on organizational performance. Below are the most prominent statistics and their sources:",
+    "OUR_SERVICES_TITLE": "Our Services",
+    "OUR_SERVICES_TEXT": "Our services are tailored to design a PMO that fits your specific operational environment, integrating the best practices from both traditional and Agile approaches, and ensuring the delivery of tangible value and measurable results.",
+    "HELP_EMPOWERMENT_HEADER": "At \"Help Empowerment\"",
+    "HELP_EMPOWERMENT_TEXT": "we believe that every organization deserves a Project Management Office (PMO) specifically designed to align with its unique vision and strategic needs. We recognize the importance of adopting Agile methodologies to enhance flexibility and the ability to quickly respond to market changes.",
+    "ENROLL_MESSAGE": "Do not hesitate to contact us. Together, we will develop an integrated solution that guarantees the achievement of your organization's goals and enhances the efficiency of your operations."
+  },
   "enroll": {
     "enroll": "Enroll Now",
     "message": "Fill in the form below and our team will contact you shortly.",
@@ -133,142 +131,170 @@
     "notesLabel": "Notes",
     "enrollBtn": "Submit Enrollment"
   },
-    "PMIS": {
-      "MAIN_TITLE": "Empower Your Decisions with Smarter Data Insights",
-      "MAIN_DESCRIPTION": "Help Empowerment transforms your project management with a customized Project Management Information System (PMIS) that serves as the central system for all your projects and programs. We deliver more than software, we provide a complete ecosystem that unifies your tools, data, and teams into one powerful platform.",
-      "WHAT_WE_DELIVER_TITLE": "What We Deliver",
-      "WHAT_WE_DELIVER_SUBTITLE": "A complete ecosystem that unifies your tools, data, and teams into one powerful platform",
-      "KEY_BENEFITS_TITLE": "Key Benefits of PMIS:",
-      "SECTION_TAG_HEADER": "At \"Help Empowerment\"",
-      "SECTION_TAG_TEXT": "We deliver guaranteed outcomes including faster data-driven decisions, complete portfolio visibility, 70% time savings on report generation, and enhanced collaboration, ensuring measurable improvements in efficiency and transparency.",
-      "ENROLL_TITLE_1": "Ready to Empower Your Organization?",
-      "ENROLL_TITLE_2": "Contact us today for a custom PMIS solution designed for your success"
+  "PMIS": {
+    "MAIN_TITLE": "Empower Your Decisions with Smarter Data Insights",
+    "MAIN_DESCRIPTION": "Help Empowerment transforms your project management with a customized Project Management Information System (PMIS) that serves as the central system for all your projects and programs. We deliver more than software, we provide a complete ecosystem that unifies your tools, data, and teams into one powerful platform.",
+    "WHAT_WE_DELIVER_TITLE": "What We Deliver",
+    "WHAT_WE_DELIVER_SUBTITLE": "A complete ecosystem that unifies your tools, data, and teams into one powerful platform",
+    "KEY_BENEFITS_TITLE": "Key Benefits of PMIS:",
+    "SECTION_TAG_HEADER": "At \"Help Empowerment\"",
+    "SECTION_TAG_TEXT": "We deliver guaranteed outcomes including faster data-driven decisions, complete portfolio visibility, 70% time savings on report generation, and enhanced collaboration, ensuring measurable improvements in efficiency and transparency.",
+    "ENROLL_TITLE_1": "Ready to Empower Your Organization?",
+    "ENROLL_TITLE_2": "Contact us today for a custom PMIS solution designed for your success"
+  },
+  "assessment": {
+    "MAIN_TITLE": "Project Management Maturity Assessment",
+    "MAIN_DESCRIPTION": "A project management maturity assessment evaluates your organization's project management processes, tools, and practices, providing insights to improve efficiency and effectiveness.",
+    "ENROLL_TITLE_1": "Interested in a PM Maturity Assessment?",
+    "ENROLL_TITLE_2": "Contact us today to schedule your assessment and unlock your organization's full potential.",
+    "mainObjectiveTitle": "Main Objectives",
+    "mainObjectiveDescription": "The main objectives of conducting a project management maturity assessment include understanding current practices, identifying gaps, and recommending improvements.",
+    "methodologyTitle": "Assessment Methodology",
+    "methodologyText": "Our methodology involves surveys, interviews, document reviews, and observations to analyze project management practices and recommend improvements.",
+    "standardsTitle": "Industry Standards & Best Practices",
+    "standardsText": "Our assessments are aligned with OPM3 (Organizational Project Management Maturity Model) and P3M3 (Portfolio, Program, and Project Management Maturity Model) to ensure best practices and measurable improvements.",
+    "SECTION_TAG_HEADER": "At Help Empowerment",
+    "SECTION_TAG_TEXT": "We have conducted PM Maturity Assessments numerous times for diverse clients. We recommend that every organization perform this assessment annually to measure progress and development in their project management activities."
+  },
+  "training": {
+    "MAIN_TITLE": "Tailored Excellence: Build Your Own Training Solution",
+    "MAIN_DESCRIPTION": "Move beyond one-size-fits-all programs. Our Customized Training service is a collaborative partnership designed to address your organization's unique challenges, culture, and strategic objectives directly. We don't just deliver courses; we co-create targeted learning experiences that drive measurable performance improvement and align perfectly with your business goals.",
+    "SECOND_DESCRIPTION": "We work closely with your leadership and subject-matter experts to analyze gaps, define precise learning outcomes, and develop a curriculum that resonates with your team. From integrating your real-world case studies and internal methodologies to aligning with your specific software and workflows, we ensure every module is relevant, practical, and immediately applicable.",
+    "ENROLL_TITLE_1": "Let's build the program your team needs together. Contact us to start a conversation about your goals.",
+    "ExamplesTitle": "Training Examples:"
+  },
+  "vacancy": {
+    "mainTitle": "Post a Vacancy",
+    "title": "Looking to Hire the Right Talent?",
+    "subTitle": "Fill out the form below and our team will help you find the best candidates for your organization.",
+    "fullnameLabel": "Full Name",
+    "fullnamePlaceholder": "Enter your full name",
+    "companyNameLabel": "Company Name",
+    "companyNamePlaceholder": "Enter your company name",
+    "roleLabel": "Job Role / Position",
+    "rolePlaceholder": "Enter the job role",
+    "experienceLabel": "Required Experience Level",
+    "jobDescriptionLabel": "Job Description",
+    "jobDescriptionPlaceholder": "Describe the job responsibilities and requirements",
+    "notesLabel": "Additional Notes",
+    "notesPlaceholder": "Add any additional information here",
+    "vacancyBtn": "Post Vacancy"
+  },
+  "job": {
+    "title": "Post Your Job Application",
+    "subTitle": "Let employers find your talent – upload your details and CV now.",
+    "fullnameLabel": "Full Name",
+    "fullnamePlaceholder": "Enter your full name",
+    "fieldLabel": "Job Field",
+    "currentPositionLabel": "Current Position",
+    "currentPositionPlaceholder": "e.g. Senior Frontend Developer",
+    "experienceLabel": "Experience Level",
+    "currentSalaryLabel": "Current Salary",
+    "currentSalaryPlaceholder": "Enter your current monthly/yearly salary",
+    "expectedSalaryLabel": "Expected Salary",
+    "expectedSalaryPlaceholder": "Enter your desired salary",
+    "uploadCVLabel": "Upload CV",
+    "jobBtn": "Submit Application"
+  },
+  "calendar": {
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "moreDetails": "More Details",
+    "upcomingEvents": "Upcoming Events",
+    "unlockMessage": "Unlock your next level, join our courses and gain the skills to turn your goals into reality."
+  },
+  "examSimulator": {
+    "masterPmp": "Master the PMP exam environment.",
+    "realisticSimulation": "Your most realistic exam simulation begins now.",
+    "description": "The closest experience to the real exam, available whenever you need it. Build unshakable exam-day confidence with full-length simulated tests designed by PMP-certified experts. Practice with hundreds of realistic, scenario-based questions that mirror PMI's style and complexity. Learn from detailed answer explanations that don't just tell you what's right—they show you why. Track your progress across every domain and identify exactly where to focus your final study efforts. A structured simulation path designed for your success. 9 Exams – 1,620 Questions – Practice Mode & Exam Mode – Reports & Lesson learned Questions – 9 months access",
+    "buyNow": "Buy Now",
+    "addToCart": "Add to cart",
+    "everythingYouNeed": "Everything You Need to Pass",
+    "masterPmpQuestions": "Master the PMP exam with 1,640 realistic questions designed to ensure your success",
+    "tryBeforeBuy": "Try Before you Buy",
+    "experienceFree": "Experience the Exam Simulator for Free",
+    "testBothModes": "Test both Practice Mode and Exam Mode to see how our simulator helps you succeed",
+    "freeExam": "Free Exam",
+    "freePreviewDescription": "Start with a free 10-question preview. The paid version delivers more of that great experience",
+    "practiceAndExamMode": "Practice Mode - Exam Mode",
+    "reportsAndLessons": "Reports - Lesson Learned Questions",
+    "startFreeExam": "Start Free Exam - Try Now"
+  },
+  "exam": {
+    "practiceAndExamMode": "Practice Mode - Exam Mode",
+    "reportsAndLessons": "Reports - Lesson Learned Questions"
+  },
+  "common": {
+    "required": "This field is required",
+    "invalidFormat": "Invalid format",
+    "submit": "Submit",
+    "startNow": "Start Now",
+    "learnMore": "Learn More",
+    "enrolled": "enrolled",
+    "freeAccess": "Free Access",
+    "questions": "Questions",
+    "duration": "Duration",
+    "loading": "Loading...",
+    "noResults": "No results found"
+  },
+  "recordedCourse": {
+    "masterPmp": "Learn PMP mastery on your own schedule,",
+    "title": " your journey to PMP can begin right now",
+    "description": "World-class PMP training that fits your calendar, not the other way around. Access proven PMP strategies from certified experts, available 24/7. Master every domain of the PMBOK®️ Guide at the pace that works for you. Pause, rewind, and revisit complex topics until they click—on your terms. A structured path to certification designed for busy professionals. Downloadable resources, templates, and study guides to reinforce learning."
+  },
+  "liveCourse": {
+    "masterPmp": "Transform your career with live PMP guidance,",
+    "title": " Your interactive path to certification begins now.",
+    "description": "Real-time instruction that brings the PMBOK®️ Guide to life in your own projects. Get direct, personalized answers from expert instructors who guide you through every complex topic. Connect your PMP study directly to your current role—learn strategies you can apply immediately to enhance your real-world project management practice. Collaborate with peers facing similar challenges in a dynamic, supportive cohort. A structured yet adaptive live journey designed to certify you and elevate your professional impact from day one."
+  },
+  "quizGame": {
+    "masterPmp": "Level Up Your PMP Knowledge",
+    "title": " Master the Essentials Through Play",
+    "description": "Turn PMP mastery into a challenge you can’t put down. Test your skills with our interactive quiz game, built on the core subjects and essential terminology of the exam. Learn through action with intuitive drag-and-drop puzzles, quick-fire questions, and bite-sized levels designed to reinforce key concepts. Track your progress, climb the leaderboard, and see how you rank against peers while building genuine confidence from the ground up. Whether you’re starting fresh or sharpening your expertise—this is PMP prep, reinvented.",
+    "play": "Play Now"
+  },
+  "webinar": {
+    "masterPmp": "Get Your PMP Roadmap, Live & Free. Unlock",
+    "title": " Your 2-Hour Path to Certification Clarity.",
+    "fullnameLabel": "Full Name",
+    "fullnamePlaceholder": "Enter your full name",
+    "positionLabel": "Job Title / Position",
+    "positionPlaceholder": "Enter your current position",
+    "webinarButton": "Register Now",
+    "description": "Join a live, interactive session to demystify the PMP certification. In just 2 hours, get a complete breakdown of PMP eligibility requirements and the current exam format. Master key terminology and get your personal questions answered live by a PMP expert. Walk away with actionable next steps and a special opportunity to explore our full suite of tools—including a hands-on look at our exam simulator and a preview of our recorded and live courses—so you can choose the right path for your success."
+  },
+  "courseArticles": {
+    "masterPmp": "Bridge Theory with Reality, ",
+    "title": " Actionable Insights for the Modern Project Leader.",
+    "description": "Go beyond the exam with real-world PMP wisdom. Access our curated library of articles where PMI standards meet practical execution. Discover how certified professionals apply methodologies in real environments, adapt to industry trends, and solve complex project challenges. Stay ahead with updates on evolving frameworks, practical case studies, and strategies you can implement immediately. This is where certification knowledge transforms into career authority."
+  },
+  "webinarForm": {
+    "title": "Register for the Webinar",
+    "subTitle": "Fill in your details below to secure your free spot."
+  },
+  "pmpFaq": {
+    "question1": "What does PMI and CAPM mean?",
+    "answer1": "PMI (Project Management Institute): The global leader in project management standards and professional certifications.\n\nCAPM (Certified Associate in Project Management): PMI's foundational certification designed for individuals starting their project management career, validating understanding of fundamental knowledge, terminology, and processes as defined in the PMBOK® Guide.",
+    "question2": "What makes your CAPM exam simulator unique compared to other platforms?",
+    "answer2": "Our CAPM simulator is engineered to build confidence for first-time exam takers. It features a dynamic bank of 600 questions aligned with the current exam outline, and two smart modes: a Practice Mode for learning with instant feedback, and a Timed Exam Mode to simulate real test pressure, complete with performance analytics to pinpoint your strengths and areas for growth.",
+    "question3": "Are your questions like the real CAPM exam?",
+    "answer3": "Absolutely. Our questions are meticulously crafted to mirror the style, format, and difficulty level of the official CAPM exam, focusing on the knowledge areas and process groups outlined in the PMBOK® Guide (6th & 7th Editions). We ensure you practice with the exact question types you will encounter.",
+    "question4": "What do I need to apply for the official PMI - CAPM exam?",
+    "answer4": "You need to fulfill these 2 simple requirements:\n\n1. Education: A secondary degree (high school diploma or global equivalent).\n\n2. Project Management Education: 23 contact hours of formal education in project management. You will receive these required hours upon completion of our CAPM course.",
+    "question5": "Which official Project Management Institute (PMI) book should I study for the CAPM exam?",
+    "answer5": "The CAPM exam is based primarily on the concepts found in the PMBOK® Guide (6th Edition) and its processes, and it also incorporates principles from the PMBOK® Guide (7th Edition). The Agile Practice Guide is a valuable complementary resource. Our CAPM course synthesizes all essential content from these guides into a structured, easy-to-follow curriculum, so you don't need to navigate them alone."
+  },
+    "campFaq": {
+      "question1": "What does PMI and CAPM mean?",
+      "answer1": "PMI (Project Management Institute): The global leader in project management standards and professional certifications.\n\nCAPM (Certified Associate in Project Management): PMI's foundational certification designed for individuals starting their project management career, validating understanding of fundamental knowledge, terminology, and processes as defined in the PMBOK® Guide.",
+      "question2": "What makes your CAPM exam simulator unique compared to other platforms?",
+      "answer2": "Our CAPM simulator is engineered to build confidence for first-time exam takers. It features a dynamic bank of 600 questions aligned with the current exam outline, and two smart modes: a Practice Mode for learning with instant feedback, and a Timed Exam Mode to simulate real test pressure, complete with performance analytics to pinpoint your strengths and areas for growth.",
+      "question3": "Are your questions like the real CAPM exam?",
+      "answer3": "Absolutely. Our questions are meticulously crafted to mirror the style, format, and difficulty level of the official CAPM exam, focusing on the knowledge areas and process groups outlined in the PMBOK® Guide (6th & 7th Editions). We ensure you practice with the exact question types you will encounter.",
+      "question4": "What do I need to apply for the official PMI - CAPM exam?",
+      "answer4": "You need to fulfill these 2 simple requirements:\n\n1. Education: A secondary degree (high school diploma or global equivalent).\n\n2. Project Management Education: 23 contact hours of formal education in project management. You will receive these required hours upon completion of our CAPM course.",
+      "question5": "Which official Project Management Institute (PMI) book should I study for the CAPM exam?",
+      "answer5": "The CAPM exam is based primarily on the concepts found in the PMBOK® Guide (6th Edition) and its processes, and it also incorporates principles from the PMBOK® Guide (7th Edition). The Agile Practice Guide is a valuable complementary resource. Our CAPM course synthesizes all essential content from these guides into a structured, easy-to-follow curriculum, so you don't need to navigate them alone."
     },
-      "assessment": {
-        "MAIN_TITLE": "Project Management Maturity Assessment",
-        "MAIN_DESCRIPTION": "A project management maturity assessment evaluates your organization's project management processes, tools, and practices, providing insights to improve efficiency and effectiveness.",
-        "ENROLL_TITLE_1": "Interested in a PM Maturity Assessment?",
-        "ENROLL_TITLE_2": "Contact us today to schedule your assessment and unlock your organization's full potential.",
-        "mainObjectiveTitle": "Main Objectives",
-        "mainObjectiveDescription": "The main objectives of conducting a project management maturity assessment include understanding current practices, identifying gaps, and recommending improvements.",
-        "methodologyTitle": "Assessment Methodology",
-        "methodologyText": "Our methodology involves surveys, interviews, document reviews, and observations to analyze project management practices and recommend improvements.",
-        "standardsTitle": "Industry Standards & Best Practices",
-        "standardsText": "Our assessments are aligned with OPM3 (Organizational Project Management Maturity Model) and P3M3 (Portfolio, Program, and Project Management Maturity Model) to ensure best practices and measurable improvements.",
-        "SECTION_TAG_HEADER": "At Help Empowerment",
-        "SECTION_TAG_TEXT": "We have conducted PM Maturity Assessments numerous times for diverse clients. We recommend that every organization perform this assessment annually to measure progress and development in their project management activities."
-      },
-      "training": {
-        "MAIN_TITLE": "Tailored Excellence: Build Your Own Training Solution",
-        "MAIN_DESCRIPTION": "Move beyond one-size-fits-all programs. Our Customized Training service is a collaborative partnership designed to address your organization's unique challenges, culture, and strategic objectives directly. We don't just deliver courses; we co-create targeted learning experiences that drive measurable performance improvement and align perfectly with your business goals.",
-        "SECOND_DESCRIPTION": "We work closely with your leadership and subject-matter experts to analyze gaps, define precise learning outcomes, and develop a curriculum that resonates with your team. From integrating your real-world case studies and internal methodologies to aligning with your specific software and workflows, we ensure every module is relevant, practical, and immediately applicable.",
-        "ENROLL_TITLE_1": "Let's build the program your team needs together. Contact us to start a conversation about your goals.",
-       "ExamplesTitle":"Training Examples:"
-      },
-      "vacancy": {
-        "mainTitle": "Post a Vacancy",
-        "title": "Looking to Hire the Right Talent?",
-        "subTitle": "Fill out the form below and our team will help you find the best candidates for your organization.",
-        "fullnameLabel": "Full Name",
-        "fullnamePlaceholder": "Enter your full name",
-        "companyNameLabel": "Company Name",
-        "companyNamePlaceholder": "Enter your company name",
-        "roleLabel": "Job Role / Position",
-        "rolePlaceholder": "Enter the job role",
-        "experienceLabel": "Required Experience Level",
-        "jobDescriptionLabel": "Job Description",
-        "jobDescriptionPlaceholder": "Describe the job responsibilities and requirements",
-        "notesLabel": "Additional Notes",
-        "notesPlaceholder": "Add any additional information here",
-        "vacancyBtn": "Post Vacancy"
-      },
-      "job": {
-        "title": "Post Your Job Application",
-        "subTitle": "Let employers find your talent – upload your details and CV now.",
-        "fullnameLabel": "Full Name",
-        "fullnamePlaceholder": "Enter your full name",
-        "fieldLabel": "Job Field",
-        "currentPositionLabel": "Current Position",
-        "currentPositionPlaceholder": "e.g. Senior Frontend Developer",
-        "experienceLabel": "Experience Level",
-        "currentSalaryLabel": "Current Salary",
-        "currentSalaryPlaceholder": "Enter your current monthly/yearly salary",
-        "expectedSalaryLabel": "Expected Salary",
-        "expectedSalaryPlaceholder": "Enter your desired salary",
-        "uploadCVLabel": "Upload CV",
-        "jobBtn": "Submit Application"
-      },
-      "calendar":{
-        "startDate":"Start Date",
-        "endDate":"End Date",
-        "moreDetails":"More Details",
-        "upcomingEvents":"Upcoming Events",
-        "unlockMessage":"Unlock your next level, join our courses and gain the skills to turn your goals into reality."
-      },
-      "examSimulator": {
-        "masterPmp": "Master the PMP exam environment.",
-        "realisticSimulation": "Your most realistic exam simulation begins now.",
-        "description": "The closest experience to the real exam, available whenever you need it. Build unshakable exam-day confidence with full-length simulated tests designed by PMP-certified experts. Practice with hundreds of realistic, scenario-based questions that mirror PMI's style and complexity. Learn from detailed answer explanations that don't just tell you what's right—they show you why. Track your progress across every domain and identify exactly where to focus your final study efforts. A structured simulation path designed for your success. 9 Exams – 1,620 Questions – Practice Mode & Exam Mode – Reports & Lesson learned Questions – 9 months access",
-        "buyNow": "Buy Now",
-        "addToCart": "Add to cart",
-        "everythingYouNeed": "Everything You Need to Pass",
-        "masterPmpQuestions": "Master the PMP exam with 1,640 realistic questions designed to ensure your success",
-        "tryBeforeBuy": "Try Before you Buy",
-        "experienceFree": "Experience the Exam Simulator for Free",
-        "testBothModes": "Test both Practice Mode and Exam Mode to see how our simulator helps you succeed",
-        "freeExam": "Free Exam",
-        "freePreviewDescription": "Start with a free 10-question preview. The paid version delivers more of that great experience",
-        "practiceAndExamMode": "Practice Mode - Exam Mode",
-        "reportsAndLessons": "Reports - Lesson Learned Questions",
-        "startFreeExam": "Start Free Exam - Try Now"
-      },
-      "exam": {
-        "practiceAndExamMode": "Practice Mode - Exam Mode",
-        "reportsAndLessons": "Reports - Lesson Learned Questions"
-      },
-      "common": {
-        "required": "This field is required",
-        "invalidFormat": "Invalid format",
-        "submit": "Submit",
-        "startNow": "Start Now",
-        "learnMore": "Learn More",
-        "enrolled": "enrolled",
-        "freeAccess": "Free Access",
-        "questions": "Questions",
-        "duration": "Duration",
-        "loading": "Loading...",
-        "noResults": "No results found"
-      },
-      "recordedCourse":{
-        "masterPmp":"Learn PMP mastery on your own schedule,",
-        "title":" your journey to PMP can begin right now",
-        "description":"World-class PMP training that fits your calendar, not the other way around. Access proven PMP strategies from certified experts, available 24/7. Master every domain of the PMBOK®️ Guide at the pace that works for you. Pause, rewind, and revisit complex topics until they click—on your terms. A structured path to certification designed for busy professionals. Downloadable resources, templates, and study guides to reinforce learning."
-      },
-        "liveCourse": {
-          "masterPmp": "Transform your career with live PMP guidance,",
-          "title": " Your interactive path to certification begins now.",
-          "description": "Real-time instruction that brings the PMBOK®️ Guide to life in your own projects. Get direct, personalized answers from expert instructors who guide you through every complex topic. Connect your PMP study directly to your current role—learn strategies you can apply immediately to enhance your real-world project management practice. Collaborate with peers facing similar challenges in a dynamic, supportive cohort. A structured yet adaptive live journey designed to certify you and elevate your professional impact from day one."
-        },
-            "quizGame": {
-              "masterPmp": "Level Up Your PMP Knowledge",
-              "title": " Master the Essentials Through Play",
-              "description": "Turn PMP mastery into a challenge you can’t put down. Test your skills with our interactive quiz game, built on the core subjects and essential terminology of the exam. Learn through action with intuitive drag-and-drop puzzles, quick-fire questions, and bite-sized levels designed to reinforce key concepts. Track your progress, climb the leaderboard, and see how you rank against peers while building genuine confidence from the ground up. Whether you’re starting fresh or sharpening your expertise—this is PMP prep, reinvented.",
-               "play":"Play Now"
-            },
-            "webinar": {
-              "masterPmp": "Get Your PMP Roadmap, Live & Free. Unlock",
-              "title": " Your 2-Hour Path to Certification Clarity.",
-                "fullnameLabel": "Full Name",
-                "fullnamePlaceholder": "Enter your full name",
-                "positionLabel": "Job Title / Position",
-                "positionPlaceholder": "Enter your current position",
-                "webinarButton": "Register Now",
-              "description":"Join a live, interactive session to demystify the PMP certification. In just 2 hours, get a complete breakdown of PMP eligibility requirements and the current exam format. Master key terminology and get your personal questions answered live by a PMP expert. Walk away with actionable next steps and a special opportunity to explore our full suite of tools—including a hands-on look at our exam simulator and a preview of our recorded and live courses—so you can choose the right path for your success."
-            },
-              "webinarForm": {
-                "title": "Register for the Webinar",
-                "subTitle": "Fill in your details below to secure your free spot."
-              },
-                "courseOutline":"Course Outline"
+  "courseOutline": "Course Outline"
 }
-

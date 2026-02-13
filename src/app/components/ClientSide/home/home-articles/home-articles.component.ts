@@ -1,9 +1,10 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { Shared } from '../../../../shared/Services/shared/shared';
 import { ArticleCardComponent } from '../../../../shared/clientSide/article-card/article-card.component';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 export interface ArticleItem {
   imgAlt: string;
+  imgSrc: string;
   date: string;
   publishTime: string;
   title: string;
@@ -13,6 +14,7 @@ export interface ArticleItem {
 export const articles: ArticleItem[] = [
   {
     imgAlt: 'Article 1 image',
+    imgSrc: 'assets/images/homeArticles/article1.jpeg',
     date: 'articles.published.march_2025',
     publishTime: 'articles.read_time.8_min',
     title: 'articles.article1.title',
@@ -20,6 +22,7 @@ export const articles: ArticleItem[] = [
   },
   {
     imgAlt: 'Article 2 image',
+    imgSrc: 'assets/images/homeArticles/article2.jpeg',
     date: 'articles.published.february_2025',
     publishTime: 'articles.read_time.6_min',
     title: 'articles.article2.title',
@@ -27,6 +30,7 @@ export const articles: ArticleItem[] = [
   },
   {
     imgAlt: 'Article 3 image',
+    imgSrc: 'assets/images/homeArticles/article3.png',
     date: 'articles.published.february_2025',
     publishTime: 'articles.read_time.6_min',
     title: 'articles.article3.title',
@@ -43,7 +47,37 @@ export const articles: ArticleItem[] = [
 export class HomeArticlesComponent {
   private shared=inject(Shared);
   isRTL=this.shared.isRtl;
-  articlesData = input<ArticleItem[]>(articles);
+  currentCertification=this.shared.currentCertificate;
+  type = input<string>('home');
+
+  articlesData=computed(()=>{
+    if (!this.currentCertification())
+      return articles;
+    else if (this.currentCertification() == 'camp')
+      return [{
+        imgAlt: 'Article 1 image',
+        imgSrc: 'assets/images/homeArticles/article1.jpeg',
+        date: 'articles.published.march_2025',
+        publishTime: 'articles.read_time.8_min',
+        title: 'articles.article1.title',
+        description: 'articles.article1.summary',
+      },]
+    else if (this.currentCertification() == 'pmp')
+      return [
+        {
+          imgAlt: 'Article 2 image',
+          imgSrc: 'assets/images/homeArticles/article2.jpeg',
+          date: 'articles.published.february_2025',
+          publishTime: 'articles.read_time.6_min',
+          title: 'articles.article2.title',
+          description: 'articles.article2.summary',
+        },
+    ]
+    else return [];
+
+  })
+  // articlesData = input<ArticleItem[]>(articles);
+
 
   // articlesData = toSignal(this.articleService.getArticles(), { initialValue: [] });
 
