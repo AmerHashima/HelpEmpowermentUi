@@ -12,12 +12,13 @@ import { CoureseFeaturesComponent } from '../courese-features/courese-features.c
 import { CouresePlayerComponent, Lesson } from '../courese-player/courese-player.component';
 import { CoureseContentComponent } from '../courese-content/courese-content.component';
 import { ResourcesComponent } from '../course-resources/course-resources.component';
+import { InstructorInfoComponent } from '../../../AdminPanel/certifications/instructor-info/instructor-info.component';
 
 @Component({
   selector: 'app-recorded-course',
   imports: [PageBannerComponent,SiteButtonComponent,StarRatingComponent,TranslateModule,
     TranslatePipe, NgIf, CoureseOutlineComponent,CoureseFeaturesComponent,CouresePlayerComponent,
-    CoureseContentComponent, ResourcesComponent
+    CoureseContentComponent, ResourcesComponent,InstructorInfoComponent
   ],
   templateUrl: './recorded-course.component.html',
   styleUrl: './recorded-course.component.scss'
@@ -28,7 +29,48 @@ export class RecordedCourseComponent {
   isRTL = this.shared.isRtl;
   certification=this.shared.currentCertificate;
   hasBought = this.auth.hasBought;
-
+  instructor = {
+    introParagragh: "Expert in translating the organizational strategy into tangible results with 20 years of hands-on experience, I build the frameworks for lasting success. My expertise covers the full spectrum of strategic delivery:",
+    skills: [
+      {
+        icon: "bi bi-person-badge",
+        header: "Strategic Project & Program Leadership",
+        text: "Directly leading complex initiatives to deliver high-value outcomes on scope, time, and budget."
+      },
+      {
+        icon: "bi bi-briefcase",
+        header: "Portfolio Optimization",
+        text: "Aligning project investments with core business strategy to maximize return and manage risk."
+      },
+      {
+        icon: "bi bi-building",
+        header: "PMO Design & Implementation",
+        text: "Establishing and leading Project Management Offices as strategic centers of excellence."
+      },
+      {
+        icon: "bi bi-bar-chart",
+        header: "Project Management Maturity",
+        text: "Assessing and elevating organizational capabilities to improve efficiency and reduce risk."
+      }
+    ],
+    certifcations: [
+      "B.Sc. of Electrical Engineering (Computer & Automatic Control)",
+      "Authorized Training Partner (PMI - ATP) Instructor",
+      "PMI - Program Management Professional (PgMP)",
+      "PMI - Project Management Professional (PMP)",
+      "PMI – Project Management Office – Certified Practitioner (PMO-CP)",
+      "PMI - Agile Certified Practitioner (PMI-ACP)",
+      "PMI - Professional in Business Analysis (PMI-PBA)",
+      "AXELOS – P3O certificate in Portfolio, Program and Project Offices",
+      "AXELOS – ITIL Foundation Certificate in IT Services Management",
+      "CompTIA Project+ PK0-003",
+      "Managing Projects with Microsoft Project 2013",
+      "Cisco Certified Network Associate (CCNA)",
+      "Cisco Certified Network Professional (CCNP)",
+      "PMI - Train The Trainer",
+      "Microsoft Certified Technology Specialist (MCTS)"
+    ]
+  }
   courseOutlines=computed(()=>{
     if(this.certification() == 'pmp')
       return  [
@@ -568,38 +610,7 @@ export class RecordedCourseComponent {
         },
       ];
     else
-      return [
-        {
-          type: "pdf",
-          name: "PMP Study Guide",
-          src: "/resources/pmp-study-guide.pdf",
-        },
-        {
-          type: "presentation",
-          name: "PMP Framework Overview",
-          src: "/resources/pmp-framework.pptx",
-        },
-        {
-          type: "image",
-          name: "49 Processes Chart",
-          src: "/resources/49-processes.png",
-        },
-        {
-          type: "pdf",
-          name: "Agile Practice Guide",
-          src: "/resources/agile-practice-guide.pdf",
-        },
-        {
-          type: "presentation",
-          name: "Risk Management Slides",
-          src: "/resources/risk-management.pptx",
-        },
-        {
-          type: "image",
-          name: "Process Groups Flow",
-          src: "/resources/process-groups-flow.jpg",
-        },
-      ];
+      return [];
   })
 
   enrollImage = 'assets/images/enroll.png';
