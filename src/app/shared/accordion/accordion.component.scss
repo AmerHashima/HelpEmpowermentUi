@@ -29,6 +29,12 @@
     color: $headerColor;
     line-height: 1.6;
   }
+  .accordion-item{
+  background-color: transparent;
+}
+  .accordion-header{
+  background-color: transparent;
+}
 }
 
 /* RTL Support */

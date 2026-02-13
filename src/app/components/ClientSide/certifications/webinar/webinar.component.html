@@ -25,36 +25,114 @@
   />
 </app-page-banner>
 
-
 <div class="container-fluid">
-  <div class="row ">
+  <div class="row">
     <div class="col-12">
-       <div class="col-12">
-        <app-upcoming-sessions [type]="'webinar'" [title]="'Upcoming Webinars'"/>
+      <div class="col-12">
+        <app-upcoming-sessions
+          [type]="'webinar'"
+          [title]="'Upcoming Webinars'"
+          (register)="registerNow()"
+        />
       </div>
       <div class="col-12">
-        <app-courese-features [type]="'webinar'" title="Webinar Agenda"/>
+        <app-courese-features [type]="'webinar'" title="Webinar Agenda" />
       </div>
     </div>
     <div class="col-12">
-        <div class="col-l2">
-                <app-courese-features [type]="'takeAway'" title="Key Takeaways"/>
-          </div>
-           <div class="col-12">
-                <app-courese-features [type]="'audience'" title="Target Audience"/>
-          </div>
-        </div>
-    <div class="col-12 ">
-       <div class="webinarRegister  mx-auto d-flex flex-column gap-3 bg-site rounded-3 justify-content-center align-items-center py-4">
-          <span class="registerBtn">{{"Secure Your Free Spot Now—Seats Are Limited!" | translate}}</span>
-              <app-site-button
-              title="Register Now"
-              type="main"
-              [icon]="isRTL() ? 'bi bi-arrow-left' : 'bi bi-arrow-right'"
-              [isRTL]="isRTL()"
-            ></app-site-button>
-       </div>
+      <div class="col-l2">
+        <app-courese-features [type]="'takeAway'" title="Key Takeaways" />
+      </div>
+      <div class="col-12">
+        <app-courese-features [type]="'audience'" title="Target Audience" />
+      </div>
     </div>
+    <div class="col-12">
+      <div
+        class="webinarRegister mx-auto d-flex flex-column gap-3 bg-site rounded-3 justify-content-center align-items-center py-4"
+      >
+        <span class="registerBtn">{{
+          "Secure Your Free Spot Now—Seats Are Limited!" | translate
+        }}</span>
+        <app-site-button
+          (click)="showConfirm = true"
+          title="Register Now"
+          type="main"
+          [icon]="isRTL() ? 'bi bi-arrow-left' : 'bi bi-arrow-right'"
+          [isRTL]="isRTL()"
+        ></app-site-button>
+      </div>
     </div>
   </div>
+</div>
 
+<app-generic-modal [(isOpen)]="showConfirm" title="">
+  <section
+    class="form w-100 d-flex flex-column align-items-stretch gap-3 p-3 rounded"
+  >
+    <div class="d-flex flex-column gap-2 w-100">
+      <h3 class="m-0 text-center">{{ "webinarForm.title" | translate }}</h3>
+      <p class="text-center w-100">{{ "webinarForm.subTitle" | translate }}</p>
+    </div>
+
+    <form
+      #webinarRegisterForm="ngForm"
+      (ngSubmit)="onWebinarRegister()"
+      class="webinar-form mb-0"
+    >
+      <div class="d-flex flex-column gap-3">
+        <app-input
+          name="fullname"
+          [(ngModel)]="webinar.fullname"
+          required
+          [label]="'webinar.fullnameLabel' | translate"
+          [placeholder]="'webinar.fullnamePlaceholder' | translate"
+          [icon]="'bi bi-user'"
+          [errorMessages]="{
+            required: 'Full Name is required' | translate,
+          }"
+        ></app-input>
+        <app-input
+          name="email"
+          [(ngModel)]="webinar.email"
+          required
+          email
+          [label]="'log.emailLabel' | translate"
+          [placeholder]="'log.emailPlaceholder' | translate"
+          [icon]="'bi bi-envelope'"
+          [errorMessages]="{
+            required: 'Email is required' | translate,
+            email: 'Invalid email format' | translate,
+          }"
+        ></app-input>
+        <app-phone-input
+          name="phone"
+          [(ngModel)]="webinar.phone"
+          [required]="true"
+          [labelKey]="'register.phoneLabel' | translate"
+        >
+        </app-phone-input>
+        <app-input
+          name="position"
+          [(ngModel)]="webinar.position"
+          required
+          [label]="'webinar.positionLabel' | translate"
+          [placeholder]="'webinar.positionPlaceholder' | translate"
+          [icon]="'bi bi-person-workspace'"
+          [type]="'password'"
+          [errorMessages]="{
+            required: 'Field is required' | translate,
+          }"
+        ></app-input>
+
+        <app-site-button
+          title="webinar.webinarButton"
+          type="main"
+          htmlType="submit"
+          [icon]="isRTL() ? 'bi bi-arrow-left' : 'bi bi-arrow-right'"
+          [isRTL]="isRTL()"
+        ></app-site-button>
+      </div>
+    </form>
+  </section>
+</app-generic-modal>

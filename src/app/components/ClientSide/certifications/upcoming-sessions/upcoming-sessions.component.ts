@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, signal } from '@angular/core';
+import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { AccordionComponent } from '../../../../shared/accordion/accordion.component';
 import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/site-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -52,12 +52,10 @@ export class UpcomingSessionsComponent {
 
   title = input<string>('Upcoming Live Sessions');
   type = input<string>('Live Sessions');
-
-  bookNow(session:any){
-
-  }
-
-  registerNow(session: any) {
+  register = output<void>();
+    bookNow(session:any){
 
   }
+
+
 }

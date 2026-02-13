@@ -258,8 +258,17 @@
             "webinar": {
               "masterPmp": "Get Your PMP Roadmap, Live & Free. Unlock",
               "title": " Your 2-Hour Path to Certification Clarity.",
+                "fullnameLabel": "Full Name",
+                "fullnamePlaceholder": "Enter your full name",
+                "positionLabel": "Job Title / Position",
+                "positionPlaceholder": "Enter your current position",
+                "webinarButton": "Register Now",
               "description":"Join a live, interactive session to demystify the PMP certification. In just 2 hours, get a complete breakdown of PMP eligibility requirements and the current exam format. Master key terminology and get your personal questions answered live by a PMP expert. Walk away with actionable next steps and a special opportunity to explore our full suite of tools—including a hands-on look at our exam simulator and a preview of our recorded and live courses—so you can choose the right path for your success."
             },
-      "courseOutline":"Course Outline"
+              "webinarForm": {
+                "title": "Register for the Webinar",
+                "subTitle": "Fill in your details below to secure your free spot."
+              },
+                "courseOutline":"Course Outline"
 }
 
