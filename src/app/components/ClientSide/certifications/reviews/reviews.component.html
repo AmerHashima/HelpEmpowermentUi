@@ -41,12 +41,11 @@
 </div>
 
 <!-- Reviews list -->
-<!-- <div class="reviews d-flex flex-column gap-4 mt-4"> -->
 <div class="row g-4 mt-4">
   @for (review of reviews(); track $index) {
     <div class="col-md-6 flex-grow-1">
       <app-review
-      class="w-100 h-100"
+        class="w-100 h-100"
         [sectionImage]="review.reviewerImage"
         [reviewerName]="review.reviewerName"
         [reviewDate]="review.reviewDate"
@@ -56,7 +55,11 @@
       ></app-review>
     </div>
   } @empty {
-    <div class="text-center text-muted py-5">
+    <!-- <div class="text-center text-muted py-5">
+      {{ "reviews.noReviews" | translate }}
+    </div> -->
+    <div class="shadow noReveiws rounded text-center text-muted py-5">
+      <i class="bi bi-chat-square-dots fs-1 mb-3 d-block text-secondary"></i>
       {{ "reviews.noReviews" | translate }}
     </div>
   }
@@ -108,17 +111,17 @@
         >
         </app-phone-input>
 
-           <app-textarea
-              name="message"
-              [(ngModel)]="review.message"
-              required
-              [label]="'contact.messageLabel' | translate"
-              [placeholder]="'contact.messageLabel' | translate"
-              [icon]="'bi bi-chat-dots'"
-              [errorMessages]="{
-                required: 'Message is required' | translate,
-              }"
-            ></app-textarea>
+        <app-textarea
+          name="message"
+          [(ngModel)]="review.message"
+          required
+          [label]="'contact.messageLabel' | translate"
+          [placeholder]="'contact.messageLabel' | translate"
+          [icon]="'bi bi-chat-dots'"
+          [errorMessages]="{
+            required: 'Message is required' | translate,
+          }"
+        ></app-textarea>
         <app-site-button
           title="addReview.reviewButton"
           type="main"

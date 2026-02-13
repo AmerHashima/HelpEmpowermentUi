@@ -1,29 +1,38 @@
 <div class="w-100">
   <app-accordion [title]="title() | translate">
     <div class="d-flex flex-column gap-2">
-      @for (item of courseFeatures(); let i = $index; track item) {
-        <div class="feature-item flex flex-column gap-1">
-          <div class="d-flex align-items-start gap-1">
-            <i class="featureIcon bi bi-pin-angle mainTextColor pt-1"></i>
-            <div class="d-flex flex-column gap-1">
-              <span class="featureTitle darkText">{{
-                item.title | translate
-              }}</span>
-              <span class="featureDescription">{{
-                item.description | translate
-              }}</span>
+      @if (courseFeatures().length > 0) {
+        @for (item of courseFeatures(); let i = $index; track item) {
+          <div class="feature-item flex flex-column gap-1">
+            <div class="d-flex align-items-start gap-1">
+              <i class="featureIcon bi bi-pin-angle mainTextColor pt-1"></i>
+              <div class="d-flex flex-column gap-1">
+                <span class="featureTitle darkText">{{
+                  item.title | translate
+                }}</span>
+                <span class="featureDescription">{{
+                  item.description | translate
+                }}</span>
+              </div>
             </div>
           </div>
+        }
+        @if (!hasBought() && type() == "features") {
+          <app-site-button
+            class="w-100"
+            title="examSimulator.buyNow"
+            [icon]="isRTL() ? 'bi bi-arrow-left' : 'bi bi-arrow-right'"
+            type="main"
+            (click)="buyNow()"
+          ></app-site-button>
+        }
+      } @else {
+        <div class="shadow noReveiws rounded text-center text-muted py-5">
+          <i
+            class="bi bi-chat-square-dots fs-1 mb-3 d-block text-secondary"
+          ></i>
+          {{ "No Data" | translate }}
         </div>
-      }
-      @if (!hasBought() && type() =='features') {
-        <app-site-button
-          class="w-100"
-          title="examSimulator.buyNow"
-          [icon]="isRTL() ? 'bi bi-arrow-left' : 'bi bi-arrow-right'"
-          type="main"
-          (click)="buyNow()"
-        ></app-site-button>
       }
     </div>
   </app-accordion>

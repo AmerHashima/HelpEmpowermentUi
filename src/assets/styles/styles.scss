@@ -396,7 +396,7 @@ p {
   gap: 0.5rem;
 }
 .text-muted{
-  color:$paraTextColor;
+  color:$paraTextColor !important;
 }
 .CertificationHeader {
   font-size: 1.8rem;

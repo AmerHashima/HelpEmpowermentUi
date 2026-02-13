@@ -1,4 +1,4 @@
-
+@use 'variables' as *;
 .reviewsHeader{
     padding-top:2rem;
 }
@@ -44,6 +44,9 @@
   }
   .readMore{
     color:var(--primary-color);
+}
+.noReveiws{
+  background-color: $inputBg;
 }
 @media screen and (min-width :1200px) {
  .reviews .review {
