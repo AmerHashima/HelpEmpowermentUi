@@ -235,7 +235,9 @@
     "questions": "Questions",
     "duration": "Duration",
     "loading": "Loading...",
-    "noResults": "No results found"
+    "noResults": "No results found",
+    "readMore":"Read More",
+    "readLess":"Read Less"
   },
   "recordedCourse": {
     "masterPmp": "Learn PMP mastery on your own schedule,",
@@ -267,6 +269,18 @@
     "masterPmp": "Bridge Theory with Reality, ",
     "title": " Actionable Insights for the Modern Project Leader.",
     "description": "Go beyond the exam with real-world PMP wisdom. Access our curated library of articles where PMI standards meet practical execution. Discover how certified professionals apply methodologies in real environments, adapt to industry trends, and solve complex project challenges. Stay ahead with updates on evolving frameworks, practical case studies, and strategies you can implement immediately. This is where certification knowledge transforms into career authority."
+  },
+  "reviews": {
+    "masterPmp": "Level Up Your PMP Confidence,",
+    "title": " Proven by Real Success Stories",
+    "addReview":"Add Review",
+    "clientsSaying":"What Our Clients Are Saying",
+    "trustedBy":"Trusted by professionals who passed the PMP with confidence.",
+    "description":"Built to deliver results—not just content.Our approach transforms PMP preparation into an active experience, reinforcing essential knowledge through practice, progress tracking, and measurable improvement. The feedback speaks for itself."
+  },
+  "addReview":{
+  "title":"Share your experience with us",
+  "reviewButton":"Add Review"
   },
   "webinarForm": {
     "title": "Register for the Webinar",
