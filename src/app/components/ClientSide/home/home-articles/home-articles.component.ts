@@ -48,9 +48,9 @@ export class HomeArticlesComponent {
   // articlesData = toSignal(this.articleService.getArticles(), { initialValue: [] });
 
   private readonly articleImages = [
-    'assets/images/certifications/certfication_1.jpeg',
-    'assets/images/certifications/certfication_2.jpeg',
-    'assets/images/certifications/certfication_1.jpeg',
+    'assets/images/homeArticles/article1.jpeg',
+    'assets/images/homeArticles/article2.jpeg',
+    'assets/images/homeArticles/article3.png',
   ];
 
   getImageSrc(index: number): string {
