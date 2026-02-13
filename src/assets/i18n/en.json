@@ -249,6 +249,12 @@
           "title": " Your interactive path to certification begins now.",
           "description": "Real-time instruction that brings the PMBOK®️ Guide to life in your own projects. Get direct, personalized answers from expert instructors who guide you through every complex topic. Connect your PMP study directly to your current role—learn strategies you can apply immediately to enhance your real-world project management practice. Collaborate with peers facing similar challenges in a dynamic, supportive cohort. A structured yet adaptive live journey designed to certify you and elevate your professional impact from day one."
         },
+            "quizGame": {
+              "masterPmp": "Level Up Your PMP Knowledge",
+              "title": " Master the Essentials Through Play",
+              "description": "Turn PMP mastery into a challenge you can’t put down. Test your skills with our interactive quiz game, built on the core subjects and essential terminology of the exam. Learn through action with intuitive drag-and-drop puzzles, quick-fire questions, and bite-sized levels designed to reinforce key concepts. Track your progress, climb the leaderboard, and see how you rank against peers while building genuine confidence from the ground up. Whether you’re starting fresh or sharpening your expertise—this is PMP prep, reinvented.",
+               "play":"Play Now"
+            },
       "courseOutline":"Course Outline"
 }
 
