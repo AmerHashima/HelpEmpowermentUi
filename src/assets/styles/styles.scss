@@ -387,7 +387,9 @@ p {
   flex-direction: column;
   gap: 0.5rem;
 }
-
+.text-muted{
+  color:$paraTextColor;
+}
 @media screen and (min-width: 1200px) {
   h1 {
     font-size: 5rem;

@@ -13,12 +13,13 @@ import { CouresePlayerComponent, Lesson } from '../courese-player/courese-player
 import { CoureseContentComponent } from '../courese-content/courese-content.component';
 import { ResourcesComponent } from '../course-resources/course-resources.component';
 import { InstructorInfoComponent } from '../../../AdminPanel/certifications/instructor-info/instructor-info.component';
+import { TargetAudienceComponent } from '../../../AdminPanel/certifications/target-audience/target-audience.component';
 
 @Component({
   selector: 'app-recorded-course',
-  imports: [PageBannerComponent,SiteButtonComponent,StarRatingComponent,TranslateModule,
-    TranslatePipe, NgIf, CoureseOutlineComponent,CoureseFeaturesComponent,CouresePlayerComponent,
-    CoureseContentComponent, ResourcesComponent,InstructorInfoComponent
+  imports: [PageBannerComponent, SiteButtonComponent, StarRatingComponent, TranslateModule,
+    TranslatePipe, NgIf, CoureseOutlineComponent, CoureseFeaturesComponent, CouresePlayerComponent,
+    CoureseContentComponent, ResourcesComponent, InstructorInfoComponent, TargetAudienceComponent
   ],
   templateUrl: './recorded-course.component.html',
   styleUrl: './recorded-course.component.scss'
@@ -27,7 +28,7 @@ export class RecordedCourseComponent {
   private shared = inject(Shared);
   private auth = inject(AuthService);
   isRTL = this.shared.isRtl;
-  certification=this.shared.currentCertificate;
+  certification = this.shared.currentCertificate;
   hasBought = this.auth.hasBought;
   instructor = {
     introParagragh: "Expert in translating the organizational strategy into tangible results with 20 years of hands-on experience, I build the frameworks for lasting success. My expertise covers the full spectrum of strategic delivery:",
@@ -71,20 +72,20 @@ export class RecordedCourseComponent {
       "Microsoft Certified Technology Specialist (MCTS)"
     ]
   }
-  courseOutlines=computed(()=>{
-    if(this.certification() == 'pmp')
-      return  [
-      "Leadership Level",
-      "Project Management Fundamentals & Framework",
-      "Project Life Cycles & Development Approaches",
-      "Project Integration Management",
-      "Scope, Schedule, and Cost Management",
-      "Quality, Resource, and Communications Management",
-      "Risk, Procurement, and Stakeholder Management",
-      "Professional Responsibility & Ethics",
-      "Real-world scenario simulations, tool-based planning exercises, and agile methodology implementation",
-      "Applying the main domains “People, Process & Business Environment” in the 49 processes.",
-    ];
+  courseOutlines = computed(() => {
+    if (this.certification() == 'pmp')
+      return [
+        "Leadership Level",
+        "Project Management Fundamentals & Framework",
+        "Project Life Cycles & Development Approaches",
+        "Project Integration Management",
+        "Scope, Schedule, and Cost Management",
+        "Quality, Resource, and Communications Management",
+        "Risk, Procurement, and Stakeholder Management",
+        "Professional Responsibility & Ethics",
+        "Real-world scenario simulations, tool-based planning exercises, and agile methodology implementation",
+        "Applying the main domains “People, Process & Business Environment” in the 49 processes.",
+      ];
     else
       return [
         "Foundation & Awareness Level",
@@ -361,7 +362,7 @@ export class RecordedCourseComponent {
         },
       ];
     else
-      return  [
+      return [
         {
           id: 1,
           title: "Session (1) – PMI & PMP Introduction",
@@ -525,7 +526,7 @@ export class RecordedCourseComponent {
       ];
   });
 
-  courseContent  = computed(() => {
+  courseContent = computed(() => {
     if (this.certification() == 'pmp')
       return [
         { title: "Session (1) – PMI & PMP Introduction", duration: "2:00" },
@@ -575,7 +576,7 @@ export class RecordedCourseComponent {
 
   })
 
-  courseResource  = computed(() => {
+  courseResource = computed(() => {
     if (this.certification() == 'pmp')
       return [
         {
@@ -613,8 +614,20 @@ export class RecordedCourseComponent {
       return [];
   })
 
+  targetAudiences = computed(() => {
+    if (this.certification() == 'pmp')
+      return [
+        "Experienced project managers ",
+        "PMO members",
+        "Consultant",
+        "Department Heads",
+        "Team leads",
+      ];
+    else
+      return [];
+  })
   enrollImage = 'assets/images/enroll.png';
-  recoedImage ="assets/images/recordedCourse.jpeg";
+  recoedImage = "assets/images/recordedCourse.jpeg";
 
 
   buyNow() {

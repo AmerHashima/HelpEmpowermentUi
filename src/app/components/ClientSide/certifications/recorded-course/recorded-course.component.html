@@ -85,16 +85,19 @@
           </div>
         }
         <div class="col-12">
-          <app-instructor-info
-            [instructor]="instructor"
-          />
+          <app-instructor-info [instructor]="instructor" />
         </div>
       </div>
       <div class="col-lg-3">
-        <div>
-          <app-courese-features
-            [courseFeature]="courseFeatures()"
-          ></app-courese-features>
+        <div class="row">
+          <div class="col-12">
+            <app-courese-features
+              [courseFeature]="courseFeatures()"
+            ></app-courese-features>
+          </div>
+        </div>
+        <div class="col-12">
+          <app-target-audience [targetAudiences]="targetAudiences()" />
         </div>
       </div>
     </div>
