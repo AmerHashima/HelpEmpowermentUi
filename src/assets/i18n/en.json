@@ -311,5 +311,27 @@
       "question5": "Which official Project Management Institute (PMI) book should I study for the CAPM exam?",
       "answer5": "The CAPM exam is based primarily on the concepts found in the PMBOK® Guide (6th Edition) and its processes, and it also incorporates principles from the PMBOK® Guide (7th Edition). The Agile Practice Guide is a valuable complementary resource. Our CAPM course synthesizes all essential content from these guides into a structured, easy-to-follow curriculum, so you don't need to navigate them alone."
     },
+      "services": {
+        "organizationalEmpowerment": "Organizational Empowerment",
+        "pmoSetup": "PMO Setup & Operation",
+        "pmMaturity": "Project Management Maturity Assessment",
+        "pmis": "Project Management Information Systems (PMIS)",
+        "manpower": "Manpower Solutions",
+        "customTraining": "Customized Training",
+        "individualEmpowerment": "Individual Empowerment",
+        "professionalCertifications": "Professional Certifications",
+        "focusedTrainingTitle": "Focused, Practical Training:",
+        "focusedTrainingDesc": "Gain skills you can use at work the very next day.",
+        "jobReadyTitle": "Practical, Job-Ready Services:",
+        "jobReadyDesc": "Use what you learn immediately in your daily work.",
+        "globalCertTitle": "Globally Updated Certifications:",
+        "globalCertDesc": "Learn the latest standards that employers demand.",
+        "studyPlanTitle": "Smart Study Planning:",
+        "studyPlanDesc": "Follow a personalized path that maximizes your time and results.",
+        "expertTitle": "Learn from Certified Experts:",
+        "expertDesc": "Train with professionals who apply theory in real projects.",
+        "supportTitle": "Always-On Technical Support:",
+        "supportDesc": "Get instant help when you need it."
+      },
   "courseOutline": "Course Outline"
 }
