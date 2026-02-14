@@ -1,4 +1,5 @@
-<div class="certification pagePadding">
+  <div class="certification pagePadding">
+<!-- @if(!chooseExam){ -->
   <!-- Banner - shown only if not purchased -->
   <ng-container *ngIf="!hasBought()" >
     <app-page-banner [isRTL]="isRTL()" [media]="true">
@@ -64,7 +65,7 @@
     </app-page-banner>
   </ng-container>
 
-  <!-- Benefits section -->
+    <!-- Benefits section -->
   <div class="CertifticationBenfits d-flex flex-column gap-5 pt-5 pb-5">
     <div class="d-flex flex-column align-items-center gap-2">
       <h2 class="mainTextColor">
@@ -86,6 +87,10 @@
     </div>
   </div>
 
+<!-- } -->
+
+
+
   <!-- Modes / Try before buy section -->
   <div class="modes d-flex flex-column gap-5 pt-5 pb-5">
     <div class="d-flex flex-column align-items-center gap-2">
@@ -105,6 +110,8 @@
     </div>
 
     <ng-container *ngIf="!hasBought()">
+          <!-- @if(!chooseExam){ -->
+
       <div class="d-flex justify-content-center">
         <div class="examModeCard d-flex flex-column gap-3 shadow-sm">
           <div class="d-flex gap-3 align-items-start">
@@ -176,9 +183,16 @@
           </div>
         </div>
       </div>
+          <!-- }@else{
+              <app-choose-exam/>
+          } -->
+
     </ng-container>
+
+
 
     <!-- Show full exams list if already purchased -->
     <app-simulator-exams *ngIf="hasBought()"></app-simulator-exams>
   </div>
+
 </div>

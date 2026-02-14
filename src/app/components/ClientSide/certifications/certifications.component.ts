@@ -1,7 +1,9 @@
 import { Component, computed, inject } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { GenericTabsComponent } from '../../../shared/generic-tabs/generic-tabs.component';
 import { Shared } from '../../../shared/Services/shared/shared';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-certifications',
@@ -11,7 +13,9 @@ import { Shared } from '../../../shared/Services/shared/shared';
 })
 export class CertificationsComponent {
   private shared = inject(Shared);
+  private router = inject(Router);
   lang = this.shared.lang;
+  isFullPage=this.shared.fullPage;
   currentCertification=this.shared.currentCertificate;
   tabs = computed(() => [
     {
@@ -55,4 +59,30 @@ export class CertificationsComponent {
       route: `/${this.lang()}/certifications/${this.currentCertification()}/reviews`
     }
   ]);
+
+  private route = inject(ActivatedRoute);
+
+  showTabs:boolean=true;
+  lastSegment = '';
+  private sub!: Subscription;
+
+
+  constructor() {
+    // Subscribe to navigation events
+    this.sub = this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe(() => {
+        const url = this.router.url.split('?')[0].split('#')[0];
+        const segments = url.split('/').filter(s => s.length > 0);
+        this.lastSegment = segments[segments.length - 1];
+
+        // Hide tabs for certain routes
+        this.showTabs = !['reports', 'lesson-learned', 'chooseExam'].includes(this.lastSegment);
+      });
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
+  }
+
 }

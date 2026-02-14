@@ -9,6 +9,7 @@ import { ClientMainLayoutComponent } from '../client-main-layout/client-main-lay
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { filter, map } from 'rxjs/operators';
+import { Shared } from '../Services/shared/shared';
 
 const SUPPORTED_LANGS = ['en', 'ar'];
 
@@ -30,7 +31,7 @@ export class ClientSideLayoutComponent {
   private translate = inject(TranslateService);
   private platformId = inject(PLATFORM_ID);
   private document = inject(DOCUMENT);
-
+ private shared=inject(Shared);
   currentLang = 'en';
   isFullPage = false;
   isNoLayout = false;
@@ -60,9 +61,19 @@ export class ClientSideLayoutComponent {
     // 2. Handle layout flags from route data & URL
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
-      map(() => this.route.snapshot.firstChild?.data ?? {})
+      map(() => {
+        let currentRoute = this.route.snapshot;
+
+        while (currentRoute.firstChild) {
+          currentRoute = currentRoute.firstChild;
+        }
+
+        return currentRoute.data ?? {};
+      })
     ).subscribe(routeData => {
+      console.log('routeData', routeData);
       this.isFullPage = !!routeData['fullPage'];
+      this.shared.fullPage.set(this.isFullPage);
       this.isNoLayout = this.checkNoLayout(this.router.url);
     });
   }
@@ -73,8 +84,8 @@ export class ClientSideLayoutComponent {
   private checkNoLayout(pathname: string): boolean {
     const noLayoutPaths = [
       `/${this.currentLang}/home`,
-      // `/${this.currentLang}/certifications/PMP/chooseExam`,
-      // `/${this.currentLang}/certifications/CAMP/chooseExam`
+      `/${this.currentLang}/certifications/pmp/exams/free`,
+      `/${this.currentLang}/certifications/camp/exams/free`
     ];
     return noLayoutPaths.includes(pathname);
   }
@@ -87,7 +98,7 @@ export class ClientSideLayoutComponent {
   //     .pop() || 'home';
   // }
   get pageKey(): string {
-    const url = this.router.url;                    // e.g. "/en/certifications/camp/exam-simulator"
+    const url = this.router.url;
 
     // Remove language prefix
     const withoutLang = url.replace(/^\/(en|ar)/, '').replace(/^\//, '');

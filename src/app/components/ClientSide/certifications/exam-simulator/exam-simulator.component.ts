@@ -1,5 +1,5 @@
-import { Component, inject, Input } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, effect, inject, Input } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IconCardComponent } from '../../../../shared/icon-card/icon-card.component';
 import { Shared } from '../../../../shared/Services/shared/shared';
 import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/site-button.component';
@@ -10,11 +10,13 @@ import { PageBannerComponent } from '../../../../shared/clientSide/page-banner/p
 import { NgIf } from '@angular/common';
 import { SimulatorExamsComponent } from '../simulator-exams/simulator-exams.component';
 import { AuthService } from '../../../../Services/auth.service';
+import { ChooseExamComponent } from '../choose-exam/choose-exam.component';
 
 @Component({
   selector: 'app-exam-simulator',
   imports: [IconCardComponent,SiteButtonComponent,TranslateModule,TranslatePipe,FeatureComponent,
-    StarRatingComponent,PageBannerComponent,NgIf,SimulatorExamsComponent
+    StarRatingComponent, PageBannerComponent, NgIf, SimulatorExamsComponent, ChooseExamComponent
+
   ],
   templateUrl: './exam-simulator.component.html',
   styleUrl: './exam-simulator.component.scss'
@@ -24,7 +26,7 @@ export class ExamSimulatorComponent {
   private auth = inject(AuthService);
   isRTL = this.shared.isRtl;
   hasBought=this.auth.hasBought;
-
+//  chooseExam:boolean=false;
   examSimulatorBenfits = [
     {
       title: "Always Current",
@@ -88,14 +90,19 @@ export class ExamSimulatorComponent {
   simulatorVideo = 'assets/videos/SimulatorVideo.mp4';
   enrollImage = 'assets/images/enroll.png';
 
-  constructor(private router: Router) { }
+  constructor(private router: Router,private route:ActivatedRoute) {
+    effect(()=>{
+      const _=this.shared.currentExamId();
+      // this.chooseExam=true;
+    })
+  }
 
   navigateToFreeExam() {
-    this.router.navigate([], {
-      queryParams: { examId: 'free' },
-      queryParamsHandling: 'merge'
+    this.router.navigate(['../chooseExam'], {
+      relativeTo: this.route
     });
-    // or: this.router.navigate(['chooseExam'], { queryParams: { examId: 'free' } });
+    // this.chooseExam=true;
+    this.shared.currentExamId.set('free');
   }
 
   buyNow() {

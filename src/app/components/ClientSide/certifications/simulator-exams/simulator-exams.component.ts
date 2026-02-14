@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { Shared } from '../../../../shared/Services/shared/shared';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/site-button.component';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-simulator-exams',
@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 })
 export class SimulatorExamsComponent {
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
   private shared = inject(Shared);
   isRTL = this.shared.isRtl;
 
@@ -46,13 +47,9 @@ export class SimulatorExamsComponent {
   }
 
   startExam(examId: number) {
-    // Navigate with query param examId
-    this.router.navigate([], {
-      queryParams: { examId },
-      queryParamsHandling: 'merge'
+    this.shared.currentExamId.set(`${examId}`);
+    this.router.navigate(['../chooseExam'], {
+      relativeTo: this.route
     });
-
-    // Alternative: full route
-    // this.router.navigate(['chooseExam'], { queryParams: { examId } });
   }
 }

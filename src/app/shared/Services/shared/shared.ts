@@ -13,6 +13,9 @@ export class Shared {
   lang = signal<'en' | 'ar'>('en');
   isRtl = computed(() => this.lang() === 'ar');
   currentCertificate = signal('');
+  currentExamId = signal('');
+
+  fullPage = signal<boolean>(false);
 
   // Dependencies
   private platformId = inject(PLATFORM_ID);

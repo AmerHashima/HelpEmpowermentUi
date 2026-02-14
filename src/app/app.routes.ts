@@ -303,6 +303,31 @@ function getCertificationChildren():Routes {
       loadComponent: () =>
         import('./components/ClientSide/certifications/reviews/reviews.component')
           .then(m => m.ReviewsComponent)
+    },
+    {
+      path: 'reports',
+      loadComponent: () =>
+        import('./components/ClientSide/exam-reports/exam-reports.component')
+          .then(m => m.ExamReportsComponent)
+    },
+    {
+      path: 'lesson-learned',
+      loadComponent: () =>
+        import('./components/ClientSide/exam-lesson-learned-questions/exam-lesson-learned-questions.component')
+          .then(m => m.ExamLessonLearnedQuestionsComponent)
+    },
+    {
+      path: 'chooseExam',
+      loadComponent: () =>
+        import('./components/ClientSide/certifications/choose-exam/choose-exam.component')
+          .then(m => m.ChooseExamComponent),
+    },
+      {
+      path: 'exams/:id',
+      loadComponent: () =>
+        import('./components/ClientSide/certifications/exam/exam.component')
+          .then(m => m.ExamComponent),
+        data: { fullPage: true }
     }
   ];
 }
