@@ -1,3 +1,4 @@
+// src\app\components\AdminPanel\certifications\certifications-features\certifications-features.component.ts
 import { Component, computed, effect, ElementRef, Inject, inject, PLATFORM_ID, signal, ViewChild } from '@angular/core';
 import { ButtonComponent } from '../../../../shared/button/button.component';
 import { InputComponent } from '../../../../shared/input/input.component';
@@ -415,7 +416,7 @@ export class CertificationsFeaturesComponent {
 //   }
 
 //   formFactory = (feature?: CourseFeature): FormGroup => {
-//     console.log('formFactory called with:', feature);
+//     //console.log('formFactory called with:', feature);
 
 //     const group = this.fb.group({
 //       // oid: [feature?.oid],
@@ -425,7 +426,7 @@ export class CertificationsFeaturesComponent {
 //       orderNo: [this.getNextOrderNo(), Validators.required],
 //     });
 
-//     console.log('Created form group:', group.value, group.controls);
+//     //console.log('Created form group:', group.value, group.controls);
 
 //     return group;
 //   };
@@ -437,7 +438,7 @@ export class CertificationsFeaturesComponent {
 //   }
 
 //   createFeature = (data: CourseFeature): Observable<CourseFeature> => {
-//     console.log('createFeature' , 'feature');
+//     //console.log('createFeature' , 'feature');
 //     return this.certificationService.createCourseFeature(data);
 //   };
 

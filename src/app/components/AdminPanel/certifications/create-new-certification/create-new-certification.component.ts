@@ -12,6 +12,7 @@ import { Certification } from '../../../../models/certification';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
+import { BreadcrumbService } from '../../../../Services/breadcrumb.service';
 
 @Component({
   selector: 'app-create-certification',
@@ -25,6 +26,7 @@ export class CreateNewCertificationComponent {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private location = inject(Location);
+  private breadcrumbService = inject(BreadcrumbService);
 
   fb = inject(FormBuilder);
   store = inject(CertificationsStore);
@@ -63,6 +65,26 @@ export class CreateNewCertificationComponent {
     effect(() => {
       if (certificationId && !this.certification()) {
         this.store.getCertification(certificationId);
+      }
+    });
+
+    effect(() => {
+      const isEdit = this.isEdit();
+      const cert = this.certification();
+
+      if (isEdit && cert) {
+        this.breadcrumbService.setBreadcrumbs([
+          { label: 'Admin', url: '/admin' },
+          { label: 'Certifications', url: '/admin/certifications' },
+          { label: cert.courseName || 'Certification', url: `/admin/certifications/${cert.oid}` },
+          { label: 'Edit', url: '' }
+        ]);
+      } else if (!isEdit) {
+        this.breadcrumbService.setBreadcrumbs([
+          { label: 'Admin', url: '/admin' },
+          { label: 'Certifications', url: '/admin/certifications' },
+          { label: 'Create', url: '' }
+        ]);
       }
     });
 

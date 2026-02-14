@@ -1,3 +1,4 @@
+// src\app\components\AdminPanel\certifications\certification-contents\certification-contents.component.ts
 import { Component, computed, effect, ElementRef, Inject, inject, PLATFORM_ID, signal, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CertificationsStore } from '../../../../AdminPanelStores/CertificationStore/certification.store';
@@ -11,7 +12,7 @@ import { SpkNgSelectComponent } from '../../../../shared/spk-ng-select/spk-ng-se
 
 @Component({
   selector: 'app-certification-contents',
-  imports: [ReactiveFormsModule,ButtonComponent,NgIf,InputComponent,SpkNgSelectComponent],
+  imports: [ReactiveFormsModule, ButtonComponent, NgIf, InputComponent, SpkNgSelectComponent],
   templateUrl: './certification-contents.component.html',
   styleUrl: './certification-contents.component.scss'
 })
@@ -21,7 +22,7 @@ export class CertificationContentsComponent {
   private certificationService = inject(CertificationService);
   certification = this.store.selectedCertification;
   courseId = computed(() => this.certification()?.oid)
-  private choiceAnswerOrderCounter=0;
+  private choiceAnswerOrderCounter = 0;
   contentIndex = signal<number>(0);
   readonly courseContents = signal<any[]>([]);
   @ViewChild('contentModal') modalRef!: ElementRef;
@@ -37,7 +38,7 @@ export class CertificationContentsComponent {
       contentTypeLookupId: ['', Validators.required],
       contentOid: ['', Validators.required],
       orderNo: [order ?? this.choiceAnswerOrderCounter, Validators.required],
-      isFree: [false,Validators.required]
+      isFree: [false, Validators.required]
 
     });
     this.choiceAnswerOrderCounter++;
@@ -91,7 +92,7 @@ export class CertificationContentsComponent {
   }
 
   AddContents() {
-    console.log('in add contents');
+    //console.log('in add contents');
     this.contentArrays.push(this.createContentGroup());
     this.openModal();
   }
@@ -108,39 +109,39 @@ export class CertificationContentsComponent {
     });
   }
 
-    onSubmit() {
-      const contents: any[] = this.form.value.contents ?? [];
-      if (!contents || contents.length === 0) return;
+  onSubmit() {
+    const contents: any[] = this.form.value.contents ?? [];
+    if (!contents || contents.length === 0) return;
 
-      const requests = contents.map((content: any) => {
-        if (content.oid) {
-          return this.certificationService.updateCourseContent(content.oid, content);
-        } else {
-          return this.certificationService.createCourseContent(content);
-        }
-      });
+    const requests = contents.map((content: any) => {
+      if (content.oid) {
+        return this.certificationService.updateCourseContent(content.oid, content);
+      } else {
+        return this.certificationService.createCourseContent(content);
+      }
+    });
 
-      forkJoin(requests).subscribe({
-        next: (results) => {
-          this.courseContents.update((prev) => {
-            const updated = [...prev];
-            results.forEach((res: any) => {
-              const idx = updated.findIndex((f) => f.oid === res.oid);
-              if (idx > -1) {
-                updated[idx] = res; // update existing
-              } else {
-                updated.push(res); // add new
-              }
-            });
-            return updated;
+    forkJoin(requests).subscribe({
+      next: (results) => {
+        this.courseContents.update((prev) => {
+          const updated = [...prev];
+          results.forEach((res: any) => {
+            const idx = updated.findIndex((f) => f.oid === res.oid);
+            if (idx > -1) {
+              updated[idx] = res; // update existing
+            } else {
+              updated.push(res); // add new
+            }
           });
+          return updated;
+        });
 
-          this.resetContentForm();
-          this.closeModal();
-        },
-        error: (err) => console.error('Failed to save features', err),
-      });
-    }
+        this.resetContentForm();
+        this.closeModal();
+      },
+      error: (err) => console.error('Failed to save features', err),
+    });
+  }
   editContent(content: any) {
     this.resetContentForm();
 

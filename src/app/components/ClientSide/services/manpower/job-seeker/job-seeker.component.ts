@@ -1,3 +1,4 @@
+// src\app\components\ClientSide\services\manpower\job-seeker\job-seeker.component.ts
 import { Component, inject } from '@angular/core';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { InputComponent } from '../../../../../shared/input/input.component';
@@ -49,6 +50,6 @@ export class JobSeekerComponent {
   };
 
   onPostJob() {
-    console.log(this.job);
+    //console.log(this.job);
   }
 }

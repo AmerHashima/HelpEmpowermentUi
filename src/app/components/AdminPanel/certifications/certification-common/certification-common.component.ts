@@ -1,3 +1,4 @@
+// src\app\components\AdminPanel\certifications\certification-common\certification-common.component.ts
 import {
   Component,
   input,
@@ -73,9 +74,9 @@ export class CertificationCommonComponent<T extends { oid?: string }> {
   }
 
   submit() {
-    console.log('in submit');
-    console.log(this.form.value);
-    console.log(this.form.invalid);
+    //console.log('in submit');
+    //console.log(this.form.value);
+    //console.log(this.form.invalid);
     if (this.form.invalid) return;
 
     const entities = this.formArray.value as T[];

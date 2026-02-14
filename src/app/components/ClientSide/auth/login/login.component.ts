@@ -1,4 +1,4 @@
-// login.component.ts
+// src\app\components\ClientSide\auth\login\login.component.ts
 import { Component, inject, ViewChild, signal } from '@angular/core';
 import { CommonModule, NgClass, NgIf } from '@angular/common';
 import { RouterLink } from '@angular/router';
@@ -38,6 +38,6 @@ export class LoginComponent {
   };
 
   onLoginSubmit() {
-    console.log('Submitted credentials:', this.credentials);
+    //console.log('Submitted credentials:', this.credentials);
   }
 }

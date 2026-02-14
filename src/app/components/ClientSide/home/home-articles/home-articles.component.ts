@@ -1,3 +1,4 @@
+// src\app\components\ClientSide\home\home-articles\home-articles.component.ts
 import { Component, inject, input } from '@angular/core';
 import { Shared } from '../../../../shared/Services/shared/shared';
 import { ArticleCardComponent } from '../../../../shared/clientSide/article-card/article-card.component';
@@ -58,7 +59,7 @@ export class HomeArticlesComponent {
   }
 
   onArticleClick(article: ArticleItem, index: number) {
-    console.log('Article clicked:', article.title, 'index:', index);
+    //console.log('Article clicked:', article.title, 'index:', index);
     // this.router.navigate(['/articles', article.slug || index]);
   }
 }

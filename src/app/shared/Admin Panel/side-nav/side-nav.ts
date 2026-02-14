@@ -35,7 +35,7 @@ export class SideNav {
   private platformId = inject(PLATFORM_ID);
 
   lang = this.shared.lang;
-  isCollapse = this.shared.isCollapse;
+  // isCollapse = this.shared.isCollapse;
   previousIndex: number = -1;
   smallScreen = signal(false);
 
@@ -86,7 +86,7 @@ export class SideNav {
 
   showHoverSubMenu(index: number, event: MouseEvent) {
     if (!isPlatformBrowser(this.platformId)) return;
-    if (!this.isCollapse()) return;
+    // if (!this.isCollapse()) return;
     if (this.previousIndex != -1) this.hideHoverSubMenu(this.previousIndex);
 
     const navItem = event.currentTarget as HTMLElement;
@@ -114,7 +114,7 @@ export class SideNav {
 
   showSearchPopup(event: MouseEvent) {
     if (!isPlatformBrowser(this.platformId)) return;
-    if (!this.isCollapse()) return;
+    // if (!this.isCollapse()) return;
 
     const searchIcon = this.searchIcon?.nativeElement;
     const searchPopup = this.searchPopup?.nativeElement;

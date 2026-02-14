@@ -20,6 +20,7 @@ import { ExamsStore } from '../../../../AdminPanelStores/ExamsStore/exam.store';
 import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
 import { QuestionsStore } from '../../../../AdminPanelStores/QuestionStores/questions.store';
 import { TranslateService } from '../../../../Services/translate.service';
+import { BreadcrumbService } from '../../../../Services/breadcrumb.service';
 
 type QuestionType = 'MCQ' | 'MATCHING' | null;
 type SectionType = QuestionType | 'Multiple Choice Question' | 'Matching';
@@ -63,6 +64,7 @@ export class CertificationQuestionComponent {
   private toast = inject(ToastingMessagesService);
   private destroyRef = inject(DestroyRef);
   private translateService = inject(TranslateService);
+  private breadcrumbService = inject(BreadcrumbService);
 
   private certificationStore = inject(CertificationsStore);
   private examsStore = inject(ExamsStore);
@@ -177,6 +179,30 @@ export class CertificationQuestionComponent {
       const examId = this.route.snapshot.paramMap.get('examId');
       if (examId && !this.selectedExam()?.oid) {
         this.examsStore.getExam(examId);
+      }
+    });
+
+    effect(() => {
+      const cert = this.selectedCertification();
+      const exam = this.selectedExam();
+      const question = this.question();
+      const questionId = this.route.snapshot.paramMap.get('questionId');
+
+      if (cert && exam) {
+        const breadcrumbs = [
+          { label: 'Admin', url: '/admin' },
+          { label: 'Certifications', url: '/admin/certifications' },
+          { label: cert.courseName || 'Certification', url: `/admin/certifications/${cert.oid}` },
+          { label: exam.courseName || 'Exam', url: `/admin/certifications/${cert.oid}/exams/exam/${exam.oid}` },
+        ];
+
+        if (questionId) {
+          breadcrumbs.push({ label: question?.questionText || 'Question Details', url: '' });
+        } else {
+          breadcrumbs.push({ label: 'Create Question', url: '' });
+        }
+
+        this.breadcrumbService.setBreadcrumbs(breadcrumbs);
       }
     });
 
@@ -457,7 +483,7 @@ export class CertificationQuestionComponent {
       const answerControls = question.answers?.map((a: any) => this.createAnswerGroup(false, a)) ?? [];
       this.form.setControl('answers', this.fb.array(answerControls));
     } else {
-      console.log('question', question);
+      //console.log('question', question);
       const sortByOrder = (items: any[]) =>
         items.slice().sort((a, b) => (a?.orderNo ?? 0) - (b?.orderNo ?? 0));
 
@@ -482,7 +508,7 @@ export class CertificationQuestionComponent {
       this.addDragAnswersFlag.set(true);
       this.apiQuestions = questions;
       this.apiAnswers.set(answers);
-      console.log('questions', questions);
+      //console.log('questions', questions);
       this.syncCorrectAnswerSelections(questions, answers);
       this.linkDragAnswerAndQuestionFlag.set(true);
     }
@@ -508,8 +534,8 @@ export class CertificationQuestionComponent {
       this.answersArray.clear();
     }
 
-    console.log('Form invalid?', this.form.invalid);
-    console.log('Form value:', this.form.value);
+    //console.log('Form invalid?', this.form.invalid);
+    //console.log('Form value:', this.form.value);
 
     if (this.form.invalid) {
       this.logAllInvalidControls();
@@ -518,14 +544,14 @@ export class CertificationQuestionComponent {
     }
 
     const payload = this.buildPayload();
-    console.log('payload', payload);
-    console.log('edit mode', this.editMode);
+    //console.log('payload', payload);
+    //console.log('edit mode', this.editMode);
     if (!this.editMode) {
-      console.log('selectedType', this.selectedType())
+      //console.log('selectedType', this.selectedType())
       if (this.selectedType() !== 'MATCHING') {
         this.questionStore.addQuestion(payload);
       } else {
-        console.log('subit deag questions');
+        //console.log('subit deag questions');
         this.updateMatchingQuestions();
       }
     } else {
@@ -702,7 +728,7 @@ export class CertificationQuestionComponent {
     traverse(this.form);
 
     if (invalid.length === 0) {
-      console.log('No invalid controls found');
+      //console.log('No invalid controls found');
     } else {
       console.table(invalid);
     }

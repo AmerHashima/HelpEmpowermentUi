@@ -1,3 +1,4 @@
+// src\app\components\ClientSide\auth\register\register.component.ts
 import { Component, inject } from '@angular/core';
 import { Shared } from '../../../../shared/Services/shared/shared';
 import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/site-button.component';
@@ -31,6 +32,6 @@ export class RegisterComponent {
   };
 
   onRegister() {
-    console.log('Submitted credentials:', this.credentials);
+    //console.log('Submitted credentials:', this.credentials);
   }
 }

@@ -11,6 +11,7 @@ import { Location } from '@angular/common';
 import { CertificationsStore } from '../../../AdminPanelStores/CertificationStore/certification.store';
 import { ActivatedRoute } from '@angular/router';
 import { ExamsStore } from '../../../AdminPanelStores/ExamsStore/exam.store';
+import { BreadcrumbService } from '../../../Services/breadcrumb.service';
 
 
 @Component({
@@ -26,6 +27,7 @@ export class CreateNewExamComponent {
 
   private route = inject(ActivatedRoute);
   private location = inject(Location);
+  private breadcrumbService = inject(BreadcrumbService);
 
   fb = inject(FormBuilder);
   // store = inject(CertificationsStore);
@@ -68,6 +70,13 @@ export class CreateNewExamComponent {
     effect(() => {
       const certification = this.certification();
       if (certification) {
+        this.breadcrumbService.setBreadcrumbs([
+          { label: 'Admin', url: '/admin' },
+          { label: 'Certifications', url: '/admin/certifications' },
+          { label: certification.courseName || 'Certification', url: `/admin/certifications/${certification.oid}` },
+          { label: 'Create Exam', url: '' }
+        ]);
+
         this.form.patchValue({
           courseName: certification.courseName,
           courseLevelLookupId: certification.courseLevelLookupId ?? null,

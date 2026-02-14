@@ -1,3 +1,4 @@
+// src\app\components\ClientSide\home\home-faq\home-faq.component.ts
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
@@ -46,7 +47,7 @@ export class HomeFAQComponent {
 
   onContactSupport() {
     // Replace with real action
-    console.log('Contact support clicked');
+    //console.log('Contact support clicked');
     // window.location.href = 'mailto:support@yourdomain.com';
     // or open modal, navigate to contact page, etc.
   }

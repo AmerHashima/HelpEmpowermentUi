@@ -1,3 +1,4 @@
+// src\app\AdminPanelStores\QuestionStores\question.state.ts
 import { courseQuestion } from "../../models/certification";
 import { Filter } from "../../models/rquest";
 
@@ -12,6 +13,6 @@ export interface QuestionState {
   total: number;
   search: string;
   sortBy: string;
-filters: Filter[];
+  filters: Filter[];
   sortDirection: 'asc' | 'desc' | '';
 }

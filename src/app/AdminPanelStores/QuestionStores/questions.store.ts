@@ -129,6 +129,10 @@ export const QuestionsStore = signalStore(
     setFilters(filters: Filter[]) {
       patchState(store, setFiltersUpdater(filters));
     },
+
+    clearQuestions() {
+      patchState(store, setQuestions([]));
+    },
   })),
 
   /* ===================== Query ===================== */
@@ -140,7 +144,6 @@ export const QuestionsStore = signalStore(
         tap(() => patchState(store, activateLoading)),
         switchMap((request) =>
           service.searchQuestion(request).pipe(
-            tap(() => console.log('in query questions')),
             tap((res: { questions: APICourseQuestion[]; total: number }) => {
               patchState(store, (s) => ({
                 ...s,
@@ -148,7 +151,6 @@ export const QuestionsStore = signalStore(
                 total: res.total ?? 0,
               }));
             }),
-            tap(() => console.log('in query questions', store.questions())),
             catchError((err) => {
               patchState(store, setError(err?.message ?? 'Failed to load questions'));
               return of({ questions: [], total: 0 });
@@ -189,12 +191,12 @@ export const QuestionsStore = signalStore(
             service.createQuestion(body).pipe(
               tap((question: APICourseQuestion) => {
                 patchState(store, addQuestion(question));
-                tap(() => toasting.showToast('Question has been deleted', 'success')),
-                  patchState(store, setSuccess(true));
+                toasting.showToast('Question has been added', 'success');
+                patchState(store, setSuccess(true));
               }),
               catchError((err) => {
                 patchState(store, setError(err?.msg ?? 'Failed to add question'));
-                toasting.showToast('Question failed to be added', 'error')
+                toasting.showToast('Question failed to be added', 'error');
                 return EMPTY;
               }),
               finalize(() => patchState(store, deactivateLoading))
@@ -206,19 +208,12 @@ export const QuestionsStore = signalStore(
       updateQuestion: rxMethod<UpdateQuestionPayload>(
         pipe(
           tap(() => patchState(store, activateLoading)),
-          // swiychMap(({ id, body }) =>
           concatMap(({ id, body }) =>
             service.updateQuestion(id, body).pipe(
-              tap((questiupdateon: APICourseQuestion) => {
-
-                // patchState(store, updateQuestion(questiupdateon));
-                // patchState(store, setSuccess(true));
+              tap((questionUpdated: APICourseQuestion) => {
+                patchState(store, updateQuestion(questionUpdated, questionUpdated.oid));
+                patchState(store, setSuccess(true));
               }),
-              // tap(() => {
-              //   const question = store.selectedQuestion();
-              //   if (!question?.oid) return;
-              //   store.getQuestion(question.oid);
-              // }),
               catchError((err) => {
                 patchState(store, setError(err?.msg ?? 'Failed to update question'));
                 return EMPTY;
@@ -260,7 +255,7 @@ export const QuestionsStore = signalStore(
           concatMap((body) =>
             service.createAnswer(body).pipe(
               tap(() => {
-                console.log('createSyccessfully');
+                //console.log('createSyccessfully');
               }),
               // tap(() => {
               //   const question = store.selectedQuestion();
@@ -282,11 +277,8 @@ export const QuestionsStore = signalStore(
           concatMap((id) =>
             service.deleteAnswer(id).pipe(
               // tap(() => patchState(store, deleteAnswer(id))),
-              tap(() => toasting.showToast('Answer has been deleted', 'success')),
               tap(() => {
-                const question = store.selectedQuestion();
-                if (!question?.oid) return;
-                store.getQuestion(question.oid);
+                toasting.showToast('Answer has been deleted', 'success');
               }),
               catchError((err) => {
                 patchState(store, setError(err?.message ?? 'Delete failed'));
@@ -299,17 +291,13 @@ export const QuestionsStore = signalStore(
         )
       ),
       updateQuestion$(payload: any) {
-        console.log('updatePayload', payload);
         patchState(store, activateLoading);
         return service.updateQuestion(payload.id, payload.body).pipe(
-          // tap(updated => console.log('ubefore pdateed', store.selectedQuestion())),
-          tap(updated => console.log('update sucess', updated)),
-          // tap(updated => patchState(store, updateQuestion(updated, updated.questionId))),
-          // tap(updated => console.log('updateed', store.selectedQuestion())),
+          tap(updated => {
+            patchState(store, updateQuestion(updated, updated.questionId));
+          }),
           catchError(err => {
             patchState(store, setError(err?.message ?? 'Update failed'));
-            console.log(err?.message);
-            console.log('update failed')
             return of(null);
           }),
           finalize(() => patchState(store, deactivateLoading))
@@ -319,7 +307,7 @@ export const QuestionsStore = signalStore(
       addAnswer$(answer: any) {
         return service.createAnswer(answer).pipe(
           tap(() => {
-            // console.log('created');
+            // //console.log('created');
           }),
           catchError(err => {
             patchState(store, setError(err?.message ?? 'failed to add failed'));

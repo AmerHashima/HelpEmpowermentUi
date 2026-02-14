@@ -18,7 +18,7 @@ import { NgClass } from '@angular/common';
 @Component({
   selector: 'app-file-upload',
   standalone: true,
-  imports: [FilePondModule,NgClass],
+  imports: [FilePondModule, NgClass],
   templateUrl: './file-upload.component.html',
   styleUrl: './file-upload.component.scss',
   providers: [
@@ -95,7 +95,7 @@ export class FileUploadComponent implements ControlValueAccessor {
   }
 
   pondHandleInit() {
-    console.log('FilePond initialized');
+    //console.log('FilePond initialized');
   }
 
   pondHandleAddFile() {

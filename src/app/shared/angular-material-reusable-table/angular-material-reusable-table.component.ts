@@ -1,3 +1,4 @@
+// src\app\shared\angular-material-reusable-table\angular-material-reusable-table.component.ts
 import { Component, Input, ViewChild, AfterViewInit, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common'; // <-- Needed for *ngIf and *ngFor
 import { MatTableModule } from '@angular/material/table';
@@ -32,7 +33,7 @@ import { ButtonComponent } from '../button/button.component';
 export class ReusableMaterialTableComponent implements AfterViewInit {
   @Input() columns: any[] = [];
   @Input() data: any[] = [];
-  @Input() btnLabel:string='Add New'
+  @Input() btnLabel: string = 'Add New'
   @Input() totalCount = 0;
   @Input() pageSize = 10;
   @Input() pageSizeOptions: number[] = [10, 20, 50];
@@ -48,7 +49,7 @@ export class ReusableMaterialTableComponent implements AfterViewInit {
   @Output() pageChange = new EventEmitter<any>();
   @Output() sortChange = new EventEmitter<any>();
   @Output() onFirstCellClickChange = new EventEmitter<any>();
-  @Output() onAddNewChange=new EventEmitter<any>();
+  @Output() onAddNewChange = new EventEmitter<any>();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -81,7 +82,7 @@ export class ReusableMaterialTableComponent implements AfterViewInit {
   onDelete(row: any) {
     this.deleteRow.emit(row);
   }
-  onAddNew(){
+  onAddNew() {
     this.onAddNewChange.emit();
   }
 

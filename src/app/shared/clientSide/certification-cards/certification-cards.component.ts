@@ -1,4 +1,4 @@
-// src/app/components/certification-cards/certification-cards.component.ts
+// src\app\shared\clientSide\certification-cards\certification-cards.component.ts
 import { Component, input, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SiteButtonComponent } from '../site-button/site-button.component';
@@ -67,7 +67,7 @@ export class CertificationCardsComponent {
 
   // Replace with real navigation / enrollment logic
   onEnroll(item: CertificationItem) {
-    console.log('Enroll clicked for:', item.courseAbb);
+    //console.log('Enroll clicked for:', item.courseAbb);
     // router.navigate([...]), open modal, etc.
   }
 }

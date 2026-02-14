@@ -1,4 +1,4 @@
-// import {
+// src\app\shared\clientSide\navbar\navbar.component.ts
 //   Component,
 //   computed,
 //   effect,
@@ -32,7 +32,7 @@
 //   constructor() {
 //     // Watch route params for language
 //     effect(() => {
-//       console.log('in nav route effect');
+//       //console.log('in nav route effect');
 //       this.route.paramMap.subscribe(params => {
 //         const l = params.get('lang') as 'en' | 'ar';
 //         if (l) {
