@@ -1,3 +1,4 @@
+// src\app\components\ClientSide\certifications\live-course\live-course.component.ts
 import { Component, inject } from '@angular/core';
 import { PageBannerComponent } from '../../../../shared/clientSide/page-banner/page-banner.component';
 import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/site-button.component';
@@ -16,9 +17,9 @@ import { UpcomingSessionsComponent } from '../upcoming-sessions/upcoming-session
 
 @Component({
   selector: 'app-live-course',
-  imports: [PageBannerComponent,SiteButtonComponent,CoureseAudienceComponent,
-    CoureseContentComponent,CoureseFeaturesComponent,CoureseOutlineComponent,InstructorInfoComponent,
-    TargetAudienceComponent,StarRatingComponent,TranslatePipe,NgIf,UpcomingSessionsComponent
+  imports: [PageBannerComponent, SiteButtonComponent, CoureseAudienceComponent,
+    CoureseContentComponent, CoureseFeaturesComponent, CoureseOutlineComponent, InstructorInfoComponent,
+    TargetAudienceComponent, StarRatingComponent, TranslatePipe, NgIf, UpcomingSessionsComponent
   ],
   templateUrl: './live-course.component.html',
   styleUrl: './live-course.component.scss'
