@@ -1,1 +1,15 @@
-<p>target-audience works!</p>
+<div class="w-100">
+  <app-accordion [title]="accordionTitle">
+    <div class="audience-container d-flex gap-1 flex-wrap justify-content-center">
+      @for (audience of targetAudiences(); track $index) {
+        <span class="audience">
+          {{ audience | translate }}
+        </span>
+      } @empty {
+        <div class="text-muted text-center py-3">
+          No target audience specified
+        </div>
+      }
+    </div>
+  </app-accordion>
+</div>

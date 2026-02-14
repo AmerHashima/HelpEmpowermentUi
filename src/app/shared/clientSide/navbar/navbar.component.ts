@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // src\app\shared\clientSide\navbar\navbar.component.ts
 //   Component,
 //   computed,
@@ -181,6 +182,8 @@
 //   ]);
 // }
 // src/app/components/client-navbar/client-navbar.component.ts
+=======
+>>>>>>> 6fc5dbf71dd98694413a2f5d727c5c24526d84d3
 import {
   Component,
   computed,
@@ -194,6 +197,7 @@ import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 import { Shared } from '../../Services/shared/shared';
+import { Theme } from '../../Services/ThemeService/theme';
 
 @Component({
   selector: 'app-client-navbar',
@@ -210,6 +214,7 @@ export class ClientNavbarComponent {
 
   // Use shared service as single source of truth
   lang = this.shared.lang;
+  currentTheme = signal<string | null>(null);
   isRTL = this.shared.isRtl;
 
   // Local component state
@@ -224,6 +229,8 @@ export class ClientNavbarComponent {
         this.shared.useLanguage(langParam);
       }
     });
+
+    this.currentTheme.set(this.getTheme());
 
     // Keep track of current path for active link highlighting
     effect(() => {
@@ -264,6 +271,7 @@ export class ClientNavbarComponent {
 
   /** Toggle dark/light theme */
   toggleTheme() {
+
     if (!isPlatformBrowser(this.platformId)) return;
 
     const root = document.documentElement;
@@ -271,8 +279,18 @@ export class ClientNavbarComponent {
     const next = current === 'dark' ? 'light' : 'dark';
     root.setAttribute('data-theme', next);
     localStorage.setItem('theme', next);
+    this.currentTheme.set(next);
   }
 
+  getTheme(): 'light' | 'dark' | null {
+    if (!isPlatformBrowser(this.platformId)) return null;
+
+    const root = document.documentElement;
+    const current = root.getAttribute('data-theme') as 'light' | 'dark' | null;
+
+    // fallback to localStorage if attribute not set
+    return current ?? (localStorage.getItem('theme') as 'light' | 'dark' | null);
+  }
   /** Dynamic menu – uses current language from shared service */
   menu = computed(() => [
     {
@@ -295,12 +313,12 @@ export class ClientNavbarComponent {
         {
           translateKey: 'menu.certifications_children.PMP',
           icon: 'bi bi-clipboard-check',
-          path: `/${this.lang()}/certifications/PMP`,
+          path: `/${this.lang()}/certifications/pmp`,
         },
         {
           translateKey: 'menu.certifications_children.CAMP',
           icon: 'bi bi-clipboard',
-          path: `/${this.lang()}/certifications/CAMP`,
+          path: `/${this.lang()}/certifications/camp`,
         },
       ],
     },

@@ -1,0 +1,124 @@
+@use 'variables' as *;
+.certification .Homebanner {
+  min-height: auto !important;
+}
+
+
+.CertifticationBenfitsSubTitle {
+  text-align: center;
+}
+
+.examBenfits {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr;
+}
+
+.examBenfits .card-icon .icon {
+  font-size: 1.8rem !important;
+}
+
+.examBenfits .expirte-card {
+  padding: calc(2rem + 17px) 2rem 0.5rem;
+}
+.examBenfits .expirte-card .card-content.pt-4 {
+  padding-top: 0.5rem !important;
+}
+.examModeCard {
+  padding: 1rem;
+  border-radius: $borderRadius;
+}
+
+.examModeCard:hover {
+  background-color: $secondaryColor;
+  color: $lightBgTextColor;
+}
+.examModeCard .icon {
+  background-color: $primaryColor;
+  color: $lightBgTextColor;
+  border-radius:$borderRadius;
+  font-size: 1.1rem;
+}
+
+.examModeCard:hover * {
+  color: $lightBgTextColor;
+}
+.examModeCard:hover .icon {
+  background-color: $lightBgTextColor;
+  color: $secondaryColor;
+}
+.examModeCard:hover .icon i {
+  color: $secondaryColor;
+}
+
+.examModeCard:hover .feature-card {
+  background-color: $lightBgTextColor;
+}
+
+.examModeCard:hover .feature-card * {
+  color:$secondaryColor;
+}
+
+.examModeCard:hover .site-primary-button:hover {
+    background-color:$lightBgTextColor !important;
+}
+.examModeCard:hover .site-primary-button:hover * {
+  color:$primaryColor !important;
+}
+
+.examInfo {
+  border-top: 1px solid $borderColor;
+  border-bottom: 1px solid  $borderColor;
+}
+.examInfo .questions {
+  border-right: 1px solid  $borderColor;
+}
+
+[dir="rtl"] .examInfo .questions {
+  border-left: 1px solid  $borderColor;
+}
+
+.fa-circle-check {
+  color: rgb(34, 220, 34);
+}
+
+
+.certificationsExams{
+  display: flex;
+  flex-direction: column;
+  gap:1rem;
+}
+.certificationsExams .icon  {
+  padding:.5rem 1rem;
+}
+.certificationsExams h3  {
+ font-size:1.3rem;
+}
+ .bi-check-circle{
+  color:$successColor;
+}
+
+
+@media screen and (min-width: 768px) {
+  .examBenfits {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media screen and (min-width: 992px) {
+  .examModeCard {
+    width: 70%;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .examBenfits {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .examModeCard {
+    width: 50%;
+  }
+
+  .certificationsExams{
+  flex-direction: row;
+}
+}

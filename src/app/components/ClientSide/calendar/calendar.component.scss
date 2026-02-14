@@ -1,3 +1,6 @@
+@use 'variables' as *;
 h6{
   font-size: 1.3rem;
+  color:$headerColor;
 }
+

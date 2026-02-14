@@ -1,1 +1,12 @@
-/* src\app\components\about\about.component.scss */
+@use 'variables' as *;
+
+h1{
+  font-size:1.8rem;
+}
+
+.firstPart{
+  color:$paraTextColor;
+}
+.subTitle{
+  font-size: 1.3rem;
+}

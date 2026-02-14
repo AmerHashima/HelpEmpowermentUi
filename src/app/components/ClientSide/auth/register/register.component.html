@@ -56,18 +56,7 @@
                 email: 'Invalid email format' | translate,
               }"
             ></app-input>
-            <!-- <app-phone-input
-              name="phone"
-              [(ngModel)]="vacancy.phone"
-              required
-              [label]="'register.phoneLabel' | translate"
-              [isRTL]="isRTL()"
-              [preferredCountries]="['EG', 'SA', 'AE', 'US']"
-              [initialCountry]="'EG'"
-              [i18n]="arabicLabels"
-              [localizedCountries]="arabicCountries"
-            >
-            </app-phone-input> -->
+        
                 <app-phone-input
                   name="phone"
                   [(ngModel)]="credentials.phone"

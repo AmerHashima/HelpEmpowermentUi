@@ -1,0 +1,37 @@
+<div class="expirteContainer d-flex h-100">
+  <div class="expirte-card shadow-sm">
+    <!-- Icon -->
+    <div class="card-icon d-flex align-items-center justify-content-center">
+      <span class="icon">
+        <i [class]="icon" aria-hidden="true"></i>
+      </span>
+    </div>
+
+    <!-- Content -->
+    <div class="card-content d-flex flex-column pt-4 gap-2">
+      <div class="flex-grow-1 d-flex flex-column" [ngClass]="gap">
+        <h3>{{ title | translate }}</h3>
+        <p>{{ description | translate }}</p>
+      </div>
+
+      <!-- Learn More - shown only when onClick is provided -->
+      <ng-container *ngIf="onClick">
+        <div
+          class="learnMore d-flex align-items-center justify-content-end gap-2"
+          (click)="onClick()"
+          role="button"
+          tabindex="0"
+          (keydown.enter)="onClick()"
+          (keydown.space)="onClick()"
+        >
+          <span>{{ 'common.learnMore' | translate }}</span>
+          <i
+            class="bi"
+            [ngClass]="isRTL() ? 'bi-arrow-left' : 'bi-arrow-right'"
+            aria-hidden="true"
+          ></i>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

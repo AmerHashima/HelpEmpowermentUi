@@ -1,0 +1,38 @@
+    <app-page-banner [isRTL]="isRTL()" [media]="true">
+      <!-- Content projection -->
+      <div content class="d-flex flex-column gap-3 pe-xl-5">
+        <div class="d-flex flex-column gap-3">
+          <h3 class="CertificationHeader">
+            <span class="darkText">
+              {{ "quizGame.masterPmp" | translate }}
+            </span>
+            <span class="mainTextColor">
+              {{ "quizGame.title" | translate }}
+            </span>
+          </h3>
+
+          <p>
+            {{ "quizGame.description" | translate }}
+          </p>
+
+
+
+          <div class="d-flex align-content-center gap-3">
+            <app-site-button
+              title="quizGame.play"
+              [icon]="isRTL() ? 'bi bi-arrow-left' : 'bi bi-arrow-right'"
+              type="main"
+              (click)="playNow()"
+            ></app-site-button>
+
+          </div>
+        </div>
+      </div>
+
+      <img
+        media
+        [src]="courseImage"
+        alt="contact Image"
+        class="Homebanner-video shadow w-100 h-100"
+      />
+    </app-page-banner>

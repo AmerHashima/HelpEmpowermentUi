@@ -1,1 +1,46 @@
-<p>instructor-info works!</p>
+<div class="w-full">
+  <app-accordion [title]="accordionTitle">
+    <div class="instructor-content d-flex flex-column gap-4">
+      <!-- Introduction paragraph -->
+      <p>{{ instructor().introParagragh }}</p>
+
+      <!-- Skills / Services grid -->
+      <div class="row gy-2">
+        @for (skill of instructor().skills; track $index) {
+          <div class="col-sm-6">
+            <app-service-card
+              [icon]="skill.icon"
+              [header]="skill.header"
+              [text]="skill.text"
+            ></app-service-card>
+          </div>
+        } @empty {
+          <div class="text-muted text-center py-3">No skills listed</div>
+        }
+      </div>
+
+      <!-- Professional Certifications section -->
+      <div class="d-flex flex-column gap-3">
+        <div class="d-flex gap-1 align-items-center mainTextColor">
+          <i class="bi bi-award-fill"></i>
+          <h4 class="mb-0 fw-bold">{{ "Professional Certifications" | translate }}</h4>
+        </div>
+
+        <div class="ps-4 row gy-2">
+          @for (cert of instructor().certifcations; track $index) {
+            <div class="col-lg-6">
+              <div class="outline-item d-flex align-items-center gap-2">
+                <i class="bi bi-check-circle-fill mainTextColor"></i>
+                <span class="darkText">{{ cert | translate }}</span>
+              </div>
+            </div>
+          } @empty {
+            <div class="text-muted text-center py-2">
+              No certifications listed
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </app-accordion>
+</div>

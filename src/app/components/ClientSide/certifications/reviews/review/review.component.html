@@ -1,0 +1,53 @@
+<div class="review h-100">
+  <div class="reviewContent d-flex flex-column gap-2">
+    <!-- Reviewer info + image -->
+    <div class="d-flex align-items-center gap-2">
+      <img
+        [src]="sectionImage()"
+        alt="Reviewer image"
+        class="reviewer-image rounded-circle"
+      />
+
+      <div class="innerContent  flex-grow-1 d-flex flex-md-column flex-xl-row justify-content-between">
+        <div class="d-flex flex-column gap-1 ">
+          <span class="reviewerName  fw-bold">{{ reviewerName() }}</span>
+
+          <div class="reviewTag text-muted small">
+            <div class="d-flex align-items-center gap-2">
+              <span>Reviewed:</span>
+              <span>{{ reviewDate() }}</span>
+            </div>
+
+            <div class="d-flex align-items-center gap-2">
+              <span>Topic:</span>
+              <span>{{ reviewTopic() }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="stars">
+          <app-star-rating [value]="reviewRate()"></app-star-rating>
+        </div>
+      </div>
+    </div>
+
+    <!-- Review text with read more/less -->
+    <p class="reviewText">
+      {{ displayedText() }}
+
+      @if (isLongText()) {
+        <span
+          class="readMore text-primary fw-medium ms-1"
+          role="button"
+          tabindex="0"
+          (click)="toggleExpanded()"
+          (keydown.enter)="toggleExpanded()"
+          (keydown.space)="toggleExpanded()"
+        >
+          {{ expanded() ? ('common.readLess' | translate) : ('common.readMore' | translate) }}
+        </span>
+      }
+    </p>
+  </div>
+</div>
+

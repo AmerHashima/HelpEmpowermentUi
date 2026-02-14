@@ -53,6 +53,9 @@ html #toast-container.toast-top-right {
   z-index: 999999999 !important;
 }
 
+.bg-site{
+  background-color: #C02C61;
+}
   .form-check-label,label{
     color:$paraTextColor !important;
   }
@@ -224,7 +227,7 @@ body {
 }
 
 .mainTextColor {
-  color: var(--primary-color);
+  color: var(--primary-color) ;
 }
 
 html[dir="ltr"],
@@ -351,6 +354,75 @@ p {
   font-size:1.2rem;
 }
 
+.examModeCard .btn.btn-primary:hover{
+  background-color: $lightBgTextColor !important;
+  color:$secondaryColor !important;
+}
+
+.webinarRegister .btn.btn-primary{
+  background-color: $lightBgTextColor !important;
+  color:$primaryColor !important;
+  &:hover{
+    color:$lightBgTextColor !important;
+  }
+}
+
+
+.certificationPrice span {
+  font-size: 2rem;
+  font-weight:$bold;
+}
+
+.certificationPrice {
+  padding-top: 0.5rem;
+}
+
+.certifictionRate {
+  font-size: $fs-sm;
+  color: $paragraphColor;
+}
+
+.enrollTag img {
+  height: 40px !important;
+}
+
+.enrollTag span {
+  color: $paragraphColor;
+  font-weight: $bold;
+}
+.certification .rating {
+  padding-inline-end: 2rem;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.text-muted{
+  color:$paraTextColor !important;
+}
+.CertificationHeader {
+  font-size: 1.8rem;
+  margin: 0px;
+  line-height: 130%;
+}
+
+.custom-close {
+  background-color: transparent;
+  border: none;
+  font-size: 1.3rem;
+  color:$primaryColor !important;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.custom-close:hover {
+  opacity: 0.7;
+}
+.modal-content {
+  background-color: $bgNav;
+}
+.modal-header{
+  border-color: $borderColor;
+}
+
 @media screen and (min-width: 1200px) {
   h1 {
     font-size: 5rem;
@@ -360,6 +432,14 @@ p {
   }
   h3 {
     font-size: 1.5rem;
+  }
+    .certification .rating {
+    flex-direction: row;
+    gap: 1rem;
+  }
+  .certification .enrollTag,
+  .certification .enrollTag img {
+    order: 1;
   }
 }
 

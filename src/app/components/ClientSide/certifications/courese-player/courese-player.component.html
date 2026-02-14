@@ -1,0 +1,24 @@
+<div class="container-fluid">
+  <div class="course-player row">
+    <!-- Video Player Area -->
+    <div class="col-lg-9">
+      <div class="video-player">
+        <app-video-player
+          *ngIf="currentLesson()"
+          [video]="currentLesson()!"
+          (ended)="handleLessonEnd(currentLesson()!.id)"
+        ></app-video-player>
+      </div>
+    </div>
+
+    <div class="col-lg-3">
+      <div class="lesson-sidebar">
+        <app-lesson-sidebar
+          [lessons]="lessonState()"
+          [currentLesson]="currentLesson()"
+          (select)="handleSelectLesson($event)"
+        ></app-lesson-sidebar>
+      </div>
+    </div>
+  </div>
+</div>

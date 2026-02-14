@@ -35,6 +35,9 @@ import { LoginComponent } from './components/ClientSide/auth/login/login.compone
 import { RegisterComponent } from './components/ClientSide/auth/register/register.component';
 import { ProfileComponent } from './components/ClientSide/auth/profile/profile.component';
 import { AuthComponent } from './components/ClientSide/auth/auth.component';
+import { LiveCourseComponent } from './components/ClientSide/certifications/live-course/live-course.component';
+import { QuizGameComponent } from './components/ClientSide/certifications/quiz-game/quiz-game.component';
+import { ReviewsComponent } from './components/ClientSide/certifications/reviews/reviews.component';
 
 export const validLangGuard: CanMatchFn = (route, segments) => {
   const lang = segments[0]?.path;
@@ -80,22 +83,25 @@ export const routes: Routes = [
       {
         path: 'certifications',
         component: clientCertifications,
-        // children:[
-        //   {
-        //     path:'',
-        //     redirectTo:"pmp",
-        //     pathMatch: 'full',
-        //   },
-        //   {
-        //        path:"PMP",
-        //        component:PmpComponent
-        //   },
-        //   {
-        //     path: "CAMP",
-        //     component: CampComponent
-        //   }
+        children:[
+          {
+            path:'',
+            redirectTo:"pmp",
+            pathMatch: 'full',
+          },
+          {
+               path:"pmp",
+               component:PmpComponent,
+            children: getCertificationChildren()
 
-        // ]
+          },
+          {
+            path: "camp",
+            component: CampComponent,
+            children: getCertificationChildren()
+          }
+
+        ]
       },
       {
         path: 'services',
@@ -241,3 +247,87 @@ export const routes: Routes = [
     component: NotFoundComponent,
   },
 ];
+
+
+function getCertificationChildren():Routes {
+  return [
+    {
+      path: '',
+      redirectTo: 'exam-simulator',
+      pathMatch: 'full'
+    },
+    {
+      path: 'exam-simulator',
+      loadComponent: () =>
+        import('./components/ClientSide/certifications/exam-simulator/exam-simulator.component')
+          .then(m => m.ExamSimulatorComponent)
+    },
+    {
+      path: 'recorded-course',
+      loadComponent: () =>
+        import('./components/ClientSide/certifications/recorded-course/recorded-course.component')
+          .then(m => m.RecordedCourseComponent)
+    },
+    {
+      path: 'live-course',
+      loadComponent: () =>
+        import('./components/ClientSide/certifications/live-course/live-course.component')
+          .then(m => m.LiveCourseComponent)
+    },
+    {
+      path: 'webinar',
+      loadComponent: () =>
+        import('./components/ClientSide/certifications/webinar/webinar.component')
+          .then(m => m.WebinarComponent)
+    },
+    {
+      path: 'articles',
+      loadComponent: () =>
+        import('./components/ClientSide/certifications/certification-articles/certification-articles.component')
+          .then(m => m.CertificationArticlesComponent)
+    },
+    {
+      path: 'quiz-game',
+      loadComponent: () =>
+        import('./components/ClientSide/certifications/quiz-game/quiz-game.component')
+          .then(m => m.QuizGameComponent)
+    },
+    {
+      path: 'faq',
+      loadComponent: () =>
+        import('./components/ClientSide/certifications/certification-faqs/certification-faqs.component')
+          .then(m => m.CertificationFaqsComponent)
+    },
+    {
+      path: 'reviews',
+      loadComponent: () =>
+        import('./components/ClientSide/certifications/reviews/reviews.component')
+          .then(m => m.ReviewsComponent)
+    },
+    {
+      path: 'reports',
+      loadComponent: () =>
+        import('./components/ClientSide/exam-reports/exam-reports.component')
+          .then(m => m.ExamReportsComponent)
+    },
+    {
+      path: 'lesson-learned',
+      loadComponent: () =>
+        import('./components/ClientSide/exam-lesson-learned-questions/exam-lesson-learned-questions.component')
+          .then(m => m.ExamLessonLearnedQuestionsComponent)
+    },
+    {
+      path: 'chooseExam',
+      loadComponent: () =>
+        import('./components/ClientSide/certifications/choose-exam/choose-exam.component')
+          .then(m => m.ChooseExamComponent),
+    },
+      {
+      path: 'exams/:id',
+      loadComponent: () =>
+        import('./components/ClientSide/certifications/exam/exam.component')
+          .then(m => m.ExamComponent),
+        data: { fullPage: true }
+    }
+  ];
+}

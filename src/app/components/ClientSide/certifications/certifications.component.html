@@ -1,1 +1,4 @@
-<<router-outlet></router-outlet>
+@if(!isFullPage() && showTabs){
+<app-generic-tabs [tabs]="tabs()"></app-generic-tabs>
+}
+<router-outlet></router-outlet>

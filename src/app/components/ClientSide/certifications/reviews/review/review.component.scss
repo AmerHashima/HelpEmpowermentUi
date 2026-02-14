@@ -1,0 +1,60 @@
+@use 'variables' as *;
+
+.review {
+  background-color: $inputBg;
+  border: 1px solid $inputBg;
+  border-radius: 12px;
+  padding: 1.25rem;
+  transition: all 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+  }
+}
+
+.reviewer-image {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+}
+
+.reviewerName {
+  font-size: 1.1rem;
+  color: $headerColor;
+}
+
+.reviewTag {
+  font-size: 0.9rem;
+  span{
+    color:$paraTextColor;
+  }
+}
+
+.reviewText {
+  color: $paraTextColor;
+  line-height: 1.6;
+  margin-top: 0.75rem;
+
+  .readMore {
+    color:$primaryColor !important ;
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.stars i {
+  font-size: 1.1rem;
+}
+
+/* RTL support */
+:host-context([dir="rtl"]) {
+  .reviewContent .d-flex.align-items-center {
+    flex-direction: row-reverse;
+  }
+
+  .reviewTag .d-flex {
+    flex-direction: row-reverse;
+  }
+}

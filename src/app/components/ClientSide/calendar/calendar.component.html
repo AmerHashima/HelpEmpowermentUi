@@ -1,10 +1,10 @@
 <div class="d-flex flex-column gap-3">
   <app-page-banner [isRTL]="isRTL()" [media]="true" [isGrow]="false">
-    <div content class="d-flex flex-column gap-3">
+    <div content class="d-flex flex-column gap-3 pe-xl-5" >
       <h6 class="mb-0 fw-bold">
         {{ "calendar.unlockMessage" | translate }}
       </h6>
-      <h5 class="mb-0 fw-bold">{{ "calendar.upcomingEvents" | translate }}</h5>
+      <h5 class="mb-0 fw-bold mainTextColor">{{ "calendar.upcomingEvents" | translate }}</h5>
 
         <div class="calendarGrid row px-0 g-3">
           @for (item of calendarData; let i = $index; track item) {
@@ -23,7 +23,7 @@
 
     <img
       media
-      src="assets/images/contact/contact.jpeg"
+      src="assets/images/calendar/calendar.jpeg"
       alt="contactImage"
       class="Homebanner-video shadow w-100 h-100"
     />

@@ -1,0 +1,22 @@
+@use 'variables' as *;
+.examCard{
+  background-color: $primaryColor;
+  &:hover{
+      background-color: $secondaryColor;
+  }
+}
+span , i{
+  color:$lightBgTextColor;
+}
+
+.infoColor{
+  color:$primaryColor !important;
+  font-size: 2rem;
+}
+.try{
+    color:$primaryColor !important;
+}
+.back *{
+      color:$primaryColor !important;
+
+}

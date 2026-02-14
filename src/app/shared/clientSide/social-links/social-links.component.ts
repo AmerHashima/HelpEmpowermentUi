@@ -11,27 +11,27 @@ export class SocialLinksComponent {
     {
       title: 'linkedin',
       icon: 'bi bi-linkedin',
-      url: 'https://www.linkedin.com/',
+      url: 'https://www.linkedin.com/company/help-empowerment/',
     },
     {
       title: 'facebook',
       icon: 'bi bi-facebook',
-      url: 'https://www.facebook.com',
+      url: 'https://www.facebook.com/share/1aLDjaYUHY/',
     },
     {
       title: 'twitter',
       icon: 'bi bi-twitter-x',
-      url: 'https://x.com/',
+      url: 'https://x.com/HelpEmpowe12214',
     },
     {
       title: 'instagram',
       icon: 'bi bi-instagram',
-      url: 'https://www.instagram.com/',
+      url: 'https://www.instagram.com/help_empowerment',
     },
     {
-      title: 'youtube',
-      icon: 'bi bi-youtube',
-      url: 'https://www.youtube.com/',
+      title: 'whatsapp',
+      icon: 'bi bi-whatsapp',
+      url: 'https://wa.me/966564943997',
     },
   ];
 

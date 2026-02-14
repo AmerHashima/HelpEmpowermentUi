@@ -9,6 +9,6 @@ import { Component, input, output } from '@angular/core';
 export class GenericModelComponent {
   isOpen = input.required<boolean>();
   title = input<string>('Modal');
-
+  isOpenChange = output<boolean>({ alias: 'isOpenChange' });
   close = output<void>();
 }

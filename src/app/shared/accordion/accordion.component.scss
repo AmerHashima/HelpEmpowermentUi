@@ -1,0 +1,50 @@
+@use 'variables' as *;
+
+.accordion-wrapper {
+  margin-bottom: 1.5rem;
+
+  .accordion-button {
+    font-weight: 500;
+    color: $headerColor;
+    background-color: $accordionBg;
+
+    // Always show arrow
+    &::after {
+      display: block;
+      opacity: 1;
+    }
+
+    &:not(.collapsed) {
+      background-color: $accordionBg;
+      color: $headerColor;
+      box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .125);
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.25);
+    }
+  }
+
+  .accordion-body {
+    color: $headerColor;
+    line-height: 1.6;
+  }
+  .accordion-item{
+  background-color: transparent;
+}
+  .accordion-header{
+  background-color: transparent;
+}
+}
+
+/* RTL Support */
+:host-context([dir="rtl"]) {
+  .accordion-button {
+    flex-direction: row-reverse;
+
+    &::after {
+      margin-right: 0;
+      margin-left: auto;
+    }
+  }
+}
