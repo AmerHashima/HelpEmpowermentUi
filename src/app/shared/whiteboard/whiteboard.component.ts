@@ -43,14 +43,12 @@ export class WhiteboardComponent implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     if (!this.isBrowser) {
-      // Server: do nothing → template will show fallback content
       return;
     }
 
-    // Browser only: delay because modal needs time to become visible/sized
     setTimeout(() => {
       this.initializeCanvas();
-    }, 400); // adjust if needed (300–800 ms)
+    }, 400);
   }
 
   private initializeCanvas() {
@@ -64,14 +62,13 @@ export class WhiteboardComponent implements AfterViewInit, OnDestroy {
       backgroundColor: '#ffffff',
       selection: true,
       preserveObjectStacking: true,
-      width: 800, // fallback
-      height: 500, // fallback
+      width: 800,
+      height: 500,
     });
 
     this.forceResizeAndRefresh();
     this.enableDrawingMode();
 
-    // Debug helpers (browser only)
     this.canvas.on('mouse:down', (e) => {
       console.log('mouse:down event:', e);
     });
@@ -95,7 +92,7 @@ export class WhiteboardComponent implements AfterViewInit, OnDestroy {
       height = Math.max(height, 400);
 
       this.canvas.setDimensions({ width, height });
-      this.canvas.calcOffset(); // critical for mouse coordinates
+      this.canvas.calcOffset();
       this.canvas.requestRenderAll();
       this.cdr.detectChanges();
     }

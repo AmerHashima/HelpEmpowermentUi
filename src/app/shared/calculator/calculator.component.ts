@@ -66,10 +66,25 @@ export class CalculatorComponent {
      Basic Controls
   --------------------------------------------------- */
 
+
   append(value: string) {
-    if (this.result && /[0-9.]/.test(value)) {
-      this.expression = '';
-      this.result = '';
+
+    const operators = ['+', '-', '×', '÷', '^', '%'];
+    const lastChar = this.expression.slice(-1);
+
+    if (this.result) {
+      if (operators.includes(value)) {
+        this.expression = this.result;
+        this.result = '';
+      } else {
+        this.expression = '';
+        this.result = '';
+      }
+    }
+
+    // Prevent double operators
+    if (operators.includes(value) && operators.includes(lastChar)) {
+      this.expression = this.expression.slice(0, -1);
     }
 
     this.expression += value;

@@ -10,23 +10,20 @@
     <div class="result">{{ result || '0' }}</div>
 
     <!-- Angle mode toggle -->
-    <div class="mode-toggle">
+    <div class="mode-toggle" class="mb-2">
       <mat-button-toggle-group [(ngModel)]="angleMode">
         <mat-button-toggle value="RAD">RAD</mat-button-toggle>
         <mat-button-toggle value="DEG">DEG</mat-button-toggle>
       </mat-button-toggle-group>
     </div>
 
-    <!-- Memory row -->
-    <div class="memory-row">
-      <button mat-stroked-button (click)="memoryClear()">MC</button>
-      <button mat-stroked-button (click)="memoryRecall()">MR</button>
-      <button mat-stroked-button (click)="memoryAdd()">M+</button>
-      <button mat-stroked-button (click)="memorySubtract()">M−</button>
-    </div>
 
     <!-- Main grid + scientific functions -->
     <div class="button-grid">
+       <button  mat-flat-button color="primary" (click)="memoryClear()">MC</button>
+      <button mat-flat-button color="primary" (click)="memoryRecall()">MR</button>
+      <button  mat-flat-button color="primary" (click)="memoryAdd()">M+</button>
+      <button  mat-flat-button color="primary" (click)="memorySubtract()">M−</button>
       <!-- Row scientific + memory-like -->
       <button mat-flat-button color="primary" (click)="insertFunction('sin')">sin</button>
       <button mat-flat-button color="primary" (click)="insertFunction('cos')">cos</button>

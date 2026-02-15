@@ -1,9 +1,9 @@
 <div class="exam-container">
   <!-- Header -->
-  <header class="exam-header gap-2">
+  <header class="exam-header flex-column flex-lg-row gap-2">
     <app-feature title="Exam 1 - Practice Mode" icon="bi bi-star" />
     <!-- <div class="mode"><span class="star">★</span> Exam 1 - Practice Mode</div> -->
-    <div class="actionsd d-flex gap-2 flex-grow-1">
+    <div class="actionsd d-flex flex-column flex-lg-row gap-2 flex-grow-1">
       <app-site-button
         class="flex-grow-1"
         title="End Exam"
@@ -31,7 +31,7 @@
 
   <!-- Question area -->
   <main class="question-area">
-    <div class="d-flex gap-2">
+    <div class="d-flex flex-column flex-md-row gap-2">
       <div class="question-header shadow rounded rounded-3 flex-grow-1">
         <div class="progress-info">
           <span class="mainTextColor"
@@ -56,7 +56,7 @@
         [customClass]="true"
         (click)="onOpenCalculator()"
       />
-    </div>
+    </div>  
 
     <div class="question-content">
       <h2 class="question-text">
@@ -78,8 +78,8 @@
     </div>
 
     <!-- Footer controls -->
-    <footer class="question-footer">
-      <div class="left-controls d-flex align-items-center gap-1">
+    <footer class="question-footer   gap-2 flex-column flex-lg-row ">
+      <div class="left-controls d-flex  align-items-center gap-1">
         <app-site-button
           [title]="'Question Board' | translate"
           type="main"
@@ -97,7 +97,7 @@
           (click)="onTranslate()"
         />
       </div>
-      <div class="nav-buttons d-flex align-items-center gap-1">
+      <div class="nav-buttons d-flex  align-items-center gap-1">
         <app-site-button
           [title]="'Previous' | translate"
           type="secondary"

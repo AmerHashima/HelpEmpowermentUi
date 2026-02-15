@@ -430,6 +430,17 @@ p {
   color:$primaryColor !important;
   font-size: 2rem;
 }
+.group-appearance-standard,.mat-button-toggle-appearance-standard.mat-button-toggle-checked {
+  border-color: $primaryColor !important;
+  background-color: $primaryColor !important;
+  color:$lightBgTextColor !important;
+  *{
+  color:$lightBgTextColor !important;
+  }
+}
+.mat-button-toggle-group-appearance-standard .mat-pseudo-checkbox {
+    --mat-minimal-pseudo-checkbox-selected-checkmark-color:$lightBgTextColor !important;
+}
 @media screen and (min-width: 1200px) {
   h1 {
     font-size: 5rem;
