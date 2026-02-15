@@ -38,6 +38,7 @@ import { AuthComponent } from './components/ClientSide/auth/auth.component';
 import { LiveCourseComponent } from './components/ClientSide/certifications/live-course/live-course.component';
 import { QuizGameComponent } from './components/ClientSide/certifications/quiz-game/quiz-game.component';
 import { ReviewsComponent } from './components/ClientSide/certifications/reviews/reviews.component';
+import { clientAuthGuard, clientGuestGuard } from './Guards/ClientSideGuards/client-auth-guard';
 
 export const validLangGuard: CanMatchFn = (route, segments) => {
   const lang = segments[0]?.path;
@@ -163,15 +164,21 @@ export const routes: Routes = [
           },
           {
             path: "login",
-            component: LoginComponent
+            component: LoginComponent,
+            canActivate: [clientGuestGuard]
+
           },
           {
             path: "register",
-            component: RegisterComponent
+            component: RegisterComponent,
+            canActivate: [clientGuestGuard]
+
           },
           {
             path: "profile",
-            component: ProfileComponent
+            component: ProfileComponent,
+            canActivate: [clientAuthGuard]
+
           },
         ]
       },

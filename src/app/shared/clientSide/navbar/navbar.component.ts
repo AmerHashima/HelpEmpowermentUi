@@ -12,6 +12,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 import { Shared } from '../../Services/shared/shared';
 import { Theme } from '../../Services/ThemeService/theme';
+import { AuthService } from '../../../Services/auth.service';
 
 @Component({
   selector: 'app-client-navbar',
@@ -22,6 +23,8 @@ import { Theme } from '../../Services/ThemeService/theme';
 })
 export class ClientNavbarComponent {
   private shared = inject(Shared);
+  private auth = inject(AuthService);
+  loggedStudent =this.auth.loggedStudent
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private platformId = inject(PLATFORM_ID);
@@ -104,6 +107,10 @@ export class ClientNavbarComponent {
 
     // fallback to localStorage if attribute not set
     return current ?? (localStorage.getItem('theme') as 'light' | 'dark' | null);
+  }
+
+  logout(){
+    this.auth.logout();
   }
   /** Dynamic menu – uses current language from shared service */
   menu = computed(() => [

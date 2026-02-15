@@ -1,8 +1,9 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
 import ApiService from '../shared/Services/ApiService/api.service';
 import { APIStudent, Student } from '../models/student';
 import { ApiResponse } from '../models/apiResponse';
 import { map, Observable } from 'rxjs';
+import { isPlatformBrowser } from '@angular/common';
 
 interface LoginForm{
   username: string,
@@ -12,9 +13,19 @@ interface LoginForm{
   providedIn: 'root'
 })
 export class AuthService {
+  private platformId = inject(PLATFORM_ID);
+  private isBrowser = isPlatformBrowser(this.platformId);
   hasBought = signal<boolean>(false);
   loggedStudent=signal<APIStudent | null>(null);
-  constructor(private apiService: ApiService) { }
+
+  constructor(private apiService: ApiService) {
+    if (this.isBrowser) {
+      const storedUser = localStorage.getItem('loggedStudent');
+      if (storedUser) {
+        this.loggedStudent.set(JSON.parse(storedUser));
+      }
+    }
+  }
 
   registerStudent(body: Student): Observable<APIStudent> {
     return this.apiService
@@ -40,11 +51,22 @@ export class AuthService {
             throw new Error(msg);
           }
           this.loggedStudent.set(response.data);
+          if (this.isBrowser) {
+            localStorage.setItem('loggedStudent', JSON.stringify(response.data));
+          }
           return response.data;
         })
       );
   }
 
+  logout(){
+    //send api reuquesy
+    console.log('send logout api reuqest')
+    this.loggedStudent.set(null);
+    if (this.isBrowser) {
+      localStorage.removeItem('loggedStudent');
+    }
+  }
   getStudents(): Observable<APIStudent[]> {
     return this.apiService.get<ApiResponse<APIStudent[]>>('Students').pipe(
       map((response: ApiResponse<APIStudent[]>) => {

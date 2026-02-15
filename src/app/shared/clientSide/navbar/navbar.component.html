@@ -1,35 +1,51 @@
 <nav class="clientNavbar w-100">
- <div class="page-width">
-   <div class="top-bar">
-              <img src="assets/images/clientNavbar/logo.png" alt="Logo" class="logo" />
+  <div class="page-width">
+    <div class="top-bar">
+      <img src="assets/images/clientNavbar/logo.png" alt="Logo" class="logo" />
 
-    <!-- @if(currentTheme() == 'light'){
+      <!-- @if(currentTheme() == 'light'){
           <img src="assets/images/clientNavbar/logo.png" alt="Logo" class="logo" />
     }
     @else{
                 <img src="assets/images/clientNavbar/darkLogo.jpeg" alt="Logo" class="logo" />
     } -->
 
-    <div class="right-actions">
-      <div class="search">
-        <i class="bi bi-search"></i>
-        <input [placeholder]="'search' | translate" />
-      </div>
+      <div class="right-actions">
+        <div class="search">
+          <i class="bi bi-search"></i>
+          <input [placeholder]="'search' | translate" />
+        </div>
 
-     <div class="d-flex align-items-center flex-nowrap">
-       <i class="bi bi-moon theme-toggle" (click)="toggleTheme()"></i>
+        <div class="d-flex align-items-center flex-nowrap">
+          <i class="bi bi-moon theme-toggle" (click)="toggleTheme()"></i>
 
-      <!-- Language -->
+          <!-- Language -->
+          <div class="dropdown">
+            <i class="bi bi-globe" (click)="toggleDropdown('lang')"></i>
+            <ul *ngIf="openDropdown() === 'lang'">
+              <li (click)="changeLang('en')" class="text-center">English</li>
+              <li (click)="changeLang('ar')" class="text-center">العربية</li>
+            </ul>
+          </div>
+
+          <!-- Auth -->
+          <!-- @if(this.loggedStudent() && this.loggedStudent().oid){
       <div class="dropdown">
-        <i class="bi bi-globe" (click)="toggleDropdown('lang')"></i>
-        <ul *ngIf="openDropdown() === 'lang'">
-          <li (click)="changeLang('en')" class="text-center">English</li>
-          <li (click)="changeLang('ar')"  class="text-center">العربية</li>
+        <i class="bi bi-user" (click)="toggleDropdown('auth')"></i>
+        <ul *ngIf="openDropdown() === 'auth'" class="shadow">
+          <li (click)="navigate('/' + lang() + '/auth/profile')">
+            <i class="bi bi-box-arrow-in-right"></i>
+            {{ 'auth.profile' | translate }}
+          </li>
+            <li (click)="logout()">
+            <i class="bi bi-box-arrow-right"></i>
+            {{ 'auth.logout' | translate }}
+          </li>
         </ul>
       </div>
-
-      <!-- Auth -->
-      <div class="dropdown">
+       }
+       @else{
+          <div class="dropdown">
         <i class="bi bi-box-arrow-in-right" (click)="toggleDropdown('auth')"></i>
         <ul *ngIf="openDropdown() === 'auth'" class="shadow">
           <li (click)="navigate('/' + lang() + '/auth/login')">
@@ -42,41 +58,77 @@
           </li>
         </ul>
       </div>
-     </div>
+       } -->
+
+          @let student = this.loggedStudent();
+
+          @if (student && student.oid) {
+            <div class="dropdown">
+              <i class="bi bi-person-circle" (click)="toggleDropdown('auth')"></i>
+              <ul *ngIf="openDropdown() === 'auth'" class="shadow">
+                <li (click)="navigate('/' + lang() + '/auth/profile')">
+                  <i class="bi bi-person"></i>
+                  {{ "auth.profile" | translate }}
+                </li>
+                <li (click)="logout()">
+                  <i class="bi bi-box-arrow-right"></i>
+                  {{ "auth.logout" | translate }}
+                </li>
+              </ul>
+            </div>
+          } @else {
+            <div class="dropdown">
+              <i
+                class="bi bi-box-arrow-in-right"
+                (click)="toggleDropdown('auth')"
+              ></i>
+              <ul *ngIf="openDropdown() === 'auth'" class="shadow">
+                <li (click)="navigate('/' + lang() + '/auth/login')">
+                  <i class="bi bi-box-arrow-in-right"></i>
+                  {{ "auth.login" | translate }}
+                </li>
+                <li (click)="navigate('/' + lang() + '/auth/register')">
+                  <i class="bi bi-person-plus"></i>
+                  {{ "auth.signup" | translate }}
+                </li>
+              </ul>
+            </div>
+          }
+        </div>
+      </div>
     </div>
-  </div>
 
-  <ul class="menu">
-    <li
-      *ngFor="let item of menu()"
-      [class.active]="currentPath() === item.path"
-      [class.has-children]="item.children"
-    >
-      <!-- Parent without children -->
-      <a *ngIf="!item.children" (click)="navigate(item.path!)">
-        <i [class]="item.icon"></i>
-        {{ item.translateKey | translate }}
-      </a>
-
-      <!-- Parent with children (dropdown) -->
-      <div *ngIf="item.children">
-        <a (click)="toggleDropdown(item.key)">
+    <ul class="menu">
+      <li
+        *ngFor="let item of menu()"
+        [class.active]="currentPath() === item.path"
+        [class.has-children]="item.children"
+      >
+        <!-- Parent without children -->
+        <a *ngIf="!item.children" (click)="navigate(item.path!)">
           <i [class]="item.icon"></i>
           {{ item.translateKey | translate }}
-          <i class="bi bi-chevron-down"></i>
         </a>
 
-        <ul *ngIf="openDropdown() === item.key" class="shadow">
-          <li
-            *ngFor="let child of item.children"
-            (click)="navigate(child.path)"
-          >
-            <i [class]="child.icon"></i>
-            {{ child.translateKey | translate }}
-          </li>
-        </ul>
-      </div>
-    </li>
-  </ul>
- </div>
+        <!-- Parent with children (dropdown) -->
+        <div *ngIf="item.children">
+          <a (click)="toggleDropdown(item.key)">
+            <i [class]="item.icon"></i>
+            {{ item.translateKey | translate }}
+            <i class="bi bi-chevron-down"></i>
+          </a>
+
+          <ul *ngIf="openDropdown() === item.key" class="shadow">
+            <li
+              *ngFor="let child of item.children"
+              (click)="navigate(child.path)"
+            >
+              <i [class]="child.icon"></i>
+              {{ child.translateKey | translate }}
+            </li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+  </div>
 </nav>

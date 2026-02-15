@@ -22,7 +22,9 @@
   },
   "auth": {
     "login": "Login",
-    "signup": "Sign Up"
+    "signup": "Sign Up",
+    "profile":"Profile",
+    "logout":"Logout"
   },
   "footer": {
     "image": "Footer image",
