@@ -343,6 +343,7 @@
   },
   "pages": {
     "about": "About US",
+        "profile": "Profile",
     "contact": "Contact US",
     "login": "Login",
     "register": "Register",

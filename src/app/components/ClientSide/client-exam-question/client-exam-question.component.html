@@ -1,31 +1,61 @@
 <div class="exam-container">
   <!-- Header -->
-  <header class="exam-header">
-      <app-feature title="Exam 1 - Practice Mode" icon="bi bi-star" />
+  <header class="exam-header gap-2">
+    <app-feature title="Exam 1 - Practice Mode" icon="bi bi-star" />
     <!-- <div class="mode"><span class="star">★</span> Exam 1 - Practice Mode</div> -->
-    <div class="actions">
-      <button class="btn end">End Exam</button>
-      <button class="btn save">Save and Continue Later</button>
-      <button class="btn whiteboard">🖊 Whiteboard</button>
+    <div class="actionsd d-flex gap-2 flex-grow-1">
+      <app-site-button
+        class="flex-grow-1"
+        title="End Exam"
+        [isRTL]="isRTL()"
+        type="main"
+        (click)="onEndExam()"
+      />
+      <app-site-button
+        class="flex-grow-1"
+        title="Save and Continue Later"
+        [isRTL]="isRTL()"
+        type="secondary"
+        (click)="onSaveExamForLater()"
+      />
+      <app-site-button
+        title="Whiteboard"
+        [isRTL]="isRTL()"
+        type="main"
+        icon="bi bi-easel"
+        [customClass]="true"
+        (click)="onOpenWhiteboard()"
+      />
     </div>
   </header>
 
   <!-- Question area -->
   <main class="question-area">
-    <div class="question-header">
-      <div class="progress-info">
-        <span class="help">?</span>
-        <span class="qid"
-          >{{ question().id }}/{{ question().totalQuestions }}</span
-        >
-        <div class="progress-bar">
-          <div
-            class="progress-fill"
-            [style.width.%]="question().progress"
-          ></div>
+    <div class="d-flex gap-2">
+      <div class="question-header shadow rounded rounded-3 flex-grow-1">
+        <div class="progress-info">
+          <span class="mainTextColor"
+            ><i class="bi bi-question-circle-fill"></i
+          ></span>
+          <span class="qid mainTextColor"
+            >{{ question().id }}/{{ question().totalQuestions }}</span
+          >
+          <div class="progress-bar">
+            <div
+              class="progress-fill"
+              [style.width.%]="question().progress"
+            ></div>
+          </div>
         </div>
       </div>
-      <button class="btn calculator">🧮 Calculator</button>
+      <app-site-button
+        title="Calculator"
+        [isRTL]="isRTL()"
+        type="main"
+        icon="bi bi-calculator"
+        [customClass]="true"
+        (click)="onOpenCalculator()"
+      />
     </div>
 
     <div class="question-content">
@@ -50,18 +80,18 @@
     <!-- Footer controls -->
     <footer class="question-footer">
       <div class="left-controls d-flex align-items-center gap-1">
-           <app-site-button
+        <app-site-button
           [title]="'Question Board' | translate"
           type="main"
           [customClass]="true"
           icon="bi bi-clipboard-data"
-            [isRTL]="isRTL()"
+          [isRTL]="isRTL()"
           (click)="onOpenQuestionBoard()"
         />
-             <app-site-button
+        <app-site-button
           [title]="'Translate' | translate"
           type="main"
-            [isRTL]="isRTL()"
+          [isRTL]="isRTL()"
           icon="bi bi-translate"
           [customClass]="true"
           (click)="onTranslate()"
@@ -71,20 +101,20 @@
         <app-site-button
           [title]="'Previous' | translate"
           type="secondary"
-            [isRTL]="isRTL()"
+          [isRTL]="isRTL()"
           (click)="previousQuestion()"
         />
-         <app-site-button
+        <app-site-button
           [title]="'Marked' | translate"
           type="main"
           icon="bi bi-bookmark-check"
           [customClass]="true"
-            [isRTL]="isRTL()"
+          [isRTL]="isRTL()"
           (click)="onMarkQuestion()"
         />
         <app-site-button
           title="Next"
-            [isRTL]="isRTL()"
+          [isRTL]="isRTL()"
           type="main"
           (click)="nextQuestion()"
         />
@@ -92,3 +122,34 @@
     </footer>
   </main>
 </div>
+
+<app-generic-modal [(isOpen)]="showConfirm" title="">
+  <section
+    class="form w-100 d-flex flex-column align-items-stretch gap-3 p-3 rounded"
+  >
+    <div
+      class="d-flex flex-column align-items-center justify-content-center gap-2 w-100"
+    >
+      <i class="bi bi-info-circle-fill infoColor"></i>
+      <p class="text-center darkText w-75 mx-auto">
+        {{ "Are you sure you want  to end exam now?" | translate }}
+      </p>
+      <div class="d-flex gap-2 align-items-center">
+        <app-site-button
+          class="flex-grow-1"
+          title="Cancal"
+          [isRTL]="isRTL()"
+          type="secondary"
+          (click)="onCancalEndExam()"
+        />
+        <app-site-button
+          class="flex-grow-1"
+          title="End Now"
+          [isRTL]="isRTL()"
+          type="main"
+          (click)="EndExam()"
+        />
+      </div>
+    </div>
+  </section>
+</app-generic-modal>

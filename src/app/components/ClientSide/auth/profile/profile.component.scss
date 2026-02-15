@@ -1,0 +1,22 @@
+// Hover lift effect for cards
+
+@use 'variables' as *;
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12) !important;
+  }
+}
+
+// Gradient background helper
+// .bg-gradient-primary {
+//   background: linear-gradient(135deg, $primaryColor, darken($primaryColor, 15%));
+// }
+
+// RTL adjustments
+[dir="rtl"] {
+  .progress-bar {
+    direction: rtl;
+  }
+}
