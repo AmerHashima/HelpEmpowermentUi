@@ -156,19 +156,34 @@
   align-items: center;
 }
 
-.btn {
-  padding: 10px 20px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  background: #f5f5f5;
-  cursor: pointer;
+.question-box.notVisited {
+  background: #e9ecef;
 }
 
-.btn.nav {
-  min-width: 100px;
+.question-box.answered {
+  background: $successColor;
+  color: $lightBgTextColor;
 }
 
-.marked {
-  background: #fff3cd;
-  border-color: #ffeeba;
+.question-box.marked {
+  background: $primaryColor;
+    color: $lightBgTextColor;
+}
+
+.question-box.skipped {
+  background: rgb(150, 150, 26);
+  color: #000;
+}
+
+.notAnswesedTag i{
+color:#e9ecef;
+}
+.AnswesedTag i{
+ color:$successColor;
+}
+.markedTag i{
+  color: $primaryColor;
+}
+.skippedTag i{
+ color:rgb(150, 150, 26); ;
 }

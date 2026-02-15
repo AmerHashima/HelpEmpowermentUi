@@ -9,7 +9,7 @@
   >
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
-        <div class="modal-header justify-content-end py-2">
+        <div class="modal-header py-2"   [ngClass]="title() ? 'justify-content-between' : 'justify-content-end'">
           <h5 class="modal-title">{{ title() }}</h5>
           <button
             type="button"

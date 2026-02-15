@@ -4,6 +4,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { Shared } from '../../../shared/Services/shared/shared';
 import { FeatureComponent } from '../../../shared/clientSide/feature/feature.component';
 import { GenericModelComponent } from '../../../shared/generic-model/generic-model.component';
+import { NgClass } from '@angular/common';
 
 interface Question {
   id: string;
@@ -13,11 +14,12 @@ interface Question {
   questionNumber: number;
   totalQuestions: number;
 }
+type QuestionStatus = 'notVisited' | 'answered' | 'marked' | 'skipped';
 
 @Component({
   selector: 'app-client-exam-question',
   imports: [SiteButtonComponent,TranslatePipe,FeatureComponent,
-    GenericModelComponent
+    GenericModelComponent,NgClass
   ],
   templateUrl: './client-exam-question.component.html',
   styleUrl: './client-exam-question.component.scss'
@@ -27,6 +29,12 @@ export class ClientExamQuestionComponent {
   isRTL=this.shared.isRtl
   question = input.required<Question>();
   showConfirm:boolean=false;
+  showQuestionBoard:boolean=false;
+  questionboardNumbers: { number: number; status: QuestionStatus }[] =
+    Array.from({ length: 180 }, (_, i) => ({
+      number: i + 1,
+      status: 'skipped'
+    }));
   selectOption(opt: Question['options'][number]) {
     this.question().options.forEach(o => o.isSelected = false);
     opt.isSelected = true;
@@ -43,7 +51,12 @@ export class ClientExamQuestionComponent {
   onCancalEndExam(){
     this.showConfirm=false;
   }
-  onOpenQuestionBoard(){}
+  onOpenQuestionBoard(){
+    this.showQuestionBoard=true
+  }
+  closeQuestionBoard(){
+  this.showQuestionBoard = false;
+  }
   onTranslate(){}
   onMarkQuestion(){}
   nextQuestion(){}

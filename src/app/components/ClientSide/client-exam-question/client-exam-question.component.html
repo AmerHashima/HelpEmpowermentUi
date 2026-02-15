@@ -153,3 +153,63 @@
     </div>
   </section>
 </app-generic-modal>
+
+<app-generic-modal [(isOpen)]="showQuestionBoard" title="Question Board">
+  <section
+    class="form w-100 d-flex flex-column align-items-stretch gap-3 p-3 rounded"
+  >
+    <div
+      class="d-flex flex-column align-items-center justify-content-center gap-2 w-100"
+    >
+      <div class="d-flex gap-1">
+         <div class="p-1 rouneded rounded-3 d-flex align-items-center gap-1">
+           <span class="notAnswesedTag"><i class="bi bi-circle-fill"></i></span>
+           <span>Not Answered</span>
+         </div>
+          <div class="p-1 rouneded rounded-3 d-flex align-items-center gap-1">
+           <span class="AnswesedTag"><i class="bi bi-circle-fill"></i></span>
+           <span>Answered</span>
+         </div>
+            <div class="p-1 rouneded rounded-3 d-flex align-items-center gap-1">
+           <span class="markedTag"><i class="bi bi-circle-fill"></i></span>
+           <span>Marked</span>
+         </div>
+            <div class="p-1 rouneded rounded-3 d-flex align-items-center gap-1">
+           <span class="skippedTag"><i class="bi bi-circle-fill"></i></span>
+           <span>Skipped</span>
+         </div>
+      </div>
+      <div class="row g-1 flex-wrap">
+        @for(question of questionboardNumbers; let index = $index; track index ) {
+          <div class="col-2">
+            <div class="d-flex gap-1 align-items-center  p-1 rounded rounded-2 question-box" [ngClass]="question.status">
+              @if(question.status == 'marked'){
+                <i class="bi bi-flag-fill"></i>
+              }
+              @else if(question.status == 'skipped'){
+                <i class="bi bi-skip-forward-circle"></i>
+              }
+              @else{
+              <i class="bi bi-question-circle-fill"></i>
+              }
+              <p class="text-center darkText w-75 mx-auto">Q{{ index + 1 }}</p>
+            </div>
+          </div>
+        }
+        @empty {
+    <p>No questions</p>
+  }
+      </div>
+
+      <div class="d-flex w-100 gap-2 align-items-center justify-content-between">
+        <span> {{ "30" }} of {{ questionboardNumbers.length}} answered </span>
+        <app-site-button
+          title="Close"
+          [isRTL]="isRTL()"
+          type="main"
+          (click)="closeQuestionBoard()"
+        />
+      </div>
+    </div>
+  </section>
+</app-generic-modal>

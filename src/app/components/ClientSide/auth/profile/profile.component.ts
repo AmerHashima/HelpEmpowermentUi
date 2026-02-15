@@ -1,11 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { AuthService } from '../../../../Services/auth.service';
 import { Shared } from '../../../../shared/Services/shared/shared';
-import { DatePipe, NgClass, NgIf } from '@angular/common';
+import { DatePipe, NgClass, NgFor, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-profile',
-  imports: [NgClass,DatePipe,NgIf],
+  imports: [NgClass,DatePipe,NgIf,NgFor],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
 })
