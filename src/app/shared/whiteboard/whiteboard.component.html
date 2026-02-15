@@ -1,0 +1,45 @@
+<div class="whiteboard-wrapper">
+  <div class="toolbar">
+      <button mat-mini-fab color="primary" (click)="enableDrawingMode()" [disabled]="isDrawingMode">
+    <mat-icon>brush</mat-icon>
+  </button>
+
+  <button mat-mini-fab (click)="addRect()">
+    <mat-icon>crop_square</mat-icon>
+  </button>
+
+  <button mat-mini-fab (click)="addText()">
+    <mat-icon>text_fields</mat-icon>
+  </button>
+
+  <button mat-mini-fab color="warn" (click)="clearCanvas()">
+    <mat-icon>delete</mat-icon>
+  </button>
+
+  <button mat-mini-fab (click)="undo()">
+    <mat-icon>undo</mat-icon>
+  </button>
+
+  <button mat-mini-fab color="accent" (click)="exportPNG()">
+    <mat-icon>download</mat-icon>
+  </button>
+
+  <!-- Color picker example -->
+  <input type="color" [(ngModel)]="brushColor" (change)="changeColor(brushColor)" />
+
+  <!-- Brush size -->
+  <input type="range" min="1" max="30" [(ngModel)]="brushSize" (input)="changeBrushSize(brushSize)" />
+  </div>
+
+  <div class="canvas-container">
+    <ng-container *ngIf="isBrowser; else fallback">
+      <canvas #canvas></canvas>
+    </ng-container>
+
+    <ng-template #fallback>
+      <div class="ssr-fallback">
+        Whiteboard loading... (interactive canvas available in browser)
+      </div>
+    </ng-template>
+  </div>
+</div>

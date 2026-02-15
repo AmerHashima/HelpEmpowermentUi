@@ -182,7 +182,7 @@
       <div class="row g-1 flex-wrap">
         @for(question of questionboardNumbers; let index = $index; track index ) {
           <div class="col-2">
-            <div class="d-flex gap-1 align-items-center  p-1 rounded rounded-2 question-box" [ngClass]="question.status">
+            <div class="d-flex gap-1 align-items-center  p-1 rounded rounded-2 question-box" [ngClass]="question.status" (click)="navigateToQuestion(question)">
               @if(question.status == 'marked'){
                 <i class="bi bi-flag-fill"></i>
               }
@@ -213,3 +213,21 @@
     </div>
   </section>
 </app-generic-modal>
+
+
+<app-generic-modal [(isOpen)]="showCalculator" title="Calculator">
+  <section
+    class="form w-100 d-flex flex-column align-items-stretch gap-3 p-3 rounded"
+  >
+   <app-calculator/>
+  </section>
+</app-generic-modal>
+
+<app-generic-modal [(isOpen)]="showWhiteboard" title="Whiteboard">
+  <section
+    class="form w-100 d-flex flex-column align-items-stretch gap-3 p-3 rounded"
+  >
+   <app-whiteboard/>
+  </section>
+</app-generic-modal>
+
