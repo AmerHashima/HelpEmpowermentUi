@@ -3,7 +3,8 @@
       class="btn d-flex align-items-center justify-content-center w-100"
       [ngClass]="{
         'btn-primary':   type() === 'main',
-        'btn-outline-primary': type() === 'secondary'
+        'btn-outline-primary': type() === 'secondary',
+        'custom-class':customClass()
       }"
       [style]="{
         'direction': isRTL() ? 'rtl' : 'ltr',
@@ -13,8 +14,11 @@
       }"
       (click)="onClick.emit()"
     >
+     @if (icon() && customClass()) {
+        <i [class]="icon()"></i>
+      }
       <span>{{ title() | translate }}</span>
-      @if (icon()) {
+      @if (icon() && !customClass()) {
         <i [class]="icon()"></i>
       }
     </button>

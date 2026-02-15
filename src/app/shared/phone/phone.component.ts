@@ -1,4 +1,4 @@
-import { Component, forwardRef, inject, Input } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, forwardRef, inject, Input } from '@angular/core';
 import {  NgIf } from '@angular/common';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { NgxsmkTelInputComponent } from 'ngxsmk-tel-input';
@@ -14,6 +14,7 @@ import { Shared } from '../Services/shared/shared';
     FormsModule,
     NgIf
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,

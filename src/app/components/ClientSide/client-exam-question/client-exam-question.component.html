@@ -1,0 +1,94 @@
+<div class="exam-container">
+  <!-- Header -->
+  <header class="exam-header">
+      <app-feature title="Exam 1 - Practice Mode" icon="bi bi-star" />
+    <!-- <div class="mode"><span class="star">★</span> Exam 1 - Practice Mode</div> -->
+    <div class="actions">
+      <button class="btn end">End Exam</button>
+      <button class="btn save">Save and Continue Later</button>
+      <button class="btn whiteboard">🖊 Whiteboard</button>
+    </div>
+  </header>
+
+  <!-- Question area -->
+  <main class="question-area">
+    <div class="question-header">
+      <div class="progress-info">
+        <span class="help">?</span>
+        <span class="qid"
+          >{{ question().id }}/{{ question().totalQuestions }}</span
+        >
+        <div class="progress-bar">
+          <div
+            class="progress-fill"
+            [style.width.%]="question().progress"
+          ></div>
+        </div>
+      </div>
+      <button class="btn calculator">🧮 Calculator</button>
+    </div>
+
+    <div class="question-content">
+      <h2 class="question-text">
+        {{ question().text }}
+      </h2>
+
+      <div class="options">
+        @for (opt of question().options; track opt.letter) {
+          <label
+            class="option"
+            [class.selected]="opt.isSelected"
+            (click)="selectOption(opt)"
+          >
+            <span class="letter">({{ opt.letter }})</span>
+            <span class="text">{{ opt.text }}</span>
+          </label>
+        }
+      </div>
+    </div>
+
+    <!-- Footer controls -->
+    <footer class="question-footer">
+      <div class="left-controls d-flex align-items-center gap-1">
+           <app-site-button
+          [title]="'Question Board' | translate"
+          type="main"
+          [customClass]="true"
+          icon="bi bi-clipboard-data"
+            [isRTL]="isRTL()"
+          (click)="onOpenQuestionBoard()"
+        />
+             <app-site-button
+          [title]="'Translate' | translate"
+          type="main"
+            [isRTL]="isRTL()"
+          icon="bi bi-translate"
+          [customClass]="true"
+          (click)="onTranslate()"
+        />
+      </div>
+      <div class="nav-buttons d-flex align-items-center gap-1">
+        <app-site-button
+          [title]="'Previous' | translate"
+          type="secondary"
+            [isRTL]="isRTL()"
+          (click)="previousQuestion()"
+        />
+         <app-site-button
+          [title]="'Marked' | translate"
+          type="main"
+          icon="bi bi-bookmark-check"
+          [customClass]="true"
+            [isRTL]="isRTL()"
+          (click)="onMarkQuestion()"
+        />
+        <app-site-button
+          title="Next"
+            [isRTL]="isRTL()"
+          type="main"
+          (click)="nextQuestion()"
+        />
+      </div>
+    </footer>
+  </main>
+</div>

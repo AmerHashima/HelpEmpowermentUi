@@ -13,7 +13,7 @@
           class="login-form mb-0"
         >
           <div class="d-flex flex-column gap-3">
-            <app-input
+            <!-- <app-input
               name="email"
               [(ngModel)]="credentials.email"
               required
@@ -25,8 +25,20 @@
                 required: 'Email is required' | translate,
                 email: 'Invalid email format' | translate,
               }"
-            ></app-input>
+            ></app-input> -->
 
+             <app-input
+              name="username"
+              [(ngModel)]="credentials.username"
+              required
+              [label]="'register.usernameLabel' | translate"
+              [placeholder]="'register.usernamePlaceholder' | translate"
+              [icon]="'bi bi-person'"
+              [errorMessages]="{
+                required: 'User Name is required' | translate,
+              }"
+            ></app-input>
+            
             <app-input
               name="password"
               [(ngModel)]="credentials.password"
@@ -42,7 +54,7 @@
               }"
             ></app-input>
 
-            <label class="form-check">
+            <!-- <label class="form-check">
               <input
                 name="rememberMe"
                 [(ngModel)]="credentials.rememberMe"
@@ -50,7 +62,7 @@
                 class="form-check-input"
               />
               <span class="form-check-label">Remember Me</span>
-            </label>
+            </label> -->
 
 
             <app-site-button
