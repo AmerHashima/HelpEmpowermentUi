@@ -50,10 +50,8 @@ export class AuthService {
             const msg = response.errors?.join(', ') || response.message || 'API failed to login';
             throw new Error(msg);
           }
-          this.loggedStudent.set(response.data);
-          if (this.isBrowser) {
-            localStorage.setItem('loggedStudent', JSON.stringify(response.data));
-          }
+          this.updatedLoggedStudent(response.data);
+
           return response.data;
         })
       );
@@ -95,14 +93,14 @@ export class AuthService {
 
   updateStudent(id: string, body: Student): Observable<APIStudent> {
     return this.apiService
-      .put<ApiResponse<APIStudent>>('Courses', id, body)
+      .put<ApiResponse<APIStudent>>('Students', id, body, 'User info has been updated successfully')
       .pipe(
         map((response: ApiResponse<APIStudent>) => {
           if (!response.success) {
             const msg = response.errors?.join(', ') || response.message || 'API failed to update student';
             throw new Error(msg);
           }
-
+          this.updatedLoggedStudent(response.data);
           return response.data;
         })
       );
@@ -120,6 +118,13 @@ export class AuthService {
           return response.data;
         })
       );
+  }
+
+  private updatedLoggedStudent(data: APIStudent) {
+    this.loggedStudent.set(data);
+    if (this.isBrowser) {
+      localStorage.setItem('loggedStudent', JSON.stringify(data));
+    }
   }
 }
 

@@ -88,7 +88,7 @@ export class WhiteboardComponent implements AfterViewInit, OnDestroy {
       let width = container.clientWidth - 20;
       let height = container.clientHeight - 20;
 
-      width = Math.max(width, 600);
+      width = Math.max(width, 800);
       height = Math.max(height, 400);
 
       this.canvas.setDimensions({ width, height });

@@ -5,9 +5,11 @@ export interface Student {
   email: string,
   mobile: string,
   username: string,
-  password: string,
+  password?: string,
   isActive: boolean,
-  createdBy: string
+  createdBy?: string,
+  updatedBy?: string
+
 }
 
 export interface APIStudent {

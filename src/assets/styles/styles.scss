@@ -441,6 +441,9 @@ p {
 .mat-button-toggle-group-appearance-standard .mat-pseudo-checkbox {
     --mat-minimal-pseudo-checkbox-selected-checkmark-color:$lightBgTextColor !important;
 }
+    // .modal-dialog{
+    //   max-width: 50%;
+    // }
 @media screen and (min-width: 1200px) {
   h1 {
     font-size: 5rem;

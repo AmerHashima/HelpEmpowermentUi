@@ -1,130 +1,350 @@
-<div class="container py-5" [dir]="isRTL()? 'rtl' : 'ltr'">
-  <!-- Header / Hero Section -->
-  <div class="row mb-5">
-    <div class="col-lg-8 mx-auto">
-      <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
-        <div class="card-body p-5 text-center bg-gradient-primary text-white">
-          <img
-            [src]="'assets/images/reviewers/person.png'"
-            alt="User Avatar"
-            class="rounded-circle mb-3 border border-4 border-white shadow"
-            width="120"
-            height="120"
-          />
-          <h2 class="mb-1 fw-bold">{{ user?.nameEn || 'User nameEn' }}</h2>
-          <p class="lead mb-3 opacity-75">{{ user?.email || 'user@example.com' }}</p>
-          <p class="mb-4">
-            <small>Member since {{ user?.createdAt | date:'MMMM yyyy' }}</small>
-          </p>
+<!-- <app-page-header [title]="'Profile'" [items]="['Pages']" [active_item]="'Profile'" /> -->
 
-          <!-- Quick stats -->
-          <div class="d-flex justify-content-center gap-5">
-            <div>
-              <h4 class="mb-0">{{ enrolledCourses.length }}</h4>
-              <small>Enrolled Courses</small>
+<!-- Start::row-1 -->
+<div class="row row-sm">
+  <div class="col-xl-4">
+    <div class="card mb-4">
+      <div class="card-body">
+        <div class="ps-0">
+          <div class="main-profile-overview">
+            <div class="profile-image-wrapper">
+              <img [src]="studentImage" alt="user image" class="profile-img" />
+
+              <label class="profile-edit-btn">
+                <i class="bi bi-camera-fill"></i>
+                <input
+                  type="file"
+                  (change)="handleFileInput($event)"
+                  accept="image/*"
+                  hidden
+                />
+              </label>
             </div>
-            <div>
-              <h4 class="mb-0">{{ ongoingExams.length }}</h4>
-              <small>Ongoing Exams</small>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <div class="text-center w-100">
+                <h5 class="main-profile-name mb-1 text-center">
+                  {{ isRTL() ? user?.nameAr : (user?.nameEn | titlecase) }}
+                </h5>
+                <p class="main-profile-name-text w-100 text-muted text-center">
+                  {{ user?.username }}
+                </p>
+              </div>
+            </div>
+            <h6 class="fs-14 text-center">{{ "Contact Info" | translate }}</h6>
+            <div class="main-profile-bio text-center">
+              <i class="bi bi-envelope pe-2"></i>
+              <span>{{ user?.email }}</span>
+
+              <!-- <a href="javascript:void(0);" class="text-primary">More</a> -->
+            </div>
+            <div class="main-profile-bio text-center">
+              <i class="bi bi-telephone pe-1"></i>
+              <span> {{ user?.mobile }} </span>
+
+              <!-- <a href="javascript:void(0);" class="text-primary">More</a> -->
+            </div>
+            <!-- main-profile-bio -->
+            <div class="row mt-3">
+              <div class="col-md-4 col">
+                <h5 class="fs-17 text-center mainTextColor">5</h5>
+                <h6 class="text-small text-muted text-center fs-14 mb-0">
+                  {{ "Courses" | translate }}
+                </h6>
+              </div>
+              <div class="col-md-4 col">
+                <h5 class="fs-17 text-center mainTextColor">7</h5>
+                <h6 class="text-small text-center text-muted fs-14 mb-0">
+                  {{ "Exams" | translate }}
+                </h6>
+              </div>
+              <div class="col-md-4 col">
+                <h5 class="fs-17 text-center mainTextColor">65%</h5>
+                <h6 class="text-small text-center text-muted fs-14 mb-0">
+                  {{ "Success Rate" | translate }}
+                </h6>
+              </div>
             </div>
           </div>
+          <!-- main-profile-overview -->
         </div>
       </div>
     </div>
   </div>
+  <div class="col-xl-8">
+    <div class="card">
+      <div class="card-body">
+        <div class="tabs-menu">
+          <!-- Tabs -->
+          <ul
+            ngbNav
+            #nav="ngbNav"
+            class="nav nav-tabs profile navtab-custom panel-tabs pb-0 pt-0"
+          >
+            <li [ngbNavItem]="1" class="">
+              <a ngbNavLink data-bs-toggle="tab" class="" aria-expanded="true">
+                <span class="visible-xs"
+                  ><i class="bi bi-collection me-1"></i
+                ></span>
+                <span class="hidden-xs">Enrolled Courses</span>
+              </a>
+              <ng-template ngbNavContent>
+                  <div class="row g-2">
+                    @for (course of enrolledCourses; track course.id) {
+                      <div class="col-sm-6 col-md-6 col-lg-4">
+                        <div
+                          class="card course-card h-100 position-relative h-100"
+                        >
+                          <img
+                            [src]="course.image"
+                            class="card-img-top"
+                            alt="course"
+                          />
 
-  <div class="row g-4">
-    <!-- Enrolled Courses Section -->
-    <div class="col-lg-8">
-      <div class="card shadow border-0 rounded-4 h-100">
-        <div class="card-header bg-light border-0 py-4">
-          <h4 class="mb-0 fw-semibold text-primary">Enrolled Courses</h4>
-        </div>
-        <div class="card-body p-4">
-          <div *ngIf="enrolledCourses.length === 0" class="text-center py-5 text-muted">
-            <i class="bi bi-book fs-1"></i>
-            <p class="mt-3">No courses enrolled yet. Start learning!</p>
-            <a routerLink="/courses" class="btn btn-outline-primary">Browse Courses</a>
-          </div>
+                          <div class="card-body d-flex flex-column flex-grow-1">
+                            <h5 class="card-title">{{ course.title }}</h5>
+                            <p class="text-muted small mb-2">
+                              Mahmoud Elhelbawi
+                            </p>
 
-          <div class="row g-4" *ngIf="enrolledCourses.length > 0">
-            <div class="col-md-6" *ngFor="let course of enrolledCourses">
-              <div class="card h-100 border-0 shadow-sm hover-lift">
-                <img [src]="course.image" class="card-img-top" alt="{{ course.title }}" style="height: 160px; object-fit: cover;" />
-                <div class="card-body d-flex flex-column">
-                  <h5 class="card-title fw-semibold">{{ course.title }}</h5>
-                  <p class="card-text text-muted small">Instructor: {{ course.instructor }}</p>
+                            <div class="d-flex justify-content-between mb-2">
+                              <small
+                                ><i class="bi bi-journal-text me-1"></i
+                                >{{ course.lessons }} Lessons</small
+                              >
+                              <small
+                                ><i class="bi bi-clock me-1"></i
+                                >{{ course.duration }}</small
+                              >
+                            </div>
 
-                  <div class="mt-auto">
-                    <div class="d-flex justify-content-between mb-1 small">
-                      <span>Progress</span>
-                      <span>{{ course.progress }}%</span>
-                    </div>
-                    <div class="progress" style="height: 8px;">
-                      <div
-                        class="progress-bar bg-success"
-                        role="progressbar"
-                        [style.width.%]="course.progress"
-                        [attr.aria-valuenow]="course.progress"
-                        aria-valuemin="0"
-                        aria-valuemax="100"
-                      ></div>
-                    </div>
+                            <!-- Progress -->
+                            <div class="progress mb-2" style="height: 6px">
+                              <div
+                                class="progress-bar"
+                                [style.width.%]="course.progress"
+                              ></div>
+                            </div>
+                            <small class="text-end d-block mb-3"
+                              >{{ course.progress }}% Completed</small
+                            >
+
+                            <app-site-button
+                              class="flex-grow-1 align-content-end"
+                              title="Continue Course"
+                              [isRTL]="isRTL()"
+                              type="main"
+                              (click)="continueCourse(course)"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    }@empty{
+                         <div class="empty-courses text-center py-5">
+                    <i class="bi bi-journal-x fs-1 text-muted"></i>
+                    <p class="mt-3 text-muted w-100">
+                      You haven’t enrolled in any courses yet.
+                    </p>
                   </div>
-                </div>
+                    }
+                  </div>
+                <!-- } -->
+              </ng-template>
+            </li>
+            <li [ngbNavItem]="2" class="">
+              <a ngbNavLink data-bs-toggle="tab" aria-expanded="false">
+                <span class="visible-xs"
+                  ><i class="bi bi-clipboard-check me-1"></i
+                ></span>
+                <span class="hidden-xs">Exams</span>
+              </a>
+              <ng-template ngbNavContent>
+                @if (exams.length === 0) {
+                  <div class="empty-exams text-center py-5">
+                    <i class="bi bi-file-earmark-text fs-1 text-muted"></i>
+                    <p class="mt-3 text-muted w-100">No exams found yet.</p>
+                  </div>
+                } @else {
+                  <div class="row g-4">
+                    @for (exam of exams; track exam.id) {
+                      <div class="col-sm-6 col-md-6 col-lg-4">
+                        <div class="card exam-card h-100 p-3">
+                          <div
+                            class="d-flex justify-content-between align-items-start mb-2"
+                          >
+                            <h6 class="mb-0">{{ exam.examNumber }}</h6>
+                            <span
+                              class="badge"
+                              [ngClass]="{
+                                'bg-success': exam.status === 'Finished',
+                                'bg-warning': exam.status === 'Saved',
+                                'bg-info': exam.status === 'In Progress',
+                              }"
+                            >
+                              {{ exam.status }}
+                            </span>
+                          </div>
+
+                          <p class="text-muted mb-2 small">
+                            {{ exam.certification | titlecase}}
+                          </p>
+
+                          <!-- Progress -->
+                          <div class="progress mb-2" style="height: 6px">
+                            <div
+                              class="progress-bar"
+                              [style.width.%]="exam.progress"
+                            ></div>
+                          </div>
+                          <small class="text-end d-block mb-2"
+                            >{{ exam.progress }}% Completed</small
+                          >
+
+                          <!-- Success Rate for Finished Exams -->
+                          <ng-container *ngIf="exam.status === 'Finished'">
+                            <div class="text-center text-success fw-bold mb-2">
+                              Success Rate: {{ exam.successRate }}%
+                            </div>
+                          </ng-container>
+
+                          <!-- Continue Button for Saved / In Progress -->
+                          <ng-container *ngIf="exam.status !== 'Finished'">
+                              <app-site-button
+                              class="flex-grow-1 align-content-end"
+                              title="Continue Course"
+                              [isRTL]="isRTL()"
+                              type="main"
+                              (click)="goToExam(exam)"
+                            />
+                          </ng-container>
+                        </div>
+                      </div>
+                    }
+                  </div>
+                }
+              </ng-template>
+            </li>
+            <li [ngbNavItem]="4" class="">
+              <a ngbNavLink data-bs-toggle="tab" aria-expanded="false">
+                <span class="visible-xs"
+                  ><i class="las la-cog fs-16 me-1"></i
+                ></span>
+                <span class="hidden-xs">SETTINGS</span>
+              </a>
+              <ng-template ngbNavContent>
+                <div class="border-0 p-0 form" id="settings">
+                       <form
+          #registerForm="ngForm"
+          (ngSubmit)="onUpdateInfo()"
+          class="register-form mb-0"
+        >
+          <div class="d-flex flex-column gap-3">
+            <div class="row">
+              <div class="col-12 col-lg-6">
+                <app-input
+                  name="firstName"
+                  [(ngModel)]="credentials.firstName"
+                  required
+                  [label]="'register.firstNameLabel' | translate"
+                  [placeholder]="'register.firstNamePlaceholder' | translate"
+                  [icon]="'bi bi-person'"
+                  [errorMessages]="{
+                    required: 'First Name is required' | translate,
+                  }"
+                ></app-input>
+              </div>
+              <div class="col-12 col-lg-6">
+                <app-input
+                  name="lastName"
+                  [(ngModel)]="credentials.lastName"
+                  required
+                  [label]="'register.lastNameLabel' | translate"
+                  [placeholder]="'register.lastNamePlaceholder' | translate"
+                  [icon]="'bi bi-person'"
+                  [errorMessages]="{
+                    required: 'Last Name is required' | translate,
+                  }"
+                ></app-input>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Ongoing Exams / Assessments Section -->
-    <div class="col-lg-4">
-      <div class="card shadow border-0 rounded-4 h-100">
-        <div class="card-header bg-light border-0 py-4">
-          <h4 class="mb-0 fw-semibold text-primary">Ongoing Exams</h4>
-        </div>
-        <div class="card-body p-4">
-          <div *ngIf="ongoingExams.length === 0" class="text-center py-5 text-muted">
-            <i class="bi bi-journal-check fs-1"></i>
-            <p class="mt-3">No active exams right now.</p>
-          </div>
-
-          <ul class="list-group list-group-flush" *ngIf="ongoingExams.length > 0">
-            <li class="list-group-item px-0 py-3 border-bottom" *ngFor="let exam of ongoingExams">
-              <div class="d-flex justify-content-between align-items-center">
-                <div>
-                  <h6 class="mb-1">{{ exam.title }}</h6>
-                  <small class="text-muted">Due: {{ exam.dueDate | date:'mediumDate' }}</small>
-                </div>
-                <span
-                  class="badge rounded-pill"
-                  [ngClass]="{
-                    'bg-warning text-dark': exam.status === 'Pending',
-                    'bg-info': exam.status === 'In Progress',
-                    'bg-success': exam.status === 'Completed'
+            <div class="row">
+              <div class="col-12 col-lg-6">
+                <app-input
+                  name="firstNameAr"
+                  [(ngModel)]="credentials.firstNameAr"
+                  required
+                  [label]="'register.firstNameArLabel' | translate"
+                  [placeholder]="'register.firstNameArPlaceholder' | translate"
+                  [icon]="'bi bi-person'"
+                  [errorMessages]="{
+                    required: 'Arabic First Name is required' | translate,
                   }"
-                >
-                  {{ exam.status }}
-                </span>
+                ></app-input>
               </div>
-              <div *ngIf="exam.score !== null" class="mt-2 small text-success">
-                Score: {{ exam.score }}%
+              <div class="col-12 col-lg-6">
+                <app-input
+                  name="lastNameAr"
+                  [(ngModel)]="credentials.lastNameAr"
+                  required
+                  [label]="'register.lastNameArLabel' | translate"
+                  [placeholder]="'register.lastNameArPlaceholder' | translate"
+                  [icon]="'bi bi-person'"
+                  [errorMessages]="{
+                    required: 'Arabic Last Name is required' | translate,
+                  }"
+                ></app-input>
               </div>
+            </div>
+            <app-input
+              name="username"
+              [(ngModel)]="credentials.username"
+              required
+              [label]="'register.usernameLabel' | translate"
+              [placeholder]="'register.usernamePlaceholder' | translate"
+              [icon]="'bi bi-person'"
+              [errorMessages]="{
+                required: 'User Name is required' | translate,
+              }"
+            ></app-input>
+            <app-input
+              name="email"
+              [(ngModel)]="credentials.email"
+              required
+              email
+              [label]="'log.emailLabel' | translate"
+              [placeholder]="'log.emailPlaceholder' | translate"
+              [icon]="'bi bi-envelope'"
+              [errorMessages]="{
+                required: 'Email is required' | translate,
+                email: 'Invalid email format' | translate,
+              }"
+            ></app-input>
+
+            <app-phone-input
+              name="phone"
+              [(ngModel)]="credentials.mobile"
+              [required]="true"
+              [labelKey]="'register.phoneLabel' | translate"
+            >
+            </app-phone-input>
+
+            <app-site-button
+              title="Save"
+              type="main"
+              htmlType="submit"
+              [icon]="isRTL() ? 'bi bi-arrow-left' : 'bi bi-arrow-right'"
+              [isRTL]="isRTL()"
+            ></app-site-button>
+          </div>
+        </form>
+                </div>
+              </ng-template>
             </li>
           </ul>
-
-          <a routerLink="/exams" class="btn btn-outline-primary btn-sm w-100 mt-3">View All Exams</a>
+        </div>
+        <div class="tab-content border border-top-0 p-4 br-dark customtab">
+          <div [ngbNavOutlet]="nav"></div>
         </div>
       </div>
     </div>
-  </div>
-
-  <!-- Optional: Edit Profile / Settings link -->
-  <div class="text-center mt-5">
-    <a routerLink="/profile/edit" class="btn btn-outline-secondary">
-      <i class="bi bi-pencil me-2"></i> Edit Profile
-    </a>
   </div>
 </div>
