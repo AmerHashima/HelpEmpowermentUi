@@ -1,3 +1,4 @@
+// src\app\components\ClientSide\certifications\certifications.component.ts
 import { Component, computed, inject } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { GenericTabsComponent } from '../../../shared/generic-tabs/generic-tabs.component';
@@ -7,7 +8,7 @@ import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-certifications',
-  imports: [RouterOutlet,GenericTabsComponent],
+  imports: [RouterOutlet, GenericTabsComponent],
   templateUrl: './certifications.component.html',
   styleUrl: './certifications.component.scss'
 })
@@ -15,8 +16,8 @@ export class CertificationsComponent {
   private shared = inject(Shared);
   private router = inject(Router);
   lang = this.shared.lang;
-  isFullPage=this.shared.fullPage;
-  currentCertification=this.shared.currentCertificate;
+  isFullPage = this.shared.fullPage;
+  currentCertification = this.shared.currentCertificate;
   tabs = computed(() => [
     {
       header: 'Exam Simulator',
@@ -62,7 +63,7 @@ export class CertificationsComponent {
 
   private route = inject(ActivatedRoute);
 
-  showTabs:boolean=true;
+  showTabs: boolean = true;
   lastSegment = '';
   private sub!: Subscription;
 

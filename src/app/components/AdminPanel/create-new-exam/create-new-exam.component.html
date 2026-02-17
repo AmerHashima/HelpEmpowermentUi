@@ -31,6 +31,18 @@
         }"
       />
     </div>
+    <div class="col-lg-4">
+      <app-input
+        formControlName="examName"
+        label="Exam Name"
+        type="text"
+        placeholder="Enter exam name"
+        icon=""
+        [errorMessages]="{
+          required: 'Exam Name is required',
+        }"
+      />
+    </div>
        <div class="col-lg-4">
       <app-input
         formControlName="durationMinutes"

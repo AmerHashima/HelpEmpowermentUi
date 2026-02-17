@@ -48,7 +48,8 @@ export class CreateNewExamComponent {
 
   form = this.fb.group({
     courseOid: [''],
-    courseName: ['', [Validators.required]],
+    courseName: [''],
+    examName: ['', [Validators.required]],
     durationMinutes: [0],
     questionCount: [0],
     courseLevelLookupId: [null as string | null],
@@ -77,8 +78,14 @@ export class CreateNewExamComponent {
           { label: 'Create Exam', url: '' }
         ]);
 
+        // Calculate next exam name based on existing exams count
+        const exams = this.examStore.exams();
+        const nextExamNumber = (exams?.length ?? 0) + 1;
+        const defaultExamName = `Exam ${nextExamNumber}`;
+
         this.form.patchValue({
           courseName: certification.courseName,
+          examName: defaultExamName,
           courseLevelLookupId: certification.courseLevelLookupId ?? null,
           courseCategoryLookupId: certification.courseCategoryLookupId ?? null,
           questionCount: certification.questionCount ?? 0,
@@ -119,6 +126,7 @@ export class CreateNewExamComponent {
       courseName: v.courseName!,
       courseLevelLookupId: v.courseLevelLookupId ?? null,
       durationMinutes: v.durationMinutes ?? 0,
+      examName: v.examName!,
       questionCount: v.questionCount ?? 0,
       courseCategoryLookupId: v.courseCategoryLookupId ?? null,
       createdBy: v.createdBy!,

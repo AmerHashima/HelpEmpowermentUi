@@ -5,7 +5,7 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { HttpClient, provideHttpClient } from '@angular/common/http';
+import { HttpClient, provideHttpClient, withFetch } from '@angular/common/http';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { provideToastr } from 'ngx-toastr';
 import { HttpLoaderFactory } from '../translate-loader';
@@ -24,7 +24,7 @@ export const appConfig: ApplicationConfig = {
   }),
   provideClientHydration(withEventReplay()),
 
-  provideHttpClient(),
+  provideHttpClient(withFetch()),
   {
     provide: TranslateLoader,
     useFactory: HttpLoaderFactory,

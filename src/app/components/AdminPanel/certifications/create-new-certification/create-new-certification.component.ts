@@ -45,6 +45,7 @@ export class CreateNewCertificationComponent {
     courseCode: [''],
     courseName: ['', [Validators.required]],
     courseDescription: [''],
+
     durationMinutes: [0],
     questionCount: [0],
     // courseLevelLookupId: ['', [Validators.required]],
@@ -97,6 +98,7 @@ export class CreateNewCertificationComponent {
         courseCode: certification.courseCode,
         courseName: certification.courseName,
         courseDescription: certification.courseDescription,
+
         durationMinutes: certification.durationMinutes,
         courseLevelLookupId: certification.courseLevelLookupId ?? null,
         courseCategoryLookupId: certification.courseCategoryLookupId ?? null,

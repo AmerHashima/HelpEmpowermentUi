@@ -1,3 +1,4 @@
+// src\app\components\AdminPanel\certifications\certifications.component.ts
 import { Component } from '@angular/core';
 
 import { RouterOutlet } from '@angular/router';
@@ -12,7 +13,7 @@ import { QuestionsStore } from '../../../AdminPanelStores/QuestionStores/questio
   imports: [RouterOutlet],
   templateUrl: './certifications.component.html',
   styleUrl: './certifications.component.scss',
-  providers: [CertificationsStore,ExamsStore,QuestionsStore]
+  providers: [CertificationsStore, ExamsStore, QuestionsStore]
 })
 export class CertificationsComponent {
 }
