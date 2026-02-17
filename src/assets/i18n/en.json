@@ -72,6 +72,8 @@
     "emailPlaceholder": "Enter your email",
     "passwordLabel": "Password",
     "passwordPlaceholder": "Enter your password",
+    "confirmPasswordLabel":"Confirm Password",
+    "confirmPasswordPlaceholder":"Enter your confirm Password",
     "rememberMe": "Remember me",
     "loginButton": "Login",
     "noAccount": "Don't have an account?",

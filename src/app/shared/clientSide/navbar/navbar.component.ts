@@ -24,7 +24,8 @@ import { AuthService } from '../../../Services/auth.service';
 export class ClientNavbarComponent {
   private shared = inject(Shared);
   private auth = inject(AuthService);
-  loggedStudent =this.auth.loggedStudent
+  // loggedStudent =this.auth.loggedStudent
+  studentToken =this.auth.studentToken;
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private platformId = inject(PLATFORM_ID);
@@ -110,7 +111,7 @@ export class ClientNavbarComponent {
   }
 
   logout(){
-    this.auth.logout();
+    this.auth.logout().subscribe({})
   }
   /** Dynamic menu – uses current language from shared service */
   menu = computed(() => [

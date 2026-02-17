@@ -6,7 +6,7 @@ export interface Student {
   mobile: string,
   username: string,
   password?: string,
-  isActive: boolean,
+  // isActive: boolean,
   createdBy?: string,
   updatedBy?: string
 
@@ -27,3 +27,32 @@ export interface APIStudent {
 }
 
 
+export interface AuthStudent {
+  nameEn: string,
+  nameAr: string,
+  email: string,
+  mobile: string,
+  username: string,
+  password?: string,
+  confirmPassword?: string,
+}
+
+export interface APIAuthStudent {
+  userId:string,
+  nameEn: string,
+  nameAr: string,
+  email: string,
+  mobile: string,
+  username: string,
+  token:string,
+  refreshToken:string,
+  tokenExpires:string,
+  userType: string,
+  roles:string[]
+
+}
+
+
+
+
+              

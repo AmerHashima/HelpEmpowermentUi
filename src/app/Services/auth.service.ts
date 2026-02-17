@@ -1,6 +1,6 @@
 import { inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
 import ApiService from '../shared/Services/ApiService/api.service';
-import { APIStudent, Student } from '../models/student';
+import { APIAuthStudent, APIStudent, AuthStudent, Student } from '../models/student';
 import { ApiResponse } from '../models/apiResponse';
 import { map, Observable } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
@@ -16,22 +16,27 @@ export class AuthService {
   private platformId = inject(PLATFORM_ID);
   private isBrowser = isPlatformBrowser(this.platformId);
   hasBought = signal<boolean>(false);
-  loggedStudent=signal<APIStudent | null>(null);
-
+  loggedStudent=signal<APIAuthStudent | null>(null);
+  studentToken=signal<string>('');
+  adminToken = signal<string>('');
   constructor(private apiService: ApiService) {
     if (this.isBrowser) {
       const storedUser = localStorage.getItem('loggedStudent');
+      const studentToken = localStorage.getItem('studentToken');
+      if (studentToken) {
+        this.studentToken.set(JSON.parse(studentToken));
+      }
       if (storedUser) {
         this.loggedStudent.set(JSON.parse(storedUser));
       }
     }
   }
 
-  registerStudent(body: Student): Observable<APIStudent> {
+  registerStudent(body: AuthStudent): Observable<APIAuthStudent> {
     return this.apiService
-      .post<ApiResponse<APIStudent>>('Students', body,"User has been registerted Successfully")
+      .post<ApiResponse<APIAuthStudent>>('Auth/student/register', body,"User has been registerted Successfully")
       .pipe(
-        map((response: ApiResponse<APIStudent>) => {
+        map((response: ApiResponse<APIAuthStudent>) => {
           if (!response.success) {
             const msg = response.errors?.join(', ') || response.message || 'API failed to create student';
             throw new Error(msg);
@@ -41,11 +46,11 @@ export class AuthService {
       );
   }
 
-  loginStudent(body: LoginForm): Observable<APIStudent> {
+  loginStudent(body: LoginForm): Observable<APIAuthStudent> {
     return this.apiService
-      .post<ApiResponse<APIStudent>>('Students/authenticate', body,"User has been logged successfully")
+      .post<ApiResponse<APIAuthStudent>>('Auth/student/login', body,"User has been logged successfully")
       .pipe(
-        map((response: ApiResponse<APIStudent>) => {
+        map((response: ApiResponse<APIAuthStudent>) => {
           if (!response.success) {
             const msg = response.errors?.join(', ') || response.message || 'API failed to login';
             throw new Error(msg);
@@ -58,72 +63,38 @@ export class AuthService {
   }
 
   logout(){
-    //send api reuquesy
-    console.log('send logout api reuqest')
-    this.loggedStudent.set(null);
-    if (this.isBrowser) {
-      localStorage.removeItem('loggedStudent');
-    }
-  }
-  getStudents(): Observable<APIStudent[]> {
-    return this.apiService.get<ApiResponse<APIStudent[]>>('Students').pipe(
-      map((response: ApiResponse<APIStudent[]>) => {
-        if (!response.success) {
-          throw new Error(response.message || 'API failed to load students');
-        }
-        return response.data;
-      })
-    );
-  }
+    console.log('in service click logout');
 
-  getStudent(id: string): Observable<APIStudent> {
     return this.apiService
-      .getSingle<ApiResponse<APIStudent>>('Students', id)
-      .pipe(
-        map((response: ApiResponse<APIStudent>) => {
-          if (!response.success) {
-            const msg = response.errors?.join(', ') || response.message || 'API failed to load student';
-            throw new Error(msg);
-          }
-          return response.data;
-        })
-      );
-  }
-
-
-  updateStudent(id: string, body: Student): Observable<APIStudent> {
-    return this.apiService
-      .put<ApiResponse<APIStudent>>('Students', id, body, 'User info has been updated successfully')
-      .pipe(
-        map((response: ApiResponse<APIStudent>) => {
-          if (!response.success) {
-            const msg = response.errors?.join(', ') || response.message || 'API failed to update student';
-            throw new Error(msg);
-          }
-          this.updatedLoggedStudent(response.data);
-          return response.data;
-        })
-      );
-  }
-
-  deleteStudent(id: string): Observable<boolean> {
-    return this.apiService
-      .delete<ApiResponse<boolean>>('Students', id)
+      .post<ApiResponse<boolean>>('Auth/logout', null, "User has been Logged out Successfully")
       .pipe(
         map((response: ApiResponse<boolean>) => {
           if (!response.success) {
-            const msg = response.errors?.join(', ') || response.message || 'API failed to delete student';
+            const msg = response.errors?.join(', ') || response.message || 'API failed logout';
             throw new Error(msg);
+          }
+          this.loggedStudent.set(null);
+          this.studentToken.set('');
+          if (this.isBrowser) {
+            localStorage.removeItem('loggedStudent');
+            localStorage.removeItem('studentToken');
+
           }
           return response.data;
         })
       );
+
   }
 
-  private updatedLoggedStudent(data: APIStudent) {
+
+  private updatedLoggedStudent(data: APIAuthStudent) {
     this.loggedStudent.set(data);
+    this.studentToken.set(data.token);
+
     if (this.isBrowser) {
       localStorage.setItem('loggedStudent', JSON.stringify(data));
+      localStorage.setItem('studentToken', data.token);
+
     }
   }
 }

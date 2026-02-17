@@ -9,11 +9,16 @@ export const clientAuthGuard: CanActivateFn = (route, state) => {
 
   const router = inject(Router);
 
-  const user = authService.loggedStudent();
+   const token=authService.studentToken();
+  // const user = authService.loggedStudent();
 
-  if (user && user.oid) {
+
+  if (token) {
     return true;
   }
+  // if (user && user.userId) {
+  //   return true;
+  // }
 
   return router.createUrlTree([`/${shared.lang()}/auth/login`]);
 }
@@ -24,10 +29,13 @@ export const clientGuestGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
 
   const router = inject(Router);
+  const token = authService.studentToken();
 
-  const user = authService.loggedStudent();
+  // const user = authService.loggedStudent();
 
-  if (user && user.oid) {
+  // if (user && user.userId) {
+  if (token) {
+
     return router.createUrlTree([`/${shared.lang()}/home`]);
   }
 

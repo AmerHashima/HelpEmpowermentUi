@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { InputComponent } from '../../../../shared/input/input.component';
 import { PhoneInputComponent } from '../../../../shared/phone/phone.component';
 import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
+import { StudentService } from '../../../../Services/student-service.service';
 @Component({
   selector: 'app-profile',
   imports: [NgClass, DatePipe, NgIf, NgFor, NgbNavModule,TranslatePipe,TitleCasePipe,
@@ -20,6 +21,7 @@ import { ToastingMessagesService } from '../../../../shared/Services/ToastingMes
 })
 export class ProfileComponent {
   private authService = inject(AuthService);
+  private studentService = inject(StudentService);
   private shared = inject(Shared);
   private router = inject(Router);
   private toasting=inject(ToastingMessagesService);
@@ -133,7 +135,7 @@ constructor(){
 
     };
 
-    this.authService.updateStudent(payload.oid,payload).subscribe({
+    this.studentService.updateStudent(payload.oid,payload).subscribe({
       next: () => {
         // this.toasting.showToast('Account created suffccessfully please login','success');
       },

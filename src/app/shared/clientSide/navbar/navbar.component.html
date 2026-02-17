@@ -60,11 +60,15 @@
       </div>
        } -->
 
-          @let student = this.loggedStudent();
+          <!-- @let student = this.loggedStudent();
 
-          @if (student && student.oid) {
+          @if (student && student.userId) { -->
+          @if (studentToken()) {
             <div class="dropdown">
-              <i class="bi bi-person-circle" (click)="toggleDropdown('auth')"></i>
+              <i
+                class="bi bi-person-circle"
+                (click)="toggleDropdown('auth')"
+              ></i>
               <ul *ngIf="openDropdown() === 'auth'" class="shadow">
                 <li (click)="navigate('/' + lang() + '/auth/profile')">
                   <i class="bi bi-person"></i>

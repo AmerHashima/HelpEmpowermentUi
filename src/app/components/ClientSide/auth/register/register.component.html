@@ -118,20 +118,20 @@
                 minlength: 'At least 6 characters' | translate,
               }"
             ></app-input>
-            <!-- <app-input
+            <app-input
               name="confirmPassword"
               [(ngModel)]="credentials.confirmPassword"
               required
               minlength="6"
-              [label]="'log.passwordLabel' | translate"
-              [placeholder]="'log.passwordPlaceholder' | translate"
+              [label]="'log.confirmPasswordLabel' | translate"
+              [placeholder]="'log.confirmPasswordPlaceholder' | translate"
               [icon]="'bi bi-lock'"
               [type]="'password'"
               [errorMessages]="{
                 required: 'Password is required' | translate,
                 minlength: 'At least 6 characters' | translate,
               }"
-            ></app-input> -->
+            ></app-input>
             <!-- <label class="form-check">
               <input
                 name="terms"
@@ -158,7 +158,7 @@
           <span class="pe-1">{{ "register.loginMessage" | translate }}</span>
           <span
             [routerLink]="`/${lang()}/auth/login`"
-            class="mainTextColor fw-bold text-decoration-underline"
+            class="mainTextColor fw-bold text-decoration-underline w-100"
             >{{ "Login" | translate }}</span
           >
         </p>

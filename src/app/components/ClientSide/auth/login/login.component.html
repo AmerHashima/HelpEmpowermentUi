@@ -38,7 +38,7 @@
                 required: 'User Name is required' | translate,
               }"
             ></app-input>
-            
+
             <app-input
               name="password"
               [(ngModel)]="credentials.password"
@@ -75,7 +75,7 @@
           </div>
         </form>
 
-        <p class="d-flex align-items-center justify-content-center">
+        <p class="d-flex align-items-center justify-content-center w-100">
           <span class="pe-1">Don't have an account?</span>
           <span class="mainTextColor fw-bold text-decoration-underline"
           [routerLink]="`/${lang()}/auth/register`"

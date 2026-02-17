@@ -35,7 +35,7 @@ export class RegisterComponent {
     email:'',
     mobile:"",
     password: '',
-    // confirmPassword:'',
+    confirmPassword:'',
     // terms: false
   };
 
@@ -47,8 +47,9 @@ export class RegisterComponent {
       mobile: this.credentials.mobile,
       username: this.credentials.username,
       password: this.credentials.password,
-      isActive: true,
-      createdBy: '3fa85f64-5717-4562-b3fc-2c963f66afa6'
+      confirmPassword:this.credentials.confirmPassword,
+      // isActive: true,
+      // createdBy: '3fa85f64-5717-4562-b3fc-2c963f66afa6'
     };
 
     this.auth.registerStudent(payload).subscribe({
