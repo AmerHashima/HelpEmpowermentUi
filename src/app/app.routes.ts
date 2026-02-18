@@ -40,6 +40,10 @@ import { QuizGameComponent } from './components/ClientSide/certifications/quiz-g
 import { ReviewsComponent } from './components/ClientSide/certifications/reviews/reviews.component';
 import { clientAuthGuard, clientGuestGuard } from './Guards/ClientSideGuards/client-auth-guard';
 import { CalculatorComponent } from './shared/calculator/calculator.component';
+import { RefundPolicyComponent } from './components/ClientSide/refund-policy/refund-policy.component';
+import { PrivacyNoticeComponent } from './components/ClientSide/privacy-notice/privacy-notice.component';
+import { UserAccountPolicyComponent } from './components/ClientSide/user-account-policy/user-account-policy.component';
+import { TechnicalSupportPolicyComponent } from './components/ClientSide/technical-support-policy/technical-support-policy.component';
 
 export const validLangGuard: CanMatchFn = (route, segments) => {
   const lang = segments[0]?.path;
@@ -83,6 +87,22 @@ export const routes: Routes = [
         component: ContactComponent,
       },
       {
+        path:'refund-policy',
+        component:RefundPolicyComponent
+      },
+      {
+        path:"privacy-notice",
+        component:PrivacyNoticeComponent
+      },
+      {
+        path: "user-account-policy",
+        component: UserAccountPolicyComponent
+      },
+      {
+        path: "technical-support-policy",
+        component: TechnicalSupportPolicyComponent
+      },
+      {
         path: 'certifications',
         component: clientCertifications,
         children:[
@@ -111,7 +131,7 @@ export const routes: Routes = [
         children: [
           {
             path: '',
-            redirectTo: "manpower",
+            redirectTo: "pmo",
             pathMatch: 'full',
 
           },

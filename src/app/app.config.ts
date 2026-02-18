@@ -13,7 +13,7 @@ import { studentAuthInterceptor } from './core/interceptors/student-auth.interce
 export const appConfig: ApplicationConfig = {
   providers: [
   provideZoneChangeDetection({ eventCoalescing: true }),
-  provideRouter(routes),
+  provideRouter(routes ),
   provideAnimations(),
   provideToastr({
     timeOut: 3000,

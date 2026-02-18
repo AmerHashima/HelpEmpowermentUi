@@ -31,19 +31,19 @@ isRTL=this.shared.isRtl;
 
   readonly contactInfos = signal<ContactInfo[]>([
     {
-      icon: 'bi bi-phone',
-      header: 'Call Us',
-      value: '0122 456 7890'
+      icon: '',
+      header: 'Contact US',
+      value: undefined
     },
     {
       icon: 'bi bi-envelope',
       header: 'Email Us',
-      value: 'support@yourcompany.com'
+      value: 'Support@helpempowerment.com'
     },
     {
       icon: 'bi bi-map-marker',
       header: 'Visit Us',
-      value: '123 Main Street, Cairo'
+      value: 'Media City, UAE'
     },
     {
       icon: '',
@@ -59,9 +59,11 @@ isRTL=this.shared.isRtl;
     message: '',
   };
 
+
   private sanitizer = inject(DomSanitizer);
 
-  private readonly embedSrc = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3972.423456789!2d-0.127586!3d51.507351!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47d8a00baf21de75%3A0x52963a5b2a4c3f1!2sLondon!5e0!3m2!1sen!2suk!4v1700000000000';
+  private readonly embedSrc =
+    'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3609.5!2d55.150!3d25.090!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f43496b0b!2sDubai+Media+City!5e0!3m2!1sen!2sae!4v1730000000000';
 
   readonly mapUrl = computed<SafeResourceUrl>(() =>
     this.sanitizer.bypassSecurityTrustResourceUrl(this.embedSrc)

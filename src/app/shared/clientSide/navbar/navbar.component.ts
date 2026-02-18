@@ -156,11 +156,6 @@ export class ClientNavbarComponent {
       icon: 'bi bi-briefcase',
       children: [
         {
-          translateKey: 'menu.services_children.manpower',
-          icon: 'bi bi-tower-observation',
-          path: `/${this.lang()}/services/manpower`,
-        },
-        {
           translateKey: 'menu.services_children.PMO',
           icon: 'bi bi-toolbox',
           path: `/${this.lang()}/services/pmo`,
@@ -175,6 +170,12 @@ export class ClientNavbarComponent {
           icon: 'bi bi-circle-info',
           path: `/${this.lang()}/services/pmis`,
         },
+        {
+          translateKey: 'menu.services_children.manpower',
+          icon: 'bi bi-tower-observation',
+          path: `/${this.lang()}/services/manpower`,
+        },
+
         {
           translateKey: 'menu.services_children.training',
           icon: 'bi bi-graduation-cap',
@@ -201,4 +202,8 @@ export class ClientNavbarComponent {
       path: `/${this.lang()}/contact`,
     },
   ]);
+
+  navigateHome(){
+    this.router.navigateByUrl(`${this.lang()}/home`);
+  }
 }

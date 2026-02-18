@@ -28,7 +28,11 @@
   },
   "footer": {
     "image": "Footer image",
-    "copyright": "© 2024 Help Empowerment. All rights reserved."
+    "copyright": "© 2026 Help Empowerment LLC. All rights reserved.",
+    "refundPolicy": "Refund Policy",
+    "privacyNotice": "Privacy Notice",
+    "userAccountPolicy": "User Account Policy",
+    "technicalSupportPolic": "Technical Support Policy"
   },
   "articles": {
     "published": {
