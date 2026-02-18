@@ -76,12 +76,13 @@ export class CertificationQuestionComponent {
   selectedCertification = this.certificationStore.selectedCertification;
   selectedExam = computed(() => this.examsStore.selectedExam());
 
-  examsWithIndex = computed(() =>
-    this.examsStore.exams().map((exam, idx) => ({
+  examsWithIndex = computed(() => {
+    const exams = this.examsStore.exams();
+    return exams.map((exam, idx) => ({
       ...exam,
-      indexLabel: `${idx + 1}`
-    }))
-  );
+      indexLabel: `${exam.examName}`
+    }));
+  });
 
   question = computed(() => this.questionStore.selectedQuestion());
 
@@ -99,6 +100,7 @@ export class CertificationQuestionComponent {
   questionId = '';
   choiceAnswerOrderCounter = 0;
   private lastAutoTranslatedAr = '';
+  private shouldNavigateBack = true;
 
   pendingQuestionType = signal<any>(null);
   apiAnswers = signal<any[]>([]);
@@ -120,7 +122,7 @@ export class CertificationQuestionComponent {
   form = this.fb.group({
     certification: ['', Validators.required],
     coursesMasterExamOid: ['', Validators.required],
-    questionTypeLookupId: ['', Validators.required],
+    questionTypeLookupId: ['33333333-3333-3333-3333-333333333301', Validators.required],
     questionText: ['', [Validators.required]],
     questionText_Ar: [''],
     questionExplination: [''],
@@ -155,6 +157,14 @@ export class CertificationQuestionComponent {
       if (pending) {
         this.applyQuestionType(pending);
         this.pendingQuestionType.set(null);
+      }
+
+      // Trigger the default question type if set and not in edit mode
+      if (!this.editMode) {
+        const defaultTypeId = this.form.get('questionTypeLookupId')?.value;
+        if (defaultTypeId && defaultTypeId !== '') {
+          this.applyQuestionType(defaultTypeId);
+        }
       }
     });
   }
@@ -230,6 +240,44 @@ export class CertificationQuestionComponent {
       });
     });
 
+    // Auto-calculate orderNo for new questions based on max existing orderNo + 1
+    effect(() => {
+      const exam = this.selectedExam();
+      const questionId = this.route.snapshot.paramMap.get('questionId');
+
+      // Only auto-calculate for new questions (not edit mode)
+      if (!questionId && exam?.oid) {
+        const filters = [{
+          propertyName: "coursesMasterExamOid",
+          value: exam.oid,
+          operation: 0
+        }];
+
+        // Create a request to get all questions for this exam
+        const request = {
+          filters,
+          sort: [],
+          pagination: { getAll: true, pageNumber: 0, pageSize: 1000 },
+          columns: []
+        };
+
+        this.certificationService.searchQuestion(request).subscribe({
+          next: (res) => {
+            const questions = res.questions;
+            const maxOrderNo = questions?.length > 0
+              ? Math.max(...questions.map(q => q.orderNo ?? 0))
+              : 0;
+            const nextOrderNo = maxOrderNo + 1;
+            this.form.patchValue({ orderNo: String(nextOrderNo) });
+          },
+          error: () => {
+            // If error, default to 1
+            this.form.patchValue({ orderNo: '1' });
+          }
+        });
+      }
+    });
+
     effect(() => {
       if (this.certificationStore.success()) {
         this.cancel();
@@ -240,9 +288,22 @@ export class CertificationQuestionComponent {
     effect(() => {
       if (this.questionStore.success()) {
         this.toast.showToast('Question saved successfully', 'success');
-        this.cancel();
         this.questionStore.setSuccess(false);
-        this.location.back();
+
+        if (this.shouldNavigateBack) {
+          // Navigate to exam details screen
+          const certId = this.route.snapshot.paramMap.get('id') || this.selectedCertification()?.oid;
+          const examId = this.route.snapshot.paramMap.get('examId') || this.selectedExam()?.oid;
+
+          if (certId && examId) {
+            this.router.navigate(['/admin/certifications', certId, 'exams', 'exam', examId]);
+          } else {
+            this.location.back();
+          }
+        } else {
+          // Reset form for new question while keeping certification and exam
+          this.resetFormForNewQuestion();
+        }
       }
     });
 
@@ -529,9 +590,23 @@ export class CertificationQuestionComponent {
   }
 
   // Submit / Cancel
-  onSubmit(): void {
+  onSubmit(stayOnForm: boolean = false): void {
+    this.shouldNavigateBack = !stayOnForm;
+
     if (this.selectedType()?.toLowerCase() === 'matching' && !this.editMode) {
       this.answersArray.clear();
+    }
+
+    // Validate MCQ type has at least one correct answer
+    if (this.selectedType() === 'MCQ') {
+      const hasCorrectAnswer = this.answersArray.controls.some(
+        control => control.get('isCorrect')?.value === true
+      );
+
+      if (!hasCorrectAnswer) {
+        this.toast.showToast('Please mark at least one answer as correct', 'error');
+        return;
+      }
     }
 
     //console.log('Form invalid?', this.form.invalid);
@@ -562,7 +637,86 @@ export class CertificationQuestionComponent {
   cancel(): void {
     this.form.reset();
     this.form.markAsUntouched();
-    this.location.back();
+
+    // Navigate to exam details screen
+    const certId = this.route.snapshot.paramMap.get('id') || this.selectedCertification()?.oid;
+    const examId = this.route.snapshot.paramMap.get('examId') || this.selectedExam()?.oid;
+
+    if (certId && examId) {
+      this.router.navigate(['/admin/certifications', certId, 'exams', 'exam', examId]);
+    } else {
+      this.location.back();
+    }
+  }
+
+  private resetFormForNewQuestion(): void {
+    const certId = this.form.get('certification')?.value;
+    const examId = this.form.get('coursesMasterExamOid')?.value;
+    const questionType = this.form.get('questionTypeLookupId')?.value;
+
+    // Reset the form
+    this.form.reset();
+    this.form.markAsUntouched();
+
+    // Clear arrays
+    this.resetFormArrays();
+
+    // Restore the certification, exam, and question type, and set defaults
+    this.form.patchValue({
+      certification: certId,
+      coursesMasterExamOid: examId,
+      questionTypeLookupId: questionType,
+      isActive: true,
+      correctAnswer: true,
+      question: true,
+      questionScore: 1,
+      createdBy: DEFAULT_USER_ID
+    });
+
+    // Re-apply the question type to set up the sections properly
+    if (questionType) {
+      this.applyQuestionType(questionType);
+    }
+
+    // Re-add initial answer/drag items based on question type
+    const type = this.selectedType();
+    if (type === 'MCQ') {
+      this.answersArray.push(this.createAnswerGroup(false));
+    } else if (type === 'MATCHING') {
+      this.dragQuestionsArray.push(this.createDragQuestionGroup());
+      this.dragAnswersArray.push(this.createDragAnswerGroup());
+    }
+
+    // Re-trigger orderNo calculation
+    const exam = this.selectedExam();
+    if (exam?.oid) {
+      const filters = [{
+        propertyName: "coursesMasterExamOid",
+        value: exam.oid,
+        operation: 0
+      }];
+
+      const request = {
+        filters,
+        sort: [],
+        pagination: { getAll: true, pageNumber: 0, pageSize: 1000 },
+        columns: []
+      };
+
+      this.certificationService.searchQuestion(request).subscribe({
+        next: (res) => {
+          const questions = res.questions;
+          const maxOrderNo = questions?.length > 0
+            ? Math.max(...questions.map(q => q.orderNo ?? 0))
+            : 0;
+          const nextOrderNo = maxOrderNo + 1;
+          this.form.patchValue({ orderNo: String(nextOrderNo) });
+        },
+        error: () => {
+          this.form.patchValue({ orderNo: '1' });
+        }
+      });
+    }
   }
 
   // Payload Builders

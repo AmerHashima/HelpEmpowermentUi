@@ -44,7 +44,7 @@ export interface courseExam {
   courseCategoryLookupId: string | null,
   questionCount?: number,
   durationMinutes?: number,
-
+  orderNo?: number,
   isActive: boolean,
   createdBy: string
 }
@@ -62,7 +62,7 @@ export interface APIExam {
   isActive: boolean,
   questionCount: number,
   durationMinutes: number,
-
+  orderNo?: number,
   createdAt: string,
   createdBy: string,
   updatedAt: string,

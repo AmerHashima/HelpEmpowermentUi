@@ -13,5 +13,5 @@ export const initialCertificationState: certificationState = {
 
   search: '',
   sortBy: 'orderNo',
-  sortDirection: 'asc',
+  sortDirection: 'desc',
 };
