@@ -15,6 +15,7 @@ interface Question {
   progress: number;        // 0–100
   questionNumber: number;
   totalQuestions: number;
+  maxChoices: number;
 }
 type QuestionStatus = 'notVisited' | 'answered' | 'marked' | 'skipped';
 
@@ -41,9 +42,39 @@ export class ClientExamQuestionComponent {
     }));
 
 
+  // selectOption(opt: Question['options'][number]) {
+  //   this.question().options.forEach(o => o.isSelected = false);
+  //   opt.isSelected = true;
+  // }
   selectOption(opt: Question['options'][number]) {
-    this.question().options.forEach(o => o.isSelected = false);
-    opt.isSelected = true;
+    const question = this.question();
+    const max = question.maxChoices;
+
+    // If single choice → behave like radio button
+    if (max === 1) {
+      question.options.forEach(o => o.isSelected = false);
+      opt.isSelected = true;
+      return;
+    }
+
+    // If unlimited choices
+    if (max === 0) {
+      opt.isSelected = !opt.isSelected;
+      return;
+    }
+
+    // If limited multiple choice
+    const selectedCount = question.options.filter(o => o.isSelected).length;
+
+    if (opt.isSelected) {
+      // Allow deselect
+      opt.isSelected = false;
+    } else {
+      // Only select if under limit
+      if (selectedCount < max) {
+        opt.isSelected = true;
+      }
+    }
   }
   navigateToQuestion(question:any){
     this.showQuestionBoard=false;
@@ -51,34 +82,6 @@ export class ClientExamQuestionComponent {
   }
   onOpenCalculator(){
     this.showCalculator=true;
-    // const width = 380;
-    // const height = 520;
-    // const left = (screen.width - width) / 2;
-    // const top = (screen.height - height) / 2;
-
-
-
-    // // const popup = window.open(
-    // //   'https://www.theonlinecalculator.com/',
-    // //   'calcPopup',
-    // //   `width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=no,toolbar=no,location=no,menubar=no`
-    // // );
-
-    // // if (!popup) {
-    // //   alert('Popup was blocked! Please allow popups for this site.');
-    // // }
-
-    // const calculatorWindow = window.open(
-    //   '/calculator',
-    //   'myCalculator',
-    //   `width=${width},height=${height},left=${left},top=${top},` +
-    //   'resizable=yes,scrollbars=no,toolbar=no,location=no,menubar=no'
-    // );
-
-    // // Very useful feedback
-    // if (!calculatorWindow || calculatorWindow.closed || typeof calculatorWindow.closed === 'undefined') {
-    //   alert('Popup blocked!\nPlease allow popups for this website');
-    // }
   }
   onOpenWhiteboard(){
     this.showWhiteboard=true;
