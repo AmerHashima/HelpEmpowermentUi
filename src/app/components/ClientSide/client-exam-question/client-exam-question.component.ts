@@ -7,6 +7,7 @@ import { GenericModelComponent } from '../../../shared/generic-model/generic-mod
 import { NgClass } from '@angular/common';
 import { CalculatorComponent } from '../../../shared/calculator/calculator.component';
 import { WhiteboardComponent } from '../../../shared/whiteboard/whiteboard.component';
+import { DragComponentComponent } from '../drag-component/drag-component.component';
 
 interface Question {
   id: string;
@@ -22,7 +23,7 @@ type QuestionStatus = 'notVisited' | 'answered' | 'marked' | 'skipped';
 @Component({
   selector: 'app-client-exam-question',
   imports: [SiteButtonComponent,TranslatePipe,FeatureComponent,
-    GenericModelComponent,NgClass,CalculatorComponent,WhiteboardComponent
+    GenericModelComponent,NgClass,CalculatorComponent,WhiteboardComponent,DragComponentComponent
   ],
   templateUrl: './client-exam-question.component.html',
   styleUrl: './client-exam-question.component.scss'
@@ -42,10 +43,6 @@ export class ClientExamQuestionComponent {
     }));
 
 
-  // selectOption(opt: Question['options'][number]) {
-  //   this.question().options.forEach(o => o.isSelected = false);
-  //   opt.isSelected = true;
-  // }
   selectOption(opt: Question['options'][number]) {
     const question = this.question();
     const max = question.maxChoices;
@@ -106,4 +103,13 @@ export class ClientExamQuestionComponent {
   onMarkQuestion(){}
   nextQuestion(){}
   previousQuestion(){}
+
+  left = ['Template A', 'Template B', 'Template C'];
+  right = ['Item 1', 'Item 2', 'Item 3'];
+  middle: string[] = [];
+
+  onMiddleChange(updated: string[]) {
+    console.log('Middle updated:', updated);
+  }
+
 }

@@ -56,7 +56,7 @@
         [customClass]="true"
         (click)="onOpenCalculator()"
       />
-    </div>  
+    </div>
 
     <div class="question-content">
       <h2 class="question-text">
@@ -122,6 +122,8 @@
     </footer>
   </main>
 </div>
+
+
 
 <app-generic-modal [(isOpen)]="showConfirm" title="">
   <section
@@ -231,3 +233,15 @@
   </section>
 </app-generic-modal>
 
+<!-- <app-drag-component
+  [leftItems]="left"
+  [rightItems]="right"
+  [middleItems]="middle"
+  (middleChange)="onMiddleChange($event)"
+></app-drag-component> -->
+
+<app-drag-component
+  [leftItems]="left"
+  [rightItems]="right"
+  (middleChange)="onMiddleChange($event)"
+></app-drag-component>

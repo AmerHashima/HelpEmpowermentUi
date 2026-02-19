@@ -1,0 +1,48 @@
+<div class="builder-container">
+  <div class="column left">
+    <div class="fixed-list">
+      <div class="item" *ngFor="let item of leftItems">
+        {{ item }}
+      </div>
+    </div>
+  </div>
+
+  <!-- MIDDLE (Drop Zone) -->
+  <div class="column middle">
+    <div
+      cdkDropList
+      id="middleList"
+      [cdkDropListData]="middleItems"
+      [cdkDropListConnectedTo]="['rightList']"
+      class="list"
+      (cdkDropListDropped)="dropToMiddle($event)"
+    >
+      <div
+        class="item"
+        *ngFor="let item of middleItems; let i = index"
+        cdkDrag
+        [cdkDragDisabled]="!item"
+        [class.placeholder]="!item"
+      >
+        {{ item || "Drop Here" }}
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT (Drag Source) -->
+  @if (rightItems.length > 0) {
+    <div class="column right">
+      <div
+        cdkDropList
+        id="rightList"
+        [cdkDropListData]="rightItems"
+        [cdkDropListConnectedTo]="['middleList']"
+        class="list"
+      >
+        <div class="item draggable" *ngFor="let item of rightItems" cdkDrag>
+          {{ item }}
+        </div>
+      </div>
+    </div>
+  }
+</div>
