@@ -1,3 +1,5 @@
+// src\app\components\ClientSide\home\home-articles\home-articles.component.ts
+
 import { Component, computed, inject, input } from '@angular/core';
 import { Shared } from '../../../../shared/Services/shared/shared';
 import { ArticleCardComponent } from '../../../../shared/clientSide/article-card/article-card.component';
@@ -39,18 +41,18 @@ export const articles: ArticleItem[] = [
 ];
 @Component({
   selector: 'app-home-articles',
-  standalone:true,
-  imports: [ArticleCardComponent,TranslatePipe,TranslateModule],
+  standalone: true,
+  imports: [ArticleCardComponent, TranslatePipe, TranslateModule],
   templateUrl: './home-articles.component.html',
   styleUrl: './home-articles.component.scss'
 })
 export class HomeArticlesComponent {
-  private shared=inject(Shared);
-  isRTL=this.shared.isRtl;
-  currentCertification=this.shared.currentCertificate;
+  private shared = inject(Shared);
+  isRTL = this.shared.isRtl;
+  currentCertification = this.shared.currentCertificate;
   type = input<string>('home');
 
-  articlesData=computed(()=>{
+  articlesData = computed(() => {
     if (!this.currentCertification())
       return articles;
     else if (this.currentCertification() == 'camp')
@@ -72,7 +74,7 @@ export class HomeArticlesComponent {
           title: 'articles.article2.title',
           description: 'articles.article2.summary',
         },
-    ]
+      ]
     else return [];
 
   })
@@ -92,7 +94,7 @@ export class HomeArticlesComponent {
   }
 
   onArticleClick(article: ArticleItem, index: number) {
-    console.log('Article clicked:', article.title, 'index:', index);
+    //console.log('Article clicked:', article.title, 'index:', index);
     // this.router.navigate(['/articles', article.slug || index]);
   }
 }

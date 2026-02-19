@@ -12,36 +12,34 @@ import { HttpLoaderFactory } from '../translate-loader';
 import { studentAuthInterceptor } from './core/interceptors/student-auth.interceptor';
 export const appConfig: ApplicationConfig = {
   providers: [
-  provideZoneChangeDetection({ eventCoalescing: true }),
-  provideRouter(routes ),
-  provideAnimations(),
-  provideToastr({
-    timeOut: 3000,
-    positionClass: 'toast-top-right',
-    preventDuplicates: true,
-    closeButton: true,
-    progressBar: true,
-    newestOnTop: false,
-  }),
+    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideRouter(routes),
+    provideAnimations(),
+    provideToastr({
+      timeOut: 3000,
+      positionClass: 'toast-top-right',
+      preventDuplicates: true,
+      closeButton: true,
+      progressBar: true,
+      newestOnTop: false,
+    }),
+    provideClientHydration(withEventReplay()),
+
     provideHttpClient(
       withFetch(),
       withInterceptors([studentAuthInterceptor])
-    ),
-    // provideHttpClient(),
-  provideClientHydration(withEventReplay()),
-
-  {
-    provide: TranslateLoader,
-    useFactory: HttpLoaderFactory,
-    deps: [HttpClient]
-  },
-  TranslateModule.forRoot({
-    loader: {
+    ),    {
       provide: TranslateLoader,
       useFactory: HttpLoaderFactory,
       deps: [HttpClient]
     },
-    fallbackLang: 'en'
-  }).providers!
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      },
+      fallbackLang: 'en'
+    }).providers!
   ]
 };

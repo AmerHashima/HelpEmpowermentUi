@@ -1,4 +1,4 @@
-// src\app\components\contact\contact.component.ts
+// src\app\components\ClientSide\contact\contact.component.ts
 import { Component, computed, inject, signal } from '@angular/core';
 import { PageBannerComponent } from '../../../shared/clientSide/page-banner/page-banner.component';
 import { Shared } from '../../../shared/Services/shared/shared';
@@ -70,6 +70,6 @@ isRTL=this.shared.isRtl;
   );
 
   onSendContactMessage() {
-    console.log('Submitted credentials:', this.contact);
+    //console.log('Submitted credentials:', this.contact);
   }
 }

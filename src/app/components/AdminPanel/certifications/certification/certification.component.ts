@@ -8,6 +8,7 @@ import { CertificationService } from '../../../../Services/certification.service
 import { CertificationsStore } from '../../../../AdminPanelStores/CertificationStore/certification.store';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
+import { BreadcrumbService } from '../../../../Services/breadcrumb.service';
 import { CertificationsFeaturesComponent } from '../certifications-features/certifications-features.component';
 import { ExamsStore } from '../../../../AdminPanelStores/ExamsStore/exam.store';
 import { QuestionsStore } from '../../../../AdminPanelStores/QuestionStores/questions.store';
@@ -27,6 +28,7 @@ export class CertificationComponent {
   certificationService = inject(CertificationService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private breadcrumbService = inject(BreadcrumbService);
   certification = this.certificationStore.selectedCertification
   courseContents = [];
   exams = computed(() => this.examsStore.exams());
@@ -36,6 +38,17 @@ export class CertificationComponent {
       const id = this.route.snapshot.paramMap.get('id');
       if (id && !this.certification()) {
         this.certificationStore.getCertification(id);
+      }
+    });
+
+    effect(() => {
+      const cert = this.certification();
+      if (cert) {
+        this.breadcrumbService.setBreadcrumbs([
+          { label: 'Admin', url: '/admin' },
+          { label: 'Certifications', url: '/admin/certifications' },
+          { label: cert.courseName || 'Certification Details', url: `/admin/certifications/${cert.oid}` }
+        ]);
       }
     });
   }

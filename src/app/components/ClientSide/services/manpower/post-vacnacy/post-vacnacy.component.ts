@@ -1,3 +1,4 @@
+// src\app\components\ClientSide\services\manpower\post-vacnacy\post-vacnacy.component.ts
 import { Component, inject } from '@angular/core';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { InputComponent } from '../../../../../shared/input/input.component';
@@ -44,6 +45,6 @@ isRTL=this.shared.isRtl;
   };
 
   onPostVacancy(){
-    console.log(this.vacancy);
+    //console.log(this.vacancy);
   }
 }

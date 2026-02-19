@@ -32,7 +32,7 @@ export class ClientNavbarComponent {
 
   // Use shared service as single source of truth
   lang = this.shared.lang;
-  currentTheme=signal<string | null>(null);
+  currentTheme = signal<string | null>(null);
   isRTL = this.shared.isRtl;
 
   // Local component state

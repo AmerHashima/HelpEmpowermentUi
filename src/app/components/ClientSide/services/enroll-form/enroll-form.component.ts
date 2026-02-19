@@ -1,3 +1,4 @@
+// src\app\components\ClientSide\services\enroll-form\enroll-form.component.ts
 import { Component, inject, output } from '@angular/core';
 import { Shared } from '../../../../shared/Services/shared/shared';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
@@ -43,7 +44,7 @@ export class EnrollFormComponent {
   };
 
   onEnroll() {
-    console.log('Enroll form submitted:', this.enroll);
+    //console.log('Enroll form submitted:', this.enroll);
     this.submitted.emit(this.enroll);
   }
 }

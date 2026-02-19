@@ -87,10 +87,10 @@ export const updateQuestion =
 //   answers: any,
 //   updateQuestion:string
 // ): PartialStateUpdater<QuestionState> => {
-//   // console.log('mapperqUESTION', question);
+//   // //console.log('mapperqUESTION', question);
 //   // const mappedQuestion: courseQuestion = mapApiQuestionToCourseQuestion(question);
-//   // console.log('aftermapperqUESTION', mappedQuestion);
-//   console.log('updateQuestionId', updateQuestion);
+//   // //console.log('aftermapperqUESTION', mappedQuestion);
+//   //console.log('updateQuestionId', updateQuestion);
 //   return (state) => ({
 //     questions: [
 //       ...state.questions.filter(q => q.oid !== updateQuestion),
@@ -108,7 +108,7 @@ export const getQuestion = (
   question: APICourseQuestion
 ): PartialStateUpdater<QuestionState> => {
   const mappedQuestion: courseQuestion = mapApiQuestionToCourseQuestion(question);
-  console.log('mappedQuestion', mappedQuestion);
+  //console.log('mappedQuestion', mappedQuestion);
   return () => ({
     selectedQuestion: mappedQuestion,
   });

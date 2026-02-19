@@ -1,5 +1,5 @@
 <!-- src\app\shared\Admin Panel\side-nav\side-nav.html -->
-<div class="sidebar p-3 d-flex flex-column gap-3 h-100" [class.collapsed]="isCollapse()" #sideNav>
+<div class="sidebar p-3 d-flex flex-column gap-3 h-100"  #sideNav>
   <!-- Logo Section -->
   <div class="logo d-flex align-items-center justify-content-center logoBorder bg-white rounded-3 p-2">
         <img src="assets/images/sideNav/logo.png" alt="Logo Image" class="w-100" />
@@ -21,14 +21,14 @@
   <!-- Navigation Options -->
   <div class="flex-grow-1 d-flex flex-column navOptions">
     <!-- Section One: Main Menu -->
-    <div class="text-site fs-regular-xs small fw-bold" [class.text-center]="isCollapse()">
-      @if (!isCollapse()) {
+    <div class="text-site fs-regular-xs small fw-bold">
+      <!-- @if (!isCollapse()) {
       <span class="pe-1">{{'menu' | translate | titlecase}}</span>
-      }
+      } -->
       @if(lang() == 'ar' ){
       <span>الرئيسية</span>
       }
-      @if(lang() == 'en' && isCollapse()){
+      @if(lang() == 'en'){
       <span>{{'menu'  | titlecase}}</span>
       }
     </div>
@@ -36,13 +36,13 @@
       <ul>
         @for (navItem of sectionOneNavItems; track navItem; let index = $index) {
         @if(navItem.name == 'settings'){
-        <div class="text-site fs-regular-xs fw-bold pb-1 pt-3" [class.text-center]="isCollapse()">
+        <div class="text-site fs-regular-xs fw-bold pb-1 pt-3">
           <span>{{lang() == 'ar' ? navItem.nameAr : navItem.name | titlecase}}</span>
         </div>
         }
         <li>
           <app-side-nav-item [NavitemComponentData]="{
-                isCollapsed: isCollapse(),
+                isCollapsed: false,
                 navItemName: lang()== 'ar' ? navItem.nameAr:navItem.name,
                 classes: 'py-2',
                 subItems: navItem.subItems,
@@ -52,23 +52,7 @@
                 <i [ngClass]="navItem.icon"></i>
             <!-- <i [ngClass]="navItem.icon"></i> -->
           </app-side-nav-item>
-          @if ( isCollapse()){
-          <ul class="hoverSub basic-style" [ngClass]="{ 'collapsed-subnav': isCollapse() }"
-            [class.p-2]="navItem.subItems && navItem.subItems.length >0" (mouseleave)="hideHoverSubMenu(index)"
-            #hoverSub>
-            @for (subItem of navItem.subItems; track subItem) {
-            <li class="py-2">
-              <div class="d-flex align-items-center subnav-item" [routerLink]="subItem.route"
-                routerLinkActive="router-link-active">
-                <i [ngClass]="subItem.icon" class="pe-2 small"></i>
-                <span class="small fw-light">
-                  {{ lang()== 'ar' ? subItem.nameAr:subItem.name | titlecase}}
-                </span>
-              </div>
-            </li>
-            }
-          </ul>
-          }
+       
         </li>
         }
       </ul>

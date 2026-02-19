@@ -1,4 +1,4 @@
-// src\app\components\calendar\calendar.component.ts
+// src\app\components\ClientSide\calendar\calendar.component.ts
 import { Component, inject } from '@angular/core';
 import { Shared } from '../../../shared/Services/shared/shared';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
@@ -47,6 +47,6 @@ export class CalendarComponent {
   ];
 
   onCardClick(item:any){
-    console.log('cardClicked');
+    //console.log('cardClicked');
   }
 }

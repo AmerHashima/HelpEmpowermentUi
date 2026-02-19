@@ -1,4 +1,4 @@
-// login.component.ts
+// src\app\components\ClientSide\auth\login\login.component.ts
 import { Component, inject, ViewChild, signal } from '@angular/core';
 import { CommonModule, NgClass, NgIf } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';

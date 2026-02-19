@@ -100,13 +100,15 @@
         <div class="col-12 col-md-4">
           <app-input
             formControlName="orderNo"
-            label="Question Order"
+            label="Question Order (Auto-calculated)"
             type="number"
             placeholder="e.g. 1, 2, 3..."
+            [readOnly]="!editMode"
             [errorMessages]="{
               required: 'Order is required',
             }"
           ></app-input>
+          <small class="text-muted">Auto-calculated as max order + 1 for this exam</small>
         </div>
 
         <!-- <div class="col-12 col-md-4">
@@ -163,6 +165,7 @@
         class="card-header fw-bold d-flex justify-content-between align-items-center"
       >
         <h5 class="mb-0">Answer Options</h5>
+        <small class="text-muted">Mark at least one answer as correct</small>
       </div>
       <div class="card-body">
         <div formArrayName="answers" class="d-flex flex-column gap-3">
@@ -175,7 +178,9 @@
                   class="form-check-input"
                   [id]="'correct-' + i"
                 />
-                <label class="form-check-label" [for]="'correct-' + i"></label>
+                <label class="form-check-label" [for]="'correct-' + i">
+                  <small class="text-muted">Correct</small>
+                </label>
               </div>
 
               <div class="flex-grow-1">
@@ -443,9 +448,17 @@
   <!--         Actions            -->
   <div class="d-flex justify-content-end gap-3 mt-4">
     <app-button btnLabel="Cancel" [mainBtn]="false" (click)="cancel()" />
+    @if (!editMode) {
+      <app-button
+        btnLabel="Create Question & New"
+        [mainBtn]="false"
+        (click)="onSubmit(true)"
+      />
+    }
     <app-button
       btnLabel="{{ editMode ? 'Update Question' : 'Create Question' }}"
       buttonType="submit"
+      (click)="onSubmit(false)"
     />
   </div>
 </div>

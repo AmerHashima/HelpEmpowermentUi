@@ -3,6 +3,8 @@ import { Component, computed, effect, inject, signal } from '@angular/core';
 import { ExamsStore } from '../../../AdminPanelStores/ExamsStore/exam.store';
 import { CertificationService } from '../../../Services/certification.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BreadcrumbService } from '../../../Services/breadcrumb.service';
+import { CertificationsStore } from '../../../AdminPanelStores/CertificationStore/certification.store';
 import { ReusableMaterialTableComponent } from '../../../shared/angular-material-reusable-table/angular-material-reusable-table.component';
 import { QuestionsStore } from '../../../AdminPanelStores/QuestionStores/questions.store';
 import { Filter, Sort } from '../../../models/rquest';
@@ -21,7 +23,10 @@ export class ExamDetailsComponent {
   certificationService = inject(CertificationService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private breadcrumbService = inject(BreadcrumbService);
+  private certificationStore = inject(CertificationsStore);
   exam = this.examsStore.selectedExam;
+  certification = this.certificationStore.selectedCertification;
   total = computed(() => this.questionStore.total());
   pageSize = computed(() => this.questionStore.pageSize());
   loading = computed(() => this.questionStore.loading());
@@ -46,11 +51,30 @@ export class ExamDetailsComponent {
     { field: 'actions', header: 'Actions', type: 'buttons' }
   ];
   constructor() {
+    // Clear questions state when entering the component
+    this.questionStore.clearQuestions();
+
     effect(() => {
       const id = this.route.snapshot.paramMap.get('examId');
       this.certId = this.route.snapshot.paramMap.get('id');
       if (id && !this.exam()) {
         this.examsStore.getExam(id);
+      }
+      if (this.certId && !this.certification()) {
+        this.certificationStore.getCertification(this.certId);
+      }
+    });
+
+    effect(() => {
+      const exam = this.exam();
+      const cert = this.certification();
+      if (exam && cert) {
+        this.breadcrumbService.setBreadcrumbs([
+          { label: 'Admin', url: '/admin' },
+          { label: 'Certifications', url: '/admin/certifications' },
+          { label: cert.courseName || 'Certification', url: `/admin/certifications/${cert.oid}` },
+          { label: exam.courseName || 'Exam Details', url: `/admin/certifications/${cert.oid}/exams/exam/${exam.oid}` }
+        ]);
       }
     });
 
@@ -98,17 +122,17 @@ export class ExamDetailsComponent {
 
   // onPageChange(event: PageEvent) {
   onPageChange(event: any) {
-    console.log('pagination', event);
+    //console.log('pagination', event);
     // this.store.setPage(event.pageIndex + 1, event.pageSize);
   }
 
   onFilterChange(value: string) {
-    console.log('filter', value);
+    //console.log('filter', value);
     this.questionStore.setSearch(value);
   }
 
   onSortChange(sort: any) {
-    console.log('sort', sort);
+    //console.log('sort', sort);
     this.questionStore.setSort(sort);
   }
 
