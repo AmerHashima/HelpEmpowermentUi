@@ -31,14 +31,14 @@ export class CalendarComponent {
       route: "",
     },
     {
-      title: "Camp Course",
+      title: "capm Course",
       icon: "bi bi-camera-video",
       startDate: "20-Feb-26",
       endDate: "20-Mar-26",
       route: "",
     },
     {
-      title: "Camp Webinar",
+      title: "capm Webinar",
       icon: "bi bi-camera-video",
       startDate: "20-Feb-26",
       endDate: "20-Mar-26",

@@ -1,1 +1,10 @@
-/* src\app\components\home\home.component.scss */
+@use 'variables' as *;
+
+h2{
+  white-space: pre-line;
+  line-height: 60%;
+}
+
+.expirteSubTitle{
+  color:$primaryColor;
+}

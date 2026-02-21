@@ -1,0 +1,193 @@
+@use "variables" as *;
+:host {
+  display: block;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: #f8f9fa;
+  min-height: 100vh;
+}
+
+.exam-container {
+  min-width: 75%;
+  margin: 0 auto;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+}
+
+.exam-header {
+  background: linear-gradient(45deg, #AD1357, #470824) !important;
+  color: white;
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mode {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.star {
+  color: gold;
+  margin-right: 6px;
+}
+
+.actions .btn {
+  margin-left: 12px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.end {
+  background: #c41e3a;
+  color: white;
+}
+.save {
+  background: #444;
+  color: white;
+}
+.whiteboard {
+  background: #2e7d32;
+  color: white;
+}
+
+.question-header {
+  background: $inputBg;
+  color: $primaryColor !important;
+  padding: 8px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.progress-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.help {
+  width: 24px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 50%;
+  text-align: center;
+  line-height: 24px;
+  font-weight: bold;
+}
+
+.progress-bar {
+  width: 220px;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: $primaryColor;
+  transition: width 0.4s;
+}
+
+.question-area {
+  padding: 24px 32px;
+}
+
+.question-text {
+  text-align: start;
+  margin: 1.2em 0 1.8em;
+  line-height: 1.45;
+  font-size: 1.15rem;
+  font-weight: 500;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.option {
+  display: flex;
+  align-items: flex-start;
+  padding: 14px 18px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.option:hover {
+  background-color: $secondaryColor;
+  border-color: $secondaryColor;
+  color: $lightBgTextColor !important;
+  *{
+      color: $lightBgTextColor !important;
+  }
+}
+
+.option.selected {
+  background-color: $primaryColor;
+  border-color: $primaryColor;
+  color: $lightBgTextColor !important;
+  box-shadow: 0 0 0 2px $lightBgTextColor inset;
+   *{
+      color: $lightBgTextColor !important;
+  }
+}
+
+.letter {
+  min-width: 32px;
+  font-weight: bold;
+  color: #555;
+}
+
+.question-footer {
+  margin-top: 2.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.question-box.notVisited {
+  background: #e9ecef;
+}
+
+.question-box.answered {
+  background: $successColor;
+  color: $lightBgTextColor;
+}
+
+.question-box.marked {
+  background: $primaryColor;
+    color: $lightBgTextColor;
+}
+
+.question-box.skipped {
+  background: rgb(150, 150, 26);
+  color: #000;
+}
+
+.notAnswesedTag i{
+color:#e9ecef;
+}
+.AnswesedTag i{
+ color:$successColor;
+}
+.markedTag i{
+  color: $primaryColor;
+}
+.skippedTag i{
+ color:rgb(150, 150, 26); ;
+}
+span{
+  color: $headerColor !important;
+}
+

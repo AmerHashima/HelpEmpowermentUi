@@ -359,6 +359,9 @@ p {
   color:$secondaryColor !important;
 }
 
+
+
+
 .webinarRegister .btn.btn-primary{
   background-color: $lightBgTextColor !important;
   color:$primaryColor !important;
@@ -423,6 +426,24 @@ p {
   border-color: $borderColor;
 }
 
+.infoColor{
+  color:$primaryColor !important;
+  font-size: 2rem;
+}
+.group-appearance-standard,.mat-button-toggle-appearance-standard.mat-button-toggle-checked {
+  border-color: $primaryColor !important;
+  background-color: $primaryColor !important;
+  color:$lightBgTextColor !important;
+  *{
+  color:$lightBgTextColor !important;
+  }
+}
+.mat-button-toggle-group-appearance-standard .mat-pseudo-checkbox {
+    --mat-minimal-pseudo-checkbox-selected-checkmark-color:$lightBgTextColor !important;
+}
+    // .modal-dialog{
+    //   max-width: 50%;
+    // }
 @media screen and (min-width: 1200px) {
   h1 {
     font-size: 5rem;

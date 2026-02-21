@@ -1,0 +1,126 @@
+
+@use 'variables' as *;
+
+
+.profile-img{
+  width:100px;
+  height: 100px;
+  border-radius: 50%;
+}
+
+.profile-image-wrapper {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  margin: auto;
+}
+
+.profile-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 4px solid #fff;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Camera button */
+.profile-edit-btn {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  width: 38px;
+  height: 38px;
+  background: $primaryColor;
+  color: $lightBgTextColor;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  i{
+      color: $lightBgTextColor;
+
+  }
+}
+
+.profile-edit-btn:hover {
+  transform: scale(1.1);
+  background: $secondaryColor;
+}
+
+.profile-edit-btn i {
+  font-size: 16px;
+}
+
+
+.course-card {
+  border-radius: 16px;
+  overflow: hidden;
+  transition: 0.3s ease;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.course-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 30px rgba(0,0,0,0.15);
+}
+
+.course-card img {
+  height: 180px;
+  object-fit: cover;
+}
+
+.progress-bar {
+  background: linear-gradient(45deg, #AD1357, #470824) !important;
+}
+
+
+.exam-card {
+  border-radius: 12px;
+  transition: 0.3s ease;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+}
+
+.exam-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+}
+
+.progress-bar {
+  background: linear-gradient(90deg, #0d6efd, #6610f2);
+  border-radius: 3px;
+}
+
+.exam-rating i {
+  margin-right: 2px;
+  font-size: 0.9rem;
+}
+
+.empty-exams {
+  color: #6c757d;
+  i {
+    font-size: 4rem;
+  }
+  p {
+    font-size: 1rem;
+  }
+}
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+  color:$primaryColor !important;
+  background-color: $inputBg;
+}
+
+.nav-link{
+  color:$paraTextColor !important;
+}
+
+.card-body,.card{
+  background-color: $bgBody;
+  *{
+    color:$lightTextColor !important;
+  }
+}

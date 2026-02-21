@@ -85,7 +85,7 @@ export class ClientSideLayoutComponent {
     const noLayoutPaths = [
       `/${this.currentLang}/home`,
       `/${this.currentLang}/certifications/pmp/exams/free`,
-      `/${this.currentLang}/certifications/camp/exams/free`
+      `/${this.currentLang}/certifications/capm/exams/free`
     ];
     return noLayoutPaths.includes(pathname);
   }

@@ -12,6 +12,9 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 import { Shared } from '../../Services/shared/shared';
 import { Theme } from '../../Services/ThemeService/theme';
+import { AuthService } from '../../../Services/auth.service';
+import { CertificationsStore } from '../../../AdminPanelStores/CertificationStore/certification.store';
+import { certifications } from '../certification-cards/certification-cards.component';
 
 @Component({
   selector: 'app-client-navbar',
@@ -19,9 +22,16 @@ import { Theme } from '../../Services/ThemeService/theme';
   imports: [CommonModule, RouterModule, TranslatePipe],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
+  providers: [CertificationsStore]
+
 })
 export class ClientNavbarComponent {
+  private certificationStore = inject(CertificationsStore);
+  certifications = computed(() => this.certificationStore.certifications);
   private shared = inject(Shared);
+  private auth = inject(AuthService);
+  // loggedStudent =this.auth.loggedStudent
+  studentToken =this.auth.studentToken;
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private platformId = inject(PLATFORM_ID);
@@ -105,6 +115,10 @@ export class ClientNavbarComponent {
     // fallback to localStorage if attribute not set
     return current ?? (localStorage.getItem('theme') as 'light' | 'dark' | null);
   }
+
+  logout(){
+    this.auth.logout().subscribe({})
+  }
   /** Dynamic menu – uses current language from shared service */
   menu = computed(() => [
     {
@@ -123,19 +137,29 @@ export class ClientNavbarComponent {
       key: 'certifications',
       translateKey: 'menu.certifications',
       icon: 'bi bi-patch-check',
-      children: [
-        {
-          translateKey: 'menu.certifications_children.PMP',
-          icon: 'bi bi-clipboard-check',
-          path: `/${this.lang()}/certifications/pmp`,
-        },
-        {
-          translateKey: 'menu.certifications_children.CAMP',
-          icon: 'bi bi-clipboard',
-          path: `/${this.lang()}/certifications/camp`,
-        },
-      ],
+      children: this.certificationStore.certifications().map(cert => ({
+        translateKey: cert.courseName,
+        icon: 'bi bi-clipboard',
+        path: `/${this.lang()}/certifications/${cert.courseName.toLowerCase()}`, // generate path from cert key
+      })),
     },
+    // {
+    //   key: 'certifications',
+    //   translateKey: 'menu.certifications',
+    //   icon: 'bi bi-patch-check',
+    //   children: [
+    //     {
+    //       translateKey: 'menu.certifications_children.PMP',
+    //       icon: 'bi bi-clipboard-check',
+    //       path: `/${this.lang()}/certifications/pmp`,
+    //     },
+    //     {
+    //       translateKey: 'menu.certifications_children.CAMP',
+    //       icon: 'bi bi-clipboard',
+    //       path: `/${this.lang()}/certifications/capm`,
+    //     },
+    //   ],
+    // },
     {
       key: 'calendar',
       translateKey: 'menu.calendar',
@@ -147,11 +171,6 @@ export class ClientNavbarComponent {
       translateKey: 'menu.services',
       icon: 'bi bi-briefcase',
       children: [
-        {
-          translateKey: 'menu.services_children.manpower',
-          icon: 'bi bi-tower-observation',
-          path: `/${this.lang()}/services/manpower`,
-        },
         {
           translateKey: 'menu.services_children.PMO',
           icon: 'bi bi-toolbox',
@@ -167,6 +186,12 @@ export class ClientNavbarComponent {
           icon: 'bi bi-circle-info',
           path: `/${this.lang()}/services/pmis`,
         },
+        {
+          translateKey: 'menu.services_children.manpower',
+          icon: 'bi bi-tower-observation',
+          path: `/${this.lang()}/services/manpower`,
+        },
+
         {
           translateKey: 'menu.services_children.training',
           icon: 'bi bi-graduation-cap',
@@ -193,4 +218,8 @@ export class ClientNavbarComponent {
       path: `/${this.lang()}/contact`,
     },
   ]);
+
+  navigateHome(){
+    this.router.navigateByUrl(`${this.lang()}/home`);
+  }
 }

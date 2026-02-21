@@ -110,7 +110,7 @@ Master the PMI Mindset: Discover the critical thinking approach unique to PMI th
           `A clear, stress-free understanding of the entire PMP journey.\nA practical, 5-step action plan you can start immediately.\nAnswers to your most pressing questions from an expert.\n`
         },
       ];
-    else if (this.certification() == 'camp' && this.type() == 'features')
+    else if (this.certification() == 'capm' && this.type() == 'features')
       return [
         {
           title: 'Instant Qualification',

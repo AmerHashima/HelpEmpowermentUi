@@ -11,7 +11,7 @@ import {  RouterOutlet } from '@angular/router';
 export class CampComponent {
   private shared = inject(Shared);
   constructor() {
-    this.shared.currentCertificate.set('camp');
+    this.shared.currentCertificate.set('capm');
   }
   ngOnDestroy(): void {
     this.shared.currentCertificate.set('');

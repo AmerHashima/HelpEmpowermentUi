@@ -24,6 +24,11 @@ export class SocialLinksComponent {
       url: 'https://x.com/HelpEmpowe12214',
     },
     {
+      title: 'youtube',
+      icon: 'bi bi-youtube',
+      url: 'https://youtube.com/@helpempowerment?si=jtooXnTRBu--1hHh',
+    },
+    {
       title: 'instagram',
       icon: 'bi bi-instagram',
       url: 'https://www.instagram.com/help_empowerment',

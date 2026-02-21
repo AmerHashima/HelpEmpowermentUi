@@ -96,7 +96,7 @@ export class HomeFAQComponent {
   displayedQuestions = computed(() => {
     if (this.currentCertification() == 'pmp')
       return this.pmpQuestions;
-    else if (this.currentCertification() == 'camp')
+    else if (this.currentCertification() == 'capm')
       return this.campQuestions;
     else return this.questions;
   })

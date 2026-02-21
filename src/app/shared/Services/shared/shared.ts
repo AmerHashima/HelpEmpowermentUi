@@ -2,6 +2,7 @@
 import { Injectable, RendererFactory2, Renderer2, signal, computed, inject, PLATFORM_ID } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { isPlatformBrowser } from '@angular/common';
+import { certifications } from '../../clientSide/certification-cards/certification-cards.component';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export class Shared {
   lang = signal<'en' | 'ar'>('en');
   isRtl = computed(() => this.lang() === 'ar');
   currentCertificate = signal('');
+  certifications=signal<any>(null);
   currentExamId = signal('');
 
   fullPage = signal<boolean>(false);

@@ -1,5 +1,5 @@
 // src\app\components\home\home.component.ts
-import { Component, inject } from '@angular/core';
+import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { PageBannerComponent } from '../../../shared/clientSide/page-banner/page-banner.component';
 import { FeatureComponent } from '../../../shared/clientSide/feature/feature.component';
 import { SocialLinksComponent } from '../../../shared/clientSide/social-links/social-links.component';
@@ -20,9 +20,31 @@ import { HomeFAQComponent } from './home-faq/home-faq.component';
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
+  @ViewChild('homeCertificationCards') certCards!: ElementRef;
+  @ViewChild('homeServiceCards') serviceCards!: ElementRef;
+
+
   private shared=inject(Shared);
   isRTL=this.shared.isRtl;
   homeVideo='assets/videos/Home.mp4';
-  onStartJourney(){}
-  onCorporateClick(){}
+  scrollToElement(elRef: ElementRef | null, headerOffset: number = 140) {
+    if (!elRef) return;
+
+    const el = elRef.nativeElement as HTMLElement;
+    const elementPosition = el.getBoundingClientRect().top + window.scrollY;
+    const offsetPosition = elementPosition - headerOffset;
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: 'smooth'
+    });
+  }
+
+  onStartJourney() {
+    this.scrollToElement(this.certCards);
+  }
+
+  onCorporateClick() {
+    this.scrollToElement(this.serviceCards);
+  }
 }

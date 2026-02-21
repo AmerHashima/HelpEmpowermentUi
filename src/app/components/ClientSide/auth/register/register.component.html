@@ -43,6 +43,45 @@
                 ></app-input>
               </div>
             </div>
+            <div class="row">
+              <div class="col-12 col-lg-6">
+                <app-input
+                  name="firstNameAr"
+                  [(ngModel)]="credentials.firstNameAr"
+                  required
+                  [label]="'register.firstNameArLabel' | translate"
+                  [placeholder]="'register.firstNameArPlaceholder' | translate"
+                  [icon]="'bi bi-person'"
+                  [errorMessages]="{
+                    required: 'Arabic First Name is required' | translate,
+                  }"
+                ></app-input>
+              </div>
+              <div class="col-12 col-lg-6">
+                <app-input
+                  name="lastNameAr"
+                  [(ngModel)]="credentials.lastNameAr"
+                  required
+                  [label]="'register.lastNameArLabel' | translate"
+                  [placeholder]="'register.lastNameArPlaceholder' | translate"
+                  [icon]="'bi bi-person'"
+                  [errorMessages]="{
+                    required: 'Arabic Last Name is required' | translate,
+                  }"
+                ></app-input>
+              </div>
+            </div>
+            <app-input
+              name="username"
+              [(ngModel)]="credentials.username"
+              required
+              [label]="'register.usernameLabel' | translate"
+              [placeholder]="'register.usernamePlaceholder' | translate"
+              [icon]="'bi bi-person'"
+              [errorMessages]="{
+                required: 'User Name is required' | translate,
+              }"
+            ></app-input>
             <app-input
               name="email"
               [(ngModel)]="credentials.email"
@@ -56,14 +95,15 @@
                 email: 'Invalid email format' | translate,
               }"
             ></app-input>
-        
-                <app-phone-input
-                  name="phone"
-                  [(ngModel)]="credentials.phone"
-                   [required]="true"
-                  [labelKey]="'register.phoneLabel' | translate"
-                >
-                </app-phone-input>
+
+            <app-phone-input
+              name="phone"
+              [(ngModel)]="credentials.mobile"
+              [required]="true"
+              [labelKey]="'register.phoneLabel' | translate"
+            >
+            </app-phone-input>
+
             <app-input
               name="password"
               [(ngModel)]="credentials.password"
@@ -83,8 +123,8 @@
               [(ngModel)]="credentials.confirmPassword"
               required
               minlength="6"
-              [label]="'log.passwordLabel' | translate"
-              [placeholder]="'log.passwordPlaceholder' | translate"
+              [label]="'log.confirmPasswordLabel' | translate"
+              [placeholder]="'log.confirmPasswordPlaceholder' | translate"
               [icon]="'bi bi-lock'"
               [type]="'password'"
               [errorMessages]="{
@@ -92,7 +132,7 @@
                 minlength: 'At least 6 characters' | translate,
               }"
             ></app-input>
-            <label class="form-check">
+            <!-- <label class="form-check">
               <input
                 name="terms"
                 [(ngModel)]="credentials.terms"
@@ -102,7 +142,7 @@
               <span class="form-check-label"
                 >I agree to the Terms & Conditions and Privacy Policy</span
               >
-            </label>
+            </label> -->
 
             <app-site-button
               title="register.registerButton"
@@ -118,7 +158,7 @@
           <span class="pe-1">{{ "register.loginMessage" | translate }}</span>
           <span
             [routerLink]="`/${lang()}/auth/login`"
-            class="mainTextColor fw-bold text-decoration-underline"
+            class="mainTextColor fw-bold text-decoration-underline w-100"
             >{{ "Login" | translate }}</span
           >
         </p>

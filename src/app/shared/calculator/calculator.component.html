@@ -1,0 +1,75 @@
+<mat-card class="calculator-card">
+
+
+  <mat-card-content>
+    <!-- Display -->
+    <mat-form-field appearance="outline" class="full-width">
+      <input matInput [(ngModel)]="expression" placeholder="0" readonly />
+    </mat-form-field>
+
+    <div class="result">{{ result || '0' }}</div>
+
+    <!-- Angle mode toggle -->
+    <div class="mode-toggle" class="mb-2">
+      <mat-button-toggle-group [(ngModel)]="angleMode">
+        <mat-button-toggle value="RAD">RAD</mat-button-toggle>
+        <mat-button-toggle value="DEG">DEG</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+
+
+    <!-- Main grid + scientific functions -->
+    <div class="button-grid">
+       <button  mat-flat-button color="primary" (click)="memoryClear()">MC</button>
+      <button mat-flat-button color="primary" (click)="memoryRecall()">MR</button>
+      <button  mat-flat-button color="primary" (click)="memoryAdd()">M+</button>
+      <button  mat-flat-button color="primary" (click)="memorySubtract()">M−</button>
+      <!-- Row scientific + memory-like -->
+      <button mat-flat-button color="primary" (click)="insertFunction('sin')">sin</button>
+      <button mat-flat-button color="primary" (click)="insertFunction('cos')">cos</button>
+      <button mat-flat-button color="primary" (click)="insertFunction('tan')">tan</button>
+      <button mat-flat-button color="accent" (click)="append('(')">(</button>
+
+      <button mat-flat-button color="primary" (click)="insertFunction('asin')">asin</button>
+      <button mat-flat-button color="primary" (click)="insertFunction('acos')">acos</button>
+      <button mat-flat-button color="primary" (click)="insertFunction('atan')">atan</button>
+      <button mat-flat-button color="accent" (click)="append(')')">)</button>
+
+      <button mat-flat-button (click)="append('^')">xʸ</button>
+      <button mat-flat-button (click)="insertFunction('sqrt')">√</button>
+      <button mat-flat-button (click)="insertConstant('π')">π</button>
+      <button mat-flat-button (click)="insertConstant('e')">e</button>
+
+      <!-- Standard rows -->
+      <button mat-flat-button color="warn" (click)="allClear()">AC</button>
+      <button mat-flat-button (click)="backspace()"><mat-icon>backspace</mat-icon></button>
+      <button mat-flat-button color="primary" (click)="append('%')">%</button>
+      <button mat-flat-button color="accent" (click)="append('÷')">÷</button>
+
+      <button mat-flat-button (click)="append('7')">7</button>
+      <button mat-flat-button (click)="append('8')">8</button>
+      <button mat-flat-button (click)="append('9')">9</button>
+      <button mat-flat-button color="accent" (click)="append('×')">×</button>
+
+      <button mat-flat-button (click)="append('4')">4</button>
+      <button mat-flat-button (click)="append('5')">5</button>
+      <button mat-flat-button (click)="append('6')">6</button>
+      <button mat-flat-button color="accent" (click)="append('-')">−</button>
+
+      <button mat-flat-button (click)="append('1')">1</button>
+      <button mat-flat-button (click)="append('2')">2</button>
+      <button mat-flat-button (click)="append('3')">3</button>
+      <button mat-flat-button color="accent" (click)="append('+')">+</button>
+
+      <button mat-flat-button class="wide" (click)="append('0')">0</button>
+      <button mat-flat-button (click)="append('.')">.</button>
+      <button mat-flat-button color="primary" class="equal" (click)="calculate()">=</button>
+    </div>
+
+    <!-- History -->
+    <div class="history" *ngIf="history.length">
+      <small>History</small>
+      <div *ngFor="let item of history">{{ item }}</div>
+    </div>
+  </mat-card-content>
+</mat-card>

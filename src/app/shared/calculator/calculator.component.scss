@@ -1,0 +1,48 @@
+@use 'variables' as *;
+
+.mat-mdc-unelevated-button:not(:disabled){
+ background-color: $primaryColor !important;
+}
+.mat-mdc-card{
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+.calculator-card {
+  max-width: 360px;
+  margin: 20px auto;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+}
+
+.full-width { width: 100%; }
+
+.result {
+  font-size: 2.8rem;
+  text-align: right;
+  min-height: 60px;
+  color: $primaryColor;
+  margin: 8px 0;
+}
+
+.button-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.wide { grid-column: span 2; }
+
+.scientific-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.history {
+  margin-top: 16px;
+  font-size: 0.9rem;
+  color: #555;
+  max-height: 120px;
+  overflow-y: auto;
+}

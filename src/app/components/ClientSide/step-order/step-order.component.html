@@ -1,0 +1,49 @@
+<div class="container">
+  <h2>{{ title }}</h2>
+
+  <div
+    class="list"
+    cdkDropList
+    (cdkDropListDropped)="drop($event)"
+  >
+    <div
+      class="item"
+      *ngFor="let item of items; let i = index; trackBy: trackById"
+      cdkDrag
+    >
+      <span
+        *ngIf="showDragHandle"
+        class="handle"
+        cdkDragHandle
+      >☰</span>
+
+      <div class="content">
+        <div class="label">({{ getDisplayLabel(item, i) }})</div>
+        <div class="description">{{ item.description }}</div>
+      </div>
+
+      <div
+        *ngIf="showPositionNumbers"
+        class="position"
+      >
+        {{ i + 1 }}
+      </div>
+
+      <!-- Nice preview while dragging -->
+      <div *cdkDragPreview class="preview">
+        <div class="label">({{ getDisplayLabel(item, i) }})</div>
+        {{ item.description }}
+      </div>
+
+      <!-- Placeholder -->
+      <div *cdkDragPlaceholder class="placeholder"></div>
+    </div>
+  </div>
+
+  <!-- Optional: debug/current order -->
+  <!--
+  <div class="debug">
+    Current order: {{ currentOrder() | json }}
+  </div>
+  -->
+</div>
