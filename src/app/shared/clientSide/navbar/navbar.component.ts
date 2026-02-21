@@ -133,33 +133,33 @@ export class ClientNavbarComponent {
       icon: 'bi bi-info-circle',
       path: `/${this.lang()}/about`,
     },
-    // {
-    //   key: 'certifications',
-    //   translateKey: 'menu.certifications',
-    //   icon: 'bi bi-patch-check',
-    //   children: this.certificationStore.certifications().map(cert => ({
-    //     translateKey: cert.courseName,
-    //     icon: 'bi bi-clipboard',
-    //     path: `/${this.lang()}/certifications/${cert.courseName.toLowerCase()}`, // generate path from cert key
-    //   })),
-    // },
     {
       key: 'certifications',
       translateKey: 'menu.certifications',
       icon: 'bi bi-patch-check',
-      children: [
-        {
-          translateKey: 'menu.certifications_children.PMP',
-          icon: 'bi bi-clipboard-check',
-          path: `/${this.lang()}/certifications/pmp`,
-        },
-        {
-          translateKey: 'menu.certifications_children.CAMP',
-          icon: 'bi bi-clipboard',
-          path: `/${this.lang()}/certifications/camp`,
-        },
-      ],
+      children: this.certificationStore.certifications().map(cert => ({
+        translateKey: cert.courseName,
+        icon: 'bi bi-clipboard',
+        path: `/${this.lang()}/certifications/${cert.courseName.toLowerCase()}`, // generate path from cert key
+      })),
     },
+    // {
+    //   key: 'certifications',
+    //   translateKey: 'menu.certifications',
+    //   icon: 'bi bi-patch-check',
+    //   children: [
+    //     {
+    //       translateKey: 'menu.certifications_children.PMP',
+    //       icon: 'bi bi-clipboard-check',
+    //       path: `/${this.lang()}/certifications/pmp`,
+    //     },
+    //     {
+    //       translateKey: 'menu.certifications_children.CAMP',
+    //       icon: 'bi bi-clipboard',
+    //       path: `/${this.lang()}/certifications/capm`,
+    //     },
+    //   ],
+    // },
     {
       key: 'calendar',
       translateKey: 'menu.calendar',

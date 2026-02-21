@@ -55,7 +55,7 @@ export class HomeArticlesComponent {
   articlesData = computed(() => {
     if (!this.currentCertification())
       return articles;
-    else if (this.currentCertification() == 'camp')
+    else if (this.currentCertification() == 'capm')
       return [{
         imgAlt: 'Article 1 image',
         imgSrc: 'assets/images/homeArticles/article1.jpeg',

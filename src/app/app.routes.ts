@@ -118,7 +118,7 @@ export const routes: Routes = [
 
           },
           {
-            path: "camp",
+            path: "capm",
             component: CampComponent,
             children: getCertificationChildren()
           }

@@ -68,7 +68,7 @@ export class ProfileComponent {
     {
       id: 3,
       examNumber: 'Exam 1',
-      certification: 'camp',
+      certification: 'capm',
       status: 'Saved',
       progress: 60
     }
