@@ -84,11 +84,12 @@
 }
 
 
-.certificationsExams{
-  display: flex;
-  flex-direction: column;
-  gap:1rem;
-}
+// .certificationsExams{
+//   display: flex;
+//   flex-direction: column;
+//   gap:1rem;
+// }
+
 .certificationsExams .icon  {
   padding:.5rem 1rem;
 }
@@ -114,20 +115,20 @@
   .certification .enrollTag img {
     order: 1;
   }
-  .examModeCard {
-    width: 70%;
-  }
+  // .examModeCard {
+  //   width: 70%;
+  // }
 }
 
 @media screen and (min-width: 1200px) {
   .examBenfits {
     grid-template-columns: repeat(3, 1fr);
   }
-  .examModeCard {
-    width: 50%;
-  }
+  // .examModeCard {
+  //   width: 50%;
+  // }
 
-  .certificationsExams{
-  flex-direction: row;
-}
+//   .certificationsExams{
+//   flex-direction: row;
+// }
 }

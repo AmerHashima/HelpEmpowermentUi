@@ -1,20 +1,24 @@
 // src\app\components\ClientSide\certifications\certifications.component.ts
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, effect, inject } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { GenericTabsComponent } from '../../../shared/generic-tabs/generic-tabs.component';
 import { Shared } from '../../../shared/Services/shared/shared';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { filter } from 'rxjs';
 import { certifications } from '../../../shared/clientSide/certification-cards/certification-cards.component';
+import { CertificationsStore } from '../../../AdminPanelStores/CertificationStore/certification.store';
 
 @Component({
   selector: 'app-certifications',
   imports: [RouterOutlet, GenericTabsComponent],
   templateUrl: './certifications.component.html',
   styleUrl: './certifications.component.scss',
+  providers: [CertificationsStore]
 })
 export class CertificationsComponent {
   private shared = inject(Shared);
+  private certificationsStore = inject(CertificationsStore);
+
   private router = inject(Router);
   lang = this.shared.lang;
   isFullPage = this.shared.fullPage;
@@ -70,7 +74,11 @@ export class CertificationsComponent {
 
 
   constructor() {
-    // Subscribe to navigation events
+
+    effect(()=>{
+      this.certificationsStore.setSelectedCertification(this.shared.currentCertificationObject());
+    });
+
     this.sub = this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe(() => {

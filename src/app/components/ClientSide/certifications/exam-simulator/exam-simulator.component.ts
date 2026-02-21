@@ -19,13 +19,14 @@ import { ChooseExamComponent } from '../choose-exam/choose-exam.component';
 
   ],
   templateUrl: './exam-simulator.component.html',
-  styleUrl: './exam-simulator.component.scss'
+  styleUrl: './exam-simulator.component.scss',
 })
 export class ExamSimulatorComponent {
   private shared = inject(Shared);
   private auth = inject(AuthService);
   isRTL = this.shared.isRtl;
   hasBought=this.auth.hasBought;
+  // certification=this.shared.currentCertificationObject
 //  chooseExam:boolean=false;
   examSimulatorBenfits = [
     {
@@ -95,6 +96,7 @@ export class ExamSimulatorComponent {
       const _=this.shared.currentExamId();
       // this.chooseExam=true;
     })
+
   }
 
   navigateToFreeExam() {

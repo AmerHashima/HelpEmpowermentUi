@@ -71,7 +71,6 @@ export class ClientSideLayoutComponent {
         return currentRoute.data ?? {};
       })
     ).subscribe(routeData => {
-      console.log('routeData', routeData);
       this.isFullPage = !!routeData['fullPage'];
       this.shared.fullPage.set(this.isFullPage);
       this.isNoLayout = this.checkNoLayout(this.router.url);

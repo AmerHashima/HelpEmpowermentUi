@@ -6,9 +6,22 @@ import { ExamState } from './exam.state';
 import { ServerRoute } from '@angular/ssr';
 
 
+// export const setExams = (exams: APIExam[]) => (state: ExamState) => ({
+//   ...state,
+//   exams,
+// });
+
 export const setExams = (exams: APIExam[]) => (state: ExamState) => ({
   ...state,
-  exams,
+  exams: exams.slice().map(exam => ({
+    ...exam,
+    displayName: exam.examName.trim().replace(/([a-zA-Z]+)([0-9]+)/g, '$1 $2'),
+  })).sort((a, b) => {
+    const getNumber = (name: string) =>
+      parseInt(name.replace(/\s+/g, '').match(/\d+/)?.[0] || '0', 10);
+
+    return getNumber(a.examName) - getNumber(b.examName);
+  }),
 });
 
 export const addExam = (exam: APIExam) => (state: ExamState) => ({

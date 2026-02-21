@@ -15,6 +15,13 @@ export class Shared {
   isRtl = computed(() => this.lang() === 'ar');
   currentCertificate = signal('');
   certifications=signal<any>(null);
+  currentCertificationObject = computed(() => {
+    const certName = this.currentCertificate();
+    const certs = this.certifications();
+    if (!certName || !certs?.length) return null;
+    const certification = certs.find((c: any) => c.courseName.toLowerCase() === certName) ?? null;
+    return certification;
+  });
   currentExamId = signal('');
 
   fullPage = signal<boolean>(false);

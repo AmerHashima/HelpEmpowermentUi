@@ -27,7 +27,7 @@ import { certifications } from '../certification-cards/certification-cards.compo
 })
 export class ClientNavbarComponent {
   private certificationStore = inject(CertificationsStore);
-  certifications = computed(() => this.certificationStore.certifications);
+  certifications = computed(() => this.certificationStore.certifications());
   private shared = inject(Shared);
   private auth = inject(AuthService);
   // loggedStudent =this.auth.loggedStudent
@@ -46,6 +46,12 @@ export class ClientNavbarComponent {
   openDropdown = signal<string | null>(null);
 
   constructor() {
+
+    effect(() => {
+      const certs = this.certifications();
+      this.shared.certifications.set(certs);
+    });
+
     // React to route param :lang → delegate to shared service
     this.route.paramMap.subscribe(params => {
       const langParam = params.get('lang') as 'en' | 'ar' | null;
@@ -137,10 +143,10 @@ export class ClientNavbarComponent {
       key: 'certifications',
       translateKey: 'menu.certifications',
       icon: 'bi bi-patch-check',
-      children: this.certificationStore.certifications().map(cert => ({
+      children: this.certifications().map(cert => ({
         translateKey: cert.courseName,
         icon: 'bi bi-clipboard',
-        path: `/${this.lang()}/certifications/${cert.courseName.toLowerCase()}`, // generate path from cert key
+        path: `/${this.lang()}/certifications/${cert.courseName.toLowerCase()}`,
       })),
     },
     // {
