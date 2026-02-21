@@ -246,7 +246,7 @@ export class CertificationQuestionComponent {
       const questionId = this.route.snapshot.paramMap.get('questionId');
 
       // Only auto-calculate for new questions (not edit mode)
-      if (!questionId && exam?.oid) {
+      if (!questionId && !this.form.get('orderNo')?.value && exam?.oid) {
         const filters = [{
           propertyName: "coursesMasterExamOid",
           value: exam.oid,
