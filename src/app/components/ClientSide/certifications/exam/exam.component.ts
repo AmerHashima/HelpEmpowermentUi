@@ -19,9 +19,10 @@ What should you do FIRST?`,
       { letter: 'C', text: 'Ask the project sponsor to decide whether to add the feature' },
       { letter: 'D', text: 'Reject the request because it is outside the approved scope' }
     ],
+    type: 'MATCHING',
     progress: 38,
     questionNumber: 23,
     totalQuestions: 180,
-    maxChoices:3
+    maxChoices:3,
   };
 }

@@ -35,7 +35,7 @@ export class PhoneInputComponent implements ControlValueAccessor {
 
   // ────────────────────────────────────────────────
   readonly preferredCountries: any[] = ['EG', 'SA', 'AE', 'US'];
-  readonly initialCountry = 'EG';
+  readonly initialCountry = 'SA';
 
   readonly arabicLabels = {
     searchPlaceholder: 'ابحث عن دولة أو رمز الاتصال',
@@ -58,6 +58,7 @@ export class PhoneInputComponent implements ControlValueAccessor {
   onTouched: () => void = () => { };
 
   writeValue(value: string): void {
+    this.value = '';
     this.value = value || '';
   }
 

@@ -13,6 +13,8 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Shared } from '../../Services/shared/shared';
 import { Theme } from '../../Services/ThemeService/theme';
 import { AuthService } from '../../../Services/auth.service';
+import { CertificationsStore } from '../../../AdminPanelStores/CertificationStore/certification.store';
+import { certifications } from '../certification-cards/certification-cards.component';
 
 @Component({
   selector: 'app-client-navbar',
@@ -20,8 +22,12 @@ import { AuthService } from '../../../Services/auth.service';
   imports: [CommonModule, RouterModule, TranslatePipe],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
+  providers: [CertificationsStore]
+
 })
 export class ClientNavbarComponent {
+  private certificationStore = inject(CertificationsStore);
+  certifications = computed(() => this.certificationStore.certifications);
   private shared = inject(Shared);
   private auth = inject(AuthService);
   // loggedStudent =this.auth.loggedStudent
@@ -127,6 +133,16 @@ export class ClientNavbarComponent {
       icon: 'bi bi-info-circle',
       path: `/${this.lang()}/about`,
     },
+    // {
+    //   key: 'certifications',
+    //   translateKey: 'menu.certifications',
+    //   icon: 'bi bi-patch-check',
+    //   children: this.certificationStore.certifications().map(cert => ({
+    //     translateKey: cert.courseName,
+    //     icon: 'bi bi-clipboard',
+    //     path: `/${this.lang()}/certifications/${cert.courseName.toLowerCase()}`, // generate path from cert key
+    //   })),
+    // },
     {
       key: 'certifications',
       translateKey: 'menu.certifications',

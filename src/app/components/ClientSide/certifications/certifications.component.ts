@@ -5,12 +5,13 @@ import { GenericTabsComponent } from '../../../shared/generic-tabs/generic-tabs.
 import { Shared } from '../../../shared/Services/shared/shared';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { filter } from 'rxjs';
+import { certifications } from '../../../shared/clientSide/certification-cards/certification-cards.component';
 
 @Component({
   selector: 'app-certifications',
   imports: [RouterOutlet, GenericTabsComponent],
   templateUrl: './certifications.component.html',
-  styleUrl: './certifications.component.scss'
+  styleUrl: './certifications.component.scss',
 })
 export class CertificationsComponent {
   private shared = inject(Shared);

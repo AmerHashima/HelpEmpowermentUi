@@ -12,8 +12,9 @@ import { DragComponentComponent } from '../drag-component/drag-component.compone
 interface Question {
   id: string;
   text: string;
+  type:string;
   options: { letter: string; text: string; isSelected?: boolean }[];
-  progress: number;        // 0–100
+  progress: number;
   questionNumber: number;
   totalQuestions: number;
   maxChoices: number;

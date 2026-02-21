@@ -41,7 +41,7 @@ isRTL=this.shared.isRtl;
       value: 'Support@helpempowerment.com'
     },
     {
-      icon: 'bi bi-map-marker',
+      icon: 'bi bi-geo-alt',
       header: 'Visit Us',
       value: 'Media City, UAE'
     },
