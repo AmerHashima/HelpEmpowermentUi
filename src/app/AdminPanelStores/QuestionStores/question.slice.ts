@@ -13,5 +13,5 @@ export const initialQuestionState: QuestionState = {
   filters: [],
   search: '',
   sortBy: 'orderNo',
-  sortDirection: 'desc',
+  sortDirection: 'asc',
 };

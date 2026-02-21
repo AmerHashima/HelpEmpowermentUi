@@ -3,11 +3,13 @@ import { Injectable, RendererFactory2, Renderer2, signal, computed, inject, PLAT
 import { TranslateService } from '@ngx-translate/core';
 import { isPlatformBrowser } from '@angular/common';
 import { certifications } from '../../clientSide/certification-cards/certification-cards.component';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class Shared {
+  private router = inject(Router);
   // Signals
   isCollapse = signal(false);
   page = signal('Home');
@@ -26,6 +28,7 @@ export class Shared {
 
   fullPage = signal<boolean>(false);
 
+
   // Dependencies
   private platformId = inject(PLATFORM_ID);
   private translate = inject(TranslateService);
@@ -36,6 +39,23 @@ export class Shared {
 
   constructor() {
     this.initLanguage();
+    if (isPlatformBrowser(this.platformId)) {
+      this.restoreExamIdFromStorage();
+    }
+  }
+
+  private restoreExamIdFromStorage() {
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    const currentUrl = this.router.url;
+    const savedExamId = localStorage.getItem('currentExamId');
+
+    if (
+      savedExamId &&
+      (currentUrl.includes('/chooseExam') || currentUrl.includes('?mode')  )
+    ) {
+      this.currentExamId.set(savedExamId);
+    }
   }
 
   private initLanguage() {

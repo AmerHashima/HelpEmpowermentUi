@@ -62,7 +62,7 @@ export interface APIExam {
   isActive: boolean,
   questionCount: number,
   durationMinutes: number,
-  orderNo?: number,
+  orderNo: number,
   createdAt: string,
   createdBy: string,
   updatedAt: string,

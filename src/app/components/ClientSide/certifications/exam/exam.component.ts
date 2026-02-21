@@ -1,28 +1,132 @@
-import { Component } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { ClientExamQuestionComponent } from '../../client-exam-question/client-exam-question.component';
-
+import { Shared } from '../../../../shared/Services/shared/shared';
+import { QuestionsStore } from '../../../../AdminPanelStores/QuestionStores/questions.store';
+import { Filter } from '../../../../models/rquest';
 @Component({
   selector: 'app-exam',
   imports: [ClientExamQuestionComponent],
   templateUrl: './exam.component.html',
-  styleUrl: './exam.component.scss'
+  styleUrl: './exam.component.scss',
+  providers: [QuestionsStore],
+  standalone: true
 })
 export class ExamComponent {
-  currentQuestion = {
-    id: 'Q23',
-    text: `You are managing a software development project that is currently in the execution phase. A key stakeholder requests a new feature that was not included in the approved project scope. The feature would add significant value, but implementing it will impact the project schedule and cost.
+  private questionStore = inject(QuestionsStore);
+  private shared = inject(Shared);
 
-What should you do FIRST?`,
-    options: [
-      { letter: 'A', text: 'Implement the feature immediately to satisfy the stakeholder' },
-      { letter: 'B', text: 'Analyze the impact of the request and submit it through the change control process' },
-      { letter: 'C', text: 'Ask the project sponsor to decide whether to add the feature' },
-      { letter: 'D', text: 'Reject the request because it is outside the approved scope' }
-    ],
-    type: 'MATCHING',
-    progress: 38,
-    questionNumber: 23,
-    totalQuestions: 180,
-    maxChoices:3,
-  };
+  currentExamId = signal<string>('');
+  currentQuestionIndex = signal<number>(0);
+
+  questions = computed(() => this.questionStore.questions() ?? []);
+
+  // Derived current question (safe access)
+  currentQuestion = computed(() => {
+    const qs = this.questions();
+    const idx = this.currentQuestionIndex();
+    if (qs.length === 0 || idx < 0 || idx >= qs.length) return null;
+    return this.mapToClientQuestion(qs[idx], idx);
+  });
+
+  constructor() {
+    // Load questions when exam id changes
+    effect(() => {
+      const examId = this.shared.currentExamId();
+      this.currentExamId.set(examId);
+      if (examId) {
+        const filters: Filter[] = [{
+          propertyName: "coursesMasterExamOid",
+          value: examId,
+          operation: 0 // assuming 0 = equals
+        }];
+        this.questionStore.setFilters([...filters]);
+        this.questionStore.queryQuestions(this.questionStore.queryRequest());
+      }
+    });
+
+    // Optional: reset index when questions load / change
+    effect(() => {
+      if (this.questions().length > 0) {
+        // only reset if index is invalid
+        if (this.currentQuestionIndex() >= this.questions().length) {
+          this.currentQuestionIndex.set(0);
+        }
+      }
+    });
+  }
+
+  // Convert your backend question shape → frontend Question shape
+  private mapToClientQuestion(q: any, index: number): any {
+    console.log('orderNo', q.orderNo!)
+    return {
+      // oid: q.oid || `Q${index + 1}`,
+      // text: q.questionText || '',
+      // type: q.questionTypeName,
+      // options: (q.answers || []).map((opt: any, i: number) => ({
+      //   letter: String.fromCharCode(65 + i),
+      //   text: opt.answerText,
+      //   isSelected: false
+      // })),
+      ...q,
+      answers: (q.answers || []).map((opt: any, i: number) => ({
+        ...opt,
+        letter: String.fromCharCode(65 + i),
+        isSelected: false
+      })),
+      progress: Math.round(((q.orderNo!) / Math.max(1, this.questions().length)) * 100),
+      // questionNumber: q.orderNo,
+      totalQuestions: this.questions().length,
+      maxChoices: q.answers.filter((o: any) => o.isCorrect).length || 1
+    };
+  }
+
+  // Navigation methods — to be called from child
+  goToNext() {
+    if (this.currentQuestionIndex() < this.questions().length - 1) {
+      this.currentQuestionIndex.update(i => i + 1);
+    }
+  }
+
+  goToPrevious() {
+    if (this.currentQuestionIndex() > 0) {
+      this.currentQuestionIndex.update(i => i - 1);
+    }
+  }
+
+  goToQuestionNumber(num: number) {
+    const index = num - 1;
+    if (index >= 0 && index < this.questions().length) {
+      this.currentQuestionIndex.set(index);
+    }
+  }
+
+  onMarkQuestion(wantMarked: boolean) {
+
+  }
+  // markedQuestions = signal<Set<number>>(new Set());   // using Set for simplicity
+
+  // // Helper: is current question marked?
+  // isCurrentMarked = computed(() => {
+  //   return this.markedQuestions().has(this.currentQuestionIndex());
+  // });
+
+  // // ─── Add this method ─────────────────────────────────────
+  // onMarkQuestion(wantMarked: boolean) {
+  //   const idx = this.currentQuestionIndex();
+
+  //   this.markedQuestions.update(marks => {
+  //     const newMarks = new Set(marks);
+  //     if (wantMarked) {
+  //       newMarks.add(idx);
+  //     } else {
+  //       newMarks.delete(idx);
+  //     }
+  //     return newMarks;
+  //   });
+
+  //   console.log(`Question ${idx + 1} ${wantMarked ? 'marked' : 'unmarked'}`);
+  // }
+
+  // // Optional: expose count for question board header
+  // markedCount = computed(() => this.markedQuestions().size);
 }

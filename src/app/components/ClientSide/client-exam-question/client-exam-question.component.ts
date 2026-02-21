@@ -1,4 +1,4 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, inject, input, output, SimpleChanges } from '@angular/core';
 import { SiteButtonComponent } from '../../../shared/clientSide/site-button/site-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Shared } from '../../../shared/Services/shared/shared';
@@ -8,17 +8,18 @@ import { NgClass } from '@angular/common';
 import { CalculatorComponent } from '../../../shared/calculator/calculator.component';
 import { WhiteboardComponent } from '../../../shared/whiteboard/whiteboard.component';
 import { DragComponentComponent } from '../drag-component/drag-component.component';
+import { AnyAaaaRecord } from 'node:dns';
 
-interface Question {
-  id: string;
-  text: string;
-  type:string;
-  options: { letter: string; text: string; isSelected?: boolean }[];
-  progress: number;
-  questionNumber: number;
-  totalQuestions: number;
-  maxChoices: number;
-}
+// interface Question {
+//   id: string;
+//   text: string;
+//   type:string;
+//   options: { letter: string; text: string; isSelected?: boolean }[];
+//   progress: number;
+//   questionNumber: number;
+//   totalQuestions: number;
+//   maxChoices: number;
+// }
 type QuestionStatus = 'notVisited' | 'answered' | 'marked' | 'skipped';
 
 @Component({
@@ -30,9 +31,17 @@ type QuestionStatus = 'notVisited' | 'answered' | 'marked' | 'skipped';
   styleUrl: './client-exam-question.component.scss'
 })
 export class ClientExamQuestionComponent {
+
+  next = output<void>();
+  previous = output<void>();
+  goToQuestion = output<number>();
+  mark = output<boolean>();
+
   private shared=inject(Shared);
   isRTL=this.shared.isRtl
-  question = input.required<Question>();
+  // question = input.required<Question>();
+  question = input.required<any>();
+
   showConfirm:boolean=false;
   showQuestionBoard:boolean=false;
   showCalculator:boolean=false;
@@ -43,41 +52,72 @@ export class ClientExamQuestionComponent {
       status: 'skipped'
     }));
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['question'] && this.isMatchingQuestion) {
+      this._rightItems = this.question()?.answers.filter((a: any) => !a.question_Ask) ?? [];
+    }
+  }
+  // selectOption(opt: Question['options'][number]) {
+  selectOption(opt: any['options'][number]) {
+    if (this.isMatchingQuestion) return;
 
-  selectOption(opt: Question['options'][number]) {
     const question = this.question();
     const max = question.maxChoices;
 
-    // If single choice → behave like radio button
     if (max === 1) {
-      question.options.forEach(o => o.isSelected = false);
+      question.options.forEach((o: any) => o.isSelected = false);
       opt.isSelected = true;
       return;
     }
 
-    // If unlimited choices
     if (max === 0) {
       opt.isSelected = !opt.isSelected;
       return;
     }
 
-    // If limited multiple choice
-    const selectedCount = question.options.filter(o => o.isSelected).length;
+    const selectedCount = question.options.filter((o: any) => o.isSelected).length;
 
     if (opt.isSelected) {
-      // Allow deselect
       opt.isSelected = false;
-    } else {
-      // Only select if under limit
-      if (selectedCount < max) {
-        opt.isSelected = true;
-      }
+    } else if (selectedCount < max) {
+      opt.isSelected = true;
     }
   }
-  navigateToQuestion(question:any){
-    this.showQuestionBoard=false;
-    this.question=question;
-  }
+  // selectOption(opt: any['options'][number]) {
+
+  //   const question = this.question();
+  //   const max = question.maxChoices;
+
+  //   // If single choice → behave like radio button
+  //   if (max === 1) {
+  //     question.options.forEach((o:any) => o.isSelected = false);
+  //     opt.isSelected = true;
+  //     return;
+  //   }
+
+  //   // If unlimited choices
+  //   if (max === 0) {
+  //     opt.isSelected = !opt.isSelected;
+  //     return;
+  //   }
+
+  //   // If limited multiple choice
+  //   const selectedCount = question.options.filter((o:any) => o.isSelected).length;
+
+  //   if (opt.isSelected) {
+  //     // Allow deselect
+  //     opt.isSelected = false;
+  //   } else {
+  //     // Only select if under limit
+  //     if (selectedCount < max) {
+  //       opt.isSelected = true;
+  //     }
+  //   }
+  // }
+  // navigateToQuestion(question:any){
+  //   this.showQuestionBoard=false;
+  //   this.question=question;
+  // }
   onOpenCalculator(){
     this.showCalculator=true;
   }
@@ -101,12 +141,51 @@ export class ClientExamQuestionComponent {
   this.showQuestionBoard = false;
   }
   onTranslate(){}
-  onMarkQuestion(){}
-  nextQuestion(){}
-  previousQuestion(){}
+  onMarkQuestion() {
+    // Toggle for now – later you can track real marked questions
+    this.mark.emit(true); // or toggle logic
+  }
 
-  left = ['Template A', 'Template B', 'Template C'];
-  right = ['Item 1', 'Item 2', 'Item 3'];
+  nextQuestion() {
+    this.next.emit();
+  }
+
+  previousQuestion() {
+    this.previous.emit();
+  }
+
+  navigateToQuestion(q: { number: number }) {
+    this.goToQuestion.emit(q.number);
+     this.showQuestionBoard=false;
+  }
+  // onMarkQuestion(){}
+  // nextQuestion(){}
+  // previousQuestion(){}
+
+  get isMatchingQuestion(): boolean {
+    return this.question()?.questionTypeName.toLowerCase() === 'matching';
+  }
+
+  get left(): AnyAaaaRecord[] {
+    if (!this.isMatchingQuestion) return [];
+    return this.question()?.answers.filter((answer:any) => answer.question_Ask) ?? [];
+  }
+
+  private _rightItems: any[] = [];
+
+  // get right(): any[] {
+  //   if (!this.isMatchingQuestion) return [];
+  //   return this._rightItems.length ? this._rightItems : this.question()?.answers.filter((answer: any) => !answer.question_Ask) ?? [];
+  // }
+  get right(): any[] {
+    if (!this.isMatchingQuestion) return [];
+    // Always return _rightItems, even if empty
+    return this._rightItems;
+  }
+  set right(value: any[]) {
+    this._rightItems = value;
+  }
+
   middle: string[] = [];
 
   onMiddleChange(updated: string[]) {

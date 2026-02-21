@@ -1,9 +1,7 @@
 // src\app\components\AdminPanel\certifications\certification\certification.component.ts
-import { Component, computed, effect, inject, linkedSignal, output } from '@angular/core';
-import { APIExam } from '../../../../models/certification';
+import { Component, computed, effect, inject } from '@angular/core';
 import { ButtonComponent } from '../../../../shared/button/button.component';
 import { AsyncPipe } from '@angular/common';
-import { of } from 'rxjs';
 import { CertificationService } from '../../../../Services/certification.service';
 import { CertificationsStore } from '../../../../AdminPanelStores/CertificationStore/certification.store';
 import { Router } from '@angular/router';

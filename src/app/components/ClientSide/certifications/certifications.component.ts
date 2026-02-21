@@ -1,13 +1,11 @@
 // src\app\components\ClientSide\certifications\certifications.component.ts
-import { Component, computed, effect, inject } from '@angular/core';
+import { Component, computed, effect, inject, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { GenericTabsComponent } from '../../../shared/generic-tabs/generic-tabs.component';
 import { Shared } from '../../../shared/Services/shared/shared';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { filter } from 'rxjs';
-import { certifications } from '../../../shared/clientSide/certification-cards/certification-cards.component';
 import { CertificationsStore } from '../../../AdminPanelStores/CertificationStore/certification.store';
-
 @Component({
   selector: 'app-certifications',
   imports: [RouterOutlet, GenericTabsComponent],
@@ -16,6 +14,7 @@ import { CertificationsStore } from '../../../AdminPanelStores/CertificationStor
   providers: [CertificationsStore]
 })
 export class CertificationsComponent {
+
   private shared = inject(Shared);
   private certificationsStore = inject(CertificationsStore);
 
@@ -74,7 +73,6 @@ export class CertificationsComponent {
 
 
   constructor() {
-
     effect(()=>{
       this.certificationsStore.setSelectedCertification(this.shared.currentCertificationObject());
     });

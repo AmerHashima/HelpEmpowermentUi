@@ -2,7 +2,7 @@
   <div class="column left">
     <div class="fixed-list">
       <div class="item" *ngFor="let item of leftItems">
-        {{ item }}
+        {{ item.answerText }}
       </div>
     </div>
   </div>
@@ -24,8 +24,7 @@
         [cdkDragDisabled]="!item"
         [class.placeholder]="!item"
       >
-        {{ item || "Drop Here" }}
-      </div>
+{{ item?.answerText || "Drop Here" }}      </div>
     </div>
   </div>
 
@@ -40,7 +39,7 @@
         class="list"
       >
         <div class="item draggable" *ngFor="let item of rightItems" cdkDrag>
-          {{ item }}
+          {{ item.answerText }}
         </div>
       </div>
     </div>

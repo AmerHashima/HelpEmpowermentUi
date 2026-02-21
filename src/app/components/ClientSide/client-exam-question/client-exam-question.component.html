@@ -28,7 +28,6 @@
       />
     </div>
   </header>
-
   <!-- Question area -->
   <main class="question-area">
     <div class="d-flex flex-column flex-md-row gap-2">
@@ -37,9 +36,13 @@
           <span class="mainTextColor"
             ><i class="bi bi-question-circle-fill"></i
           ></span>
-          <span class="qid mainTextColor"
-            >{{ question().id }}/{{ question().totalQuestions }}</span
-          >
+          @if (question().orderNo) {
+            <span class="qid mainTextColor"
+              >{{ question().orderNo }}/{{ question().totalQuestions }}</span
+            >
+          }
+
+
           <div class="progress-bar">
             <div
               class="progress-fill"
@@ -60,19 +63,20 @@
 
     <div class="question-content">
       <h2 class="question-text">
-        {{ question().text }}
+        {{ question().questionText }}
       </h2>
 
-      @if (question().type != "MATCHING") {
+      <!-- @if (question().questionTypeName != "MATCHING") { -->
+      @if (!isMatchingQuestion) {
         <div class="options">
-          @for (opt of question().options; track opt.letter) {
+          @for (opt of question().answers; track opt.letter) {
             <label
               class="option"
               [class.selected]="opt.isSelected"
               (click)="selectOption(opt)"
             >
               <span class="letter">({{ opt.letter }})</span>
-              <span class="text">{{ opt.text }}</span>
+              <span class="text">{{ opt.answerText }}</span>
             </label>
           }
         </div>
@@ -80,6 +84,7 @@
         <app-drag-component
           [leftItems]="left"
           [rightItems]="right"
+            (rightItemsChange)="right = $event"
           (middleChange)="onMiddleChange($event)"
         ></app-drag-component>
       }

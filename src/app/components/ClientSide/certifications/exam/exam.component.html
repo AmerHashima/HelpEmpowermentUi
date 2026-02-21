@@ -1,1 +1,20 @@
-<app-client-exam-question [question]="currentQuestion" />
+<!-- <app-client-exam-question [question]="currentQuestion"/> -->
+<!-- <app-client-exam-question
+  [question]="currentQuestion()"
+  (next)="goToNext()"
+  [isMarked]="isCurrentMarked()"
+  (previous)="goToPrevious()"
+  (goToQuestion)="goToQuestionNumber($event)"
+  (mark)="onMarkQuestion($event)"
+/> -->
+
+@if(currentQuestion()){
+<app-client-exam-question
+  [question]="currentQuestion()"
+  (next)="goToNext()"
+  (previous)="goToPrevious()"
+  (goToQuestion)="goToQuestionNumber($event)"
+  (mark)="onMarkQuestion($event)"
+/>
+}
+
