@@ -4,6 +4,7 @@ import { map, Observable } from 'rxjs';
 import { APIStudent, Student } from '../models/student';
 import { ApiResponse } from '../models/apiResponse';
 import { AuthService } from './auth.service';
+import { APIStudentExamResponse, startStudentExam } from '../models/certification';
 
 @Injectable({
   providedIn: 'root'
@@ -78,5 +79,19 @@ export class StudentService {
           })
         );
     }
+
+  startExam(body: startStudentExam): Observable<APIStudentExamResponse> {
+    return this.apiService
+      .post<ApiResponse<APIStudentExamResponse>>('StudnetExams/start', body, "Exam has been started!")
+      .pipe(
+        map((response: ApiResponse<APIStudentExamResponse>) => {
+          if (!response.success) {
+            const msg = response.errors?.join(', ') || response.message || 'API failed to start exam';
+            throw new Error(msg);
+          }
+          return response.data;
+        })
+      );
+  }
 
 }

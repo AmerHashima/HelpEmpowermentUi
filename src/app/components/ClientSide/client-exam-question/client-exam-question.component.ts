@@ -58,14 +58,16 @@ export class ClientExamQuestionComponent {
     }
   }
   // selectOption(opt: Question['options'][number]) {
-  selectOption(opt: any['options'][number]) {
+  selectOption(opt: any['answers'][number]) {
     if (this.isMatchingQuestion) return;
 
     const question = this.question();
+    console.log(question.answers);
+    console.log(question.maxChoices);
     const max = question.maxChoices;
 
     if (max === 1) {
-      question.options.forEach((o: any) => o.isSelected = false);
+      question.answers.forEach((o: any) => o.isSelected = false);
       opt.isSelected = true;
       return;
     }
@@ -75,7 +77,7 @@ export class ClientExamQuestionComponent {
       return;
     }
 
-    const selectedCount = question.options.filter((o: any) => o.isSelected).length;
+    const selectedCount = question.answers.filter((o: any) => o.isSelected).length;
 
     if (opt.isSelected) {
       opt.isSelected = false;
@@ -147,6 +149,7 @@ export class ClientExamQuestionComponent {
   }
 
   nextQuestion() {
+    console.log('before next',this.question())
     this.next.emit();
   }
 
@@ -158,9 +161,7 @@ export class ClientExamQuestionComponent {
     this.goToQuestion.emit(q.number);
      this.showQuestionBoard=false;
   }
-  // onMarkQuestion(){}
-  // nextQuestion(){}
-  // previousQuestion(){}
+
 
   get isMatchingQuestion(): boolean {
     return this.question()?.questionTypeName.toLowerCase() === 'matching';

@@ -32,6 +32,7 @@ export class ChooseExamComponent {
     });
   }
 
+  
   openReports(){
     if (this.previousExamMode())
       this.router.navigate(['../reports'], {

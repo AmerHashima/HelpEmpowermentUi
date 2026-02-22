@@ -100,8 +100,62 @@ export interface courseAnswer {
   updatedBy?: string
 }
 
+export interface startStudentExam{
+  studentOid: string,
+coursesMasterExamOid: string,
+  attemptNo: number,
+    createdBy: string
+}
+
+export interface APIStudentExamResponse {
+  oid:string,
+  studentOid: string,
+  studentName:string,
+  coursesMasterExamOid: string,
+  examName: string,
+  totalScore:number
+  attemptNo: number,
+  obtainedScore:number,
+  passPercent:number,
+  isPassed:boolean,
+  examStatusLookupId:string,
+  examStatusName:string,
+  startedAt:string,
+  finishedAt: string,
+  createdAt: string,
+  createdBy: string,
+  updatedAt: string,
+  updatedBy: string,
+  examQuestions: studentExamQuestion[]
+}
 
 
+export interface studentExamQuestion{
+  oid: string,
+  studentExamOid: string,
+  questionOid: string,
+  questionText: string,
+  selectedAnswerOid: string,
+  selectedAnswerText: string,
+  isCorrect: boolean,
+  questionScore: number,
+  obtainedScore: number,
+  createdAt: string,
+  createdBy: string,
+  updatedAt: string,
+  updatedBy: string
+}
+
+export interface submitStudentExam{
+  studentExamOid: string,
+  answers: [
+    {
+      questionOid:string,
+      selectedAnswerOid: string
+    }
+  ],
+  updatedBy:string
+}
 
 
 

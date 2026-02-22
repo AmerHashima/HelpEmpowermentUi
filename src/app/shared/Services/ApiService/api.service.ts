@@ -45,6 +45,8 @@ export default class ApiService {
     let fullUrl = '';
     if (type == 'question')
       fullUrl = `${this.baseUrl}/${url}/${id}/with-answers`;
+    if (type == 'studentExam')
+      fullUrl = `${this.baseUrl}/${url}/${id}/with-questions`;
     else
       fullUrl = `${this.baseUrl}/${url}/${id}`;
     this.loader.start();
