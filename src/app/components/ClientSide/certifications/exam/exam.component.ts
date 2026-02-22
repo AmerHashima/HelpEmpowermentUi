@@ -1,8 +1,9 @@
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, PLATFORM_ID, signal } from '@angular/core';
 import { ClientExamQuestionComponent } from '../../client-exam-question/client-exam-question.component';
 import { Shared } from '../../../../shared/Services/shared/shared';
 import { QuestionsStore } from '../../../../AdminPanelStores/QuestionStores/questions.store';
 import { Filter } from '../../../../models/rquest';
+import { isPlatformBrowser } from '@angular/common';
 @Component({
   selector: 'app-exam',
   imports: [ClientExamQuestionComponent],
@@ -12,9 +13,11 @@ import { Filter } from '../../../../models/rquest';
   standalone: true
 })
 export class ExamComponent {
+  private platformId = inject(PLATFORM_ID);
+  private isBrowser = isPlatformBrowser(this.platformId);
   private questionStore = inject(QuestionsStore);
   private shared = inject(Shared);
-
+  examAnswers=[];
   currentExamId = signal<string>('');
   currentQuestionIndex = signal<number>(0);
 
@@ -41,6 +44,16 @@ export class ExamComponent {
         }];
         this.questionStore.setFilters([...filters]);
         this.questionStore.queryQuestions(this.questionStore.queryRequest());
+
+        if (this.isBrowser) {
+          const key = this.getStorageKey(examId);
+          const saved = localStorage.getItem(key);
+
+          if (saved) {
+            const parsed = JSON.parse(saved);
+            this.currentQuestionIndex.set(parsed.currentQuestionIndex ?? 0);
+          }
+        }
       }
     });
 
@@ -53,8 +66,31 @@ export class ExamComponent {
         }
       }
     });
-  }
 
+    effect(() => {
+      if (!this.isBrowser) return;
+
+      const examId = this.currentExamId();
+      const index = this.currentQuestionIndex();
+
+      if (!examId) return;
+
+      const key = this.getStorageKey(examId);
+
+      localStorage.setItem(
+        key,
+        JSON.stringify({
+          currentQuestionIndex: index
+        })
+      );
+    });
+  }
+  finishExam(end:boolean) {
+    if(end && this.isBrowser){
+      const key = this.getStorageKey(this.currentExamId());
+      localStorage.removeItem(key);
+    }
+  }
   // Convert your backend question shape → frontend Question shape
   private mapToClientQuestion(q: any, index: number): any {
     console.log('orderNo', q.orderNo!)
@@ -78,6 +114,10 @@ export class ExamComponent {
       totalQuestions: this.questions().length,
       maxChoices: q.answers.filter((o: any) => o.isCorrect).length || 1
     };
+  }
+
+  private getStorageKey(examId: string) {
+    return `exam-progress-${examId}`;
   }
 
   // Navigation methods — to be called from child

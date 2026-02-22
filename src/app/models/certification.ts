@@ -126,11 +126,16 @@ export interface APIStudentExamResponse {
   createdBy: string,
   updatedAt: string,
   updatedBy: string,
-  examQuestions: studentExamQuestion[]
+  examQuestions: APIStudentExamQuestion[]
 }
 
-
-export interface studentExamQuestion{
+export interface StudentExamQuestion{
+  studentExamOid: string,
+  questionOid: string,
+  selectedAnswerOid: string,
+  createdBy: string
+}
+export interface APIStudentExamQuestion{
   oid: string,
   studentExamOid: string,
   questionOid: string,

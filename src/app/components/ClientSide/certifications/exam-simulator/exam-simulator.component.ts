@@ -1,4 +1,4 @@
-import { Component, effect, inject, Input } from '@angular/core';
+import { Component, effect, inject, Input, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IconCardComponent } from '../../../../shared/icon-card/icon-card.component';
 import { Shared } from '../../../../shared/Services/shared/shared';
@@ -7,7 +7,7 @@ import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { FeatureComponent } from '../../../../shared/clientSide/feature/feature.component';
 import { StarRatingComponent } from '../../../../shared/star-rating/star-rating.component';
 import { PageBannerComponent } from '../../../../shared/clientSide/page-banner/page-banner.component';
-import { NgIf } from '@angular/common';
+import { isPlatformBrowser, NgIf } from '@angular/common';
 import { SimulatorExamsComponent } from '../simulator-exams/simulator-exams.component';
 import { AuthService } from '../../../../Services/auth.service';
 import { ChooseExamComponent } from '../choose-exam/choose-exam.component';
@@ -22,10 +22,12 @@ import { ChooseExamComponent } from '../choose-exam/choose-exam.component';
   styleUrl: './exam-simulator.component.scss',
 })
 export class ExamSimulatorComponent {
+  private platformId = inject(PLATFORM_ID);
   private shared = inject(Shared);
   private auth = inject(AuthService);
   isRTL = this.shared.isRtl;
   hasBought=this.auth.hasBought;
+  studentToken =this.auth.studentToken;
   // certification=this.shared.currentCertificationObject
 //  chooseExam:boolean=false;
   examSimulatorBenfits = [
@@ -100,11 +102,14 @@ export class ExamSimulatorComponent {
   }
 
   navigateToFreeExam() {
+    // this.chooseExam=true;
+    this.shared.currentExamId.set('free');
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.setItem('currentExamId', 'free');
+    }
     this.router.navigate(['../chooseExam'], {
       relativeTo: this.route
     });
-    // this.chooseExam=true;
-    this.shared.currentExamId.set('free');
   }
 
   buyNow() {

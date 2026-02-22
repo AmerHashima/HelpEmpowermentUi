@@ -1,7 +1,7 @@
   <div class="certification pagePadding">
 <!-- @if(!chooseExam){ -->
   <!-- Banner - shown only if not purchased -->
-  <ng-container *ngIf="!hasBought()" >
+  <ng-container *ngIf="!hasBought() || !studentToken()" >
     <app-page-banner [isRTL]="isRTL()" [media]="true">
       <!-- Content projection -->
       <div content class="d-flex flex-column gap-3 pe-xl-5">
@@ -109,7 +109,7 @@
       </p>
     </div>
 
-    <ng-container *ngIf="!hasBought()">
+    <ng-container *ngIf="!hasBought() || !studentToken()">
           <!-- @if(!chooseExam){ -->
 
       <div class="d-flex justify-content-center">
@@ -192,7 +192,7 @@
 
 
     <!-- Show full exams list if already purchased -->
-    <app-simulator-exams *ngIf="hasBought()"></app-simulator-exams>
+    <app-simulator-exams *ngIf="hasBought() && studentToken()"></app-simulator-exams>
   </div>
 
 </div>

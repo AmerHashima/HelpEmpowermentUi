@@ -15,7 +15,7 @@ export class StudentExamService {
 
   startExam(body: startStudentExam): Observable<APIStudentExamResponse> {
     return this.apiService
-      .post<ApiResponse<APIStudentExamResponse>>('StudnetExams/start', body, "Exam has been started!")
+      .post<ApiResponse<APIStudentExamResponse>>('StudentExams/start', body, "Exam has been started!")
       .pipe(
         map((response: ApiResponse<APIStudentExamResponse>) => {
           if (!response.success) {
@@ -29,7 +29,7 @@ export class StudentExamService {
 
   submitExam(body: submitStudentExam): Observable<APIStudentExamResponse> {
     return this.apiService
-      .post<ApiResponse<APIStudentExamResponse>>('StudnetExams/submit', body, "Exam has been submitted successfully!")
+      .post<ApiResponse<APIStudentExamResponse>>('StudentExams/submit', body, "Exam has been submitted successfully!")
       .pipe(
         map((response: ApiResponse<APIStudentExamResponse>) => {
           if (!response.success) {

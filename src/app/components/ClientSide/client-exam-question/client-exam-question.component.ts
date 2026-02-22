@@ -36,6 +36,8 @@ export class ClientExamQuestionComponent {
   previous = output<void>();
   goToQuestion = output<number>();
   mark = output<boolean>();
+  finishExam = output<boolean>();
+
 
   private shared=inject(Shared);
   isRTL=this.shared.isRtl
@@ -131,6 +133,7 @@ export class ClientExamQuestionComponent {
     this.showConfirm=true;
   }
   EndExam(){
+    this.finishExam.emit(true);
     console.log('confirm end exam');
   }
   onCancalEndExam(){

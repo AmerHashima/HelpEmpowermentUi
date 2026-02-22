@@ -25,7 +25,7 @@ export class Shared {
     return certification;
   });
   currentExamId = signal('');
-
+  studentExamId = signal('');
   fullPage = signal<boolean>(false);
 
 
