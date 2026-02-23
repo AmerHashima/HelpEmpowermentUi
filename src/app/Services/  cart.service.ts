@@ -15,6 +15,9 @@ export class CartService {
   studentId = computed(() => this.auth.loggedStudent()?.userId);
   cartItems = signal<APICartItem[]>([]);
   currentBasketId=signal<string>('');
+  cartCount = computed(() =>
+    this.cartItems().reduce((total, item) => total + item.quantity, 0)
+  );
   constructor(private apiService: ApiService) { }
 
   getStudentBasketItems(): Observable<APICartResponse> {
@@ -115,6 +118,25 @@ export class CartService {
           return response.data;
         })
       );
+  }
+
+  isInCart(cartItem: any): boolean {
+    return this.cartItems().some(item => item.courseId === cartItem.courseId);
+  }
+  updateBasket(cartItem: APICartItem) {
+    this.cartItems.update(items => {
+      const existing = items.find(i => i.courseId === cartItem.courseId);
+
+      if (!existing) {
+        return [...items, { ...cartItem, quantity: 1 }];
+      }
+
+      return items.map(i =>
+        i.courseId === cartItem.courseId
+          ? { ...i, quantity: i.quantity + 1 }
+          : i
+      );
+    });
   }
 }
 

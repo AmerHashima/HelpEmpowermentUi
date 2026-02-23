@@ -15,6 +15,7 @@ import { Theme } from '../../Services/ThemeService/theme';
 import { AuthService } from '../../../Services/auth.service';
 import { CertificationsStore } from '../../../AdminPanelStores/CertificationStore/certification.store';
 import { certifications } from '../certification-cards/certification-cards.component';
+import { CartService } from '../../../Services/  cart.service';
 
 @Component({
   selector: 'app-client-navbar',
@@ -30,6 +31,8 @@ export class ClientNavbarComponent {
   certifications = computed(() => this.certificationStore.certifications());
   private shared = inject(Shared);
   private auth = inject(AuthService);
+  private cartService = inject(CartService);
+  cartCount=this.cartService.cartCount;
   // loggedStudent =this.auth.loggedStudent
   studentToken =this.auth.studentToken;
   private router = inject(Router);

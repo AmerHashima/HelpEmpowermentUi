@@ -1,5 +1,5 @@
 // src\app\components\ClientSide\services\enroll-form\enroll-form.component.ts
-import { Component, inject, output } from '@angular/core';
+import { Component, inject, input, output } from '@angular/core';
 import { Shared } from '../../../../shared/Services/shared/shared';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/site-button.component';
@@ -20,7 +20,7 @@ export class EnrollFormComponent {
   private shared=inject(Shared);
   isRTL=this.shared.isRtl;
   readonly submitted = output<any>();
-
+  home=input<boolean>(false);
 
   arabicLabels = {
     searchPlaceholder: 'ابحث عن دولة أو رمز الاتصال',
@@ -44,7 +44,6 @@ export class EnrollFormComponent {
   };
 
   onEnroll() {
-    //console.log('Enroll form submitted:', this.enroll);
     this.submitted.emit(this.enroll);
   }
 }

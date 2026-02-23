@@ -68,7 +68,14 @@
           <!-- @let student = this.loggedStudent();
 
           @if (student && student.userId) { -->
-          <i class="bi bi-cart-check" (click)="addToCart()"></i>
+          <!-- <i class="bi bi-cart-check" (click)="addToCart()"></i> -->
+          <div class="cart-icon-wrapper" (click)="addToCart()">
+            <i class="bi bi-cart-check cart-icon"></i>
+
+            <span class="cart-badge">
+              {{ cartCount() }}
+            </span>
+          </div>
           @if (studentToken()) {
             <div class="dropdown">
               <i

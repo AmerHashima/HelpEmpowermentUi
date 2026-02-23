@@ -11,18 +11,21 @@ import { isPlatformBrowser, NgIf } from '@angular/common';
 import { SimulatorExamsComponent } from '../simulator-exams/simulator-exams.component';
 import { AuthService } from '../../../../Services/auth.service';
 import { ChooseExamComponent } from '../choose-exam/choose-exam.component';
+import { CartService } from '../../../../Services/  cart.service';
+import { GenericModelComponent } from '../../../../shared/generic-model/generic-model.component';
 
 @Component({
   selector: 'app-exam-simulator',
   imports: [IconCardComponent,SiteButtonComponent,TranslateModule,TranslatePipe,FeatureComponent,
-    StarRatingComponent, PageBannerComponent, NgIf, SimulatorExamsComponent, ChooseExamComponent
-
+    StarRatingComponent, PageBannerComponent, NgIf, SimulatorExamsComponent, ChooseExamComponent,
+    GenericModelComponent
   ],
   templateUrl: './exam-simulator.component.html',
   styleUrl: './exam-simulator.component.scss',
 })
 export class ExamSimulatorComponent {
   private platformId = inject(PLATFORM_ID);
+  private cartService = inject(CartService);
   private shared = inject(Shared);
   private auth = inject(AuthService);
   isRTL = this.shared.isRtl;
@@ -92,7 +95,7 @@ export class ExamSimulatorComponent {
 
   simulatorVideo = 'assets/videos/SimulatorVideo.mp4';
   enrollImage = 'assets/images/enroll.png';
-
+  showConfirm:boolean=false;
   constructor(private router: Router,private route:ActivatedRoute) {
     effect(()=>{
       const _=this.shared.currentExamId();
@@ -118,7 +121,25 @@ export class ExamSimulatorComponent {
   }
 
   addToCart() {
-    // Implement add to cart logic
-    console.log('Add to Cart clicked');
+    if(this.auth.studentToken()){
+      const cartPayload = {
+        studentId: this.auth.loggedStudent()?.userId!,
+        courseId: this.shared.currentCertificationObject().oid,
+        couponCode: "",
+        // itemType:'exam-simulator'
+      }
+      if (this.cartService.isInCart(cartPayload)){
+         console.log('update existing Item')
+      }
+      else{
+        this.cartService.addCartItem(cartPayload).subscribe({
+          next: (cartItem) => {
+            this.cartService.updateBasket(cartItem);
+          }
+        })
+      }
+    }else{
+      this.showConfirm=true;
+    }
   }
 }

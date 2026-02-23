@@ -1,5 +1,5 @@
 // src\app\shared\clientSide\certification-cards\certification-cards.component.ts
-import { Component, input, computed, inject } from '@angular/core';
+import { Component, input, computed, inject, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SiteButtonComponent } from '../site-button/site-button.component';
 import { TagComponent } from '../../tag/tag.component';
@@ -56,6 +56,7 @@ export class CertificationCardsComponent {
   certifications = input<CertificationItem[]>(certifications);
   private shared = inject(Shared);
   isRTL = this.shared.isRtl;
+  enrollCourse = output<CertificationItem>();
   private images = [
     'assets/images/certifications/certfication_1.jpeg',
     'assets/images/certifications/certfication_2.jpeg'
@@ -67,7 +68,6 @@ export class CertificationCardsComponent {
 
   // Replace with real navigation / enrollment logic
   onEnroll(item: CertificationItem) {
-    //console.log('Enroll clicked for:', item.courseAbb);
-    // router.navigate([...]), open modal, etc.
+    this.enrollCourse.emit(item)
   }
 }
