@@ -15,7 +15,7 @@ export class SiteButtonComponent {
   type = input<'main' | 'secondary'>('main');
   htmlType = input<'button' | 'submit' | 'reset'>('button');
   customClass = input<boolean>(false);
-
+  disabled = input<boolean>(false);
   onClick = output<void>();
 
   isRTL = input<boolean>(false);

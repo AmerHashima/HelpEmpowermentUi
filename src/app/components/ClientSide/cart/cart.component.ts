@@ -18,6 +18,10 @@ export class CartComponent {
   private shared=inject(Shared);
   private cartService = inject(CartService);
   private router=inject(Router);
+  appliedCoupon=this.cartService.appliedCoupon;
+  discountAmount = this.cartService.discountAmount;
+  subtotal = this.cartService.subtotal;
+  total=this.cartService.total;
   lang=this.shared.lang;
   isRTL=this.shared.isRtl;
   cartItems = this.cartService.cartItems;
@@ -35,8 +39,15 @@ export class CartComponent {
 
   BrowseCourses(){
     this.router.navigateByUrl(`/${this.lang()}/certifications/pmp`);
-
   }
+
+  navigateToCheckout(){
+    this.router.navigateByUrl(`/${this.lang()}/checkout`);
+  }
+  decrease(item:any){}
+  increase(item:any){}
+  removeCoupon(){}
+applyCoupon(value:any){}
 }
 
 

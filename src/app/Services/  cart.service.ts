@@ -1,9 +1,10 @@
-import { computed, inject, Injectable, signal, } from '@angular/core';
+import { computed, effect, inject, Injectable, signal, } from '@angular/core';
 import { APICartItem, APICartResponse, APICheckout, CartItem, UpdateCartItem } from '../models/cart';
 import ApiService from '../shared/Services/ApiService/api.service';
-import { map, Observable } from 'rxjs';
+import { filter, map, Observable, switchMap } from 'rxjs';
 import { ApiResponse } from '../models/apiResponse';
 import { AuthService } from './auth.service';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 
 
@@ -18,7 +19,55 @@ export class CartService {
   cartCount = computed(() =>
     this.cartItems().reduce((total, item) => total + item.quantity, 0)
   );
-  constructor(private apiService: ApiService) { }
+
+  appliedCoupon = signal<string | null>(null);
+  discountAmount = signal<number>(0);
+
+  subtotal = computed(() =>
+    this.cartItems().reduce((total, item) => total + (item.finalPrice ?? 0), 0)
+  );
+
+  total = computed(() =>
+    this.subtotal() - this.discountAmount()
+  );
+  
+  constructor(private apiService: ApiService) {
+    toObservable(this.studentId)
+      .pipe(
+        filter(id => !!id),
+        switchMap(() => this.getStudentBasketItems())
+      )
+      .subscribe({
+        next: (data) => {
+          this.cartItems.set(data.items ?? []);
+          // this.currentBasketId.set(data.oid ?? '');
+        },
+        error: () => {
+          this.cartItems.set([]);
+        }
+      });
+    // effect(() => {
+    //   const id = this.studentId();
+
+    //   if (!id) {
+    //     this.cartItems.set([]);
+    //     this.currentBasketId.set('');
+    //     return;
+    //   }
+
+    //   this.getStudentBasketItems().subscribe({
+    //     next: (data) => {
+    //       this.cartItems.set(data.items ?? []);
+    //     },
+    //     error: (err) => {
+    //       console.error('Failed to load basket', err);
+    //       this.cartItems.set([]);
+    //     }
+    //   });
+
+    // });
+  }
+
 
   getStudentBasketItems(): Observable<APICartResponse> {
     return this.apiService

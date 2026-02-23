@@ -6,6 +6,7 @@
         'btn-outline-primary': type() === 'secondary',
         'custom-class':customClass()
       }"
+      [disabled]="disabled()"
       [style]="{
         'direction': isRTL() ? 'rtl' : 'ltr',
         'display': 'flex',

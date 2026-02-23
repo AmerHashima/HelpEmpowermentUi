@@ -1,8 +1,10 @@
 <!-- cart.component.html -->
-<div class="cart-container ">
+<div class="cart-parent">
   @if (cartItems().length === 0) {
     <ng-container>
-      <div class="d-flex flex-column gap-2 align-items-center justify-content-center h-100 empty-cart">
+      <div
+        class="d-flex flex-column gap-2 align-items-center justify-content-center h-100 empty-cart"
+      >
         <i class="bi bi-cart empty-icon"></i>
         <!-- Placeholder for an elegant icon -->
         <p class="empty-message">
@@ -20,26 +22,116 @@
     </ng-container>
   } @else {
     <ng-container>
-      <h3 class="cart-title mb-0">Your Learning Cart</h3>
-      <div class="cart-items">
-        @for (item of cartItems(); track item) {
-          <div class="cart-item">
-            <div class="item-details">
-              <h3 class="item-name">{{ item.courseName | titlecase }}</h3>
-              <p class="item-price">${{ (item.finalPrice ?? 0).toFixed(2) }}</p>
+      <div class="cart-container">
+        <!-- LEFT: Cart Items -->
+        <div class="cart-left">
+          @if (cartItems().length === 0) {
+            <div class="empty-cart">
+              <i class="bi bi-cart-x"></i>
+              <p>Your cart is empty</p>
             </div>
-            <button class="remove-button" (click)="removeItem(item)">
-              Remove
-            </button>
+          } @else {
+            @for (item of cartItems(); track item.courseId) {
+              <div class="cart-card">
+                <img
+                  [src]="
+                    item.courseImage || 'assets/images/course-placeholder.jpg'
+                  "
+                  class="course-image"
+                  alt="course image"
+                />
+
+                <div class="card-content">
+                  <h3 class="course-title">
+                    {{ item.courseName | titlecase }}
+                  </h3>
+
+                  <div class="price-row">
+                    <span class="price">
+                      ${{ (item.finalPrice ?? 0).toFixed(2) }}
+                    </span>
+                  </div>
+
+                  <div class="quantity-row">
+                    <button (click)="decrease(item)">−</button>
+                    <span>{{ item.quantity }}</span>
+                    <button (click)="increase(item)">+</button>
+                  </div>
+                </div>
+
+                <button class="remove-btn" (click)="removeItem(item)">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            }
+          }
+        </div>
+
+        <!-- RIGHT: Summary -->
+        <div class="cart-summary">
+          <h3 class="summary-title">Order Summary</h3>
+
+          <!-- Coupon Section -->
+          <div class="coupon-section">
+            @if (!appliedCoupon()) {
+              <div class="coupon-input-wrapper">
+                <input
+                  #couponInput
+                  type="text"
+                  placeholder="Enter coupon code"
+                  class="coupon-input form-control"
+                  (keyup.enter)="applyCoupon(couponInput.value)"
+                />
+                <app-site-button
+                  title="Apply"
+                  type="main"
+                  [icon]="isRTL() ? 'bi bi-arrow-left' : 'bi bi-arrow-right'"
+                  [isRTL]="isRTL()"
+                  [disabled]="!couponInput.value"
+                  (click)="applyCoupon(couponInput.value)"
+                ></app-site-button>
+              </div>
+            } @else {
+              <div class="coupon-applied">
+                <span>
+                  Coupon Applied:
+                  <strong>{{ appliedCoupon() }}</strong>
+                </span>
+
+                <button class="remove-coupon" (click)="removeCoupon()">
+                  Remove
+                </button>
+              </div>
+            }
           </div>
-        }
-      </div>
-      <div class="cart-summary">
-        <p class="total">
-          Total:
-          <span class="total-amount">${{ getTotalPrice().toFixed(2) }}</span>
-        </p>
-        <button class="checkout-button">Proceed to Checkout</button>
+
+          <!-- Price Breakdown -->
+          <div class="summary-row">
+            <span>Subtotal</span>
+            <span>${{ subtotal().toFixed(2) }}</span>
+          </div>
+
+          @if (discountAmount() > 0) {
+            <div class="summary-row discount">
+              <span>Discount</span>
+              <span>- ${{ discountAmount().toFixed(2) }}</span>
+            </div>
+          }
+
+          <div class="summary-row total">
+            <span>Total</span>
+            <span>${{ total().toFixed(2) }}</span>
+          </div>
+
+          <app-site-button
+            title="Proceed to Checkout"
+            type="main"
+            [icon]="isRTL() ? 'bi bi-arrow-left' : 'bi bi-arrow-right'"
+            [isRTL]="isRTL()"
+            [disabled]="cartItems().length === 0"
+            (click)="navigateToCheckout()"
+          ></app-site-button>
+        </div>
       </div>
     </ng-container>
   }
