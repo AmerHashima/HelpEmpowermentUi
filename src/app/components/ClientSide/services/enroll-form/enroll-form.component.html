@@ -1,17 +1,13 @@
 <section class="enrollForm">
   <ng-content select="[form-title]"></ng-content>
   <section
-    class="form w-100 d-flex flex-column align-items-stretch gap-3 rounded"
-    [class.mt-3]="!home()"
+    class="form w-100 d-flex flex-column align-items-stretch gap-3 rounded mt-3"
   >
-    @if (!home()) {
       <div class="d-flex flex-column gap-2 w-100">
         <h3 class="m-0">{{ "enroll.enroll" | translate }}</h3>
         <p>{{ "enroll.message" | translate }}</p>
       </div>
-    }
-
-    <form #enrollForm="ngForm" (ngSubmit)="onEnroll()" class="enroll-form mb-0">
+    <form #enrollForm="ngForm" (ngSubmit)="onEnroll(enrollForm)" class="enroll-form mb-0">
       <div class="d-flex flex-column gap-3">
         <app-input
           name="fullname"
@@ -52,7 +48,7 @@
         <app-phone-input
           name="phone"
           [(ngModel)]="enroll.phone"
-          [required]="true"
+          [required]="false"
           [labelKey]="'register.phoneLabel' | translate"
         >
         </app-phone-input>
