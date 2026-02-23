@@ -44,6 +44,7 @@ import { RefundPolicyComponent } from './components/ClientSide/refund-policy/ref
 import { PrivacyNoticeComponent } from './components/ClientSide/privacy-notice/privacy-notice.component';
 import { UserAccountPolicyComponent } from './components/ClientSide/user-account-policy/user-account-policy.component';
 import { TechnicalSupportPolicyComponent } from './components/ClientSide/technical-support-policy/technical-support-policy.component';
+import { CartComponent } from './components/ClientSide/cart/cart.component';
 
 export const validLangGuard: CanMatchFn = (route, segments) => {
   const lang = segments[0]?.path;
@@ -101,6 +102,10 @@ export const routes: Routes = [
       {
         path: "technical-support-policy",
         component: TechnicalSupportPolicyComponent
+      },
+      {
+        path: "cart",
+        component: CartComponent
       },
       {
         path: 'certifications',

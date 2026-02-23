@@ -1,0 +1,40 @@
+/* src\assets\styles\light-theme.scss */
+:root .light-theme, :root[data-theme=light] {
+  --primary-color: #AD1457;
+  --successColor:green;
+  --accordionBg:#F4F4F4;
+  --secondary-color: #EC407A;
+  --dropdownNacColor:#80939f;
+  --bgNav:#fff;
+  --inputFieldBgColor: #fff;
+  --inputFieldtextColor: var(--icon-color);
+  --navTextColor:#80939f;
+  --border-color: rgb(217, 217, 217);
+  --light-bg-text-color: #fff;
+  --light-text-color: #233043;
+  --label-color: #797979;
+  --paragraph-color: #6D8493;
+  --placeHolderColor: #797979;
+  --bgBody: #F9FAFB;
+  --FeatureTagBg: #fef3df;
+  --FeatureTagIcon: #fea903;
+  --socialLinkBg: #ecedef;
+  --socialLinkText: #151d20;
+  --headerColor: #151d20;
+  --btnDarkbg:#1e1e1e;
+  --btnDarkText:#fff;
+  --paraTextColor:#80939f;
+  --btnTextColor: #fff;
+  --btnBgColor: #AD1457;
+  --faqBg:#F9FAFB;
+  --iconColor: #F7FDF9;
+  --iconCircleTextColor: #AD1457;
+  --sidebarBgColor: #AD1457;
+  --siteNavColor: #AD1457;
+  --textColor: #F7FDF9;
+  --borderColor: #F7FDF9;
+  --iconColorLight: #AD1457;
+  --bgCard: #fff;
+  --hoverColor: #fff;
+  --textGray: #9C9C9C;
+}/*# sourceMappingURL=light-theme.css.map */

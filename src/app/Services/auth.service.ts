@@ -24,7 +24,7 @@ export class AuthService {
       const storedUser = localStorage.getItem('loggedStudent');
       const studentToken = localStorage.getItem('studentToken');
       if (studentToken) {
-        this.studentToken.set(JSON.parse(studentToken));
+        this.studentToken.set(studentToken);
       }
       if (storedUser) {
         this.loggedStudent.set(JSON.parse(storedUser));

@@ -1,6 +1,9 @@
 @use 'variables' as *;
 .mainContainer{
-  padding-top: 165px;
+  // padding-top: 165px;
+   padding-top: 190px;
+   flex-grow: 1;
+
 }
 
 .pagesBanner{
@@ -13,7 +16,23 @@
 }
 
 
-@media (max-width: 992px) {
+@media screen and  (min-width: 636px) {
 .mainContainer{
-  padding-top: 165px;
+  padding-top: 145px;
 }}
+
+
+@media screen and  (min-width: 980px) {
+.mainContainer{
+  padding-top: 108px;
+}}
+
+@media screen and  (min-width: 992px) {
+.mainContainer{
+  padding-top: 162px;
+}}
+
+
+
+
+

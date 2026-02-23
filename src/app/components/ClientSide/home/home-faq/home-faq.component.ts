@@ -102,10 +102,10 @@ export class HomeFAQComponent {
   })
 
   onContactSupport() {
-    // Replace with real action
-    //console.log('Contact support clicked');
-    // window.location.href = 'mailto:support@yourdomain.com';
-    // or open modal, navigate to contact page, etc.
+    window.location.href = 'mailto:Support@helpempowerment.com';
+    // or
+    // this.router.navigateByUrl(`/${this.lang()}/certifications/${course.courseName.toLowerCase()}/recorded-course`);
+
   }
 }
 

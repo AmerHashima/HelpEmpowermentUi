@@ -10,7 +10,7 @@ import { ApiResponse } from '../models/apiResponse';
 export class ContactUsService {
 
   constructor(private apiService:ApiService) { }
-  createStudent(body: ContactUs): Observable<APIContact> {
+  createContactMessage(body: ContactUs): Observable<APIContact> {
           return this.apiService
             .post<ApiResponse<APIContact>>('ServiceContactUs', body,"Message has been sent Successfully")
             .pipe(

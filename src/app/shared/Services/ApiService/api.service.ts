@@ -70,6 +70,7 @@ export default class ApiService {
   }
 
 
+
   put<T>(url: string, id: string, body: any, successMessage: string = 'Success'): Observable<T> {
     // const fullUrl = `${this.baseUrl}/${url}/${id}`;
     const fullUrl = `${this.baseUrl}/${url}`;
@@ -88,6 +89,23 @@ export default class ApiService {
   delete<T>(url: string, id: string, successMessage: string = 'Success'): Observable<T> {
     // const httpParams = new HttpParams({ fromObject: params || {} });
     const fullUrl = `${this.baseUrl}/${url}/${id}`;
+    this.loader.start();
+    return this.http.delete<T>(fullUrl, {
+      // params: httpParams,
+      headers: this.createHeaders(),
+    }).pipe(
+      tap(() => {
+        if (successMessage) {
+          this.toasting.showToast(successMessage, 'success');
+        }
+      }),
+      finalize(() => this.loader.stop())
+    );
+  }
+
+  clear<T>(url: string, id: string, successMessage: string = 'Success'): Observable<T> {
+    // const httpParams = new HttpParams({ fromObject: params || {} });
+    const fullUrl = `${this.baseUrl}/${url}/${id}/clear`;
     this.loader.start();
     return this.http.delete<T>(fullUrl, {
       // params: httpParams,

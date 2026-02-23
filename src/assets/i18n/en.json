@@ -1,7 +1,7 @@
 {
   "menu": {
     "home": "Home",
-    "about": "About Us",
+    "about": "About",
     "certifications": "Certifications",
     "contact": "Contact",
     "calendar": "calendar",
@@ -23,8 +23,8 @@
   "auth": {
     "login": "Login",
     "signup": "Sign Up",
-    "profile":"Profile",
-    "logout":"Logout"
+    "profile": "Profile",
+    "logout": "Logout"
   },
   "footer": {
     "image": "Footer image",
@@ -76,8 +76,8 @@
     "emailPlaceholder": "Enter your email",
     "passwordLabel": "Password",
     "passwordPlaceholder": "Enter your password",
-    "confirmPasswordLabel":"Confirm Password",
-    "confirmPasswordPlaceholder":"Enter your confirm Password",
+    "confirmPasswordLabel": "Confirm Password",
+    "confirmPasswordPlaceholder": "Enter your confirm Password",
     "rememberMe": "Remember me",
     "loginButton": "Login",
     "noAccount": "Don't have an account?",
@@ -98,7 +98,7 @@
     "firstNameArPlaceholder": "Enter your arabic first name",
     "lastNameLabel": "Last Name",
     "lastNameArLabel": "Arabic Last Name",
-        "lastNamePlaceholder": "Enter your last name",
+    "lastNamePlaceholder": "Enter your last name",
     "lastNameArPlaceholder": "Enter your arabic last name",
     "usernameLabel": "Username",
     "usernamePlaceholder": "Enter your username",
@@ -301,18 +301,18 @@
     "title": "Register for the Webinar",
     "subTitle": "Fill in your details below to secure your free spot."
   },
-"pmpFaq": {
-  "question1": "What does PMI and PMP mean?",
-  "answer1": "PMI (Project Management Institute): The world's leading association for project management professionals that sets global standards.\n\nPMP (Project Management Professional): The most important international certification in project management, issued by PMI to experts who meet strict experience and exam requirements.",
-  "question2": "What makes your PMP exam simulator unique compared to other platforms?",
-  "answer2": "Our simulator is designed to be the closest experience to the actual exam. It goes beyond simple practice tests by offering a dynamic bank of 1,620 questions aligned with the latest PMP exam format, realistic timed exam simulations, and in-depth explanations grounded in the PMBOK® Guide 7th Edition and Agile principles. We ensure you're prepared not just to recall information, but to apply it effectively in real-world scenarios.",
-  "question3": "Are your questions like the real PMP exam?",
-  "answer3": "Yes! Our questions are carefully designed to match the real PMP exam in style, structure, and difficulty level. We continuously update them to follow the latest PMP exam format and include the same types of situational and scenario-based questions you will encounter on exam day.",
-  "question4": "What do I need to apply for the official PMI - PMP exam?",
-  "answer4": "You need to meet these 2 main requirements:\n\n1. 35 Contact Hours of Project Management Training: You will receive this certificate upon completion of our course.\n\n2. Education & Experience:\n- If you have a 4-year university degree: You need 3 years (36 months) of project experience.\n- If you have a high school diploma or associate degree: You need 5 years (60 months) of project experience.\n\nNote: You are not required to hold the title of 'Project Manager.' What matters is that you have worked in a project-based environment. Personal and private projects may also be considered as qualifying experience.",
-  "question5": "Which official Project Management Institute (PMI) books should I study for the PMP exam?",
-  "answer5": "PMI recommends the following primary references:\n\n• PMBOK® Guide – 7th Edition (focuses on project management principles)\n• The Standard for Project Management (companion to PMBOK® 7)\n• Agile Practice Guide (covers agile and hybrid approaches)\n\nOur PMP course consolidates all essential information from these references into one structured learning path, so you don’t need to study each book separately."
-},
+  "pmpFaq": {
+    "question1": "What does PMI and PMP mean?",
+    "answer1": "PMI (Project Management Institute): The world's leading association for project management professionals that sets global standards.\n\nPMP (Project Management Professional): The most important international certification in project management, issued by PMI to experts who meet strict experience and exam requirements.",
+    "question2": "What makes your PMP exam simulator unique compared to other platforms?",
+    "answer2": "Our simulator is designed to be the closest experience to the actual exam. It goes beyond simple practice tests by offering a dynamic bank of 1,620 questions aligned with the latest PMP exam format, realistic timed exam simulations, and in-depth explanations grounded in the PMBOK® Guide 7th Edition and Agile principles. We ensure you're prepared not just to recall information, but to apply it effectively in real-world scenarios.",
+    "question3": "Are your questions like the real PMP exam?",
+    "answer3": "Yes! Our questions are carefully designed to match the real PMP exam in style, structure, and difficulty level. We continuously update them to follow the latest PMP exam format and include the same types of situational and scenario-based questions you will encounter on exam day.",
+    "question4": "What do I need to apply for the official PMI - PMP exam?",
+    "answer4": "You need to meet these 2 main requirements:\n\n1. 35 Contact Hours of Project Management Training: You will receive this certificate upon completion of our course.\n\n2. Education & Experience:\n- If you have a 4-year university degree: You need 3 years (36 months) of project experience.\n- If you have a high school diploma or associate degree: You need 5 years (60 months) of project experience.\n\nNote: You are not required to hold the title of 'Project Manager.' What matters is that you have worked in a project-based environment. Personal and private projects may also be considered as qualifying experience.",
+    "question5": "Which official Project Management Institute (PMI) books should I study for the PMP exam?",
+    "answer5": "PMI recommends the following primary references:\n\n• PMBOK® Guide – 7th Edition (focuses on project management principles)\n• The Standard for Project Management (companion to PMBOK® 7)\n• Agile Practice Guide (covers agile and hybrid approaches)\n\nOur PMP course consolidates all essential information from these references into one structured learning path, so you don’t need to study each book separately."
+  },
   "campFaq": {
     "question1": "What does PMI and CAPM mean?",
     "answer1": "PMI (Project Management Institute): The global leader in project management standards and professional certifications.\n\nCAPM (Certified Associate in Project Management): PMI's foundational certification designed for individuals starting their project management career, validating understanding of fundamental knowledge, terminology, and processes as defined in the PMBOK® Guide.",
@@ -349,7 +349,7 @@
   },
   "pages": {
     "about": "About US",
-        "profile": "Profile",
+    "profile": "Profile",
     "contact": "Contact US",
     "login": "Login",
     "register": "Register",
@@ -363,7 +363,8 @@
     "pmis": "Project Management Information System (PMIS)",
     "training": "Customized Training",
     "pmp": "PMP",
-    "capm": "CAPM"
+    "capm": "CAPM",
+    "cart":"Cart"
   },
   "courseOutline": "Course Outline"
 }

@@ -1,0 +1,46 @@
+<!-- cart.component.html -->
+<div class="cart-container ">
+  @if (cartItems().length === 0) {
+    <ng-container>
+      <div class="d-flex flex-column gap-2 align-items-center justify-content-center h-100 empty-cart">
+        <i class="bi bi-cart empty-icon"></i>
+        <!-- Placeholder for an elegant icon -->
+        <p class="empty-message">
+          Your cart is empty. Explore our courses and exams to get started on
+          your learning journey.
+        </p>
+        <app-site-button
+          title="Browse Courses & Exams"
+          type="main"
+          [icon]="isRTL() ? 'bi bi-arrow-left' : 'bi bi-arrow-right'"
+          [isRTL]="isRTL()"
+          (click)="BrowseCourses()"
+        ></app-site-button>
+      </div>
+    </ng-container>
+  } @else {
+    <ng-container>
+      <h3 class="cart-title mb-0">Your Learning Cart</h3>
+      <div class="cart-items">
+        @for (item of cartItems(); track item) {
+          <div class="cart-item">
+            <div class="item-details">
+              <h3 class="item-name">{{ item.courseName | titlecase }}</h3>
+              <p class="item-price">${{ (item.finalPrice ?? 0).toFixed(2) }}</p>
+            </div>
+            <button class="remove-button" (click)="removeItem(item)">
+              Remove
+            </button>
+          </div>
+        }
+      </div>
+      <div class="cart-summary">
+        <p class="total">
+          Total:
+          <span class="total-amount">${{ getTotalPrice().toFixed(2) }}</span>
+        </p>
+        <button class="checkout-button">Proceed to Checkout</button>
+      </div>
+    </ng-container>
+  }
+</div>

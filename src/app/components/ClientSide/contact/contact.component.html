@@ -12,7 +12,7 @@
 
         <form
           #contactForm="ngForm"
-          (ngSubmit)="onSendContactMessage()"
+          (ngSubmit)="onSendContactMessage(contactForm)"
           class="contact-form mb-0"
         >
           <div class="d-flex flex-column gap-3">
@@ -44,7 +44,7 @@
             <app-phone-input
               name="phone"
               [(ngModel)]="contact.phone"
-              [required]="true"
+              [required]="false"
               [labelKey]="'register.phoneLabel' | translate"
             >
             </app-phone-input>
@@ -206,3 +206,21 @@
     </div>
   </div>
 </div>
+
+
+  <app-generic-modal [(isOpen)]="showConfirm" title="Alert Message">
+    <section
+      class="w-100 d-flex flex-column align-items-stretch gap-3 p-3 rounded"
+    >
+      <div
+        class="d-flex flex-column align-items-center justify-content-center gap-2 w-100"
+      >
+        <i class="bi bi-info-circle-fill infoColor"></i>
+        <p class="text-center darkText w-75 mx-auto">
+          {{
+            "You Must be logged to be able to contact us." | translate
+          }}
+        </p>
+      </div>
+    </section>
+  </app-generic-modal>

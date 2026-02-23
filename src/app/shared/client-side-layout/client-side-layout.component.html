@@ -1,15 +1,8 @@
-<!-- <div class="d-flex align-items-stretch flex-column justify-content-between h-100">
-  <app-client-navbar />
-  <div class="mainContainer">
-    <div class="page-width">
-        <app-client-main-layout/>
-    </div>
-  </div>
-  <app-footer/>
-</div> -->
-
-<div
+<!-- <div
   class="d-flex align-items-stretch flex-column justify-content-between h-100"
+> -->
+<div
+  class="d-flex h-100 flex-column justify-content-between"
 >
   @if (isFullPage) {
     <!-- Full page mode (no navbar/footer/banner) -->
@@ -21,8 +14,8 @@
     <app-footer />
   } @else {
     <!-- Normal layout -->
-    <app-client-navbar />
-
+<div class='flex-grow-1  d-flex flex-column'>
+      <app-client-navbar />
     <div class="mainContainer">
       <!-- Optional banner (skip on no-layout routes) -->
       @if (!isNoLayout) {
@@ -36,7 +29,8 @@
       </div>
 
     </div>
-                    <app-footer />
+      <app-footer />
+</div>
 
   }
 </div>

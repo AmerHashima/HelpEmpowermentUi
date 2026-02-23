@@ -1,0 +1,14 @@
+.course-player {
+  background-color: transparent;
+}
+.course-player .video-player {
+  background: black;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.course-player .lesson-sidebar {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  overflow-y: auto;
+}/*# sourceMappingURL=courese-player.component.css.map */

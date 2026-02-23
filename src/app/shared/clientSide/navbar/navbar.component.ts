@@ -125,6 +125,9 @@ export class ClientNavbarComponent {
   logout(){
     this.auth.logout().subscribe({})
   }
+  addToCart(){
+    this.router.navigateByUrl(`/${this.lang()}/cart`);
+  }
   /** Dynamic menu – uses current language from shared service */
   menu = computed(() => [
     {
