@@ -1,7 +1,7 @@
 <div class="social-links d-flex align-items-center justify-content-center justify-content-lg-start gap-2">
   @for(link of links ; track link){
   <button
-    class="social-link-button me-3"
+    class="social-link-button me-1"
     (click)="openLink(link.url)"
     [attr.aria-label]="link.title"
   >

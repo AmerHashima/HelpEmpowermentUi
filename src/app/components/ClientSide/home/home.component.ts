@@ -17,7 +17,9 @@ import { EnrollFormComponent } from '../services/enroll-form/enroll-form.compone
   standalone:true,
   imports: [PageBannerComponent,FeatureComponent,SocialLinksComponent,
     SiteButtonComponent, TranslateModule, TranslatePipe, CertificationCardsComponent,
-    HomeArticlesComponent, HomeFAQComponent,GenericModelComponent,EnrollFormComponent],
+    HomeArticlesComponent, HomeFAQComponent,
+    // GenericModelComponent,EnrollFormComponent
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -29,8 +31,8 @@ export class HomeComponent {
   private shared=inject(Shared);
   isRTL=this.shared.isRtl;
   homeVideo='assets/videos/Home.mp4';
-  showEnrollForm:boolean=false;
-  enrolledCertification:CertificationItem| null=null;
+  // showEnrollForm:boolean=false;
+  // enrolledCertification:CertificationItem| null=null;
   scrollToElement(elRef: ElementRef | null, headerOffset: number = 140) {
     if (!elRef) return;
 
@@ -52,14 +54,14 @@ export class HomeComponent {
     this.scrollToElement(this.serviceCards);
   }
 
-  onEnrollToCourse(course:any){
-    this.showEnrollForm=true;
-    this.enrolledCertification=course;
-    console.log('enrolledCertification',this.enrolledCertification);
-  }
+  // onEnrollToCourse(course:any){
+  //   this.showEnrollForm=true;
+  //   this.enrolledCertification=course;
+  //   console.log('enrolledCertification',this.enrolledCertification);
+  // }
 
-  onEnrollSubmittion(enrollData:any){
-    //get course name or id form   this.enrolledCertification and rest on info from enrollData
-    console.log('send to enrroll api')
-  }
+  // onEnrollSubmittion(enrollData:any){
+  //   //get course name or id form   this.enrolledCertification and rest on info from enrollData
+  //   console.log('send to enrroll api')
+  // }
 }

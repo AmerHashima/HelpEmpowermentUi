@@ -72,7 +72,8 @@
         }}
       </p>
     </div>
-    <app-certification-cards (enrollCourse)="onEnrollToCourse($event)" />
+    <!-- <app-certification-cards (enrollCourse)="onEnrollToCourse($event)" /> -->
+    <app-certification-cards />
   </div>
 
   <div class="training d-flex flex-column gap-4 py-5" #homeServiceCards>
@@ -121,21 +122,11 @@ that meet client's expectations" | translate
   </div>
 </div>
 
-
-  <app-generic-modal [(isOpen)]="showEnrollForm" title="Enroll form">
+<!-- <app-generic-modal [(isOpen)]="showEnrollForm" title="Enroll form">
     <section
       class="w-100 d-flex flex-column align-items-stretch gap-3 p-3 rounded"
     >
     <app-enroll-form [home]="true" (submitted)="onEnrollSubmittion($event)"/>
-      <!-- <div
-        class="d-flex flex-column align-items-center justify-content-center gap-2 w-100"
-      >
-        <i class="bi bi-info-circle-fill infoColor"></i>
-        <p class="text-center darkText w-75 mx-auto">
-          {{
-            "You Must be logged to be able to contact us." | translate
-          }}
-        </p>
-      </div> -->
+
     </section>
-  </app-generic-modal>
+  </app-generic-modal> -->

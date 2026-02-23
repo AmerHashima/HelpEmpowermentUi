@@ -34,10 +34,16 @@ export class SocialLinksComponent {
       url: 'https://www.instagram.com/help_empowerment',
     },
     {
-      title: 'whatsapp',
-      icon: 'bi bi-whatsapp',
-      url: 'https://wa.me/966564943997',
+      title: 'tiktok',
+      icon: 'bi bi-tiktok',
+      url: 'https://www.tiktok.com/@help_empowememt?_r=1&_t=ZS-93pJ6atQF77',
     },
+    {
+      title: 'snapchat',
+      icon: 'bi bi-snapchat',
+      url: 'https://www.snapchat.com/add/mahmoud_he123',
+    },
+
   ];
 
   openLink(url: string) {

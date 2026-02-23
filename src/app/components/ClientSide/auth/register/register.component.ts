@@ -43,7 +43,8 @@ export class RegisterComponent {
   onRegister() {
     const payload = {
       nameEn: `${this.credentials.firstName} ${this.credentials.lastName}`,
-      nameAr: `${this.credentials.firstNameAr} ${this.credentials.lastNameAr}`,
+      // nameAr: `${this.credentials.firstNameAr} ${this.credentials.lastNameAr}`,
+      nameAr: "",
       email: this.credentials.email,
       mobile: this.credentials.mobile,
       username: this.credentials.username,

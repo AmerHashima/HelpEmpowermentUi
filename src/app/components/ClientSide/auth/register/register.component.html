@@ -43,7 +43,7 @@
                 ></app-input>
               </div>
             </div>
-            <div class="row">
+            <!-- <div class="row">
               <div class="col-12 col-lg-6">
                 <app-input
                   name="firstNameAr"
@@ -70,7 +70,7 @@
                   }"
                 ></app-input>
               </div>
-            </div>
+            </div> -->
             <app-input
               name="username"
               [(ngModel)]="credentials.username"
@@ -154,8 +154,8 @@
           </div>
         </form>
 
-        <p class="d-flex align-items-center justify-content-center">
-          <span class="pe-1">{{ "register.loginMessage" | translate }}</span>
+        <p class=" text-center  w-100 ">
+          <span class="pe-1 message">{{ "register.loginMessage" | translate }}</span>
           <span
             [routerLink]="`/${lang()}/auth/login`"
             class="mainTextColor fw-bold text-decoration-underline w-100"

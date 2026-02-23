@@ -6,6 +6,7 @@ import { TagComponent } from '../../tag/tag.component';
 import { StarRatingComponent } from '../../star-rating/star-rating.component';
 import { Shared } from '../../Services/shared/shared';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { Router } from '@angular/router';
 
 // Assuming you have a type/interface for the data
 export interface CertificationItem {
@@ -15,6 +16,7 @@ export interface CertificationItem {
   courseName: string;
   courseAbb: string;
   rateValue: number;
+  courseCode:string
 }
 
 
@@ -25,6 +27,7 @@ export const certifications: CertificationItem[] = [
     tags: ['Advanced', 'Global Standard'],
     courseAbb: 'Project Management Professional',
     courseName: 'PMP® Certification',
+    courseCode:'PMP',
     rateValue: 4.8,
   },
   {
@@ -33,6 +36,7 @@ export const certifications: CertificationItem[] = [
     tags: ['Foundational', 'Career Starter'],
     courseAbb: 'Certified Associate in Project Management',
     courseName: 'CAPM® Certification',
+    courseCode: 'CAPM',
     rateValue: 4.8,
   },
 ];
@@ -55,6 +59,8 @@ export class CertificationCardsComponent {
 
   certifications = input<CertificationItem[]>(certifications);
   private shared = inject(Shared);
+  private router = inject(Router);
+
   isRTL = this.shared.isRtl;
   enrollCourse = output<CertificationItem>();
   private images = [
@@ -66,8 +72,8 @@ export class CertificationCardsComponent {
     return this.images[index % 2];
   }
 
-  // Replace with real navigation / enrollment logic
   onEnroll(item: CertificationItem) {
-    this.enrollCourse.emit(item)
+    this.router.navigateByUrl(`/${this.shared.lang()}/certifications/${item.courseCode.toLowerCase()}`);
+    // this.enrollCourse.emit(item)
   }
 }
