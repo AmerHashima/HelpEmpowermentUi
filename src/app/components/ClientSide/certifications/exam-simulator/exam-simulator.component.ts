@@ -97,6 +97,7 @@ export class ExamSimulatorComponent {
   enrollImage = 'assets/images/enroll.png';
   showConfirm:boolean=false;
   constructor(private router: Router,private route:ActivatedRoute) {
+    console.log('certifications',this.shared.certifications());
     effect(()=>{
       const _=this.shared.currentExamId();
       // this.chooseExam=true;

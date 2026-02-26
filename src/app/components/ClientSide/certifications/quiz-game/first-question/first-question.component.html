@@ -1,0 +1,89 @@
+<div class="timeline-container">
+
+  <!-- 🔴 SOURCE ROW (Pink Items) -->
+  <div class="source-row" cdkDropListGroup>
+
+    <div class="source-list"
+         cdkDropList
+         id="source"
+         [cdkDropListData]="sourceData"
+         [cdkDropListConnectedTo]="dropListIds()"
+         (cdkDropListDropped)="drop($event)">
+
+      @for (item of sourceData; track item) {
+        <div class="draggable pink" cdkDrag>
+          {{ item }}
+        </div>
+      }
+
+    </div>
+  </div>
+
+
+  <!-- ⬛ ROW 1 (4 DROP ZONES) -->
+  <div class="top-row">
+
+    @for (zone of topZones(); track $index; let i = $index) {
+
+      <div class="zone-wrapper">
+
+        <div class="drop-zone"
+             cdkDropList
+             [id]="'top-' + i"
+             [cdkDropListData]="zone.items"
+             [cdkDropListConnectedTo]="dropListIds()"
+             [cdkDropListEnterPredicate]="singleItemPredicate"
+             (cdkDropListDropped)="drop($event)">
+
+          @if (zone.items.length) {
+            <div class="draggable pink" cdkDrag>
+              {{ zone.items[0] }}
+            </div>
+          } @else {
+            <span class="placeholder"></span>
+          }
+
+        </div>
+
+        <!-- ➡ Arrow between boxes -->
+        @if (i < 3) {
+          <div class="arrow-right"></div>
+        }
+
+      </div>
+
+    }
+
+  </div>
+
+
+  <!-- ⬛ ROW 2 (1 CENTERED DROP ZONE) -->
+  <div class="bottom-row">
+
+    <!-- left connector -->
+    <div class="left-connector"></div>
+
+    <div class="bottom-zone"
+         cdkDropList
+         id="bottom"
+         [cdkDropListData]="bottomData"
+         [cdkDropListConnectedTo]="dropListIds()"
+         [cdkDropListEnterPredicate]="singleItemPredicate"
+         (cdkDropListDropped)="drop($event)">
+
+      @if (bottomData.length) {
+        <div class="draggable pink" cdkDrag>
+          {{ bottomData[0] }}
+        </div>
+      } @else {
+        <span class="placeholder"></span>
+      }
+
+    </div>
+
+    <!-- right connector -->
+    <div class="right-connector"></div>
+
+  </div>
+
+</div>

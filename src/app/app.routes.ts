@@ -345,6 +345,13 @@ function getCertificationChildren():Routes {
           .then(m => m.ReviewsComponent)
     },
     {
+      path: 'quiz',
+      loadComponent: () =>
+        import('./components/ClientSide/certifications/quiz-game/quiz-game-question/quiz-game-question.component')
+          .then(m => m.QuizGameQuestionComponent),
+      data: { fullPage: true }
+    },
+    {
       path: 'reports',
       loadComponent: () =>
         import('./components/ClientSide/exam-reports/exam-reports.component')

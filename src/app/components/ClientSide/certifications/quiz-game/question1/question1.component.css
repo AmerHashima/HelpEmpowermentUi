@@ -1,0 +1,73 @@
+@charset "UTF-8";
+.container {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+.matrix {
+  border-collapse: collapse;
+  width: 70%;
+  table-layout: fixed;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 15px;
+  vertical-align: top;
+}
+
+.fixed-column {
+  background: #f5f5f5;
+  font-weight: 500;
+  width: 320px; /* ← fixed width for knowledge areas – adjust as needed */
+  white-space: normal; /* allow wrapping if names are very long */
+}
+
+th:nth-child(2),
+td.drop-cell {
+  width: 260px; /* ← same width for ALL drop zones + header above them */
+  /* or use: width: 40%;  if you prefer percentage */
+}
+
+.drop-cell {
+  min-height: 80px; /* a bit taller so empty zones look inviting */
+  background: #fafafa;
+}
+
+.drag-item,
+.option-item {
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  background: #c2185b;
+  color: white;
+  border-radius: 6px;
+  cursor: move;
+}
+
+.options {
+  /* width: 260px; */
+  min-height: 200px;
+  padding: 15px;
+  background: #eee;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.cdk-drag-preview {
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.4);
+  opacity: 0.9;
+}
+
+.cdk-drag-placeholder {
+  opacity: 0.4;
+  background: #ffc107 !important;
+  border: 2px dashed #ff9800;
+  min-height: 40px;
+}
+
+.drop-cell:empty::after {
+  content: "Drop here";
+  color: #aaa;
+  font-style: italic;
+}/*# sourceMappingURL=question1.component.css.map */

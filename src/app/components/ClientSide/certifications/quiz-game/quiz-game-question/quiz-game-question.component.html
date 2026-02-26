@@ -1,0 +1,136 @@
+<div class="exam-container">
+  <!-- Header -->
+  <header class="exam-header flex-column flex-md-row gap-2">
+    <app-feature [title]="currentLevel().level" icon="bi bi-star" />
+
+    <span class="bg-site flex-grow-1 rounded rounded-3 p-2 text-center">
+      {{ this.currentLevel().title }}
+    </span>
+  </header>
+  <!-- Question area -->
+  <main class="question-area py-4">
+    @if (this.currentLevelIndex() == 0) {
+      <app-first-question
+        [next]="next()"
+        (isCorrect)="onGetQuestionResult($event)"/>
+    }
+    @else if(this.currentLevelIndex() >= 1 && this.currentLevelIndex() <= 5) {
+      <app-question1
+        [questions]="currentLevel().questions"
+        [correctAnswers]="currentLevel().correctAnswers"
+        [header1]="currentLevel().header1"
+        [header2]="currentLevel().header2"
+        [next]="next()"
+        (isCorrect)="onGetQuestionResult($event)"
+      />
+    }
+    <!-- Footer controls -->
+    <footer
+      class="py-2 d-flex gap-2 align-items-center justify-content-center flex-column flex-lg-row"
+    >
+      <app-site-button
+        [title]="'Quit' | translate"
+        type="secondary"
+        [isRTL]="isRTL()"
+        (click)="QuitQuiz()"
+      />
+      <app-site-button
+        [title]="'Reset' | translate"
+        type="main"
+        icon="bi bi-bookmark-check"
+        [customClass]="true"
+        [isRTL]="isRTL()"
+        (click)="ResetQuiz()"
+      />
+      <app-site-button
+        title="Next"
+        [isRTL]="isRTL()"
+        type="main"
+        (click)="nextQuestion()"
+      />
+    </footer>
+  </main>
+</div>
+
+<app-generic-modal [(isOpen)]="showConfirm" title="Quit Quiz">
+  <section
+    class="w-100 d-flex flex-column align-items-stretch gap-3 p-3 rounded"
+  >
+    <div
+      class="d-flex flex-column align-items-center justify-content-center gap-2 w-100"
+    >
+      <i class="bi bi-question-circle-fill infoColor"></i>
+      <p class="text-center darkText w-75 mx-auto">
+        {{
+          "Are you sure you want to quit? Progress will be lost. " | translate
+        }}
+      </p>
+      <div class="d-flex gap-2 justify-content-center py-2">
+        <app-site-button
+          [title]="'Cancel' | translate"
+          type="secondary"
+          [isRTL]="isRTL()"
+          (click)="cancalQuiz()"
+        />
+
+        <app-site-button
+          title="Confirm"
+          [isRTL]="isRTL()"
+          type="main"
+          (click)="confirmQuit()"
+        />
+      </div>
+    </div>
+  </section>
+</app-generic-modal>
+
+<app-generic-modal [(isOpen)]="showResetConfirm" title="Reset Quiz">
+  <section
+    class="w-100 d-flex flex-column align-items-stretch gap-3 p-3 rounded"
+  >
+    <div
+      class="d-flex flex-column align-items-center justify-content-center gap-2 w-100"
+    >
+      <i class="bi bi-question-circle-fill infoColor"></i>
+      <p class="text-center darkText w-75 mx-auto">
+        {{
+          "Are you sure you want to reset? Progress will be lost. " | translate
+        }}
+      </p>
+      <div class="d-flex gap-2 justify-content-center py-2">
+        <app-site-button
+          [title]="'Cancel' | translate"
+          type="secondary"
+          [isRTL]="isRTL()"
+          (click)="cancelResetQuiz()"
+        />
+
+        <app-site-button
+          title="Confirm"
+          [isRTL]="isRTL()"
+          type="main"
+          (click)="confirmResetQuiz()"
+        />
+      </div>
+    </div>
+  </section>
+</app-generic-modal>
+
+<app-generic-modal [(isOpen)]="showMessage" title="Alert Message">
+  <section
+    class="w-100 d-flex flex-column align-items-stretch gap-3 p-3 rounded"
+  >
+    <div
+      class="d-flex flex-column align-items-center justify-content-center gap-2 w-100"
+    >
+      @if (levelMessage().isCorrect) {
+        <i class="bi bi-check-circle-fill text-success"></i>
+      } @else {
+        <i class="bi bi-x-circle-fill text-danger"></i>
+      }
+      <p class="text-center message darkText w-75 mx-auto">
+        {{ levelMessage().message }}
+      </p>
+    </div>
+  </section>
+</app-generic-modal>

@@ -1,0 +1,54 @@
+<div class="container" cdkDropListGroup>
+
+  <!-- TABLE -->
+  <table class="matrix">
+    <thead>
+      <tr>
+        <th>{{header1()}}</th>
+        <th>{{header2()}}</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <!-- <tr *ngFor="let area of knowledgeAreas; let i = index"> -->
+        <tr *ngFor="let area of questions(); let i = index">
+        <td class="fixed-column">
+          {{ area }}
+        </td>
+
+    <td cdkDropList
+    [cdkDropListData]="dropZones[i]"
+    [cdkDropListEnterPredicate]="noMoreThanOnePredicate"
+    class="drop-cell"
+    (cdkDropListDropped)="drop($event)">
+  <div *ngFor="let item of dropZones[i]"
+       cdkDrag
+       class="drag-item">
+    {{ item }}
+  </div>
+</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="options"
+       cdkDropList
+       [cdkDropListData]="options"
+       (cdkDropListDropped)="drop($event)">
+ @for(option of options;track option){
+   <div
+         cdkDrag
+         class="option-item">
+      {{ option }}
+    </div>
+
+ }@empty{
+  <div class="d-flex align-items-center gap-1 justify-content-center text-muted">
+    <i class="bi bi-info-circle-fill"></i>
+    <span>No More Options</span>
+  </div>
+ }
+
+  </div>
+
+</div>

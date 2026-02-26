@@ -2,6 +2,7 @@
 :root .light-theme, :root[data-theme=light] {
   --primary-color: #AD1457;
   --successColor:green;
+  --quizColor:#fff;
   --accordionBg:#F4F4F4;
   --secondary-color: #EC407A;
   --dropdownNacColor:#80939f;
