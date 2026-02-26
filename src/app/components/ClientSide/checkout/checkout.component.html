@@ -1,1 +1,132 @@
-<p>checkout works!</p>
+<div class="checkout-container">
+  <!-- LEFT SECTION -->
+  <div class="checkout-form">
+    <h2 class="section-title mainTextColor text-start">Billing Information</h2>
+
+    <form class="form" [formGroup]="checkoutForm">
+      <div class="row gy-2">
+        <div class="col-12">
+          <!-- Full Name -->
+          <app-input
+            formControlName="fullName"
+            [label]="'Full Name'"
+            type="text"
+            icon="bi bi-person"
+            [errorMessages]="{
+              required: 'Full name is required',
+            }"
+          />
+        </div>
+
+        <div class="col-12">
+          <div class="row">
+            <div class="col-12">
+              <app-input
+                formControlName="email"
+                [label]="'Email Address'"
+                type="email"
+                icon="bi bi-envelope"
+                [errorMessages]="{
+                  required: 'Email is required',
+                  email: 'Invalid email format',
+                }"
+              />
+            </div>
+            <div class="col-12">
+              <app-phone-input
+                formControlName="phone"
+                [labelKey]="'Phone Number'"
+                [required]="true"
+              ></app-phone-input>
+            </div>
+          </div>
+        </div>
+        <div class="col-12">
+          <!-- Address -->
+          <app-input
+            formControlName="address"
+            [label]="'Address'"
+            type="text"
+            icon="bi bi-geo-alt"
+            [errorMessages]="{
+              required: 'Address is required',
+            }"
+          />
+        </div>
+
+        <div class="col-12">
+          <!-- City -->
+          <app-input
+            formControlName="city"
+            [label]="'City'"
+            type="text"
+            icon="bi bi-building"
+            [errorMessages]="{
+              required: 'City is required',
+            }"
+          />
+        </div>
+      </div>
+
+      <!-- Payment -->
+      <h2 class="section-title mt-4 border-top pt-4 mainTextColor text-start">
+        Payment Method
+      </h2>
+
+      <div class="payment-method">
+        <label>
+          <input type="radio" value="card" formControlName="paymentMethod" />
+          Credit / Debit Card
+        </label>
+         <label>
+          <input type="radio" value="paypal" formControlName="paymentMethod" />
+         Paypal
+        </label>
+      </div>
+
+      <!-- Terms -->
+      <div class="terms">
+        <label>
+          <input type="checkbox" formControlName="acceptTerms" />
+          I agree to the Terms & Conditions
+        </label>
+      </div>
+
+      <!-- Button -->
+      <button
+        type="button"
+        class="place-order-btn"
+        (click)="placeOrder()"
+        [disabled]="loading()"
+      >
+        <span *ngIf="!loading()">Complete Order</span>
+        <span *ngIf="loading()">Processing...</span>
+      </button>
+    </form>
+  </div>
+
+  <!-- RIGHT SECTION -->
+  <div class="checkout-summary">
+    <h2 class="mainTextColor section-title text-start">Order Summary</h2>
+    @for (item of cartItems(); track item) {
+      <div class="summary-item">
+        <span class="fw-bold">{{ item.courseName }}</span>
+        <span class="fw-bold">${{ item.finalPrice }}</span>
+      </div>
+    }
+
+    <hr />
+    <div class="d-flex align-items-center justify-content-between mb-2">
+      <span>SubTotal</span>
+      <span>${{ subTotal() }}</span>
+    </div>
+    <div class="d-flex align-items-center justify-content-between mb-2">
+      <span>Discount</span>
+      <span>-${{ discontAmount() }}</span>
+    </div>
+    <div class="summary-total">
+      <span class="mainTextColor">Total</span>
+      <span class="mainTextColor">${{ total() }}</span>
+    </div>
+  </div>
+</div>

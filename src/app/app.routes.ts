@@ -46,6 +46,7 @@ import { UserAccountPolicyComponent } from './components/ClientSide/user-account
 import { TechnicalSupportPolicyComponent } from './components/ClientSide/technical-support-policy/technical-support-policy.component';
 import { CartComponent } from './components/ClientSide/cart/cart.component';
 import { CheckoutComponent } from './components/ClientSide/checkout/checkout.component';
+import { checkoutGuard } from './Guards/ClientSideGuards/checkout.guard';
 
 export const validLangGuard: CanMatchFn = (route, segments) => {
   const lang = segments[0]?.path;
@@ -110,7 +111,8 @@ export const routes: Routes = [
       },
       {
         path: "checkout",
-        component: CheckoutComponent
+        component: CheckoutComponent,
+        canActivate: [checkoutGuard]
       },
       {
         path: 'certifications',

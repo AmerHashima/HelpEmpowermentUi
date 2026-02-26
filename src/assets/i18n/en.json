@@ -364,7 +364,8 @@
     "training": "Customized Training",
     "pmp": "PMP",
     "capm": "CAPM",
-    "cart":"Cart"
+    "cart":"Cart",
+    "checkout":"Checkout"
   },
   "courseOutline": "Course Outline"
 }

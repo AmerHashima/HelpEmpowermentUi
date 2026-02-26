@@ -1,19 +1,17 @@
-@use 'variables' as *;
 .checkout-container {
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 40px;
   padding: 50px;
-  background-color:transparent
+  background: #f6f8fc;
 }
 
 .checkout-form,
 .checkout-summary {
-  background-color: $inputBg;
-  color:$inputText;
+  background: #fff;
   padding: 30px;
   border-radius: 16px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.04);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.04);
 }
 
 .section-title {
@@ -34,11 +32,12 @@
 
 .place-order-btn {
   width: 100%;
-  padding: 8px;
+  padding: 14px;
   border-radius: 12px;
   border: none;
-  background-color: $primaryColor;
-  color:$lightBgTextColor;
+  background-color: linear-gradient(135deg, #0d6efd, #0046b8);
+  color: #fff;
+  font-weight: 600;
   cursor: pointer;
   transition: 0.3s ease;
 }
@@ -64,17 +63,13 @@
   font-size: 18px;
 }
 
-input[type="radio"],input[type="checkbox"] {
-  accent-color: $primaryColor;
-}
 /* Responsive */
 @media (max-width: 992px) {
   .checkout-container {
     grid-template-columns: 1fr;
     padding: 20px;
   }
-
   .form-row {
     flex-direction: column;
   }
-}
+}/*# sourceMappingURL=checkout.component.css.map */
