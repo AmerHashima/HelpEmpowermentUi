@@ -1,0 +1,52 @@
+<div class="container" cdkDropListGroup>
+
+  <!-- Table 1 -->
+
+  <table class="matrix">
+    <thead>
+      <tr><th>Table 1</th></tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of dropZones1; let i = index">
+        <td cdkDropList
+            [cdkDropListData]="dropZones1[i]"
+            [cdkDropListEnterPredicate]="noMoreThanOnePredicate"
+            class="drop-cell"
+            (cdkDropListDropped)="drop($event)">
+          <div *ngFor="let item of dropZones1[i]" cdkDrag class="drag-item">
+            {{ item }}
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Table 2 -->
+  <table class="matrix">
+    <thead>
+      <tr><th>Table 2</th></tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of dropZones2; let i = index">
+        <td cdkDropList
+            [cdkDropListData]="dropZones2[i]"
+            [cdkDropListEnterPredicate]="noMoreThanOnePredicate"
+            class="drop-cell"
+            (cdkDropListDropped)="drop($event)">
+          <div *ngFor="let item of dropZones2[i]" cdkDrag class="drag-item">
+            {{ item }}
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Options -->
+  <div class="options" cdkDropList [cdkDropListData]="options" (cdkDropListDropped)="drop($event)">
+    <div *ngFor="let option of options" cdkDrag class="option-item">{{ option }}</div>
+    <div *ngIf="options.length === 0" class="no-options">
+      <i class="bi bi-info-circle-fill"></i> No More Options
+    </div>
+  </div>
+
+</div>

@@ -64,31 +64,82 @@ export class FirstQuestionComponent {
     return drop.data.length === 0;
   };
 
-  drop(event: CdkDragDrop<string[]>) {
+  // drop(event: CdkDragDrop<string[]>) {
 
+  //   if (event.previousContainer === event.container) {
+  //     moveItemInArray(
+  //       event.container.data,
+  //       event.previousIndex,
+  //       event.currentIndex
+  //     );
+  //   } else {
+
+  //     // prevent overwriting in zones
+  //     if (
+  //       event.container.id !== 'source' &&
+  //       event.container.data.length > 0
+  //     ) {
+  //       return;
+  //     }
+
+  //     transferArrayItem(
+  //       event.previousContainer.data,
+  //       event.container.data,
+  //       event.previousIndex,
+  //       event.currentIndex
+  //     );
+  //   }
+  // }
+  drop(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {
+      // Same container → just reorder
       moveItemInArray(
         event.container.data,
         event.previousIndex,
         event.currentIndex
       );
-    } else {
+      return;
+    }
 
-      // prevent overwriting in zones
-      if (
-        event.container.id !== 'source' &&
-        event.container.data.length > 0
-      ) {
-        return;
-      }
+    // ─────────────────────────────────────────────
+    // Dropping into a different container
+    // ─────────────────────────────────────────────
 
+    const targetContainer = event.container;
+    const targetData = targetContainer.data;
+
+    // If dropping back to source → normal transfer
+    if (targetContainer.id === 'source') {
       transferArrayItem(
         event.previousContainer.data,
-        event.container.data,
+        targetData,
         event.previousIndex,
         event.currentIndex
       );
+      return;
     }
+
+    // ─── Dropping into a ZONE (top or bottom) ───
+    // If zone already has an item → send old one back to source
+    if (targetData.length > 0) {
+      const oldItem = targetData[0]; // only one item allowed
+
+      // 1. Remove old item from the zone
+      targetData.splice(0, 1);
+
+      // 2. Return old item to sourceItems (add to end — or change position if you want)
+      this.sourceItems.update(items => [...items, oldItem]);
+      // Alternative: add to beginning
+      // this.sourceItems.update(items => [oldItem, ...items]);
+    }
+
+    // 3. Now place the new dragged item into the zone
+    transferArrayItem(
+      event.previousContainer.data,
+      targetData,
+      event.previousIndex,
+      event.currentIndex
+    );
   }
   private checkAnswers(): void {
     console.log('checkAnswers');

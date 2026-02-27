@@ -14,7 +14,16 @@
         [next]="next()"
         (isCorrect)="onGetQuestionResult($event)"/>
     }
-    @else if(this.currentLevelIndex() >= 1 && this.currentLevelIndex() <= 5) {
+     @else if (this.currentLevelIndex() == 1) {
+      <app-second-question
+         [header1]="currentLevel().header1"
+        [header2]="currentLevel().header2"
+        [correctAnswers]="currentLevel().correctAnswers"
+        [options]="currentLevel().options"
+        [next]="next()"
+        (isCorrect)="onGetQuestionResult($event)"/>
+    }
+    @else if(this.currentLevelIndex() >= 2 && this.currentLevelIndex() <= 6) {
       <app-question1
         [questions]="currentLevel().questions"
         [correctAnswers]="currentLevel().correctAnswers"

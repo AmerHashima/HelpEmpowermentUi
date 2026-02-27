@@ -1,0 +1,73 @@
+@use 'variables' as *;
+.container {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+.matrix {
+  border-collapse: collapse;
+  width: 30%;
+  table-layout: fixed;
+}
+th{
+  background-color: $headerColor !important;
+  color:$quizColor !important;
+}
+th, td {
+  border: 1px solid $borderColor;
+  padding: 15px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.fixed-column {
+  background-color: transparent;
+  font-weight: 500;
+  white-space: normal;
+}
+
+
+.drop-cell {
+  background-color: transparent;
+}
+
+.drag-item,
+.option-item {
+  padding: 8px 12px;
+  margin-bottom: 0px;
+  background-color: $primaryColor;
+  color: $lightBgTextColor;
+  border-radius: 6px;
+  text-align: center;
+  cursor: move;
+  white-space: pre-line;
+}
+
+.options {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap:.5rem;
+  padding: 15px;
+  background-color: transparent;
+  border-radius: 8px;
+  border:1px dashed $borderColor;
+}
+.cdk-drag-preview {
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.4);
+  opacity: 0.9;
+}
+
+.cdk-drag-placeholder {
+  opacity: 0.4;
+  background: #ffc107 !important;
+  border: 2px dashed #ff9800;
+  min-height: 40px;
+}
+
+.drop-cell:empty::after {
+  content: "Drop here";
+  color: #aaa;
+  font-style: italic;
+}

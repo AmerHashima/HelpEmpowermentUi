@@ -7,11 +7,21 @@ import { GenericModelComponent } from '../../../../../shared/generic-model/gener
 import { ActivatedRoute, Router } from '@angular/router';
 import { Question1Component } from '../question1/question1.component';
 import { FirstQuestionComponent } from '../first-question/first-question.component';
+import { SecondQuestionComponent } from '../second-question/second-question.component';
 
+interface QuizLevel {
+  level: string;
+  title: string;
+  header1: string;
+  header2: string;
+  options: string[];
+  questions: string[];
+  correctAnswers: Record<string, string[]>;
+}
 @Component({
   selector: 'app-quiz-game-question',
   imports: [FeatureComponent, SiteButtonComponent, TranslatePipe, GenericModelComponent, Question1Component,
-    FirstQuestionComponent
+    FirstQuestionComponent,SecondQuestionComponent
   ],
   templateUrl: './quiz-game-question.component.html',
   styleUrl: './quiz-game-question.component.scss'
@@ -33,20 +43,63 @@ export class QuizGameQuestionComponent {
 
 
 
-  levels = [
+  levels: QuizLevel[] = [
     {
-      level: "level 1",
-      title: "5 Process Group",
-      header1: "",
-      header2: "",
+      level: 'level 1',
+      title: '5 Process Group',
+      header1: '',
+      header2: '',
       questions:[],
+      options:[],
       correctAnswers: {} as Record<string, string[]>,
     },
     {
-      level: "level 2",
-      title: "Process Group & Knowledge Area",
-      header1: "Process Group/Knowledge Area",
-      header2: "Initiation",
+      level: 'level 1',
+      title: 'Process Group & Knowledge Area ',
+      header1: '5 Process Group',
+      header2: '10 Knowledge Area',
+      options:[
+        'Project Stakeholder Management',
+        'Project Risk Management',
+        'Project Cost Management',
+        'Project Integration Management',
+        'Monitoring & Controlling',
+        'Project Time Management',
+        'Executing',
+        'Project Resource Management',
+        'Initiating',
+        'Project Quality Management',
+        'Project Procurement Management',
+        'Closing',
+        'Project Scope Management',
+        'Project Communication Management',
+        'Planning'
+      ],
+      questions: [],
+      correctAnswers:{
+        'Table1-0': ['Initiating'],
+        'Table1-1': ['Planning'],
+        'Table1-2': ['Executing'],
+        'Table1-3': ['Monitoring & Controlling'],
+        'Table1-4': ['Closing'],
+        'Table2-0': ['Project Integration Management'],
+        'Table2-1': ['Project Scope Management'],
+        'Table2-2': ['Project Time Management'],
+        'Table2-3': ['Project Cost Management'],
+        'Table2-4': ['Project Quality Management'],
+        'Table2-5': ['Project Resource Management'],
+        'Table2-6': ['Project Communication Management'],
+        'Table2-7': ['Project Risk Management'],
+        'Table2-8': ['Project Procurement Management'],
+        'Table2-9': ['Project Stakeholder Management'],
+      },
+    },
+    {
+      level: 'level 2',
+      title: 'Process Group & Knowledge Area',
+      header1: 'Process Group/Knowledge Area',
+      header2: 'Initiation',
+      options: [],
       questions: [
         'Project Integration Management',
         'Project Scope Management',
@@ -73,10 +126,11 @@ export class QuizGameQuestionComponent {
       }
     },
     {
-      level: "level 3",
-      title: "Knowledge Area & Planning",
-      header1: "Process Group/Knowledge Area",
-      header2: "Planning",
+      level: 'level 3',
+      title: 'Knowledge Area & Planning',
+      header1: 'Process Group/Knowledge Area',
+      header2: 'Planning',
+      options: [],
       questions: [
         'Project Integration Management',
         'Project Scope Management',
@@ -104,10 +158,12 @@ export class QuizGameQuestionComponent {
       }
     },
     {
-      level: "level 4",
-      title: "Knowledge Area & Executing",
-      header1: "Process Group/Knowledge Area",
-      header2: "Executing",
+      level: 'level 4',
+      title: 'Knowledge Area & Executing',
+      header1: 'Process Group/Knowledge Area',
+      header2: 'Executing',
+      options: [],
+
       questions: [
         'Project Integration Management',
         'Project Scope Management',
@@ -134,10 +190,12 @@ export class QuizGameQuestionComponent {
       }
     },
     {
-      level: "level 5",
-      title: "Knowledge Area & (Monitoring & Controlling)",
-      header1: "Process Group/Knowledge Area",
-      header2: "Monitoring & Controlling  ",
+      level: 'level 5',
+      title: 'Knowledge Area & (Monitoring & Controlling)',
+      header1: 'Process Group/Knowledge Area',
+      header2: 'Monitoring & Controlling  ',
+      options: [],
+
       questions: [
         'Project Integration Management',
         'Project Scope Management',
@@ -164,10 +222,11 @@ export class QuizGameQuestionComponent {
       }
     },
     {
-      level: "level 6",
-      title: "Knowledge Area & Closing",
-      header1: "Process Group/Knowledge Area",
-      header2: "Closing",
+      level: 'level 6',
+      title: 'Knowledge Area & Closing',
+      header1: 'Process Group/Knowledge Area',
+      header2: 'Closing',
+      options: [],
       questions: [
         'Project Integration Management',
         'Project Scope Management',
