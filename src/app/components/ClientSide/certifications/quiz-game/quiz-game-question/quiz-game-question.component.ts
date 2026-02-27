@@ -8,20 +8,22 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Question1Component } from '../question1/question1.component';
 import { FirstQuestionComponent } from '../first-question/first-question.component';
 import { SecondQuestionComponent } from '../second-question/second-question.component';
+import { MultiTableQuestionsComponent } from '../multi-table-questions/multi-table-questions.component';
 
 interface QuizLevel {
   level: string;
   title: string;
   header1: string;
   header2: string;
-  options: string[];
+  options?: string[];
   questions: string[];
+  headers?: string[];
   correctAnswers: Record<string, string[]>;
 }
 @Component({
   selector: 'app-quiz-game-question',
   imports: [FeatureComponent, SiteButtonComponent, TranslatePipe, GenericModelComponent, Question1Component,
-    FirstQuestionComponent,SecondQuestionComponent
+    FirstQuestionComponent, SecondQuestionComponent, MultiTableQuestionsComponent
   ],
   templateUrl: './quiz-game-question.component.html',
   styleUrl: './quiz-game-question.component.scss'
@@ -37,7 +39,7 @@ export class QuizGameQuestionComponent {
   showConfirm: boolean = false;
   showMessage: boolean = false;
   showResetConfirm: boolean = false;
-  currentLevelIndex = signal(0);
+  currentLevelIndex = signal(7);
   score = signal(0);
   gameFinished = signal(false);
 
@@ -50,7 +52,6 @@ export class QuizGameQuestionComponent {
       header1: '',
       header2: '',
       questions:[],
-      options:[],
       correctAnswers: {} as Record<string, string[]>,
     },
     {
@@ -99,7 +100,7 @@ export class QuizGameQuestionComponent {
       title: 'Process Group & Knowledge Area',
       header1: 'Process Group/Knowledge Area',
       header2: 'Initiation',
-      options: [],
+
       questions: [
         'Project Integration Management',
         'Project Scope Management',
@@ -130,7 +131,7 @@ export class QuizGameQuestionComponent {
       title: 'Knowledge Area & Planning',
       header1: 'Process Group/Knowledge Area',
       header2: 'Planning',
-      options: [],
+
       questions: [
         'Project Integration Management',
         'Project Scope Management',
@@ -162,7 +163,7 @@ export class QuizGameQuestionComponent {
       title: 'Knowledge Area & Executing',
       header1: 'Process Group/Knowledge Area',
       header2: 'Executing',
-      options: [],
+
 
       questions: [
         'Project Integration Management',
@@ -194,8 +195,6 @@ export class QuizGameQuestionComponent {
       title: 'Knowledge Area & (Monitoring & Controlling)',
       header1: 'Process Group/Knowledge Area',
       header2: 'Monitoring & Controlling  ',
-      options: [],
-
       questions: [
         'Project Integration Management',
         'Project Scope Management',
@@ -226,7 +225,7 @@ export class QuizGameQuestionComponent {
       title: 'Knowledge Area & Closing',
       header1: 'Process Group/Knowledge Area',
       header2: 'Closing',
-      options: [],
+
       questions: [
         'Project Integration Management',
         'Project Scope Management',
@@ -250,6 +249,133 @@ export class QuizGameQuestionComponent {
         'Project Risk Management': [],
         'Project Procurement Management': [],
         'Project Stakeholder Management': []
+      }
+    },
+    {
+      level: 'level 7',
+      title: 'Mapping between Process Group & Knowledge Area (49 Processes) ',
+      header1: '',
+      header2: '',
+      headers:[
+        'Initiating',
+        'Planning',
+        'Executing',
+        'Monitoring &Control',
+        'Closing'
+      ],
+      questions: [
+        'Project Integration Management',
+        'Project Scope Management',
+        'Project Schedule Management',
+        'Project Cost Management',
+        'Project Quality Management',
+        'Project Resource Management',
+        'Project Communications Management',
+        'Project Risk Management',
+        'Project Procurement Management',
+        'Project Stakeholder Management'
+      ],
+      options:[
+        "Develop project charter",
+        "Identify Stakeholders",
+        "Develop project management plan",
+        "-Plan Scope Management\n-Collect Requirements\n-Define Scope\n-Create WBS",
+        "-Plan Schedule Management\n-Define Activities\n-Sequence Activities\n-Estimate Activity Durations\n-Develop Schedule",
+        "-Plan Cost Management\n-Estimate Costs\n-Determine Budget\n",
+        "Plan Quality Management",
+        "-Plan Resource Management\n-Estimate Activity Resource",
+        "-Plan Communications Management",
+        "-Plan Risk Management\n-Identify Risks\n-Perform Qualitative Risk Analysis\n-Perform Quantitative Risk Analysis\n-Plan Risk Responses\n",
+        "-Plan Procurement Management",
+        "Plan Stakeholder Engagement",
+        "-Direct and manage project\n-Manage Project Knowledge work",
+        "Manage Quality",
+        "-Acquire Resources\n-Develop Team\n-Manage Team",
+        "Manage Communications",
+        "Implement Risk Responses",
+        "Conduct Procurements ",
+        "Manage Stakeholder Engagement",
+        "-Monitor & control project work.\n-Perform integrated change control",
+        "-Validate Scope\n-Control Scope",
+        "Control Schedule",
+        "Control Costs",
+        "Control Quality",
+        "Control Resources",
+        "Monitor Communications",
+        "Monitor Risks",
+        "Control Procurements",
+        "Monitor Stakeholder Engagement"
+      ],
+      correctAnswers: {
+        // row 0 = Project Integration Management
+        '0-0': ['Develop project charter'],                     // Initiation (single)
+        '0-1': ['Develop project management plan'],             // Planning (single)
+        '0-2': ['-Direct and manage project\n-Manage Project Knowledge work'],  // Executing (multiline)
+        '0-3': ['-Monitor & control project work.\n-Perform integrated change control'], // Monitoring & Controlling (multiline)
+        '0-4': ['Close project or phase'],                      // Closing (single)
+
+        // row 1 = Project Scope Management
+        '1-0': [],
+        '1-1': ['-Plan Scope Management\n-Collect Requirements\n-Define Scope\n-Create WBS'],
+        '1-2': [],
+        '1-3': ['-Validate Scope\n-Control Scope'],
+        '1-4': [],
+
+        // row 2 = Project Schedule Management
+        '2-0': [],
+        '2-1': ['-Plan Schedule Management\n-Define Activities\n-Sequence Activities\n-Estimate Activity Durations\n-Develop Schedule'],
+        '2-2': [],
+        '2-3': ['Control Schedule'],
+        '2-4': [],
+
+        // row 3 = Project Cost Management
+        '3-0': [],
+        '3-1': ['-Plan Cost Management\n-Estimate Costs\n-Determine Budget'],
+        '3-2': [],
+        '3-3': ['Control Costs'],
+        '3-4': [],
+
+        // row 4 = Project Quality Management
+        '4-0': [],
+        '4-1': ['Plan Quality Management'],
+        '4-2': ['Manage Quality'],
+        '4-3': ['Control Quality'],
+        '4-4': [],
+
+        // row 5 = Project Resource Management
+        '5-0': [],
+        '5-1': ['-Plan Resource Management\n-Estimate Activity Resource'],
+        '5-2': ['-Acquire Resources\n-Develop Team\n-Manage Team'],
+        '5-3': ['Control Resources'],
+        '5-4': [],
+
+        // row 6 = Project Communications Management
+        '6-0': [],
+        '6-1': ['-Plan Communications Management'],
+        '6-2': ['Manage Communications'],
+        '6-3': ['Monitor Communications'],
+        '6-4': [],
+
+        // row 7 = Project Risk Management
+        '7-0': [],
+        '7-1': ['-Plan Risk Management\n-Identify Risks\n-Perform Qualitative Risk Analysis\n-Perform Quantitative Risk Analysis\n-Plan Risk Responses'],
+        '7-2': ['Implement Risk Responses'],
+        '7-3': ['Monitor Risks'],
+        '7-4': [],
+
+        // row 8 = Project Procurement Management
+        '8-0': [],
+        '8-1': ['-Plan Procurement Management'],
+        '8-2': ['Conduct Procurements'],
+        '8-3': ['Control Procurements'],
+        '8-4': [],
+
+        // row 9 = Project Stakeholder Management
+        '9-0': ['Identify Stakeholders'],
+        '9-1': ['Plan Stakeholder Engagement'],
+        '9-2': ['Manage Stakeholder Engagement'],
+        '9-3': ['Monitor Stakeholder Engagement'],
+        '9-4': []
       }
     },
   ];

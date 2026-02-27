@@ -19,7 +19,7 @@
          [header1]="currentLevel().header1"
         [header2]="currentLevel().header2"
         [correctAnswers]="currentLevel().correctAnswers"
-        [options]="currentLevel().options"
+        [options]="currentLevel().options ?? []"
         [next]="next()"
         (isCorrect)="onGetQuestionResult($event)"/>
     }
@@ -32,6 +32,14 @@
         [next]="next()"
         (isCorrect)="onGetQuestionResult($event)"
       />
+    }
+       @else if (this.currentLevelIndex() == 7) {
+      <app-multi-table-questions
+         [headers]="currentLevel().headers ?? []"
+          [questions]="currentLevel().questions"
+        [correctAnswers]="currentLevel().correctAnswers"
+        [next]="next()"
+        (isCorrect)="onGetQuestionResult($event)"/>
     }
     <!-- Footer controls -->
     <footer

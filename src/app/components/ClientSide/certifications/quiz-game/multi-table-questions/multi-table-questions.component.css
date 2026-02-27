@@ -1,0 +1,68 @@
+/* multi-table-questions.component.scss */
+.parent {
+  padding: 20px;
+}
+
+.options-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 32px;
+  padding: 16px;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+}
+
+.option-item {
+  padding: 12px 18px;
+  background: #007bff;
+  color: white;
+  border-radius: 6px;
+  cursor: grab;
+  min-width: 180px;
+}
+
+.multiline {
+  margin: 0;
+  font-family: monospace;
+  white-space: pre-wrap;
+  font-size: 0.95em;
+  line-height: 1.4;
+}
+
+.quiz-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 1px solid #dee2e6;
+  padding: 12px;
+  vertical-align: top;
+}
+
+.first-col {
+  font-weight: bold;
+  background: #e9ecef;
+  min-width: 220px;
+  text-align: left;
+}
+
+.drop-cell {
+  min-height: 80px;
+  background: white;
+  transition: background 0.2s;
+}
+
+.drop-cell.cdk-drop-list-dragging {
+  background: #e3f2fd;
+}
+
+.drag-item {
+  margin: 8px 0;
+  padding: 10px;
+  background: #28a745;
+  color: white;
+  border-radius: 6px;
+}/*# sourceMappingURL=multi-table-questions.component.css.map */
