@@ -41,6 +41,14 @@
         [next]="next()"
         (isCorrect)="onGetQuestionResult($event)"/>
     }
+        @else if (this.currentLevelIndex() == 8) {
+      <app-pyramid-drag-drop
+        [questions]="currentLevel().questions"
+        [options]="currentLevel().options ??[]"
+        [correctAnswers]="currentLevel().correctAnswers"
+        [next]="next()"
+        (isCorrect)="onGetQuestionResult($event)"/>
+    }
     <!-- Footer controls -->
     <footer
       class="py-2 d-flex gap-2 align-items-center justify-content-center flex-column flex-lg-row"

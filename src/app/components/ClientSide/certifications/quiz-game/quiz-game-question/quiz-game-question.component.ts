@@ -9,6 +9,7 @@ import { Question1Component } from '../question1/question1.component';
 import { FirstQuestionComponent } from '../first-question/first-question.component';
 import { SecondQuestionComponent } from '../second-question/second-question.component';
 import { MultiTableQuestionsComponent } from '../multi-table-questions/multi-table-questions.component';
+import { PyramidDragDropComponent } from '../pyramid-drag-drop/pyramid-drag-drop.component';
 
 interface QuizLevel {
   level: string;
@@ -23,7 +24,7 @@ interface QuizLevel {
 @Component({
   selector: 'app-quiz-game-question',
   imports: [FeatureComponent, SiteButtonComponent, TranslatePipe, GenericModelComponent, Question1Component,
-    FirstQuestionComponent, SecondQuestionComponent, MultiTableQuestionsComponent
+    FirstQuestionComponent, SecondQuestionComponent, MultiTableQuestionsComponent, PyramidDragDropComponent
   ],
   templateUrl: './quiz-game-question.component.html',
   styleUrl: './quiz-game-question.component.scss'
@@ -39,7 +40,7 @@ export class QuizGameQuestionComponent {
   showConfirm: boolean = false;
   showMessage: boolean = false;
   showResetConfirm: boolean = false;
-  currentLevelIndex = signal(0);
+  currentLevelIndex = signal(8);
   score = signal(0);
   gameFinished = signal(false);
 
@@ -376,6 +377,30 @@ export class QuizGameQuestionComponent {
         '9-2': ['Manage Stakeholder Engagement'],
         '9-3': ['Monitor Stakeholder Engagement'],
         '9-4': []
+      }
+    },
+    {
+      level: 'level 8',
+      title: 'OPM & Portfolios & Programs & Projects',
+      header1: '',
+      header2: '',
+      questions: [
+        "Provides a strategic framework to delivery organizational strategy",
+        "Selects and prioritizes programs and projects",
+        "Coordinates the management of related projects",
+        "Manages efforts to develop specific scope"
+      ],
+      options: [
+          "Project",
+          "ORM",
+          "Program",
+          "Portfolio"
+      ],
+      correctAnswers: {
+        "level1": ['ORM'],
+        "level2": ['Portfolio'],
+        "level3": ['Program'],
+        "level4": ['Project']
       }
     },
   ];
