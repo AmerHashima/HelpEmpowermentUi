@@ -1,0 +1,72 @@
+@use 'variables' as *;
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  align-items: center;
+}
+
+.options-bar {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  border:1px dashed $borderColor;
+}
+
+.option-item {
+  background-color: $primaryColor;
+  color: $lightBgTextColor;
+  padding: 12px 20px;
+  border-radius: 4px;
+  cursor: grab;
+  text-align: center;
+  font-weight: 500;
+}
+
+.questions-container {
+  display: flex;
+  gap: 40px;
+}
+
+.question-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 220px;
+}
+
+.drop-box {
+  width: 100%;
+  min-height: 50px;
+  background: $borderColor;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.drop-box .option-item{
+  width: 100%;
+}
+.question-box {
+  width: 100%;
+  min-height: 180px;
+  background: #9e9e9e;
+  color: white;
+  white-space: pre-line;
+}
+
+img{
+  width: 100%;
+  height: 100%;
+}
+
+
+.slots-row {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+

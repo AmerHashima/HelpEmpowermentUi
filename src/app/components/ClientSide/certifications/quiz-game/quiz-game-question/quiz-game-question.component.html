@@ -8,7 +8,7 @@
     </span>
   </header>
   <!-- Question area -->
-  <main class="question-area py-4">
+  <main class="question-area  py-4">
     @if (this.currentLevelIndex() == 0) {
       <app-first-question
         [next]="next()"
@@ -49,8 +49,19 @@
         [next]="next()"
         (isCorrect)="onGetQuestionResult($event)"/>
     }
+         @else if (this.currentLevelIndex() >8) {
+      <app-generic-drag-match
+        [questions]="currentLevel().questions"
+        [options]="currentLevel().options ??[]"
+        [correctAnswers]="currentLevel().correctAnswers"
+        [next]="next()"
+        [dropSlotsPerQuestion]="currentLevel().dropSlotsPerQuestion ?? 1"
+        [type]="currentLevel().type ?? ''"
+        (isCorrect)="onGetQuestionResult($event)"/>
+    }
     <!-- Footer controls -->
-    <footer
+  </main>
+      <footer
       class="py-2 d-flex gap-2 align-items-center justify-content-center flex-column flex-lg-row"
     >
       <app-site-button
@@ -74,7 +85,6 @@
         (click)="nextQuestion()"
       />
     </footer>
-  </main>
 </div>
 
 <app-generic-modal [(isOpen)]="showConfirm" title="Quit Quiz">

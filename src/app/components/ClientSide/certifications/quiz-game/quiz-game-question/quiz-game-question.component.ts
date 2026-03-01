@@ -10,6 +10,7 @@ import { FirstQuestionComponent } from '../first-question/first-question.compone
 import { SecondQuestionComponent } from '../second-question/second-question.component';
 import { MultiTableQuestionsComponent } from '../multi-table-questions/multi-table-questions.component';
 import { PyramidDragDropComponent } from '../pyramid-drag-drop/pyramid-drag-drop.component';
+import { GenericDragMatchComponent } from '../generic-drag-match/generic-drag-match.component';
 
 interface QuizLevel {
   level: string;
@@ -18,13 +19,15 @@ interface QuizLevel {
   header2: string;
   options?: string[];
   questions: string[];
+  type?:string
   headers?: string[];
+  dropSlotsPerQuestion?:number;
   correctAnswers: Record<string, string[]>;
 }
 @Component({
   selector: 'app-quiz-game-question',
   imports: [FeatureComponent, SiteButtonComponent, TranslatePipe, GenericModelComponent, Question1Component,
-    FirstQuestionComponent, SecondQuestionComponent, MultiTableQuestionsComponent, PyramidDragDropComponent
+    FirstQuestionComponent, SecondQuestionComponent, MultiTableQuestionsComponent, PyramidDragDropComponent, GenericDragMatchComponent
   ],
   templateUrl: './quiz-game-question.component.html',
   styleUrl: './quiz-game-question.component.scss'
@@ -40,7 +43,7 @@ export class QuizGameQuestionComponent {
   showConfirm: boolean = false;
   showMessage: boolean = false;
   showResetConfirm: boolean = false;
-  currentLevelIndex = signal(8);
+  currentLevelIndex = signal(13);
   score = signal(0);
   gameFinished = signal(false);
 
@@ -401,6 +404,141 @@ export class QuizGameQuestionComponent {
         "level2": ['Portfolio'],
         "level3": ['Program'],
         "level4": ['Project']
+      }
+    },
+    {
+      level: 'level 9',
+      title: 'Project Management Office (PMO)',
+      type:'text',
+      header1: '',
+      header2: '',
+      questions: [
+        "Policies\nMethodologies\nTemplates\nLesson Learned\nLow level of control",
+        "Provide Guidance\nAssists with specific project management tools\nModerate level of control",
+        "Provide project manager\nResponsible for the result\nHigh level of control",
+      ],
+      options: [
+        "Supportive PMO",
+        "Directive PMO",
+        "Controlling PMO",
+      ],
+      correctAnswers: {
+        "level1": ['Supportive PMO'],
+        "level2": ['Controlling PMO'],
+        "level3": ['Directive PMO'],
+      }
+    },
+    {
+      level: 'level 10',
+      title: 'Organization types according to Projects prospectives',
+      type:'image',
+      header1: '',
+      header2: '',
+      questions: [
+        "img1.png",
+        "img2.png",
+        "img3.png",
+        "img4.png",
+        "img5.png"
+      ],
+      options: [
+        "Functional",
+        "Weak Matrix",
+        "Balanced Matrix",
+        "Strong Matrix",
+        "Projectized Organization"
+      ],
+      correctAnswers: {
+        "level1": ['Functional'],
+        "level2": ['Balanced Matrix'],
+        "level3": ['Weak Matrix'],
+        "level4": ['Strong Matrix'],
+        "level5": ['Projectized Organization'],
+      }
+    },
+    {
+      level: 'level 11',
+      title: 'Organization types according to Projects prospectives',
+      type: 'text',
+      header1: '',
+      header2: '',
+      questions: [
+        "Project team members have more than one boss.",
+        "No Home for team members when project is completed.",
+        "The project Manager has little or no authority",
+      ],
+      options: [
+        "Projectized Organization",
+        "Functional Organization",
+        "Matrix Organization",
+      ],
+      correctAnswers: {
+        "level1": ['Matrix Organization'],
+        "level2": ['Projectized Organization'],
+        "level3": ['Functional Organization'],
+      }
+    },
+    {
+      level: 'level 12',
+      title: 'Scrum VS Kanban',
+      type: 'image',
+      header1: '',
+      header2: '',
+      questions: [
+        "scrum.png",
+       "kanban.png"
+      ],
+      options: [
+       "Kanban",
+       "Scrum"
+      ],
+      correctAnswers: {
+        "level1": ['Scrum'],
+        "level2": ['Kanban'],
+      }
+    },
+    {
+      level: 'level 13',
+      title: 'Scrum VS Kanban',
+      type: 'image',
+      dropSlotsPerQuestion: 2,
+      header1: '',
+      header2: '',
+      questions: [
+        "scrum.png",
+        "kanban.png"
+      ],
+      options: [
+        "Time-boxed iterations are optional",
+        "Time-boxed iterations are an essential part",
+        "Product Owner, Scrum master, development team",
+        "No required roles. The whole team owns the kanban board"
+      ],
+      correctAnswers: {
+        "level1": ['Time-boxed iterations are an essential part', 'Product Owner, Scrum master, development team'],
+        "level2": ['Time-boxed iterations are optional', 'No required roles. The whole team owns the kanban board'],
+      }
+    },
+    {
+      level: 'level 14',
+      title: 'Scrum VS Kanban',
+      type: 'image',
+      dropSlotsPerQuestion: 2,
+      header1: '',
+      header2: '',
+      questions: [
+        "scrum.png",
+        "kanban.png"
+      ],
+      options: [
+        "Sprints, Sprint backlogs and product backlogs",
+        "Teams should not make changes during the sprint",
+        "Cards on boards",
+        "Changes can happen at any time"
+      ],
+      correctAnswers: {
+        "level1": ['Sprints, Sprint backlogs and product backlogs','Teams should not make changes during the sprint'],
+        "level2": ['Cards on boards', 'Changes can happen at any time'],
       }
     },
   ];

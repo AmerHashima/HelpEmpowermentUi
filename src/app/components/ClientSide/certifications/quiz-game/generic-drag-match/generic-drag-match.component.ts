@@ -1,11 +1,180 @@
-import { Component } from '@angular/core';
+import { Component, input, output, effect } from '@angular/core';
+import {
+  CdkDragDrop,
+  DragDropModule,
+  moveItemInArray,
+  transferArrayItem
+} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-generic-drag-match',
-  imports: [],
+  standalone: true,
+  imports: [DragDropModule],
   templateUrl: './generic-drag-match.component.html',
-  styleUrl: './generic-drag-match.component.scss'
+  styleUrls: ['./generic-drag-match.component.scss']
 })
 export class GenericDragMatchComponent {
 
+  next = input<boolean>(false);
+  isCorrect = output<boolean>();
+
+  questions = input.required<string[]>();
+  type = input.required<string>();
+  options = input.required<string[]>();
+  correctAnswers = input.required<Record<string, string[]>>();
+  dropSlotsPerQuestion = input<number>(1);
+
+  sourceOptions: string[] = [];
+  // droppedItems: string[][] = [];
+droppedItems:string[][][]=[]
+  constructor() {
+    // effect(() => {
+    //   const questions = this.questions();
+    //   const options = this.options();
+
+    //   if (!questions || !options) return;
+
+    //   // Reset options
+    //   this.sourceOptions = [...options];
+
+    //   // Recreate drop zones (empty)
+    //   this.droppedItems = questions.map(() => []);
+    // });
+    effect(() => {
+      const questions = this.questions();
+      const options = this.options();
+      const slots = this.dropSlotsPerQuestion();
+
+      if (!questions || !options) return;
+
+      this.sourceOptions = [...options];
+
+      // Build structure dynamically
+      this.droppedItems = questions.map(() =>
+        Array.from({ length: slots }, () => [])
+      );
+    });
+
+    effect(() => {
+      if (this.next()) {
+        this.checkAnswer();
+      }
+    });
+  }
+
+  ngOnInit() {
+    this.sourceOptions = [...this.options()];
+
+    // Create one drop array per question
+    this.droppedItems = this.questions().map(() => []);
+  }
+
+  // drop(event: CdkDragDrop<string[]>, zoneIndex?: number) {
+
+  //   const prev = event.previousContainer.data;
+  //   const curr = event.container.data;
+
+  //   // Same container (options reorder only)
+  //   if (event.previousContainer === event.container) {
+  //     moveItemInArray(curr, event.previousIndex, event.currentIndex);
+  //     return;
+  //   }
+
+  //   // Dropping into a DROP ZONE
+  //   if (zoneIndex !== undefined) {
+
+  //     // If zone already has item → swap
+  //     if (curr.length > 0) {
+  //       const existingItem = curr[0];
+
+  //       // Remove existing from zone
+  //       curr.splice(0, 1);
+
+  //       // Return existing to previous container
+  //       prev.push(existingItem);
+  //     }
+
+  //     transferArrayItem(
+  //       prev,
+  //       curr,
+  //       event.previousIndex,
+  //       0 // always position 0 (only 1 allowed)
+  //     );
+
+  //     return;
+  //   }
+
+  //   // Dropping back to OPTIONS
+  //   transferArrayItem(
+  //     prev,
+  //     curr,
+  //     event.previousIndex,
+  //     event.currentIndex
+  //   );
+  // }
+
+  drop(
+    event: CdkDragDrop<string[]>,
+    questionIndex?: number,
+    slotIndex?: number
+  ) {
+
+    const prev = event.previousContainer.data;
+    const curr = event.container.data;
+
+    // Same container reorder
+    if (event.previousContainer === event.container) {
+      moveItemInArray(curr, event.previousIndex, event.currentIndex);
+      return;
+    }
+
+    // Dropping into a specific slot
+    if (questionIndex !== undefined && slotIndex !== undefined) {
+
+      // Only 1 item per slot
+      if (curr.length > 0) {
+        const existing = curr[0];
+        curr.splice(0, 1);
+        prev.push(existing);
+      }
+
+      transferArrayItem(prev, curr, event.previousIndex, 0);
+      return;
+    }
+
+    // Dropping back to options
+    transferArrayItem(prev, curr, event.previousIndex, event.currentIndex);
+  }
+
+  checkAnswer() {
+
+    const answers = this.correctAnswers();
+    let correct = true;
+
+    this.droppedItems.forEach((slots, qIndex) => {
+
+      const key = `level${qIndex + 1}`;
+      const flatSlots = slots.flat(); // flatten 2 slots into 1 array
+
+      if (JSON.stringify(flatSlots) !== JSON.stringify(answers[key])) {
+        correct = false;
+      }
+    });
+
+    this.isCorrect.emit(correct);
+  }
+  
+  // checkAnswer() {
+  //   const answers = this.correctAnswers();
+  //   let correct = true;
+
+  //   this.droppedItems.forEach((items, index) => {
+  //     const key = `level${index + 1}`;
+  //     if (JSON.stringify(items) !== JSON.stringify(answers[key])) {
+  //       correct = false;
+  //     }
+  //   });
+
+  //   this.isCorrect.emit(correct);
+  // }
 }
