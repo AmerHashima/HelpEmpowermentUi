@@ -16,11 +16,30 @@
           {{ area }}
         </td>
 
-    <td cdkDropList
+
+    <!-- <td cdkDropList
     [cdkDropListData]="dropZones[i]"
     [cdkDropListEnterPredicate]="noMoreThanOnePredicate"
     class="drop-cell"
     (cdkDropListDropped)="drop($event)">
+  <div *ngFor="let item of dropZones[i]"
+       cdkDrag
+       class="drag-item">
+    {{ item }}
+  </div>
+</td> -->
+
+    <!-- <td cdkDropList
+    [cdkDropListData]="dropZones[i]"
+    class="drop-cell"
+    (cdkDropListDropped)="drop($event)"> -->
+    <td
+  cdkDropList
+  [id]="'zone-' + i"
+  [cdkDropListData]="dropZones[i]"
+  [cdkDropListConnectedTo]="connectedLists"
+  class="drop-cell"
+  (cdkDropListDropped)="drop($event)">
   <div *ngFor="let item of dropZones[i]"
        cdkDrag
        class="drag-item">
@@ -31,10 +50,17 @@
     </tbody>
   </table>
 
-  <div class="options"
+  <!-- <div class="options"
        cdkDropList
        [cdkDropListData]="options"
-       (cdkDropListDropped)="drop($event)">
+       (cdkDropListDropped)="drop($event)"> -->
+       <div
+  cdkDropList
+  id="options"
+  class="options"
+  [cdkDropListData]="options"
+  [cdkDropListConnectedTo]="connectedLists"
+  (cdkDropListDropped)="drop($event)">
  @for(option of options;track option){
    <div
          cdkDrag

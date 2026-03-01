@@ -22,7 +22,9 @@ body * {
   text-rendering: optimizeLegibility;
   direction: inherit;
 }
-
+.optionsBorder{
+  border:1px  dashed $borderColor !important;
+}
 .drop-shadow {
   box-shadow: 0px 2px 2px 0px rgba(208, 210, 210, 0.25);
 }

@@ -58,89 +58,65 @@ export class FirstQuestionComponent {
       }
     });
   }
-  /* allow only one item in zones (NOT in source) */
-  singleItemPredicate = (drag: any, drop: any) => {
-    if (drop.id === 'source') return true;
-    return drop.data.length === 0;
-  };
 
-  // drop(event: CdkDragDrop<string[]>) {
-
-  //   if (event.previousContainer === event.container) {
-  //     moveItemInArray(
-  //       event.container.data,
-  //       event.previousIndex,
-  //       event.currentIndex
-  //     );
-  //   } else {
-
-  //     // prevent overwriting in zones
-  //     if (
-  //       event.container.id !== 'source' &&
-  //       event.container.data.length > 0
-  //     ) {
-  //       return;
-  //     }
-
-  //     transferArrayItem(
-  //       event.previousContainer.data,
-  //       event.container.data,
-  //       event.previousIndex,
-  //       event.currentIndex
-  //     );
-  //   }
-  // }
   drop(event: CdkDragDrop<string[]>) {
-    if (event.previousContainer === event.container) {
-      // Same container → just reorder
-      moveItemInArray(
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex
-      );
+
+    const prevContainer = event.previousContainer;
+    const currContainer = event.container;
+
+    const prevData = prevContainer.data;
+    const currData = currContainer.data;
+
+    const draggedItem = prevData[event.previousIndex];
+
+    const isFromSource = prevContainer.id === 'source';
+    const isToSource = currContainer.id === 'source';
+
+    const isFromZone = prevContainer.id !== 'source';
+    const isToZone = currContainer.id !== 'source';
+
+    if (prevContainer === currContainer) {
+      moveItemInArray(currData, event.previousIndex, event.currentIndex);
       return;
     }
 
-    // ─────────────────────────────────────────────
-    // Dropping into a different container
-    // ─────────────────────────────────────────────
 
-    const targetContainer = event.container;
-    const targetData = targetContainer.data;
+    if (isFromSource && isToZone) {
 
-    // If dropping back to source → normal transfer
-    if (targetContainer.id === 'source') {
-      transferArrayItem(
-        event.previousContainer.data,
-        targetData,
-        event.previousIndex,
-        event.currentIndex
-      );
+      if (currData.length > 0) {
+        const oldItem = currData[0];
+        currData.splice(0, 1);
+
+        this.sourceItems().push(oldItem);
+      }
+
+      transferArrayItem(prevData, currData, event.previousIndex, 0);
       return;
     }
 
-    // ─── Dropping into a ZONE (top or bottom) ───
-    // If zone already has an item → send old one back to source
-    if (targetData.length > 0) {
-      const oldItem = targetData[0]; // only one item allowed
-
-      // 1. Remove old item from the zone
-      targetData.splice(0, 1);
-
-      // 2. Return old item to sourceItems (add to end — or change position if you want)
-      this.sourceItems.update(items => [...items, oldItem]);
-      // Alternative: add to beginning
-      // this.sourceItems.update(items => [oldItem, ...items]);
+    if (isFromZone && isToSource) {
+      transferArrayItem(prevData, currData, event.previousIndex, event.currentIndex);
+      return;
     }
 
-    // 3. Now place the new dragged item into the zone
-    transferArrayItem(
-      event.previousContainer.data,
-      targetData,
-      event.previousIndex,
-      event.currentIndex
-    );
+
+    if (isFromZone && isToZone) {
+
+      if (currData.length === 0) {
+        transferArrayItem(prevData, currData, event.previousIndex, 0);
+        return;
+      }
+
+      const targetItem = currData[0];
+
+      currData[0] = draggedItem;
+      prevData[event.previousIndex] = targetItem;
+
+      return;
+    }
+
   }
+
   private checkAnswers(): void {
     console.log('checkAnswers');
     const correctOrder = [
@@ -151,24 +127,14 @@ export class FirstQuestionComponent {
       'Closing'
     ];
 
-    // Get current placed items in order
     const placedItems = [
       ...this.topZones().map(z => z.items[0] || null),
       this.bottomZone()[0] || null
     ];
 
-    // Check if every position has the correct value
-    // and nothing is missing / extra
+
     const isCorrect = placedItems.every((item, index) => item === correctOrder[index]);
 
-    // Optional: more detailed logging for debugging
-    console.table({
-      expected: correctOrder,
-      actual: placedItems,
-      isCorrect
-    });
-
-    // Emit result to parent
     this.isCorrect.emit(isCorrect);
   }
 }

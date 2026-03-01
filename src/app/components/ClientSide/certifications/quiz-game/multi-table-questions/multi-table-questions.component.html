@@ -1,4 +1,4 @@
-<div class="parent" cdkDropListGroup>
+<!-- <div class="parent" cdkDropListGroup>
   <div
     class="options-bar"
     cdkDropList
@@ -56,4 +56,67 @@
       }
     </tbody>
   </table>
+</div> -->
+
+<div class="parent" cdkDropListGroup>
+
+  <div
+    class="options-bar"
+    cdkDropList
+    id="optionsList"
+    [cdkDropListData]="options"
+    [cdkDropListConnectedTo]="connectedDropLists"
+    cdkDropListOrientation="horizontal"
+    (cdkDropListDropped)="drop($event)"
+  >
+    @for (option of options; track option) {
+      <div cdkDrag [cdkDragData]="option" class="option-item">
+        {{ option }}
+      </div>
+    } @empty {
+      <div class="text-muted text-center">
+        No More Options
+      </div>
+    }
+  </div>
+
+  <table class="quiz-table">
+    <thead>
+      <tr>
+        <th class="first-col">Process Group / Knowledge Area</th>
+        @for (header of headers; track header) {
+          <th>{{ header }}</th>
+        }
+      </tr>
+    </thead>
+
+    <tbody>
+      @for (question of questions; let rowIndex = $index; track question) {
+        <tr>
+          <td class="first-col">
+            {{ question }}
+          </td>
+
+          @for (header of headers; let colIndex = $index; track header) {
+               <td
+              cdkDropList
+              [id]="'cell-' + rowIndex + '-' + colIndex"
+              [cdkDropListData]="dropMatrix[rowIndex][colIndex]"
+              [cdkDropListConnectedTo]="connectedDropLists"
+              (cdkDropListDropped)="drop($event)"
+              class="drop-cell"
+            >
+              @for (item of dropMatrix[rowIndex][colIndex]; track item) {
+                <div cdkDrag [cdkDragData]="item" class="drag-item">
+                  {{ item }}
+                </div>
+              }
+            </td>
+          }
+
+        </tr>
+      }
+    </tbody>
+  </table>
+
 </div>

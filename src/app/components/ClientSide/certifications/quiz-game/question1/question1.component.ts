@@ -163,7 +163,7 @@ export class Question1Component {
   questions = input.required<string[]>();
   correctAnswers = input.required<Record<string, string[]>>();
   next = input<boolean>(false);
-
+  connectedLists: string[] = [];
   // Output - emit result when next changes to true
   isCorrect = output<boolean>();
 
@@ -173,9 +173,24 @@ export class Question1Component {
 
   constructor() {
     // Initialize dropZones whenever knowledgeAreas changes
+    // effect(() => {
+    //   const areas = this.questions();
+    //   this.dropZones = areas.map(() => []);
+    // });
     effect(() => {
       const areas = this.questions();
+
+      // Create drop zones
       this.dropZones = areas.map(() => []);
+
+      // Build connected list IDs
+      const ids: string[] = ['options'];
+
+      areas.forEach((_, i) => {
+        ids.push(`zone-${i}`);
+      });
+
+      this.connectedLists = ids;
     });
 
     // Initialize options from all correct processes (once on init or when correctAnswers changes)
@@ -193,22 +208,89 @@ export class Question1Component {
   }
 
   // Predicate: only allow drop if the target zone is empty (max 1 per zone)
-  noMoreThanOnePredicate = (drag: CdkDrag<any>, drop: CdkDropList<any>): boolean => {
-    return (drop.data?.length ?? 0) === 0;
-  };
+  // noMoreThanOnePredicate = (drag: CdkDrag<any>, drop: CdkDropList<any>): boolean => {
+  //   return (drop.data?.length ?? 0) === 0;
+  // };
 
   drop(event: CdkDragDrop<string[]>) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex
-      );
+
+    const prevContainer = event.previousContainer;
+    const currContainer = event.container;
+
+    const prevData = prevContainer.data;
+    const currData = currContainer.data;
+
+    const draggedItem = prevData[event.previousIndex];
+
+    const isFromOptions = prevContainer.id === 'options';
+    const isToOptions = currContainer.id === 'options';
+
+    const isFromZone = !isFromOptions;
+    const isToZone = !isToOptions;
+
+    // 🔁 Same container (only relevant for options reorder)
+    if (prevContainer === currContainer) {
+      moveItemInArray(currData, event.previousIndex, event.currentIndex);
+      return;
+    }
+
+    // ===============================
+    // 🔥 OPTIONS → ZONE (Replace allowed)
+    // ===============================
+    if (isFromOptions && isToZone) {
+
+      // If zone already has item → return old to options
+      if (currData.length > 0) {
+        const oldItem = currData[0];
+        currData.splice(0, 1);
+        this.options.push(oldItem);
+      }
+
+      transferArrayItem(prevData, currData, event.previousIndex, 0);
+      return;
+    }
+
+    // ===============================
+    // 🔥 ZONE → OPTIONS
+    // ===============================
+    if (isFromZone && isToOptions) {
+      transferArrayItem(prevData, currData, event.previousIndex, event.currentIndex);
+      return;
+    }
+
+    // ===============================
+    // 🔥 ZONE → ZONE (SWAP ENABLED)
+    // ===============================
+    if (isFromZone && isToZone) {
+
+      // If target empty → move
+      if (currData.length === 0) {
+        transferArrayItem(prevData, currData, event.previousIndex, 0);
+        return;
+      }
+
+      // 🔄 If target filled → SWAP
+      const targetItem = currData[0];
+
+      currData[0] = draggedItem;
+      prevData[event.previousIndex] = targetItem;
+
+      return;
     }
   }
+
+  // drop(event: CdkDragDrop<string[]>) {
+  //   if (event.previousContainer === event.container) {
+  //     moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+  //   } else {
+  //     transferArrayItem(
+  //       event.previousContainer.data,
+  //       event.container.data,
+  //       event.previousIndex,
+  //       event.currentIndex
+  //     );
+  //   }
+  // }
 
   private checkAnswers(): void {
     const areas = this.questions();

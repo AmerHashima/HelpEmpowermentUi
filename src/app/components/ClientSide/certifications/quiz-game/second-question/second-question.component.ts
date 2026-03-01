@@ -42,23 +42,67 @@ export class SecondQuestionComponent {
     });
   }
 
-  // Predicate: only 1 item per drop zone
-  noMoreThanOnePredicate = (drag: any, drop: any) => (drop.data?.length ?? 0) === 0;
+
 
   drop(event: CdkDragDrop<string[]>) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex
-      );
+
+    const prevContainer = event.previousContainer;
+    const currContainer = event.container;
+
+    const prevData = prevContainer.data;
+    const currData = currContainer.data;
+
+    const draggedItem = prevData[event.previousIndex];
+
+    const isFromOptions = prevContainer.id === 'options';
+    const isToOptions = currContainer.id === 'options';
+
+    const isFromZone = prevContainer.id !== 'options';
+    const isToZone = currContainer.id !== 'options';
+
+    if (prevContainer === currContainer) {
+      moveItemInArray(currData, event.previousIndex, event.currentIndex);
+      return;
     }
+
+    if (isFromOptions && isToZone) {
+
+      // If zone already has item → return it to options
+      if (currData.length > 0) {
+        const oldItem = currData[0];
+        currData.splice(0, 1);
+
+        this.options.push(oldItem);
+      }
+
+      transferArrayItem(prevData, currData, event.previousIndex, 0);
+      return;
+    }
+
+    if (isFromZone && isToOptions) {
+      transferArrayItem(prevData, currData, event.previousIndex, event.currentIndex);
+      return;
+    }
+
+  
+    if (isFromZone && isToZone) {
+
+      // Target empty → simple move
+      if (currData.length === 0) {
+        transferArrayItem(prevData, currData, event.previousIndex, 0);
+        return;
+      }
+
+      // 🔄 Target filled → SWAP
+      const targetItem = currData[0];
+
+      currData[0] = draggedItem;
+      prevData[event.previousIndex] = targetItem;
+
+      return;
+    }
+
   }
-
-
 
   private checkAnswer() {
     let allCorrect = true;

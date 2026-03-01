@@ -1,6 +1,5 @@
 <div class="timeline-container">
 
-  <!-- 🔴 SOURCE ROW (Pink Items) -->
   <div class="source-row" cdkDropListGroup>
 
     <div class="source-list"
@@ -14,7 +13,14 @@
         <div class="draggable pink" cdkDrag>
           {{ item }}
         </div>
-      }
+      } @empty {
+      <div
+        class=" optionsBorder w-100 py-2 rounded rounded-3  d-flex  align-items-center gap-1 justify-content-center text-muted"
+      >
+        <i class="bi bi-info-circle-fill"></i>
+        <span>No More Options</span>
+      </div>
+    }
 
     </div>
   </div>
@@ -27,7 +33,24 @@
 
       <div class="zone-wrapper">
 
-        <div class="drop-zone"
+           <div class="drop-zone"
+             cdkDropList
+             [id]="'top-' + i"
+             [cdkDropListData]="zone.items"
+             [cdkDropListConnectedTo]="dropListIds()"
+             (cdkDropListDropped)="drop($event)">
+
+          @if (zone.items.length) {
+            <div class="draggable pink" cdkDrag>
+              {{ zone.items[0] }}
+            </div>
+          } @else {
+            <span class="placeholder"></span>
+          }
+
+        </div>
+
+        <!-- <div class="drop-zone"
              cdkDropList
              [id]="'top-' + i"
              [cdkDropListData]="zone.items"
@@ -43,7 +66,7 @@
             <span class="placeholder"></span>
           }
 
-        </div>
+        </div> -->
 
         <!-- ➡ Arrow between boxes -->
         @if (i < 3) {
@@ -62,8 +85,23 @@
 
     <!-- left connector -->
     <div class="left-connector"></div>
+   <div class="bottom-zone"
+         cdkDropList
+         id="bottom"
+         [cdkDropListData]="bottomData"
+         [cdkDropListConnectedTo]="dropListIds()"
+         (cdkDropListDropped)="drop($event)">
 
-    <div class="bottom-zone"
+      @if (bottomData.length) {
+        <div class="draggable pink" cdkDrag>
+          {{ bottomData[0] }}
+        </div>
+      } @else {
+        <span class="placeholder"></span>
+      }
+
+    </div>
+    <!-- <div class="bottom-zone"
          cdkDropList
          id="bottom"
          [cdkDropListData]="bottomData"
@@ -79,7 +117,7 @@
         <span class="placeholder"></span>
       }
 
-    </div>
+    </div> -->
 
     <!-- right connector -->
     <div class="right-connector"></div>
