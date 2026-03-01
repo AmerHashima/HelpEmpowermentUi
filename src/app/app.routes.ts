@@ -12,6 +12,8 @@ import { CreateNewCertificationComponent } from './components/AdminPanel/certifi
 import { CreateNewExamComponent } from './components/AdminPanel/create-new-exam/create-new-exam.component';
 import { CertificationQuestionComponent } from './components/AdminPanel/certifications/certification-question/certification-question.component';
 import { ExamDetailsComponent } from './components/AdminPanel/exam-details/exam-details.component';
+import { StudentsComponent } from './components/AdminPanel/students/students.component';
+import { StudentReservedCoursesComponent } from './components/AdminPanel/students/student-reserved-courses/student-reserved-courses.component';
 import { HomeComponent } from './components/ClientSide/home/home.component';
 import { ClientSideLayoutComponent } from './shared/client-side-layout/client-side-layout.component';
 import { NotFoundComponent } from './shared/not-found/not-found.component';
@@ -90,12 +92,12 @@ export const routes: Routes = [
         component: ContactComponent,
       },
       {
-        path:'refund-policy',
-        component:RefundPolicyComponent
+        path: 'refund-policy',
+        component: RefundPolicyComponent
       },
       {
-        path:"privacy-notice",
-        component:PrivacyNoticeComponent
+        path: "privacy-notice",
+        component: PrivacyNoticeComponent
       },
       {
         path: "user-account-policy",
@@ -117,15 +119,15 @@ export const routes: Routes = [
       {
         path: 'certifications',
         component: clientCertifications,
-        children:[
+        children: [
           {
-            path:'',
-            redirectTo:"pmp",
+            path: '',
+            redirectTo: "pmp",
             pathMatch: 'full',
           },
           {
-               path:"pmp",
-               component:PmpComponent,
+            path: "pmp",
+            component: PmpComponent,
             children: getCertificationChildren()
 
           },
@@ -280,6 +282,16 @@ export const routes: Routes = [
 
         ],
       },
+      {
+        path: 'students/:id/courses',
+        component: StudentReservedCoursesComponent,
+        data: { breadcrumb: 'Reserved Courses' },
+      },
+      {
+        path: 'students',
+        component: StudentsComponent,
+        data: { breadcrumb: 'Students' },
+      },
     ],
   },
   {
@@ -289,7 +301,7 @@ export const routes: Routes = [
 ];
 
 
-function getCertificationChildren():Routes {
+function getCertificationChildren(): Routes {
   return [
     {
       path: '',
@@ -369,12 +381,12 @@ function getCertificationChildren():Routes {
         import('./components/ClientSide/certifications/choose-exam/choose-exam.component')
           .then(m => m.ChooseExamComponent),
     },
-      {
+    {
       path: 'exams/:id',
       loadComponent: () =>
         import('./components/ClientSide/certifications/exam/exam.component')
           .then(m => m.ExamComponent),
-        data: { fullPage: true }
+      data: { fullPage: true }
     }
   ];
 }

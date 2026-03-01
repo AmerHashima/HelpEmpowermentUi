@@ -1,10 +1,12 @@
+// src\app\models\student.ts
 export interface Student {
-  oid?:string;
+  oid?: string;
   nameEn: string,
   nameAr: string,
   email: string,
   mobile: string,
   username: string,
+  courses?: string[],
   password?: string,
   // isActive: boolean,
   createdBy?: string,
@@ -19,7 +21,8 @@ export interface APIStudent {
   email: string,
   mobile: string,
   username: string,
-  isActive: true,
+  isActive: boolean,
+  courses: string[],
   createdAt: string,
   createdBy: string,
   updatedAt: string,
@@ -38,17 +41,17 @@ export interface AuthStudent {
 }
 
 export interface APIAuthStudent {
-  userId:string,
+  userId: string,
   nameEn: string,
   nameAr: string,
   email: string,
   mobile: string,
   username: string,
-  token:string,
-  refreshToken:string,
-  tokenExpires:string,
+  token: string,
+  refreshToken: string,
+  tokenExpires: string,
   userType: string,
-  roles:string[]
+  roles: string[]
 
 }
 

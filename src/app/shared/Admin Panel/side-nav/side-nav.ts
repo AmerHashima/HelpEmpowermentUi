@@ -56,6 +56,12 @@ export class SideNav {
       //   { name: 'CAMP', nameAr: 'إضافةطبيب جديد', icon: 'bi bi-patch-check-fill', route: 'camp' },
       // ]
     },
+    {
+      name: 'Students',
+      nameAr: 'الطلاب',
+      icon: 'bi bi-people-fill',
+      route: 'students'
+    },
     // {
     //   name: 'Services',
     //   nameAr: 'الخدمات',
