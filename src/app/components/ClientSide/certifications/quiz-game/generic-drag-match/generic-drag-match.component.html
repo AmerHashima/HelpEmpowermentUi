@@ -1,4 +1,4 @@
-<div class="wrapper" cdkDropListGroup>
+<div class="wrapper"  cdkDropListGroup>
   <!-- OPTIONS (Green Boxes) -->
   <div
     class="options-bar rounded-3"
@@ -50,11 +50,16 @@
     }
 
   </div> -->
-  <div class="questions-container">
+  <div class="questions-container "
+  >
+
     @for (question of questions(); track question; let i = $index) {
-      <div class="question-column">
+      <div class="question-column"
+      >
+
         <!-- MULTIPLE DROP SLOTS -->
-        <div class="slots-row">
+        <div class="slots-row"
+         [class.order-2]="level() == 'level 17' || level() == 'level 18'">
           @for (slot of droppedItems[i]; track $index; let j = $index) {
             <div
               cdkDropList
@@ -71,7 +76,13 @@
           }
         </div>
 
-        <div class="question-box">
+        @if(level() == 'level 17' || level() == 'level 18'){
+          <span class="fw-bold mt-2 d-inline-block"
+            [class.order-1]="level() == 'level 17' || level() == 'level 18'">
+
+          Over</span>
+        }
+        <div class="question-box" >
           @if (type() == "text") {
             <div class="p-3">{{ question }}</div>
           } @else {

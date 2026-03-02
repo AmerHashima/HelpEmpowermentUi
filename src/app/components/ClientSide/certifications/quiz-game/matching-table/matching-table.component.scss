@@ -1,0 +1,51 @@
+@use 'variables' as *;
+.options-bar {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  overflow-x: auto;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.option-item {
+  background: $primaryColor;
+  color: $lightBgTextColor;
+  padding: 8px 14px;
+  border-radius: 6px;
+  white-space: nowrap;
+  cursor: grab;
+}
+
+.table {
+    padding: 10px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.cell {
+  padding: 12px;
+  text-align: center;
+  border:1px solid $borderColor;
+}
+
+.header {
+  background-color: $headerColor;
+  color: $lightBgTextColor;
+  font-weight: bold;
+}
+
+.dropzone {
+  background: #fafafa;
+  min-height: 60px;
+}
+
+.dropped-item {
+  background: $primaryColor;
+  color: $lightBgTextColor;
+  padding: 8px 12px;
+  border-radius: 6px;
+}

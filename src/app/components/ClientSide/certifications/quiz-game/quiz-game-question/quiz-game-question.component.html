@@ -8,22 +8,24 @@
     </span>
   </header>
   <!-- Question area -->
-  <main class="question-area  py-4">
+  <main class="question-area py-4">
     @if (this.currentLevelIndex() == 0) {
       <app-first-question
         [next]="next()"
-        (isCorrect)="onGetQuestionResult($event)"/>
-    }
-     @else if (this.currentLevelIndex() == 1) {
+        (isCorrect)="onGetQuestionResult($event)"
+      />
+    } @else if (this.currentLevelIndex() == 1) {
       <app-second-question
-         [header1]="currentLevel().header1"
+        [header1]="currentLevel().header1"
         [header2]="currentLevel().header2"
         [correctAnswers]="currentLevel().correctAnswers"
         [options]="currentLevel().options ?? []"
         [next]="next()"
-        (isCorrect)="onGetQuestionResult($event)"/>
-    }
-    @else if(this.currentLevelIndex() >= 2 && this.currentLevelIndex() <= 6) {
+        (isCorrect)="onGetQuestionResult($event)"
+      />
+    } @else if (
+      this.currentLevelIndex() >= 2 && this.currentLevelIndex() <= 6
+    ) {
       <app-question1
         [questions]="currentLevel().questions"
         [correctAnswers]="currentLevel().correctAnswers"
@@ -32,59 +34,73 @@
         [next]="next()"
         (isCorrect)="onGetQuestionResult($event)"
       />
-    }
-       @else if (this.currentLevelIndex() == 7) {
+    } @else if (this.currentLevelIndex() == 7) {
       <app-multi-table-questions
-         [headers]="currentLevel().headers ?? []"
-          [questions]="currentLevel().questions"
+        [headers]="currentLevel().headers ?? []"
+        [questions]="currentLevel().questions"
         [correctAnswers]="currentLevel().correctAnswers"
         [next]="next()"
-        (isCorrect)="onGetQuestionResult($event)"/>
-    }
-        @else if (this.currentLevelIndex() == 8) {
+        (isCorrect)="onGetQuestionResult($event)"
+      />
+    } @else if (this.currentLevelIndex() == 8) {
       <app-pyramid-drag-drop
         [questions]="currentLevel().questions"
-        [options]="currentLevel().options ??[]"
+        [options]="currentLevel().options ?? []"
         [correctAnswers]="currentLevel().correctAnswers"
         [next]="next()"
-        (isCorrect)="onGetQuestionResult($event)"/>
-    }
-         @else if (this.currentLevelIndex() >8) {
+        (isCorrect)="onGetQuestionResult($event)"
+      />
+    } @else if (
+      currentLevel().level == "level 15" || currentLevel().level == "level 16"
+    ) {
+      <app-matching-table
+        [rows]="currentLevel().rows"
+        [headers]="currentLevel().headers ?? []"
+        [options]="currentLevel().tableOptions"
+        [correctAnswers]="currentLevel().tableCorrectAnswers"
+        [next]="next()"
+        (correct)="onGetQuestionResult($event)"
+      >
+      </app-matching-table>
+
+    } @else if (this.currentLevelIndex() > 8) {
       <app-generic-drag-match
+        [level]="currentLevel().level"
         [questions]="currentLevel().questions"
-        [options]="currentLevel().options ??[]"
+        [options]="currentLevel().options ?? []"
         [correctAnswers]="currentLevel().correctAnswers"
         [next]="next()"
         [dropSlotsPerQuestion]="currentLevel().dropSlotsPerQuestion ?? 1"
         [type]="currentLevel().type ?? ''"
-        (isCorrect)="onGetQuestionResult($event)"/>
+        (isCorrect)="onGetQuestionResult($event)"
+      />
     }
     <!-- Footer controls -->
   </main>
-      <footer
-      class="py-2 d-flex gap-2 align-items-center justify-content-center flex-column flex-lg-row"
-    >
-      <app-site-button
-        [title]="'Quit' | translate"
-        type="secondary"
-        [isRTL]="isRTL()"
-        (click)="QuitQuiz()"
-      />
-      <app-site-button
-        [title]="'Reset' | translate"
-        type="main"
-        icon="bi bi-bookmark-check"
-        [customClass]="true"
-        [isRTL]="isRTL()"
-        (click)="ResetQuiz()"
-      />
-      <app-site-button
-        title="Next"
-        [isRTL]="isRTL()"
-        type="main"
-        (click)="nextQuestion()"
-      />
-    </footer>
+  <footer
+    class="py-2 d-flex gap-2 align-items-center justify-content-center flex-column flex-lg-row"
+  >
+    <app-site-button
+      [title]="'Quit' | translate"
+      type="secondary"
+      [isRTL]="isRTL()"
+      (click)="QuitQuiz()"
+    />
+    <app-site-button
+      [title]="'Reset' | translate"
+      type="main"
+      icon="bi bi-bookmark-check"
+      [customClass]="true"
+      [isRTL]="isRTL()"
+      (click)="ResetQuiz()"
+    />
+    <app-site-button
+      title="Next"
+      [isRTL]="isRTL()"
+      type="main"
+      (click)="nextQuestion()"
+    />
+  </footer>
 </div>
 
 <app-generic-modal [(isOpen)]="showConfirm" title="Quit Quiz">

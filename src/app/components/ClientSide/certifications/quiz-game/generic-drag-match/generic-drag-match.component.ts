@@ -17,7 +17,7 @@ export class GenericDragMatchComponent {
 
   next = input<boolean>(false);
   isCorrect = output<boolean>();
-
+  level = input<string>('');
   questions = input.required<string[]>();
   type = input.required<string>();
   options = input.required<string[]>();
@@ -163,7 +163,7 @@ droppedItems:string[][][]=[]
 
     this.isCorrect.emit(correct);
   }
-  
+
   // checkAnswer() {
   //   const answers = this.correctAnswers();
   //   let correct = true;

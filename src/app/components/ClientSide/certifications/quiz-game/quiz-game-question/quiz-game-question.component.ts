@@ -11,6 +11,7 @@ import { SecondQuestionComponent } from '../second-question/second-question.comp
 import { MultiTableQuestionsComponent } from '../multi-table-questions/multi-table-questions.component';
 import { PyramidDragDropComponent } from '../pyramid-drag-drop/pyramid-drag-drop.component';
 import { GenericDragMatchComponent } from '../generic-drag-match/generic-drag-match.component';
+import { MatchingTableComponent } from '../matching-table/matching-table.component';
 
 interface QuizLevel {
   level: string;
@@ -19,6 +20,10 @@ interface QuizLevel {
   header2: string;
   options?: string[];
   questions: string[];
+  rows?:any,
+  columns?:any,
+  tableOptions?:any,
+  tableCorrectAnswers?:any,
   type?:string
   headers?: string[];
   dropSlotsPerQuestion?:number;
@@ -27,7 +32,8 @@ interface QuizLevel {
 @Component({
   selector: 'app-quiz-game-question',
   imports: [FeatureComponent, SiteButtonComponent, TranslatePipe, GenericModelComponent, Question1Component,
-    FirstQuestionComponent, SecondQuestionComponent, MultiTableQuestionsComponent, PyramidDragDropComponent, GenericDragMatchComponent
+    FirstQuestionComponent, SecondQuestionComponent, MultiTableQuestionsComponent,
+    PyramidDragDropComponent, GenericDragMatchComponent, MatchingTableComponent
   ],
   templateUrl: './quiz-game-question.component.html',
   styleUrl: './quiz-game-question.component.scss'
@@ -43,7 +49,7 @@ export class QuizGameQuestionComponent {
   showConfirm: boolean = false;
   showMessage: boolean = false;
   showResetConfirm: boolean = false;
-  currentLevelIndex = signal(13);
+  currentLevelIndex = signal(15);
   score = signal(0);
   gameFinished = signal(false);
 
@@ -539,6 +545,125 @@ export class QuizGameQuestionComponent {
       correctAnswers: {
         "level1": ['Sprints, Sprint backlogs and product backlogs','Teams should not make changes during the sprint'],
         "level2": ['Cards on boards', 'Changes can happen at any time'],
+      }
+    },
+    {
+      level: 'level 15',
+      title: 'Economic models',
+      headers: ['Economic models', 'Project A', 'Project B', 'Which Project would you pick'],
+      correctAnswers: {},
+      header1: '',
+      header2: '',
+      questions: [],
+      rows: [
+        {
+          id: 'row1',
+          columns: [
+            {
+              type: 'text', value: 'Net Present Value' },
+            {
+              type: 'text', value: '95000' },
+            {
+              type: 'text', value: '75000' }
+          ]
+        },
+        {
+          id: 'row2',
+          columns: [
+            { type: 'text', value: 'IRR' },
+            { type: 'text', value: '13%' },
+            { type: 'text', value: '17%' }
+          ]
+        }
+      ],
+      columns: [
+        { key: 'projectA', label: 'Project A' },
+        { key: 'projectB', label: 'Project B' }
+      ],
+      tableOptions: [
+        { id: 'a', label: 'Project A' },
+        { id: 'b', label: 'Project B' }
+      ],
+      tableCorrectAnswers: {
+        row1: 'a',
+        row2: 'b'
+      }
+    },
+    {
+      level: 'level 16',
+      title: 'Economic models',
+      headers: ['Economic models', 'Project A', 'Project B', 'Which Project would you pick'],
+      correctAnswers:{},
+      header1: '',
+      header2: '',
+      questions: [  ],
+      rows: [
+        {
+          id: 'row1',
+          columns: [
+            { type: 'text', value: 'Payback Period' },
+            { type: 'text', value: '16 months' },
+            { type: 'text', value: '21 months' }
+          ]
+        },
+        {
+          id: 'row2',
+          columns: [
+            { type: 'text', value: 'Benefit Cost Ratio' },
+            { type: 'text', value: '1.3' },
+            { type: 'text', value: '2.79' }
+          ]
+        }
+      ],
+      columns: [
+        { key: 'projectA', label: 'Project A' },
+        { key: 'projectB', label: 'Project B' }
+      ],
+      tableOptions: [
+        { id: 'a', label: 'Project A' },
+        { id: 'b', label: 'Project B' }
+      ],
+      tableCorrectAnswers: {
+        row1: 'a',
+        row2: 'b'
+      }
+    },
+    {
+      level: 'level 17',
+      title: 'Agile Values',
+      type: 'text',
+      header1: '',
+      header2: '',
+      questions: [
+        "Individuals and interactions",
+        "Working software"
+      ],
+      options: [
+        "comprehensive documentation",
+        "process and tools",
+      ],
+      correctAnswers: {
+        "level1": ['process and tools'],
+        "level2": ['comprehensive documentation'],
+      }
+    },
+    {
+      level: 'level 18',
+      title: 'Agile Values',
+      type: 'text',
+      header1: '',
+      header2: '',
+      questions: [
+        "Customer collaboration",
+        "Responding to change"
+      ],
+      options: [
+        "following a plan",
+        "contract negotiation",
+      ],
+      correctAnswers: {
+        "level1": ['contract negotiation'],
+        "level2": ['following a plan'],
       }
     },
   ];

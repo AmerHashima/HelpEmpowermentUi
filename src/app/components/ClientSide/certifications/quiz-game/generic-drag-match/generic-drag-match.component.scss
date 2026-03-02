@@ -50,10 +50,14 @@
 }
 .question-box {
   width: 100%;
-  min-height: 180px;
+  // min-height: 180px;
   background: #9e9e9e;
   color: white;
   white-space: pre-line;
+}
+
+.question-box img{
+   height: 180px;
 }
 
 img{
