@@ -94,12 +94,19 @@
       [isRTL]="isRTL()"
       (click)="ResetQuiz()"
     />
-    <app-site-button
+    @if(currentLevelIndex() !=18){
+       <app-site-button
       title="Next"
       [isRTL]="isRTL()"
       type="main"
       (click)="nextQuestion()"
-    />
+    />}@else{
+          <app-site-button
+      title="Finish"
+      [isRTL]="isRTL()"
+      type="main"
+      (click)="finish()"/>
+    }
   </footer>
 </div>
 
@@ -167,7 +174,7 @@
   </section>
 </app-generic-modal>
 
-<app-generic-modal [(isOpen)]="showMessage" title="Alert Message">
+<app-generic-modal [(isOpen)]="showMessage" title="Alert Message" (close)="closeResultMessage()">
   <section
     class="w-100 d-flex flex-column align-items-stretch gap-3 p-3 rounded"
   >

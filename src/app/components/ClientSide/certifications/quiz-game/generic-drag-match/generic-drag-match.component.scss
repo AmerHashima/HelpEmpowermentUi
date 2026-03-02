@@ -38,7 +38,9 @@
 .drop-box {
   width: 100%;
   min-height: 50px;
-  background: $borderColor;
+  background-color: $headerColor;
+  color:$inputText;
+  border-radius: 8px;
   margin-bottom: 10px;
   display: flex;
   justify-content: center;
@@ -47,12 +49,16 @@
 
 .drop-box .option-item{
   width: 100%;
+  height: 100%;
 }
 .question-box {
   width: 100%;
   // min-height: 180px;
-  background: #9e9e9e;
-  color: white;
+  height: 100%;
+  background-color: $inputBg;
+  color: $inputText;
+  border:1px solid $borderColor;
+  border-radius: 8px;
   white-space: pre-line;
 }
 
@@ -74,3 +80,23 @@ img{
 }
 
 
+.row-layout{
+  flex-direction: column;
+  width:50%;
+  .question-column{
+    flex-direction: row;
+    align-items: center;
+   width: 100%;
+    .drop-box , .question-box{
+      min-height: 60px;
+      margin-bottom: 0px;
+      flex-grow: 1;
+    }
+    .drop-box{
+      padding: .5rem;
+      .option-item{
+        height: 100% !important;
+      }
+    }
+  }
+}

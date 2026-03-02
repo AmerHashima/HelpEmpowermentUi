@@ -41,7 +41,7 @@
 
   <div class="options" cdkDropList [cdkDropListData]="options" (cdkDropListDropped)="drop($event)">
     <div *ngFor="let option of options" cdkDrag class="option-item">{{ option }}</div>
-    <div *ngIf="options.length === 0" class="no-options">
+    <div *ngIf="options.length === 0" class="no-options text-muted text-center">
       <i class="bi bi-info-circle-fill"></i> No More Options
     </div>
   </div>

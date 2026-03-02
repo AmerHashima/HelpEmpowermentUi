@@ -1,4 +1,4 @@
-import { Component, input, output, effect } from '@angular/core';
+import { Component, input, output, effect, computed } from '@angular/core';
 import {
   CdkDragDrop,
   DragDropModule,
@@ -26,7 +26,10 @@ export class GenericDragMatchComponent {
 
   sourceOptions: string[] = [];
   // droppedItems: string[][] = [];
-droppedItems:string[][][]=[]
+droppedItems:string[][][]=[];
+  readonly isRowLayout = computed(() =>
+    this.level() === 'level 17' || this.level() === 'level 18'
+  );
   constructor() {
     // effect(() => {
     //   const questions = this.questions();
@@ -68,50 +71,6 @@ droppedItems:string[][][]=[]
     // Create one drop array per question
     this.droppedItems = this.questions().map(() => []);
   }
-
-  // drop(event: CdkDragDrop<string[]>, zoneIndex?: number) {
-
-  //   const prev = event.previousContainer.data;
-  //   const curr = event.container.data;
-
-  //   // Same container (options reorder only)
-  //   if (event.previousContainer === event.container) {
-  //     moveItemInArray(curr, event.previousIndex, event.currentIndex);
-  //     return;
-  //   }
-
-  //   // Dropping into a DROP ZONE
-  //   if (zoneIndex !== undefined) {
-
-  //     // If zone already has item → swap
-  //     if (curr.length > 0) {
-  //       const existingItem = curr[0];
-
-  //       // Remove existing from zone
-  //       curr.splice(0, 1);
-
-  //       // Return existing to previous container
-  //       prev.push(existingItem);
-  //     }
-
-  //     transferArrayItem(
-  //       prev,
-  //       curr,
-  //       event.previousIndex,
-  //       0 // always position 0 (only 1 allowed)
-  //     );
-
-  //     return;
-  //   }
-
-  //   // Dropping back to OPTIONS
-  //   transferArrayItem(
-  //     prev,
-  //     curr,
-  //     event.previousIndex,
-  //     event.currentIndex
-  //   );
-  // }
 
   drop(
     event: CdkDragDrop<string[]>,
@@ -164,17 +123,15 @@ droppedItems:string[][][]=[]
     this.isCorrect.emit(correct);
   }
 
-  // checkAnswer() {
-  //   const answers = this.correctAnswers();
-  //   let correct = true;
+  private reorderLevels = [
+    'level 12',
+    'level 13',
+    'level 14',
+    'level 17',
+    'level 18'
+  ];
 
-  //   this.droppedItems.forEach((items, index) => {
-  //     const key = `level${index + 1}`;
-  //     if (JSON.stringify(items) !== JSON.stringify(answers[key])) {
-  //       correct = false;
-  //     }
-  //   });
-
-  //   this.isCorrect.emit(correct);
-  // }
+  shouldReorder(): boolean {
+    return this.reorderLevels.includes(this.level());
+  }
 }

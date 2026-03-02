@@ -1,4 +1,5 @@
-<div class="wrapper"  cdkDropListGroup>
+<div class="wrapper"
+ cdkDropListGroup>
   <!-- OPTIONS (Green Boxes) -->
   <div
     class="options-bar rounded-3"
@@ -12,54 +13,23 @@
         {{ option }}
       </div>
     } @empty {
-      <div class="text-muted text-center">No More Options</div>
+      <div class="text-muted text-center d-flex gap-1 align-items-center justify-content-center">
+        <i class="bi bi-info-circle-fill"></i>
+        <span>No More Options</span>
+      </div>
     }
   </div>
 
-  <!-- QUESTIONS + DROP ZONES -->
-  <!-- <div class="questions-container">
-
-    @for (question of questions(); track question; let i = $index) {
-
-      <div class="question-column">
-
-      <div
-  cdkDropList
-  class="drop-box rounded rounded-3"
-  [cdkDropListData]="droppedItems[i]"
-  (cdkDropListDropped)="drop($event, i)"
->
-          @for (item of droppedItems[i]; track item) {
-            <div cdkDrag class="option-item">
-              {{ item }}
-            </div>
-          }
-        </div>
-
-        <div class="question-box">
-          @if(type() == 'text'){
-          <pre class="p-3">{{ question }}</pre>
-          }
-          @else{
-            <img [src]="'assets/images/quiz/' + question" alt="image">
-          }
-        </div>
-
-      </div>
-
-    }
-
-  </div> -->
   <div class="questions-container "
-  >
+        [class.row-layout]="isRowLayout()">
 
     @for (question of questions(); track question; let i = $index) {
-      <div class="question-column"
-      >
-
-        <!-- MULTIPLE DROP SLOTS -->
-        <div class="slots-row"
-         [class.order-2]="level() == 'level 17' || level() == 'level 18'">
+      <div class="question-column gap-2"
+     >
+        <div
+          class="slots-row"
+          [class.order-2]="shouldReorder()"
+        >
           @for (slot of droppedItems[i]; track $index; let j = $index) {
             <div
               cdkDropList
@@ -76,13 +46,15 @@
           }
         </div>
 
-        @if(level() == 'level 17' || level() == 'level 18'){
-          <span class="fw-bold mt-2 d-inline-block"
-            [class.order-1]="level() == 'level 17' || level() == 'level 18'">
-
-          Over</span>
+        @if (level() == "level 17" || level() == "level 18") {
+          <span
+            class="fw-bold mt-2 d-inline-block"
+            [class.order-1]="level() == 'level 17' || level() == 'level 18'"
+          >
+            Over</span
+          >
         }
-        <div class="question-box" >
+        <div class="question-box">
           @if (type() == "text") {
             <div class="p-3">{{ question }}</div>
           } @else {

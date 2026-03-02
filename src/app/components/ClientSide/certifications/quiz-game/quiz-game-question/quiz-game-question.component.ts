@@ -49,7 +49,7 @@ export class QuizGameQuestionComponent {
   showConfirm: boolean = false;
   showMessage: boolean = false;
   showResetConfirm: boolean = false;
-  currentLevelIndex = signal(15);
+  currentLevelIndex = signal(17);
   score = signal(0);
   gameFinished = signal(false);
 
@@ -671,7 +671,6 @@ export class QuizGameQuestionComponent {
 
   currentLevel = computed(() => this.levels[this.currentLevelIndex()]);
   onGetQuestionResult(isCorrect: boolean) {
-    console.log(isCorrect);
     this.next.set(false);
     if (!isCorrect) {
       this.showMessage = true;
@@ -682,24 +681,24 @@ export class QuizGameQuestionComponent {
       return;
     }
 
-    // this.levelMessage.set({
-    //   message: 'Well Done, Your Answer is correct\nGo To Next Level....',
-    //   isCorrect: false
-    // })
 
     this.score.update(s => s + 1);
-
+    console.log(this.currentLevelIndex());
+    console.log(this.currentLevelIndex() < this.levels.length - 1)
     if (this.currentLevelIndex() < this.levels.length - 1) {
       this.currentLevelIndex.update(i => i + 1);
-      console.log('his.currentLevelIndex', this.currentLevelIndex());
+    }else{
+      this.showMessage=true;
+      this.levelMessage.set({
+        message: 'Well Done,You have rock it',
+        isCorrect: true
+      })
     }
 
   }
 
   nextQuestion() {
-    console.log('next', this.next());
     this.next.set(true);
-    console.log('next',this.next());
   }
   ResetQuiz() {
     this.showResetConfirm = true
@@ -725,4 +724,13 @@ export class QuizGameQuestionComponent {
   cancalQuiz() {
     this.showConfirm = false;
   }
+  closeResultMessage(){
+    this.router.navigate(['../quiz-game'], {
+      relativeTo: this.route
+    });}
+
+    finish(){
+      this.next.set(true);
+
+    }
 }
