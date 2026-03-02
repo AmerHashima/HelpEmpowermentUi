@@ -12,6 +12,7 @@
     @if (this.currentLevelIndex() == 0) {
       <app-first-question
         [next]="next()"
+        [reset]="resetFlag"
         (isCorrect)="onGetQuestionResult($event)"
       />
     } @else if (this.currentLevelIndex() == 1) {

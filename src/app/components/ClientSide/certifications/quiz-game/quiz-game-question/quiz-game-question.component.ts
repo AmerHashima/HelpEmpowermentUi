@@ -44,12 +44,12 @@ export class QuizGameQuestionComponent {
   private route = inject(ActivatedRoute);
   next = signal<boolean>(false);
   levelMessage = signal<{ message: string, isCorrect: boolean }>({ message: '', isCorrect: false });
-
+  resetFlag=false;
   isRTL = this.shared.isRtl;
   showConfirm: boolean = false;
   showMessage: boolean = false;
   showResetConfirm: boolean = false;
-  currentLevelIndex = signal(17);
+  currentLevelIndex = signal(0);
   score = signal(0);
   gameFinished = signal(false);
 
@@ -705,7 +705,12 @@ export class QuizGameQuestionComponent {
   }
   confirmResetQuiz() {
     this.showResetConfirm = false
+    if (this.currentLevelIndex() == 0){
+      this.resetFlag=true;
+    }
+    else{
     this.currentLevelIndex.set(0);
+    }
     this.score.set(0);
   }
   cancelResetQuiz() {

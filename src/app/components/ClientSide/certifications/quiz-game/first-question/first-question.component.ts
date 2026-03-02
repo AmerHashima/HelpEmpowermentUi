@@ -17,9 +17,9 @@ import {
 })
 export class FirstQuestionComponent {
 
-  next=input<boolean>(false);
+  next = input<boolean>(false);
   isCorrect = output<boolean>();
-
+  reset = input<boolean>(false);
   sourceItems = signal<string[]>([
     'Executing',
     'Planning',
@@ -50,15 +50,41 @@ export class FirstQuestionComponent {
     return ['source', ...tops, 'bottom'];
   });
 
-  constructor(){
+  constructor() {
+
+    effect(() => {
+      if (this.reset()) {
+        this.resetState();
+      }
+    });
     effect(() => {
       if (this.next()) {
-        console.log('in next');
         this.checkAnswers();
       }
     });
   }
 
+  private resetState(): void {
+
+    this.sourceItems.set([
+      'Executing',
+      'Planning',
+      'Initiation',
+      'Monitoring & Control',
+      'Closing'
+    ]);
+
+    this.topZones.set([
+      { items: [] },
+      { items: [] },
+      { items: [] },
+      { items: [] }
+    ]);
+
+    this.bottomZone.set([]);
+
+  }
+  
   drop(event: CdkDragDrop<string[]>) {
 
     const prevContainer = event.previousContainer;
