@@ -1,0 +1,116 @@
+<!-- src\app\components\AdminPanel\students\students.component.html -->
+<div class="container-fluid py-3">
+  <div class="row g-3">
+    <div class="col-12">
+      <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+        <h4 class="mb-0">Students</h4>
+        <div class="d-flex gap-2 align-items-center">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Search by English name"
+            [(ngModel)]="searchText"
+            (keyup.enter)="onSearch()"
+          />
+          <app-button
+          btnLabel="Search"
+          [mainBtn]="false"
+          (click)="onSearch()"
+        />
+              <app-button
+          btnLabel="Add Student"
+          [mainBtn]="true"
+          (click)="openCreatePopup()"
+        />
+        
+        </div>
+      </div>
+
+      @if (loading()) {
+        <div class="d-flex justify-content-center py-5">
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      } @else if (errorMessage()) {
+        <div class="alert alert-danger" role="alert">
+          {{ errorMessage() }}
+        </div>
+      } @else if (students().length === 0) {
+        <div class="alert alert-light border" role="alert">
+          No students found.
+        </div>
+      } @else {
+        <div class="row g-3">
+          @for (student of students(); track student.oid) {
+            <div class="col-12 col-md-6">
+              <div class="student-card border rounded-3 p-3 h-100 bg-white" (click)="openReservedCourses(student.oid)">
+                <div class="d-flex justify-content-between mb-2">
+                  <h6 class="mb-0">{{ student.nameEn }}</h6>
+                  <span class="badge" [class.bg-success]="student.isActive" [class.bg-secondary]="!student.isActive">
+                    {{ student.isActive ? 'Active' : 'Inactive' }}
+                  </span>
+                </div>
+                <div class="small text-muted mb-2">{{ student.nameAr }}</div>
+                <div class="small mb-1"><strong>Email:</strong> {{ student.email }}</div>
+                <div class="small mb-1"><strong>Mobile:</strong> {{ student.mobile }}</div>
+                <div class="small mb-2"><strong>Username:</strong> {{ student.username }}</div>
+                <div class="mb-3">
+                  <strong class="text-primary">Courses:</strong>
+                  <div class="d-flex flex-wrap gap-2 mt-2">
+                    @for (course of displayCourses(student); track course) {
+                      <span class="badge bg-primary text-white fs-6 px-3 py-2">{{ course }}</span>
+                    }
+                  </div>
+                </div>
+
+                <div class="d-flex gap-2">
+                  <button class="btn btn-sm btn-outline-primary" type="button" (click)="openEditPopup(student.oid)">
+                    Edit
+                  </button>
+                  <!-- <button class="btn btn-sm btn-primary" type="button" >
+                    Reserved Courses
+                  </button> -->
+                  <button class="btn btn-sm btn-outline-danger" type="button" (click)="removeStudent(student.oid)">
+                    Delete
+                  </button>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+
+        <div class="d-flex flex-wrap justify-content-between align-items-center mt-3 gap-2">
+          <div class="d-flex align-items-center gap-2">
+            <span class="small text-muted">Rows:</span>
+            <select class="form-select form-select-sm" style="width: 90px" [value]="pageSize()" (change)="onPageSizeChange($event)">
+              <option [value]="5">5</option>
+              <option [value]="10">10</option>
+              <option [value]="20">20</option>
+            </select>
+          </div>
+
+          <div class="small text-muted">
+            Page {{ displayPageNumber() }} of {{ totalPages() }} ({{ totalCount() }} students)
+          </div>
+
+          <div class="d-flex gap-2">
+            <button class="btn btn-sm btn-outline-secondary" type="button" [disabled]="!canGoPrevious()" (click)="previousPage()">
+              Previous
+            </button>
+            <button class="btn btn-sm btn-outline-secondary" type="button" [disabled]="!canGoNext()" (click)="nextPage()">
+              Next
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <app-student-form-popup
+    [isOpen]="isStudentPopupOpen()"
+    [studentId]="editingStudentId()"
+    (closed)="closeStudentPopup()"
+    (saved)="onStudentSaved()"
+  />
+</div>

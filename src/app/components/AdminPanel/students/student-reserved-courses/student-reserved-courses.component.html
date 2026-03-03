@@ -1,0 +1,46 @@
+<!-- src\app\components\AdminPanel\students\student-reserved-courses\student-reserved-courses.component.html -->
+<div class="container-fluid py-3">
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+    <h4 class="mb-0">Reserved Courses</h4>
+    <a routerLink="/admin/students" class="btn btn-outline-secondary">Back to Students</a>
+  </div>
+
+  @if (loading()) {
+    <div class="d-flex justify-content-center py-5">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  } @else if (errorMessage()) {
+    <div class="alert alert-danger" role="alert">{{ errorMessage() }}</div>
+  } @else if (courses().length === 0) {
+    <div class="alert alert-light border" role="alert">No reserved courses found for this student.</div>
+  } @else {
+    <div class="row g-3">
+      @for (item of courses(); track item.oid) {
+        <div class="col-12 col-lg-6">
+          <div class="border rounded-3 p-3 h-100 bg-white">
+            <div class="d-flex justify-content-between mb-2">
+              <h6 class="mb-0">{{ item.courseName }}</h6>
+              <span class="badge bg-primary">{{ item.progressPercentage }}%</span>
+            </div>
+
+            <div class="small mb-1"><strong>Student:</strong> {{ item.studentName }}</div>
+            <div class="small mb-1"><strong>Price:</strong> {{ item.price }}</div>
+            <div class="small mb-1"><strong>Discount:</strong> {{ item.discountAmount }}</div>
+            <div class="small mb-1"><strong>Paid:</strong> {{ item.paidAmount ?? '-' }}</div>
+            <div class="small mb-1"><strong>Payment Method:</strong> {{ item.paymentMethod || '-' }}</div>
+            <div class="small mb-1"><strong>Enrollment Date:</strong> {{ item.enrollmentDate || '-' }}</div>
+
+            <div class="d-flex flex-wrap gap-2 mt-2">
+              <span class="badge" [class.bg-success]="item.examSimulationReserv" [class.bg-secondary]="!item.examSimulationReserv">Exam Simulation</span>
+              <span class="badge" [class.bg-success]="item.recordedCourseReserv" [class.bg-secondary]="!item.recordedCourseReserv">Recorded Course</span>
+              <span class="badge" [class.bg-success]="item.liveCourseReserv" [class.bg-secondary]="!item.liveCourseReserv">Live Course</span>
+              <!-- <span class="badge" [class.bg-success]="item.isCertificateIssued" [class.bg-secondary]="!item.isCertificateIssued">Certificate Issued</span> -->
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

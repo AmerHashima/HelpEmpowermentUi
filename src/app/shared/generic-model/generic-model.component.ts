@@ -1,3 +1,4 @@
+// src\app\shared\generic-model\generic-model.component.ts
 import { NgClass } from '@angular/common';
 import { Component, input, output } from '@angular/core';
 
