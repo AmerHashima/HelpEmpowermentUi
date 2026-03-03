@@ -31,7 +31,11 @@
               <p>Your cart is empty</p>
             </div>
           } @else {
-            @for (item of cartItems(); track item.courseId) {
+            <!-- @for (item of cartItems(); track item.courseId) { -->
+            @for (
+              item of expandedCartItems();
+              track item.oid + item.reservationType
+            ) {
               <div class="cart-card">
                 <img
                   [src]="
@@ -46,17 +50,30 @@
                     {{ item.courseName | titlecase }}
                   </h3>
 
+                  <p class="reservation-type">
+                    {{
+                      item.reservationType === "examSimulationReserv"
+                        ? "Exam Simulation"
+                        : item.reservationType === "recordedCourseReserv"
+                          ? "Recorded Course"
+                          : "Live Course"
+                    }}
+                  </p>
+                  <!-- <h3 class="course-title">
+                    {{ item.courseName | titlecase }}
+                  </h3>
+
                   <div class="price-row">
                     <span class="price">
                       ${{ (item.finalPrice ?? 0).toFixed(2) }}
                     </span>
-                  </div>
+                  </div> -->
 
-                  <div class="quantity-row">
+                  <!-- <div class="quantity-row">
                     <button (click)="decrease(item)">−</button>
                     <span>{{ item.quantity }}</span>
                     <button (click)="increase(item)">+</button>
-                  </div>
+                  </div> -->
                 </div>
 
                 <button class="remove-btn" (click)="removeItem(item)">

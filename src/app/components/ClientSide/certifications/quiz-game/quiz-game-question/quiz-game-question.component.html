@@ -35,7 +35,8 @@
         [next]="next()"
         (isCorrect)="onGetQuestionResult($event)"
       />
-    } @else if (this.currentLevelIndex() == 7) {
+    }
+     <!-- @else if (this.currentLevelIndex() == 7) {
       <app-multi-table-questions
         [headers]="currentLevel().headers ?? []"
         [questions]="currentLevel().questions"
@@ -75,7 +76,7 @@
         [type]="currentLevel().type ?? ''"
         (isCorrect)="onGetQuestionResult($event)"
       />
-    }
+    } -->
     <!-- Footer controls -->
   </main>
   <footer

@@ -6,6 +6,10 @@ import { ApiResponse } from '../models/apiResponse';
 import { AuthService } from './auth.service';
 import { toObservable } from '@angular/core/rxjs-interop';
 
+type ReservationKey =
+  | 'examSimulationReserv'
+  | 'recordedCourseReserv'
+  | 'liveCourseReserv';
 
 
 @Injectable({
@@ -30,42 +34,42 @@ export class CartService {
   total = computed(() =>
     this.subtotal() - this.discountAmount()
   );
-  
+
   constructor(private apiService: ApiService) {
-    toObservable(this.studentId)
-      .pipe(
-        filter(id => !!id),
-        switchMap(() => this.getStudentBasketItems())
-      )
-      .subscribe({
-        next: (data) => {
-          this.cartItems.set(data.items ?? []);
-          // this.currentBasketId.set(data.oid ?? '');
-        },
-        error: () => {
-          this.cartItems.set([]);
-        }
-      });
-    // effect(() => {
-    //   const id = this.studentId();
-
-    //   if (!id) {
-    //     this.cartItems.set([]);
-    //     this.currentBasketId.set('');
-    //     return;
-    //   }
-
-    //   this.getStudentBasketItems().subscribe({
+    // toObservable(this.studentId)
+    //   .pipe(
+    //     filter(id => !!id),
+    //     switchMap(() => this.getStudentBasketItems())
+    //   )
+    //   .subscribe({
     //     next: (data) => {
     //       this.cartItems.set(data.items ?? []);
+    //       // this.currentBasketId.set(data.oid ?? '');
     //     },
-    //     error: (err) => {
-    //       console.error('Failed to load basket', err);
+    //     error: () => {
     //       this.cartItems.set([]);
     //     }
     //   });
+    effect(() => {
+      const id = this.studentId();
 
-    // });
+      if (!id) {
+        this.cartItems.set([]);
+        this.currentBasketId.set('');
+        return;
+      }
+
+      this.getStudentBasketItems().subscribe({
+        next: (data) => {
+          this.cartItems.set(data.items ?? []);
+        },
+        error: (err) => {
+          console.error('Failed to load basket', err);
+          this.cartItems.set([]);
+        }
+      });
+
+    });
   }
 
 
@@ -169,9 +173,24 @@ export class CartService {
       );
   }
 
-  isInCart(cartItem: any): boolean {
-    return this.cartItems().some(item => item.courseId === cartItem.courseId);
+
+  getCourse(courseId: string): APICartItem | undefined {
+    return this.cartItems().find(item => item.courseId === courseId);
   }
+  courseExists( courseId: string): boolean {
+    return !!this.getCourse( courseId);
+  }
+
+  isInCart(
+    courseId: string,
+    key: ReservationKey
+  ): boolean {
+
+    const course = this.getCourse( courseId);
+
+    return !!course?.[key];
+  }
+
   updateBasket(cartItem: APICartItem) {
     this.cartItems.update(items => {
       const existing = items.find(i => i.courseId === cartItem.courseId);
@@ -187,5 +206,6 @@ export class CartService {
       );
     });
   }
+
 }
 

@@ -14,6 +14,8 @@ import { StarRatingComponent } from '../../../../shared/star-rating/star-rating.
 import { TranslatePipe } from '@ngx-translate/core';
 import { NgIf } from '@angular/common';
 import { UpcomingSessionsComponent } from '../upcoming-sessions/upcoming-sessions.component';
+import { CartService } from '../../../../Services/  cart.service';
+import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
 
 @Component({
   selector: 'app-live-course',
@@ -27,8 +29,11 @@ import { UpcomingSessionsComponent } from '../upcoming-sessions/upcoming-session
 export class LiveCourseComponent {
   private shared = inject(Shared);
   private auth = inject(AuthService);
+  private cartService=inject(CartService);
+  private toasting=inject(ToastingMessagesService);
   isRTL = this.shared.isRtl;
   hasBought = this.auth.hasBought;
+  showConfirm:boolean=false;
   enrollImage = 'assets/images/enroll.png';
   courseImage = "assets/images/recordedCourse.jpeg";
 
@@ -37,7 +42,60 @@ export class LiveCourseComponent {
     console.log('Buy Now clicked');
   }
 
-  addToCart() {
-    console.log('Add to Cart clicked');
+
+  addToCart(): void {
+    if (!this.auth.studentToken()) {
+      this.showConfirm = true;
+      return;
+    }
+
+    const courseId = this.shared.currentCertificationObject().oid;
+
+    if (this.cartService.courseExists(courseId)) {
+
+      if (this.cartService.isInCart(courseId, 'liveCourseReserv')) {
+        this.toasting.showToast('Item is already added before', 'warning');
+        return;
+      }
+
+      this.updateExistingCourse(courseId);
+      return;
+    }
+
+    this.addNewCourse(courseId);
+  }
+
+  private updateExistingCourse(courseId: string): void {
+
+    const course = this.cartService.getCourse(courseId);
+    if (!course) return;
+
+    const payload = {
+      oid: course.oid,
+      quantity: course.quantity,
+      couponCode: course.couponCode,
+      examSimulationReserv: course.examSimulationReserv,
+      recordedCourseReserv: course.recordedCourseReserv,
+      liveCourseReserv: true,
+    };
+
+    this.cartService.updateCartItem(payload.oid, payload).subscribe({
+      next: (cartItem) => this.cartService.updateBasket(cartItem)
+    });
+  }
+  private addNewCourse(courseId: string): void {
+
+    const cartPayload = {
+      studentId: this.auth.loggedStudent()?.userId!,
+      courseId,
+      examSimulationReserv: false,
+      recordedCourseReserv: false,
+      liveCourseReserv: true,
+      couponCode: "",
+    };
+
+    this.cartService.addCartItem(cartPayload).subscribe({
+      next: (cartItem) => this.cartService.updateBasket(cartItem)
+    });
   }
 }

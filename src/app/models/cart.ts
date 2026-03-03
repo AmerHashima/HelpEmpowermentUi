@@ -2,6 +2,9 @@ export interface CartItem {
   studentId: string,
   courseId: string,
   couponCode: string,
+  examSimulationReserv: boolean,
+  recordedCourseReserv: boolean,
+  liveCourseReserv: boolean,
 }
 
 export interface APICartItem {
@@ -17,6 +20,9 @@ export interface APICartItem {
   couponCode: string,
   quantity: number,
   addedAt: string
+  examSimulationReserv: boolean,
+  recordedCourseReserv: boolean,
+  liveCourseReserv: boolean,
 }
 
 export interface UpdateCartItem {
@@ -24,9 +30,12 @@ export interface UpdateCartItem {
   oid: string,
   quantity: number,
   couponCode: string
+  examSimulationReserv: boolean,
+  recordedCourseReserv: boolean,
+  liveCourseReserv: boolean,
 }
 
-export interface APICheckout{
+export interface APICheckout {
   oid: string,
   studentId: string,
   studentName: string,
@@ -50,7 +59,10 @@ export interface APICheckout{
   totalLessons: number,
   isCertificateIssued: boolean,
   certificateIssuedDate: string,
-  certificateNumber: string
+  certificateNumber: string,
+  examSimulationReserv: boolean,
+  recordedCourseReserv: boolean,
+  liveCourseReserv: boolean,
 }
 
 export interface APICartResponse {
