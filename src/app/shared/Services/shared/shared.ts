@@ -49,7 +49,11 @@ export class Shared {
 
     const currentUrl = this.router.url;
     const savedExamId = localStorage.getItem('currentExamId');
-
+    const savedstudettExamId = localStorage.getItem('studentExamId');
+    console.log('savedstudettExamId',savedstudettExamId);
+    if (savedstudettExamId){
+      this.studentExamId.set(savedstudettExamId);
+    }
     if (
       savedExamId &&
       (currentUrl.includes('/chooseExam') || currentUrl.includes('?mode')  )

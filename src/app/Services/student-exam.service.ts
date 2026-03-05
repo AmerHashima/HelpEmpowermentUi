@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import ApiService from '../shared/Services/ApiService/api.service';
 import { map, Observable } from 'rxjs';
 import { ApiResponse, ApiSearchResponse } from '../models/apiResponse';
-import { APIStudentExamResponse, startStudentExam, submitStudentExam } from '../models/certification';
+import { APIStudentExamResponse, choiceQuestionExamSubmit, matchingQuestionExamSubmit, startStudentExam, submitStudentExam } from '../models/certification';
 import { RequestBody } from '../models/rquest';
 
 @Injectable({
@@ -112,4 +112,36 @@ export class StudentExamService {
           })
         );
     }
+
+  submitchoiceExamQuestion(body: choiceQuestionExamSubmit): Observable<string> {
+    return this.apiService
+      .post<ApiResponse<string>>('StudentExamQuestions/submit-multiple', body)
+      .pipe(
+        map((response: ApiResponse<string>) => {
+          if (!response.success) {
+            const msg = response.errors?.join(', ') || response.message || 'API failed to start exam';
+            throw new Error(msg);
+          }
+          return response.data;
+        })
+      );
+  }
+
+
+  submitMatchingExamQuestion(body: matchingQuestionExamSubmit): Observable<string> {
+    return this.apiService
+      .post<ApiResponse<string>>('StudentExamQuestions/validate-answers', body)
+      .pipe(
+        map((response: ApiResponse<string>) => {
+          if (!response.success) {
+            const msg = response.errors?.join(', ') || response.message || 'API failed to start exam';
+            throw new Error(msg);
+          }
+          return response.data;
+        })
+      );
+  }
+
+
+
 }

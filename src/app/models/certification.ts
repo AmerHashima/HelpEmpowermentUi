@@ -200,3 +200,34 @@ export interface APIAnswer {
   updatedAt: string,
   updatedBy: string
 }
+
+export interface matchingQuestionExamSubmit{
+
+  studentExamOid: string,
+    questionOid: string,
+      answers: [
+        {
+          selectedAnswerOid: string,
+          answerSelectedAnswerOid: string
+        }
+      ],
+        createdBy: string
+
+}
+
+
+export interface choiceQuestionExamSubmit {
+
+  studentExamOid: string
+  questions: [
+    {
+      questionOid: string,
+      selectedAnswerOids: [
+        string
+      ]
+    }
+  ],
+  createdBy: string
+}
+
+

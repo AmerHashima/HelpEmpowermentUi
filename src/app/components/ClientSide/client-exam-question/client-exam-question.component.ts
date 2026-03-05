@@ -9,6 +9,7 @@ import { CalculatorComponent } from '../../../shared/calculator/calculator.compo
 import { WhiteboardComponent } from '../../../shared/whiteboard/whiteboard.component';
 import { DragComponentComponent } from '../drag-component/drag-component.component';
 import { AnyAaaaRecord } from 'node:dns';
+import { APIAnswer } from '../../../models/certification';
 
 
 type QuestionStatus = 'notVisited' | 'answered' | 'marked' | 'skipped';
@@ -23,7 +24,8 @@ type QuestionStatus = 'notVisited' | 'answered' | 'marked' | 'skipped';
 })
 export class ClientExamQuestionComponent {
 
-  next = output<void>();
+  // next = output<void>();
+  next = output<any>();
   previous = output<void>();
   goToQuestion = output<number>();
   mark = output<boolean>();
@@ -34,7 +36,7 @@ export class ClientExamQuestionComponent {
   isRTL=this.shared.isRtl
   // question = input.required<Question>();
   question = input.required<any>();
-
+  savedMiddle:any[]=[];
   showConfirm:boolean=false;
   showQuestionBoard:boolean=false;
   showCalculator:boolean=false;
@@ -46,10 +48,49 @@ export class ClientExamQuestionComponent {
       status: 'skipped'
     }));
 
+  // ngOnChanges(changes: SimpleChanges) {
+  //   if (changes['question'] && this.isMatchingQuestion) {
+  //     this._rightItems = this.question()?.answers.filter((a: any) => !a.question_Ask) ?? [];
+  //   }
+  // }
   ngOnChanges(changes: SimpleChanges) {
+
     if (changes['question'] && this.isMatchingQuestion) {
-      this._rightItems = this.question()?.answers.filter((a: any) => !a.question_Ask) ?? [];
-    }
+
+      const q = this.question();
+
+      const left = q?.answers.filter((a: APIAnswer) => a.question_Ask) ?? [];
+      const right = q?.answers.filter((a: APIAnswer) => !a.question_Ask) ?? [];
+
+      // reset arrays
+      this.middle = new Array(left.length).fill(null);
+      this._rightItems = [...right];
+
+      const saved = q.savedMatchingAnswers ?? [];
+      if(saved.length > 0){
+        saved.forEach((pair: any, index: number) => {
+
+          const match = right.find(
+            (r: any) => r.oid === pair.answerSelectedAnswerOid
+          );
+
+          if (match) {
+
+            this.middle[index] = match;
+
+            // remove from right column
+            this._rightItems = this._rightItems.filter(
+              r => r.oid !== match.oid
+            );
+
+          }
+
+        });
+        this.savedMiddle = [...this.middle]
+      }
+
+    console.log('middle' , this.middle);    }
+
   }
   // selectOption(opt: Question['options'][number]) {
   selectOption(opt: any['answers'][number]) {
@@ -107,14 +148,30 @@ export class ClientExamQuestionComponent {
   }
 
   nextQuestion() {
-    if (this.question().questionTypeName == '"Multiple Choice Question"'){
+    console.log(this.question().questionTypeName);
+    if (this.question().questionTypeName == 'Multiple Choice Question'){
+      this.next.emit({
+        type:"Multiple Choice Question",
+        answers: this.mapToAnswerPayload(this.question())
+      })
+    }
+      else if (this.question().questionTypeName == 'Matching'){
+      this.next.emit({type:'Matching',
+        answers:this.buildMatchingAnswers(this.left,this.middle)
+      });
 
     }
-      else if (this.question().questionTypeName == '"Matching"'){
+    // console.log('before next',this.question())
+    // this.next.emit();
+  }
 
-    }
-    console.log('before next',this.question())
-    this.next.emit();
+  mapToAnswerPayload(question: any) {
+    return {
+      questionOid: question.oid,
+      selectedAnswerOids: question.answers
+        .filter((a: any) => a.isSelected)
+        .map((a: any) => a.oid)
+    };
   }
 
   previousQuestion() {
@@ -131,30 +188,37 @@ export class ClientExamQuestionComponent {
     return this.question()?.questionTypeName.toLowerCase() === 'matching';
   }
 
-  get left(): AnyAaaaRecord[] {
+  get left(): APIAnswer[] {
     if (!this.isMatchingQuestion) return [];
-    return this.question()?.answers.filter((answer:any) => answer.question_Ask) ?? [];
+    return this.question()?.answers.filter((answer: APIAnswer) => answer.question_Ask) ?? [];
   }
 
-  private _rightItems: any[] = [];
+  private _rightItems: APIAnswer[] = [];
 
-  // get right(): any[] {
-  //   if (!this.isMatchingQuestion) return [];
-  //   return this._rightItems.length ? this._rightItems : this.question()?.answers.filter((answer: any) => !answer.question_Ask) ?? [];
-  // }
-  get right(): any[] {
+  get right(): APIAnswer[] {
     if (!this.isMatchingQuestion) return [];
-    // Always return _rightItems, even if empty
     return this._rightItems;
   }
-  set right(value: any[]) {
+  set right(value: APIAnswer[]) {
     this._rightItems = value;
   }
 
-  middle: string[] = [];
+  middle: APIAnswer[] = [];
 
-  onMiddleChange(updated: string[]) {
+  onMiddleChange(updated: APIAnswer[] | null) {
+    if(updated)
+       this.middle=updated;
     console.log('Middle updated:', updated);
   }
+
+  buildMatchingAnswers(left: APIAnswer[], middle: APIAnswer[]) {
+    const answers = left.map((l, index) => ({
+      selectedAnswerOid: l.oid,
+      answerSelectedAnswerOid: middle[index]?.oid ?? null
+    }));
+
+    return answers;
+  }
+
 
 }

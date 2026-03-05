@@ -32,6 +32,7 @@ export class ChooseExamComponent {
           if (isPlatformBrowser(this.platformId)) {
             localStorage.setItem('studentExamId', exam.oid);
           }
+          localStorage.removeItem(`exam-progress-${exam.oid}`);
           if (mode == 'practice')
             this.onChoosePracticeMode();
           else if (mode == 'exam')

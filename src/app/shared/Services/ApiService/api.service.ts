@@ -61,7 +61,8 @@ export default class ApiService {
       headers: this.createHeaders(),
     }).pipe(
       tap(() => {
-        if (successMessage && !url.includes('search') && !url.includes('en-to-ar')) {
+        if (successMessage && !url.includes('search') && !url.includes('en-to-ar') && !url.includes('submit-multiple') &&
+          !url.includes('validate-answers')) {
           this.toasting.showToast(successMessage, 'success');
         }
       }),

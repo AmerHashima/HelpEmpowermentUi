@@ -84,7 +84,8 @@
         <app-drag-component
           [leftItems]="left"
           [rightItems]="right"
-            (rightItemsChange)="right = $event"
+          [savedMiddle]="savedMiddle"
+          (rightItemsChange)="right = $event"
           (middleChange)="onMiddleChange($event)"
         ></app-drag-component>
       }

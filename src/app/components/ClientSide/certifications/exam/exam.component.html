@@ -9,9 +9,17 @@
 /> -->
 
 @if(currentQuestion()){
-<app-client-exam-question
+<!-- <app-client-exam-question
   [question]="currentQuestion()"
   (next)="goToNext()"
+  (previous)="goToPrevious()"
+  (goToQuestion)="goToQuestionNumber($event)"
+  (mark)="onMarkQuestion($event)"
+  (finishExam)="finishExam($event)"
+/> -->
+<app-client-exam-question
+  [question]="currentQuestion()"
+  (next)="goToNext($event)"
   (previous)="goToPrevious()"
   (goToQuestion)="goToQuestionNumber($event)"
   (mark)="onMarkQuestion($event)"
