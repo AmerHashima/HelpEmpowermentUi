@@ -1,0 +1,67 @@
+<div class="wrapper"
+ cdkDropListGroup>
+  <!-- OPTIONS (Green Boxes) -->
+  <div
+    class="options-bar rounded-3"
+    cdkDropList
+    [cdkDropListData]="sourceOptions"
+    cdkDropListOrientation="horizontal"
+    (cdkDropListDropped)="drop($event)"
+  >
+    @for (option of sourceOptions; track option) {
+      <div cdkDrag class="option-item">
+        {{ option }}
+      </div>
+    } @empty {
+      <div class="text-muted text-center d-flex gap-1 align-items-center justify-content-center">
+        <i class="bi bi-info-circle-fill"></i>
+        <span>No More Options</span>
+      </div>
+    }
+  </div>
+
+  <div class="questions-container "
+        [class.row-layout]="isRowLayout()">
+
+    @for (question of questions(); track question; let i = $index) {
+      <div class="question-column gap-2"
+     >
+        <div
+          class="slots-row"
+          [class.order-2]="shouldReorder()"
+        >
+          @for (slot of droppedItems[i]; track $index; let j = $index) {
+            <div
+              cdkDropList
+              class="drop-box"
+              [cdkDropListData]="droppedItems[i][j]"
+              (cdkDropListDropped)="drop($event, i, j)"
+            >
+              @for (item of droppedItems[i][j]; track item) {
+                <div cdkDrag class="option-item">
+                  {{ item }}
+                </div>
+              }
+            </div>
+          }
+        </div>
+
+        @if (level() == "level 17" || level() == "level 18") {
+          <span
+            class="fw-bold mt-2 d-inline-block"
+            [class.order-1]="level() == 'level 17' || level() == 'level 18'"
+          >
+            Over</span
+          >
+        }
+        <div class="question-box">
+          @if (type() == "text") {
+            <div class="p-3">{{ question }}</div>
+          } @else {
+            <img [src]="'assets/images/quiz/' + question" alt="image" />
+          }
+        </div>
+      </div>
+    }
+  </div>
+</div>

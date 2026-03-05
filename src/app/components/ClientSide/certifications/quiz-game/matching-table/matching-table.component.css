@@ -1,0 +1,49 @@
+.options-bar {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.option-item {
+  background: #e91e63;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 6px;
+  white-space: nowrap;
+  cursor: grab;
+}
+
+.table {
+  border: 1px solid #ccc;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.cell {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: center;
+}
+
+.header {
+  background: #4f637a;
+  color: white;
+  font-weight: bold;
+}
+
+.dropzone {
+  background: #fafafa;
+  min-height: 60px;
+}
+
+.dropped-item {
+  background: #9c27b0;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+}/*# sourceMappingURL=matching-table.component.css.map */

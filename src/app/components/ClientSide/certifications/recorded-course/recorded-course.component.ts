@@ -14,12 +14,15 @@ import { CoureseContentComponent } from '../courese-content/courese-content.comp
 import { ResourcesComponent } from '../course-resources/course-resources.component';
 import { InstructorInfoComponent } from '../../../AdminPanel/certifications/instructor-info/instructor-info.component';
 import { TargetAudienceComponent } from '../../../AdminPanel/certifications/target-audience/target-audience.component';
+import { CartService } from '../../../../Services/  cart.service';
+import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
+import { GenericModelComponent } from '../../../../shared/generic-model/generic-model.component';
 
 @Component({
   selector: 'app-recorded-course',
   imports: [PageBannerComponent, SiteButtonComponent, StarRatingComponent, TranslateModule,
     TranslatePipe, NgIf, CoureseOutlineComponent, CoureseFeaturesComponent, CouresePlayerComponent,
-    CoureseContentComponent, ResourcesComponent, InstructorInfoComponent, TargetAudienceComponent
+    CoureseContentComponent, ResourcesComponent, InstructorInfoComponent, TargetAudienceComponent,GenericModelComponent
   ],
   templateUrl: './recorded-course.component.html',
   styleUrl: './recorded-course.component.scss'
@@ -27,7 +30,10 @@ import { TargetAudienceComponent } from '../../../AdminPanel/certifications/targ
 export class RecordedCourseComponent {
   private shared = inject(Shared);
   private auth = inject(AuthService);
+  private cartService=inject(CartService);
+  private toasting=inject(ToastingMessagesService);
   isRTL = this.shared.isRtl;
+  showConfirm:boolean=false;
   hasBought = this.auth.hasBought;
 
   enrollImage = 'assets/images/enroll.png';
@@ -39,8 +45,59 @@ export class RecordedCourseComponent {
     console.log('Buy Now clicked');
   }
 
-  addToCart() {
-    // Implement add to cart logic
-    console.log('Add to Cart clicked');
+  addToCart(): void {
+    if (!this.auth.studentToken()) {
+      this.showConfirm = true;
+      return;
+    }
+
+    const courseId = this.shared.currentCertificationObject().oid;
+
+    if (this.cartService.courseExists(courseId)) {
+
+      if (this.cartService.isInCart(courseId, 'recordedCourseReserv')) {
+        this.toasting.showToast('Item is already added before', 'warning');
+        return;
+      }
+
+      this.updateExistingCourse(courseId);
+      return;
+    }
+
+    this.addNewCourse(courseId);
+  }
+
+  private updateExistingCourse(courseId: string): void {
+
+    const course = this.cartService.getCourse(courseId);
+    if (!course) return;
+
+    const payload = {
+      oid: course.oid,
+      quantity: course.quantity,
+      couponCode: course.couponCode,
+      examSimulationReserv: course.examSimulationReserv,
+      recordedCourseReserv: true,
+      liveCourseReserv: course.liveCourseReserv,
+    };
+
+    this.cartService.updateCartItem(payload.oid, payload).subscribe({
+      next: (cartItem) => this.cartService.updateBasket(cartItem)
+    });
+  }
+  private addNewCourse(courseId: string): void {
+
+    const cartPayload = {
+      studentId: this.auth.loggedStudent()?.userId!,
+      courseId,
+      examSimulationReserv: false,
+      recordedCourseReserv: true,
+      liveCourseReserv: false,
+      couponCode: "",
+    };
+
+    this.cartService.addCartItem(cartPayload).subscribe({
+      next: (cartItem) => this.cartService.updateBasket(cartItem)
+    });
   }
 }

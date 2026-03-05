@@ -13,6 +13,7 @@ import { AuthService } from '../../../../Services/auth.service';
 import { ChooseExamComponent } from '../choose-exam/choose-exam.component';
 import { CartService } from '../../../../Services/  cart.service';
 import { GenericModelComponent } from '../../../../shared/generic-model/generic-model.component';
+import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
 
 @Component({
   selector: 'app-exam-simulator',
@@ -28,6 +29,7 @@ export class ExamSimulatorComponent {
   private cartService = inject(CartService);
   private shared = inject(Shared);
   private auth = inject(AuthService);
+  private toasting=inject(ToastingMessagesService);
   isRTL = this.shared.isRtl;
   hasBought=this.auth.hasBought;
   studentToken =this.auth.studentToken;
@@ -121,26 +123,110 @@ export class ExamSimulatorComponent {
     console.log('Buy Now clicked');
   }
 
-  addToCart() {
-    if(this.auth.studentToken()){
-      const cartPayload = {
-        studentId: this.auth.loggedStudent()?.userId!,
-        courseId: this.shared.currentCertificationObject().oid,
-        couponCode: "",
-        // itemType:'exam-simulator'
-      }
-      if (this.cartService.isInCart(cartPayload)){
-         console.log('update existing Item')
-      }
-      else{
-        this.cartService.addCartItem(cartPayload).subscribe({
-          next: (cartItem) => {
-            this.cartService.updateBasket(cartItem);
-          }
-        })
-      }
-    }else{
-      this.showConfirm=true;
+  // addToCart() {
+  //   if(this.auth.studentToken()){
+  //     const courseId = this.shared.currentCertificationObject().oid;
+  //     if(this.cartService.courseExists(courseId)){
+  //       if (this.cartService.isInCart(courseId, 'examSimulationReserv')) {
+  //         this.toasting.showToast('Item is already added before', 'warning');
+  //       }else{
+  //         const course = this.cartService.getCourse(courseId);
+  //         console.log('course', course);
+  //         if(course){
+  //           const payload = {
+  //             oid: course.oid,
+  //             quantity: course.quantity,
+  //             couponCode: course.couponCode,
+  //            examSimulationReserv: true,
+  //             recordedCourseReserv: course.recordedCourseReserv,
+  //             liveCourseReserv: course.liveCourseReserv,
+  //           }
+  //           this.cartService.updateCartItem(payload.oid, payload).subscribe({
+  //             next: (cartItem) => {
+  //               console.log('cartItem', cartItem);
+  //               this.cartService.updateBasket(cartItem);
+  //               console.log('cartItems', this.cartService.cartItems());
+  //             }
+  //           })
+  //         }
+
+  //       }
+  //     }else{
+  //       const cartPayload = {
+  //         studentId: this.auth.loggedStudent()?.userId!,
+  //         courseId: courseId,
+  //         examSimulationReserv: true,
+  //         recordedCourseReserv: false,
+  //         liveCourseReserv: false,
+  //         couponCode: "",
+  //       }
+  //       console.log('cartPayload', cartPayload);
+  //       this.cartService.addCartItem(cartPayload).subscribe({
+  //         next: (cartItem) => {
+  //           console.log('cartItem', cartItem);
+  //           this.cartService.updateBasket(cartItem);
+  //           console.log('cartItems',this.cartService.cartItems());
+  //         }
+  //       })
+  //     }
+  //   }else{
+  //     this.showConfirm=true;
+  //   }
+  // }
+  addToCart(): void {
+    if (!this.auth.studentToken()) {
+      this.showConfirm = true;
+      return;
     }
+
+    const courseId = this.shared.currentCertificationObject().oid;
+
+    if (this.cartService.courseExists(courseId)) {
+
+      if (this.cartService.isInCart(courseId, 'examSimulationReserv')) {
+        this.toasting.showToast('Item is already added before', 'warning');
+        return;
+      }
+
+      this.updateExistingCourse(courseId);
+      return;
+    }
+
+    this.addNewCourse(courseId);
+  }
+
+  private updateExistingCourse(courseId: string): void {
+
+    const course = this.cartService.getCourse(courseId);
+    if (!course) return;
+
+    const payload = {
+      oid: course.oid,
+      quantity: course.quantity,
+      couponCode: course.couponCode,
+      examSimulationReserv: true,
+      recordedCourseReserv: course.recordedCourseReserv,
+      liveCourseReserv: course.liveCourseReserv,
+    };
+
+    this.cartService.updateCartItem(payload.oid, payload).subscribe({
+      next: (cartItem) => this.cartService.updateBasket(cartItem)
+    });
+  }
+  private addNewCourse(courseId: string): void {
+
+    const cartPayload = {
+      studentId: this.auth.loggedStudent()?.userId!,
+      courseId,
+      examSimulationReserv: true,
+      recordedCourseReserv: false,
+      liveCourseReserv: false,
+      couponCode: "",
+    };
+
+    this.cartService.addCartItem(cartPayload).subscribe({
+      next: (cartItem) => this.cartService.updateBasket(cartItem)
+    });
   }
 }
+

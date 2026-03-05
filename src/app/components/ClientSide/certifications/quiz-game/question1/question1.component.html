@@ -16,23 +16,6 @@
           {{ area }}
         </td>
 
-
-    <!-- <td cdkDropList
-    [cdkDropListData]="dropZones[i]"
-    [cdkDropListEnterPredicate]="noMoreThanOnePredicate"
-    class="drop-cell"
-    (cdkDropListDropped)="drop($event)">
-  <div *ngFor="let item of dropZones[i]"
-       cdkDrag
-       class="drag-item">
-    {{ item }}
-  </div>
-</td> -->
-
-    <!-- <td cdkDropList
-    [cdkDropListData]="dropZones[i]"
-    class="drop-cell"
-    (cdkDropListDropped)="drop($event)"> -->
     <td
   cdkDropList
   [id]="'zone-' + i"
@@ -50,10 +33,6 @@
     </tbody>
   </table>
 
-  <!-- <div class="options"
-       cdkDropList
-       [cdkDropListData]="options"
-       (cdkDropListDropped)="drop($event)"> -->
        <div
   cdkDropList
   id="options"

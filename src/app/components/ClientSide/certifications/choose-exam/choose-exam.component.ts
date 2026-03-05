@@ -39,6 +39,7 @@ export class ChooseExamComponent {
         }
       })
     }else{
+      // this.onChoosePracticeMode();
       console.log('start Free exam');
     }
 

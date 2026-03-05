@@ -9,6 +9,9 @@ import { Question1Component } from '../question1/question1.component';
 import { FirstQuestionComponent } from '../first-question/first-question.component';
 import { SecondQuestionComponent } from '../second-question/second-question.component';
 import { MultiTableQuestionsComponent } from '../multi-table-questions/multi-table-questions.component';
+import { PyramidDragDropComponent } from '../pyramid-drag-drop/pyramid-drag-drop.component';
+import { GenericDragMatchComponent } from '../generic-drag-match/generic-drag-match.component';
+import { MatchingTableComponent } from '../matching-table/matching-table.component';
 
 interface QuizLevel {
   level: string;
@@ -17,13 +20,20 @@ interface QuizLevel {
   header2: string;
   options?: string[];
   questions: string[];
+  rows?:any,
+  columns?:any,
+  tableOptions?:any,
+  tableCorrectAnswers?:any,
+  type?:string
   headers?: string[];
+  dropSlotsPerQuestion?:number;
   correctAnswers: Record<string, string[]>;
 }
 @Component({
   selector: 'app-quiz-game-question',
   imports: [FeatureComponent, SiteButtonComponent, TranslatePipe, GenericModelComponent, Question1Component,
-    FirstQuestionComponent, SecondQuestionComponent, MultiTableQuestionsComponent
+    FirstQuestionComponent, SecondQuestionComponent, MultiTableQuestionsComponent,
+    PyramidDragDropComponent, GenericDragMatchComponent, MatchingTableComponent
   ],
   templateUrl: './quiz-game-question.component.html',
   styleUrl: './quiz-game-question.component.scss'
@@ -34,7 +44,7 @@ export class QuizGameQuestionComponent {
   private route = inject(ActivatedRoute);
   next = signal<boolean>(false);
   levelMessage = signal<{ message: string, isCorrect: boolean }>({ message: '', isCorrect: false });
-
+  resetFlag=false;
   isRTL = this.shared.isRtl;
   showConfirm: boolean = false;
   showMessage: boolean = false;
@@ -378,12 +388,289 @@ export class QuizGameQuestionComponent {
         '9-4': []
       }
     },
+    {
+      level: 'level 8',
+      title: 'OPM & Portfolios & Programs & Projects',
+      header1: '',
+      header2: '',
+      questions: [
+        "Provides a strategic framework to delivery organizational strategy",
+        "Selects and prioritizes programs and projects",
+        "Coordinates the management of related projects",
+        "Manages efforts to develop specific scope"
+      ],
+      options: [
+          "Project",
+          "ORM",
+          "Program",
+          "Portfolio"
+      ],
+      correctAnswers: {
+        "level1": ['ORM'],
+        "level2": ['Portfolio'],
+        "level3": ['Program'],
+        "level4": ['Project']
+      }
+    },
+    {
+      level: 'level 9',
+      title: 'Project Management Office (PMO)',
+      type:'text',
+      header1: '',
+      header2: '',
+      questions: [
+        "Policies\nMethodologies\nTemplates\nLesson Learned\nLow level of control",
+        "Provide Guidance\nAssists with specific project management tools\nModerate level of control",
+        "Provide project manager\nResponsible for the result\nHigh level of control",
+      ],
+      options: [
+        "Supportive PMO",
+        "Directive PMO",
+        "Controlling PMO",
+      ],
+      correctAnswers: {
+        "level1": ['Supportive PMO'],
+        "level2": ['Controlling PMO'],
+        "level3": ['Directive PMO'],
+      }
+    },
+    {
+      level: 'level 10',
+      title: 'Organization types according to Projects prospectives',
+      type:'image',
+      header1: '',
+      header2: '',
+      questions: [
+        "img1.png",
+        "img2.png",
+        "img3.png",
+        "img4.png",
+        "img5.png"
+      ],
+      options: [
+        "Functional",
+        "Weak Matrix",
+        "Balanced Matrix",
+        "Strong Matrix",
+        "Projectized Organization"
+      ],
+      correctAnswers: {
+        "level1": ['Functional'],
+        "level2": ['Balanced Matrix'],
+        "level3": ['Weak Matrix'],
+        "level4": ['Strong Matrix'],
+        "level5": ['Projectized Organization'],
+      }
+    },
+    {
+      level: 'level 11',
+      title: 'Organization types according to Projects prospectives',
+      type: 'text',
+      header1: '',
+      header2: '',
+      questions: [
+        "Project team members have more than one boss.",
+        "No Home for team members when project is completed.",
+        "The project Manager has little or no authority",
+      ],
+      options: [
+        "Projectized Organization",
+        "Functional Organization",
+        "Matrix Organization",
+      ],
+      correctAnswers: {
+        "level1": ['Matrix Organization'],
+        "level2": ['Projectized Organization'],
+        "level3": ['Functional Organization'],
+      }
+    },
+    {
+      level: 'level 12',
+      title: 'Scrum VS Kanban',
+      type: 'image',
+      header1: '',
+      header2: '',
+      questions: [
+        "scrum.png",
+       "kanban.png"
+      ],
+      options: [
+       "Kanban",
+       "Scrum"
+      ],
+      correctAnswers: {
+        "level1": ['Scrum'],
+        "level2": ['Kanban'],
+      }
+    },
+    {
+      level: 'level 13',
+      title: 'Scrum VS Kanban',
+      type: 'image',
+      dropSlotsPerQuestion: 2,
+      header1: '',
+      header2: '',
+      questions: [
+        "scrum.png",
+        "kanban.png"
+      ],
+      options: [
+        "Time-boxed iterations are optional",
+        "Time-boxed iterations are an essential part",
+        "Product Owner, Scrum master, development team",
+        "No required roles. The whole team owns the kanban board"
+      ],
+      correctAnswers: {
+        "level1": ['Time-boxed iterations are an essential part', 'Product Owner, Scrum master, development team'],
+        "level2": ['Time-boxed iterations are optional', 'No required roles. The whole team owns the kanban board'],
+      }
+    },
+    {
+      level: 'level 14',
+      title: 'Scrum VS Kanban',
+      type: 'image',
+      dropSlotsPerQuestion: 2,
+      header1: '',
+      header2: '',
+      questions: [
+        "scrum.png",
+        "kanban.png"
+      ],
+      options: [
+        "Sprints, Sprint backlogs and product backlogs",
+        "Teams should not make changes during the sprint",
+        "Cards on boards",
+        "Changes can happen at any time"
+      ],
+      correctAnswers: {
+        "level1": ['Sprints, Sprint backlogs and product backlogs','Teams should not make changes during the sprint'],
+        "level2": ['Cards on boards', 'Changes can happen at any time'],
+      }
+    },
+    {
+      level: 'level 15',
+      title: 'Economic models',
+      headers: ['Economic models', 'Project A', 'Project B', 'Which Project would you pick'],
+      correctAnswers: {},
+      header1: '',
+      header2: '',
+      questions: [],
+      rows: [
+        {
+          id: 'row1',
+          columns: [
+            {
+              type: 'text', value: 'Net Present Value' },
+            {
+              type: 'text', value: '95000' },
+            {
+              type: 'text', value: '75000' }
+          ]
+        },
+        {
+          id: 'row2',
+          columns: [
+            { type: 'text', value: 'IRR' },
+            { type: 'text', value: '13%' },
+            { type: 'text', value: '17%' }
+          ]
+        }
+      ],
+      columns: [
+        { key: 'projectA', label: 'Project A' },
+        { key: 'projectB', label: 'Project B' }
+      ],
+      tableOptions: [
+        { id: 'a', label: 'Project A' },
+        { id: 'b', label: 'Project B' }
+      ],
+      tableCorrectAnswers: {
+        row1: 'a',
+        row2: 'b'
+      }
+    },
+    {
+      level: 'level 16',
+      title: 'Economic models',
+      headers: ['Economic models', 'Project A', 'Project B', 'Which Project would you pick'],
+      correctAnswers:{},
+      header1: '',
+      header2: '',
+      questions: [  ],
+      rows: [
+        {
+          id: 'row1',
+          columns: [
+            { type: 'text', value: 'Payback Period' },
+            { type: 'text', value: '16 months' },
+            { type: 'text', value: '21 months' }
+          ]
+        },
+        {
+          id: 'row2',
+          columns: [
+            { type: 'text', value: 'Benefit Cost Ratio' },
+            { type: 'text', value: '1.3' },
+            { type: 'text', value: '2.79' }
+          ]
+        }
+      ],
+      columns: [
+        { key: 'projectA', label: 'Project A' },
+        { key: 'projectB', label: 'Project B' }
+      ],
+      tableOptions: [
+        { id: 'a', label: 'Project A' },
+        { id: 'b', label: 'Project B' }
+      ],
+      tableCorrectAnswers: {
+        row1: 'a',
+        row2: 'b'
+      }
+    },
+    {
+      level: 'level 17',
+      title: 'Agile Values',
+      type: 'text',
+      header1: '',
+      header2: '',
+      questions: [
+        "Individuals and interactions",
+        "Working software"
+      ],
+      options: [
+        "comprehensive documentation",
+        "process and tools",
+      ],
+      correctAnswers: {
+        "level1": ['process and tools'],
+        "level2": ['comprehensive documentation'],
+      }
+    },
+    {
+      level: 'level 18',
+      title: 'Agile Values',
+      type: 'text',
+      header1: '',
+      header2: '',
+      questions: [
+        "Customer collaboration",
+        "Responding to change"
+      ],
+      options: [
+        "following a plan",
+        "contract negotiation",
+      ],
+      correctAnswers: {
+        "level1": ['contract negotiation'],
+        "level2": ['following a plan'],
+      }
+    },
   ];
 
 
   currentLevel = computed(() => this.levels[this.currentLevelIndex()]);
   onGetQuestionResult(isCorrect: boolean) {
-    console.log(isCorrect);
     this.next.set(false);
     if (!isCorrect) {
       this.showMessage = true;
@@ -394,31 +681,36 @@ export class QuizGameQuestionComponent {
       return;
     }
 
-    // this.levelMessage.set({
-    //   message: 'Well Done, Your Answer is correct\nGo To Next Level....',
-    //   isCorrect: false
-    // })
 
     this.score.update(s => s + 1);
-
+    console.log(this.currentLevelIndex());
+    console.log(this.currentLevelIndex() < this.levels.length - 1)
     if (this.currentLevelIndex() < this.levels.length - 1) {
       this.currentLevelIndex.update(i => i + 1);
-      console.log('his.currentLevelIndex', this.currentLevelIndex());
+    }else{
+      this.showMessage=true;
+      this.levelMessage.set({
+        message: 'Well Done,You have rock it',
+        isCorrect: true
+      })
     }
 
   }
 
   nextQuestion() {
-    console.log('next', this.next());
     this.next.set(true);
-    console.log('next',this.next());
   }
   ResetQuiz() {
     this.showResetConfirm = true
   }
   confirmResetQuiz() {
     this.showResetConfirm = false
+    if (this.currentLevelIndex() == 0){
+      this.resetFlag=true;
+    }
+    else{
     this.currentLevelIndex.set(0);
+    }
     this.score.set(0);
   }
   cancelResetQuiz() {
@@ -437,4 +729,13 @@ export class QuizGameQuestionComponent {
   cancalQuiz() {
     this.showConfirm = false;
   }
+  closeResultMessage(){
+    this.router.navigate(['../quiz-game'], {
+      relativeTo: this.route
+    });}
+
+    finish(){
+      this.next.set(true);
+
+    }
 }

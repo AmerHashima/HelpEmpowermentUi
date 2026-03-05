@@ -21,7 +21,12 @@ export class ExamComponent {
   currentExamId = signal<string>('');
   currentQuestionIndex = signal<number>(0);
 
-  questions = computed(() => this.questionStore.questions() ?? []);
+  // questions = computed(() => this.questionStore.questions() ?? []);
+  questions = computed(() => {
+    const list = this.questionStore.questions() ?? [];
+
+    return [...list].sort((a, b) => a.orderNo - b.orderNo);
+  });
 
   // Derived current question (safe access)
   currentQuestion = computed(() => {

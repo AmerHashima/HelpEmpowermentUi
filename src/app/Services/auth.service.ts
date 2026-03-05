@@ -4,6 +4,7 @@ import { APIAuthStudent, APIStudent, AuthStudent, Student } from '../models/stud
 import { ApiResponse } from '../models/apiResponse';
 import { map, Observable } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
+import { Router } from '@angular/router';
 
 interface LoginForm{
   username: string,
@@ -15,7 +16,7 @@ interface LoginForm{
 export class AuthService {
   private platformId = inject(PLATFORM_ID);
   private isBrowser = isPlatformBrowser(this.platformId);
-  hasBought = signal<boolean>(false);
+  hasBought = signal<boolean>(true);
   loggedStudent=signal<APIAuthStudent | null>(null);
   studentToken=signal<string>('');
   adminToken = signal<string>('');
@@ -76,7 +77,6 @@ export class AuthService {
           if (this.isBrowser) {
             localStorage.removeItem('loggedStudent');
             localStorage.removeItem('studentToken');
-
           }
           return response.data;
         })

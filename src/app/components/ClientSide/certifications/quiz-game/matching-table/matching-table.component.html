@@ -1,0 +1,74 @@
+<div class="container">
+  <div >
+    <h5 class="mb-3 fw-bold">Which Project would you pick A or B?</h5>
+  </div>
+  <!-- OPTIONS BAR -->
+<div
+  cdkDropList
+  id="options"
+  [cdkDropListData]="options"
+  [cdkDropListConnectedTo]="connectedDropLists"
+  class="options-bar optionsBorder rouneded rounded-3"
+  (cdkDropListDropped)="drop($event)">
+  @for(option of options ; track option){
+  <div
+    cdkDrag
+    class="option-item">
+    {{ option.label }}
+  </div>
+  } @empty {
+      <div class="text-muted text-center d-flex gap-1 align-items-center justify-content-center">
+        <i class="bi bi-info-circle-fill"></i>
+        <span>No More Options</span>
+      </div>
+    }
+
+</div>
+
+
+<!-- TABLE -->
+<div class="table">
+
+  <!-- HEADER -->
+  <div class="row header">
+    <div class="cell" *ngFor="let header of headers">
+      {{ header }}
+    </div>
+  </div>
+
+  <!-- ROWS -->
+  <div class="row" *ngFor="let row of rows">
+
+    <!-- Fixed 3 columns -->
+    <div class="cell" *ngFor="let col of row.columns">
+      <ng-container *ngIf="!col.type || col.type === 'text'">
+        {{ col.value }}
+      </ng-container>
+
+      <ng-container *ngIf="col.type === 'image'">
+        <img [src]="col.value" />
+      </ng-container>
+    </div>
+
+    <!-- Drop column -->
+<div
+  class="cell dropzone"
+  cdkDropList
+  [id]="row.id"
+  [cdkDropListData]="dropZones()[row.id]"
+  [cdkDropListConnectedTo]="dropListConnections"
+  (cdkDropListDropped)="drop($event, row.id)">
+
+      <div
+        *ngFor="let item of dropZones()[row.id]"
+        cdkDrag
+        class="dropped-item"
+        [class.correct]="isCorrect(row.id)">
+        {{ item.label }}
+      </div>
+
+    </div>
+
+  </div>
+</div>
+</div>

@@ -126,7 +126,9 @@ export class ClientNavbarComponent {
   }
 
   logout(){
-    this.auth.logout().subscribe({})
+    this.auth.logout().subscribe({
+      next:()=> this.router.navigateByUrl(`${this.lang()}/auth/login`)
+    })
   }
   addToCart(){
     this.router.navigateByUrl(`/${this.lang()}/cart`);

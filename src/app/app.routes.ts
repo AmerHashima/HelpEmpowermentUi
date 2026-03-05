@@ -109,6 +109,7 @@ export const routes: Routes = [
       },
       {
         path: "cart",
+        canActivate: [clientAuthGuard],
         component: CartComponent
       },
       {
