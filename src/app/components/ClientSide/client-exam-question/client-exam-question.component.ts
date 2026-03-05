@@ -10,16 +10,7 @@ import { WhiteboardComponent } from '../../../shared/whiteboard/whiteboard.compo
 import { DragComponentComponent } from '../drag-component/drag-component.component';
 import { AnyAaaaRecord } from 'node:dns';
 
-// interface Question {
-//   id: string;
-//   text: string;
-//   type:string;
-//   options: { letter: string; text: string; isSelected?: boolean }[];
-//   progress: number;
-//   questionNumber: number;
-//   totalQuestions: number;
-//   maxChoices: number;
-// }
+
 type QuestionStatus = 'notVisited' | 'answered' | 'marked' | 'skipped';
 
 @Component({
@@ -48,6 +39,7 @@ export class ClientExamQuestionComponent {
   showQuestionBoard:boolean=false;
   showCalculator:boolean=false;
   showWhiteboard:boolean=false;
+  examAnswers=[];
   questionboardNumbers: { number: number; status: QuestionStatus }[] =
     Array.from({ length: 180 }, (_, i) => ({
       number: i + 1,
@@ -64,8 +56,6 @@ export class ClientExamQuestionComponent {
     if (this.isMatchingQuestion) return;
 
     const question = this.question();
-    console.log(question.answers);
-    console.log(question.maxChoices);
     const max = question.maxChoices;
 
     if (max === 1) {
@@ -87,41 +77,6 @@ export class ClientExamQuestionComponent {
       opt.isSelected = true;
     }
   }
-  // selectOption(opt: any['options'][number]) {
-
-  //   const question = this.question();
-  //   const max = question.maxChoices;
-
-  //   // If single choice → behave like radio button
-  //   if (max === 1) {
-  //     question.options.forEach((o:any) => o.isSelected = false);
-  //     opt.isSelected = true;
-  //     return;
-  //   }
-
-  //   // If unlimited choices
-  //   if (max === 0) {
-  //     opt.isSelected = !opt.isSelected;
-  //     return;
-  //   }
-
-  //   // If limited multiple choice
-  //   const selectedCount = question.options.filter((o:any) => o.isSelected).length;
-
-  //   if (opt.isSelected) {
-  //     // Allow deselect
-  //     opt.isSelected = false;
-  //   } else {
-  //     // Only select if under limit
-  //     if (selectedCount < max) {
-  //       opt.isSelected = true;
-  //     }
-  //   }
-  // }
-  // navigateToQuestion(question:any){
-  //   this.showQuestionBoard=false;
-  //   this.question=question;
-  // }
   onOpenCalculator(){
     this.showCalculator=true;
   }
@@ -152,6 +107,12 @@ export class ClientExamQuestionComponent {
   }
 
   nextQuestion() {
+    if (this.question().questionTypeName == '"Multiple Choice Question"'){
+
+    }
+      else if (this.question().questionTypeName == '"Matching"'){
+
+    }
     console.log('before next',this.question())
     this.next.emit();
   }

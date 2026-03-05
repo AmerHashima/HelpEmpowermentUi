@@ -34,7 +34,6 @@ export interface APICertification {
 }
 
 
-
 export interface courseExam {
   oid?: string,
   courseOid: string,

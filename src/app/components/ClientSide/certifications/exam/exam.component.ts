@@ -21,10 +21,8 @@ export class ExamComponent {
   currentExamId = signal<string>('');
   currentQuestionIndex = signal<number>(0);
 
-  // questions = computed(() => this.questionStore.questions() ?? []);
   questions = computed(() => {
     const list = this.questionStore.questions() ?? [];
-
     return [...list].sort((a, b) => a.orderNo - b.orderNo);
   });
 
@@ -49,7 +47,6 @@ export class ExamComponent {
         }];
         this.questionStore.setFilters([...filters]);
         this.questionStore.queryQuestions(this.questionStore.queryRequest());
-
         if (this.isBrowser) {
           const key = this.getStorageKey(examId);
           const saved = localStorage.getItem(key);
