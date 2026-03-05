@@ -1,7 +1,7 @@
 <!-- src\app\components\AdminPanel\certifications\certification-question\certification-question.component.html -->
 <form
   [formGroup]="form"
-  (ngSubmit)="onSubmit()"
+  (ngSubmit)="onSubmit(false)"
   class="d-flex flex-column gap-4 p-3"
 >
   <!--   Certification Info     -->
@@ -296,15 +296,13 @@
             <i class="bi bi-plus-circle me-1"></i> Add Question
           </button>
 
-          @if (!editMode) {
-            <button
-              type="button"
-              class="btn btn-outline-success btn-sm"
-              (click)="addDragAnswersFlag.set(true)"
-            >
-              <i class="bi bi-check-circle me-1"></i> Done with Questions
-            </button>
-          }
+          <button
+            type="button"
+            class="btn btn-outline-success btn-sm"
+            (click)="addDragAnswersFlag.set(true)"
+          >
+            <i class="bi bi-check-circle me-1"></i> Done with Questions
+          </button>
         </div>
       </div>
     </div>
@@ -367,15 +365,13 @@
               <i class="bi bi-plus-circle me-1"></i> Add Answer
             </button>
 
-            @if (!editMode) {
-              <button
-                type="button"
-                class="btn btn-outline-success btn-sm"
-                (click)="DoneWithDragAnswer()"
-              >
-                <i class="bi bi-link-45deg me-1"></i> Done – Link Answers
-              </button>
-            }
+            <button
+              type="button"
+              class="btn btn-outline-success btn-sm"
+              (click)="DoneWithDragAnswer()"
+            >
+              <i class="bi bi-link-45deg me-1"></i> Done – Link Answers
+            </button>
           </div>
         </div>
       </div>
@@ -458,7 +454,6 @@
     <app-button
       btnLabel="{{ editMode ? 'Update Question' : 'Create Question' }}"
       buttonType="submit"
-      (click)="onSubmit(false)"
     />
   </div>
 </div>
