@@ -4,7 +4,7 @@
   font-family:
     -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   background: #f8f9fa;
-  min-height: 100vh;
+  // min-height: 100vh;
 }
 
 .exam-container {
@@ -169,40 +169,6 @@ color:$headerColor !important;
   align-items: center;
 }
 
-.question-box.notVisited {
-  background: #e9ecef;
-}
-
-.question-box.answered {
-  background: $successColor;
-  color: $lightBgTextColor;
-}
-
-.question-box.marked {
-  background: $primaryColor;
-    color: $lightBgTextColor;
-}
-
-.question-box.skipped {
-  background: rgb(150, 150, 26);
-  color: #000;
-}
-
-.notAnswesedTag i{
-color:#e9ecef;
-}
-.AnswesedTag i{
- color:$successColor;
-}
-.markedTag i{
-  color: $primaryColor;
-}
-.skippedTag i{
- color:rgb(150, 150, 26); ;
-}
-span{
-  color: $headerColor !important;
-}
 
 .correctAnswer{
   border:1px solid $primaryColor;

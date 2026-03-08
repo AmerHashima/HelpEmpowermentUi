@@ -152,12 +152,7 @@ export interface APIStudentExamQuestion{
 
 export interface submitStudentExam{
   studentExamOid: string,
-  answers: [
-    {
-      questionOid:string,
-      selectedAnswerOid: string
-    }
-  ],
+  answers: any[],
   updatedBy:string
 }
 

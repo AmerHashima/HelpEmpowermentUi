@@ -371,6 +371,14 @@ function getCertificationChildren(): Routes {
           .then(m => m.ExamReportsComponent)
     },
     {
+      path: 'exam-result',
+      loadComponent: () =>
+        import('./components/ClientSide/certifications/exam-result/exam-result.component')
+          .then(m => m.ExamResultComponent),
+                data: { fullPage: true }
+
+    },
+    {
       path: 'lesson-learned',
       loadComponent: () =>
         import('./components/ClientSide/exam-lesson-learned-questions/exam-lesson-learned-questions.component')

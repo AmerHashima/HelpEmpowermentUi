@@ -8,11 +8,9 @@ import { NgClass } from '@angular/common';
 import { CalculatorComponent } from '../../../shared/calculator/calculator.component';
 import { WhiteboardComponent } from '../../../shared/whiteboard/whiteboard.component';
 import { DragComponentComponent } from '../drag-component/drag-component.component';
-import { AnyAaaaRecord } from 'node:dns';
 import { APIAnswer } from '../../../models/certification';
 
 
-type QuestionStatus = 'notVisited' | 'answered' | 'marked' | 'skipped';
 
 @Component({
   selector: 'app-client-exam-question',
@@ -30,6 +28,7 @@ export class ClientExamQuestionComponent {
   goToQuestion = output<number>();
   mark = output<boolean>();
   finishExam = output<boolean>();
+  showBoard = output<boolean>();
 
 
   private shared=inject(Shared);
@@ -38,21 +37,17 @@ export class ClientExamQuestionComponent {
   question = input.required<any>();
   savedMiddle:any[]=[];
   showConfirm:boolean=false;
-  showQuestionBoard:boolean=false;
+  // showQuestionBoard:boolean=false;
   showCalculator:boolean=false;
   showWhiteboard:boolean=false;
   examAnswers=[];
   showCorrectAnswerFlag:boolean=false;
   showTranslateFlag:boolean=false;
-  questionboardNumbers: { number: number; status: QuestionStatus }[] =
-    Array.from({ length: 180 }, (_, i) => ({
-      number: i + 1,
-      status: 'notVisited'
-    }));
-
 
   ngOnChanges(changes: SimpleChanges) {
-
+    if (changes['question']){
+      this.hideAnswersAndTranslations();
+    }
     if (changes['question'] && this.isMatchingQuestion) {
 
       const q = this.question();
@@ -90,7 +85,6 @@ export class ClientExamQuestionComponent {
     console.log('middle' , this.middle);    }
 
   }
-  // selectOption(opt: Question['options'][number]) {
   selectOption(opt: any['answers'][number]) {
     if (this.isMatchingQuestion) return;
 
@@ -127,6 +121,7 @@ export class ClientExamQuestionComponent {
     this.showConfirm=true;
   }
   EndExam(){
+    this.showConfirm = false;
     this.finishExam.emit(true);
     console.log('confirm end exam');
   }
@@ -134,11 +129,9 @@ export class ClientExamQuestionComponent {
     this.showConfirm=false;
   }
   onOpenQuestionBoard(){
-    this.showQuestionBoard=true
+    this.showBoard.emit(true)
   }
-  closeQuestionBoard(){
-  this.showQuestionBoard = false;
-  }
+
   onTranslate(){
     this.showTranslateFlag=true
   }
@@ -157,24 +150,60 @@ export class ClientExamQuestionComponent {
     this.showCorrectAnswerFlag = false;
 
   }
+  // nextQuestion() {
+  //   this.hideAnswersAndTranslations();
+  //   if (this.question().questionTypeName == 'Multiple Choice Question'){
+  //     this.next.emit({
+  //       type:"Multiple Choice Question",
+  //       answers: this.mapToAnswerPayload(this.question())
+  //     })
+  //   }
+  //     else if (this.question().questionTypeName == 'Matching'){
+  //     this.next.emit({type:'Matching',
+  //       answers:this.buildMatchingAnswers(this.left,this.middle)
+  //     });
+
+  //   }
+  //   // console.log('before next',this.question())
+  //   // this.next.emit();
+  // }
+
   nextQuestion() {
     this.hideAnswersAndTranslations();
-    if (this.question().questionTypeName == 'Multiple Choice Question'){
+
+    const q = this.question();
+
+    if (!q) return;
+
+    // Multiple Choice Question
+    if (q.questionTypeName === 'Multiple Choice Question') {
+      const payload = this.mapToAnswerPayload(q);
+
+      if (!payload?.selectedAnswerOids?.length) {
+        this.next.emit({ type: 'empty' });
+        return;
+      }
+
       this.next.emit({
-        type:"Multiple Choice Question",
-        answers: this.mapToAnswerPayload(this.question())
-      })
-    }
-      else if (this.question().questionTypeName == 'Matching'){
-      this.next.emit({type:'Matching',
-        answers:this.buildMatchingAnswers(this.left,this.middle)
+        type: 'Multiple Choice Question',
+        answers: payload
       });
-
     }
-    // console.log('before next',this.question())
-    // this.next.emit();
-  }
+    // Matching Question
+    else if (q.questionTypeName === 'Matching') {
+      const payload = this.buildMatchingAnswers(this.left, this.middle);
 
+      if (!payload?.length) {
+        this.next.emit({ type: 'empty' });
+        return;
+      }
+
+      this.next.emit({
+        type: 'Matching',
+        answers: payload
+      });
+    }
+  }
   mapToAnswerPayload(question: any) {
     return {
       questionOid: question.oid,
@@ -189,11 +218,7 @@ export class ClientExamQuestionComponent {
     this.previous.emit();
   }
 
-  navigateToQuestion(q: { number: number }) {
-    this.hideAnswersAndTranslations();
-    this.goToQuestion.emit(q.number);
-     this.showQuestionBoard=false;
-  }
+ 
 
 private hideAnswersAndTranslations(){
   this.showCorrectAnswerFlag = false;

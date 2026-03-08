@@ -1,0 +1,35 @@
+@use 'variables' as *;
+.question-box.notVisited {
+  background: #e9ecef;
+}
+
+.question-box.answered {
+  background: $successColor;
+  color: $lightBgTextColor;
+}
+
+.question-box.marked {
+  background: $primaryColor;
+    color: $lightBgTextColor !important;
+}
+
+.question-box.marked p,.question-box.answered p{
+    color: $lightBgTextColor !important;
+}
+
+
+
+
+.notAnswesedTag i{
+color:#e9ecef;
+}
+.AnswesedTag i{
+ color:$successColor;
+}
+.markedTag i{
+  color: $primaryColor;
+}
+
+span{
+  color: $headerColor !important;
+}

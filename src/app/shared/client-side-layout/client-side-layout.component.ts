@@ -114,4 +114,8 @@ export class ClientSideLayoutComponent {
     // Case 2: Fallback to last segment (or 'home')
     return segments[segments.length - 1] || 'home';
   }
+
+  navigateHome(){
+    this.router.navigateByUrl(`/${this.shared.lang()}/home`);
+  }
 }
