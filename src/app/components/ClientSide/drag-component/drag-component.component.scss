@@ -1,79 +1,8 @@
-// @use 'variables' as *;
-// .builder-container {
-//   display: flex;
-//   gap: 8px;
-// }
-
-// .column {
-//   flex: 1;
-//   background-color: transparent;
-//   border-radius: 16px;
-//   padding: 16px;
-//   display: flex;
-//   flex-direction: column;
-//   box-shadow:none !important;
-// }
-
-// #middleList .item{
-//   border:1px solid dashed;
-// }
 
 
-// .list {
-//   display: flex;
-//   flex-direction: column;
-//   flex: 1;
-//   min-height: 250px;
-//   padding: 10px;
-//   gap:8px;
-//   border-radius: 12px;
-// }
 
-// .fixed-list {
-//   display: flex;
-//   flex-direction: column;
-//     flex: 1;
-//   min-height: 250px;
-//   padding: 10px;
-//   gap:8px;
-//   border-radius: 12px;
-// }
 
-// .item {
-//   padding: 12px;
-//   border-radius: 10px;
-//   background-color: $inputBg;
-//   color:$inputText;
-//   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
-//   transition: 0.2s ease;
-//     border: 1px solid $inputBg;
 
-// }
-
-// .placeholder {
-//   border: 1px dashed $borderColor;
-//   background-color: transparent;
-//   color: #aaa;
-//   text-align: center;
-// }
-
-// .draggable {
-//   cursor: grab;
-// }
-
-// .draggable:active {
-//   cursor: grabbing;
-// }
-
-// .cdk-drag-preview {
-//   border-radius: 10px;
-//   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
-// }
-
-// .cdk-drag-placeholder {
-//   opacity: 0.3;
-// }
-/* drag-component.component.scss - example styles */
 .builder-container {
   display: flex;
   gap: 24px;
@@ -121,7 +50,6 @@
 #middleList{
   display: flex;
   flex-direction: column;
-  // gap:.5rem !important;
   .item{
       margin-bottom: 0;
 

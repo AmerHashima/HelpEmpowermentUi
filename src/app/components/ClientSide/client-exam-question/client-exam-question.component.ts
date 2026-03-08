@@ -42,17 +42,15 @@ export class ClientExamQuestionComponent {
   showCalculator:boolean=false;
   showWhiteboard:boolean=false;
   examAnswers=[];
+  showCorrectAnswerFlag:boolean=false;
+  showTranslateFlag:boolean=false;
   questionboardNumbers: { number: number; status: QuestionStatus }[] =
     Array.from({ length: 180 }, (_, i) => ({
       number: i + 1,
-      status: 'skipped'
+      status: 'notVisited'
     }));
 
-  // ngOnChanges(changes: SimpleChanges) {
-  //   if (changes['question'] && this.isMatchingQuestion) {
-  //     this._rightItems = this.question()?.answers.filter((a: any) => !a.question_Ask) ?? [];
-  //   }
-  // }
+
   ngOnChanges(changes: SimpleChanges) {
 
     if (changes['question'] && this.isMatchingQuestion) {
@@ -141,14 +139,26 @@ export class ClientExamQuestionComponent {
   closeQuestionBoard(){
   this.showQuestionBoard = false;
   }
-  onTranslate(){}
+  onTranslate(){
+    this.showTranslateFlag=true
+  }
+  hideTranslations(){
+  this.showTranslateFlag = false
+  }
   onMarkQuestion() {
-    // Toggle for now – later you can track real marked questions
-    this.mark.emit(true); // or toggle logic
+    this.hideAnswersAndTranslations();
+    this.mark.emit(true);
   }
 
+  showAnswer(){
+    this.showCorrectAnswerFlag=true;
+  }
+  hideAnswer(){
+    this.showCorrectAnswerFlag = false;
+
+  }
   nextQuestion() {
-    console.log(this.question().questionTypeName);
+    this.hideAnswersAndTranslations();
     if (this.question().questionTypeName == 'Multiple Choice Question'){
       this.next.emit({
         type:"Multiple Choice Question",
@@ -175,15 +185,20 @@ export class ClientExamQuestionComponent {
   }
 
   previousQuestion() {
+    this.hideAnswersAndTranslations();
     this.previous.emit();
   }
 
   navigateToQuestion(q: { number: number }) {
+    this.hideAnswersAndTranslations();
     this.goToQuestion.emit(q.number);
      this.showQuestionBoard=false;
   }
 
-
+private hideAnswersAndTranslations(){
+  this.showCorrectAnswerFlag = false;
+  this.showTranslateFlag = false;
+}
   get isMatchingQuestion(): boolean {
     return this.question()?.questionTypeName.toLowerCase() === 'matching';
   }
@@ -191,6 +206,21 @@ export class ClientExamQuestionComponent {
   get left(): APIAnswer[] {
     if (!this.isMatchingQuestion) return [];
     return this.question()?.answers.filter((answer: APIAnswer) => answer.question_Ask) ?? [];
+  }
+
+  get correctMiddle(): APIAnswer[] {
+    if (!this.isMatchingQuestion) return [];
+
+    const answers = this.question()?.answers ?? [];
+
+    return this.left
+      .map((q) =>
+        answers.find(
+          (a: APIAnswer) =>
+            !a.question_Ask && a.oid === q.correctAnswerOid
+        )
+      )
+      .filter((a): a is APIAnswer => !!a);
   }
 
   private _rightItems: APIAnswer[] = [];
@@ -208,7 +238,6 @@ export class ClientExamQuestionComponent {
   onMiddleChange(updated: APIAnswer[] | null) {
     if(updated)
        this.middle=updated;
-    console.log('Middle updated:', updated);
   }
 
   buildMatchingAnswers(left: APIAnswer[], middle: APIAnswer[]) {
@@ -219,6 +248,5 @@ export class ClientExamQuestionComponent {
 
     return answers;
   }
-
 
 }

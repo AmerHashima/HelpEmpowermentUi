@@ -15,11 +15,11 @@
       }"
       (click)="onClick.emit()"
     >
-     @if (icon() && customClass()) {
+     @if ((icon() && customClass()) || title().includes('Answer')) {
         <i [class]="icon()"></i>
       }
       <span>{{ title() | translate }}</span>
-      @if (icon() && !customClass()) {
+      @if (icon() && !customClass() && !title().includes('Answer')) {
         <i [class]="icon()"></i>
       }
     </button>

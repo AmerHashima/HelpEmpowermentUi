@@ -134,6 +134,8 @@ export class DragComponentComponent implements OnChanges {
   @Input() rightItems: any[] = [];
   @Input() savedMiddle: any[] = [];
   @Input() totalSlots = 0;
+  @Input() answersFlag = false;
+  @Input() translatedFlag=false
 
   @Output() middleChange = new EventEmitter<any[]>();
   @Output() rightItemsChange = new EventEmitter<any[]>();
@@ -163,6 +165,8 @@ export class DragComponentComponent implements OnChanges {
   }
 
   drop(event: CdkDragDrop<(any | null)[]>) {
+    if (this.answersFlag || this.translatedFlag) return;
+
     // Same container → just reorder inside middle
     if (event.previousContainer === event.container) {
       const newMiddle = [...this.middleItems];

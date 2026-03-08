@@ -42,7 +42,6 @@
             >
           }
 
-
           <div class="progress-bar">
             <div
               class="progress-fill"
@@ -90,7 +89,38 @@
         ></app-drag-component>
       }
     </div>
+    @if (showTranslateFlag) {
+      <div class="correctAnswer mt-3 rounded-3 d-flex gap-3 flex-column">
+        <div class="d-flex flex-column">
+          <h3 class="mainTextColor text-end">الترجمة بالعربية</h3>
+          <div class="question-content">
+            <h2 class="question-text text-end">
+              {{ question().questionText_Ar }}
+            </h2>
 
+            <!-- @if (question().questionTypeName != "MATCHING") { -->
+            @if (!isMatchingQuestion) {
+              <div class="options">
+                @for (opt of question().answers; track opt.letter) {
+                  <label
+                    class="option translatedOption justify-content-end"
+                  >
+                    <span class="letter order-1">({{ opt.letter }})</span>
+                    <span class="text me-2">{{ opt.answerText_Ar }}</span>
+                  </label>
+                }
+              </div>
+            } @else {
+              <app-drag-component
+                [leftItems]="left"
+                [rightItems]="right"
+                [translatedFlag]="true"
+              ></app-drag-component>
+            }
+          </div>
+        </div>
+      </div>
+    }
     <!-- Footer controls -->
     <footer class="question-footer gap-2 flex-column flex-lg-row">
       <div class="left-controls d-flex align-items-center gap-1">
@@ -102,13 +132,43 @@
           [isRTL]="isRTL()"
           (click)="onOpenQuestionBoard()"
         />
-        <app-site-button
+          @if(!showTranslateFlag){
+    <app-site-button
           [title]="'Translate' | translate"
           type="main"
           [isRTL]="isRTL()"
           icon="bi bi-translate"
           [customClass]="true"
           (click)="onTranslate()"
+        />
+        }@else{
+    <app-site-button
+          [title]="'Hide Translation' | translate"
+          type="main"
+          [isRTL]="isRTL()"
+          icon="bi bi-translate"
+          [customClass]="true"
+          (click)="hideTranslations()"
+        />
+        }
+
+      </div>
+      <div class="nav-buttons d-flex align-items-center gap-1">
+        <app-site-button
+          title="Show Answer"
+          [isRTL]="isRTL()"
+          icon="bi bi-eye-fill"
+          [hidden]="showCorrectAnswerFlag"
+          type="main"
+          (click)="showAnswer()"
+        />
+        <app-site-button
+          title="Hide Answer"
+          [isRTL]="isRTL()"
+          icon="bi bi-eye-slash-fill"
+          [hidden]="!showCorrectAnswerFlag"
+          type="main"
+          (click)="hideAnswer()"
         />
       </div>
       <div class="nav-buttons d-flex align-items-center gap-1">
@@ -118,6 +178,7 @@
           [isRTL]="isRTL()"
           (click)="previousQuestion()"
         />
+
         <app-site-button
           [title]="'Marked' | translate"
           type="main"
@@ -134,6 +195,34 @@
         />
       </div>
     </footer>
+    @if (showCorrectAnswerFlag) {
+      <div class="correctAnswer mt-3 rounded-3 d-flex gap-3 flex-column">
+        <div class="d-flex flex-column">
+          <h3 class="mainTextColor">Correct Answer</h3>
+          <div class="d-flex flex-column gap-1">
+            @if (
+              this.question().questionTypeName == "Multiple Choice Question"
+            ) {
+              @for (answer of question().answers; track answer) {
+                @if (answer.isCorrect) {
+                  <span>{{ answer.answerText }}</span>
+                }
+              }
+            } @else {
+              <app-drag-component
+                [leftItems]="left"
+                [savedMiddle]="correctMiddle"
+                [answersFlag]="true"
+              ></app-drag-component>
+            }
+          </div>
+        </div>
+        <div class="d-flex flex-column">
+          <h3 class="mainTextColor">Explanation</h3>
+          <span class="darkText">{{ question().questionExplination }}</span>
+        </div>
+      </div>
+    }
   </main>
 </div>
 
@@ -188,10 +277,10 @@
           <span class="markedTag"><i class="bi bi-circle-fill"></i></span>
           <span>Marked</span>
         </div>
-        <div class="p-1 rouneded rounded-3 d-flex align-items-center gap-1">
+        <!-- <div class="p-1 rouneded rounded-3 d-flex align-items-center gap-1">
           <span class="skippedTag"><i class="bi bi-circle-fill"></i></span>
           <span>Skipped</span>
-        </div>
+        </div> -->
       </div>
       <div class="row g-1 flex-wrap">
         @for (

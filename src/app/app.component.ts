@@ -20,4 +20,5 @@ export class AppComponent {
   constructor(private loadingService: LoadingService) {
     this.loading$ = this.loadingService.loading$;
   }
+  
 }

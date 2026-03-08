@@ -136,6 +136,16 @@
   }
 }
 
+.translatedOption:hover{
+  background-color: transparent;
+    border: 1px solid #ddd;
+color:$headerColor !important;
+ *{
+    color:$headerColor!important;
+  }
+
+}
+
 .option.selected {
   background-color: $primaryColor;
   border-color: $primaryColor;
@@ -194,3 +204,7 @@ span{
   color: $headerColor !important;
 }
 
+.correctAnswer{
+  border:1px solid $primaryColor;
+  padding:1rem;
+}

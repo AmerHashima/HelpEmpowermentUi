@@ -1,95 +1,45 @@
-<!-- <div class="builder-container">
-  <div class="column left">
-    <div class="fixed-list">
-      <div class="item" *ngFor="let item of leftItems">
-        {{ item.answerText }}
-      </div>
-    </div>
-  </div>
 
-  <div class="column middle flex-grow-1">
-    <div
-      cdkDropList
-      id="middleList"
-      [cdkDropListData]="middleItems"
-      [cdkDropListConnectedTo]="['rightList']"
-      class="list"
-      (cdkDropListDropped)="dropToMiddle($event)"
-    >
-      <div
-        class="item"
-        *ngFor="let item of middleItems; let i = index"
-        cdkDrag
-        [cdkDragDisabled]="!item"
-        [class.placeholder]="!item"
-      >
-{{ item?.answerText || "Drop Here" }}      </div>
-    </div>
-  </div>
-
-  @if (rightItems.length > 0) {
-    <div class="column right">
-      <div
-        cdkDropList
-        id="rightList"
-        [cdkDropListData]="rightItems"
-        [cdkDropListConnectedTo]="['middleList']"
-        class="list"
-      >
-        <div class="item draggable" *ngFor="let item of rightItems" cdkDrag>
-          {{ item.answerText }}
-        </div>
-      </div>
-    </div>
-  }@else{
-        <div
-        class="optionsBorder column right  rounded-3  d-flex  align-items-center gap-1 justify-content-center text-muted"
-      >
-        <i class="bi bi-info-circle-fill"></i>
-        <span>No More Options</span>
-      </div>
-  }
-</div>
-
- -->
 
 <!-- drag-component.component.html -->
-<div class="builder-container">
+<div class="builder-container"  >
   <!-- Left column - fixed items (not draggable) -->
-  <div class="column left">
+  <div class="column left" [class.order-2]="translatedFlag">
     <div class="fixed-list">
-      <div class="item" *ngFor="let item of leftItems">
-        {{ item.answerText }}
+      <div class="item"         [class.text-end]="translatedFlag"
+ *ngFor="let item of leftItems">
+        {{ translatedFlag ? item.answerText_Ar : item.answerText }}
       </div>
     </div>
   </div>
 
   <!-- Middle column - droppable slots -->
-  <div class="column middle">
+  <div class="column middle" [class.order-1]="translatedFlag">
     <div
       cdkDropList
       id="middleList"
       [cdkDropListData]="middleItems"
       [cdkDropListConnectedTo]="['rightList']"
       class="list"
+        [cdkDropListDisabled]="answersFlag || translatedFlag"
       (cdkDropListDropped)="drop($event)"
     >
       <div
-        class="item"
+        class="item "
         *ngFor="let item of middleItems; let i = index"
         cdkDrag
         cdkDropListGroup
-        [cdkDragDisabled]="item === null"
+        [cdkDragDisabled]="item === null || answersFlag || translatedFlag "
         [class.placeholder]="item === null"
         [cdkDragData]="item"
       >
-        {{ item?.answerText || "Drop Here" }}
+        {{  item?.answerText|| "Drop Here" }}
       </div>
     </div>
   </div>
 
   <!-- Right column - available items (draggable back) -->
   <!-- @if (rightItems.length > 0) { -->
+  @if(!answersFlag){
   <div class="column right">
     <div
       cdkDropList
@@ -98,11 +48,14 @@
       [cdkDropListData]="rightItems"
       [cdkDropListConnectedTo]="['middleList']"
       class="list"
+              [cdkDropListDisabled]="translatedFlag"
+
       (cdkDropListDropped)="drop($event)"
     >
       @for (item of rightItems; track item) {
-        <div class="item draggable" cdkDrag [cdkDragData]="item">
-          {{ item.answerText }}
+        <div class="item draggable"         [class.text-end]="translatedFlag"
+ cdkDrag [cdkDragData]="item">
+          {{ translatedFlag ? item.answerText_Ar : item.answerText }}
         </div>
       } @empty {
         <div
@@ -114,4 +67,6 @@
       }
     </div>
   </div>
+  }
+
 </div>
