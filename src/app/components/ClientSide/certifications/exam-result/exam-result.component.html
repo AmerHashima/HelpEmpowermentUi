@@ -11,7 +11,7 @@
       <div class="row">
         <div class="col-12">
           <div class="row">
-            <div class="col-6 overAllResult text-center p-3 ">
+            <div class="col-6 overAllResult text-center p-3">
               <span>{{ "Overall Result" | translate }}</span>
             </div>
             <div class="col-6 border-start text-center pass p-3">
@@ -38,99 +38,6 @@
         </div>
       </div>
     </div>
-
-    <div class="table-responsive">
-      <table class="table table-striped table-bordered">
-        <thead>
-          <tr>
-            <th>Performance Level</th>
-            <th class="header">What It Means for the People Domain (42%)</th>
-            <th class="header">What It Means for the Process Domain (50%)</th>
-            <th class="header">
-              What It Means for the Business Environment Domain (8%)
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="aboveTarget">Above Target</td>
-            <td>
-              You consistently demonstrated the ability to lead, motivate, and
-              manage a project team effectively. You excelled in questions on
-              conflict resolution, stakeholder engagement, team development, and
-              communication.
-            </td>
-            <td>
-              You showed a strong, nuanced understanding of the technical
-              project management processes. You could correctly apply
-              predictive, agile, and hybrid approaches to complex scenarios
-              involving scope, schedule, cost, risk, and quality.
-            </td>
-            <td>
-              You masterfully connected project work to organizational strategy
-              and business value. You correctly analyzed benefits, compliance
-              issues, and how external factors (like regulations or market
-              changes) impact project justification and execution.
-            </td>
-          </tr>
-          <tr>
-            <td class="target">Target</td>
-            <td>
-              You demonstrated a solid, competent understanding of how to manage
-              and support the project team. You successfully answered questions
-              on key leadership and interpersonal skills required for a project
-              manager.
-            </td>
-            <td>
-              You reliably applied the correct processes, artifacts, and
-              practices to manage a project. You showed you have the necessary
-              technical knowledge to deliver project outcomes
-            </td>
-            <td>
-              You understood the essential link between the project and the
-              broader business context, correctly answering questions on
-              business case, benefits management, and organizational governance.
-            </td>
-          </tr>
-          <tr>
-            <td class="belowTarget">Below Target</td>
-            <td>
-              You struggled with the leadership and interpersonal aspects of
-              project management. Your answers indicated gaps in skills like
-              motivating team members, managing stakeholder expectations, or
-              resolving conflicts.
-            </td>
-            <td>
-              You had noticeable gaps in your knowledge of the "how-to" of
-              project management. You made errors in applying processes for
-              planning, monitoring, and controlling project work (e.g.,
-              scheduling, budgeting, or managing risks).
-            </td>
-            <td>
-              You showed a weak understanding of how projects align with
-              business goals. You missed questions related to value delivery,
-              regulatory compliance, or strategic alignment
-            </td>
-          </tr>
-          <tr>
-            <td class="improvement">Needs Improvement</td>
-            <td>
-              You demonstrated a significant lack of competency in the
-              people-focused skills of project management. This area requires
-              substantial study and review before re-attempting the exam.
-            </td>
-            <td>
-              Your understanding of the project management processes was
-              critically insufficient. This indicates a major gap in the core
-              technical knowledge required to pass the exam.
-            </td>
-            <td>
-              You failed to grasp the fundamental reasons why projects are
-              undertaken and how they operate within a business ecosystem.
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <app-performance-indicators-table />
   </main>
 </div>

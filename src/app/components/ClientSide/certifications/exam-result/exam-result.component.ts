@@ -3,10 +3,11 @@ import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Shared } from '../../../../shared/Services/shared/shared';
+import { PerformanceIndicatorsTableComponent } from '../../../../../components/ClientSide/performance-indicators-table/performance-indicators-table.component';
 
 @Component({
   selector: 'app-exam-result',
-  imports: [TranslatePipe,NgClass],
+  imports: [TranslatePipe, NgClass, PerformanceIndicatorsTableComponent],
   templateUrl: './exam-result.component.html',
   styleUrl: './exam-result.component.scss'
 })

@@ -1,4 +1,3 @@
-@use 'variables' as *;
 .exam-container {
   min-width: 75%;
   margin: 0 auto;
@@ -20,24 +19,4 @@
 
 .question-area {
   padding: 24px 32px;
-}
-
-
-.overAllResult{
-    border-top-left-radius: 10px !important;
-  background-color: $headerColor;
-  color:white;
-}
-
-.pass{
-      border-top-right-radius: 10px !important;
-
-}
-
-.performanceLevel{
-      border-bottom-left-radius: 10px !important;
-}
-
-.level{
-        border-bottom-right-radius: 10px !important;
 }

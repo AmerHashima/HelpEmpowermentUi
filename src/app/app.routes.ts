@@ -49,6 +49,7 @@ import { TechnicalSupportPolicyComponent } from './components/ClientSide/technic
 import { CartComponent } from './components/ClientSide/cart/cart.component';
 import { CheckoutComponent } from './components/ClientSide/checkout/checkout.component';
 import { checkoutGuard } from './Guards/ClientSideGuards/checkout.guard';
+import { PerformanceLevelsComponent } from '../components/ClientSide/performance-levels/performance-levels.component';
 
 export const validLangGuard: CanMatchFn = (route, segments) => {
   const lang = segments[0]?.path;
@@ -82,6 +83,10 @@ export const routes: Routes = [
       {
         path: 'articles',
         component: ArticlesComponent,
+      },
+      {
+        path: 'performance-levels',
+        component: PerformanceLevelsComponent,
       },
       {
         path: 'faq',
