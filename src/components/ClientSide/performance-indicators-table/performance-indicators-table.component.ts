@@ -1,3 +1,4 @@
+// src\components\ClientSide\performance-indicators-table\performance-indicators-table.component.ts
 import { Component } from '@angular/core';
 
 @Component({

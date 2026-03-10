@@ -4,7 +4,7 @@ import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } fr
 import { CertificationsStore } from '../../../../AdminPanelStores/CertificationStore/certification.store';
 import { ActivatedRoute } from '@angular/router';
 import { CertificationService } from '../../../../Services/certification.service';
-import { isPlatformBrowser, NgIf } from '@angular/common';
+import { isPlatformBrowser, NgFor, NgIf } from '@angular/common';
 import { ButtonComponent } from '../../../../shared/button/button.component';
 import { forkJoin } from 'rxjs';
 import { InputComponent } from '../../../../shared/input/input.component';
@@ -12,7 +12,7 @@ import { SpkNgSelectComponent } from '../../../../shared/spk-ng-select/spk-ng-se
 
 @Component({
   selector: 'app-certification-contents',
-  imports: [ReactiveFormsModule, ButtonComponent, NgIf, InputComponent, SpkNgSelectComponent],
+  imports: [ReactiveFormsModule, ButtonComponent, NgIf, NgFor, InputComponent, SpkNgSelectComponent],
   templateUrl: './certification-contents.component.html',
   styleUrl: './certification-contents.component.scss'
 })
