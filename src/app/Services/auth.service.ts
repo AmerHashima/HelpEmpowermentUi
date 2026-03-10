@@ -77,6 +77,7 @@ export class AuthService {
           if (this.isBrowser) {
             localStorage.removeItem('loggedStudent');
             localStorage.removeItem('studentToken');
+            this.cleanupExamProgressNotSavedForLater();
           }
           return response.data;
         })
@@ -84,6 +85,37 @@ export class AuthService {
 
   }
 
+  cleanupExamProgressNotSavedForLater(): { removedCount: number; removedKeys: string[] } {
+    if (!isPlatformBrowser(this.platformId)) {
+      return { removedCount: 0, removedKeys: [] };
+    }
+
+    const keysToRemove: string[] = [];
+
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (!key?.includes('exam-progress')) continue;
+
+      const raw = localStorage.getItem(key);
+      if (!raw) continue;
+        const data = JSON.parse(raw);
+
+        const shouldRemove = data?.saveForLater !== true;
+
+        if (shouldRemove) {
+          keysToRemove.push(key);
+        }
+     
+    }
+
+    // Perform removal
+    keysToRemove.forEach(key => localStorage.removeItem(key));
+
+    return {
+      removedCount: keysToRemove.length,
+      removedKeys: keysToRemove
+    };
+  }
 
   private updatedLoggedStudent(data: APIAuthStudent) {
     this.loggedStudent.set(data);

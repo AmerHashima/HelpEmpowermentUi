@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import ApiService from '../shared/Services/ApiService/api.service';
 import { map, Observable } from 'rxjs';
 import { ApiResponse, ApiSearchResponse } from '../models/apiResponse';
@@ -9,7 +9,6 @@ import { RequestBody } from '../models/rquest';
   providedIn: 'root'
 })
 export class StudentExamService {
-
   constructor(private apiService: ApiService) { }
 
 

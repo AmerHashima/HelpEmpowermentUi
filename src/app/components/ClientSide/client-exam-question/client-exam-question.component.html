@@ -1,7 +1,7 @@
 <div class="exam-container">
   <!-- Header -->
   <header class="exam-header flex-column flex-lg-row gap-2">
-    <app-feature title="Exam 1 - Practice Mode" icon="bi bi-star" />
+    <app-feature [title]="getExamTitle()" icon="bi bi-star" />
     <!-- <div class="mode"><span class="star">★</span> Exam 1 - Practice Mode</div> -->
     <div class="actions d-flex flex-column flex-lg-row gap-2 flex-grow-1">
       <app-site-button

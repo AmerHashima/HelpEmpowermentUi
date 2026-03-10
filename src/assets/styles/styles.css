@@ -491,6 +491,26 @@ p {
   line-height: 130%;
 }
 
+.aboveTarget {
+  background-color: #2D571A;
+  color: white;
+}
+
+.target {
+  background-color: #00B342;
+  color: white;
+}
+
+.belowTarget {
+  background-color: #FFBD00;
+  color: #000;
+}
+
+.improvement {
+  background-color: #FF0000;
+  color: #fff;
+}
+
 .custom-close {
   background-color: transparent;
   border: none;

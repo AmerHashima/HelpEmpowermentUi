@@ -24,13 +24,14 @@ export class ClientExamQuestionComponent {
 
   // next = output<void>();
   next = output<any>();
+  mode=input<string>('');
   previous = output<void>();
   goToQuestion = output<number>();
   mark = output<boolean>();
   finishExam = output<boolean>();
   showBoard = output<boolean>();
 
-
+  saveForLater = output<void>();
   private shared=inject(Shared);
   isRTL=this.shared.isRtl
   // question = input.required<Question>();
@@ -117,7 +118,9 @@ export class ClientExamQuestionComponent {
   onOpenWhiteboard(){
     this.showWhiteboard=true;
   }
-  onSaveExamForLater(){}
+  onSaveExamForLater(){
+    this.saveForLater.emit();
+  }
   onEndExam(){
     this.showConfirm=true;
   }
@@ -275,4 +278,10 @@ private hideAnswersAndTranslations(){
     return answers;
   }
 
+  getExamTitle(){
+    const exam=this.shared.currentExam();
+    if(exam && this.mode())
+    return `${exam.examName} - ${this.mode()} mode`
+  else return '';
+  }
 }

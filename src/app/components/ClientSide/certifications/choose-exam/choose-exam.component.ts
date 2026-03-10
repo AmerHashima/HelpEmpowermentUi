@@ -47,14 +47,14 @@ export class ChooseExamComponent {
   onChoosePracticeMode(){
     this.router.navigate(['../exams/', this.shared.currentExamId()], {
       relativeTo: this.route,
-      queryParams: { mode: 'practice' },
+      queryParams: { mode: 'Practice' },
       queryParamsHandling: 'merge',
     });
   }
   onChooseExamMode(){
     this.router.navigate(['../exams/', this.shared.currentExamId()], {
       relativeTo: this.route,
-      queryParams: {  mode: 'exam' },
+      queryParams: {  mode: 'Exam' },
       queryParamsHandling: 'merge',
     });
   }

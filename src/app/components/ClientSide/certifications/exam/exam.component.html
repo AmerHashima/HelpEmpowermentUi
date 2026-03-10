@@ -1,10 +1,12 @@
 @if (currentQuestion()) {
   <app-client-exam-question
     [question]="currentQuestion()"
+    [mode]="currentMode()"
     (next)="goToNext($event)"
     (previous)="goToPrevious()"
     (showBoard)="onOpenQuestionBoard($event)"
     [isMarked]="isMarked()"
+    (saveForLater)="onSaveForLater()"
     (mark)="onMarkQuestion($event)"
     (finishExam)="finishExam($event)"
   />

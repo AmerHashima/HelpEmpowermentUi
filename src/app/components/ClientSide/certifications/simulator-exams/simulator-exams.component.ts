@@ -59,10 +59,13 @@ export class SimulatorExamsComponent {
       this.startIndex.update(v => v + this.visibleCount);
     }
   }
-  startExam(examId: string) {
+  startExam(item: any) {
+    const examId=item.oid;
+    this.shared.currentExam.set(item);
     this.shared.currentExamId.set(`${examId}`);
     if (isPlatformBrowser(this.platformId)) {
       localStorage.setItem('currentExamId', examId);
+      localStorage.setItem('currentExam', JSON.stringify(item));
     }
     this.router.navigate(['../chooseExam'], {
       relativeTo: this.route
