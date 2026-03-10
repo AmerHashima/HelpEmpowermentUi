@@ -38,9 +38,7 @@ export class ExamComponent {
   examMatchingAnswers:any[]=[];
   currentExamId = signal<string>('');
   currentQuestionIndex = signal<number>(0);
-  // isMarked = computed(() => {
-  //   return this.markedQuestions().has(this.currentQuestionIndex());
-  // });
+
   isMarked = computed(() => {
     const question = this.currentQuestion();
     if (!question) return false;
@@ -52,10 +50,34 @@ export class ExamComponent {
     return [...list].sort((a, b) => a.orderNo - b.orderNo);
   });
 
-  // answeredQuestions = signal<Set<number>>(new Set());
-  // answeredQuestions = signal<Set<number>>(new Set());
-  answeredQuestions = signal<Set<string>>(new Set());
 
+  answeredQuestions = signal<Set<string>>(new Set());
+  boardQuestions = computed(() => {
+    const list = this.questionStore.questions() ?? [];
+    const marked = this.markedQuestions();
+    const answered = this.answeredQuestions();
+
+    return [...list]
+      .sort((a, b) => a.orderNo - b.orderNo)
+      .map((q, i) => {
+        const isMarked = marked.has(q.oid!);
+        const isAnswered = answered.has(q.oid!);
+
+        let status = 'notVisited';
+        if (isMarked && isAnswered) {
+          status = 'marked-answered'; // custom status for both
+        } else if (isMarked) {
+          status = 'marked';
+        } else if (isAnswered) {
+          status = 'answered';
+        }
+
+        return {
+          ...q,
+          status
+        };
+      });
+  });
   // boardQuestions = computed(() => {
   //   const list = this.questionStore.questions() ?? [];
   //   const marked = this.markedQuestions();
@@ -65,40 +87,13 @@ export class ExamComponent {
   //     .sort((a, b) => a.orderNo - b.orderNo)
   //     .map((q, i) => ({
   //       ...q,
-  //       status: marked.has(i)
+  //       status: marked.has(q.oid!)
   //         ? 'marked'
-  //         : answered.has(i)
+  //         : answered.has(q.oid!)
   //           ? 'answered'
   //           : 'notVisited'
   //     }));
   // });
-  // boardQuestions = computed(() => {
-  //   const list = this.questionStore.questions() ?? [];
-  //   const marked = this.markedQuestions();
-
-  //   return [...list]
-  //     .sort((a, b) => a.orderNo - b.orderNo)
-  //     .map((q, i) => ({
-  //       ...q,
-  //       status: marked.has(i) ? 'marked' : 'notvisited'
-  //     }));
-  // });
-  boardQuestions = computed(() => {
-    const list = this.questionStore.questions() ?? [];
-    const marked = this.markedQuestions();
-    const answered = this.answeredQuestions();
-
-    return [...list]
-      .sort((a, b) => a.orderNo - b.orderNo)
-      .map((q, i) => ({
-        ...q,
-        status: marked.has(q.oid!)
-          ? 'marked'
-          : answered.has(q.oid!)
-            ? 'answered'
-            : 'notVisited'
-      }));
-  });
   currentQuestion = computed(() => {
     const qs = this.questions();
     const idx = this.currentQuestionIndex();

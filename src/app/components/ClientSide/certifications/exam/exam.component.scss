@@ -1,4 +1,7 @@
 @use 'variables' as *;
+.question-box p{
+  width: fit-content;
+}
 .question-box.notVisited {
   background: #e9ecef;
 }
@@ -29,7 +32,19 @@ color:#e9ecef;
 .markedTag i{
   color: $primaryColor;
 }
-
+.marked-answered {
+  background-color: #ffc107; 
+  color: #fff;
+}
+.text-warning{
+  color:#ffc107 !important;
+}
+.marked-answered p{
+  color:#fff;
+}
+.markedAnswered{
+   color:#ffc107 !important; 
+}
 span{
   color: $headerColor !important;
 }
