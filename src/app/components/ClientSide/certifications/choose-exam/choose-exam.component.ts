@@ -1,4 +1,4 @@
-import { Component, inject, PLATFORM_ID, signal } from '@angular/core';
+import { Component, computed, effect, inject, PLATFORM_ID, signal } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { GenericModelComponent } from '../../../../shared/generic-model/generic-model.component';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,6 +8,8 @@ import { AuthService } from '../../../../Services/auth.service';
 import { isPlatformBrowser } from '@angular/common';
 import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
 import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/site-button.component';
+import { StudentService } from '../../../../Services/student-service.service';
+import { APIStudentExamResponse } from '../../../../models/certification';
 
 @Component({
   selector: 'app-choose-exam',
@@ -16,6 +18,7 @@ import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/s
   styleUrl: './choose-exam.component.scss'
 })
 export class ChooseExamComponent {
+  private auth = inject(AuthService);
   private platformId=inject(PLATFORM_ID);
   private router=inject(Router);
   private shared = inject(Shared);
@@ -24,31 +27,21 @@ export class ChooseExamComponent {
   private AuthService = inject(AuthService);
  private toasting=inject(ToastingMessagesService);
   private route=inject(ActivatedRoute);
-  previousExamMode=signal<boolean>(true);
   showConfirm =false;
+  
+  previousExamMode = computed(() => {
+    const examId = this.shared.currentExamId();
+    const allReports = this.studentExamService.reports();
+
+    return allReports.some(
+      r => r.coursesMasterExamOid === examId && r.startedAt && r.finishedAt
+    );
+  });
+  
   private getStorageKey(examId: string,mode:string) {
     return `exam-progress-student_${this.AuthService.loggedStudent()?.userId}-${mode}-${examId}`;
   }
-  // startExam(mode: string) {
-  //   if (this.shared.currentExamId() != 'free') {
-  //     this.studentExamService.startExam(this.getStartExamPayload()).subscribe({
-  //       next: (exam) => {
-  //         this.shared.studentExamId.set(exam.oid);
-  //         if (isPlatformBrowser(this.platformId)) {
-  //           localStorage.setItem('studentExamId', exam.oid);
-  //         }
-  //         localStorage.removeItem(`exam-progress-${exam.oid}`);
-  //         if (mode == 'practice')
-  //           this.onChoosePracticeMode();
-  //         else if (mode == 'exam')
-  //           this.onChooseExamMode()
-  //       }
-  //     })
-  //   } else {
-  //     console.log('start Free exam');
-  //   }
 
-  // }
   startExam(mode: string) {
     const examId = this.shared.currentExamId();
 
@@ -122,6 +115,7 @@ export class ChooseExamComponent {
     return payload;
   }
   openReports(){
+  
     if (this.previousExamMode())
       this.router.navigate(['../reports'], {
         relativeTo: this.route

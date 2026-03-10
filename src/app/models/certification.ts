@@ -119,9 +119,9 @@ export interface APIStudentExamResponse {
   isPassed:boolean,
   examStatusLookupId:string,
   examStatusName:string,
-  startedAt:string,
-  finishedAt: string,
-  createdAt: string,
+  startedAt: string | null;
+  finishedAt: string | null;
+  createdAt: string | null;
   createdBy: string,
   updatedAt: string,
   updatedBy: string,

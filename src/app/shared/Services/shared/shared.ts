@@ -57,15 +57,16 @@ export class Shared {
     if (savedstudettExamId){
       this.studentExamId.set(savedstudettExamId);
     }
+  
     if (
       savedExamId &&
-      (currentUrl.includes('/chooseExam') || currentUrl.includes('?mode')  )
+      (currentUrl.includes('/chooseExam') || currentUrl.includes('/lesson-learned') ||currentUrl.includes('/reports') || currentUrl.includes('?mode')  )
     ) {
       this.currentExamId.set(savedExamId);
     }
     if (
       savedExam &&
-      (currentUrl.includes('/chooseExam') || currentUrl.includes('?mode'))
+      (currentUrl.includes('/chooseExam') || currentUrl.includes('/lesson-learned') || currentUrl.includes('/reports') || currentUrl.includes('?mode'))
     ) {
       this.currentExam.set(JSON.parse(savedExam));
     }

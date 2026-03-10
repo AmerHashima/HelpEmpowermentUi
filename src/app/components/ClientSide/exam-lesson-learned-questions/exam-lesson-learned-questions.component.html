@@ -7,7 +7,7 @@
       <div class="col-lg-4">
         <div class="card summary-card p-3">
           <h6 class="fw-bold">Exam Summary</h6>
-          <div class="score">{{ correct() }}/{{ total() }}</div>
+          <div class="score">{{ latestReport()?.obtainedScore ?? '0' }}/{{ latestReport()?.totalScore ?? '0' }}</div>
 
           <!-- donut placeholder -->
           <div class="chart">
@@ -59,13 +59,14 @@
                   ✔ {{ "Correct Questions" | translate }}
                 </div>
 
-                <h3>{{ correct() }}</h3>
+                <h3>{{ latestReport()?.obtainedScore || '0' }}</h3>
 
                 <button
                   class="btn btn-success w-100"
+                  [disabled]=" !latestReport()?.obtainedScore"
                   (click)="practiceQuestions('correct')"
                 >
-                  Practice {{ correct() }} Questions →
+                  Practice {{ latestReport()?.obtainedScore }} Questions →
                 </button>
               </div>
             </div>
@@ -81,6 +82,7 @@
 
                 <button
                   class="btn btn-danger w-100"
+                                    [disabled]=" !incorrect()"
                   (click)="practiceQuestions('incorrect')"
                 >
                   Practice {{ incorrect() }} Questions →
@@ -97,6 +99,8 @@
                 <h3>{{ notAnswered() }}</h3>
                 <button
                   class="btn btn-secondary w-100"
+                                                      [disabled]=" !notAnswered()"
+
                   (click)="practiceQuestions('na')"
                 >
                   Practice {{ notAnswered() }} Questions →

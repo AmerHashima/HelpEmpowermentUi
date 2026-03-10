@@ -14,7 +14,6 @@ export interface ExamReport {
   obtainedScore:number;
   notAnswered: number;
   isPassed: boolean;
-  level: 'Above Target' | 'Target' | 'Below Target' | 'Needs Improvement';
 }
 
 

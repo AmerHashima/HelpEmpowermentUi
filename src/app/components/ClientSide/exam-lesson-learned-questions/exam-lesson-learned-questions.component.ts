@@ -1,6 +1,8 @@
 import { isPlatformBrowser, Location } from '@angular/common';
-import { Component, Inject, input, output, PLATFORM_ID, signal } from '@angular/core';
+import { Component, computed, inject, Inject, input, output, PLATFORM_ID, signal } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
+import { StudentExamService } from '../../../Services/student-exam.service';
+import { Shared } from '../../../shared/Services/shared/shared';
 
 @Component({
   selector: 'app-exam-lesson-learned-questions',
@@ -9,6 +11,21 @@ import { TranslatePipe } from '@ngx-translate/core';
   styleUrl: './exam-lesson-learned-questions.component.scss'
 })
 export class ExamLessonLearnedQuestionsComponent {
+  private studentExamService=inject(StudentExamService);
+  private shared=inject(Shared);
+  latestReport = computed(() => {
+    const examId = this.shared.currentExamId();
+
+    const reports = this.studentExamService
+      .reports()
+      .filter(r => r.coursesMasterExamOid === examId && r.startedAt);
+
+    if (!reports.length) return null;
+
+    return reports.reduce((a, b) =>
+      new Date(b.startedAt!).getTime() > new Date(a.startedAt!).getTime() ? b : a
+    );
+  });
 
   correct = input<number>(100);
   incorrect = input<number>(60);
@@ -24,11 +41,13 @@ export class ExamLessonLearnedQuestionsComponent {
   ) { }
 
   donutStyle() {
-    const total = this.total();
+    const report = this.latestReport();
 
-    if (!total) return '';
+    if (!report || !report.totalScore) return '';
 
-    const correct = (this.correct() / total) * 100;
+    const total = report.totalScore;
+
+    const correct = (report.obtainedScore / total) * 100;
     const wrong = (this.incorrect() / total) * 100;
     const na = (this.notAnswered() / total) * 100;
 
@@ -42,15 +61,31 @@ export class ExamLessonLearnedQuestionsComponent {
   )`;
   }
   correctPercent() {
-    return Math.round((this.correct() / this.total()) * 100);
+    const report = this.latestReport();
+
+    if (!report || !report.totalScore) return 0;
+
+    const correct = report.obtainedScore;
+    const total = report.totalScore;
+
+    return Math.round((correct / total) * 100);
   }
 
   wrongPercent() {
-    return Math.round((this.incorrect() / this.total()) * 100);
+    const report = this.latestReport();
+
+    if (!report || !report.totalScore) return 0;
+    const total = report.totalScore;
+
+    return Math.round((this.incorrect() / total) * 100);
   }
 
   naPercent() {
-    return Math.round((this.notAnswered() / this.total()) * 100);
+    const report = this.latestReport();
+
+    if (!report || !report.totalScore) return 0;
+    const total = report.totalScore;
+    return Math.round((this.notAnswered() / total) * 100);
   }
   practiceQuestions(type: string) {
     this.practice.emit({ type });

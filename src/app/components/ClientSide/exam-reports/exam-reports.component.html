@@ -15,7 +15,7 @@
             </span>
             <div class="d-flex flex-column gap-1">
               <h6 class="darkText fw-bold">Total Exam Number</h6>
-              <span class="fw-light">8</span>
+              <span class="fw-light">{{reports().length}}</span>
             </div>
           </div>
         </div>
@@ -28,7 +28,7 @@
             </span>
             <div class="d-flex flex-column gap-1">
               <h6 class="darkText fw-bold">Average Score</h6>
-              <span class="fw-light">80%</span>
+              <span class="fw-light">{{averageScore()}}%</span>
             </div>
           </div>
         </div>
@@ -39,25 +39,26 @@
         <div class="col-12">
           <h5 class="mainTextColor fw-bold">Exam Reports</h5>
         </div>
-        <div class="col-12">
-          <div class="reportCard">
-            <app-exam-report-card
-              [report]="{
-                title: 'Exam Report 1',
-                date: 'Apr 14, 2026',
-                duration: 47,
-                correct: 84,
+        @for (report of reports(); track report; let index = $index) {
+          <div class="col-12">
+            <div class="reportCard">
+              <app-exam-report-card
+                [report]="{
+                title: 'Exam Report ' + (index + 1),
+                date: formatDate(report.startedAt),
+                duration: getDurationInMinutes(report.startedAt, report.finishedAt),
+                correct: report.obtainedScore,
                 incorrect: 84,
-                obtainedScore:20,
+                obtainedScore:report.obtainedScore,
                 notAnswered: 2,
-                isPassed: false,
-                level: 'Above Target',
+                isPassed: report.isPassed,
               }"
-              (viewLessons)="onViewLessons()"
-              (checkPerformance)="onCheckPerformance()"
-            />
+                (viewLessons)="onViewLessons()"
+                (checkPerformance)="onCheckPerformance()"
+              />
+            </div>
           </div>
-        </div>
+        }
       </div>
     </div>
   </div>

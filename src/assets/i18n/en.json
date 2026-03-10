@@ -365,7 +365,8 @@
     "pmp": "PMP",
     "capm": "CAPM",
     "cart":"Cart",
-    "checkout":"Checkout"
+    "checkout":"Checkout",
+    "performance-levels":"Performance Levels"
   },
   "courseOutline": "Course Outline"
 }

@@ -1,16 +1,35 @@
-import { Injectable, signal } from '@angular/core';
+import { effect, inject, Injectable, signal } from '@angular/core';
 import ApiService from '../shared/Services/ApiService/api.service';
 import { map, Observable } from 'rxjs';
 import { ApiResponse, ApiSearchResponse } from '../models/apiResponse';
 import { APIStudentExamResponse, choiceQuestionExamSubmit, matchingQuestionExamSubmit, startStudentExam, submitStudentExam } from '../models/certification';
 import { RequestBody } from '../models/rquest';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StudentExamService {
-  constructor(private apiService: ApiService) { }
 
+  private auth = inject(AuthService);
+
+  reports = signal<APIStudentExamResponse[]>([]);
+
+  constructor(private apiService: ApiService) {
+    effect(() => {
+      const studentId = this.auth.loggedStudent()?.userId;
+
+      if (!studentId) return;
+
+      this.getStudentExamsByStudentId(studentId)
+        .subscribe(r => this.reports.set(r));
+    });
+  }
+
+  loadStudentReports(studentId: string) {
+    this.getStudentExamsByStudentId(studentId)
+      .subscribe(r => this.reports.set(r));
+  }
 
   startExam(body: startStudentExam): Observable<APIStudentExamResponse> {
     return this.apiService
@@ -67,11 +86,11 @@ export class StudentExamService {
         })
       );
   }
-  getStudentExamsByStudentId(id: string): Observable<APIStudentExamResponse> {
+  getStudentExamsByStudentId(id: string): Observable<APIStudentExamResponse[]> {
     return this.apiService
-      .getSingle<ApiResponse<APIStudentExamResponse>>('StudentExams/student', id)
+      .getSingle<ApiResponse<APIStudentExamResponse[]>>('StudentExams/student', id)
       .pipe(
-        map((response: ApiResponse<APIStudentExamResponse>) => {
+        map((response: ApiResponse<APIStudentExamResponse[]>) => {
           if (!response.success) {
             const msg = response.errors?.join(', ') || response.message || 'API failed to load student exam';
             throw new Error(msg);
