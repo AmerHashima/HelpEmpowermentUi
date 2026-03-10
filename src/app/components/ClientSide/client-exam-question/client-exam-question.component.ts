@@ -9,10 +9,11 @@ import { CalculatorComponent } from '../../../shared/calculator/calculator.compo
 import { WhiteboardComponent } from '../../../shared/whiteboard/whiteboard.component';
 import { DragComponentComponent } from '../drag-component/drag-component.component';
 import { APIAnswer } from '../../../models/certification';
+import { ExamTimerComponent } from '../certifications/exam-timer/exam-timer.component';
 
 @Component({
   selector: 'app-client-exam-question',
-  imports: [SiteButtonComponent,TranslatePipe,FeatureComponent,
+  imports: [SiteButtonComponent, TranslatePipe, FeatureComponent, ExamTimerComponent,
     GenericModelComponent,NgClass,CalculatorComponent,WhiteboardComponent,DragComponentComponent
   ],
   templateUrl: './client-exam-question.component.html',
@@ -292,4 +293,9 @@ private hideAnswersAndTranslations(){
       this.location.back();
   }
 }
-}
+
+  onTimeUp() {
+    console.log('Time up → auto next question');
+    this.nextQuestion();
+  }
+} 

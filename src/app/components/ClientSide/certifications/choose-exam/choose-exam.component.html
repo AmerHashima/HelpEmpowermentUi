@@ -106,9 +106,14 @@
       </div>
     </div>
     <div class="col-12">
-      <div class="d-flex back gap-2 align-items-center">
-        <i class="bi bi-arrow-left"></i>
-        <span class="fw-bold" (click)="back()">Back To Exam Simulator</span>
+      <div class="d-flex back gap-2 pt-3 justify-content-center">
+             <app-site-button
+          [title]="'Back To Exam Simulator' | translate"
+          type="secondary"
+          [isRTL]="isRTL()"
+          (click)="back()"
+        />
+     
       </div>
     </div>
   </div>

@@ -1,0 +1,13 @@
+@use 'variables' as *;
+.exam-timer{
+      font-weight:600;
+      width:fit-content;
+      padding:.4rem .5rem;
+      border-radius:8px;
+      height:100%;
+      background-color:$primaryColor;
+      color:$lightBgTextColor;
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }

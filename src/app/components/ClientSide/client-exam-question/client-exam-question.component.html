@@ -31,6 +31,13 @@
   <!-- Question area -->
   <main class="question-area">
     <div class="d-flex flex-column flex-md-row gap-2">
+         @if (mode() === "Exam") {
+      <app-exam-timer
+        [duration]="60"
+        [key]="question().oid"
+        (timeUp)="onTimeUp()"
+      ></app-exam-timer>
+    }
       <div class="question-header shadow rounded rounded-3 flex-grow-1">
         <div class="progress-info">
           <span class="mainTextColor"
@@ -59,7 +66,7 @@
         (click)="onOpenCalculator()"
       />
     </div>
-
+ 
     <div class="question-content">
       <h2 class="question-text">
         {{ question().questionText }}
@@ -102,9 +109,7 @@
             @if (!isMatchingQuestion) {
               <div class="options">
                 @for (opt of question().answers; track opt.letter) {
-                  <label
-                    class="option translatedOption justify-content-end"
-                  >
+                  <label class="option translatedOption justify-content-end">
                     <span class="letter order-1">({{ opt.letter }})</span>
                     <span class="text me-2">{{ opt.answerText_Ar }}</span>
                   </label>
@@ -124,7 +129,7 @@
     <!-- Footer controls -->
     <footer class="question-footer gap-2 flex-column flex-lg-row">
       <div class="left-controls d-flex align-items-center gap-1">
-           <app-site-button
+        <app-site-button
           title="Back"
           [isRTL]="isRTL()"
           [customClass]="true"
@@ -139,26 +144,25 @@
           [isRTL]="isRTL()"
           (click)="onOpenQuestionBoard()"
         />
-          @if(!showTranslateFlag){
-    <app-site-button
-          [title]="'Translate' | translate"
-          type="main"
-          [isRTL]="isRTL()"
-          icon="bi bi-translate"
-          [customClass]="true"
-          (click)="onTranslate()"
-        />
-        }@else{
-    <app-site-button
-          [title]="'Hide Translation' | translate"
-          type="main"
-          [isRTL]="isRTL()"
-          icon="bi bi-translate"
-          [customClass]="true"
-          (click)="hideTranslations()"
-        />
+        @if (!showTranslateFlag) {
+          <app-site-button
+            [title]="'Translate' | translate"
+            type="main"
+            [isRTL]="isRTL()"
+            icon="bi bi-translate"
+            [customClass]="true"
+            (click)="onTranslate()"
+          />
+        } @else {
+          <app-site-button
+            [title]="'Hide Translation' | translate"
+            type="main"
+            [isRTL]="isRTL()"
+            icon="bi bi-translate"
+            [customClass]="true"
+            (click)="hideTranslations()"
+          />
         }
-
       </div>
       <div class="nav-buttons d-flex align-items-center gap-1">
         <app-site-button
