@@ -1,1 +1,150 @@
-<p>exam-lesson-learned-questions works!</p>
+@if (!lessonCleared()) {
+  <div class="lesson-container container py-4">
+    <h4 class="title mb-3">Lesson Learned Questions</h4>
+
+    <div class="row g-3">
+      <!-- Exam Summary -->
+      <div class="col-lg-4">
+        <div class="card summary-card p-3">
+          <h6 class="fw-bold">Exam Summary</h6>
+          <div class="score">{{ correct() }}/{{ total() }}</div>
+
+          <!-- donut placeholder -->
+          <div class="chart">
+            <div class="donut" [style.background]="donutStyle()"></div>
+          </div>
+
+          <div class="legend mt-3">
+            <div class="legend-item">
+              <div class="d-flex gap-1 align-items-center">
+                <span class="dot wrong"></span>
+                Wrong Answers
+              </div>
+              <span class="percent">{{ wrongPercent() }}%</span>
+            </div>
+
+            <div class="legend-item">
+              <div class="d-flex gap-1 align-items-center">
+                <span class="dot correct"></span>
+                Correct Answer
+              </div>
+              <span class="percent">{{ correctPercent() }}%</span>
+            </div>
+
+            <div class="legend-item">
+              <div class="d-flex gap-1 align-items-center">
+                <span class="dot na"></span>
+                Not Answered
+              </div>
+              <span class="percent">{{ naPercent() }}%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-8">
+        <div class="practice-container d-flex flex-column px-2 pt-2 pb-4 h-100">
+          <p class="text-center mb-2 w-100 darkText fw-semibold">
+            {{
+              "Great job completing the exam! You can now practice your questions
+          again based on your previous answers:" | translate
+            }}
+          </p>
+
+          <div class="row g-3 flex-grow-1">
+            <!-- Correct -->
+            <div class="col-md-4">
+              <div class="practice-card correct-card">
+                <div class="label text-success">
+                  ✔ {{ "Correct Questions" | translate }}
+                </div>
+
+                <h3>{{ correct() }}</h3>
+
+                <button
+                  class="btn btn-success w-100"
+                  (click)="practiceQuestions('correct')"
+                >
+                  Practice {{ correct() }} Questions →
+                </button>
+              </div>
+            </div>
+
+            <!-- Incorrect -->
+            <div class="col-md-4">
+              <div class="practice-card incorrect-card">
+                <div class="label text-danger">
+                  ✖ {{ "Incorrect Questions" | translate }}
+                </div>
+
+                <h3>{{ incorrect() }}</h3>
+
+                <button
+                  class="btn btn-danger w-100"
+                  (click)="practiceQuestions('incorrect')"
+                >
+                  Practice {{ incorrect() }} Questions →
+                </button>
+              </div>
+            </div>
+
+            <!-- Not Answered -->
+            <div class="col-md-4">
+              <div class="practice-card na-card">
+                <div class="label text-secondary">
+                  ● {{ "Not Answered Questions" | translate }}
+                </div>
+                <h3>{{ notAnswered() }}</h3>
+                <button
+                  class="btn btn-secondary w-100"
+                  (click)="practiceQuestions('na')"
+                >
+                  Practice {{ notAnswered() }} Questions →
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="important-note d-flex flex-column align-items-center gap-2 mt-4 text-center"
+    >
+      <h5>
+        <i class="bi bi-info-circle-fill"></i>
+        {{ "Important Note" | translate }}
+      </h5>
+
+      <span>
+        {{
+          "You can’t start new exam mode until you clear lesson learned Question"
+            | translate
+        }}
+      </span>
+
+      <button class="btn btn-light" (click)="clearLesson()">
+        {{ "Clear Now" | translate }}
+      </button>
+    </div>
+  </div>
+
+} @else {
+  <div class="container py-5 text-center">
+    <div class="d-flex flex-column align-items-center py-4">
+      <i class="bi bi-check-circle-fill mainTextColor display-6"></i>
+
+      <h4 class="mt-3">
+        {{ "Lesson Cleared Successfully!" | translate }}
+      </h4>
+
+      <p class="text-muted w-100">
+        {{ "You can now start a new exam." | translate }}
+      </p>
+
+      <button class="btn btn-primary mt-3" (click)="startNewExam()">
+        {{ "Start New Exam" | translate }}
+      </button>
+    </div>
+  </div>
+}

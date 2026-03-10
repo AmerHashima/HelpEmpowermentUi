@@ -1,0 +1,107 @@
+@use "variables" as *;
+
+.title {
+  color: $primaryColor;
+  font-weight: 600;
+}
+
+.summary-card {
+  border-radius: 8px;
+  background: $inputBg;
+}
+
+.score {
+  color: $primaryColor;
+  font-weight: 700;
+}
+
+.chart {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+
+
+.donut {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  position: relative;
+    transition: background 0.8s ease;
+
+}
+
+.donut::after {
+  content: "";
+  position: absolute;
+  inset: 25px;   /* controls thickness */
+  background: $inputBg;
+  border-radius: 50%;
+}
+
+.legend-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+.dot.correct {
+  background: #43a047;
+}
+.dot.wrong {
+  background: #e53935;
+}
+.dot.na {
+  background: #607d8b;
+}
+
+.practice-container {
+  border: 1px solid #d0d7de;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.practice-card {
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #d0d7de;
+  text-align: center;
+  height:100%;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  gap:1rem;
+  justify-content: center;
+}
+
+.correct-card {
+  border: 2px solid #4caf50;
+}
+
+.important-note {
+  background: $primaryColor;
+  color: $lightBgTextColor;
+  padding: 25px;
+  border-radius: 8px;
+}
+button {
+  border: none !important;
+  &:hover {
+    background-color: $secondaryColor !important;
+    color: $lightBgTextColor !important ;
+  }
+}
+
+.btn-primary{
+  background-color: $primaryColor !important;
+}
+
+

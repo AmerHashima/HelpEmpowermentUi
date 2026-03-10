@@ -71,24 +71,50 @@ export class CertificationsComponent {
   lastSegment = '';
   private sub!: Subscription;
 
-
   constructor() {
-    effect(()=>{
-      this.certificationsStore.setSelectedCertification(this.shared.currentCertificationObject());
+
+    effect(() => {
+      this.certificationsStore.setSelectedCertification(
+        this.shared.currentCertificationObject()
+      );
     });
+
+    this.updateTabsVisibility();
 
     this.sub = this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe(() => {
-        const url = this.router.url.split('?')[0].split('#')[0];
-        const segments = url.split('/').filter(s => s.length > 0);
-        this.lastSegment = segments[segments.length - 1];
-
-        // Hide tabs for certain routes
-        this.showTabs = !['reports', 'lesson-learned', 'chooseExam'].includes(this.lastSegment);
+        this.updateTabsVisibility();
       });
   }
+  // constructor() {
+  //   effect(()=>{
+  //     this.certificationsStore.setSelectedCertification(this.shared.currentCertificationObject());
+  //   });
 
+  //   this.sub = this.router.events
+  //     .pipe(filter(event => event instanceof NavigationEnd))
+  //     .subscribe(() => {
+  //       const url = this.router.url.split('?')[0].split('#')[0];
+  //       const segments = url.split('/').filter(s => s.length > 0);
+  //       this.lastSegment = segments[segments.length - 1];
+
+  //       // Hide tabs for certain routes
+  //       this.showTabs = !['reports', 'lesson-learned', 'chooseExam'].includes(this.lastSegment);
+  //     });
+  // }
+
+  private updateTabsVisibility() {
+
+    const url = this.router.url.split('?')[0].split('#')[0];
+    const segments = url.split('/').filter(s => s.length > 0);
+
+    this.lastSegment = segments[segments.length - 1];
+
+    this.showTabs = !['reports', 'lesson-learned', 'chooseExam']
+      .includes(this.lastSegment);
+
+  }
   ngOnDestroy() {
     this.sub.unsubscribe();
   }
