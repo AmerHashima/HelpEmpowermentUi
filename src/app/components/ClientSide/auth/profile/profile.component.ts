@@ -1,12 +1,12 @@
 import { Component, effect, inject } from '@angular/core';
-import { AuthService } from '../../../../Services/auth.service';
+import { AuthService, changePasswordForm } from '../../../../Services/auth.service';
 import { Shared } from '../../../../shared/Services/shared/shared';
 import { DatePipe, NgClass, NgFor, NgIf, TitleCasePipe } from '@angular/common';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/site-button.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { InputComponent } from '../../../../shared/input/input.component';
 import { PhoneInputComponent } from '../../../../shared/phone/phone.component';
 import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
@@ -84,6 +84,12 @@ export class ProfileComponent {
     mobile: "",
   };
 
+  changePasswordForm={
+    currentPassword:'',
+    newPassword:'',
+    confirmPassword:'',
+  }
+
 constructor(){
   effect(()=>{
     this.user = this.authService.loggedStudent();
@@ -132,7 +138,6 @@ constructor(){
       username: this.credentials.username,
       isActive: true,
       updatedBy: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
-
     };
 
     this.studentService.updateStudent(payload.oid,payload).subscribe({
@@ -142,6 +147,24 @@ constructor(){
       error: () => this.toasting.showToast('Failed to create User', 'error')
     })
     console.log('Submitted credentials:', this.credentials);
+  }
+  onChangePassword(form: NgForm){
+    const payload = {
+      oid: this.authService.loggedStudent()?.userId!,
+      currentPassword: this.changePasswordForm.currentPassword,
+      newPassword: this.changePasswordForm.newPassword,
+      confirmPassword: this.changePasswordForm.confirmPassword,
+      userId: this.authService.loggedStudent()?.userId!,
+      updatedBy: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+    };
+
+    this.authService.changeStudentPassword(payload).subscribe({
+      next: () => {
+        form.resetForm();
+      },
+      error: () => this.toasting.showToast('Failed to change password', 'error')
+    })
+
   }
   }
 

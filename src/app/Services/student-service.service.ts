@@ -255,7 +255,7 @@ export class StudentService {
         })
       );
   }
-=
+
   updateStudentCoursePayment(id: string, body: {
     paymentStatusLookupId:string,
     transactionId:string

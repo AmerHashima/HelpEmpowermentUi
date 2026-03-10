@@ -10,6 +10,28 @@ interface LoginForm{
   username: string,
   password: string
 }
+
+export interface changePasswordForm{
+  oid:string,
+  currentPassword: string,
+  newPassword: string,
+  confirmPassword: string,
+  userId: string,
+  updatedBy: string
+}
+
+export interface resetPasswordForm {
+  email: string,
+  token: string,
+  newPassword: string,
+  confirmPassword: string
+}
+
+export interface forgetPasswordForm {
+  email: string,
+  userType: string
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -63,6 +85,46 @@ export class AuthService {
       );
   }
 
+  changeStudentPassword(body: changePasswordForm): Observable<boolean> {
+    return this.apiService
+      .post<ApiResponse<boolean>>('Auth/change-password', body, "Password has been changed successfully")
+      .pipe(
+        map((response: ApiResponse<boolean>) => {
+          if (!response.success) {
+            const msg = response.errors?.join(', ') || response.message || 'API failed to change password';
+            throw new Error(msg);
+          }
+          return response.data;
+        })
+      );
+  }
+
+  resetStudentPassword(body: resetPasswordForm): Observable<boolean> {
+    return this.apiService
+      .post<ApiResponse<boolean>>('Auth/reset-password', body, "Password Reset Request has been sent successfully")
+      .pipe(
+        map((response: ApiResponse<boolean>) => {
+          if (!response.success) {
+            const msg = response.errors?.join(', ') || response.message || 'API failed to send mail';
+            throw new Error(msg);
+          }
+          return response.data;
+        })
+      );
+  }
+  forgetStudentPassword(body: forgetPasswordForm): Observable<boolean> {
+    return this.apiService
+      .post<ApiResponse<boolean>>('Auth/forget-password', body, "Password Reset Request has been sent successfully")
+      .pipe(
+        map((response: ApiResponse<boolean>) => {
+          if (!response.success) {
+            const msg = response.errors?.join(', ') || response.message || 'API failed to send mail';
+            throw new Error(msg);
+          }
+          return response.data;
+        })
+      );
+  }
   logout(){
     return this.apiService
       .post<ApiResponse<boolean>>('Auth/logout', null, "User has been Logged out Successfully")

@@ -4,10 +4,10 @@
     "about": "About",
     "certifications": "Certifications",
     "contact": "Contact",
-    "calendar": "calendar",
-    "services": "services",
-    "articles": "articles",
-    "faq": "faq",
+    "calendar": "Calendar",
+    "services": "Services",
+    "articles": "Articles",
+    "faq": "FAQ",
     "certifications_children": {
       "PMP": "Project Management Professional (PMP)",
       "CAMP": "Certified Associate in Project Management (CAPM)"

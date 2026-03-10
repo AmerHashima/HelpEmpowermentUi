@@ -339,6 +339,77 @@
                 </div>
               </ng-template>
             </li>
+              <li [ngbNavItem]="5" class="">
+              <a ngbNavLink data-bs-toggle="tab" aria-expanded="false">
+                <span class="visible-xs"
+                  ><i class="las la-cog fs-16 me-1"></i
+                ></span>
+                <span class="hidden-xs">Change Password</span>
+              </a>
+              <ng-template ngbNavContent>
+                <div class="border-0 p-0 form" id="changePassword">
+                       <form
+          #passwordForm="ngForm"
+          (ngSubmit)="onChangePassword(passwordForm)"
+          class="register-form mb-0"
+        >
+          <div class="d-flex flex-column gap-3">
+    
+              <app-input
+              name="currentPassword"
+              [(ngModel)]="changePasswordForm.currentPassword"
+              required
+              minlength="6"
+              [label]="'Current Password' | translate"
+              [placeholder]="'Current Password' | translate"
+              [icon]="'bi bi-lock'"
+              [type]="'password'"
+              [errorMessages]="{
+                required: 'CurrentPassword is required' | translate,
+                minlength: 'At least 6 characters' | translate,
+              }"
+            ></app-input>
+              <app-input
+              name="newPassword"
+              [(ngModel)]="changePasswordForm.newPassword"
+              required
+              minlength="6"
+              [label]="'New Password' | translate"
+              [placeholder]="'Enter your current password' | translate"
+              [icon]="'bi bi-lock'"
+              [type]="'password'"
+              [errorMessages]="{
+                required: 'New Password is required' | translate,
+                minlength: 'At least 6 characters' | translate,
+              }"
+            ></app-input>
+
+              <app-input
+              name="confirmPassword"
+              [(ngModel)]="changePasswordForm.confirmPassword"
+              required
+              minlength="6"
+              [label]="'Confirm Password' | translate"
+              [placeholder]="'Enter your confirm Pasword' | translate"
+              [icon]="'bi bi-lock'"
+              [type]="'password'"
+              [errorMessages]="{
+                required: 'Confirm Password is required' | translate,
+                minlength: 'At least 6 characters' | translate,
+              }"
+            ></app-input>
+            <app-site-button
+              title="Change Password"
+              type="main"
+              htmlType="submit"
+              [icon]="isRTL() ? 'bi bi-arrow-left' : 'bi bi-arrow-right'"
+              [isRTL]="isRTL()"
+            ></app-site-button>
+          </div>
+        </form>
+                </div>
+              </ng-template>
+            </li>
           </ul>
         </div>
         <div class="tab-content border border-top-0 p-4 br-dark customtab">
