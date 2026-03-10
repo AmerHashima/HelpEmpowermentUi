@@ -72,9 +72,15 @@ export default class ApiService {
 
 
 
-  put<T>(url: string, id: string, body: any, successMessage: string = 'Success'): Observable<T> {
-    // const fullUrl = `${this.baseUrl}/${url}/${id}`;
-    const fullUrl = `${this.baseUrl}/${url}`;
+  put<T>(url: string, id: string, body: any, successMessage: string = 'Success',type?:string): Observable<T> {
+    // const fullUrl = `${this.baseUrl}/${url}`;
+    let fullUrl = '';
+    if (type == 'payment')
+      fullUrl = `${this.baseUrl}/${url}/${id}/payment`;
+    if (type == 'progress')
+      fullUrl = `${this.baseUrl}/${url}/${id}/progress`;
+    else
+       fullUrl = `${this.baseUrl}/${url}`;
     this.loader.start();
     return this.http.put<T>(fullUrl, body, { headers: this.createHeaders() }).pipe(
       tap(() => {
