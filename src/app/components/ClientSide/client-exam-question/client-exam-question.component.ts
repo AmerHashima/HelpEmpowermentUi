@@ -35,6 +35,7 @@ export class ClientExamQuestionComponent {
   isRTL=this.shared.isRtl
   // question = input.required<Question>();
   question = input.required<any>();
+  isMarked = input<boolean>(false);
   savedMiddle:any[]=[];
   showConfirm:boolean=false;
   // showQuestionBoard:boolean=false;

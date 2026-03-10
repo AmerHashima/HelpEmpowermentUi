@@ -115,6 +115,30 @@ export class Shared {
     }
   }
 
+  getScoreCategory(score:number): string {
 
+    if (score >= 150) {
+      return 'aboveTarget';
+    } else if (score >= 117) {
+      return 'target';
+    } else if (score >= 97) {
+      return 'belowTarget';
+    } else {
+      return 'improvement';
+    }
+  }
+
+  getScoreLabel(score:number): string {
+
+    if (score >= 150) {
+      return 'Above Target';
+    } else if (score >= 117) {
+      return 'Target';
+    } else if (score >= 97) {
+      return 'Below Target';
+    } else {
+      return 'Needs Improvement';
+    }
+  }
 
 }

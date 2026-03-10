@@ -10,6 +10,7 @@ import { choiceQuestionExamSubmit, submitStudentExam } from '../../../../models/
 import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/site-button.component';
 import { GenericModelComponent } from '../../../../shared/generic-model/generic-model.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
 
 type QuestionStatus = 'notVisited' | 'answered' | 'marked';
 
@@ -29,6 +30,7 @@ export class ExamComponent {
   private isBrowser = isPlatformBrowser(this.platformId);
   private questionStore = inject(QuestionsStore);
   private shared = inject(Shared);
+  private toasting = inject(ToastingMessagesService);
   isRTL=this.shared.isRtl;
   private auth=inject(AuthService)
   showQuestionBoard:boolean=false;
@@ -36,29 +38,40 @@ export class ExamComponent {
   examMatchingAnswers:any[]=[];
   currentExamId = signal<string>('');
   currentQuestionIndex = signal<number>(0);
+  // isMarked = computed(() => {
+  //   return this.markedQuestions().has(this.currentQuestionIndex());
+  // });
+  isMarked = computed(() => {
+    const question = this.currentQuestion();
+    if (!question) return false;
 
-  questions = computed(() => {
+    return this.markedQuestions().has(question.oid);
+  });
+    questions = computed(() => {
     const list = this.questionStore.questions() ?? [];
     return [...list].sort((a, b) => a.orderNo - b.orderNo);
   });
 
-  answeredQuestions = signal<Set<number>>(new Set());
-  boardQuestions = computed(() => {
-    const list = this.questionStore.questions() ?? [];
-    const marked = this.markedQuestions();
-    const answered = this.answeredQuestions();
+  // answeredQuestions = signal<Set<number>>(new Set());
+  // answeredQuestions = signal<Set<number>>(new Set());
+  answeredQuestions = signal<Set<string>>(new Set());
 
-    return [...list]
-      .sort((a, b) => a.orderNo - b.orderNo)
-      .map((q, i) => ({
-        ...q,
-        status: marked.has(i)
-          ? 'marked'
-          : answered.has(i)
-            ? 'answered'
-            : 'notVisited'
-      }));
-  });
+  // boardQuestions = computed(() => {
+  //   const list = this.questionStore.questions() ?? [];
+  //   const marked = this.markedQuestions();
+  //   const answered = this.answeredQuestions();
+
+  //   return [...list]
+  //     .sort((a, b) => a.orderNo - b.orderNo)
+  //     .map((q, i) => ({
+  //       ...q,
+  //       status: marked.has(i)
+  //         ? 'marked'
+  //         : answered.has(i)
+  //           ? 'answered'
+  //           : 'notVisited'
+  //     }));
+  // });
   // boardQuestions = computed(() => {
   //   const list = this.questionStore.questions() ?? [];
   //   const marked = this.markedQuestions();
@@ -70,7 +83,22 @@ export class ExamComponent {
   //       status: marked.has(i) ? 'marked' : 'notvisited'
   //     }));
   // });
-  
+  boardQuestions = computed(() => {
+    const list = this.questionStore.questions() ?? [];
+    const marked = this.markedQuestions();
+    const answered = this.answeredQuestions();
+
+    return [...list]
+      .sort((a, b) => a.orderNo - b.orderNo)
+      .map((q, i) => ({
+        ...q,
+        status: marked.has(q.oid!)
+          ? 'marked'
+          : answered.has(q.oid!)
+            ? 'answered'
+            : 'notVisited'
+      }));
+  });
   currentQuestion = computed(() => {
     const qs = this.questions();
     const idx = this.currentQuestionIndex();
@@ -268,11 +296,19 @@ export class ExamComponent {
         .subscribe({
           next: () => {
             this.updateChoiceAnswer(newAnswer);
-            this.answeredQuestions.update(set => {
-              const s = new Set(set);
-              s.add(this.currentQuestionIndex());
-              return s;
-            });
+            const q = this.currentQuestion();
+
+            if (q?.oid) {
+              this.answeredQuestions.update(set => {
+                const s = new Set(set);
+                s.add(q.oid);
+                return s;
+              })}
+            // this.answeredQuestions.update(set => {
+            //   const s = new Set(set);
+            //   s.add(this.currentQuestionIndex());
+            //   return s;
+            // });
             this.saveExamProgress();
             this.updateIndex();
           }
@@ -298,12 +334,19 @@ export class ExamComponent {
         .subscribe({
           next: () => {
             this.updateMatchingAnswer(matchingPayload);
-            this.answeredQuestions.update(set => {
-              const s = new Set(set);
-              s.add(this.currentQuestionIndex());
-              return s;
-            });
+            // this.answeredQuestions.update(set => {
+            //   const s = new Set(set);
+            //   s.add(this.currentQuestionIndex());
+            //   return s;
+            // });
+            const q = this.currentQuestion();
 
+            if (q?.oid) {
+              this.answeredQuestions.update(set => {
+                const s = new Set(set);
+                s.add(q.oid);
+                return s;
+              })}
             this.saveExamProgress();
             this.updateIndex();
           }
@@ -459,26 +502,53 @@ export class ExamComponent {
   }
 
  
-  markedQuestions = signal<Set<number>>(new Set());  
+  // markedQuestions = signal<Set<number>>(new Set());  
+  markedQuestions = signal<Set<string>>(new Set());  
 
-  isCurrentMarked = computed(() => {
-    return this.markedQuestions().has(this.currentQuestionIndex());
-  });
 
-  onMarkQuestion(wantMark:boolean) {
-    const idx = this.currentQuestionIndex();
+  // isCurrentMarked = computed(() => {
+  //   return this.markedQuestions().has(this.currentQuestionIndex());
+  // });
+
+  // onMarkQuestion(wantMark:boolean) {
+  //   const idx = this.currentQuestionIndex();
+
+  //   this.markedQuestions.update(marks => {
+  //     const newMarks = new Set(marks);
+
+  //     if (newMarks.has(idx)) {
+  //       newMarks.delete(idx); 
+  //     } else {
+  //       newMarks.add(idx);
+  //     }
+  //     this.toasting.showToast('Your Question has been marked successfully','success')
+  //     return newMarks;
+  //   });
+  //   this.saveExamProgress();
+  // }
+
+  onMarkQuestion(wantMark: boolean) {
+    const question = this.currentQuestion();
+    if (!question) return;
+
+    const oid = question.oid;
 
     this.markedQuestions.update(marks => {
       const newMarks = new Set(marks);
 
-      if (newMarks.has(idx)) {
-        newMarks.delete(idx); 
+      if (newMarks.has(oid)) {
+        newMarks.delete(oid);
+        this.toasting.showToast('Mark removed', 'info');
       } else {
-        newMarks.add(idx);
+        newMarks.add(oid);
+        this.toasting.showToast('Question marked successfully', 'success');
       }
 
       return newMarks;
     });
+
     this.saveExamProgress();
   }
+
+
 }

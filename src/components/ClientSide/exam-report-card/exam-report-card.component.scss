@@ -1,0 +1,85 @@
+.exam-report-card {
+  border-radius: 14px;
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.status {
+  display: flex;
+  gap: 10px;
+}
+
+.chip {
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pass {
+  background: #0db14b;
+  color: white;
+}
+.fail{
+  background-color: red;
+    color: white;
+}
+.level {
+  background: #2e5b1a;
+  color: white;
+}
+
+.stats {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-top: 10px;
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.divider {
+  width: 1px;
+  height: 20px;
+  background: #d5dbe0;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 18px;
+}
+
+
+
+.aboveTarget{
+  background-color: #2D571A;
+  color:white
+}
+
+.target{
+  background-color: #00B342;
+  color:white
+}
+
+.belowTarget{
+  background-color: #FFBD00;
+  color:#000;
+}
+
+.improvement{
+  background-color: #FF0000;
+  color:#fff;
+}
