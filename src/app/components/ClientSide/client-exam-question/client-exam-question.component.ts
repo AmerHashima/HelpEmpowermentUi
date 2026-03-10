@@ -1,16 +1,14 @@
-import { Component, inject, input, output, SimpleChanges } from '@angular/core';
+import { Component, Inject, inject, input, output, PLATFORM_ID, SimpleChanges } from '@angular/core';
 import { SiteButtonComponent } from '../../../shared/clientSide/site-button/site-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Shared } from '../../../shared/Services/shared/shared';
 import { FeatureComponent } from '../../../shared/clientSide/feature/feature.component';
 import { GenericModelComponent } from '../../../shared/generic-model/generic-model.component';
-import { NgClass } from '@angular/common';
+import { isPlatformBrowser, NgClass, Location } from '@angular/common';
 import { CalculatorComponent } from '../../../shared/calculator/calculator.component';
 import { WhiteboardComponent } from '../../../shared/whiteboard/whiteboard.component';
 import { DragComponentComponent } from '../drag-component/drag-component.component';
 import { APIAnswer } from '../../../models/certification';
-
-
 
 @Component({
   selector: 'app-client-exam-question',
@@ -45,6 +43,10 @@ export class ClientExamQuestionComponent {
   examAnswers=[];
   showCorrectAnswerFlag:boolean=false;
   showTranslateFlag:boolean=false;
+  constructor(
+    private location: Location,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) { }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['question']){
@@ -284,4 +286,10 @@ private hideAnswersAndTranslations(){
     return `${exam.examName} - ${this.mode()} mode`
   else return '';
   }
+
+  back(){
+    if (isPlatformBrowser(this.platformId)) {
+      this.location.back();
+  }
+}
 }

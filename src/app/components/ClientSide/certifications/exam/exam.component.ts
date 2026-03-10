@@ -15,7 +15,7 @@ import { ToastingMessagesService } from '../../../../shared/Services/ToastingMes
 
 @Component({
   selector: 'app-exam',
-  imports: [ClientExamQuestionComponent,SiteButtonComponent,NgClass,GenericModelComponent],
+  imports: [ClientExamQuestionComponent, SiteButtonComponent, NgClass, GenericModelComponent],
   templateUrl: './exam.component.html',
   styleUrl: './exam.component.scss',
   providers: [QuestionsStore],
@@ -23,20 +23,20 @@ import { ToastingMessagesService } from '../../../../shared/Services/ToastingMes
 })
 export class ExamComponent {
   private platformId = inject(PLATFORM_ID);
-  private router=inject(Router);
-  private route=inject(ActivatedRoute)
+  private router = inject(Router);
+  private route = inject(ActivatedRoute)
   private studentExamService = inject(StudentExamService);
   private isBrowser = isPlatformBrowser(this.platformId);
   private questionStore = inject(QuestionsStore);
   private shared = inject(Shared);
   private toasting = inject(ToastingMessagesService);
-  isRTL=this.shared.isRtl;
-  private auth=inject(AuthService)
-  showQuestionBoard:boolean=false;
-  examChoiceAnswers:any[]=[];
-  examMatchingAnswers:any[]=[];
+  isRTL = this.shared.isRtl;
+  private auth = inject(AuthService)
+  showQuestionBoard: boolean = false;
+  examChoiceAnswers: any[] = [];
+  examMatchingAnswers: any[] = [];
   currentExamId = signal<string>('');
-
+  saveForLater: boolean = false;
   currentQuestionIndex = signal<number>(0);
   currentMode = signal<string>('');
 
@@ -46,7 +46,7 @@ export class ExamComponent {
 
     return this.markedQuestions().has(question.oid);
   });
-    questions = computed(() => {
+  questions = computed(() => {
     const list = this.questionStore.questions() ?? [];
     return [...list].sort((a, b) => a.orderNo - b.orderNo);
   });
@@ -79,7 +79,7 @@ export class ExamComponent {
         };
       });
   });
- 
+
   currentQuestion = computed(() => {
     const qs = this.questions();
     const idx = this.currentQuestionIndex();
@@ -142,9 +142,10 @@ export class ExamComponent {
         if (this.isBrowser) {
           const key = this.getStorageKey(examId);
           const saved = localStorage.getItem(key);
-          if(!saved) {this.resetExam();return;}
+          if (!saved) { this.resetExam(); return; }
           const parsed = JSON.parse(saved);
-          if (parsed.examMode='Exam') {
+          this.saveForLater = parsed.saveForLater;
+          if (parsed.examMode = 'Exam') {
             this.currentQuestionIndex.set(parsed.currentQuestionIndex ?? 0);
             this.examChoiceAnswers = parsed.examChoiceAnswers ?? [];
             this.examMatchingAnswers = parsed.examMatchingAnswers ?? []
@@ -154,7 +155,8 @@ export class ExamComponent {
             if (parsed.answeredQuestions) {
               this.answeredQuestions.set(new Set(parsed.answeredQuestions));
             }
-          } else {
+          }
+          else {
             this.resetExam();
           }
         }
@@ -175,24 +177,36 @@ export class ExamComponent {
       const index = this.currentQuestionIndex();
 
       if (!examId) return;
-       this.saveExamProgress();
+      this.saveExamProgress();
     });
   }
 
-  onSaveForLater(){
-    this.saveExamProgress(true);
+  onSaveForLater() {
+    this.saveForLater = true;
+    this.saveExamProgress();
+    if (this.isBrowser) {
+      localStorage.removeItem('currentExam');
+      localStorage.removeItem('currentExamId');
+      localStorage.removeItem('studentExamId');
+      this.toasting.showToast('Exam has been saved for later', 'success');
+    }
+
+    this.router.navigate(['../../exam-simulator'], {
+      relativeTo: this.route,
+    });
   }
 
-  finishExam(end:boolean) {
-    const payload : submitStudentExam={
+  finishExam(end: boolean) {
+    console.log('studentExamId', this.shared.studentExamId());
+    const payload: submitStudentExam = {
       studentExamOid: this.shared.studentExamId(),
       answers: [],
       updatedBy: '3fa85f64-5717-4562-b3fc-2c963f66afa6'
     }
 
-    if(end && this.isBrowser){
+    if (end && this.isBrowser) {
       this.studentExamService.submitExam(payload).subscribe({
-        next:(result)=>{
+        next: (result) => {
           const key = this.getStorageKey(this.currentExamId());
           localStorage.removeItem(key);
           localStorage.removeItem('currentExam');
@@ -208,7 +222,7 @@ export class ExamComponent {
     }
   }
 
-  resetExam(){
+  resetExam() {
     this.currentQuestionIndex.set(0);
     this.examChoiceAnswers = [];
     this.examMatchingAnswers = [];
@@ -216,11 +230,11 @@ export class ExamComponent {
     this.answeredQuestions.set(new Set([]));
 
   }
-  onOpenQuestionBoard(show:boolean) {
-    this.showQuestionBoard=true
+  onOpenQuestionBoard(show: boolean) {
+    this.showQuestionBoard = true
   }
-  closeQuestionBoard(){
-  this.showQuestionBoard = false;
+  closeQuestionBoard() {
+    this.showQuestionBoard = false;
   }
   navigateToQuestion(q: number) {
     this.goToQuestionNumber(q)
@@ -255,11 +269,11 @@ export class ExamComponent {
   }
 
   private getStorageKey(examId: string) {
-    return `exam-progress-${examId}`;
+    return `exam-progress-student_${this.auth.loggedStudent()?.userId}-${this.currentMode()}-${examId}`;
   }
 
 
- 
+
   goToNext(newAnswer: any) {
 
     if (newAnswer.type === 'empty') {
@@ -292,8 +306,9 @@ export class ExamComponent {
                 const s = new Set(set);
                 s.add(q.oid);
                 return s;
-              })}
-       
+              })
+            }
+
             this.saveExamProgress();
             this.updateIndex();
           }
@@ -319,7 +334,7 @@ export class ExamComponent {
         .subscribe({
           next: () => {
             this.updateMatchingAnswer(matchingPayload);
-      
+
             const q = this.currentQuestion();
 
             if (q?.oid) {
@@ -327,7 +342,8 @@ export class ExamComponent {
                 const s = new Set(set);
                 s.add(q.oid);
                 return s;
-              })}
+              })
+            }
             this.saveExamProgress();
             this.updateIndex();
           }
@@ -335,19 +351,19 @@ export class ExamComponent {
     }
   }
 
-  updateIndex(){
+  updateIndex() {
     if (this.currentQuestionIndex() < this.questions().length - 1) {
       this.currentQuestionIndex.update(i => i + 1);
     }
   }
   updateChoiceAnswer(newAnswer: any) {
-    if (this.examChoiceAnswers.length == 0){
+    if (this.examChoiceAnswers.length == 0) {
       this.examChoiceAnswers.push(newAnswer.answers);
       return;
     }
 
     const index = this.examChoiceAnswers.findIndex(
-      x =>  x.questionOid == newAnswer.answers.questionOid
+      x => x.questionOid == newAnswer.answers.questionOid
     );
     if (index > -1) {
       this.examChoiceAnswers[index] = newAnswer.answers;
@@ -356,7 +372,7 @@ export class ExamComponent {
     }
     this.saveExamProgress()
   }
-  updateMatchingAnswer(matchingPayload:any){
+  updateMatchingAnswer(matchingPayload: any) {
     if (this.examMatchingAnswers.length == 0) {
       this.examMatchingAnswers.push(matchingPayload);
       return;
@@ -373,16 +389,16 @@ export class ExamComponent {
   }
 
 
-  createChoicePayload(answers:any){
-    const payload: choiceQuestionExamSubmit ={
+  createChoicePayload(answers: any) {
+    const payload: choiceQuestionExamSubmit = {
       studentExamOid: this.shared.studentExamId(),
       questions: [answers],
-      createdBy:'3fa85f64-5717-4562-b3fc-2c963f66afa6'
+      createdBy: '3fa85f64-5717-4562-b3fc-2c963f66afa6'
     }
     return payload
   }
 
-  createMatchingPayload(answers:any) {
+  createMatchingPayload(answers: any) {
     const payload = {
       studentExamOid: this.shared.studentExamId(),
       questionOid: this.currentQuestion()?.oid,
@@ -393,7 +409,7 @@ export class ExamComponent {
     return payload;
   }
 
-  private saveExamProgress(saveForLater:boolean=false) {
+  private saveExamProgress() {
     if (!this.isBrowser) return;
 
     const key = this.getStorageKey(this.currentExamId());
@@ -401,18 +417,19 @@ export class ExamComponent {
     localStorage.setItem(
       key,
       JSON.stringify({
-        saveForLater: saveForLater,
-        examMode:this.currentMode(),
-        studentId:this.auth.loggedStudent()?.userId,
+        saveForLater: this.saveForLater,
+        examMode: this.currentMode(),
+        studentId: this.auth.loggedStudent()?.userId,
+        studentExamId: this.shared.studentExamId(),
         currentQuestionIndex: this.currentQuestionIndex(),
         examChoiceAnswers: this.examChoiceAnswers,
-        examMatchingAnswers: this.examMatchingAnswers, 
+        examMatchingAnswers: this.examMatchingAnswers,
         markedQuestions: Array.from(this.markedQuestions()),
         answeredQuestions: Array.from(this.answeredQuestions())
       })
     );
   }
-  
+
 
 
   goToPrevious() {
@@ -452,14 +469,14 @@ export class ExamComponent {
   }
 
   goToQuestionNumber(num: number) {
-    const index = num ;
+    const index = num;
     if (index >= 0 && index < this.questions().length) {
       this.currentQuestionIndex.set(index);
     }
   }
 
- 
-  markedQuestions = signal<Set<string>>(new Set());  
+
+  markedQuestions = signal<Set<string>>(new Set());
 
 
 
