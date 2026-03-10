@@ -1,4 +1,4 @@
-<button
+<!-- <button
       type="{{ htmlType() }}"
       class="btn d-flex align-items-center justify-content-center w-100"
       [ngClass]="{
@@ -22,4 +22,32 @@
       @if (icon() && !customClass() && !title().includes('Answer')) {
         <i [class]="icon()"></i>
       }
-    </button>
+    </button> -->
+<button
+  type="{{ htmlType() }}"
+  class="btn d-flex align-items-center justify-content-center w-100"
+  [ngClass]="{
+    'btn-primary': type() === 'main' && !isMarked(),
+    'btn-outline-primary': type() === 'secondary',
+    'bg-warning text-dark': isMarked(),
+    'custom-class': customClass()
+  }"
+  [disabled]="disabled()"
+  [style]="{
+    'direction': isRTL() ? 'rtl' : 'ltr',
+    'display': 'flex',
+    'align-items': 'center',
+    'gap': '0.5rem'
+  }"
+  (click)="onClick.emit()"
+>
+  @if ((icon() && customClass()) || title().includes('Answer')) {
+    <i [class]="icon()"></i>
+  }
+
+  <span>{{ title() | translate }}</span>
+
+  @if (icon() && !customClass() && !title().includes('Answer')) {
+    <i [class]="icon()"></i>
+  }
+</button>

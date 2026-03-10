@@ -1,7 +1,7 @@
 <div class="exam-container">
   <!-- Header -->
   <header class="exam-header flex-column flex-lg-row gap-2">
-    <app-feature title="Exam 1 - Practice Mode" icon="bi bi-star" />
+    <app-feature [title]="getExamTitle()" icon="bi bi-star" />
     <!-- <div class="mode"><span class="star">★</span> Exam 1 - Practice Mode</div> -->
     <div class="actions d-flex flex-column flex-lg-row gap-2 flex-grow-1">
       <app-site-button
@@ -124,6 +124,13 @@
     <!-- Footer controls -->
     <footer class="question-footer gap-2 flex-column flex-lg-row">
       <div class="left-controls d-flex align-items-center gap-1">
+           <app-site-button
+          title="Back"
+          [isRTL]="isRTL()"
+          [customClass]="true"
+          type="main"
+          (click)="back()"
+        />
         <app-site-button
           [title]="'Question Board' | translate"
           type="main"
@@ -184,6 +191,7 @@
           type="main"
           icon="bi bi-bookmark-check"
           [customClass]="true"
+          [isMarked]="isMarked()"
           [isRTL]="isRTL()"
           (click)="onMarkQuestion()"
         />

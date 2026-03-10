@@ -1,65 +1,59 @@
-import { NgClass } from '@angular/common';
-import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { isPlatformBrowser, NgClass } from '@angular/common';
+import { Component, inject, PLATFORM_ID } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Shared } from '../../../../shared/Services/shared/shared';
 import { PerformanceIndicatorsTableComponent } from '../../../../../components/ClientSide/performance-indicators-table/performance-indicators-table.component';
+import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/site-button.component';
 
 @Component({
   selector: 'app-exam-result',
-  imports: [TranslatePipe, NgClass, PerformanceIndicatorsTableComponent],
+  imports: [TranslatePipe, NgClass, PerformanceIndicatorsTableComponent,SiteButtonComponent],
   templateUrl: './exam-result.component.html',
   styleUrl: './exam-result.component.scss'
 })
 export class ExamResultComponent {
   private shared=inject(Shared);
   private router=inject(Router);
+  private route=inject(ActivatedRoute);
+  private platformId = inject(PLATFORM_ID);
+  isRTL=this.shared.isRtl;
   examResult: any;
 
   storageKey: string='';
 
   ngOnInit() {
+    const isBrowser = isPlatformBrowser(this.platformId);
+
+    if (!isBrowser) return; 
+
     this.storageKey = `examResult-${this.shared.studentExamId()}`;
     const stored = localStorage.getItem(this.storageKey);
     this.examResult = stored ? JSON.parse(stored) : null;
 
-    // remove from storage once loaded
     if (this.examResult) {
       localStorage.removeItem(this.storageKey);
+      localStorage.removeItem('studentExamId');
     }
 
-    // optional: redirect if no result
     if (!this.examResult) {
       this.router.navigateByUrl(`${this.shared.lang()}/home`);
     }
   }
 
-
   getScoreCategory(): string {
     const score = this.examResult?.obtainedScore ?? 0;
-
-    if (score >= 150) {
-      return 'aboveTarget';
-    } else if (score >= 117) {
-      return 'target';
-    } else if (score >= 97) {
-      return 'belowTarget';
-    } else {
-      return 'improvement';
-    }
+     return this.shared.getScoreCategory(score);
   }
 
   getScoreLabel(): string {
     const score = this.examResult?.obtainedScore ?? 0;
+    return this.shared.getScoreLabel(score);
+  }
 
-    if (score >= 150) {
-      return 'Above Target';
-    } else if (score >= 117) {
-      return 'Target';
-    } else if (score >= 97) {
-      return 'Below Target';
-    } else {
-      return 'Needs Improvement';
-    }
+  Done(){
+    this.router.navigate(['../exam-simulator'], {
+      relativeTo: this.route,
+    });
   }
 }

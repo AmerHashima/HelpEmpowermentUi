@@ -1,0 +1,74 @@
+<div class="exam-report-card shadow">
+  <div class="header">
+    <h5 class="fw-bold darkText mb-0">{{ report().title }}</h5>
+
+    <div class="status">
+      @if (report().isPassed) {
+        <span class="chip pass">
+          <i class="bi bi-check-lg"></i>
+          Pass
+        </span>
+      } @else {
+        <span class="chip fail">
+          <i class="bi bi-x-circle"></i>
+          Fail
+        </span>
+      }
+
+      <span class="chip level" [ngClass]="level()">
+  <i class="bi" [ngClass]="levelIcon()"></i>
+        {{levelLabel() }}
+      </span>
+    </div>
+  </div>
+
+  <hr />
+
+  <div class="stats">
+    <div class="stat">
+      <i class="bi bi-calendar"></i>
+      {{ report().date }}
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="stat">
+      <i class="bi bi-clock"></i>
+      Duration: {{ report().duration }} min
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="stat">
+      <i class="bi bi-check-circle"></i>
+      Correct: {{ report().correct }}
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="stat">
+      <i class="bi bi-x-circle"></i>
+      Incorrect: {{ report().incorrect }}
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="stat">
+      <i class="bi bi-exclamation-triangle"></i>
+      Not Answered : {{ report().notAnswered }}
+    </div>
+  </div>
+
+  <div class="footer">
+    <!-- <button class="btn lessons-btn">
+      View Lesson learned Question
+    </button> -->
+
+    <app-site-button
+      title="Check Performance Levels Indicators"
+      [isRTL]="isRTL()"
+      type="main"
+      (click)="performanceIndicators()"
+    />
+  </div>
+</div>

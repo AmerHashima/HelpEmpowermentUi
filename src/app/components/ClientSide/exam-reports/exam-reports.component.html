@@ -1,1 +1,64 @@
-<p>exam-reports works!</p>
+<div class="container-fluid">
+  <div class="row g-3">
+    <div class="col-12">
+      <h5 class="mainTextColor fw-bold">Exam 1 Reports</h5>
+      <p>{{ "Review Your Previous Exam Attempts" | translate }}</p>
+    </div>
+    <div class="col-12">
+      <div class="row">
+        <div class="col-6">
+          <div
+            class="reportScoreCard gap-3 d-flex align-items-center p-3 rounded-3 shadow-sm"
+          >
+            <span class="icon rounded-3 p-3">
+              <i class="bi bi-journal-check"></i>
+            </span>
+            <div class="d-flex flex-column gap-1">
+              <h6 class="darkText fw-bold">Total Exam Number</h6>
+              <span class="fw-light">8</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div
+            class="reportScoreCard gap-3 d-flex align-items-center p-3 rounded-3 shadow-sm"
+          >
+            <span class="icon rounded-3 p-3">
+              <i class="bi bi-trophy"></i>
+            </span>
+            <div class="d-flex flex-column gap-1">
+              <h6 class="darkText fw-bold">Average Score</h6>
+              <span class="fw-light">80%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="row">
+        <div class="col-12">
+          <h5 class="mainTextColor fw-bold">Exam Reports</h5>
+        </div>
+        <div class="col-12">
+          <div class="reportCard">
+            <app-exam-report-card
+              [report]="{
+                title: 'Exam Report 1',
+                date: 'Apr 14, 2026',
+                duration: 47,
+                correct: 84,
+                incorrect: 84,
+                obtainedScore:20,
+                notAnswered: 2,
+                isPassed: false,
+                level: 'Above Target',
+              }"
+              (viewLessons)="onViewLessons()"
+              (checkPerformance)="onCheckPerformance()"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -4,6 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { isPlatformBrowser } from '@angular/common';
 import { certifications } from '../../clientSide/certification-cards/certification-cards.component';
 import { Router } from '@angular/router';
+import { courseExam } from '../../../models/certification';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +26,7 @@ export class Shared {
     return certification;
   });
   currentExamId = signal('');
+  currentExam = signal<courseExam | null>(null);
   studentExamId = signal('');
   fullPage = signal<boolean>(false);
 
@@ -49,6 +51,7 @@ export class Shared {
 
     const currentUrl = this.router.url;
     const savedExamId = localStorage.getItem('currentExamId');
+    const savedExam = localStorage.getItem('currentExam');
     const savedstudettExamId = localStorage.getItem('studentExamId');
     console.log('savedstudettExamId',savedstudettExamId);
     if (savedstudettExamId){
@@ -59,6 +62,12 @@ export class Shared {
       (currentUrl.includes('/chooseExam') || currentUrl.includes('?mode')  )
     ) {
       this.currentExamId.set(savedExamId);
+    }
+    if (
+      savedExam &&
+      (currentUrl.includes('/chooseExam') || currentUrl.includes('?mode'))
+    ) {
+      this.currentExam.set(JSON.parse(savedExam));
     }
   }
 
@@ -115,6 +124,30 @@ export class Shared {
     }
   }
 
+  getScoreCategory(score:number): string {
 
+    if (score >= 150) {
+      return 'aboveTarget';
+    } else if (score >= 117) {
+      return 'target';
+    } else if (score >= 97) {
+      return 'belowTarget';
+    } else {
+      return 'improvement';
+    }
+  }
+
+  getScoreLabel(score:number): string {
+
+    if (score >= 150) {
+      return 'Above Target';
+    } else if (score >= 117) {
+      return 'Target';
+    } else if (score >= 97) {
+      return 'Below Target';
+    } else {
+      return 'Needs Improvement';
+    }
+  }
 
 }

@@ -1,0 +1,12 @@
+@use 'variables' as *;
+.reportScoreCard{
+  background-color: $inputBg;
+  *{
+    color:$inputText
+  }
+}
+
+.icon{
+  background-color: $primaryColor;
+  color:$lightBgTextColor !important;
+}
