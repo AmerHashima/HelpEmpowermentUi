@@ -8,7 +8,7 @@
 <div class="container-fluid">
   <div class="row g-3">
     <!-- Add button -->
-@if ((certifications() ?? []).length > 0) {
+@if (certifications().length > 0) {
       <div class="col-12">
         <div class="w-100 d-flex justify-content-end">
           <app-button
@@ -21,7 +21,7 @@
     }
     <!-- Content -->
     <div class="col-12">
-      @if (certifications()?.length === 0) {
+      @if (certifications().length === 0) {
         <!-- Empty state -->
         <div
           class="d-flex flex-column align-items-center justify-content-center py-5 text-center"

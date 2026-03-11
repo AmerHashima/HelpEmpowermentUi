@@ -1,20 +1,17 @@
 // src\app\components\AdminPanel\certifications\certification\certification.component.ts
 import { Component, computed, effect, inject } from '@angular/core';
 import { ButtonComponent } from '../../../../shared/button/button.component';
-import { AsyncPipe } from '@angular/common';
 import { CertificationService } from '../../../../Services/certification.service';
 import { CertificationsStore } from '../../../../AdminPanelStores/CertificationStore/certification.store';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { BreadcrumbService } from '../../../../Services/breadcrumb.service';
-import { CertificationsFeaturesComponent } from '../certifications-features/certifications-features.component';
 import { ExamsStore } from '../../../../AdminPanelStores/ExamsStore/exam.store';
 import { QuestionsStore } from '../../../../AdminPanelStores/QuestionStores/questions.store';
-import { CertificationContentsComponent } from '../certification-contents/certification-contents.component';
 
 @Component({
   selector: 'app-certification',
-  imports: [ButtonComponent, AsyncPipe, CertificationsFeaturesComponent, CertificationContentsComponent],
+  imports: [ButtonComponent],
   templateUrl: './certification.component.html',
   styleUrl: './certification.component.scss'
 })

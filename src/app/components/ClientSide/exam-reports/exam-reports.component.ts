@@ -1,3 +1,4 @@
+// src\app\components\ClientSide\exam-reports\exam-reports.component.ts
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ExamReportCardComponent } from '../../../../components/ClientSide/exam-report-card/exam-report-card.component';
@@ -9,7 +10,7 @@ import { Shared } from '../../../shared/Services/shared/shared';
 
 @Component({
   selector: 'app-exam-reports',
-  imports: [TranslatePipe, ExamReportCardComponent,DatePipe],
+  imports: [TranslatePipe, ExamReportCardComponent, DatePipe],
   templateUrl: './exam-reports.component.html',
   providers: [DatePipe],
   styleUrl: './exam-reports.component.scss'
@@ -20,7 +21,7 @@ export class ExamReportsComponent {
   private shared = inject(Shared);
   currentExamId = this.shared.currentExamId
   private datePipe = inject(DatePipe);
-  studentId=computed(()=> this.auth.loggedStudent()?.userId);
+  studentId = computed(() => this.auth.loggedStudent()?.userId);
   averageScore = computed(() => {
     const reports = this.reports();
 
@@ -58,7 +59,7 @@ export class ExamReportsComponent {
     return Math.floor(diffMs / (1000 * 60));
   }
 
- 
+
   onViewLessons() {
     console.log('View lessons clicked');
   }

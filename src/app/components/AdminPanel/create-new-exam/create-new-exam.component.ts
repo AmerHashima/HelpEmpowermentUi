@@ -6,7 +6,6 @@ import { courseExam } from '../../../models/certification';
 import { ButtonComponent } from '../../../shared/button/button.component';
 import { InputComponent } from '../../../shared/input/input.component';
 import { SpkNgSelectComponent } from '../../../shared/spk-ng-select/spk-ng-select.component';
-import { AsyncPipe } from '@angular/common';
 import { Location } from '@angular/common';
 import { CertificationsStore } from '../../../AdminPanelStores/CertificationStore/certification.store';
 import { ActivatedRoute } from '@angular/router';
@@ -16,7 +15,7 @@ import { BreadcrumbService } from '../../../Services/breadcrumb.service';
 
 @Component({
   selector: 'app-create-new-exam',
-  imports: [ButtonComponent, InputComponent, SpkNgSelectComponent, AsyncPipe, ReactiveFormsModule],
+  imports: [ButtonComponent, InputComponent, SpkNgSelectComponent, ReactiveFormsModule],
   templateUrl: './create-new-exam.component.html',
   styleUrl: './create-new-exam.component.scss'
 })

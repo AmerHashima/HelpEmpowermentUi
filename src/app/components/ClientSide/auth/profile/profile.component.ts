@@ -1,7 +1,8 @@
+// src\app\components\ClientSide\auth\profile\profile.component.ts
 import { Component, effect, inject } from '@angular/core';
 import { AuthService, changePasswordForm } from '../../../../Services/auth.service';
 import { Shared } from '../../../../shared/Services/shared/shared';
-import { DatePipe, NgClass, NgFor, NgIf, TitleCasePipe } from '@angular/common';
+import { NgClass, NgIf, TitleCasePipe } from '@angular/common';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Router } from '@angular/router';
@@ -13,7 +14,7 @@ import { ToastingMessagesService } from '../../../../shared/Services/ToastingMes
 import { StudentService } from '../../../../Services/student-service.service';
 @Component({
   selector: 'app-profile',
-  imports: [NgClass, DatePipe, NgIf, NgFor, NgbNavModule,TranslatePipe,TitleCasePipe,
+  imports: [NgClass, NgIf, NgbNavModule,TranslatePipe,TitleCasePipe,
     SiteButtonComponent,FormsModule,InputComponent,PhoneInputComponent
   ],
   templateUrl: './profile.component.html',
