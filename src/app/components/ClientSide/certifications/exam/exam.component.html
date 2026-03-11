@@ -67,9 +67,9 @@
       </div> -->
       <div class="row g-1 flex-wrap">
         @for (question of boardQuestions(); let index = $index; track index) {
-          <div class="col-2 ">
+          <div class="col-2  flex-grow-1">
             <div
-              class="d-flex gap-1 align-items-center justify-content-center p-1 rounded rounded-2 question-box"
+              class="d-flex gap-1 w-100 align-items-center  justify-content-center p-1 rounded rounded-2 question-box"
               [ngClass]="question.status"
               (click)="navigateToQuestion(index)"
             >
