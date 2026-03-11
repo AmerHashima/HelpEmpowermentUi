@@ -15,7 +15,8 @@ import { APIStudentCourse } from '../../../../models/student-course';
 import { StudentExamService } from '../../../../Services/student-exam.service';
 @Component({
   selector: 'app-profile',
-  imports: [NgClass, DatePipe, NgIf, NgFor, NgbNavModule,TranslatePipe,TitleCasePipe,TranslatePipe,
+  standalone:true,
+  imports: [NgClass, NgIf,FormsModule, NgbNavModule,TranslatePipe,TitleCasePipe,TranslatePipe,
     SiteButtonComponent,FormsModule,InputComponent,PhoneInputComponent
   ],
   templateUrl: './profile.component.html',
