@@ -15,9 +15,9 @@ import { APIStudentCourse } from '../../../../models/student-course';
 import { StudentExamService } from '../../../../Services/student-exam.service';
 @Component({
   selector: 'app-profile',
-  standalone:true,
-  imports: [NgClass, NgIf,FormsModule, NgbNavModule,TranslatePipe,TitleCasePipe,TranslatePipe,
-    SiteButtonComponent,FormsModule,InputComponent,PhoneInputComponent
+  standalone: true,
+  imports: [NgClass, NgIf, FormsModule, NgbNavModule, TranslatePipe, TitleCasePipe, TranslatePipe,
+    SiteButtonComponent, FormsModule, InputComponent, PhoneInputComponent
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
@@ -27,16 +27,16 @@ export class ProfileComponent {
   private studentService = inject(StudentService);
   private studentExamService = inject(StudentExamService);
   totalExams = this.studentExamService.reports
-  studentExams=computed(()=> 
+  studentExams = computed(() =>
     this.totalExams().filter(report => report.startedAt && report.finishedAt))
   successRate = this.studentExamService.successRate
   private shared = inject(Shared);
   private router = inject(Router);
-  private route=inject(ActivatedRoute);
-  private toasting=inject(ToastingMessagesService);
-  isRTL=this.shared.isRtl;
-  lang=this.shared.lang;
-  studentImage="assets/images/profile/person.jpg";
+  private route = inject(ActivatedRoute);
+  private toasting = inject(ToastingMessagesService);
+  isRTL = this.shared.isRtl;
+  lang = this.shared.lang;
+  studentImage = "assets/images/profile/person.jpg";
   enrolledCourses = this.studentService.enrolledCourses;
   savedExams = signal<any[]>([]);
 
@@ -53,41 +53,41 @@ export class ProfileComponent {
     mobile: "",
   };
 
-  changePasswordForm={
-    currentPassword:'',
-    newPassword:'',
-    confirmPassword:'',
+  changePasswordForm = {
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: '',
   }
-  showCourseDetailsFlag:boolean=false;
-  course=signal<APIStudentCourse |null>(null)
+  showCourseDetailsFlag: boolean = false;
+  course = signal<APIStudentCourse | null>(null)
   hasAnyCourseFeature = computed(() => {
     const c = this.course();
     return !!(c?.examSimulationReserv || c?.recordedCourseReserv || c?.liveCourseReserv);
   });
-constructor(){
-  effect(()=>{
-    this.user = this.authService.loggedStudent();
+  constructor() {
+    effect(() => {
+      this.user = this.authService.loggedStudent();
 
-    if (this.user) {
-      const names = this.user.nameEn.split(' ');
-      const namesAr = this.user.nameAr.split(' ');
-      this.credentials = {
-        firstName: names[0] || '',
-        lastName: names[1] || '',
-        firstNameAr: namesAr[0] || '',
-        lastNameAr: namesAr[1] || '',
-        username: this.user.username || '',
-        email: this.user.email || '',
-        mobile: this.user.mobile || '',
-      };
-    }
-  })
-}
+      if (this.user) {
+        const names = this.user.nameEn.split(' ');
+        const namesAr = this.user.nameAr.split(' ');
+        this.credentials = {
+          firstName: names[0] || '',
+          lastName: names[1] || '',
+          firstNameAr: namesAr[0] || '',
+          lastNameAr: namesAr[1] || '',
+          username: this.user.username || '',
+          email: this.user.email || '',
+          mobile: this.user.mobile || '',
+        };
+      }
+    })
+  }
 
-ngOnInit(): void {
- this.savedExams.set(this.loadSavedExams());
-  
-}
+  ngOnInit(): void {
+    this.savedExams.set(this.loadSavedExams());
+
+  }
 
   handleFileInput(event: any): void {
     const file = event.target.files[0];
@@ -99,14 +99,14 @@ ngOnInit(): void {
       reader.readAsDataURL(file);
     }
   }
-  goToExam(exam:any){
+  goToExam(exam: any) {
     const courseName = exam.exam.courseName.toLowerCase();
-    const currentExamId=exam.exam.oid
+    const currentExamId = exam.exam.oid
     this.shared.studentExamId.set(exam.studentExamId);
     localStorage.setItem('studentExamId', exam.studentExamId);
     this.shared.currentExamId.set(exam.exam.oid);
     this.shared.currentExam.set(exam.exam);
-    this.router.navigate(['../../certifications/', courseName, 'exams',currentExamId], {
+    this.router.navigate(['../../certifications/', courseName, 'exams', currentExamId], {
       relativeTo: this.route,
       queryParams: { mode: exam.examMode },
       queryParamsHandling: 'merge',
@@ -137,24 +137,24 @@ ngOnInit(): void {
     return exams;
   }
 
-  continueCourse(course:any){
+  continueCourse(course: any) {
     this.router.navigateByUrl(`/${this.lang()}/certifications/${course.courseName.toLowerCase()}/recorded-course`);
   }
 
-  getCourseImage(course:APIStudentCourse){
+  getCourseImage(course: APIStudentCourse) {
     console.log(course.courseName.toLowerCase());
     if (course.courseName.toLowerCase() == 'pmp')
       return 'assets/images/certifications/certfication_1.jpeg';
     else return 'assets/images/certifications/certfication_2.jpeg';
   }
 
-  showCourseDetails(course: APIStudentCourse){
-    this.showCourseDetailsFlag=true;
+  showCourseDetails(course: APIStudentCourse) {
+    this.showCourseDetailsFlag = true;
     this.course.set(course);
   }
-  onUpdateInfo(){
+  onUpdateInfo() {
     const payload = {
-      oid:this.user.oid,
+      oid: this.user.oid,
       nameEn: `${this.credentials.firstName} ${this.credentials.lastName}`,
       nameAr: `${this.credentials.firstNameAr} ${this.credentials.lastNameAr}`,
       email: this.credentials.email,
@@ -164,14 +164,14 @@ ngOnInit(): void {
       updatedBy: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
     };
 
-    this.studentService.updateStudent(payload.oid,payload).subscribe({
+    this.studentService.updateStudent(payload.oid, payload).subscribe({
       next: () => {
         // this.toasting.showToast('Account created suffccessfully please login','success');
       },
       error: () => this.toasting.showToast('Failed to create User', 'error')
     })
   }
-  onChangePassword(form: NgForm){
+  onChangePassword(form: NgForm) {
     const payload = {
       oid: this.authService.loggedStudent()?.userId!,
       currentPassword: this.changePasswordForm.currentPassword,
@@ -190,11 +190,11 @@ ngOnInit(): void {
 
   }
 
-  navigateToCourseFeatue(key:string){
-    const courseName=this.course()?.courseName.toLowerCase();
-    this.router.navigate(['../../certifications/', courseName,key], {
+  navigateToCourseFeatue(key: string) {
+    const courseName = this.course()?.courseName.toLowerCase();
+    this.router.navigate(['../../certifications/', courseName, key], {
       relativeTo: this.route,
-   
+
     });
   }
 
@@ -210,14 +210,14 @@ ngOnInit(): void {
     return Math.round((answered / total) * 100);
   }
 
-  getExamProgress(exam:any){
+  getExamProgress(exam: any) {
     const total = exam.totalScore ?? 0;
     if (!total) return 0;
     return Math.round((exam.obtainedScore / total) * 100);
   }
-  getTotalExamsLength(){
+  getTotalExamsLength() {
     return this.studentExams().length + this.savedExams().length
   }
-  }
+}
 
 
