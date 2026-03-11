@@ -11,13 +11,14 @@ import { HomeArticlesComponent } from './home-articles/home-articles.component';
 import { HomeFAQComponent } from './home-faq/home-faq.component';
 import { GenericModelComponent } from '../../../shared/generic-model/generic-model.component';
 import { EnrollFormComponent } from '../services/enroll-form/enroll-form.component';
+import { HomeServicesComponent } from './home-services/home-services.component';
 
 @Component({
   selector: 'app-home',
   standalone:true,
   imports: [PageBannerComponent,FeatureComponent,SocialLinksComponent,
     SiteButtonComponent, TranslateModule, TranslatePipe, CertificationCardsComponent,
-    HomeArticlesComponent, HomeFAQComponent,
+    HomeArticlesComponent, HomeFAQComponent, HomeServicesComponent
     // GenericModelComponent,EnrollFormComponent
   ],
   templateUrl: './home.component.html',
