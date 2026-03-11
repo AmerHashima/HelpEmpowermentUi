@@ -42,7 +42,7 @@
             </div>
           </div>
 
-          @if (!hasBought() && type() != "webinar") {
+          @if (!isEnrolled() && type() != "webinar") {
             <app-site-button
               title="Book Trial"
               [icon]="isRTL() ? 'bi bi-arrow-left' : 'bi bi-arrow-right'"

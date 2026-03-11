@@ -5,6 +5,7 @@ import { ApiResponse, ApiSearchResponse } from '../models/apiResponse';
 import { APIStudentExamResponse, choiceQuestionExamSubmit, matchingQuestionExamSubmit, startStudentExam, submitStudentExam } from '../models/certification';
 import { RequestBody } from '../models/rquest';
 import { AuthService } from './auth.service';
+import { Shared } from '../shared/Services/shared/shared';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,6 @@ import { AuthService } from './auth.service';
 export class StudentExamService {
 
   private auth = inject(AuthService);
-
   reports = signal<APIStudentExamResponse[]>([]);
 
   constructor(private apiService: ApiService) {
@@ -24,6 +24,7 @@ export class StudentExamService {
       this.getStudentExamsByStudentId(studentId)
         .subscribe(r => this.reports.set(r));
     });
+ 
   }
 
   loadStudentReports(studentId: string) {

@@ -1,5 +1,5 @@
 // src\app\Services\student-service.service.ts
-import { Injectable } from '@angular/core';
+import { computed, effect, Injectable, signal } from '@angular/core';
 import ApiService from '../shared/Services/ApiService/api.service';
 import { map, Observable } from 'rxjs';
 import { APIStudent, Student } from '../models/student';
@@ -7,13 +7,44 @@ import { ApiResponse, ApiSearchResponse } from '../models/apiResponse';
 import { APIStudentExamResponse, startStudentExam } from '../models/certification';
 import { RequestBody } from '../models/rquest';
 import { APIStudentCourse, StudentCourse, updateStudentCourse } from '../models/student-course';
+import { AuthService } from './auth.service';
+import { Shared } from '../shared/Services/shared/shared';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StudentService {
+  enrolledCourses=signal<APIStudentCourse[]>([]);
 
-  constructor(private apiService: ApiService) { }
+  currentCourse = computed(() => {
+    const certification = this.shared.currentCertificate();
+    return this.enrolledCourses()
+      .find(c => c.courseName.toLowerCase() === certification?.toLowerCase()) ?? null;
+  });
+
+  isExamSimulatorEnrolled = computed(() =>
+    // true
+    !!this.currentCourse()?.examSimulationReserv
+  );
+
+  isRecordedCoursesEnrolled = computed(() =>
+    !!this.currentCourse()?.recordedCourseReserv
+  );
+
+  isLiveCourseEnrolled = computed(() =>
+    !!this.currentCourse()?.liveCourseReserv
+  );
+  constructor(private apiService: ApiService,private auth:AuthService,private shared:Shared) { 
+    effect(()=>{
+     const studentId =this.auth.loggedStudent()?.userId
+     if(!studentId) return;
+      this.getAllStudentEnrolledCourses(studentId).subscribe({
+        next: (courses) => { this.enrolledCourses.set(courses) }
+      });
+    })
+
+  
+  }
 
   //student
   searchStudents(body: RequestBody): Observable<{ students: APIStudent[]; total: number }> {

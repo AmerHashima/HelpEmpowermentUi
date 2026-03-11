@@ -1,9 +1,10 @@
-import { Component, computed, inject, input } from '@angular/core';
+import { Component, computed, inject, input, signal } from '@angular/core';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { AccordionComponent } from '../../../../shared/accordion/accordion.component';
 import { AuthService } from '../../../../Services/auth.service';
 import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/site-button.component';
 import { Shared } from '../../../../shared/Services/shared/shared';
+import { StudentService } from '../../../../Services/student-service.service';
 
 @Component({
   selector: 'app-courese-features',
@@ -14,10 +15,13 @@ import { Shared } from '../../../../shared/Services/shared/shared';
 export class CoureseFeaturesComponent {
   private shared = inject(Shared);
   private auth = inject(AuthService);
-  hasBought = this.auth.hasBought;
+  // hasBought = this.auth.hasBought;
+    private studentService = inject(StudentService);
+
   isRTL = this.shared.isRtl;
   certification = this.shared.currentCertificate;
   type = input<string>('features');
+  isEnrolled = input<boolean>(false);
   title = input<string>('Course Features');
 
   courseFeatures = computed(() => {

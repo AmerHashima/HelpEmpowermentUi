@@ -14,6 +14,7 @@ import { ChooseExamComponent } from '../choose-exam/choose-exam.component';
 import { CartService } from '../../../../Services/  cart.service';
 import { GenericModelComponent } from '../../../../shared/generic-model/generic-model.component';
 import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
+import { StudentService } from '../../../../Services/student-service.service';
 
 @Component({
   selector: 'app-exam-simulator',
@@ -29,9 +30,11 @@ export class ExamSimulatorComponent {
   private cartService = inject(CartService);
   private shared = inject(Shared);
   private auth = inject(AuthService);
+  private studentService=inject(StudentService);
+  isEnrolled = this.studentService.isExamSimulatorEnrolled;
   private toasting=inject(ToastingMessagesService);
   isRTL = this.shared.isRtl;
-  hasBought=this.auth.hasBought;
+
   studentToken =this.auth.studentToken;
   // certification=this.shared.currentCertificationObject
 //  chooseExam:boolean=false;

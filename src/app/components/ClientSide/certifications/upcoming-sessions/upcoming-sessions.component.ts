@@ -4,6 +4,7 @@ import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/s
 import { TranslatePipe } from '@ngx-translate/core';
 import { Shared } from '../../../../shared/Services/shared/shared';
 import { AuthService } from '../../../../Services/auth.service';
+import { StudentService } from '../../../../Services/student-service.service';
 
 interface Session {
   date: string;
@@ -21,7 +22,9 @@ export class UpcomingSessionsComponent {
     private shared = inject(Shared);
     private auth = inject(AuthService);
     isRTL = this.shared.isRtl;
-    hasBought = this.auth.hasBought;
+    // hasBought = this.auth.hasBought;
+  private studentService = inject(StudentService);
+  isEnrolled = this.studentService.isLiveCourseEnrolled;
     sessions=computed(()=>{
       if(this.type() == 'webinar')
       return [

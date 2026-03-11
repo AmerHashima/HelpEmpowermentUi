@@ -38,7 +38,6 @@ export interface forgetPasswordForm {
 export class AuthService {
   private platformId = inject(PLATFORM_ID);
   private isBrowser = isPlatformBrowser(this.platformId);
-  hasBought = signal<boolean>(true);
   loggedStudent=signal<APIAuthStudent | null>(null);
   studentToken=signal<string>('');
   adminToken = signal<string>('');

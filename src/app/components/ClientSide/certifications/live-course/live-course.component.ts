@@ -17,6 +17,7 @@ import { UpcomingSessionsComponent } from '../upcoming-sessions/upcoming-session
 import { CartService } from '../../../../Services/  cart.service';
 import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
 import { GenericModelComponent } from '../../../../shared/generic-model/generic-model.component';
+import { StudentService } from '../../../../Services/student-service.service';
 
 @Component({
   selector: 'app-live-course',
@@ -33,7 +34,8 @@ export class LiveCourseComponent {
   private cartService=inject(CartService);
   private toasting=inject(ToastingMessagesService);
   isRTL = this.shared.isRtl;
-  hasBought = this.auth.hasBought;
+    private studentService=inject(StudentService);
+    isEnrolled = this.studentService.isLiveCourseEnrolled;
   showConfirm:boolean=false;
   enrollImage = 'assets/images/enroll.png';
   courseImage = "assets/images/recordedCourse.jpeg";

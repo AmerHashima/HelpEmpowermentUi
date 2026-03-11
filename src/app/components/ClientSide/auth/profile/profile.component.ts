@@ -1,16 +1,17 @@
-import { Component, effect, inject } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { AuthService, changePasswordForm } from '../../../../Services/auth.service';
 import { Shared } from '../../../../shared/Services/shared/shared';
 import { DatePipe, NgClass, NgFor, NgIf, TitleCasePipe } from '@angular/common';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe } from '@ngx-translate/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/site-button.component';
 import { FormsModule, NgForm } from '@angular/forms';
 import { InputComponent } from '../../../../shared/input/input.component';
 import { PhoneInputComponent } from '../../../../shared/phone/phone.component';
 import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
 import { StudentService } from '../../../../Services/student-service.service';
+import { APIStudentCourse } from '../../../../models/student-course';
 @Component({
   selector: 'app-profile',
   imports: [NgClass, DatePipe, NgIf, NgFor, NgbNavModule,TranslatePipe,TitleCasePipe,
@@ -24,31 +25,15 @@ export class ProfileComponent {
   private studentService = inject(StudentService);
   private shared = inject(Shared);
   private router = inject(Router);
+  private route=inject(ActivatedRoute);
   private toasting=inject(ToastingMessagesService);
   isRTL=this.shared.isRtl;
   lang=this.shared.lang;
   studentImage="assets/images/profile/person.jpg";
+  enrolledCourses = this.studentService.enrolledCourses;
 
   user: any;
 
-  enrolledCourses = [
-    {
-      id: 1,
-      title: 'PMP® Certification',
-      image: 'assets/images/certifications/certfication_1.jpeg',
-      lessons: 12,
-      duration: '6h 30m',
-      progress: 60 // %
-    },
-    {
-      id: 2,
-      title: 'CAPM® Certification',
-      image: 'assets/images/certifications/certfication_2.jpeg',
-      lessons: 8,
-      duration: '4h 15m',
-      progress: 30
-    }
-  ];
   exams = [
     {
       id: 1,
@@ -89,10 +74,16 @@ export class ProfileComponent {
     newPassword:'',
     confirmPassword:'',
   }
-
+  showCourseDetailsFlag:boolean=false;
+  course=signal<APIStudentCourse |null>(null)
+  hasAnyCourseFeature = computed(() => {
+    const c = this.course();
+    return !!(c?.examSimulationReserv || c?.recordedCourseReserv || c?.liveCourseReserv);
+  });
 constructor(){
   effect(()=>{
     this.user = this.authService.loggedStudent();
+
     if (this.user) {
       const names = this.user.nameEn.split(' ');
       const namesAr = this.user.nameAr.split(' ');
@@ -128,6 +119,17 @@ constructor(){
     this.router.navigateByUrl(`/${this.lang()}/certifications/${course.courseName.toLowerCase()}/recorded-course`);
   }
 
+  getCourseImage(course:APIStudentCourse){
+    console.log(course.courseName.toLowerCase());
+    if (course.courseName.toLowerCase() == 'pmp')
+      return 'assets/images/certifications/certfication_1.jpeg';
+    else return 'assets/images/certifications/certfication_2.jpeg';
+  }
+
+  showCourseDetails(course: APIStudentCourse){
+    this.showCourseDetailsFlag=true;
+    this.course.set(course);
+  }
   onUpdateInfo(){
     const payload = {
       oid:this.user.oid,
@@ -146,7 +148,6 @@ constructor(){
       },
       error: () => this.toasting.showToast('Failed to create User', 'error')
     })
-    console.log('Submitted credentials:', this.credentials);
   }
   onChangePassword(form: NgForm){
     const payload = {
@@ -165,6 +166,14 @@ constructor(){
       error: () => this.toasting.showToast('Failed to change password', 'error')
     })
 
+  }
+
+  navigateToCourseFeatue(key:string){
+    const courseName=this.course()?.courseName.toLowerCase();
+    this.router.navigate(['../../certifications/', courseName,key], {
+      relativeTo: this.route,
+   
+    });
   }
   }
 
