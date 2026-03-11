@@ -1,3 +1,4 @@
+// src\app\Services\auth.service.ts
 import { inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
 import ApiService from '../shared/Services/ApiService/api.service';
 import { APIAuthStudent, AuthStudent } from '../models/student';
@@ -5,13 +6,13 @@ import { ApiResponse } from '../models/apiResponse';
 import { map, Observable } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
 
-interface LoginForm{
+interface LoginForm {
   username: string,
   password: string
 }
 
-export interface changePasswordForm{
-  oid:string,
+export interface changePasswordForm {
+  oid: string,
   currentPassword: string,
   newPassword: string,
   confirmPassword: string,
@@ -33,7 +34,7 @@ export interface forgetPasswordForm {
 export interface refreshTokenForm {
   token: string,
   refreshToken: string,
-  tokenExpires?:string
+  tokenExpires?: string
 }
 
 @Injectable({
@@ -42,8 +43,8 @@ export interface refreshTokenForm {
 export class AuthService {
   private platformId = inject(PLATFORM_ID);
   private isBrowser = isPlatformBrowser(this.platformId);
-  loggedStudent=signal<APIAuthStudent | null>(null);
-  studentToken=signal<string>('');
+  loggedStudent = signal<APIAuthStudent | null>(null);
+  studentToken = signal<string>('');
   adminToken = signal<string>('');
   examIdsToDelete = signal<string[]>([]);
   private refreshTimer: any;
@@ -63,7 +64,7 @@ export class AuthService {
 
   registerStudent(body: AuthStudent): Observable<APIAuthStudent> {
     return this.apiService
-      .post<ApiResponse<APIAuthStudent>>('Auth/student/register', body,"User has been registerted Successfully")
+      .post<ApiResponse<APIAuthStudent>>('Auth/student/register', body, "User has been registerted Successfully")
       .pipe(
         map((response: ApiResponse<APIAuthStudent>) => {
           if (!response.success) {
@@ -77,7 +78,7 @@ export class AuthService {
 
   loginStudent(body: LoginForm): Observable<APIAuthStudent> {
     return this.apiService
-      .post<ApiResponse<APIAuthStudent>>('Auth/student/login', body,"User has been logged successfully")
+      .post<ApiResponse<APIAuthStudent>>('Auth/student/login', body, "User has been logged successfully")
       .pipe(
         map((response: ApiResponse<APIAuthStudent>) => {
           if (!response.success) {
@@ -191,7 +192,7 @@ export class AuthService {
   //       if (shouldRemove) {
   //         keysToRemove.push(key);
   //       }
-     
+
   //   }
 
   //   // Perform removal
@@ -218,12 +219,12 @@ export class AuthService {
             localStorage.removeItem('studentToken');
             localStorage.removeItem('refreshToken');
             localStorage.removeItem('tokenExpires');
-            const data=this.cleanupExamProgressNotSavedForLater();
+            const data = this.cleanupExamProgressNotSavedForLater();
             this.examIdsToDelete.set(data.studentExamIds);
           }
           this.loggedStudent.set(null);
           this.studentToken.set('');
-         
+
           return response.data;
         })
       );

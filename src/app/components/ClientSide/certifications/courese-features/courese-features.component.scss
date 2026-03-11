@@ -1,15 +1,17 @@
+/* src\app\components\ClientSide\certifications\courese-features\courese-features.component.scss */
 @use 'variables' as *;
-.featureTitle{
-    font-weight: $bold;
-    font-size: $fs-sm
-}
-.featureIcon{
+
+.featureTitle {
+        font-weight: $bold;
         font-size: $fs-sm
 }
-.featureDescription{
-        font-size: $fs-sm;
-          white-space: pre-line;
 
+.featureIcon {
+        font-size: $fs-sm
 }
 
+.featureDescription {
+        font-size: $fs-sm;
+        white-space: pre-line;
 
+}

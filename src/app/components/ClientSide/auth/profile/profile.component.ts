@@ -1,3 +1,4 @@
+// src\app\components\ClientSide\auth\profile\profile.component.ts
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { AuthService, changePasswordForm } from '../../../../Services/auth.service';
 import { Shared } from '../../../../shared/Services/shared/shared';
@@ -16,7 +17,7 @@ import { StudentExamService } from '../../../../Services/student-exam.service';
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [NgClass, NgIf, FormsModule, NgbNavModule, TranslatePipe, TitleCasePipe, TranslatePipe,
+  imports: [NgClass, FormsModule, NgbNavModule, TranslatePipe, TitleCasePipe, TranslatePipe,
     SiteButtonComponent, FormsModule, InputComponent, PhoneInputComponent
   ],
   templateUrl: './profile.component.html',

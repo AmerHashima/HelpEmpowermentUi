@@ -16,7 +16,7 @@ export class CoureseFeaturesComponent {
   private shared = inject(Shared);
   private auth = inject(AuthService);
   // hasBought = this.auth.hasBought;
-    private studentService = inject(StudentService);
+  private studentService = inject(StudentService);
 
   isRTL = this.shared.isRtl;
   certification = this.shared.currentCertificate;
@@ -111,7 +111,7 @@ Master the PMI Mindset: Discover the critical thinking approach unique to PMI th
         {
           title: " What You Will Leave With:",
           description:
-          `A clear, stress-free understanding of the entire PMP journey.\nA practical, 5-step action plan you can start immediately.\nAnswers to your most pressing questions from an expert.\n`
+            `A clear, stress-free understanding of the entire PMP journey.\nA practical, 5-step action plan you can start immediately.\nAnswers to your most pressing questions from an expert.\n`
         },
       ];
     else if (this.certification() == 'capm' && this.type() == 'features')

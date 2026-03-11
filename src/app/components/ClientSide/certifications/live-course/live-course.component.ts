@@ -34,7 +34,8 @@ export class LiveCourseComponent {
   private cartService = inject(CartService);
   private toasting = inject(ToastingMessagesService);
   isRTL = this.shared.isRtl;
-  hasBought = this.auth.hasBought;
+  private studentService = inject(StudentService);
+  isEnrolled = this.studentService.isLiveCourseEnrolled;
   showConfirm: boolean = false;
   enrollImage = 'assets/images/enroll.png';
   courseImage = "assets/images/recordedCourse.jpeg";
