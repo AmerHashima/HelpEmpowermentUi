@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  baseUrl: 'http://144.91.127.150:8080/api',
+  baseUrl: 'https://localhost:44379/api',
   mailServiceId: "service_qa9ozck",
   mailTemolateId: "template_1sqbwoa",
   mailPublicKey: "o3-i7ksFLJZT2C6GV",

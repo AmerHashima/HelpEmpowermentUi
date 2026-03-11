@@ -10,7 +10,7 @@ import { Shared } from '../../../shared/Services/shared/shared';
 
 @Component({
   selector: 'app-exam-reports',
-  imports: [TranslatePipe, ExamReportCardComponent, DatePipe],
+  imports: [TranslatePipe, ExamReportCardComponent],
   templateUrl: './exam-reports.component.html',
   providers: [DatePipe],
   styleUrl: './exam-reports.component.scss'

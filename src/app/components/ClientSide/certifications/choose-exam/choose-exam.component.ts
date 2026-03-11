@@ -1,3 +1,4 @@
+// src\app\components\ClientSide\certifications\choose-exam\choose-exam.component.ts
 import { Component, computed, effect, inject, PLATFORM_ID, signal } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { GenericModelComponent } from '../../../../shared/generic-model/generic-model.component';
@@ -13,22 +14,22 @@ import { APIStudentExamResponse } from '../../../../models/certification';
 
 @Component({
   selector: 'app-choose-exam',
-  imports: [TranslatePipe,GenericModelComponent,SiteButtonComponent],
+  imports: [TranslatePipe, GenericModelComponent, SiteButtonComponent],
   templateUrl: './choose-exam.component.html',
   styleUrl: './choose-exam.component.scss'
 })
 export class ChooseExamComponent {
   private auth = inject(AuthService);
-  private platformId=inject(PLATFORM_ID);
-  private router=inject(Router);
+  private platformId = inject(PLATFORM_ID);
+  private router = inject(Router);
   private shared = inject(Shared);
-  isRTL=this.shared.isRtl;
+  isRTL = this.shared.isRtl;
   private studentExamService = inject(StudentExamService);
   private AuthService = inject(AuthService);
- private toasting=inject(ToastingMessagesService);
-  private route=inject(ActivatedRoute);
-  showConfirm =false;
-  
+  private toasting = inject(ToastingMessagesService);
+  private route = inject(ActivatedRoute);
+  showConfirm = false;
+
   previousExamMode = computed(() => {
     const examId = this.shared.currentExamId();
     const allReports = this.studentExamService.reports();
@@ -37,8 +38,8 @@ export class ChooseExamComponent {
       r => r.coursesMasterExamOid === examId && r.startedAt && r.finishedAt
     );
   });
-  
-  private getStorageKey(examId: string,mode:string) {
+
+  private getStorageKey(examId: string, mode: string) {
     return `exam-progress-student_${this.AuthService.loggedStudent()?.userId}-${mode}-${examId}`;
   }
 
@@ -80,17 +81,17 @@ export class ChooseExamComponent {
       this.onChooseExamMode();
     }
   }
-  onChoosePracticeMode(){
+  onChoosePracticeMode() {
     this.router.navigate(['../exams/', this.shared.currentExamId()], {
       relativeTo: this.route,
       queryParams: { mode: 'Practice' },
       queryParamsHandling: 'merge',
     });
   }
-  onChooseExamMode(){
+  onChooseExamMode() {
     this.router.navigate(['../exams/', this.shared.currentExamId()], {
       relativeTo: this.route,
-      queryParams: {  mode: 'Exam' },
+      queryParams: { mode: 'Exam' },
       queryParamsHandling: 'merge',
     });
   }
@@ -105,8 +106,8 @@ export class ChooseExamComponent {
     console.log('start free exam');
   }
 
-  getStartExamPayload(){
-    const payload={
+  getStartExamPayload() {
+    const payload = {
       studentOid: this.AuthService.loggedStudent()?.userId!,
       coursesMasterExamOid: this.shared.currentExamId(),
       attemptNo: 0,
@@ -114,8 +115,8 @@ export class ChooseExamComponent {
     }
     return payload;
   }
-  openReports(){
-  
+  openReports() {
+
     if (this.previousExamMode())
       this.router.navigate(['../reports'], {
         relativeTo: this.route
@@ -123,14 +124,14 @@ export class ChooseExamComponent {
     else this.showConfirm = true;
   }
 
-  openLessonLearnedQuestions(){
+  openLessonLearnedQuestions() {
     if (this.previousExamMode())
       this.router.navigate(['../lesson-learned'], {
         relativeTo: this.route
       });
-    else this.showConfirm=true;
+    else this.showConfirm = true;
   }
-  back(){
+  back() {
     if (this.previousExamMode())
       this.router.navigate(['../exam-simulator'], {
         relativeTo: this.route

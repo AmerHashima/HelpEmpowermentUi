@@ -1,3 +1,4 @@
+// src\app\components\ClientSide\certifications\simulator-exams\simulator-exams.component.ts
 import { Component, computed, inject, PLATFORM_ID, signal } from '@angular/core';
 import { Shared } from '../../../../shared/Services/shared/shared';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
@@ -8,7 +9,7 @@ import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-simulator-exams',
-  imports: [TranslateModule,TranslatePipe,SiteButtonComponent],
+  imports: [TranslateModule, TranslatePipe, SiteButtonComponent],
   templateUrl: './simulator-exams.component.html',
   styleUrl: './simulator-exams.component.scss',
   providers: [ExamsStore]
@@ -60,7 +61,7 @@ export class SimulatorExamsComponent {
     }
   }
   startExam(item: any) {
-    const examId=item.oid;
+    const examId = item.oid;
     this.shared.currentExam.set(item);
     this.shared.currentExamId.set(`${examId}`);
     if (isPlatformBrowser(this.platformId)) {

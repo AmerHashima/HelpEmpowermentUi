@@ -20,9 +20,9 @@ import { GenericModelComponent } from '../../../../shared/generic-model/generic-
 
 @Component({
   selector: 'app-live-course',
-  imports: [PageBannerComponent, SiteButtonComponent, CoureseAudienceComponent,
+  imports: [PageBannerComponent, SiteButtonComponent,
     CoureseContentComponent, CoureseFeaturesComponent, CoureseOutlineComponent, InstructorInfoComponent,
-    TargetAudienceComponent, StarRatingComponent, TranslatePipe, NgIf, UpcomingSessionsComponent,GenericModelComponent
+    TargetAudienceComponent, StarRatingComponent, TranslatePipe, NgIf, UpcomingSessionsComponent, GenericModelComponent
   ],
   templateUrl: './live-course.component.html',
   styleUrl: './live-course.component.scss'
@@ -30,11 +30,11 @@ import { GenericModelComponent } from '../../../../shared/generic-model/generic-
 export class LiveCourseComponent {
   private shared = inject(Shared);
   private auth = inject(AuthService);
-  private cartService=inject(CartService);
-  private toasting=inject(ToastingMessagesService);
+  private cartService = inject(CartService);
+  private toasting = inject(ToastingMessagesService);
   isRTL = this.shared.isRtl;
   hasBought = this.auth.hasBought;
-  showConfirm:boolean=false;
+  showConfirm: boolean = false;
   enrollImage = 'assets/images/enroll.png';
   courseImage = "assets/images/recordedCourse.jpeg";
 

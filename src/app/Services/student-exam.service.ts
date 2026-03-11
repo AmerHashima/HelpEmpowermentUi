@@ -1,3 +1,4 @@
+// src\app\Services\student-exam.service.ts
 import { effect, inject, Injectable, signal } from '@angular/core';
 import ApiService from '../shared/Services/ApiService/api.service';
 import { map, Observable } from 'rxjs';
@@ -60,22 +61,22 @@ export class StudentExamService {
   }
 
   getStudentExam(id: string): Observable<APIStudentExamResponse> {
-        return this.apiService
-          .getSingle<ApiResponse<APIStudentExamResponse>>('StudentExams', id)
-          .pipe(
-            map((response: ApiResponse<APIStudentExamResponse>) => {
-              if (!response.success) {
-                const msg = response.errors?.join(', ') || response.message || 'API failed to load student exam';
-                throw new Error(msg);
-              }
-              return response.data;
-            })
-          );
-      }
+    return this.apiService
+      .getSingle<ApiResponse<APIStudentExamResponse>>('StudentExams', id)
+      .pipe(
+        map((response: ApiResponse<APIStudentExamResponse>) => {
+          if (!response.success) {
+            const msg = response.errors?.join(', ') || response.message || 'API failed to load student exam';
+            throw new Error(msg);
+          }
+          return response.data;
+        })
+      );
+  }
 
   getStudentExamWithQuestions(id: string): Observable<APIStudentExamResponse> {
     return this.apiService
-      .getSingle<ApiResponse<APIStudentExamResponse>>('StudentExams', id,'studentExam')
+      .getSingle<ApiResponse<APIStudentExamResponse>>('StudentExams', id, 'studentExam')
       .pipe(
         map((response: ApiResponse<APIStudentExamResponse>) => {
           if (!response.success) {
@@ -115,21 +116,21 @@ export class StudentExamService {
   }
 
   searchStudentExam(body: RequestBody): Observable<{ studenExams: APIStudentExamResponse[]; total: number }> {
-      return this.apiService
-        .query<ApiSearchResponse<APIStudentExamResponse>>('StudentExams/search', body)
-        .pipe(
-          map((response: ApiSearchResponse<APIStudentExamResponse>) => {
-            if (!response.success) {
-              const msg = response.message || 'API failed to query';
-              throw new Error(msg);
-            }
-            return {
-              studenExams: response.data ?? [],
-              total: response.totalPages ?? 0,
-            };
-          })
-        );
-    }
+    return this.apiService
+      .query<ApiSearchResponse<APIStudentExamResponse>>('StudentExams/search', body)
+      .pipe(
+        map((response: ApiSearchResponse<APIStudentExamResponse>) => {
+          if (!response.success) {
+            const msg = response.message || 'API failed to query';
+            throw new Error(msg);
+          }
+          return {
+            studenExams: response.data ?? [],
+            total: response.totalPages ?? 0,
+          };
+        })
+      );
+  }
 
   submitchoiceExamQuestion(body: choiceQuestionExamSubmit): Observable<string> {
     return this.apiService

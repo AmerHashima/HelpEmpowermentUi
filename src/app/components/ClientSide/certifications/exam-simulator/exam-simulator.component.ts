@@ -1,5 +1,5 @@
 // src\app\components\ClientSide\certifications\exam-simulator\exam-simulator.component.ts
-aimport { Component, effect, inject, Input, PLATFORM_ID } from '@angular/core';
+import { Component, effect, inject, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IconCardComponent } from '../../../../shared/icon-card/icon-card.component';
 import { Shared } from '../../../../shared/Services/shared/shared';
