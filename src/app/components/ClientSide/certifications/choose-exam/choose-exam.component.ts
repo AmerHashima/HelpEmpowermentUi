@@ -25,6 +25,8 @@ export class ChooseExamComponent {
   private shared = inject(Shared);
   isRTL = this.shared.isRtl;
   private studentExamService = inject(StudentExamService);
+  private studentService=inject(StudentService);
+  isEnrolled=this.studentService.isExamSimulatorEnrolled;
   private AuthService = inject(AuthService);
   private toasting = inject(ToastingMessagesService);
   private route = inject(ActivatedRoute);
@@ -58,22 +60,31 @@ export class ChooseExamComponent {
     const savedExam = localStorage.getItem(storageKey);
 
     if (savedExam) {
+      console.log('insaved');
       const parsed = JSON.parse(savedExam);
 
       this.shared.studentExamId.set(parsed.studentExamId);
       localStorage.setItem('studentExamId', parsed.studentExamId);
 
       this.toasting.showToast('Your Exam has been resumed', 'success');
+      this.chooseMode(mode)
+
     }
     else {
       this.studentExamService.startExam(this.getStartExamPayload())
         .subscribe({
           next: (exam) => {
+            console.log('in start');
             this.shared.studentExamId.set(exam.oid);
             localStorage.setItem('studentExamId', exam.oid);
+            this.chooseMode(mode)
           }
         });
     }
+   
+  }
+
+  chooseMode(mode:string){
     if (mode === 'Practice') {
       this.onChoosePracticeMode();
     }
@@ -82,6 +93,7 @@ export class ChooseExamComponent {
     }
   }
   onChoosePracticeMode() {
+    console.log('in practice mode')
     this.router.navigate(['../exams/', this.shared.currentExamId()], {
       relativeTo: this.route,
       queryParams: { mode: 'Practice' },
@@ -89,6 +101,8 @@ export class ChooseExamComponent {
     });
   }
   onChooseExamMode() {
+    console.log('in exam mode')
+
     this.router.navigate(['../exams/', this.shared.currentExamId()], {
       relativeTo: this.route,
       queryParams: { mode: 'Exam' },
@@ -113,6 +127,7 @@ export class ChooseExamComponent {
       attemptNo: 0,
       createdBy: this.AuthService.loggedStudent()?.userId!
     }
+    console.log('payload', payload);
     return payload;
   }
   openReports() {

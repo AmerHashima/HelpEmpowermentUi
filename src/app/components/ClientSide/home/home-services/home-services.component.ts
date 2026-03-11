@@ -1,7 +1,8 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, Inject, inject, PLATFORM_ID, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Shared } from '../../../../shared/Services/shared/shared';
 import { IconCardComponent } from '../../../../shared/icon-card/icon-card.component';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-home-services',
@@ -57,12 +58,14 @@ export class HomeServicesComponent {
 
   startIndex = signal(0);
 
-  constructor() {
-    this.updateVisibleCount();
-
-    window.addEventListener('resize', () => {
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+    if (isPlatformBrowser(this.platformId)) {
       this.updateVisibleCount();
-    });
+
+      window.addEventListener('resize', () => {
+        this.updateVisibleCount();
+      });
+    }
   }
 
   updateVisibleCount() {

@@ -4,14 +4,20 @@
       <div
         class="d-flex flex-column align-items-center justify-content-center gap-2"
       >
-        <div>
-          <span class="mainTextColor try fst-italic">
-            {{ "examSimulator.tryBeforeBuy" | translate }}
-          </span>
-        </div>
+        @if (!isEnrolled()) {
+          <div>
+            <span class="mainTextColor try fst-italic">
+              {{ "examSimulator.tryBeforeBuy" | translate }}
+            </span>
+          </div>
+        }
 
         <h2 class="darkText">
+            @if (isEnrolled()) {
+          {{ "Experience the Exam Simulator" | translate }}
+        } @else {
           {{ "examSimulator.experienceFree" | translate }}
+        }
         </h2>
 
         <p class="CertifticationBenfitsSubTitle text-center">
@@ -107,13 +113,12 @@
     </div>
     <div class="col-12">
       <div class="d-flex back gap-2 pt-3 justify-content-center">
-             <app-site-button
+        <app-site-button
           [title]="'Back To Exam Simulator' | translate"
           type="secondary"
           [isRTL]="isRTL()"
           (click)="back()"
         />
-     
       </div>
     </div>
   </div>

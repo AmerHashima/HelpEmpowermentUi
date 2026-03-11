@@ -1,5 +1,5 @@
 // src\app\components\ClientSide\client-exam-question\client-exam-question.component.ts
-import { Component, Inject, inject, input, output, PLATFORM_ID, SimpleChanges } from '@angular/core';
+import { Component, effect, Inject, inject, input, output, PLATFORM_ID, SimpleChanges } from '@angular/core';
 import { SiteButtonComponent } from '../../../shared/clientSide/site-button/site-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Shared } from '../../../shared/Services/shared/shared';
@@ -23,8 +23,10 @@ import { ExamTimerComponent } from '../certifications/exam-timer/exam-timer.comp
 export class ClientExamQuestionComponent {
 
   // next = output<void>();
+  revealAnswer = output<string>();
   next = output<any>();
   mode = input<string>('');
+  answerLocked = input<boolean>(false);
   previous = output<void>();
   goToQuestion = output<number>();
   mark = output<boolean>();
@@ -45,12 +47,24 @@ export class ClientExamQuestionComponent {
   examAnswers = [];
   showCorrectAnswerFlag: boolean = false;
   showTranslateFlag: boolean = false;
+
   constructor(
     private location: Location,
     @Inject(PLATFORM_ID) private platformId: Object
-  ) { }
+  ) {
+    // effect(() => {
+
+    //   if (this.answerLocked()) {
+    //     const q = this.question();
+    //     q?.answers?.forEach((a: any) => a.isSelected = false);
+    //   }
+
+    // });
+   }
+
 
   ngOnChanges(changes: SimpleChanges) {
+   
     if (changes['question']) {
       this.hideAnswersAndTranslations();
     }
@@ -92,7 +106,20 @@ export class ClientExamQuestionComponent {
     }
 
   }
+
+  get isFirstQuestion(): boolean {
+    const q = this.question();
+    return !q || q.orderNo === 1;
+  }
+
+  get isLastQuestion(): boolean {
+    const q = this.question();
+    return !q || q.orderNo === q.totalQuestions;
+  }
+
   selectOption(opt: any['answers'][number]) {
+    if (this.answerLocked()) return;
+console.log('answerLocked',this.answerLocked());
     if (this.isMatchingQuestion) return;
 
     const question = this.question();
@@ -154,30 +181,21 @@ export class ClientExamQuestionComponent {
 
   showAnswer() {
     this.showCorrectAnswerFlag = true;
+    const q = this.question();
+    if (q?.oid) {
+      this.revealAnswer.emit(q.oid);
+    }
+
   }
   hideAnswer() {
     this.showCorrectAnswerFlag = false;
 
   }
-  // nextQuestion() {
-  //   this.hideAnswersAndTranslations();
-  //   if (this.question().questionTypeName == 'Multiple Choice Question'){
-  //     this.next.emit({
-  //       type:"Multiple Choice Question",
-  //       answers: this.mapToAnswerPayload(this.question())
-  //     })
-  //   }
-  //     else if (this.question().questionTypeName == 'Matching'){
-  //     this.next.emit({type:'Matching',
-  //       answers:this.buildMatchingAnswers(this.left,this.middle)
-  //     });
 
-  //   }
-  //   // console.log('before next',this.question())
-  //   // this.next.emit();
-  // }
 
   nextQuestion() {
+    if (this.isLastQuestion) return;
+
     this.hideAnswersAndTranslations();
 
     const q = this.question();
@@ -223,6 +241,7 @@ export class ClientExamQuestionComponent {
   }
 
   previousQuestion() {
+    if (this.isFirstQuestion) return;
     this.hideAnswersAndTranslations();
     this.previous.emit();
   }

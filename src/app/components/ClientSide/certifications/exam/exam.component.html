@@ -6,8 +6,12 @@
     (previous)="goToPrevious()"
     (showBoard)="onOpenQuestionBoard($event)"
     [isMarked]="isMarked()"
+      [answerLocked]="isAnswerLocked()"
+
     (saveForLater)="onSaveForLater()"
     (mark)="onMarkQuestion($event)"
+      (revealAnswer)="onRevealAnswer($event)"
+
     (finishExam)="finishExam($event)"
   />
 }

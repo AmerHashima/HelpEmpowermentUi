@@ -46,12 +46,21 @@ export class ExamComponent {
 
     return this.markedQuestions().has(question.oid);
   });
+  isAnswerLocked = computed(() => {
+    const q = this.currentQuestion();
+    if (!q) return false;
+
+    return (
+      this.revealedQuestions().has(q.oid) 
+    );
+  });
   questions = computed(() => {
     const list = this.questionStore.questions() ?? [];
     return [...list].sort((a, b) => a.orderNo - b.orderNo);
   });
 
-
+  revealedQuestions = signal<Set<string>>(new Set());
+  answeredBeforeReveal = signal<Set<string>>(new Set());
   answeredQuestions = signal<Set<string>>(new Set());
   boardQuestions = computed(() => {
     const list = this.questionStore.questions() ?? [];
@@ -152,6 +161,12 @@ export class ExamComponent {
             if (parsed.markedQuestions) {
               this.markedQuestions.set(new Set(parsed.markedQuestions));
             }
+            if (parsed.answeredBeforeReveal) {
+              this.answeredBeforeReveal.set(new Set(parsed.answeredBeforeReveal));
+            }
+            if (parsed.revealedQuestions) {
+              this.revealedQuestions.set(new Set(parsed.revealedQuestions));
+            }
             if (parsed.answeredQuestions) {
               this.answeredQuestions.set(new Set(parsed.answeredQuestions));
             }
@@ -193,6 +208,27 @@ export class ExamComponent {
 
     this.router.navigate(['../../exam-simulator'], {
       relativeTo: this.route,
+    });
+  }
+
+  onRevealAnswer(questionId: string) {
+
+    const currentAnswer = this.examChoiceAnswers.find(
+      x => x.questionOid === questionId
+    );
+
+    if (currentAnswer?.selectedAnswerOids?.length) {
+      this.answeredBeforeReveal.update(set => {
+        const s = new Set(set);
+        s.add(questionId);
+        return s;
+      });
+    }
+
+    this.revealedQuestions.update(set => {
+      const s = new Set(set);
+      s.add(questionId);
+      return s;
     });
   }
 
@@ -276,6 +312,14 @@ export class ExamComponent {
 
   goToNext(newAnswer: any) {
 
+    const q = this.currentQuestion();
+    if (!q) return;
+
+    // If answer revealed and user didn't answer before reveal → ignore answer
+    if (this.revealedQuestions().has(q.oid) && !this.answeredBeforeReveal().has(q.oid)) {
+      newAnswer = { type: 'empty' };
+    }
+
     if (newAnswer.type === 'empty') {
       this.updateIndex();
       return;
@@ -299,14 +343,14 @@ export class ExamComponent {
         .subscribe({
           next: () => {
             this.updateChoiceAnswer(newAnswer);
-            const q = this.currentQuestion();
 
+            const q = this.currentQuestion();
             if (q?.oid) {
               this.answeredQuestions.update(set => {
                 const s = new Set(set);
                 s.add(q.oid);
                 return s;
-              })
+              });
             }
 
             this.saveExamProgress();
@@ -336,14 +380,14 @@ export class ExamComponent {
             this.updateMatchingAnswer(matchingPayload);
 
             const q = this.currentQuestion();
-
             if (q?.oid) {
               this.answeredQuestions.update(set => {
                 const s = new Set(set);
                 s.add(q.oid);
                 return s;
-              })
+              });
             }
+
             this.saveExamProgress();
             this.updateIndex();
           }
@@ -419,12 +463,14 @@ export class ExamComponent {
       JSON.stringify({
         saveForLater: this.saveForLater,
         examMode: this.currentMode(),
-        exam:this.shared.currentExam(),
+        exam: this.shared.currentExam(),
         studentId: this.auth.loggedStudent()?.userId,
         studentExamId: this.shared.studentExamId(),
         currentQuestionIndex: this.currentQuestionIndex(),
         examChoiceAnswers: this.examChoiceAnswers,
         examMatchingAnswers: this.examMatchingAnswers,
+        revealedQuestions: Array.from(this.revealedQuestions()),
+        answeredBeforeReveal: Array.from(this.answeredBeforeReveal()),
         markedQuestions: Array.from(this.markedQuestions()),
         answeredQuestions: Array.from(this.answeredQuestions())
       })
@@ -441,6 +487,7 @@ export class ExamComponent {
     const question = this.currentQuestion();
     if (!question) return;
 
+    // Restore Multiple Choice
     if (question.questionTypeName === 'Multiple Choice Question') {
 
       const saved = this.examChoiceAnswers.find(
@@ -466,6 +513,14 @@ export class ExamComponent {
         question.savedMatchingAnswers = saved.answers;
       }
 
+    }
+
+    // 🔒 Enforce reveal rule AFTER restore
+    if (
+      this.revealedQuestions().has(question.oid) &&
+      !this.answeredBeforeReveal().has(question.oid)
+    ) {
+      question.answers?.forEach((a: any) => a.isSelected = false);
     }
   }
 

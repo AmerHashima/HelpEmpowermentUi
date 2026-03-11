@@ -174,3 +174,23 @@ color:$headerColor !important;
   border:1px solid $primaryColor;
   padding:1rem;
 }
+
+.option.correct {
+  background-color: #28a745; 
+  color: white;
+  border-color: #28a745;
+}
+
+.option.correct .letter,
+.option.correct .text {
+  color: white;
+}
+.option.wrong {
+  background-color: #dc3545;
+  color: white;
+}
+
+.option.disabled {
+  pointer-events: none;
+  opacity: .6;
+}
