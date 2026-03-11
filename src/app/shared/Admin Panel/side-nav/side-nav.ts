@@ -11,7 +11,6 @@ import {
   ViewChildren
 } from '@angular/core';
 import { SideNavItem } from './side-nav-item/side-nav-item';
-import { RouterLink } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { Navitem } from '../../../models/navitem';
@@ -20,7 +19,7 @@ import { Shared } from '../../Services/shared/shared';
 
 @Component({
   selector: 'app-side-nav',
-  imports: [SideNavItem, CommonModule, RouterLink, TranslateModule],
+  imports: [SideNavItem, CommonModule, TranslateModule],
   templateUrl: './side-nav.html',
   styleUrls: ['./side-nav.scss'],
   standalone: true

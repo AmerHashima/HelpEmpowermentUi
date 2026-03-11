@@ -5,7 +5,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { Shared } from '../../../shared/Services/shared/shared';
 import { FeatureComponent } from '../../../shared/clientSide/feature/feature.component';
 import { GenericModelComponent } from '../../../shared/generic-model/generic-model.component';
-import { isPlatformBrowser, NgClass, Location } from '@angular/common';
+import { isPlatformBrowser, Location } from '@angular/common';
 import { CalculatorComponent } from '../../../shared/calculator/calculator.component';
 import { WhiteboardComponent } from '../../../shared/whiteboard/whiteboard.component';
 import { DragComponentComponent } from '../drag-component/drag-component.component';
@@ -15,7 +15,7 @@ import { ExamTimerComponent } from '../certifications/exam-timer/exam-timer.comp
 @Component({
   selector: 'app-client-exam-question',
   imports: [SiteButtonComponent, TranslatePipe, FeatureComponent, ExamTimerComponent,
-    GenericModelComponent,NgClass,CalculatorComponent,WhiteboardComponent,DragComponentComponent
+    GenericModelComponent, CalculatorComponent, WhiteboardComponent, DragComponentComponent
   ],
   templateUrl: './client-exam-question.component.html',
   styleUrl: './client-exam-question.component.scss'
@@ -24,7 +24,7 @@ export class ClientExamQuestionComponent {
 
   // next = output<void>();
   next = output<any>();
-  mode=input<string>('');
+  mode = input<string>('');
   previous = output<void>();
   goToQuestion = output<number>();
   mark = output<boolean>();
@@ -32,26 +32,26 @@ export class ClientExamQuestionComponent {
   showBoard = output<boolean>();
 
   saveForLater = output<void>();
-  private shared=inject(Shared);
-  isRTL=this.shared.isRtl
+  private shared = inject(Shared);
+  isRTL = this.shared.isRtl
   // question = input.required<Question>();
   question = input.required<any>();
   isMarked = input<boolean>(false);
-  savedMiddle:any[]=[];
-  showConfirm:boolean=false;
+  savedMiddle: any[] = [];
+  showConfirm: boolean = false;
   // showQuestionBoard:boolean=false;
-  showCalculator:boolean=false;
-  showWhiteboard:boolean=false;
-  examAnswers=[];
-  showCorrectAnswerFlag:boolean=false;
-  showTranslateFlag:boolean=false;
+  showCalculator: boolean = false;
+  showWhiteboard: boolean = false;
+  examAnswers = [];
+  showCorrectAnswerFlag: boolean = false;
+  showTranslateFlag: boolean = false;
   constructor(
     private location: Location,
     @Inject(PLATFORM_ID) private platformId: Object
   ) { }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['question']){
+    if (changes['question']) {
       this.hideAnswersAndTranslations();
     }
     if (changes['question'] && this.isMatchingQuestion) {
@@ -66,7 +66,7 @@ export class ClientExamQuestionComponent {
       this._rightItems = [...right];
 
       const saved = q.savedMatchingAnswers ?? [];
-      if(saved.length > 0){
+      if (saved.length > 0) {
         saved.forEach((pair: any, index: number) => {
 
           const match = right.find(
@@ -88,7 +88,8 @@ export class ClientExamQuestionComponent {
         this.savedMiddle = [...this.middle]
       }
 
-    console.log('middle' , this.middle);    }
+      console.log('middle', this.middle);
+    }
 
   }
   selectOption(opt: any['answers'][number]) {
@@ -116,45 +117,45 @@ export class ClientExamQuestionComponent {
       opt.isSelected = true;
     }
   }
-  onOpenCalculator(){
-    this.showCalculator=true;
+  onOpenCalculator() {
+    this.showCalculator = true;
   }
-  onOpenWhiteboard(){
-    this.showWhiteboard=true;
+  onOpenWhiteboard() {
+    this.showWhiteboard = true;
   }
-  onSaveExamForLater(){
+  onSaveExamForLater() {
     this.saveForLater.emit();
   }
-  onEndExam(){
-    this.showConfirm=true;
+  onEndExam() {
+    this.showConfirm = true;
   }
-  EndExam(){
+  EndExam() {
     this.showConfirm = false;
     this.finishExam.emit(true);
     console.log('confirm end exam');
   }
-  onCancalEndExam(){
-    this.showConfirm=false;
+  onCancalEndExam() {
+    this.showConfirm = false;
   }
-  onOpenQuestionBoard(){
+  onOpenQuestionBoard() {
     this.showBoard.emit(true)
   }
 
-  onTranslate(){
-    this.showTranslateFlag=true
+  onTranslate() {
+    this.showTranslateFlag = true
   }
-  hideTranslations(){
-  this.showTranslateFlag = false
+  hideTranslations() {
+    this.showTranslateFlag = false
   }
   onMarkQuestion() {
     this.hideAnswersAndTranslations();
     this.mark.emit(true);
   }
 
-  showAnswer(){
-    this.showCorrectAnswerFlag=true;
+  showAnswer() {
+    this.showCorrectAnswerFlag = true;
   }
-  hideAnswer(){
+  hideAnswer() {
     this.showCorrectAnswerFlag = false;
 
   }
@@ -226,12 +227,12 @@ export class ClientExamQuestionComponent {
     this.previous.emit();
   }
 
- 
 
-private hideAnswersAndTranslations(){
-  this.showCorrectAnswerFlag = false;
-  this.showTranslateFlag = false;
-}
+
+  private hideAnswersAndTranslations() {
+    this.showCorrectAnswerFlag = false;
+    this.showTranslateFlag = false;
+  }
   get isMatchingQuestion(): boolean {
     return this.question()?.questionTypeName.toLowerCase() === 'matching';
   }
@@ -269,8 +270,8 @@ private hideAnswersAndTranslations(){
   middle: APIAnswer[] = [];
 
   onMiddleChange(updated: APIAnswer[] | null) {
-    if(updated)
-       this.middle=updated;
+    if (updated)
+      this.middle = updated;
   }
 
   buildMatchingAnswers(left: APIAnswer[], middle: APIAnswer[]) {
@@ -282,18 +283,18 @@ private hideAnswersAndTranslations(){
     return answers;
   }
 
-  getExamTitle(){
-    const exam=this.shared.currentExam();
-    if(exam && this.mode())
-    return `${exam.examName} - ${this.mode()} mode`
-  else return '';
+  getExamTitle() {
+    const exam = this.shared.currentExam();
+    if (exam && this.mode())
+      return `${exam.examName} - ${this.mode()} mode`
+    else return '';
   }
 
-  back(){
+  back() {
     if (isPlatformBrowser(this.platformId)) {
       this.location.back();
+    }
   }
-}
 
   onTimeUp() {
     console.log('Time up → auto next question');

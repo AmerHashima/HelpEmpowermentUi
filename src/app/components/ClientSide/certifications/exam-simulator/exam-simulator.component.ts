@@ -30,11 +30,11 @@ export class ExamSimulatorComponent {
   private cartService = inject(CartService);
   private shared = inject(Shared);
   private auth = inject(AuthService);
-  private studentService=inject(StudentService);
+  private studentService = inject(StudentService);
   isEnrolled = this.studentService.isExamSimulatorEnrolled;
-  private toasting=inject(ToastingMessagesService);
+  private toasting = inject(ToastingMessagesService);
   isRTL = this.shared.isRtl;
-  studentToken =this.auth.studentToken;
+  studentToken = this.auth.studentToken;
   // certification=this.shared.currentCertificationObject
   //  chooseExam:boolean=false;
   examSimulatorBenfits = [

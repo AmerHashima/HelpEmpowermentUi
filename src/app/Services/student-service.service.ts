@@ -14,7 +14,7 @@ import { Shared } from '../shared/Services/shared/shared';
   providedIn: 'root'
 })
 export class StudentService {
-  enrolledCourses=signal<APIStudentCourse[]>([]);
+  enrolledCourses = signal<APIStudentCourse[]>([]);
 
   currentCourse = computed(() => {
     const certification = this.shared.currentCertificate();
@@ -34,16 +34,16 @@ export class StudentService {
   isLiveCourseEnrolled = computed(() =>
     !!this.currentCourse()?.liveCourseReserv
   );
-  constructor(private apiService: ApiService,private auth:AuthService,private shared:Shared) { 
-    effect(()=>{
-     const studentId =this.auth.loggedStudent()?.userId
-     if(!studentId) return;
+  constructor(private apiService: ApiService, private auth: AuthService, private shared: Shared) {
+    effect(() => {
+      const studentId = this.auth.loggedStudent()?.userId
+      if (!studentId) return;
       this.getAllStudentEnrolledCourses(studentId).subscribe({
         next: (courses) => { this.enrolledCourses.set(courses) }
       });
     })
 
-  
+
   }
 
   //student
@@ -244,7 +244,7 @@ export class StudentService {
   }
 
 
-  getAllStudentEnrolledCourses(studentId:string): Observable<APIStudentCourse[]> {
+  getAllStudentEnrolledCourses(studentId: string): Observable<APIStudentCourse[]> {
     return this.apiService
       .getSingle<ApiResponse<APIStudentCourse[]>>('StudentCourses/student', studentId)
       .pipe(
@@ -273,7 +273,7 @@ export class StudentService {
   }
 
 
-  checkStudentEnrolledInCourse(studentId:string,courseId: string): Observable<boolean> {
+  checkStudentEnrolledInCourse(studentId: string, courseId: string): Observable<boolean> {
     return this.apiService
       .getSingle<ApiResponse<boolean>>(`StudentCourses/check/${studentId}`, courseId)
       .pipe(
@@ -288,13 +288,13 @@ export class StudentService {
   }
 
   updateStudentCoursePayment(id: string, body: {
-    paymentStatusLookupId:string,
-    transactionId:string
+    paymentStatusLookupId: string,
+    transactionId: string
   }): Observable<APIStudentCourse> {
-   
+
 
     return this.apiService
-      .put<ApiResponse<APIStudentCourse>>('StudentCourses', id, body, 'payment info has been updated successfully','payment')
+      .put<ApiResponse<APIStudentCourse>>('StudentCourses', id, body, 'payment info has been updated successfully', 'payment')
       .pipe(
         map((response: ApiResponse<APIStudentCourse>) => {
           if (!response.success) {
