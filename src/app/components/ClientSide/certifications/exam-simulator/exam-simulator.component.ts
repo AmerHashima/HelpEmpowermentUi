@@ -1,5 +1,5 @@
 // src\app\components\ClientSide\certifications\exam-simulator\exam-simulator.component.ts
-import { Component, effect, inject, PLATFORM_ID } from '@angular/core';
+import { Component, effect, inject, Input, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IconCardComponent } from '../../../../shared/icon-card/icon-card.component';
 import { Shared } from '../../../../shared/Services/shared/shared';
@@ -14,6 +14,7 @@ import { AuthService } from '../../../../Services/auth.service';
 import { CartService } from '../../../../Services/  cart.service';
 import { GenericModelComponent } from '../../../../shared/generic-model/generic-model.component';
 import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
+import { StudentService } from '../../../../Services/student-service.service';
 
 @Component({
   selector: 'app-exam-simulator',
@@ -29,9 +30,10 @@ export class ExamSimulatorComponent {
   private cartService = inject(CartService);
   private shared = inject(Shared);
   private auth = inject(AuthService);
+  private studentService = inject(StudentService);
+  isEnrolled = this.studentService.isExamSimulatorEnrolled;
   private toasting = inject(ToastingMessagesService);
   isRTL = this.shared.isRtl;
-  hasBought = this.auth.hasBought;
   studentToken = this.auth.studentToken;
   // certification=this.shared.currentCertificationObject
   //  chooseExam:boolean=false;

@@ -66,6 +66,11 @@
   color:$primaryColor !important;
 }
 
+:host ::ng-deep .examModeCard:hover .site-primary-button button {
+  background-color: $lightBgTextColor !important;
+  color: $primaryColor !important;
+}
+
 .examInfo {
   border-top: 1px solid $borderColor;
   border-bottom: 1px solid  $borderColor;

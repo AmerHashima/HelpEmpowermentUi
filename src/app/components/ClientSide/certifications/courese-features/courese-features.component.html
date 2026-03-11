@@ -17,7 +17,7 @@
             </div>
           </div>
         }
-        @if (!hasBought() && type() == "features") {
+        @if (!isEnrolled() && type() == "features") {
           <app-site-button
             class="w-100"
             title="examSimulator.buyNow"

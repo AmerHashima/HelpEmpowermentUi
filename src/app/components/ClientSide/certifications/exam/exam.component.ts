@@ -419,6 +419,7 @@ export class ExamComponent {
       JSON.stringify({
         saveForLater: this.saveForLater,
         examMode: this.currentMode(),
+        exam:this.shared.currentExam(),
         studentId: this.auth.loggedStudent()?.userId,
         studentExamId: this.shared.studentExamId(),
         currentQuestionIndex: this.currentQuestionIndex(),

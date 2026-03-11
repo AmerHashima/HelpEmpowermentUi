@@ -46,19 +46,25 @@
             <!-- main-profile-bio -->
             <div class="row mt-3">
               <div class="col-md-4 col">
-                <h5 class="fs-17 text-center mainTextColor">5</h5>
+                <h5 class="fs-17 text-center mainTextColor">
+                  {{ enrolledCourses().length }}
+                </h5>
                 <h6 class="text-small text-muted text-center fs-14 mb-0">
                   {{ "Courses" | translate }}
                 </h6>
               </div>
               <div class="col-md-4 col">
-                <h5 class="fs-17 text-center mainTextColor">7</h5>
+                <h5 class="fs-17 text-center mainTextColor">
+                  {{ getTotalExamsLength() }}
+                </h5>
                 <h6 class="text-small text-center text-muted fs-14 mb-0">
                   {{ "Exams" | translate }}
                 </h6>
               </div>
               <div class="col-md-4 col">
-                <h5 class="fs-17 text-center mainTextColor">65%</h5>
+                <h5 class="fs-17 text-center mainTextColor">
+                  {{ successRate() }}%
+                </h5>
                 <h6 class="text-small text-center text-muted fs-14 mb-0">
                   {{ "Success Rate" | translate }}
                 </h6>
@@ -88,25 +94,29 @@
                 <span class="hidden-xs">Enrolled Courses</span>
               </a>
               <ng-template ngbNavContent>
-                  <div class="row g-2">
-                    @for (course of enrolledCourses; track course.id) {
+                <div class="row g-2">
+                  @if (!showCourseDetailsFlag) {
+                    @for (course of enrolledCourses(); track course) {
                       <div class="col-sm-6 col-md-6 col-lg-4">
                         <div
                           class="card course-card h-100 position-relative h-100"
+                          (click)="showCourseDetails(course)"
                         >
                           <img
-                            [src]="course.image"
+                            [src]="getCourseImage(course)"
                             class="card-img-top"
                             alt="course"
                           />
 
                           <div class="card-body d-flex flex-column flex-grow-1">
-                            <h5 class="card-title">{{ course.title }}</h5>
-                            <p class="text-muted small mb-2">
+                            <h5 class="card-title">
+                              {{ course.courseName }} Certification
+                            </h5>
+                            <!-- <p class="text-muted small mb-2">
                               Mahmoud Elhelbawi
-                            </p>
+                            </p> -->
 
-                            <div class="d-flex justify-content-between mb-2">
+                            <!-- <div class="d-flex justify-content-between mb-2">
                               <small
                                 ><i class="bi bi-journal-text me-1"></i
                                 >{{ course.lessons }} Lessons</small
@@ -117,7 +127,6 @@
                               >
                             </div>
 
-                            <!-- Progress -->
                             <div class="progress mb-2" style="height: 6px">
                               <div
                                 class="progress-bar"
@@ -126,27 +135,71 @@
                             </div>
                             <small class="text-end d-block mb-3"
                               >{{ course.progress }}% Completed</small
-                            >
+                            > -->
 
-                            <app-site-button
+                            <!-- <app-site-button
                               class="flex-grow-1 align-content-end"
                               title="Continue Course"
                               [isRTL]="isRTL()"
                               type="main"
                               (click)="continueCourse(course)"
-                            />
+                            /> -->
                           </div>
                         </div>
                       </div>
-                    }@empty{
-                         <div class="empty-courses text-center py-5">
-                    <i class="bi bi-journal-x fs-1 text-muted"></i>
-                    <p class="mt-3 text-muted w-100">
-                      You haven’t enrolled in any courses yet.
-                    </p>
-                  </div>
+                    } @empty {
+                      <div class="empty-courses text-center py-5">
+                        <i class="bi bi-journal-x fs-1 text-muted"></i>
+                        <p class="mt-3 text-muted w-100">
+                          You haven’t enrolled in any courses yet.
+                        </p>
+                      </div>
                     }
-                  </div>
+                  } @else {
+                    <div class="d-flex gap-1 align-items-center">
+                      @if (course()?.examSimulationReserv) {
+                        <div
+                          class="course-feature"
+                          (click)="navigateToCourseFeatue('exam-simulator')"
+                        >
+                          <i class="bi bi-controller feature-icon"></i>
+                          <span class="feature-text">Exam Simulator</span>
+                        </div>
+                      }
+
+                      @if (course()?.recordedCourseReserv) {
+                        <div
+                          class="course-feature"
+                          (click)="navigateToCourseFeatue('recorded-course')"
+                        >
+                          <i class="bi bi-play-circle feature-icon"></i>
+                          <span class="feature-text">Recorded Courses</span>
+                        </div>
+                      }
+
+                      @if (course()?.liveCourseReserv) {
+                        <div
+                          class="course-feature"
+                          (click)="navigateToCourseFeatue('live-course')"
+                        >
+                          <i class="bi bi-camera-video feature-icon"></i>
+                          <span class="feature-text">Live Course</span>
+                        </div>
+                      }
+
+                      @if (!hasAnyCourseFeature()) {
+                        <div
+                          class="course-feature empty-feature w-100 justify-content-center"
+                        >
+                          <i class="bi bi-info-circle feature-icon"></i>
+                          <span class="feature-text"
+                            >You are not enrolled in any course features</span
+                          >
+                        </div>
+                      }
+                    </div>
+                  }
+                </div>
                 <!-- } -->
               </ng-template>
             </li>
@@ -158,64 +211,94 @@
                 <span class="hidden-xs">Exams</span>
               </a>
               <ng-template ngbNavContent>
-                @if (exams.length === 0) {
+                @if (studentExams().length === 0 && savedExams().length == 0) {
                   <div class="empty-exams text-center py-5">
                     <i class="bi bi-file-earmark-text fs-1 text-muted"></i>
                     <p class="mt-3 text-muted w-100">No exams found yet.</p>
                   </div>
                 } @else {
                   <div class="row g-4">
-                    @for (exam of exams; track exam.id) {
+                    @for (exam of savedExams(); track exam.studentExamId) {
                       <div class="col-sm-6 col-md-6 col-lg-4">
                         <div class="card exam-card h-100 p-3">
                           <div
                             class="d-flex justify-content-between align-items-start mb-2"
                           >
-                            <h6 class="mb-0">{{ exam.examNumber }}</h6>
+                            <h6 class="mb-0">{{ exam.exam.examName }}</h6>
                             <span
                               class="badge"
                               [ngClass]="{
-                                'bg-success': exam.status === 'Finished',
-                                'bg-warning': exam.status === 'Saved',
-                                'bg-info': exam.status === 'In Progress',
+                                'bg-warning': exam.saveForLater,
+                                'bg-info': !exam.saveForLater,
                               }"
                             >
-                              {{ exam.status }}
+                              {{ exam.saveForLater ? "Saved" : "In Progress" }}
                             </span>
                           </div>
 
                           <p class="text-muted mb-2 small">
-                            {{ exam.certification | titlecase}}
+                            {{ exam.exam.courseName }} - {{ exam.examMode }} Mode
                           </p>
 
                           <!-- Progress -->
                           <div class="progress mb-2" style="height: 6px">
                             <div
                               class="progress-bar"
-                              [style.width.%]="exam.progress"
+                              [style.width.%]="getSavedExamProgress(exam)"
                             ></div>
                           </div>
                           <small class="text-end d-block mb-2"
-                            >{{ exam.progress }}% Completed</small
+                            >{{ getSavedExamProgress(exam) }}% Completed</small
                           >
 
-                          <!-- Success Rate for Finished Exams -->
-                          <ng-container *ngIf="exam.status === 'Finished'">
-                            <div class="text-center text-success fw-bold mb-2">
-                              Success Rate: {{ exam.successRate }}%
-                            </div>
-                          </ng-container>
-
-                          <!-- Continue Button for Saved / In Progress -->
-                          <ng-container *ngIf="exam.status !== 'Finished'">
-                              <app-site-button
+                          <ng-container>
+                            <app-site-button
                               class="flex-grow-1 align-content-end"
-                              title="Continue Course"
+                              title="Continue Exam"
                               [isRTL]="isRTL()"
                               type="main"
                               (click)="goToExam(exam)"
                             />
                           </ng-container>
+                        </div>
+                      </div>
+                    }
+                    @for (exam of studentExams(); track exam.oid) {
+                      <div class="col-sm-6 col-md-6 col-lg-4">
+                        <div class="card exam-card h-100 p-3">
+                          <div
+                            class="d-flex justify-content-between align-items-start mb-2"
+                          >
+                            <h6 class="mb-0">{{ exam.examName }}</h6>
+                            <span
+                              class="badge bg-success"
+                            >
+                              {{ 'Finished' | translate }}
+                            </span>
+                          </div>
+
+                          <p class="text-muted mb-2 small">
+                            {{ exam.examName }} - Exam Mode
+                          </p>
+
+                          <!-- Progress -->
+                          <div class="progress mb-2" style="height: 6px">
+                            <div
+                              class="progress-bar"
+                              [style.width.%]="getExamProgress(exam)"
+                            ></div>
+                          </div>
+                          <small class="text-end d-block mb-2"
+                            >{{ getExamProgress(exam) }}% Completed</small
+                          >
+
+                          <ng-container>
+                            <div class="text-center text-success fw-bold mb-2">
+                              Success Rate: {{ (exam.obtainedScore / exam.totalScore) * 100 }}%
+                            </div>
+                          </ng-container>
+
+                         
                         </div>
                       </div>
                     }
@@ -232,114 +315,128 @@
               </a>
               <ng-template ngbNavContent>
                 <div class="border-0 p-0 form" id="settings">
-                       <form
-          #registerForm="ngForm"
-          (ngSubmit)="onUpdateInfo()"
-          class="register-form mb-0"
-        >
-          <div class="d-flex flex-column gap-3">
-            <div class="row">
-              <div class="col-12 col-lg-6">
-                <app-input
-                  name="firstName"
-                  [(ngModel)]="credentials.firstName"
-                  required
-                  [label]="'register.firstNameLabel' | translate"
-                  [placeholder]="'register.firstNamePlaceholder' | translate"
-                  [icon]="'bi bi-person'"
-                  [errorMessages]="{
-                    required: 'First Name is required' | translate,
-                  }"
-                ></app-input>
-              </div>
-              <div class="col-12 col-lg-6">
-                <app-input
-                  name="lastName"
-                  [(ngModel)]="credentials.lastName"
-                  required
-                  [label]="'register.lastNameLabel' | translate"
-                  [placeholder]="'register.lastNamePlaceholder' | translate"
-                  [icon]="'bi bi-person'"
-                  [errorMessages]="{
-                    required: 'Last Name is required' | translate,
-                  }"
-                ></app-input>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-12 col-lg-6">
-                <app-input
-                  name="firstNameAr"
-                  [(ngModel)]="credentials.firstNameAr"
-                  required
-                  [label]="'register.firstNameArLabel' | translate"
-                  [placeholder]="'register.firstNameArPlaceholder' | translate"
-                  [icon]="'bi bi-person'"
-                  [errorMessages]="{
-                    required: 'Arabic First Name is required' | translate,
-                  }"
-                ></app-input>
-              </div>
-              <div class="col-12 col-lg-6">
-                <app-input
-                  name="lastNameAr"
-                  [(ngModel)]="credentials.lastNameAr"
-                  required
-                  [label]="'register.lastNameArLabel' | translate"
-                  [placeholder]="'register.lastNameArPlaceholder' | translate"
-                  [icon]="'bi bi-person'"
-                  [errorMessages]="{
-                    required: 'Arabic Last Name is required' | translate,
-                  }"
-                ></app-input>
-              </div>
-            </div>
-            <app-input
-              name="username"
-              [(ngModel)]="credentials.username"
-              required
-              [label]="'register.usernameLabel' | translate"
-              [placeholder]="'register.usernamePlaceholder' | translate"
-              [icon]="'bi bi-person'"
-              [errorMessages]="{
-                required: 'User Name is required' | translate,
-              }"
-            ></app-input>
-            <app-input
-              name="email"
-              [(ngModel)]="credentials.email"
-              required
-              email
-              [label]="'log.emailLabel' | translate"
-              [placeholder]="'log.emailPlaceholder' | translate"
-              [icon]="'bi bi-envelope'"
-              [errorMessages]="{
-                required: 'Email is required' | translate,
-                email: 'Invalid email format' | translate,
-              }"
-            ></app-input>
+                  <form
+                    #registerForm="ngForm"
+                    (ngSubmit)="onUpdateInfo()"
+                    class="register-form mb-0"
+                  >
+                    <div class="d-flex flex-column gap-3">
+                      <div class="row">
+                        <div class="col-12 col-lg-6">
+                          <app-input
+                            name="firstName"
+                            [(ngModel)]="credentials.firstName"
+                            required
+                            [label]="'register.firstNameLabel' | translate"
+                            [placeholder]="
+                              'register.firstNamePlaceholder' | translate
+                            "
+                            [icon]="'bi bi-person'"
+                            [errorMessages]="{
+                              required: 'First Name is required' | translate,
+                            }"
+                          ></app-input>
+                        </div>
+                        <div class="col-12 col-lg-6">
+                          <app-input
+                            name="lastName"
+                            [(ngModel)]="credentials.lastName"
+                            required
+                            [label]="'register.lastNameLabel' | translate"
+                            [placeholder]="
+                              'register.lastNamePlaceholder' | translate
+                            "
+                            [icon]="'bi bi-person'"
+                            [errorMessages]="{
+                              required: 'Last Name is required' | translate,
+                            }"
+                          ></app-input>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-12 col-lg-6">
+                          <app-input
+                            name="firstNameAr"
+                            [(ngModel)]="credentials.firstNameAr"
+                            required
+                            [label]="'register.firstNameArLabel' | translate"
+                            [placeholder]="
+                              'register.firstNameArPlaceholder' | translate
+                            "
+                            [icon]="'bi bi-person'"
+                            [errorMessages]="{
+                              required:
+                                'Arabic First Name is required' | translate,
+                            }"
+                          ></app-input>
+                        </div>
+                        <div class="col-12 col-lg-6">
+                          <app-input
+                            name="lastNameAr"
+                            [(ngModel)]="credentials.lastNameAr"
+                            required
+                            [label]="'register.lastNameArLabel' | translate"
+                            [placeholder]="
+                              'register.lastNameArPlaceholder' | translate
+                            "
+                            [icon]="'bi bi-person'"
+                            [errorMessages]="{
+                              required:
+                                'Arabic Last Name is required' | translate,
+                            }"
+                          ></app-input>
+                        </div>
+                      </div>
+                      <app-input
+                        name="username"
+                        [(ngModel)]="credentials.username"
+                        required
+                        [label]="'register.usernameLabel' | translate"
+                        [placeholder]="
+                          'register.usernamePlaceholder' | translate
+                        "
+                        [icon]="'bi bi-person'"
+                        [errorMessages]="{
+                          required: 'User Name is required' | translate,
+                        }"
+                      ></app-input>
+                      <app-input
+                        name="email"
+                        [(ngModel)]="credentials.email"
+                        required
+                        email
+                        [label]="'log.emailLabel' | translate"
+                        [placeholder]="'log.emailPlaceholder' | translate"
+                        [icon]="'bi bi-envelope'"
+                        [errorMessages]="{
+                          required: 'Email is required' | translate,
+                          email: 'Invalid email format' | translate,
+                        }"
+                      ></app-input>
 
-            <app-phone-input
-              name="phone"
-              [(ngModel)]="credentials.mobile"
-              [required]="true"
-              [labelKey]="'register.phoneLabel' | translate"
-            >
-            </app-phone-input>
+                      <app-phone-input
+                        name="phone"
+                        [(ngModel)]="credentials.mobile"
+                        [required]="true"
+                        [labelKey]="'register.phoneLabel' | translate"
+                      >
+                      </app-phone-input>
 
-            <app-site-button
-              title="Save"
-              type="main"
-              htmlType="submit"
-              [icon]="isRTL() ? 'bi bi-arrow-left' : 'bi bi-arrow-right'"
-              [isRTL]="isRTL()"
-            ></app-site-button>
-          </div>
-        </form>
+                      <app-site-button
+                        title="Save"
+                        type="main"
+                        htmlType="submit"
+                        [icon]="
+                          isRTL() ? 'bi bi-arrow-left' : 'bi bi-arrow-right'
+                        "
+                        [isRTL]="isRTL()"
+                      ></app-site-button>
+                    </div>
+                  </form>
                 </div>
               </ng-template>
             </li>
-              <li [ngbNavItem]="5" class="">
+            <li [ngbNavItem]="5" class="">
               <a ngbNavLink data-bs-toggle="tab" aria-expanded="false">
                 <span class="visible-xs"
                   ><i class="las la-cog fs-16 me-1"></i
@@ -348,65 +445,68 @@
               </a>
               <ng-template ngbNavContent>
                 <div class="border-0 p-0 form" id="changePassword">
-                       <form
-          #passwordForm="ngForm"
-          (ngSubmit)="onChangePassword(passwordForm)"
-          class="register-form mb-0"
-        >
-          <div class="d-flex flex-column gap-3">
-    
-              <app-input
-              name="currentPassword"
-              [(ngModel)]="changePasswordForm.currentPassword"
-              required
-              minlength="6"
-              [label]="'Current Password' | translate"
-              [placeholder]="'Current Password' | translate"
-              [icon]="'bi bi-lock'"
-              [type]="'password'"
-              [errorMessages]="{
-                required: 'CurrentPassword is required' | translate,
-                minlength: 'At least 6 characters' | translate,
-              }"
-            ></app-input>
-              <app-input
-              name="newPassword"
-              [(ngModel)]="changePasswordForm.newPassword"
-              required
-              minlength="6"
-              [label]="'New Password' | translate"
-              [placeholder]="'Enter your current password' | translate"
-              [icon]="'bi bi-lock'"
-              [type]="'password'"
-              [errorMessages]="{
-                required: 'New Password is required' | translate,
-                minlength: 'At least 6 characters' | translate,
-              }"
-            ></app-input>
+                  <form
+                    #passwordForm="ngForm"
+                    (ngSubmit)="onChangePassword(passwordForm)"
+                    class="register-form mb-0"
+                  >
+                    <div class="d-flex flex-column gap-3">
+                      <app-input
+                        name="currentPassword"
+                        [(ngModel)]="changePasswordForm.currentPassword"
+                        required
+                        minlength="6"
+                        [label]="'Current Password' | translate"
+                        [placeholder]="'Current Password' | translate"
+                        [icon]="'bi bi-lock'"
+                        [type]="'password'"
+                        [errorMessages]="{
+                          required: 'CurrentPassword is required' | translate,
+                          minlength: 'At least 6 characters' | translate,
+                        }"
+                      ></app-input>
+                      <app-input
+                        name="newPassword"
+                        [(ngModel)]="changePasswordForm.newPassword"
+                        required
+                        minlength="6"
+                        [label]="'New Password' | translate"
+                        [placeholder]="
+                          'Enter your current password' | translate
+                        "
+                        [icon]="'bi bi-lock'"
+                        [type]="'password'"
+                        [errorMessages]="{
+                          required: 'New Password is required' | translate,
+                          minlength: 'At least 6 characters' | translate,
+                        }"
+                      ></app-input>
 
-              <app-input
-              name="confirmPassword"
-              [(ngModel)]="changePasswordForm.confirmPassword"
-              required
-              minlength="6"
-              [label]="'Confirm Password' | translate"
-              [placeholder]="'Enter your confirm Pasword' | translate"
-              [icon]="'bi bi-lock'"
-              [type]="'password'"
-              [errorMessages]="{
-                required: 'Confirm Password is required' | translate,
-                minlength: 'At least 6 characters' | translate,
-              }"
-            ></app-input>
-            <app-site-button
-              title="Change Password"
-              type="main"
-              htmlType="submit"
-              [icon]="isRTL() ? 'bi bi-arrow-left' : 'bi bi-arrow-right'"
-              [isRTL]="isRTL()"
-            ></app-site-button>
-          </div>
-        </form>
+                      <app-input
+                        name="confirmPassword"
+                        [(ngModel)]="changePasswordForm.confirmPassword"
+                        required
+                        minlength="6"
+                        [label]="'Confirm Password' | translate"
+                        [placeholder]="'Enter your confirm Pasword' | translate"
+                        [icon]="'bi bi-lock'"
+                        [type]="'password'"
+                        [errorMessages]="{
+                          required: 'Confirm Password is required' | translate,
+                          minlength: 'At least 6 characters' | translate,
+                        }"
+                      ></app-input>
+                      <app-site-button
+                        title="Change Password"
+                        type="main"
+                        htmlType="submit"
+                        [icon]="
+                          isRTL() ? 'bi bi-arrow-left' : 'bi bi-arrow-right'
+                        "
+                        [isRTL]="isRTL()"
+                      ></app-site-button>
+                    </div>
+                  </form>
                 </div>
               </ng-template>
             </li>

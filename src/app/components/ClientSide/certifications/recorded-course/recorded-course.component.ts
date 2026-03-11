@@ -17,6 +17,7 @@ import { TargetAudienceComponent } from '../../../AdminPanel/certifications/targ
 import { CartService } from '../../../../Services/  cart.service';
 import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
 import { GenericModelComponent } from '../../../../shared/generic-model/generic-model.component';
+import { StudentService } from '../../../../Services/student-service.service';
 
 @Component({
   selector: 'app-recorded-course',
@@ -34,8 +35,8 @@ export class RecordedCourseComponent {
   private toasting=inject(ToastingMessagesService);
   isRTL = this.shared.isRtl;
   showConfirm:boolean=false;
-  hasBought = this.auth.hasBought;
-
+  private studentService=inject(StudentService);
+  isEnrolled = this.studentService.isRecordedCoursesEnrolled;
   enrollImage = 'assets/images/enroll.png';
   recoedImage = "assets/images/recordedCourse.jpeg";
 

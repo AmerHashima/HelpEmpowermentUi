@@ -1,9 +1,7 @@
+@use "variables" as *;
 
-@use 'variables' as *;
-
-
-.profile-img{
-  width:100px;
+.profile-img {
+  width: 100px;
   height: 100px;
   border-radius: 50%;
 }
@@ -40,9 +38,8 @@
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  i{
-      color: $lightBgTextColor;
-
+  i {
+    color: $lightBgTextColor;
   }
 }
 
@@ -55,17 +52,16 @@
   font-size: 16px;
 }
 
-
 .course-card {
   border-radius: 16px;
   overflow: hidden;
   transition: 0.3s ease;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
 .course-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 14px 30px rgba(0,0,0,0.15);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.15);
 }
 
 .course-card img {
@@ -74,19 +70,18 @@
 }
 
 .progress-bar {
-  background: linear-gradient(45deg, #AD1357, #470824) !important;
+  background: linear-gradient(45deg, #ad1357, #470824) !important;
 }
-
 
 .exam-card {
   border-radius: 12px;
   transition: 0.3s ease;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
 }
 
 .exam-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
 }
 
 .progress-bar {
@@ -109,18 +104,43 @@
   }
 }
 
-.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
-  color:$primaryColor !important;
+.nav-tabs .nav-item.show .nav-link,
+.nav-tabs .nav-link.active {
+  color: $primaryColor !important;
   background-color: $inputBg;
 }
 
-.nav-link{
-  color:$paraTextColor !important;
+.nav-link {
+  color: $paraTextColor !important;
 }
 
-.card-body,.card{
+.card-body,
+.card {
   background-color: $bgBody;
-  *{
-    color:$lightTextColor !important;
+  * {
+    color: $lightTextColor !important;
+  }
+}
+.course-feature {
+  display: flex;
+  gap: 0.5rem !important;
+  align-items: center;
+  justify-content: center;
+  background-color: $primaryColor !important;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  &:hover {
+    background-color: $secondaryColor !important;
+  }
+  * {
+    color: $lightBgTextColor !important;
+  }
+}
+
+.empty-feature {
+  background: transparent !important;
+  cursor: default;
+  * {
+    color: $headerColor !important;
   }
 }

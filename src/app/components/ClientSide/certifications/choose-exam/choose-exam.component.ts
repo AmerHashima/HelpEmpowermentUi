@@ -132,9 +132,8 @@ export class ChooseExamComponent {
     else this.showConfirm = true;
   }
   back() {
-    if (this.previousExamMode())
-      this.router.navigate(['../exam-simulator'], {
-        relativeTo: this.route
-      });
+    this.router.navigate(['../exam-simulator'], {
+      relativeTo: this.route
+    });
   }
 }

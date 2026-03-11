@@ -105,7 +105,6 @@ export class CreateNewCertificationComponent {
         isActive: certification.isActive,
       });
     });
-
     effect(() => {
       const success = this.store.success();
       if (success)

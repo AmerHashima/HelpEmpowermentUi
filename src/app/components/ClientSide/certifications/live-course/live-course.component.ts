@@ -17,6 +17,7 @@ import { UpcomingSessionsComponent } from '../upcoming-sessions/upcoming-session
 import { CartService } from '../../../../Services/  cart.service';
 import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
 import { GenericModelComponent } from '../../../../shared/generic-model/generic-model.component';
+import { StudentService } from '../../../../Services/student-service.service';
 
 @Component({
   selector: 'app-live-course',

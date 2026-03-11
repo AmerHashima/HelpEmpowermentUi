@@ -1,20 +1,22 @@
-// src\app\components\ClientSide\auth\profile\profile.component.ts
-import { Component, effect, inject } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { AuthService, changePasswordForm } from '../../../../Services/auth.service';
 import { Shared } from '../../../../shared/Services/shared/shared';
 import { NgClass, NgIf, TitleCasePipe } from '@angular/common';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe } from '@ngx-translate/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/site-button.component';
 import { FormsModule, NgForm } from '@angular/forms';
 import { InputComponent } from '../../../../shared/input/input.component';
 import { PhoneInputComponent } from '../../../../shared/phone/phone.component';
 import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
 import { StudentService } from '../../../../Services/student-service.service';
+import { APIStudentCourse } from '../../../../models/student-course';
+import { StudentExamService } from '../../../../Services/student-exam.service';
 @Component({
   selector: 'app-profile',
-  imports: [NgClass, NgIf, NgbNavModule,TranslatePipe,TitleCasePipe,
+  standalone:true,
+  imports: [NgClass, NgIf,FormsModule, NgbNavModule,TranslatePipe,TitleCasePipe,TranslatePipe,
     SiteButtonComponent,FormsModule,InputComponent,PhoneInputComponent
   ],
   templateUrl: './profile.component.html',
@@ -23,57 +25,23 @@ import { StudentService } from '../../../../Services/student-service.service';
 export class ProfileComponent {
   private authService = inject(AuthService);
   private studentService = inject(StudentService);
+  private studentExamService = inject(StudentExamService);
+  totalExams = this.studentExamService.reports
+  studentExams=computed(()=> 
+    this.totalExams().filter(report => report.startedAt && report.finishedAt))
+  successRate = this.studentExamService.successRate
   private shared = inject(Shared);
   private router = inject(Router);
+  private route=inject(ActivatedRoute);
   private toasting=inject(ToastingMessagesService);
   isRTL=this.shared.isRtl;
   lang=this.shared.lang;
   studentImage="assets/images/profile/person.jpg";
+  enrolledCourses = this.studentService.enrolledCourses;
+  savedExams = signal<any[]>([]);
 
   user: any;
 
-  enrolledCourses = [
-    {
-      id: 1,
-      title: 'PMP® Certification',
-      image: 'assets/images/certifications/certfication_1.jpeg',
-      lessons: 12,
-      duration: '6h 30m',
-      progress: 60 // %
-    },
-    {
-      id: 2,
-      title: 'CAPM® Certification',
-      image: 'assets/images/certifications/certfication_2.jpeg',
-      lessons: 8,
-      duration: '4h 15m',
-      progress: 30
-    }
-  ];
-  exams = [
-    {
-      id: 1,
-      examNumber: 'Exam 1',
-      certification: 'pmp',
-      status: 'Finished',
-      progress: 100,
-      successRate: 85
-    },
-    {
-      id: 2,
-      examNumber: 'Exam 2',
-      certification: 'pmp',
-      status: 'Saved',
-      progress: 45
-    },
-    {
-      id: 3,
-      examNumber: 'Exam 1',
-      certification: 'capm',
-      status: 'Saved',
-      progress: 60
-    }
-  ];
 
   credentials = {
     firstName: '',
@@ -90,10 +58,16 @@ export class ProfileComponent {
     newPassword:'',
     confirmPassword:'',
   }
-
+  showCourseDetailsFlag:boolean=false;
+  course=signal<APIStudentCourse |null>(null)
+  hasAnyCourseFeature = computed(() => {
+    const c = this.course();
+    return !!(c?.examSimulationReserv || c?.recordedCourseReserv || c?.liveCourseReserv);
+  });
 constructor(){
   effect(()=>{
     this.user = this.authService.loggedStudent();
+
     if (this.user) {
       const names = this.user.nameEn.split(' ');
       const namesAr = this.user.nameAr.split(' ');
@@ -110,6 +84,10 @@ constructor(){
   })
 }
 
+ngOnInit(): void {
+ this.savedExams.set(this.loadSavedExams());
+  
+}
 
   handleFileInput(event: any): void {
     const file = event.target.files[0];
@@ -121,14 +99,59 @@ constructor(){
       reader.readAsDataURL(file);
     }
   }
-  goToExam(examId:any){
-    // this.router.navigateByUrl(`/${this.lang()}/certifications/${course.courseName.toLowerCase()}/recorded-course`);
+  goToExam(exam:any){
+    const courseName = exam.exam.courseName.toLowerCase();
+    const currentExamId=exam.exam.oid
+    this.shared.studentExamId.set(exam.studentExamId);
+    localStorage.setItem('studentExamId', exam.studentExamId);
+    this.shared.currentExamId.set(exam.exam.oid);
+    this.shared.currentExam.set(exam.exam);
+    this.router.navigate(['../../certifications/', courseName, 'exams',currentExamId], {
+      relativeTo: this.route,
+      queryParams: { mode: exam.examMode },
+      queryParamsHandling: 'merge',
+    });
+  }
+
+  loadSavedExams(): any[] {
+    const studentId = this.authService.loggedStudent()?.userId;
+    if (!studentId) return [];
+
+    const prefix = `exam-progress-student_${studentId}`;
+    const exams: any[] = [];
+
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (!key || !key.startsWith(prefix)) continue;
+
+      const item = localStorage.getItem(key);
+      if (!item) continue;
+
+      try {
+        exams.push(JSON.parse(item));
+      } catch {
+        console.warn('Invalid exam storage item', key);
+      }
+    }
+
+    return exams;
   }
 
   continueCourse(course:any){
     this.router.navigateByUrl(`/${this.lang()}/certifications/${course.courseName.toLowerCase()}/recorded-course`);
   }
 
+  getCourseImage(course:APIStudentCourse){
+    console.log(course.courseName.toLowerCase());
+    if (course.courseName.toLowerCase() == 'pmp')
+      return 'assets/images/certifications/certfication_1.jpeg';
+    else return 'assets/images/certifications/certfication_2.jpeg';
+  }
+
+  showCourseDetails(course: APIStudentCourse){
+    this.showCourseDetailsFlag=true;
+    this.course.set(course);
+  }
   onUpdateInfo(){
     const payload = {
       oid:this.user.oid,
@@ -147,7 +170,6 @@ constructor(){
       },
       error: () => this.toasting.showToast('Failed to create User', 'error')
     })
-    console.log('Submitted credentials:', this.credentials);
   }
   onChangePassword(form: NgForm){
     const payload = {
@@ -166,6 +188,35 @@ constructor(){
       error: () => this.toasting.showToast('Failed to change password', 'error')
     })
 
+  }
+
+  navigateToCourseFeatue(key:string){
+    const courseName=this.course()?.courseName.toLowerCase();
+    this.router.navigate(['../../certifications/', courseName,key], {
+      relativeTo: this.route,
+   
+    });
+  }
+
+  getSavedExamProgress(exam: any): number {
+    const answered =
+      (exam.examChoiceAnswers?.length ?? 0) +
+      (exam.examMatchingAnswers?.length ?? 0);
+
+    const total = exam.exam?.questionCount ?? 0;
+
+    if (!total) return 0;
+
+    return Math.round((answered / total) * 100);
+  }
+
+  getExamProgress(exam:any){
+    const total = exam.totalScore ?? 0;
+    if (!total) return 0;
+    return Math.round((exam.obtainedScore / total) * 100);
+  }
+  getTotalExamsLength(){
+    return this.studentExams().length + this.savedExams().length
   }
   }
 
