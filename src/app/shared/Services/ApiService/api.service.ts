@@ -62,7 +62,7 @@ export default class ApiService {
     }).pipe(
       tap(() => {
         if (successMessage && !url.includes('search') && !url.includes('en-to-ar') && !url.includes('submit-multiple') &&
-          !url.includes('validate-answers')) {
+          !url.includes('validate-answers') && !url.includes('refresh-token')) {
           this.toasting.showToast(successMessage, 'success');
         }
       }),

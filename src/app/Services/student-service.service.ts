@@ -23,8 +23,8 @@ export class StudentService {
   });
 
   isExamSimulatorEnrolled = computed(() =>
-    // true
-    !!this.currentCourse()?.examSimulationReserv
+    true
+    // !!this.currentCourse()?.examSimulationReserv
   );
 
   isRecordedCoursesEnrolled = computed(() =>

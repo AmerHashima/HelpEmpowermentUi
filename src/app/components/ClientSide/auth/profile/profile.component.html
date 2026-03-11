@@ -46,19 +46,25 @@
             <!-- main-profile-bio -->
             <div class="row mt-3">
               <div class="col-md-4 col">
-                <h5 class="fs-17 text-center mainTextColor">5</h5>
+                <h5 class="fs-17 text-center mainTextColor">
+                  {{ enrolledCourses().length }}
+                </h5>
                 <h6 class="text-small text-muted text-center fs-14 mb-0">
                   {{ "Courses" | translate }}
                 </h6>
               </div>
               <div class="col-md-4 col">
-                <h5 class="fs-17 text-center mainTextColor">7</h5>
+                <h5 class="fs-17 text-center mainTextColor">
+                  {{ getTotalExamsLength() }}
+                </h5>
                 <h6 class="text-small text-center text-muted fs-14 mb-0">
                   {{ "Exams" | translate }}
                 </h6>
               </div>
               <div class="col-md-4 col">
-                <h5 class="fs-17 text-center mainTextColor">65%</h5>
+                <h5 class="fs-17 text-center mainTextColor">
+                  {{ successRate() }}%
+                </h5>
                 <h6 class="text-small text-center text-muted fs-14 mb-0">
                   {{ "Success Rate" | translate }}
                 </h6>
@@ -181,8 +187,10 @@
                         </div>
                       }
 
-                      @if ( !hasAnyCourseFeature()) {
-                        <div class="course-feature empty-feature  w-100 justify-content-center">
+                      @if (!hasAnyCourseFeature()) {
+                        <div
+                          class="course-feature empty-feature w-100 justify-content-center"
+                        >
                           <i class="bi bi-info-circle feature-icon"></i>
                           <span class="feature-text"
                             >You are not enrolled in any course features</span
@@ -203,64 +211,94 @@
                 <span class="hidden-xs">Exams</span>
               </a>
               <ng-template ngbNavContent>
-                @if (exams.length === 0) {
+                @if (studentExams().length === 0 && savedExams().length == 0) {
                   <div class="empty-exams text-center py-5">
                     <i class="bi bi-file-earmark-text fs-1 text-muted"></i>
                     <p class="mt-3 text-muted w-100">No exams found yet.</p>
                   </div>
                 } @else {
                   <div class="row g-4">
-                    @for (exam of exams; track exam.id) {
+                    @for (exam of savedExams(); track exam.studentExamId) {
                       <div class="col-sm-6 col-md-6 col-lg-4">
                         <div class="card exam-card h-100 p-3">
                           <div
                             class="d-flex justify-content-between align-items-start mb-2"
                           >
-                            <h6 class="mb-0">{{ exam.examNumber }}</h6>
+                            <h6 class="mb-0">{{ exam.exam.examName }}</h6>
                             <span
                               class="badge"
                               [ngClass]="{
-                                'bg-success': exam.status === 'Finished',
-                                'bg-warning': exam.status === 'Saved',
-                                'bg-info': exam.status === 'In Progress',
+                                'bg-warning': exam.saveForLater,
+                                'bg-info': !exam.saveForLater,
                               }"
                             >
-                              {{ exam.status }}
+                              {{ exam.saveForLater ? "Saved" : "In Progress" }}
                             </span>
                           </div>
 
                           <p class="text-muted mb-2 small">
-                            {{ exam.certification | titlecase }}
+                            {{ exam.exam.courseName }} - {{ exam.examMode }} Mode
                           </p>
 
                           <!-- Progress -->
                           <div class="progress mb-2" style="height: 6px">
                             <div
                               class="progress-bar"
-                              [style.width.%]="exam.progress"
+                              [style.width.%]="getSavedExamProgress(exam)"
                             ></div>
                           </div>
                           <small class="text-end d-block mb-2"
-                            >{{ exam.progress }}% Completed</small
+                            >{{ getSavedExamProgress(exam) }}% Completed</small
                           >
 
-                          <!-- Success Rate for Finished Exams -->
-                          <ng-container *ngIf="exam.status === 'Finished'">
-                            <div class="text-center text-success fw-bold mb-2">
-                              Success Rate: {{ exam.successRate }}%
-                            </div>
-                          </ng-container>
-
-                          <!-- Continue Button for Saved / In Progress -->
-                          <ng-container *ngIf="exam.status !== 'Finished'">
+                          <ng-container>
                             <app-site-button
                               class="flex-grow-1 align-content-end"
-                              title="Continue Course"
+                              title="Continue Exam"
                               [isRTL]="isRTL()"
                               type="main"
                               (click)="goToExam(exam)"
                             />
                           </ng-container>
+                        </div>
+                      </div>
+                    }
+                    @for (exam of studentExams(); track exam.oid) {
+                      <div class="col-sm-6 col-md-6 col-lg-4">
+                        <div class="card exam-card h-100 p-3">
+                          <div
+                            class="d-flex justify-content-between align-items-start mb-2"
+                          >
+                            <h6 class="mb-0">{{ exam.examName }}</h6>
+                            <span
+                              class="badge bg-success"
+                            >
+                              {{ 'Finished' | translate }}
+                            </span>
+                          </div>
+
+                          <p class="text-muted mb-2 small">
+                            {{ exam.examName }} - Exam Mode
+                          </p>
+
+                          <!-- Progress -->
+                          <div class="progress mb-2" style="height: 6px">
+                            <div
+                              class="progress-bar"
+                              [style.width.%]="getExamProgress(exam)"
+                            ></div>
+                          </div>
+                          <small class="text-end d-block mb-2"
+                            >{{ getExamProgress(exam) }}% Completed</small
+                          >
+
+                          <ng-container>
+                            <div class="text-center text-success fw-bold mb-2">
+                              Success Rate: {{ (exam.obtainedScore / exam.totalScore) * 100 }}%
+                            </div>
+                          </ng-container>
+
+                         
                         </div>
                       </div>
                     }

@@ -12,9 +12,10 @@ import { PhoneInputComponent } from '../../../../shared/phone/phone.component';
 import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
 import { StudentService } from '../../../../Services/student-service.service';
 import { APIStudentCourse } from '../../../../models/student-course';
+import { StudentExamService } from '../../../../Services/student-exam.service';
 @Component({
   selector: 'app-profile',
-  imports: [NgClass, DatePipe, NgIf, NgFor, NgbNavModule,TranslatePipe,TitleCasePipe,
+  imports: [NgClass, DatePipe, NgIf, NgFor, NgbNavModule,TranslatePipe,TitleCasePipe,TranslatePipe,
     SiteButtonComponent,FormsModule,InputComponent,PhoneInputComponent
   ],
   templateUrl: './profile.component.html',
@@ -23,6 +24,11 @@ import { APIStudentCourse } from '../../../../models/student-course';
 export class ProfileComponent {
   private authService = inject(AuthService);
   private studentService = inject(StudentService);
+  private studentExamService = inject(StudentExamService);
+  totalExams = this.studentExamService.reports
+  studentExams=computed(()=> 
+    this.totalExams().filter(report => report.startedAt && report.finishedAt))
+  successRate = this.studentExamService.successRate
   private shared = inject(Shared);
   private router = inject(Router);
   private route=inject(ActivatedRoute);
@@ -31,33 +37,10 @@ export class ProfileComponent {
   lang=this.shared.lang;
   studentImage="assets/images/profile/person.jpg";
   enrolledCourses = this.studentService.enrolledCourses;
+  savedExams = signal<any[]>([]);
 
   user: any;
 
-  exams = [
-    {
-      id: 1,
-      examNumber: 'Exam 1',
-      certification: 'pmp',
-      status: 'Finished',
-      progress: 100,
-      successRate: 85
-    },
-    {
-      id: 2,
-      examNumber: 'Exam 2',
-      certification: 'pmp',
-      status: 'Saved',
-      progress: 45
-    },
-    {
-      id: 3,
-      examNumber: 'Exam 1',
-      certification: 'capm',
-      status: 'Saved',
-      progress: 60
-    }
-  ];
 
   credentials = {
     firstName: '',
@@ -100,6 +83,10 @@ constructor(){
   })
 }
 
+ngOnInit(): void {
+ this.savedExams.set(this.loadSavedExams());
+  
+}
 
   handleFileInput(event: any): void {
     const file = event.target.files[0];
@@ -111,8 +98,42 @@ constructor(){
       reader.readAsDataURL(file);
     }
   }
-  goToExam(examId:any){
-    // this.router.navigateByUrl(`/${this.lang()}/certifications/${course.courseName.toLowerCase()}/recorded-course`);
+  goToExam(exam:any){
+    const courseName = exam.exam.courseName.toLowerCase();
+    const currentExamId=exam.exam.oid
+    this.shared.studentExamId.set(exam.studentExamId);
+    localStorage.setItem('studentExamId', exam.studentExamId);
+    this.shared.currentExamId.set(exam.exam.oid);
+    this.shared.currentExam.set(exam.exam);
+    this.router.navigate(['../../certifications/', courseName, 'exams',currentExamId], {
+      relativeTo: this.route,
+      queryParams: { mode: exam.examMode },
+      queryParamsHandling: 'merge',
+    });
+  }
+
+  loadSavedExams(): any[] {
+    const studentId = this.authService.loggedStudent()?.userId;
+    if (!studentId) return [];
+
+    const prefix = `exam-progress-student_${studentId}`;
+    const exams: any[] = [];
+
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (!key || !key.startsWith(prefix)) continue;
+
+      const item = localStorage.getItem(key);
+      if (!item) continue;
+
+      try {
+        exams.push(JSON.parse(item));
+      } catch {
+        console.warn('Invalid exam storage item', key);
+      }
+    }
+
+    return exams;
   }
 
   continueCourse(course:any){
@@ -174,6 +195,27 @@ constructor(){
       relativeTo: this.route,
    
     });
+  }
+
+  getSavedExamProgress(exam: any): number {
+    const answered =
+      (exam.examChoiceAnswers?.length ?? 0) +
+      (exam.examMatchingAnswers?.length ?? 0);
+
+    const total = exam.exam?.questionCount ?? 0;
+
+    if (!total) return 0;
+
+    return Math.round((answered / total) * 100);
+  }
+
+  getExamProgress(exam:any){
+    const total = exam.totalScore ?? 0;
+    if (!total) return 0;
+    return Math.round((exam.obtainedScore / total) * 100);
+  }
+  getTotalExamsLength(){
+    return this.studentExams().length + this.savedExams().length
   }
   }
 
