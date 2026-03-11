@@ -37,7 +37,7 @@ export class ProfileComponent {
   private toasting = inject(ToastingMessagesService);
   isRTL = this.shared.isRtl;
   lang = this.shared.lang;
-  studentImage = "assets/images/profile/person.jpg";
+  studentImage = "assets/images/profile/person.png";
   enrolledCourses = this.studentService.enrolledCourses;
   savedExams = signal<any[]>([]);
 

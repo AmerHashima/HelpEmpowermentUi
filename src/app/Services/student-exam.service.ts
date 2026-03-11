@@ -4,7 +4,7 @@ import { computed, effect, inject, Injectable, signal, untracked } from '@angula
 import ApiService from '../shared/Services/ApiService/api.service';
 import { map, Observable } from 'rxjs';
 import { ApiResponse, ApiSearchResponse } from '../models/apiResponse';
-import { APIStudentExamResponse, choiceQuestionExamSubmit, matchingQuestionExamSubmit, startStudentExam, submitStudentExam } from '../models/certification';
+import { APIExamSummary, APIStudentExamResponse, choiceQuestionExamSubmit, ExamSummary, matchingQuestionExamSubmit, startStudentExam, submitStudentExam } from '../models/certification';
 import { RequestBody } from '../models/rquest';
 import { AuthService } from './auth.service';
 
@@ -93,6 +93,20 @@ export class StudentExamService {
       );
   }
 
+
+  getExamSummary(body: ExamSummary): Observable<APIExamSummary> {
+    return this.apiService
+      .post<ApiResponse<APIExamSummary>>('StudentExams/summary', body, "Exam has been started!")
+      .pipe(
+        map((response: ApiResponse<APIExamSummary>) => {
+          if (!response.success) {
+            const msg = response.errors?.join(', ') || response.message || 'API failed to get summary';
+            throw new Error(msg);
+          }
+          return response.data;
+        })
+      );
+  }
   getStudentExam(id: string): Observable<APIStudentExamResponse> {
     return this.apiService
       .getSingle<ApiResponse<APIStudentExamResponse>>('StudentExams', id)

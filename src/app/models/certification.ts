@@ -128,6 +128,33 @@ export interface APIStudentExamResponse {
   examQuestions: APIStudentExamQuestion[]
 }
 
+export interface ExamSummary{
+  studentId: string,
+  examId: string
+}
+
+export interface APIExamSummary{
+  studentExamOid: string,
+  studentOid: string,
+  studentName: string,
+  examName: string,
+  attemptNo: number,
+  totalScore: number,
+  obtainedScore: number,
+  percentage: number,
+  isPassed: boolean,
+  startedAt:string,
+  finishedAt: string,
+  totalQuestions: number,
+  statusSummary: StatusSummary[]
+}
+export interface StatusSummary{
+  questionStatusLookupId: string,
+    statusName: string,
+      count: number,
+        percentage: number
+}
+
 export interface StudentExamQuestion{
   studentExamOid: string,
   questionOid: string,
