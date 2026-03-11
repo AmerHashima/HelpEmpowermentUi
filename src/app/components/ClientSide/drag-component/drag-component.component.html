@@ -20,7 +20,7 @@
       [cdkDropListData]="middleItems"
       [cdkDropListConnectedTo]="['rightList']"
       class="list"
-        [cdkDropListDisabled]="answersFlag || translatedFlag"
+[cdkDropListDisabled]="answersFlag || translatedFlag || locked()"
       (cdkDropListDropped)="drop($event)"
     >
       <div
@@ -28,7 +28,7 @@
         *ngFor="let item of middleItems; let i = index"
         cdkDrag
         cdkDropListGroup
-        [cdkDragDisabled]="item === null || answersFlag || translatedFlag "
+        [cdkDragDisabled]="item === null || answersFlag || translatedFlag  || locked() "
         [class.placeholder]="item === null"
         [cdkDragData]="item"
       >
@@ -48,12 +48,13 @@
       [cdkDropListData]="rightItems"
       [cdkDropListConnectedTo]="['middleList']"
       class="list"
-              [cdkDropListDisabled]="translatedFlag"
+              [cdkDropListDisabled]="translatedFlag || locked()"
 
       (cdkDropListDropped)="drop($event)"
     >
       @for (item of rightItems; track item) {
         <div class="item draggable"         [class.text-end]="translatedFlag"
+        [cdkDragDisabled]="locked()"
  cdkDrag [cdkDragData]="item">
           {{ translatedFlag ? item.answerText_Ar : item.answerText }}
         </div>

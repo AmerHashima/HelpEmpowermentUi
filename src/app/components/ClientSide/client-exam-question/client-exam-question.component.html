@@ -97,6 +97,7 @@
         <app-drag-component
           [leftItems]="left"
           [rightItems]="right"
+            [locked]="answerLocked() || showCorrectAnswerFlag"
           [savedMiddle]="savedMiddle"
           (rightItemsChange)="right = $event"
           (middleChange)="onMiddleChange($event)"

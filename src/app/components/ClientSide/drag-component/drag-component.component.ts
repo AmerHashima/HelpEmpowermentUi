@@ -117,7 +117,7 @@
 
 
 // drag-component.component.ts
-import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, input } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NgFor } from '@angular/common';
@@ -136,7 +136,7 @@ export class DragComponentComponent implements OnChanges {
   @Input() totalSlots = 0;
   @Input() answersFlag = false;
   @Input() translatedFlag=false
-
+  locked = input<boolean>(false);
   @Output() middleChange = new EventEmitter<any[]>();
   @Output() rightItemsChange = new EventEmitter<any[]>();
 
@@ -165,6 +165,7 @@ export class DragComponentComponent implements OnChanges {
   }
 
   drop(event: CdkDragDrop<(any | null)[]>) {
+    if (this.locked()) return;
     if (this.answersFlag || this.translatedFlag) return;
 
     // Same container → just reorder inside middle
