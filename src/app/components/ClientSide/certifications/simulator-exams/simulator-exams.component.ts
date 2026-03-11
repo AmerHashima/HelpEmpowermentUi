@@ -28,37 +28,37 @@ export class SimulatorExamsComponent {
     return exams;
   });
 
-  // startIndex = 0;
-  startIndex = signal(0);
+  // // startIndex = 0;
+  // startIndex = signal(0);
 
-  visibleCount = 3;
-
-
+  // visibleCount = 3;
 
 
-  visibleItems = computed(() => {
-    const all = this.items();
-    const start = this.startIndex();
-    return all.slice(start, start + this.visibleCount);
-  });
 
-  canGoPrev = computed(() => this.startIndex() > 0);
 
-  canGoNext = computed(() => {
-    return this.startIndex() + this.visibleCount < this.items().length;
-  });
+  // visibleItems = computed(() => {
+  //   const all = this.items();
+  //   const start = this.startIndex();
+  //   return all.slice(start, start + this.visibleCount);
+  // });
 
-  prev() {
-    if (this.canGoPrev()) {
-      this.startIndex.update(v => v - this.visibleCount);
-    }
-  }
+  // canGoPrev = computed(() => this.startIndex() > 0);
 
-  next() {
-    if (this.canGoNext()) {
-      this.startIndex.update(v => v + this.visibleCount);
-    }
-  }
+  // canGoNext = computed(() => {
+  //   return this.startIndex() + this.visibleCount < this.items().length;
+  // });
+
+  // prev() {
+  //   if (this.canGoPrev()) {
+  //     this.startIndex.update(v => v - this.visibleCount);
+  //   }
+  // }
+
+  // next() {
+  //   if (this.canGoNext()) {
+  //     this.startIndex.update(v => v + this.visibleCount);
+  //   }
+  // }
   startExam(item: any) {
     const examId=item.oid;
     this.shared.currentExam.set(item);

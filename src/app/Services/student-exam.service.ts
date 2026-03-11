@@ -33,8 +33,7 @@ export class StudentExamService {
 
       if (!studentId) return;
       this.loadReports(studentId);
-      // this.getStudentExamsByStudentId(studentId)
-      //   .subscribe(r => this.reports.set(r));
+  
     });
 
   effect(() => {

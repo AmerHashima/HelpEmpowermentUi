@@ -1,7 +1,7 @@
-  <div class="certification pagePadding">
-<!-- @if(!chooseExam){ -->
+<div class="certification pagePadding">
+  <!-- @if(!chooseExam){ -->
   <!-- Banner - shown only if not purchased -->
-  <ng-container *ngIf="!isEnrolled() || !studentToken()" >
+  <ng-container *ngIf="!isEnrolled() || !studentToken()">
     <app-page-banner [isRTL]="isRTL()" [media]="true">
       <!-- Content projection -->
       <div content class="d-flex flex-column gap-3 pe-xl-5">
@@ -53,19 +53,20 @@
         </div>
       </div>
 
-        <video
-          media
-          [src]="simulatorVideo"
-          autoplay
-          loop
-          muted
-          playsinline
-          class="Homebanner-video w-100 h-100 bg-site"
-        ></video>
+      <video
+        media
+        [src]="simulatorVideo"
+        autoplay
+        loop
+        muted
+        playsinline
+        class="Homebanner-video w-100 h-100 bg-site"
+      ></video>
     </app-page-banner>
   </ng-container>
 
-    <!-- Benefits section -->
+  <!-- Benefits section -->
+   @if(!isEnrolled()){
   <div class="CertifticationBenfits d-flex flex-column gap-5 pt-5 pb-5">
     <div class="d-flex flex-column align-items-center gap-2">
       <h2 class="mainTextColor">
@@ -86,22 +87,27 @@
       }
     </div>
   </div>
+   }
 
-<!-- } -->
-
-
+  <!-- } -->
 
   <!-- Modes / Try before buy section -->
   <div class="modes d-flex flex-column gap-5 pt-5 pb-5">
     <div class="d-flex flex-column align-items-center gap-2">
-      <div>
-        <span class="mainTextColor fst-italic">
-          {{ "examSimulator.tryBeforeBuy" | translate }}
-        </span>
-      </div>
+      @if (!isEnrolled()) {
+        <div>
+          <span class="mainTextColor fst-italic">
+            {{ "examSimulator.tryBeforeBuy" | translate }}
+          </span>
+        </div>
+      }
 
       <h2 class="darkText">
-        {{ "examSimulator.experienceFree" | translate }}
+        @if (isEnrolled()) {
+          {{ "Experience the Exam Simulator" | translate }}
+        } @else {
+          {{ "examSimulator.experienceFree" | translate }}
+        }
       </h2>
 
       <p class="CertifticationBenfitsSubTitle">
@@ -110,7 +116,7 @@
     </div>
 
     <ng-container *ngIf="!isEnrolled() || !studentToken()">
-          <!-- @if(!chooseExam){ -->
+      <!-- @if(!chooseExam){ -->
 
       <div class="d-flex justify-content-center">
         <div class="examModeCard d-flex flex-column gap-3 shadow-sm">
@@ -174,7 +180,7 @@
 
           <div class="d-flex align-content-stretch gap-3 w-100">
             <app-site-button
-             class="w-100"
+              class="w-100 site-primary-button "
               title="examSimulator.startFreeExam"
               [icon]="isRTL() ? 'bi bi-arrow-left' : 'bi bi-arrow-right'"
               type="main"
@@ -183,34 +189,29 @@
           </div>
         </div>
       </div>
-          <!-- }@else{
+      <!-- }@else{
               <app-choose-exam/>
           } -->
-
     </ng-container>
 
-
-
     <!-- Show full exams list if already purchased -->
-    <app-simulator-exams *ngIf="isEnrolled() && studentToken()"></app-simulator-exams>
+    <app-simulator-exams
+      *ngIf="isEnrolled() && studentToken()"
+    ></app-simulator-exams>
   </div>
-
 </div>
 
-
- <app-generic-modal [(isOpen)]="showConfirm" title="Alert Message">
-    <section
-      class="w-100 d-flex flex-column align-items-stretch gap-3 p-3 rounded"
+<app-generic-modal [(isOpen)]="showConfirm" title="Alert Message">
+  <section
+    class="w-100 d-flex flex-column align-items-stretch gap-3 p-3 rounded"
+  >
+    <div
+      class="d-flex flex-column align-items-center justify-content-center gap-2 w-100"
     >
-      <div
-        class="d-flex flex-column align-items-center justify-content-center gap-2 w-100"
-      >
-        <i class="bi bi-info-circle-fill infoColor"></i>
-        <p class="text-center darkText w-75 mx-auto">
-          {{
-            "You Must be logged to be able to contact us." | translate
-          }}
-        </p>
-      </div>
-    </section>
-  </app-generic-modal>
+      <i class="bi bi-info-circle-fill infoColor"></i>
+      <p class="text-center darkText w-75 mx-auto">
+        {{ "You Must be logged to be able to contact us." | translate }}
+      </p>
+    </div>
+  </section>
+</app-generic-modal>
