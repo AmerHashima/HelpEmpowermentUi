@@ -13,6 +13,7 @@ export class HomeServicesComponent {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private shared = inject(Shared);
+  visibleCount = signal(3);
   isRTL = this.shared.isRtl;
   items = [
     {
@@ -54,24 +55,39 @@ export class HomeServicesComponent {
     }
   ];
 
-  // startIndex = 0;
   startIndex = signal(0);
 
-  visibleCount = 3;
+  constructor() {
+    this.updateVisibleCount();
 
+    window.addEventListener('resize', () => {
+      this.updateVisibleCount();
+    });
+  }
 
+  updateVisibleCount() {
+    const width = window.innerWidth;
 
+    if (width < 768) {
+      this.visibleCount.set(1); 
+    } else if (width < 992) {
+      this.visibleCount.set(2);
+    } else {
+      this.visibleCount.set(3); 
+    }
+  }
 
   visibleItems = computed(() => {
     const all = this.items;
     const start = this.startIndex();
-    return all.slice(start, start + this.visibleCount);
+    const count = this.visibleCount();
+    return all.slice(start, start + count);
   });
 
   canGoPrev = computed(() => this.startIndex() > 0);
 
   canGoNext = computed(() => {
-    return this.startIndex() + this.visibleCount < this.items.length;
+    return this.startIndex() < this.items.length - this.visibleCount();
   });
 
   prev() {
