@@ -1,3 +1,4 @@
+// src\app\components\ClientSide\certifications\exam-simulator\exam-simulator.component.ts
 import { Component, effect, inject, Input, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IconCardComponent } from '../../../../shared/icon-card/icon-card.component';
@@ -10,7 +11,6 @@ import { PageBannerComponent } from '../../../../shared/clientSide/page-banner/p
 import { isPlatformBrowser, NgIf } from '@angular/common';
 import { SimulatorExamsComponent } from '../simulator-exams/simulator-exams.component';
 import { AuthService } from '../../../../Services/auth.service';
-import { ChooseExamComponent } from '../choose-exam/choose-exam.component';
 import { CartService } from '../../../../Services/  cart.service';
 import { GenericModelComponent } from '../../../../shared/generic-model/generic-model.component';
 import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
@@ -18,8 +18,8 @@ import { StudentService } from '../../../../Services/student-service.service';
 
 @Component({
   selector: 'app-exam-simulator',
-  imports: [IconCardComponent,SiteButtonComponent,TranslateModule,TranslatePipe,FeatureComponent,
-    StarRatingComponent, PageBannerComponent, NgIf, SimulatorExamsComponent, ChooseExamComponent,
+  imports: [IconCardComponent, SiteButtonComponent, TranslateModule, TranslatePipe, FeatureComponent,
+    StarRatingComponent, PageBannerComponent, NgIf, SimulatorExamsComponent,
     GenericModelComponent
   ],
   templateUrl: './exam-simulator.component.html',
@@ -34,10 +34,9 @@ export class ExamSimulatorComponent {
   isEnrolled = this.studentService.isExamSimulatorEnrolled;
   private toasting=inject(ToastingMessagesService);
   isRTL = this.shared.isRtl;
-
   studentToken =this.auth.studentToken;
   // certification=this.shared.currentCertificationObject
-//  chooseExam:boolean=false;
+  //  chooseExam:boolean=false;
   examSimulatorBenfits = [
     {
       title: "Always Current",
@@ -100,11 +99,11 @@ export class ExamSimulatorComponent {
 
   simulatorVideo = 'assets/videos/SimulatorVideo.mp4';
   enrollImage = 'assets/images/enroll.png';
-  showConfirm:boolean=false;
-  constructor(private router: Router,private route:ActivatedRoute) {
-    console.log('certifications',this.shared.certifications());
-    effect(()=>{
-      const _=this.shared.currentExamId();
+  showConfirm: boolean = false;
+  constructor(private router: Router, private route: ActivatedRoute) {
+    console.log('certifications', this.shared.certifications());
+    effect(() => {
+      const _ = this.shared.currentExamId();
       // this.chooseExam=true;
     })
 

@@ -1,11 +1,9 @@
 // src\app\components\AdminPanel\certifications\create-new-certification\create-new-certification.component.ts
 import { Component, computed, effect, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AsyncPipe } from '@angular/common';
 import { SpkNgSelectComponent } from '../../../../shared/spk-ng-select/spk-ng-select.component';
 import { ButtonComponent } from '../../../../shared/button/button.component';
 import { InputComponent } from '../../../../shared/input/input.component';
-import { FileUploadComponent } from '../../../../shared/file-upload/file-upload.component';
 import { CertificationService } from '../../../../Services/certification.service';
 import { CertificationsStore } from '../../../../AdminPanelStores/CertificationStore/certification.store';
 import { Certification } from '../../../../models/certification';
@@ -17,7 +15,7 @@ import { BreadcrumbService } from '../../../../Services/breadcrumb.service';
 @Component({
   selector: 'app-create-certification',
   imports: [SpkNgSelectComponent, ReactiveFormsModule, ButtonComponent,
-    InputComponent, FileUploadComponent, AsyncPipe],
+    InputComponent],
   templateUrl: './create-new-certification.component.html',
   styleUrl: './create-new-certification.component.scss'
 })
@@ -107,7 +105,7 @@ export class CreateNewCertificationComponent {
         isActive: certification.isActive,
       });
     });
-
+ d   w
     effect(() => {
       const success = this.store.success();
       if (success)

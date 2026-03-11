@@ -3,7 +3,7 @@ import { Component, computed, effect, ElementRef, Inject, inject, PLATFORM_ID, s
 import { ButtonComponent } from '../../../../shared/button/button.component';
 import { InputComponent } from '../../../../shared/input/input.component';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AsyncPipe, isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser } from '@angular/common';
 import { CertificationService } from '../../../../Services/certification.service';
 import { forkJoin, of, tap } from 'rxjs';
 import { CertificationsStore } from '../../../../AdminPanelStores/CertificationStore/certification.store';
@@ -13,7 +13,7 @@ import { NgIf, NgFor } from '@angular/common';
 @Component({
   selector: 'app-certifications-features',
   imports: [ButtonComponent, InputComponent, ReactiveFormsModule, TextareaComponent,
-    AsyncPipe, NgFor, NgIf],
+    NgFor, NgIf],
   templateUrl: './certifications-features.component.html',
   styleUrl: './certifications-features.component.scss'
 })

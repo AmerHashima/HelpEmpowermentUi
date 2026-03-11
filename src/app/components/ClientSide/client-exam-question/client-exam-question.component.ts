@@ -1,3 +1,4 @@
+// src\app\components\ClientSide\client-exam-question\client-exam-question.component.ts
 import { Component, Inject, inject, input, output, PLATFORM_ID, SimpleChanges } from '@angular/core';
 import { SiteButtonComponent } from '../../../shared/clientSide/site-button/site-button.component';
 import { TranslatePipe } from '@ngx-translate/core';

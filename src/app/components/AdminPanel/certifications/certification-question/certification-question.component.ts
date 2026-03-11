@@ -3,7 +3,7 @@
 
 import { Component, DestroyRef, computed, effect, inject, signal } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AsyncPipe, JsonPipe, Location, NgIf } from '@angular/common';
+import { Location, NgIf } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, concatMap, debounceTime, distinctUntilChanged, filter, forkJoin, from, map, Observable, of, switchMap, tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -47,8 +47,6 @@ const DEFAULT_USER_ID = '3fa85f64-5717-4562-b3fc-2c963f66afa6';
     InputComponent,
     FileUploadComponent,
     ReactiveFormsModule,
-    AsyncPipe,
-    JsonPipe,
     NgIf,
     TextareaComponent
   ],
