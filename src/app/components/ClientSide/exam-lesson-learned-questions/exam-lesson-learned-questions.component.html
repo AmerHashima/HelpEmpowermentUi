@@ -7,7 +7,9 @@
       <div class="col-lg-4">
         <div class="card summary-card p-3">
           <h6 class="fw-bold">Exam Summary</h6>
-          <div class="score">{{ latestReport()?.obtainedScore ?? '0' }}/{{ latestReport()?.totalScore ?? '0' }}</div>
+          <div class="score">
+            {{ statusStats().correct.count }}/{{ total() }}
+          </div>
 
           <!-- donut placeholder -->
           <div class="chart">
@@ -20,7 +22,9 @@
                 <span class="dot wrong"></span>
                 Wrong Answers
               </div>
-              <span class="percent">{{ wrongPercent() }}%</span>
+              <span class="percent"
+                >{{ statusStats().incorrect.percentage }}%</span
+              >
             </div>
 
             <div class="legend-item">
@@ -28,7 +32,9 @@
                 <span class="dot correct"></span>
                 Correct Answer
               </div>
-              <span class="percent">{{ correctPercent() }}%</span>
+              <span class="percent"
+                >{{ statusStats().correct.percentage }}%</span
+              >
             </div>
 
             <div class="legend-item">
@@ -36,7 +42,9 @@
                 <span class="dot na"></span>
                 Not Answered
               </div>
-              <span class="percent">{{ naPercent() }}%</span>
+              <span class="percent"
+                >{{ statusStats().notAnswered.percentage }}%</span
+              >
             </div>
           </div>
         </div>
@@ -59,14 +67,14 @@
                   ✔ {{ "Correct Questions" | translate }}
                 </div>
 
-                <h3>{{ latestReport()?.obtainedScore || '0' }}</h3>
+                <h3>{{ statusStats().correct.count }}</h3>
 
                 <button
                   class="btn btn-success w-100"
-                  [disabled]=" !latestReport()?.obtainedScore"
+                  [disabled]="!statusStats().correct.count"
                   (click)="practiceQuestions('correct')"
                 >
-                  Practice {{ latestReport()?.obtainedScore }} Questions →
+                  Practice {{ statusStats().correct.count }} Questions →
                 </button>
               </div>
             </div>
@@ -78,14 +86,14 @@
                   ✖ {{ "Incorrect Questions" | translate }}
                 </div>
 
-                <h3>{{ incorrect() }}</h3>
+                <h3>{{ statusStats().incorrect.count }}</h3>
 
                 <button
                   class="btn btn-danger w-100"
-                                    [disabled]=" !incorrect()"
+                  [disabled]="!statusStats().incorrect.count"
                   (click)="practiceQuestions('incorrect')"
                 >
-                  Practice {{ incorrect() }} Questions →
+                  Practice {{ statusStats().incorrect.count }} Questions →
                 </button>
               </div>
             </div>
@@ -96,14 +104,13 @@
                 <div class="label text-secondary">
                   ● {{ "Not Answered Questions" | translate }}
                 </div>
-                <h3>{{ notAnswered() }}</h3>
+                <h3>{{ statusStats().notAnswered.count }}</h3>
                 <button
                   class="btn btn-secondary w-100"
-                                                      [disabled]=" !notAnswered()"
-
+                  [disabled]="!statusStats().notAnswered.count"
                   (click)="practiceQuestions('na')"
                 >
-                  Practice {{ notAnswered() }} Questions →
+                  Practice {{ statusStats().notAnswered.count }} Questions →
                 </button>
               </div>
             </div>
@@ -132,7 +139,6 @@
       </button>
     </div>
   </div>
-
 } @else {
   <div class="container py-5 text-center">
     <div class="d-flex flex-column align-items-center py-4">

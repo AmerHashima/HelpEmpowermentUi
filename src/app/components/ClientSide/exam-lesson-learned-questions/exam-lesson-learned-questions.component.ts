@@ -3,6 +3,8 @@ import { Component, computed, inject, Inject, input, output, PLATFORM_ID, signal
 import { TranslatePipe } from '@ngx-translate/core';
 import { StudentExamService } from '../../../Services/student-exam.service';
 import { Shared } from '../../../shared/Services/shared/shared';
+import { APIExamSummary, ExamSummary } from '../../../models/certification';
+import { AuthService } from '../../../Services/auth.service';
 
 @Component({
   selector: 'app-exam-lesson-learned-questions',
@@ -12,25 +14,22 @@ import { Shared } from '../../../shared/Services/shared/shared';
 })
 export class ExamLessonLearnedQuestionsComponent {
   private studentExamService=inject(StudentExamService);
+  private auth = inject(AuthService);
   private shared=inject(Shared);
-  latestReport = computed(() => {
-    const examId = this.shared.currentExamId();
+  latestReport = signal<APIExamSummary|null>(null);
+  statusStats = computed(() => {
+    const summary = this.latestReport()?.statusSummary ?? [];
 
-    const reports = this.studentExamService
-      .reports()
-      .filter(r => r.coursesMasterExamOid === examId && r.startedAt);
+    const get = (name: string) =>
+      summary.find(s => s.statusName === name) ?? { count: 0, percentage: 0 };
 
-    if (!reports.length) return null;
-
-    return reports.reduce((a, b) =>
-      new Date(b.startedAt!).getTime() > new Date(a.startedAt!).getTime() ? b : a
-    );
+    return {
+      correct: get('Correct'),
+      incorrect: get('Incorrect'),
+      notAnswered: get('Not Answered')
+    };
   });
-
-  correct = input<number>(100);
-  incorrect = input<number>(60);
-  notAnswered = input<number>(20);
-  total = input<number>(180);
+  total = computed(() => this.latestReport()?.totalQuestions ?? 0);
 
   practice = output<{ type: string }>();
 
@@ -40,6 +39,22 @@ export class ExamLessonLearnedQuestionsComponent {
     @Inject(PLATFORM_ID) private platformId: Object
   ) { }
 
+  ngOnInit(): void {
+    const payload: ExamSummary ={
+      studentId: this.auth.loggedStudent()?.userId!,
+      examId: this.shared.currentExamId()
+    }
+    console.log(payload);
+    this.studentExamService.getExamSummary(payload).subscribe({
+      next: (report) => {
+        this.latestReport.set(report);
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    })
+    
+  }
   donutStyle() {
     const report = this.latestReport();
 
@@ -47,9 +62,9 @@ export class ExamLessonLearnedQuestionsComponent {
 
     const total = report.totalScore;
 
-    const correct = (report.obtainedScore / total) * 100;
-    const wrong = (this.incorrect() / total) * 100;
-    const na = (this.notAnswered() / total) * 100;
+    const correct = this.statusStats().correct.percentage;
+    const wrong = this.statusStats().incorrect.percentage;
+    const na = this.statusStats().notAnswered.percentage;
 
     const wrongEnd = wrong;
     const correctEnd = wrong + correct;
@@ -60,33 +75,7 @@ export class ExamLessonLearnedQuestionsComponent {
     #607d8b ${correctEnd}% 100%
   )`;
   }
-  correctPercent() {
-    const report = this.latestReport();
-
-    if (!report || !report.totalScore) return 0;
-
-    const correct = report.obtainedScore;
-    const total = report.totalScore;
-
-    return Math.round((correct / total) * 100);
-  }
-
-  wrongPercent() {
-    const report = this.latestReport();
-
-    if (!report || !report.totalScore) return 0;
-    const total = report.totalScore;
-
-    return Math.round((this.incorrect() / total) * 100);
-  }
-
-  naPercent() {
-    const report = this.latestReport();
-
-    if (!report || !report.totalScore) return 0;
-    const total = report.totalScore;
-    return Math.round((this.notAnswered() / total) * 100);
-  }
+ 
   practiceQuestions(type: string) {
     this.practice.emit({ type });
   }

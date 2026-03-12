@@ -60,11 +60,11 @@ export class ClientExamQuestionComponent {
     //   }
 
     // });
-   }
+  }
 
 
   ngOnChanges(changes: SimpleChanges) {
-   
+
     if (changes['question']) {
       this.hideAnswersAndTranslations();
     }
@@ -119,7 +119,7 @@ export class ClientExamQuestionComponent {
 
   selectOption(opt: any['answers'][number]) {
     if (this.answerLocked()) return;
-console.log('answerLocked',this.answerLocked());
+    console.log('answerLocked', this.answerLocked());
     if (this.isMatchingQuestion) return;
 
     const question = this.question();

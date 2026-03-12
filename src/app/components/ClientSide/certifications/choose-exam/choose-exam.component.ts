@@ -19,7 +19,6 @@ import { APIStudentExamResponse } from '../../../../models/certification';
   styleUrl: './choose-exam.component.scss'
 })
 export class ChooseExamComponent {
-  private auth = inject(AuthService);
   private platformId = inject(PLATFORM_ID);
   private router = inject(Router);
   private shared = inject(Shared);
@@ -27,7 +26,7 @@ export class ChooseExamComponent {
   private studentExamService = inject(StudentExamService);
   private studentService=inject(StudentService);
   isEnrolled=this.studentService.isExamSimulatorEnrolled;
-  private AuthService = inject(AuthService);
+  private auth = inject(AuthService);
   private toasting = inject(ToastingMessagesService);
   private route = inject(ActivatedRoute);
   showConfirm = false;
@@ -42,14 +41,14 @@ export class ChooseExamComponent {
   });
 
   private getStorageKey(examId: string, mode: string) {
-    return `exam-progress-student_${this.AuthService.loggedStudent()?.userId}-${mode}-${examId}`;
+    return `exam-progress-student_${this.auth.loggedStudent()?.userId}-${mode}-${examId}`;
   }
 
   startExam(mode: string) {
     const examId = this.shared.currentExamId();
 
     // Free exam case
-    if (examId === 'free') {
+    if (examId === 'free' || !this.auth.studentToken) {
       console.log('start Free exam');
       return;
     }
@@ -122,17 +121,17 @@ export class ChooseExamComponent {
 
   getStartExamPayload() {
     const payload = {
-      studentOid: this.AuthService.loggedStudent()?.userId!,
+      studentOid: this.auth.loggedStudent()?.userId!,
       coursesMasterExamOid: this.shared.currentExamId(),
       attemptNo: 0,
-      createdBy: this.AuthService.loggedStudent()?.userId!
+      createdBy: this.auth.loggedStudent()?.userId!
     }
     console.log('payload', payload);
     return payload;
   }
   openReports() {
 
-    if (this.previousExamMode())
+    if (this.previousExamMode() && this.isEnrolled())
       this.router.navigate(['../reports'], {
         relativeTo: this.route
       });

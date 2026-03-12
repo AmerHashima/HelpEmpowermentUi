@@ -87,6 +87,7 @@ export class StudentExamService {
             const msg = response.errors?.join(', ') || response.message || 'API failed to submit exam';
             throw new Error(msg);
           }
+          console.log('response',response);
           this.loadReports(this.auth.loggedStudent()?.userId!)
           return response.data;
         })
@@ -96,7 +97,7 @@ export class StudentExamService {
 
   getExamSummary(body: ExamSummary): Observable<APIExamSummary> {
     return this.apiService
-      .post<ApiResponse<APIExamSummary>>('StudentExams/summary', body, "Exam has been started!")
+      .post<ApiResponse<APIExamSummary>>('StudentExams/summary', body, )
       .pipe(
         map((response: ApiResponse<APIExamSummary>) => {
           if (!response.success) {

@@ -380,7 +380,7 @@ function getCertificationChildren(): Routes {
       loadComponent: () =>
         import('./components/ClientSide/certifications/exam-result/exam-result.component')
           .then(m => m.ExamResultComponent),
-                data: { fullPage: true }
+      data: { fullPage: true }
 
     },
     {
