@@ -25,7 +25,7 @@ export class ExamResultComponent {
   ngOnInit() {
     const isBrowser = isPlatformBrowser(this.platformId);
 
-    if (!isBrowser) return; 
+    if (!isBrowser) return;
 
     this.storageKey = `examResult-${this.shared.studentExamId()}`;
     const stored = localStorage.getItem(this.storageKey);
@@ -52,7 +52,9 @@ export class ExamResultComponent {
   }
 
   Done(){
-    this.router.navigate(['../exam-simulator'], {
+    // this.router.navigate(['../exam-simulator'], {
+
+    this.router.navigate(['../chooseExam'], {
       relativeTo: this.route,
     });
   }

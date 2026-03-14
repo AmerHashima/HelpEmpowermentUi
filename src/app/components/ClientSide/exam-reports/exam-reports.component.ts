@@ -38,7 +38,7 @@ export class ExamReportsComponent {
   reports = computed(() => {
     const examId = this.currentExamId();
     const allReports = this.studentService.reports();
-
+    console.log('allReports', allReports);
     return allReports.filter(
       r => r.coursesMasterExamOid === examId && r.startedAt && r.finishedAt
     );

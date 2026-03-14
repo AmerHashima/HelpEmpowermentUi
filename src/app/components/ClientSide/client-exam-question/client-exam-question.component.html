@@ -175,14 +175,16 @@
         }
       </div>
       <div class="nav-buttons d-flex align-items-center gap-1">
-        <app-site-button
-          title="Show Answer"
-          [isRTL]="isRTL()"
-          icon="bi bi-eye-fill"
-          [hidden]="showCorrectAnswerFlag"
-          type="main"
-          (click)="showAnswer()"
-        />
+        @if (mode() !== "Exam") {
+          <app-site-button
+            title="Show Answer"
+            [isRTL]="isRTL()"
+            icon="bi bi-eye-fill"
+            [hidden]="showCorrectAnswerFlag"
+            type="main"
+            (click)="showAnswer()"
+          />
+        }
         <app-site-button
           title="Hide Answer"
           [isRTL]="isRTL()"
@@ -218,15 +220,14 @@
             type="main"
             (click)="nextQuestion()"
           />
-        }@else{
-  <app-site-button
-          title="Submit"
-          [isRTL]="isRTL()"
-          type="main"
-          (click)="submit()"
-        />
+        } @else {
+          <app-site-button
+            title="Submit"
+            [isRTL]="isRTL()"
+            type="main"
+            (click)="submit()"
+          />
         }
-
       </div>
     </footer>
     @if (showCorrectAnswerFlag) {

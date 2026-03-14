@@ -30,6 +30,7 @@ export class ChooseExamComponent {
   private toasting = inject(ToastingMessagesService);
   private route = inject(ActivatedRoute);
   showConfirm = false;
+   examName =computed(()=> this.shared.currentExam()?.examName);
 
   previousExamMode = computed(() => {
     const examId = this.shared.currentExamId();
@@ -80,7 +81,7 @@ export class ChooseExamComponent {
           }
         });
     }
-   
+
   }
 
   chooseMode(mode:string){
