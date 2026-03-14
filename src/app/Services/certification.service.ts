@@ -374,6 +374,23 @@ export class CertificationService {
       );
   }
 
+  searchStudentExamQuestions(body: RequestBody): Observable<{ questions: APICourseQuestion[]; total: number }> {
+    return this.apiService
+      .query<ApiSearchResponse<APICourseQuestion>>('StudentExamQuestions/search', body)
+      .pipe(
+        map((response: ApiSearchResponse<APICourseQuestion>) => {
+          if (!response.success) {
+            const msg = response.message || 'API failed to query';
+            throw new Error(msg);
+          }
+          return {
+            questions: response.data ?? [],
+            total: response.totalPages ?? 0,
+          };
+        })
+      );
+  }
+
   getQuestion(id: string): Observable<APICourseQuestion> {
     return this.apiService
       // .getSingle<ApiResponse<APICourseQuestion>>('CourseQuestions', id)
@@ -469,6 +486,8 @@ export class CertificationService {
         })
       );
   }
+
+
 
 
 }

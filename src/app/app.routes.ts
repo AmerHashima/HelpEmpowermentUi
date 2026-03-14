@@ -50,6 +50,7 @@ import { CartComponent } from './components/ClientSide/cart/cart.component';
 import { CheckoutComponent } from './components/ClientSide/checkout/checkout.component';
 import { checkoutGuard } from './Guards/ClientSideGuards/checkout.guard';
 import { PerformanceLevelsComponent } from '../components/ClientSide/performance-levels/performance-levels.component';
+import { LessonLearnedQUestiosPracticeModeComponent } from './components/ClientSide/certifications/lesson-learned-questios-practice-mode/lesson-learned-questios-practice-mode.component';
 
 export const validLangGuard: CanMatchFn = (route, segments) => {
   const lang = segments[0]?.path;
@@ -388,6 +389,13 @@ function getCertificationChildren(): Routes {
       loadComponent: () =>
         import('./components/ClientSide/exam-lesson-learned-questions/exam-lesson-learned-questions.component')
           .then(m => m.ExamLessonLearnedQuestionsComponent)
+    },
+    {
+      path: 'lesson-learned/practice',
+      loadComponent: () =>
+        import('./components/ClientSide/certifications/lesson-learned-questios-practice-mode/lesson-learned-questios-practice-mode.component')
+          .then(m => m.LessonLearnedQUestiosPracticeModeComponent),
+      data: { fullPage: true }
     },
     {
       path: 'chooseExam',

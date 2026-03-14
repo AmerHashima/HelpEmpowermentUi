@@ -1,10 +1,11 @@
 import { isPlatformBrowser, Location } from '@angular/common';
-import { Component, computed, inject, Inject, input, output, PLATFORM_ID, signal } from '@angular/core';
+import { Component, computed, inject, Inject,  output, PLATFORM_ID, signal } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { StudentExamService } from '../../../Services/student-exam.service';
 import { Shared } from '../../../shared/Services/shared/shared';
 import { APIExamSummary, ExamSummary } from '../../../models/certification';
 import { AuthService } from '../../../Services/auth.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-exam-lesson-learned-questions',
@@ -16,6 +17,8 @@ export class ExamLessonLearnedQuestionsComponent {
   private studentExamService=inject(StudentExamService);
   private auth = inject(AuthService);
   private shared=inject(Shared);
+  private router=inject(Router);
+  private route=inject(ActivatedRoute);
   latestReport = signal<APIExamSummary|null>(null);
   statusStats = computed(() => {
     const summary = this.latestReport()?.statusSummary ?? [];
@@ -31,7 +34,7 @@ export class ExamLessonLearnedQuestionsComponent {
   });
   total = computed(() => this.latestReport()?.totalQuestions ?? 0);
 
-  practice = output<{ type: string }>();
+  // practice = output<{ type: string }>();
 
   lessonCleared = signal(false);
   constructor(
@@ -53,7 +56,7 @@ export class ExamLessonLearnedQuestionsComponent {
         console.log(err);
       }
     })
-    
+
   }
   donutStyle() {
     const report = this.latestReport();
@@ -75,9 +78,15 @@ export class ExamLessonLearnedQuestionsComponent {
     #607d8b ${correctEnd}% 100%
   )`;
   }
- 
+
   practiceQuestions(type: string) {
-    this.practice.emit({ type });
+    // this.practice.emit({ type });
+
+    this.router.navigate(['./practice'], {
+      relativeTo: this.route,
+      queryParams: { type: type, examId: this.latestReport()?.studentExamOid },
+      queryParamsHandling: 'merge',
+    });
   }
 
   clearLesson() {

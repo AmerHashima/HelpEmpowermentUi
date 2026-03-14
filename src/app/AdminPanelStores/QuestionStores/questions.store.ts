@@ -47,6 +47,7 @@ import { createQueryRequest } from '../CertificationStore/store.helper';
 import { mapApiQuestionsToCourseQuestions } from './question.mapper';
 import { ToastrService } from 'ngx-toastr';
 import { ToastingMessagesService } from '../../shared/Services/ToastingMessages/toasting-messages.service';
+import { StudentExamService } from '../../Services/student-exam.service';
 
 type UpdateQuestionPayload = {
   id: string;
@@ -145,6 +146,32 @@ export const QuestionsStore = signalStore(
         switchMap((request) =>
           service.searchQuestion(request).pipe(
             tap((res: { questions: APICourseQuestion[]; total: number }) => {
+              console.log('res',res);
+              patchState(store, (s) => ({
+                ...s,
+                questions: mapApiQuestionsToCourseQuestions(res.questions),
+                total: res.total ?? 0,
+              }));
+            }),
+            catchError((err) => {
+              patchState(store, setError(err?.message ?? 'Failed to load questions'));
+              return of({ questions: [], total: 0 });
+            }),
+            finalize(() => patchState(store, deactivateLoading))
+          )
+        )
+      )
+    ),
+
+    queryStudentExamQuestions: rxMethod<RequestBody>(
+      pipe(
+        debounceTime(350),
+        // distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
+        tap(() => patchState(store, activateLoading)),
+        switchMap((request) =>
+          service.searchStudentExamQuestions(request).pipe(
+            tap((res: { questions: APICourseQuestion[]; total: number }) => {
+              console.log('res', res);
               patchState(store, (s) => ({
                 ...s,
                 questions: mapApiQuestionsToCourseQuestions(res.questions),

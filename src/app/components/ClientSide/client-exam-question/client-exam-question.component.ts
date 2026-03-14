@@ -195,7 +195,44 @@ export class ClientExamQuestionComponent {
 
   nextQuestion() {
     if (this.isLastQuestion) return;
+    this.submitQuestionAnswer();
+    // this.hideAnswersAndTranslations();
 
+    // const q = this.question();
+
+    // if (!q) return;
+
+    // // Multiple Choice Question
+    // if (q.questionTypeName === 'Multiple Choice Question') {
+    //   const payload = this.mapToAnswerPayload(q);
+
+    //   if (!payload?.selectedAnswerOids?.length) {
+    //     this.next.emit({ type: 'empty' });
+    //     return;
+    //   }
+
+    //   this.next.emit({
+    //     type: 'Multiple Choice Question',
+    //     answers: payload
+    //   });
+    // }
+    // // Matching Question
+    // else if (q.questionTypeName === 'Matching') {
+    //   const payload = this.buildMatchingAnswers(this.left, this.middle);
+
+    //   if (!payload?.length) {
+    //     this.next.emit({ type: 'empty' });
+    //     return;
+    //   }
+
+    //   this.next.emit({
+    //     type: 'Matching',
+    //     answers: payload
+    //   });
+    // }
+  }
+
+  submitQuestionAnswer(last:boolean=false){
     this.hideAnswersAndTranslations();
 
     const q = this.question();
@@ -207,13 +244,14 @@ export class ClientExamQuestionComponent {
       const payload = this.mapToAnswerPayload(q);
 
       if (!payload?.selectedAnswerOids?.length) {
-        this.next.emit({ type: 'empty' });
+        this.next.emit({ type: 'empty', last });
         return;
       }
 
       this.next.emit({
         type: 'Multiple Choice Question',
-        answers: payload
+        answers: payload,
+        last
       });
     }
     // Matching Question
@@ -221,15 +259,19 @@ export class ClientExamQuestionComponent {
       const payload = this.buildMatchingAnswers(this.left, this.middle);
 
       if (!payload?.length) {
-        this.next.emit({ type: 'empty' });
+        this.next.emit({ type: 'empty', last });
         return;
       }
 
       this.next.emit({
         type: 'Matching',
-        answers: payload
+        answers: payload,last
       });
     }
+  }
+
+  submit(){
+    this.submitQuestionAnswer(true);
   }
   mapToAnswerPayload(question: any) {
     return {

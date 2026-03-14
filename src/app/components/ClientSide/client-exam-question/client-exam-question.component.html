@@ -4,13 +4,15 @@
     <app-feature [title]="getExamTitle()" icon="bi bi-star" />
     <!-- <div class="mode"><span class="star">★</span> Exam 1 - Practice Mode</div> -->
     <div class="actions d-flex flex-column flex-lg-row gap-2 flex-grow-1">
-      <app-site-button
-        class="flex-grow-1"
-        title="End Exam"
-        [isRTL]="isRTL()"
-        type="main"
-        (click)="onEndExam()"
-      />
+      @if (!isLastQuestion) {
+        <app-site-button
+          class="flex-grow-1"
+          title="End Exam"
+          [isRTL]="isRTL()"
+          type="main"
+          (click)="onEndExam()"
+        />
+      }
       <app-site-button
         class="flex-grow-1"
         title="Save and Continue Later"
@@ -97,7 +99,7 @@
         <app-drag-component
           [leftItems]="left"
           [rightItems]="right"
-            [locked]="answerLocked() || showCorrectAnswerFlag"
+          [locked]="answerLocked() || showCorrectAnswerFlag"
           [savedMiddle]="savedMiddle"
           (rightItemsChange)="right = $event"
           (middleChange)="onMiddleChange($event)"
@@ -208,13 +210,23 @@
           [isRTL]="isRTL()"
           (click)="onMarkQuestion()"
         />
-        <app-site-button
-          title="Next"
+        @if (!isLastQuestion) {
+          <app-site-button
+            title="Next"
+            [isRTL]="isRTL()"
+            [disabled]="isLastQuestion"
+            type="main"
+            (click)="nextQuestion()"
+          />
+        }@else{
+  <app-site-button
+          title="Submit"
           [isRTL]="isRTL()"
-          [disabled]="isLastQuestion"
           type="main"
-          (click)="nextQuestion()"
+          (click)="submit()"
         />
+        }
+
       </div>
     </footer>
     @if (showCorrectAnswerFlag) {

@@ -72,7 +72,7 @@
                 <button
                   class="btn btn-success w-100"
                   [disabled]="!statusStats().correct.count"
-                  (click)="practiceQuestions('correct')"
+                  (click)="practiceQuestions('Correct')"
                 >
                   Practice {{ statusStats().correct.count }} Questions →
                 </button>
@@ -91,7 +91,7 @@
                 <button
                   class="btn btn-danger w-100"
                   [disabled]="!statusStats().incorrect.count"
-                  (click)="practiceQuestions('incorrect')"
+                  (click)="practiceQuestions('Incorrect')"
                 >
                   Practice {{ statusStats().incorrect.count }} Questions →
                 </button>
@@ -108,7 +108,7 @@
                 <button
                   class="btn btn-secondary w-100"
                   [disabled]="!statusStats().notAnswered.count"
-                  (click)="practiceQuestions('na')"
+                  (click)="practiceQuestions('Not Answered')"
                 >
                   Practice {{ statusStats().notAnswered.count }} Questions →
                 </button>

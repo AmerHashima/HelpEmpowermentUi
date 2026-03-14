@@ -5,27 +5,23 @@ import { QuestionsStore } from '../../../../AdminPanelStores/QuestionStores/ques
 import { Filter } from '../../../../models/rquest';
 import { isPlatformBrowser, NgClass } from '@angular/common';
 import { AuthService } from '../../../../Services/auth.service';
-import { StudentExamService } from '../../../../Services/student-exam.service';
-import { choiceQuestionExamSubmit, courseExam, submitStudentExam } from '../../../../models/certification';
 import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/site-button.component';
 import { GenericModelComponent } from '../../../../shared/generic-model/generic-model.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
 
-
 @Component({
-  selector: 'app-exam',
+  selector: 'app-lesson-learned-questios-practice-mode',
   imports: [ClientExamQuestionComponent, SiteButtonComponent, NgClass, GenericModelComponent],
-  templateUrl: './exam.component.html',
-  styleUrl: './exam.component.scss',
+  templateUrl: './lesson-learned-questios-practice-mode.component.html',
+  styleUrl: './lesson-learned-questios-practice-mode.component.scss',
   providers: [QuestionsStore],
-  standalone: true
+  standalone:true
 })
-export class ExamComponent {
+export class LessonLearnedQUestiosPracticeModeComponent {
   private platformId = inject(PLATFORM_ID);
   private router = inject(Router);
   private route = inject(ActivatedRoute)
-  private studentExamService = inject(StudentExamService);
   private isBrowser = isPlatformBrowser(this.platformId);
   private questionStore = inject(QuestionsStore);
   private shared = inject(Shared);
@@ -35,10 +31,12 @@ export class ExamComponent {
   showQuestionBoard: boolean = false;
   examChoiceAnswers: any[] = [];
   examMatchingAnswers: any[] = [];
-  currentExamId = signal<string>('');
   saveForLater: boolean = false;
   currentQuestionIndex = signal<number>(0);
-  currentMode = signal<string>('');
+
+  currentType = signal<string>('');
+
+  studentExamId = signal<string>('');
   isMarked = computed(() => {
     const question = this.currentQuestion();
     if (!question) return false;
@@ -97,64 +95,43 @@ export class ExamComponent {
 
   constructor() {
     this.route.queryParamMap.subscribe(params => {
-      this.currentMode.set(params.get('mode') ?? '');
+      this.currentType.set(params.get('type') ?? '');
+      this.studentExamId.set(params.get('examId') ?? '');
     });
 
-    // effect(() => {
-    //   const examId = this.shared.currentExamId();
-    //   this.currentExamId.set(examId);
-    //   if (examId) {
-    //     const filters: Filter[] = [{
-    //       propertyName: "coursesMasterExamOid",
-    //       value: examId,
-    //       operation: 0
-    //     }];
-    //     this.questionStore.setFilters([...filters]);
-    //     this.questionStore.queryQuestions(this.questionStore.queryRequest());
-    //     if (this.isBrowser) {
-    //       const key = this.getStorageKey(examId);
-    //       const saved = localStorage.getItem(key);
-    //       if (saved) {
-    //         const parsed = JSON.parse(saved);
-    //         this.currentQuestionIndex.set(parsed.currentQuestionIndex ?? 0);
-    //         this.examChoiceAnswers = parsed.examChoiceAnswers ?? [];
-    //         this.examMatchingAnswers = parsed.examMatchingAnswers ?? []
-    //         if (parsed.markedQuestions) {
-    //           this.markedQuestions.set(new Set(parsed.markedQuestions));
-    //         }
-    //         if (parsed.answeredQuestions) {
-    //           this.answeredQuestions.set(new Set(parsed.answeredQuestions));
-    //         }
-    //       } else {
-    //         this.currentQuestionIndex.set(0);
-    //         this.examChoiceAnswers = [];
-    //         this.examMatchingAnswers=[];
-    //         this.markedQuestions.set(new Set([]));
-    //         this.answeredQuestions.set(new Set([]));
-
-    //       }
-    //     }
-    //   }
-    // });
     effect(() => {
-      const examId = this.shared.currentExamId();
-      this.currentExamId.set(examId);
-      if (examId) {
-        console.log('in get exam qyestions')
+      const practiceType = this.currentType();
+      const studentExamId = this.studentExamId();
+      let lookupId=null;
+      if (practiceType && studentExamId) {
+        console.log('in lesson learned exam qyestions')
+
+        if(practiceType == 'Correct')
+          lookupId ="44444444-4444-4444-4444-444444444401";
+        else if(practiceType == 'Incorrect')
+        lookupId = "44444444-4444-4444-4444-444444444402";
+else lookupId = "44444444-4444-4444-4444-444444444403";
+
         const filters: Filter[] = [{
-          propertyName: "coursesMasterExamOid",
-          value: examId,
+          propertyName: "questionStatusLookupId",
+          value: lookupId,
           operation: 0
-        }];
+        },
+          {
+            propertyName: "studentExamOid",
+            value: studentExamId,
+            operation: 0
+          },
+
+      ];
         this.questionStore.setFilters([...filters]);
-        this.questionStore.queryQuestions(this.questionStore.queryRequest());
+        this.questionStore.queryStudentExamQuestions(this.questionStore.queryRequest());
         if (this.isBrowser) {
-          const key = this.getStorageKey(examId);
+          const key = this.getStorageKey(studentExamId);
           const saved = localStorage.getItem(key);
           if (!saved) { this.resetExam(); return; }
           const parsed = JSON.parse(saved);
           this.saveForLater = parsed.saveForLater;
-          if (parsed.examMode = 'Exam') {
             this.currentQuestionIndex.set(parsed.currentQuestionIndex ?? 0);
             this.examChoiceAnswers = parsed.examChoiceAnswers ?? [];
             this.examMatchingAnswers = parsed.examMatchingAnswers ?? []
@@ -170,15 +147,15 @@ export class ExamComponent {
             if (parsed.answeredQuestions) {
               this.answeredQuestions.set(new Set(parsed.answeredQuestions));
             }
-          }
-          else {
-            this.resetExam();
-          }
+
         }
       }
     });
+
+
     effect(() => {
       if (this.questions().length > 0) {
+        console.log('questions',this.questions())
         if (this.currentQuestionIndex() >= this.questions().length) {
           this.currentQuestionIndex.set(0);
         }
@@ -188,7 +165,7 @@ export class ExamComponent {
     effect(() => {
       if (!this.isBrowser) return;
 
-      const examId = this.currentExamId();
+      const examId = this.studentExamId();
       const index = this.currentQuestionIndex();
 
       if (!examId) return;
@@ -200,13 +177,10 @@ export class ExamComponent {
     this.saveForLater = true;
     this.saveExamProgress();
     if (this.isBrowser) {
-      localStorage.removeItem('currentExam');
-      localStorage.removeItem('currentExamId');
-      localStorage.removeItem('studentExamId');
       this.toasting.showToast('Exam has been saved for later', 'success');
     }
 
-    this.router.navigate(['../../exam-simulator'], {
+    this.router.navigate(['../../chooseExam'], {
       relativeTo: this.route,
     });
   }
@@ -233,29 +207,35 @@ export class ExamComponent {
   }
 
   finishExam(end: boolean) {
-    console.log('studentExamId', this.shared.studentExamId());
-    const payload: submitStudentExam = {
-      studentExamOid: this.shared.studentExamId(),
-      answers: [],
-      updatedBy: '3fa85f64-5717-4562-b3fc-2c963f66afa6'
+    console.log('finish practicing');
+    if (this.isBrowser) {
+      this.toasting.showToast('Finish Practicing', 'success');
     }
+    this.router.navigate(['../../chooseExam'], {
+      relativeTo: this.route,
+    });
+    // const payload: submitStudentExam = {
+    //   studentExamOid: this.shared.studentExamId(),
+    //   answers: [],
+    //   updatedBy: '3fa85f64-5717-4562-b3fc-2c963f66afa6'
+    // }
 
-    if (end && this.isBrowser) {
-      this.studentExamService.submitExam(payload).subscribe({
-        next: (result) => {
-          const key = this.getStorageKey(this.currentExamId());
-          localStorage.removeItem(key);
-          localStorage.removeItem('currentExam');
-          localStorage.removeItem('currentExamId');
-          const examResult = `examResult-${this.shared.studentExamId()}`;
-          localStorage.setItem(examResult, JSON.stringify(result));
-          this.router.navigate(['../../exam-result'], {
-            relativeTo: this.route,
-          });
-        }
-      })
+    // if (end && this.isBrowser) {
+    //   this.studentExamService.submitExam(payload).subscribe({
+    //     next: (result) => {
+    //       const key = this.getStorageKey(this.currentExamId());
+    //       localStorage.removeItem(key);
+    //       localStorage.removeItem('currentExam');
+    //       localStorage.removeItem('currentExamId');
+    //       const examResult = `examResult-${this.shared.studentExamId()}`;
+    //       localStorage.setItem(examResult, JSON.stringify(result));
+    //       this.router.navigate(['../../exam-result'], {
+    //         relativeTo: this.route,
+    //       });
+    //     }
+    //   })
 
-    }
+    // }
   }
 
   resetExam() {
@@ -305,193 +285,21 @@ export class ExamComponent {
   }
 
   private getStorageKey(examId: string) {
-    return `exam-progress-student_${this.auth.loggedStudent()?.userId}-${this.currentMode()}-${examId}`;
+    return `exam-progress-lesson-learned-type-${this.currentType()}-student_${this.auth.loggedStudent()?.userId}-studentExamId-${examId}`;
   }
 
-  goToNext(newAnswer: any) {
 
-    const q = this.currentQuestion();
-    if (!q) return;
 
-    // If answer revealed and user didn't answer before reveal → ignore answer
-    if (this.revealedQuestions().has(q.oid) && !this.answeredBeforeReveal().has(q.oid)) {
-      newAnswer = { type: 'empty' };
-    }
-
-    if (newAnswer.type === 'empty') {
-      this.updateIndex(newAnswer.last);
-      return;
-    }
-
-    if (newAnswer.type === 'Multiple Choice Question') {
-
-      const existing = this.examChoiceAnswers.find(
-        x => x.questionOid === newAnswer.answers.questionOid
-      );
-
-      if (existing &&
-        JSON.stringify(existing.selectedAnswerOids) ===
-        JSON.stringify(newAnswer.answers.selectedAnswerOids)) {
-        this.updateIndex(newAnswer.last);
-        return;
-      }
-
-      this.studentExamService
-        .submitchoiceExamQuestion(this.createChoicePayload(newAnswer.answers))
-        .subscribe({
-          next: () => {
-            this.updateChoiceAnswer(newAnswer);
-
-            const q = this.currentQuestion();
-            if (q?.oid) {
-              this.answeredQuestions.update(set => {
-                const s = new Set(set);
-                s.add(q.oid);
-                return s;
-              });
-            }
-
-            this.saveExamProgress();
-            this.updateIndex(newAnswer.last);
-          }
-        });
-    }
-
-    else if (newAnswer.type === 'Matching') {
-
-      const matchingPayload = this.createMatchingPayload(newAnswer.answers);
-
-      const existing = this.examMatchingAnswers.find(
-        x => x.questionOid === matchingPayload.questionOid
-      );
-
-      if (existing &&
-        JSON.stringify(existing.answers) === JSON.stringify(matchingPayload.answers)) {
-        this.updateIndex(newAnswer.last);
-        return;
-      }
-
-      this.studentExamService
-        .submitMatchingExamQuestion(matchingPayload)
-        .subscribe({
-          next: () => {
-            this.updateMatchingAnswer(matchingPayload);
-
-            const q = this.currentQuestion();
-            if (q?.oid) {
-              this.answeredQuestions.update(set => {
-                const s = new Set(set);
-                s.add(q.oid);
-                return s;
-              });
-            }
-
-            this.saveExamProgress();
-            this.updateIndex(newAnswer.last);
-          }
-        });
-    }
-  }
-
-  updateIndex(last:boolean=false) {
-    if(!last){
+  updateIndex(last: boolean = false) {
+    if (!last) {
       if (this.currentQuestionIndex() < this.questions().length - 1) {
         this.currentQuestionIndex.update(i => i + 1);
       }
-    }else this.finishExam(true)
+    } else this.finishExam(true)
 
   }
 
-  // goToNext(newAnswer: any) {
 
-  //   const q = this.currentQuestion();
-  //   if (!q) return;
-
-  //   // If answer revealed and user didn't answer before reveal → ignore answer
-  //   if (this.revealedQuestions().has(q.oid) && !this.answeredBeforeReveal().has(q.oid)) {
-  //     newAnswer = { type: 'empty' };
-  //   }
-
-  //   if (newAnswer.type === 'empty') {
-  //     this.updateIndex();
-  //     return;
-  //   }
-
-  //   if (newAnswer.type === 'Multiple Choice Question') {
-
-  //     const existing = this.examChoiceAnswers.find(
-  //       x => x.questionOid === newAnswer.answers.questionOid
-  //     );
-
-  //     if (existing &&
-  //       JSON.stringify(existing.selectedAnswerOids) ===
-  //       JSON.stringify(newAnswer.answers.selectedAnswerOids)) {
-  //       this.updateIndex();
-  //       return;
-  //     }
-
-  //     this.studentExamService
-  //       .submitchoiceExamQuestion(this.createChoicePayload(newAnswer.answers))
-  //       .subscribe({
-  //         next: () => {
-  //           this.updateChoiceAnswer(newAnswer);
-
-  //           const q = this.currentQuestion();
-  //           if (q?.oid) {
-  //             this.answeredQuestions.update(set => {
-  //               const s = new Set(set);
-  //               s.add(q.oid);
-  //               return s;
-  //             });
-  //           }
-
-  //           this.saveExamProgress();
-  //           this.updateIndex();
-  //         }
-  //       });
-  //   }
-
-  //   else if (newAnswer.type === 'Matching') {
-
-  //     const matchingPayload = this.createMatchingPayload(newAnswer.answers);
-
-  //     const existing = this.examMatchingAnswers.find(
-  //       x => x.questionOid === matchingPayload.questionOid
-  //     );
-
-  //     if (existing &&
-  //       JSON.stringify(existing.answers) === JSON.stringify(matchingPayload.answers)) {
-  //       this.updateIndex();
-  //       return;
-  //     }
-
-  //     this.studentExamService
-  //       .submitMatchingExamQuestion(matchingPayload)
-  //       .subscribe({
-  //         next: () => {
-  //           this.updateMatchingAnswer(matchingPayload);
-
-  //           const q = this.currentQuestion();
-  //           if (q?.oid) {
-  //             this.answeredQuestions.update(set => {
-  //               const s = new Set(set);
-  //               s.add(q.oid);
-  //               return s;
-  //             });
-  //           }
-
-  //           this.saveExamProgress();
-  //           this.updateIndex();
-  //         }
-  //       });
-  //   }
-  // }
-
-  // updateIndex() {
-  //   if (this.currentQuestionIndex() < this.questions().length - 1) {
-  //     this.currentQuestionIndex.update(i => i + 1);
-  //   }
-  // }
   updateChoiceAnswer(newAnswer: any) {
     if (this.examChoiceAnswers.length == 0) {
       this.examChoiceAnswers.push(newAnswer.answers);
@@ -525,36 +333,170 @@ export class ExamComponent {
   }
 
 
-  createChoicePayload(answers: any) {
-    const payload: choiceQuestionExamSubmit = {
-      studentExamOid: this.shared.studentExamId(),
-      questions: [answers],
-      createdBy: '3fa85f64-5717-4562-b3fc-2c963f66afa6'
-    }
-    return payload
+  checkMultipleChoiceAnswer(question: any, selectedAnswerOids: string[]): boolean {
+
+    const correctAnswers = question.answers
+      .filter((a: any) => a.isCorrect)
+      .map((a: any) => a.oid)
+      .sort();
+
+    const studentAnswers = [...selectedAnswerOids].sort();
+
+    return JSON.stringify(correctAnswers) === JSON.stringify(studentAnswers);
   }
 
-  createMatchingPayload(answers: any) {
-    const payload = {
-      studentExamOid: this.shared.studentExamId(),
-      questionOid: this.currentQuestion()?.oid,
-      answers: answers,
-      createdBy: '3fa85f64-5717-4562-b3fc-2c963f66afa6'
+  checkMatchingAnswer(question: any, studentAnswers: any[]): boolean {
 
-    };
-    return payload;
+    if (!studentAnswers || studentAnswers.length === 0) return false;
+
+    return studentAnswers.every((pair: any) => {
+
+      const leftItem = question.answers.find(
+        (a: any) => a.oid === pair.leftOid
+      );
+
+      if (!leftItem) return false;
+
+      return leftItem.correctAnswerOid === pair.rightOid;
+
+    });
+
+  }
+
+  goToNext(newAnswer: any) {
+
+    const q = this.currentQuestion();
+    if (!q) return;
+
+    // If answer revealed and user didn't answer before reveal → ignore answer
+    if (this.revealedQuestions().has(q.oid) && !this.answeredBeforeReveal().has(q.oid)) {
+      newAnswer = { type: 'empty' };
+    }
+
+    if (newAnswer.type === 'empty') {
+      this.updateIndex(newAnswer.last);
+      return;
+    }
+
+    // =========================
+    // MULTIPLE CHOICE QUESTION
+    // =========================
+    if (newAnswer.type === 'Multiple Choice Question') {
+
+      const existing = this.examChoiceAnswers.find(
+        x => x.questionOid === newAnswer.answers.questionOid
+      );
+
+      if (
+        existing &&
+        JSON.stringify(existing.selectedAnswerOids) ===
+        JSON.stringify(newAnswer.answers.selectedAnswerOids)
+      ) {
+        this.updateIndex(newAnswer.last);
+        return;
+      }
+
+      const correctAnswers = q.answers
+        .filter((a: any) => a.isCorrect)
+        .map((a: any) => a.oid)
+        .sort();
+
+      const studentAnswers = [...newAnswer.answers.selectedAnswerOids].sort();
+
+      const isCorrect =
+        JSON.stringify(correctAnswers) === JSON.stringify(studentAnswers);
+
+      if (isCorrect) {
+        this.toasting.showToast('Correct Answer ✅', 'success');
+      } else {
+        this.toasting.showToast('Wrong Answer ❌', 'error');
+      }
+
+      this.updateChoiceAnswer(newAnswer);
+
+      if (q?.oid) {
+        this.answeredQuestions.update(set => {
+          const s = new Set(set);
+          s.add(q.oid);
+          return s;
+        });
+      }
+
+      this.saveExamProgress();
+
+      setTimeout(() => {
+        this.updateIndex(newAnswer.last);
+      }, 800);
+    }
+
+    // =========================
+    // MATCHING QUESTION
+    // =========================
+    else if (newAnswer.type === 'Matching') {
+
+      const matchingAnswer = {
+        questionOid: q.oid,
+        answers: newAnswer.answers
+      };
+
+      const existing = this.examMatchingAnswers.find(
+        x => x.questionOid === matchingAnswer.questionOid
+      );
+
+      if (
+        existing &&
+        JSON.stringify(existing.answers) === JSON.stringify(matchingAnswer.answers)
+      ) {
+        this.updateIndex(newAnswer.last);
+        return;
+      }
+
+      const isCorrect = newAnswer.answers.every((pair: any) => {
+
+        const leftItem = q.answers.find(
+          (a: any) => a.oid === pair.leftOid
+        );
+
+        if (!leftItem) return false;
+
+        return leftItem.correctAnswerOid === pair.rightOid;
+
+      });
+
+      if (isCorrect) {
+        this.toasting.showToast('Correct Match ✅', 'success');
+      } else {
+        this.toasting.showToast('Wrong Match ❌', 'error');
+      }
+
+      this.updateMatchingAnswer(matchingAnswer);
+
+      if (q?.oid) {
+        this.answeredQuestions.update(set => {
+          const s = new Set(set);
+          s.add(q.oid);
+          return s;
+        });
+      }
+
+      this.saveExamProgress();
+
+      setTimeout(() => {
+        this.updateIndex(newAnswer.last);
+      }, 800);
+    }
   }
 
   private saveExamProgress() {
     if (!this.isBrowser) return;
 
-    const key = this.getStorageKey(this.currentExamId());
+    const key = this.getStorageKey(this.studentExamId());
 
     localStorage.setItem(
       key,
       JSON.stringify({
         saveForLater: this.saveForLater,
-        examMode: this.currentMode(),
+        type: this.currentType(),
         exam: this.shared.currentExam(),
         studentId: this.auth.loggedStudent()?.userId,
         studentExamId: this.shared.studentExamId(),
@@ -650,6 +592,4 @@ export class ExamComponent {
 
     this.saveExamProgress();
   }
-
-
 }
