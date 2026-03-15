@@ -78,9 +78,10 @@ export class StudentExamService {
       );
   }
 
-  submitExam(body: submitStudentExam): Observable<APIStudentExamResponse> {
+  submitExam(body: submitStudentExam, message: string ='Exam has been submitted successfully!')
+  : Observable<APIStudentExamResponse> {
     return this.apiService
-      .post<ApiResponse<APIStudentExamResponse>>('StudentExams/submit', body, "Exam has been submitted successfully!")
+      .post<ApiResponse<APIStudentExamResponse>>('StudentExams/submit', body, message)
       .pipe(
         map((response: ApiResponse<APIStudentExamResponse>) => {
           if (!response.success) {
@@ -209,5 +210,5 @@ export class StudentExamService {
       );
   }
 
- 
+
 }

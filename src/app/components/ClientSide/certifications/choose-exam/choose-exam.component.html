@@ -34,9 +34,8 @@
           <i class="bi bi-pencil-square"></i>
 
           <span class="title fw-bold">
-              {{ examName() + ' - Practice Mode' | translate }}
-
-         </span>
+            {{ examName() + " - Practice Mode" | translate }}
+          </span>
         </div>
         <div class="d-flex flex-column gap-1">
           <div class="d-flex gap-1 align-items-center">
@@ -59,9 +58,9 @@
       >
         <div class="d-flex gap-1 align-items-center">
           <i class="bi bi-clipboard-check"></i>
-                    <span class="title fw-bold">
-                                {{ examName() + " - Exam Mode" | translate }}
-                    </span>
+          <span class="title fw-bold">
+            {{ examName() + " - Exam Mode" | translate }}
+          </span>
         </div>
         <div class="d-flex flex-column gap-1">
           <div class="d-flex gap-1 align-items-center">
@@ -84,9 +83,9 @@
       >
         <div class="d-flex gap-1 align-items-center">
           <i class="bi bi-bar-chart"></i>
-            <span class="title fw-bold">
-                                {{ examName() + " - Reports" | translate }}
-                    </span>
+          <span class="title fw-bold">
+            {{ examName() + " - Reports" | translate }}
+          </span>
           <span class="title fw-bold">{{ "Reports" | translate }}</span>
         </div>
         <div class="d-flex flex-column gap-1">
@@ -106,9 +105,9 @@
       >
         <div class="d-flex gap-1 align-items-center">
           <i class="bi bi-lightbulb"></i>
-              <span class="title fw-bold">
-                                {{ examName() + " - Lesson Learned Question" | translate }}
-                    </span>
+          <span class="title fw-bold">
+            {{ examName() + " - Lesson Learned Question" | translate }}
+          </span>
           <!-- <span class="title fw-bold">{{
             "Lesson Learned Question" | translate
           }}</span> -->
@@ -149,6 +148,41 @@
               | translate
           }}
         </p>
+      </div>
+    </section>
+  </app-generic-modal>
+
+  <app-generic-modal [(isOpen)]="showClearLessonLearned" title="Alert Message">
+    <section
+      class="w-100 d-flex flex-column align-items-stretch gap-3 p-3 rounded"
+    >
+      <div
+        class="d-flex flex-column align-items-center justify-content-center gap-2 w-100"
+      >
+        <i class="bi bi-info-circle-fill infoColor"></i>
+        <p class="text-center darkText w-75 mx-auto">
+          {{
+            "Please clear the Lesson Learned section before starting a new exam.
+You won’t be able to begin the new exam until the Lesson Learned has been completed or cleared."
+              | translate
+          }}
+        </p>
+      </div>
+      <div class="d-flex gap-2 align-items-center">
+        <app-site-button
+          class="flex-grow-1"
+          title="Cancal"
+          [isRTL]="isRTL()"
+          type="secondary"
+          (click)="onCloseLessonLearnedModel()"
+        />
+        <app-site-button
+          class="flex-grow-1"
+          title="Clear Now"
+          [isRTL]="isRTL()"
+          type="main"
+          (click)="clearLessonLearned()"
+        />
       </div>
     </section>
   </app-generic-modal>

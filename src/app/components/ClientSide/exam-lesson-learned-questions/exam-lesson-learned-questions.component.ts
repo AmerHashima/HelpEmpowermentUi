@@ -7,6 +7,7 @@ import { APIExamSummary, ExamSummary } from '../../../models/certification';
 import { AuthService } from '../../../Services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
+
 @Component({
   selector: 'app-exam-lesson-learned-questions',
   imports: [TranslatePipe],
@@ -58,6 +59,42 @@ export class ExamLessonLearnedQuestionsComponent {
     })
 
   }
+
+  // ngOnInit(): void {
+
+  //   if (this.isLessonCleared()) {
+  //     this.latestReport.set(null);
+  //     this.lessonCleared.set(true);
+  //     return;
+  //   }
+
+  //   const payload: ExamSummary = {
+  //     studentId: this.auth.loggedStudent()?.userId!,
+  //     examId: this.shared.currentExamId()
+  //   };
+
+  //   this.studentExamService.getExamSummary(payload).subscribe({
+  //     next: report => this.latestReport.set(report),
+  //     error: err => console.log(err)
+  //   });
+
+  // }
+
+  // isLessonCleared(): boolean {
+
+  //   if (!isPlatformBrowser(this.platformId)) return false;
+
+  //   const stored = localStorage.getItem('lessonLearnedStatus');
+  //   if (!stored) return false;
+
+  //   const data = JSON.parse(stored);
+
+  //   return (
+  //     data.cleared &&
+  //     data.studentId === this.auth.loggedStudent()?.userId &&
+  //     data.examId === this.shared.currentExamId()
+  //   );
+  // }
   donutStyle() {
     const report = this.latestReport();
 

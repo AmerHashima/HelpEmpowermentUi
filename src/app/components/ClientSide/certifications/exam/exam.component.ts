@@ -45,21 +45,21 @@ export class ExamComponent {
 
     return this.markedQuestions().has(question.oid);
   });
-  isAnswerLocked = computed(() => {
-    const q = this.currentQuestion();
-    if (!q) return false;
+  // isAnswerLocked = computed(() => {
+  //   const q = this.currentQuestion();
+  //   if (!q) return false;
 
-    return (
-      this.revealedQuestions().has(q.oid)
-    );
-  });
+  //   return (
+  //     this.revealedQuestions().has(q.oid)
+  //   );
+  // });
   questions = computed(() => {
     const list = this.questionStore.questions() ?? [];
     return [...list].sort((a, b) => a.orderNo - b.orderNo);
   });
 
-  revealedQuestions = signal<Set<string>>(new Set());
-  answeredBeforeReveal = signal<Set<string>>(new Set());
+  // revealedQuestions = signal<Set<string>>(new Set());
+  // answeredBeforeReveal = signal<Set<string>>(new Set());
   answeredQuestions = signal<Set<string>>(new Set());
   boardQuestions = computed(() => {
     const list = this.questionStore.questions() ?? [];
@@ -161,12 +161,12 @@ export class ExamComponent {
             if (parsed.markedQuestions) {
               this.markedQuestions.set(new Set(parsed.markedQuestions));
             }
-            if (parsed.answeredBeforeReveal) {
-              this.answeredBeforeReveal.set(new Set(parsed.answeredBeforeReveal));
-            }
-            if (parsed.revealedQuestions) {
-              this.revealedQuestions.set(new Set(parsed.revealedQuestions));
-            }
+            // if (parsed.answeredBeforeReveal) {
+            //   this.answeredBeforeReveal.set(new Set(parsed.answeredBeforeReveal));
+            // }
+            // if (parsed.revealedQuestions) {
+            //   this.revealedQuestions.set(new Set(parsed.revealedQuestions));
+            // }
             if (parsed.answeredQuestions) {
               this.answeredQuestions.set(new Set(parsed.answeredQuestions));
             }
@@ -211,26 +211,26 @@ export class ExamComponent {
     });
   }
 
-  onRevealAnswer(questionId: string) {
+  // onRevealAnswer(questionId: string) {
 
-    const currentAnswer = this.examChoiceAnswers.find(
-      x => x.questionOid === questionId
-    );
+  //   const currentAnswer = this.examChoiceAnswers.find(
+  //     x => x.questionOid === questionId
+  //   );
 
-    if (currentAnswer?.selectedAnswerOids?.length) {
-      this.answeredBeforeReveal.update(set => {
-        const s = new Set(set);
-        s.add(questionId);
-        return s;
-      });
-    }
+  //   if (currentAnswer?.selectedAnswerOids?.length) {
+  //     this.answeredBeforeReveal.update(set => {
+  //       const s = new Set(set);
+  //       s.add(questionId);
+  //       return s;
+  //     });
+  //   }
 
-    this.revealedQuestions.update(set => {
-      const s = new Set(set);
-      s.add(questionId);
-      return s;
-    });
-  }
+  //   this.revealedQuestions.update(set => {
+  //     const s = new Set(set);
+  //     s.add(questionId);
+  //     return s;
+  //   });
+  // }
 
   finishExam(end: boolean) {
     console.log('studentExamId', this.shared.studentExamId());
@@ -241,17 +241,24 @@ export class ExamComponent {
     }
 
     if (end && this.isBrowser) {
-      this.studentExamService.submitExam(payload).subscribe({
+      const message = this.currentMode() == 'Practice' ? 'Your Practice has been ended Successfully !' : 'Exam has been submitted successfully!';
+      this.studentExamService.submitExam(payload, message).subscribe({
         next: (result) => {
           const key = this.getStorageKey(this.currentExamId());
           localStorage.removeItem(key);
           localStorage.removeItem('currentExam');
           localStorage.removeItem('currentExamId');
-          const examResult = `examResult-${this.shared.studentExamId()}`;
-          localStorage.setItem(examResult, JSON.stringify(result));
-          this.router.navigate(['../../exam-result'], {
-            relativeTo: this.route,
-          });
+          if(this.currentMode() == 'Exam'){
+            const examResult = `examResult-${this.shared.studentExamId()}`;
+            localStorage.setItem(examResult, JSON.stringify(result));
+            this.router.navigate(['../../exam-result'], {
+              relativeTo: this.route,
+            });
+          }else{
+            this.router.navigate(['../../exam-simulator'], {
+              relativeTo: this.route,
+            });
+          }
         }
       })
 
@@ -314,9 +321,9 @@ export class ExamComponent {
     if (!q) return;
 
     // If answer revealed and user didn't answer before reveal → ignore answer
-    if (this.revealedQuestions().has(q.oid) && !this.answeredBeforeReveal().has(q.oid)) {
-      newAnswer = { type: 'empty' };
-    }
+    // if (this.revealedQuestions().has(q.oid) && !this.answeredBeforeReveal().has(q.oid)) {
+    //   newAnswer = { type: 'empty' };
+    // }
 
     if (newAnswer.type === 'empty') {
       this.updateIndex(newAnswer.last);
@@ -561,8 +568,8 @@ export class ExamComponent {
         currentQuestionIndex: this.currentQuestionIndex(),
         examChoiceAnswers: this.examChoiceAnswers,
         examMatchingAnswers: this.examMatchingAnswers,
-        revealedQuestions: Array.from(this.revealedQuestions()),
-        answeredBeforeReveal: Array.from(this.answeredBeforeReveal()),
+        // revealedQuestions: Array.from(this.revealedQuestions()),
+        // answeredBeforeReveal: Array.from(this.answeredBeforeReveal()),
         markedQuestions: Array.from(this.markedQuestions()),
         answeredQuestions: Array.from(this.answeredQuestions())
       })
@@ -608,12 +615,12 @@ export class ExamComponent {
     }
 
     // 🔒 Enforce reveal rule AFTER restore
-    if (
-      this.revealedQuestions().has(question.oid) &&
-      !this.answeredBeforeReveal().has(question.oid)
-    ) {
-      question.answers?.forEach((a: any) => a.isSelected = false);
-    }
+    // if (
+    //   this.revealedQuestions().has(question.oid) &&
+    //   !this.answeredBeforeReveal().has(question.oid)
+    // ) {
+    //   question.answers?.forEach((a: any) => a.isSelected = false);
+    // }
   }
 
   goToQuestionNumber(num: number) {

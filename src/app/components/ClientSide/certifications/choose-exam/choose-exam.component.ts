@@ -10,7 +10,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
 import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/site-button.component';
 import { StudentService } from '../../../../Services/student-service.service';
-import { APIStudentExamResponse } from '../../../../models/certification';
+import { APIExamSummary, APIStudentExamResponse, ExamSummary } from '../../../../models/certification';
 
 @Component({
   selector: 'app-choose-exam',
@@ -30,7 +30,8 @@ export class ChooseExamComponent {
   private toasting = inject(ToastingMessagesService);
   private route = inject(ActivatedRoute);
   showConfirm = false;
-   examName =computed(()=> this.shared.currentExam()?.examName);
+  showClearLessonLearned=false;
+  examName =computed(()=> this.shared.currentExam()?.examName);
 
   previousExamMode = computed(() => {
     const examId = this.shared.currentExamId();
@@ -40,16 +41,39 @@ export class ChooseExamComponent {
       r => r.coursesMasterExamOid === examId && r.startedAt && r.finishedAt
     );
   });
+  latestReport = signal<APIExamSummary|null>(null);
 
   private getStorageKey(examId: string, mode: string) {
     return `exam-progress-student_${this.auth.loggedStudent()?.userId}-${mode}-${examId}`;
   }
 
+   ngOnInit(): void {
+      const payload: ExamSummary ={
+        studentId: this.auth.loggedStudent()?.userId!,
+        examId: this.shared.currentExamId()
+      }
+      this.studentExamService.getExamSummary(payload).subscribe({
+        next: (report) => {
+          this.latestReport.set(report);
+        },
+        error: (err) => {
+          console.log(err);
+        }
+      })
+
+    }
+
+
+
   startExam(mode: string) {
+    if (this.latestReport() && mode == 'Exam' && this.auth.studentToken()){
+       this.showClearLessonLearned=true;
+       return;
+    }
     const examId = this.shared.currentExamId();
 
     // Free exam case
-    if (examId === 'free' || !this.auth.studentToken) {
+    if (examId === 'free' || !this.auth.studentToken()) {
       console.log('start Free exam');
       return;
     }
@@ -150,5 +174,24 @@ export class ChooseExamComponent {
     this.router.navigate(['../exam-simulator'], {
       relativeTo: this.route
     });
+  }
+
+  onCloseLessonLearnedModel(){
+    this.showClearLessonLearned=false
+  }
+
+  clearLessonLearned(){
+     //should send api request to clear darta
+
+    // const data = {
+    //   cleared: true,
+    //   studentId: this.auth.loggedStudent()?.userId,
+    //   examId: this.shared.currentExamId(),
+    //   clearedAt: new Date().toISOString()
+    // };
+
+    // localStorage.setItem('lessonLearnedStatus', JSON.stringify(data));
+     this.latestReport.set(null);
+     this.showClearLessonLearned=false;
   }
 }

@@ -23,7 +23,7 @@ import { ExamTimerComponent } from '../certifications/exam-timer/exam-timer.comp
 export class ClientExamQuestionComponent {
 
   // next = output<void>();
-  revealAnswer = output<string>();
+  // revealAnswer = output<string>();
   next = output<any>();
   mode = input<string>('');
   answerLocked = input<boolean>(false);
@@ -181,10 +181,10 @@ export class ClientExamQuestionComponent {
 
   showAnswer() {
     this.showCorrectAnswerFlag = true;
-    const q = this.question();
-    if (q?.oid) {
-      this.revealAnswer.emit(q.oid);
-    }
+    // const q = this.question();
+    // if (q?.oid) {
+    //   this.revealAnswer.emit(q.oid);
+    // }
 
   }
   hideAnswer() {
@@ -361,4 +361,4 @@ export class ClientExamQuestionComponent {
     console.log('Time up → auto next question');
     this.nextQuestion();
   }
-} 
+}

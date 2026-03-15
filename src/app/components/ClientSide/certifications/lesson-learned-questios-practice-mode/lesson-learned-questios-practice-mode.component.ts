@@ -43,21 +43,21 @@ export class LessonLearnedQUestiosPracticeModeComponent {
 
     return this.markedQuestions().has(question.oid);
   });
-  isAnswerLocked = computed(() => {
-    const q = this.currentQuestion();
-    if (!q) return false;
+  // isAnswerLocked = computed(() => {
+  //   const q = this.currentQuestion();
+  //   if (!q) return false;
 
-    return (
-      this.revealedQuestions().has(q.oid)
-    );
-  });
+  //   return (
+  //     this.revealedQuestions().has(q.oid)
+  //   );
+  // });
   questions = computed(() => {
     const list = this.questionStore.questions() ?? [];
     return [...list].sort((a, b) => a.orderNo - b.orderNo);
   });
 
-  revealedQuestions = signal<Set<string>>(new Set());
-  answeredBeforeReveal = signal<Set<string>>(new Set());
+  // revealedQuestions = signal<Set<string>>(new Set());
+  // answeredBeforeReveal = signal<Set<string>>(new Set());
   answeredQuestions = signal<Set<string>>(new Set());
   boardQuestions = computed(() => {
     const list = this.questionStore.questions() ?? [];
@@ -138,12 +138,12 @@ else lookupId = "44444444-4444-4444-4444-444444444403";
             if (parsed.markedQuestions) {
               this.markedQuestions.set(new Set(parsed.markedQuestions));
             }
-            if (parsed.answeredBeforeReveal) {
-              this.answeredBeforeReveal.set(new Set(parsed.answeredBeforeReveal));
-            }
-            if (parsed.revealedQuestions) {
-              this.revealedQuestions.set(new Set(parsed.revealedQuestions));
-            }
+            // if (parsed.answeredBeforeReveal) {
+            //   this.answeredBeforeReveal.set(new Set(parsed.answeredBeforeReveal));
+            // }
+            // if (parsed.revealedQuestions) {
+            //   this.revealedQuestions.set(new Set(parsed.revealedQuestions));
+            // }
             if (parsed.answeredQuestions) {
               this.answeredQuestions.set(new Set(parsed.answeredQuestions));
             }
@@ -185,26 +185,26 @@ else lookupId = "44444444-4444-4444-4444-444444444403";
     });
   }
 
-  onRevealAnswer(questionId: string) {
+  // onRevealAnswer(questionId: string) {
 
-    const currentAnswer = this.examChoiceAnswers.find(
-      x => x.questionOid === questionId
-    );
+  //   const currentAnswer = this.examChoiceAnswers.find(
+  //     x => x.questionOid === questionId
+  //   );
 
-    if (currentAnswer?.selectedAnswerOids?.length) {
-      this.answeredBeforeReveal.update(set => {
-        const s = new Set(set);
-        s.add(questionId);
-        return s;
-      });
-    }
+  //   if (currentAnswer?.selectedAnswerOids?.length) {
+  //     this.answeredBeforeReveal.update(set => {
+  //       const s = new Set(set);
+  //       s.add(questionId);
+  //       return s;
+  //     });
+  //   }
 
-    this.revealedQuestions.update(set => {
-      const s = new Set(set);
-      s.add(questionId);
-      return s;
-    });
-  }
+  //   this.revealedQuestions.update(set => {
+  //     const s = new Set(set);
+  //     s.add(questionId);
+  //     return s;
+  //   });
+  // }
 
   finishExam(end: boolean) {
     console.log('finish practicing');
@@ -214,28 +214,6 @@ else lookupId = "44444444-4444-4444-4444-444444444403";
     this.router.navigate(['../../chooseExam'], {
       relativeTo: this.route,
     });
-    // const payload: submitStudentExam = {
-    //   studentExamOid: this.shared.studentExamId(),
-    //   answers: [],
-    //   updatedBy: '3fa85f64-5717-4562-b3fc-2c963f66afa6'
-    // }
-
-    // if (end && this.isBrowser) {
-    //   this.studentExamService.submitExam(payload).subscribe({
-    //     next: (result) => {
-    //       const key = this.getStorageKey(this.currentExamId());
-    //       localStorage.removeItem(key);
-    //       localStorage.removeItem('currentExam');
-    //       localStorage.removeItem('currentExamId');
-    //       const examResult = `examResult-${this.shared.studentExamId()}`;
-    //       localStorage.setItem(examResult, JSON.stringify(result));
-    //       this.router.navigate(['../../exam-result'], {
-    //         relativeTo: this.route,
-    //       });
-    //     }
-    //   })
-
-    // }
   }
 
   resetExam() {
@@ -368,10 +346,10 @@ else lookupId = "44444444-4444-4444-4444-444444444403";
     const q = this.currentQuestion();
     if (!q) return;
 
-    // If answer revealed and user didn't answer before reveal → ignore answer
-    if (this.revealedQuestions().has(q.oid) && !this.answeredBeforeReveal().has(q.oid)) {
-      newAnswer = { type: 'empty' };
-    }
+    // // If answer revealed and user didn't answer before reveal → ignore answer
+    // if (this.revealedQuestions().has(q.oid) && !this.answeredBeforeReveal().has(q.oid)) {
+    //   newAnswer = { type: 'empty' };
+    // }
 
     if (newAnswer.type === 'empty') {
       this.updateIndex(newAnswer.last);
@@ -503,8 +481,8 @@ else lookupId = "44444444-4444-4444-4444-444444444403";
         currentQuestionIndex: this.currentQuestionIndex(),
         examChoiceAnswers: this.examChoiceAnswers,
         examMatchingAnswers: this.examMatchingAnswers,
-        revealedQuestions: Array.from(this.revealedQuestions()),
-        answeredBeforeReveal: Array.from(this.answeredBeforeReveal()),
+        // revealedQuestions: Array.from(this.revealedQuestions()),
+        // answeredBeforeReveal: Array.from(this.answeredBeforeReveal()),
         markedQuestions: Array.from(this.markedQuestions()),
         answeredQuestions: Array.from(this.answeredQuestions())
       })
@@ -550,12 +528,12 @@ else lookupId = "44444444-4444-4444-4444-444444444403";
     }
 
     // 🔒 Enforce reveal rule AFTER restore
-    if (
-      this.revealedQuestions().has(question.oid) &&
-      !this.answeredBeforeReveal().has(question.oid)
-    ) {
-      question.answers?.forEach((a: any) => a.isSelected = false);
-    }
+    // if (
+    //   this.revealedQuestions().has(question.oid) &&
+    //   !this.answeredBeforeReveal().has(question.oid)
+    // ) {
+    //   question.answers?.forEach((a: any) => a.isSelected = false);
+    // }
   }
 
   goToQuestionNumber(num: number) {

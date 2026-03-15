@@ -1,5 +1,5 @@
 @if (currentQuestion()) {
-  <app-client-exam-question
+  <!-- <app-client-exam-question
     [question]="currentQuestion()"
     mode="practice"
     (next)="goToNext($event)"
@@ -11,6 +11,19 @@
     (saveForLater)="onSaveForLater()"
     (mark)="onMarkQuestion($event)"
       (revealAnswer)="onRevealAnswer($event)"
+
+    (finishExam)="finishExam($event)"
+  /> -->
+    <app-client-exam-question
+    [question]="currentQuestion()"
+    mode="practice"
+    (next)="goToNext($event)"
+    (previous)="goToPrevious()"
+    (showBoard)="onOpenQuestionBoard($event)"
+    [isMarked]="isMarked()"
+
+    (saveForLater)="onSaveForLater()"
+    (mark)="onMarkQuestion($event)"
 
     (finishExam)="finishExam($event)"
   />
