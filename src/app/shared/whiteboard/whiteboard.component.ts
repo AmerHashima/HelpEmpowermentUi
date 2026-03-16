@@ -51,6 +51,8 @@ export class WhiteboardComponent implements AfterViewInit, OnDestroy {
     }, 400);
   }
 
+
+
   private initializeCanvas() {
     if (!this.canvasRef?.nativeElement) {
       console.warn('Canvas element not found');

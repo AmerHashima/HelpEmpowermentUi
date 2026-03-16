@@ -1,7 +1,11 @@
 @use 'variables' as *;
 :host {
-  display: block;
+  display: flex;
+  flex-direction: column;
   height: 100%;
+  align-items: center;
+  justify-content: center;
+  max-width: 800px;
 }
 
 .toolbar {
@@ -11,13 +15,23 @@
   background: #f5f5f5;
   border-bottom: 1px solid #ddd;
   flex-wrap: wrap;
+    max-width: 800px;
 }
 
 .canvas-container {
   flex: 1;
   overflow: auto;
-  background-color: $inputBg;
+
+  max-width: 800px;
+
+  > .canvas-container[data-fabric="wrapper"] {
+    width: 100% !important;
+    height: auto !important;
+  }
+
   canvas {
+    width: 100% !important;
+    height: auto !important;
     border: 1px solid #ccc;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   }
