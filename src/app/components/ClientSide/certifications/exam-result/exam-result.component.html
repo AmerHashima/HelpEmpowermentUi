@@ -16,7 +16,7 @@
             </div>
             <div class="col-6 border-start text-center pass p-3">
               <span>{{
-                (examResult.isPassed ? "Passed" : "Failed") | translate
+                (examResult() && examResult().isPassed ? "Passed" : "Failed") | translate
               }}</span>
             </div>
           </div>
@@ -28,10 +28,10 @@
             </div>
             <div
               class="col-6 border-start p-3 level text-center"
-              [ngClass]="getScoreCategory()"
+              [ngClass]="scoreCategory()"
             >
               <span>
-                {{ getScoreLabel() | translate }}
+                {{ scoreLabel() | translate }}
               </span>
             </div>
           </div>

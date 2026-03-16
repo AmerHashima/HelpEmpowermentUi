@@ -15,10 +15,10 @@ import { LoadingService } from './shared/Services/Loading/loading.service';
 export class AppComponent {
 
   title = 'Help Empowerment';
-  loading$;
+  // loading$;
 
-  constructor(private loadingService: LoadingService) {
-    this.loading$ = this.loadingService.loading$;
-  }
-  
+  // constructor(private loadingService: LoadingService) {
+  //   this.loading$ = this.loadingService.loading$;
+  // }
+
 }

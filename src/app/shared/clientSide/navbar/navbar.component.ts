@@ -34,7 +34,8 @@ export class ClientNavbarComponent {
   private cartService = inject(CartService);
   cartCount=this.cartService.cartCount;
   // loggedStudent =this.auth.loggedStudent
-  studentToken =this.auth.studentToken;
+  isLoggedIn = computed(() => !!this.auth.studentToken());
+  hydrated = signal(false);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private platformId = inject(PLATFORM_ID);
@@ -66,11 +67,16 @@ export class ClientNavbarComponent {
     this.currentTheme.set(this.getTheme());
 
     // Keep track of current path for active link highlighting
-    effect(() => {
-      this.router.events.subscribe(() => {
-        this.currentPath.set(this.router.url);
-        this.openDropdown.set(null);
-      });
+    // effect(() => {
+    //   this.router.events.subscribe(() => {
+    //     this.currentPath.set(this.router.url);
+    //     this.openDropdown.set(null);
+    //   });
+    // });
+
+    this.router.events.subscribe(() => {
+      this.currentPath.set(this.router.url);
+      this.openDropdown.set(null);
     });
   }
 
@@ -78,6 +84,7 @@ export class ClientNavbarComponent {
     if (isPlatformBrowser(this.platformId)) {
       const savedTheme = localStorage.getItem('theme') || 'light';
       document.documentElement.setAttribute('data-theme', savedTheme);
+      this.hydrated.set(true);
     }
   }
 

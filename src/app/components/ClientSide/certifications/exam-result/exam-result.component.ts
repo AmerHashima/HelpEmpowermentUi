@@ -1,5 +1,5 @@
 import { isPlatformBrowser, NgClass } from '@angular/common';
-import { Component, inject, PLATFORM_ID } from '@angular/core';
+import { Component, computed, inject, PLATFORM_ID, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Shared } from '../../../../shared/Services/shared/shared';
@@ -10,7 +10,7 @@ import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/s
   selector: 'app-exam-result',
   imports: [TranslatePipe, NgClass, PerformanceIndicatorsTableComponent,SiteButtonComponent],
   templateUrl: './exam-result.component.html',
-  styleUrl: './exam-result.component.scss'
+  styleUrl: './exam-result.component.scss',
 })
 export class ExamResultComponent {
   private shared=inject(Shared);
@@ -18,10 +18,26 @@ export class ExamResultComponent {
   private route=inject(ActivatedRoute);
   private platformId = inject(PLATFORM_ID);
   isRTL=this.shared.isRtl;
-  examResult: any;
+  examResult=signal<any>(null);
 
   storageKey: string='';
 
+  score = computed(() => this.examResult()?.obtainedScore ?? 0);
+
+  scoreCategory = computed(() =>
+  {
+    console.log('in caregory');
+    return this.shared.getScoreCategory(this.score())
+  }
+  );
+
+  scoreLabel = computed(() =>
+   {
+    console.log('in label');
+
+    return this.shared.getScoreLabel(this.score())
+   }
+  );
   ngOnInit() {
     const isBrowser = isPlatformBrowser(this.platformId);
 
@@ -29,26 +45,16 @@ export class ExamResultComponent {
 
     this.storageKey = `examResult-${this.shared.studentExamId()}`;
     const stored = localStorage.getItem(this.storageKey);
-    this.examResult = stored ? JSON.parse(stored) : null;
+    this.examResult.set(stored ? JSON.parse(stored) : null)
 
-    if (this.examResult) {
+    if (this.examResult()) {
       localStorage.removeItem(this.storageKey);
       localStorage.removeItem('studentExamId');
     }
 
-    if (!this.examResult) {
+    if (!this.examResult()) {
       this.router.navigateByUrl(`${this.shared.lang()}/home`);
     }
-  }
-
-  getScoreCategory(): string {
-    const score = this.examResult?.obtainedScore ?? 0;
-     return this.shared.getScoreCategory(score);
-  }
-
-  getScoreLabel(): string {
-    const score = this.examResult?.obtainedScore ?? 0;
-    return this.shared.getScoreLabel(score);
   }
 
   Done(){

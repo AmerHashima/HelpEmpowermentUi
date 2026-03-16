@@ -1,5 +1,5 @@
 // src\app\components\ClientSide\certifications\exam-simulator\exam-simulator.component.ts
-import { Component, effect, inject, Input, PLATFORM_ID } from '@angular/core';
+import { Component, computed, effect, inject, Input, PLATFORM_ID, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IconCardComponent } from '../../../../shared/icon-card/icon-card.component';
 import { Shared } from '../../../../shared/Services/shared/shared';
@@ -31,10 +31,15 @@ export class ExamSimulatorComponent {
   private shared = inject(Shared);
   private auth = inject(AuthService);
   private studentService = inject(StudentService);
-  isEnrolled = this.studentService.isExamSimulatorEnrolled;
+  isEnrolled =computed(()=>{
+    console.log('is entolled', this.studentService.isExamSimulatorEnrolled())
+    return this.studentService.isExamSimulatorEnrolled();
+  })
   private toasting = inject(ToastingMessagesService);
   isRTL = this.shared.isRtl;
-  studentToken = this.auth.studentToken;
+  // studentToken = this.auth.studentToken;
+  isLoggedIn = computed(() => !!this.auth.studentToken());
+  hydrated = signal(false);
   // certification=this.shared.currentCertificationObject
   //  chooseExam:boolean=false;
   examSimulatorBenfits = [
@@ -101,7 +106,6 @@ export class ExamSimulatorComponent {
   enrollImage = 'assets/images/enroll.png';
   showConfirm: boolean = false;
   constructor(private router: Router, private route: ActivatedRoute) {
-    console.log('certifications', this.shared.certifications());
     effect(() => {
       const _ = this.shared.currentExamId();
       // this.chooseExam=true;
@@ -109,6 +113,12 @@ export class ExamSimulatorComponent {
 
   }
 
+  ngOnInit() {
+    if (isPlatformBrowser(this.platformId)) {
+      this.hydrated.set(true);
+    }
+  }
+  
   navigateToFreeExam() {
     // this.chooseExam=true;
     this.shared.currentExamId.set('free');
@@ -176,7 +186,9 @@ export class ExamSimulatorComponent {
   //   }
   // }
   addToCart(): void {
-    if (!this.auth.studentToken()) {
+    // if (!this.auth.studentToken()) {
+    if (!this.isLoggedIn()) {
+
       this.showConfirm = true;
       return;
     }

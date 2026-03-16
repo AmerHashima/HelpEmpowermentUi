@@ -1,7 +1,8 @@
 <div class="certification pagePadding">
   <!-- @if(!chooseExam){ -->
   <!-- Banner - shown only if not purchased -->
-  <ng-container *ngIf="!isEnrolled() || !studentToken()">
+   <ng-container *ngIf="hydrated() && (!isEnrolled() || !isLoggedIn())">
+  <!-- <ng-container *ngIf="!isEnrolled() || !isLoggedIn()"> -->
     <app-page-banner [isRTL]="isRTL()" [media]="true">
       <!-- Content projection -->
       <div content class="d-flex flex-column gap-3 pe-xl-5">
@@ -66,7 +67,9 @@
   </ng-container>
 
   <!-- Benefits section -->
-   @if(!isEnrolled() || !studentToken()){
+
+   @if(   hydrated() && (!isEnrolled() || !isLoggedIn())){
+   <!-- @if(!isEnrolled() || !isLoggedIn()){ -->
   <div class="CertifticationBenfits d-flex flex-column gap-5 pt-5 pb-5">
     <div class="d-flex flex-column align-items-center gap-2">
       <h2 class="mainTextColor">
@@ -115,7 +118,9 @@
       </p>
     </div>
 
-    <ng-container *ngIf="!isEnrolled() || !studentToken()">
+       <ng-container *ngIf="hydrated() && (!isEnrolled() || !isLoggedIn())">
+
+    <!-- <ng-container *ngIf="!isEnrolled() || !isLoggedIn()"> -->
       <!-- @if(!chooseExam){ -->
 
       <div class="d-flex justify-content-center">
@@ -195,9 +200,12 @@
     </ng-container>
 
     <!-- Show full exams list if already purchased -->
+    <!-- <app-simulator-exams
+      *ngIf="isEnrolled() && isLoggedIn()"
+    ></app-simulator-exams> -->
     <app-simulator-exams
-      *ngIf="isEnrolled() && studentToken()"
-    ></app-simulator-exams>
+  *ngIf="hydrated() && isEnrolled() && isLoggedIn()"
+></app-simulator-exams>
   </div>
 </div>
 

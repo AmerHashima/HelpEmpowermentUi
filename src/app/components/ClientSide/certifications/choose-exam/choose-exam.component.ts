@@ -10,7 +10,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
 import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/site-button.component';
 import { StudentService } from '../../../../Services/student-service.service';
-import { APIExamSummary, APIStudentExamResponse, ExamSummary } from '../../../../models/certification';
+import { APIExamSummary, ExamSummary } from '../../../../models/certification';
 
 @Component({
   selector: 'app-choose-exam',

@@ -76,7 +76,8 @@
               {{ cartCount() }}
             </span>
           </div>
-          @if (studentToken()) {
+          @if(hydrated()){
+     @if (isLoggedIn()) {
             <div class="dropdown">
               <i
                 class="bi bi-person-circle"
@@ -111,6 +112,8 @@
               </ul>
             </div>
           }
+          }
+
         </div>
       </div>
     </div>
