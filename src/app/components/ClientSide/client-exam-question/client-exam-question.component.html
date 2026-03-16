@@ -240,7 +240,7 @@
             ) {
               @for (answer of question().answers; track answer) {
                 @if (answer.isCorrect) {
-                  <span>{{ answer.answerText }}</span>
+                  <span class="darkText">{{ answer.answerText }}</span>
                 }
               }
             } @else {
@@ -260,6 +260,7 @@
     }
   </main>
 </div>
+
 
 <app-generic-modal [(isOpen)]="showConfirm" title="">
   <section

@@ -64,7 +64,7 @@ export class ClientNavbarComponent {
       }
     });
 
-    this.currentTheme.set(this.getTheme());
+    // this.currentTheme.set(this.getTheme());
 
     // Keep track of current path for active link highlighting
     // effect(() => {
@@ -80,12 +80,21 @@ export class ClientNavbarComponent {
     });
   }
 
+  // ngOnInit() {
+  //   if (isPlatformBrowser(this.platformId)) {
+  //     const savedTheme = localStorage.getItem('theme') || 'light';
+  //     document.documentElement.setAttribute('data-theme', savedTheme);
+  //     this.hydrated.set(true);
+  //   }
+  // }
+
   ngOnInit() {
-    if (isPlatformBrowser(this.platformId)) {
-      const savedTheme = localStorage.getItem('theme') || 'light';
-      document.documentElement.setAttribute('data-theme', savedTheme);
-      this.hydrated.set(true);
-    }
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    const theme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', theme);
+    this.currentTheme.set(theme);
+    this.hydrated.set(true);
   }
 
   /** Toggle dropdown menu */
@@ -110,26 +119,44 @@ export class ClientNavbarComponent {
   }
 
   /** Toggle dark/light theme */
-  toggleTheme() {
+  // toggleTheme() {
 
+  //   if (!isPlatformBrowser(this.platformId)) return;
+
+  //   const root = document.documentElement;
+  //   const current = root.getAttribute('data-theme');
+  //   const next = current === 'dark' ? 'light' : 'dark';
+  //   root.setAttribute('data-theme', next);
+  //   localStorage.setItem('theme', next);
+  //   this.currentTheme.set(next);
+  // }
+
+  toggleTheme() {
     if (!isPlatformBrowser(this.platformId)) return;
 
     const root = document.documentElement;
-    const current = root.getAttribute('data-theme');
+    const current = root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
     const next = current === 'dark' ? 'light' : 'dark';
+
     root.setAttribute('data-theme', next);
     localStorage.setItem('theme', next);
+
     this.currentTheme.set(next);
   }
 
-  getTheme(): 'light' | 'dark' | null {
-    if (!isPlatformBrowser(this.platformId)) return null;
+  // getTheme(): 'light' | 'dark' | null {
+  //   if (!isPlatformBrowser(this.platformId)) return 'light';
 
-    const root = document.documentElement;
-    const current = root.getAttribute('data-theme') as 'light' | 'dark' | null;
+  //   const root = document.documentElement;
+  //   const current = root.getAttribute('data-theme') as 'light' | 'dark' | null;
 
-    // fallback to localStorage if attribute not set
-    return current ?? (localStorage.getItem('theme') as 'light' | 'dark' | null);
+  //   // fallback to localStorage if attribute not set
+  //   return current ?? (localStorage.getItem('theme') as 'light' | 'dark' | null);
+  // }
+  getTheme(): 'light' | 'dark' {
+    if (!isPlatformBrowser(this.platformId)) return 'light';
+
+    return (localStorage.getItem('theme') as 'light' | 'dark') ?? 'light';
   }
 
   logout(){

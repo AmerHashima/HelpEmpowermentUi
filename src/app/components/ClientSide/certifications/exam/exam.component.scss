@@ -1,9 +1,12 @@
 @use 'variables' as *;
 .question-box p{
   width: fit-content;
+
 }
+
 .question-box.notVisited {
-  background: #e9ecef;
+  background-color: $notVisited;
+  color:$inputText
 }
 
 .question-box.answered {
@@ -33,7 +36,7 @@ color:#e9ecef;
   color: $primaryColor;
 }
 .marked-answered {
-  background-color: #ffc107; 
+  background-color: #ffc107;
   color: #fff;
 }
 .text-warning{
@@ -43,7 +46,7 @@ color:#e9ecef;
   color:#fff;
 }
 .markedAnswered{
-   color:#ffc107 !important; 
+   color:#ffc107 !important;
 }
 span{
   color: $headerColor !important;

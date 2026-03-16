@@ -170,12 +170,20 @@ export class ChooseExamComponent {
       });
     else this.showConfirm = true;
   }
+  
   back() {
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem('currentExam');
+      localStorage.removeItem('currentExamId');
+    }
+
+    this.shared.currentExam.set(null);
+    this.shared.currentExamId.set('');
+
     this.router.navigate(['../exam-simulator'], {
       relativeTo: this.route
     });
   }
-
   onCloseLessonLearnedModel(){
     this.showClearLessonLearned=false
   }

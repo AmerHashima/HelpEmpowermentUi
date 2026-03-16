@@ -246,10 +246,10 @@ export class ExamComponent {
         next: (result) => {
           const key = this.getStorageKey(this.currentExamId());
           localStorage.removeItem(key);
-          localStorage.removeItem('currentExam');
-          localStorage.removeItem('currentExamId');
-          this.shared.currentExam.set(null);
-          this.shared.currentExamId.set('');
+          // localStorage.removeItem('currentExam');
+          // localStorage.removeItem('currentExamId');
+          // this.shared.currentExam.set(null);
+          // this.shared.currentExamId.set('');
           if(this.currentMode() == 'Exam'){
             const examResult = `examResult-${this.shared.studentExamId()}`;
             localStorage.setItem(examResult, JSON.stringify(result));

@@ -105,6 +105,8 @@ export class ProfileComponent {
     const currentExamId = exam.exam.oid
     this.shared.studentExamId.set(exam.studentExamId);
     localStorage.setItem('studentExamId', exam.studentExamId);
+    localStorage.setItem('currentExamId', exam.exam.oid);
+    localStorage.setItem('currentExam', JSON.stringify(exam.exam));
     this.shared.currentExamId.set(exam.exam.oid);
     this.shared.currentExam.set(exam.exam);
     this.router.navigate(['../../certifications/', courseName, 'exams', currentExamId], {

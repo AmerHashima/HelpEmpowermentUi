@@ -3,14 +3,14 @@
   display: block;
   font-family:
     -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background: #f8f9fa;
+  background: $inputBg;
   // min-height: 100vh;
 }
 
 .exam-container {
   min-width: 75%;
   margin: 0 auto;
-  background: white;
+  background: $bgNav;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
@@ -44,18 +44,6 @@
   cursor: pointer;
 }
 
-.end {
-  background: #c41e3a;
-  color: white;
-}
-.save {
-  background: #444;
-  color: white;
-}
-.whiteboard {
-  background: #2e7d32;
-  color: white;
-}
 
 .question-header {
   background: $inputBg;
@@ -109,6 +97,7 @@
   line-height: 1.45;
   font-size: 1.15rem;
   font-weight: 500;
+  color:$inputText
 }
 
 .options {
@@ -159,7 +148,7 @@ color:$headerColor !important;
 .letter {
   min-width: 32px;
   font-weight: bold;
-  color: #555;
+  color: $inputText;
 }
 
 .question-footer {
@@ -179,7 +168,7 @@ color:$headerColor !important;
 }
 
 .option.correct {
-  background-color: #28a745; 
+  background-color: #28a745;
   color: white;
   border-color: #28a745;
 }
