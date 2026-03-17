@@ -18,7 +18,7 @@
     <div class="d-flex align-content-center gap-3">
       <app-site-button
         title="reviews.addReview"
-        [icon]="isRTL() ? 'bi bi-arrow-left' : 'bi bi-arrow-right'"
+        [icon]="'bi bi-arrow'"
         type="main"
         (click)="showAddReview()"
       ></app-site-button>
@@ -126,8 +126,7 @@
           title="addReview.reviewButton"
           type="main"
           htmlType="submit"
-          [icon]="isRTL() ? 'bi bi-arrow-left' : 'bi bi-arrow-right'"
-          [isRTL]="isRTL()"
+          [icon]="'bi bi-arrow'"
         ></app-site-button>
       </div>
     </form>

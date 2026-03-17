@@ -38,14 +38,14 @@
           <div class="d-flex align-content-center gap-3">
             <app-site-button
               title="examSimulator.buyNow"
-              [icon]="isRTL() ? 'bi bi-arrow-left' : 'bi bi-arrow-right'"
+              [icon]="'bi bi-arrow'"
               type="main"
               (click)="buyNow()"
             ></app-site-button>
 
             <app-site-button
               title="examSimulator.addToCart"
-              [icon]="isRTL() ? 'bi bi-arrow-left' : 'bi bi-arrow-right'"
+              [icon]="'bi bi-arrow'"
               type="secondary"
               (click)="addToCart()"
             ></app-site-button>
@@ -61,23 +61,22 @@
       />
     </app-page-banner>
   </ng-container>
-  <ng-container *ngIf="isEnrolled()">
-  </ng-container>
+  <ng-container *ngIf="isEnrolled()"> </ng-container>
 
   <div class="container-fluid">
     <div class="row">
       <div class="col-lg-9">
         <div class="row">
           <div class="col-12">
-            <app-courese-outline/>
+            <app-courese-outline />
           </div>
         </div>
         <div class="col-12">
-          <app-courese-content/>
+          <app-courese-content />
         </div>
-          <div class="col-12">
-            <app-upcoming-sessions/>
-          </div>
+        <div class="col-12">
+          <app-upcoming-sessions />
+        </div>
 
         <div class="col-12">
           <app-instructor-info />
@@ -86,33 +85,28 @@
       <div class="col-lg-3">
         <div class="row">
           <div class="col-12">
-            <app-courese-features [isEnrolled]="isEnrolled()"/>
+            <app-courese-features [isEnrolled]="isEnrolled()" />
           </div>
         </div>
         <div class="col-12">
           <app-target-audience />
         </div>
-
       </div>
     </div>
   </div>
 </div>
 
-
-
- <app-generic-modal [(isOpen)]="showConfirm" title="Alert Message">
-    <section
-      class="w-100 d-flex flex-column align-items-stretch gap-3 p-3 rounded"
+<app-generic-modal [(isOpen)]="showConfirm" title="Alert Message">
+  <section
+    class="w-100 d-flex flex-column align-items-stretch gap-3 p-3 rounded"
+  >
+    <div
+      class="d-flex flex-column align-items-center justify-content-center gap-2 w-100"
     >
-      <div
-        class="d-flex flex-column align-items-center justify-content-center gap-2 w-100"
-      >
-        <i class="bi bi-info-circle-fill infoColor"></i>
-        <p class="text-center darkText w-75 mx-auto">
-          {{
-            "You Must be logged to be able to contact us." | translate
-          }}
-        </p>
-      </div>
-    </section>
-  </app-generic-modal>
+      <i class="bi bi-info-circle-fill infoColor"></i>
+      <p class="text-center darkText w-75 mx-auto">
+        {{ "You Must be logged to be able to contact us." | translate }}
+      </p>
+    </div>
+  </section>
+</app-generic-modal>

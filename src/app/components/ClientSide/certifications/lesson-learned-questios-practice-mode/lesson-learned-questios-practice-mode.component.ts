@@ -217,6 +217,7 @@ else lookupId = "44444444-4444-4444-4444-444444444403";
   }
 
   resetExam() {
+    console.log('in reset Exam');
     this.currentQuestionIndex.set(0);
     this.examChoiceAnswers = [];
     this.examMatchingAnswers = [];

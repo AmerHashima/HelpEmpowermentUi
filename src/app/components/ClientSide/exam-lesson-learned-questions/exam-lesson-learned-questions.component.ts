@@ -46,7 +46,7 @@ export class ExamLessonLearnedQuestionsComponent {
   ngOnInit(): void {
     const payload: ExamSummary ={
       studentId: this.auth.loggedStudent()?.userId!,
-      examId: this.shared.currentExamId()
+      masrterExamId: this.shared.currentExamId()
     }
     console.log(payload);
     this.studentExamService.getExamSummary(payload).subscribe({

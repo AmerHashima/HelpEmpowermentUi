@@ -127,7 +127,6 @@
         <app-site-button
           [title]="'Back To Exam Simulator' | translate"
           type="secondary"
-          [isRTL]="isRTL()"
           (click)="back()"
         />
       </div>
@@ -172,14 +171,12 @@ You won’t be able to begin the new exam until the Lesson Learned has been comp
         <app-site-button
           class="flex-grow-1"
           title="Cancal"
-          [isRTL]="isRTL()"
           type="secondary"
           (click)="onCloseLessonLearnedModel()"
         />
         <app-site-button
           class="flex-grow-1"
           title="Clear Now"
-          [isRTL]="isRTL()"
           type="main"
           (click)="clearLessonLearned()"
         />

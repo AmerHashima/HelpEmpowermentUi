@@ -1,4 +1,4 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, forwardRef, inject, Input } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, forwardRef, inject, Input, ViewChild } from '@angular/core';
 import {  NgIf } from '@angular/common';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { NgxsmkTelInputComponent } from 'ngxsmk-tel-input';
@@ -33,8 +33,11 @@ export class PhoneInputComponent implements ControlValueAccessor {
   @Input() required = true;
 
 
-  // ────────────────────────────────────────────────
-  readonly preferredCountries: any[] = ['EG', 'SA', 'AE', 'US'];
+  // // ────────────────────────────────────────────────
+  // readonly preferredCountries: any[] = ['EG', 'SA', 'AE', 'US'];
+  // readonly initialCountry = 'SA';
+
+  readonly preferredCountries: any[] = ['SA', 'EG', 'AE', 'US'];
   readonly initialCountry = 'SA';
 
   readonly arabicLabels = {
@@ -57,10 +60,15 @@ export class PhoneInputComponent implements ControlValueAccessor {
   onChange: (val: string) => void = () => { };
   onTouched: () => void = () => { };
 
+
+
+
   writeValue(value: string): void {
-    this.value = '';
     this.value = value || '';
   }
+
+
+
 
   registerOnChange(fn: any): void {
     this.onChange = fn;

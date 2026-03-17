@@ -12,6 +12,7 @@
       "PMP": "Project Management Professional (PMP)",
       "CAMP": "Certified Associate in Project Management (CAPM)"
     },
+
     "services_children": {
       "manpower": "Manpower",
       "PMO": "PMO Setup & Operation",
@@ -25,6 +26,32 @@
     "signup": "Sign Up",
     "profile": "Profile",
     "logout": "Logout"
+  },
+  "home": {
+    "hero": {
+      "feature": "Feature",
+      "line1": "Linking Knowledge",
+      "line2_part1": "to",
+      "line2_part2": "Practical",
+      "line3": "Execution",
+      "description": "We bridge the critical gap between learning and doing. We understand that knowledge alone is not power, the true power lies in its effective practical execution.",
+      "startJourney": "Start your Journey",
+      "corporate": "For Corporate"
+    },
+    "certifications": {
+      "subtitle": "Excellence in Training",
+      "title": "Empower your Expertise",
+      "description": "Move beyond theory. Our world-class certifications provide the actionable framework to turn knowledge into tangible results and recognized authority."
+    },
+    "services": {
+      "subtitle": "OUR EXPERTISE",
+      "title": "Delivering tailored solutions that meet client's expectations"
+    },
+    "articles": {
+      "subtitle": "THOUGHT LEADERSHIP",
+      "title": "Latest Insights",
+      "description": "Strategies, trends, and perspectives from our industry experts."
+    }
   },
   "footer": {
     "image": "Footer image",

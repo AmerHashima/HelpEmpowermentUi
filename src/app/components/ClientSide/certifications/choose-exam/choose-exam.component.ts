@@ -50,7 +50,7 @@ export class ChooseExamComponent {
    ngOnInit(): void {
       const payload: ExamSummary ={
         studentId: this.auth.loggedStudent()?.userId!,
-        examId: this.shared.currentExamId()
+        masrterExamId: this.shared.currentExamId()
       }
       this.studentExamService.getExamSummary(payload).subscribe({
         next: (report) => {
@@ -170,7 +170,7 @@ export class ChooseExamComponent {
       });
     else this.showConfirm = true;
   }
-  
+
   back() {
     if (isPlatformBrowser(this.platformId)) {
       localStorage.removeItem('currentExam');

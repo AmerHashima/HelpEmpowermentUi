@@ -17,18 +17,18 @@ export class StudentExamService {
   examIdsToDelete = this.auth.examIdsToDelete;
   reports = signal<APIStudentExamResponse[]>([]);
 
-  successRate = computed(() => {
-    const reports = this.reports();
+  // successRate = computed(() => {
+  //   const reports = this.reports();
 
-    if (!reports.length) return 0;
+  //   if (!reports.length) return 0;
 
-    const total = reports.reduce((sum, r) => {
-      if (!r.totalScore) return sum;
-      return sum + (r.obtainedScore / r.totalScore) * 100;
-    }, 0);
+  //   const total = reports.reduce((sum, r) => {
+  //     if (!r.totalScore) return sum;
+  //     return sum + (r.obtainedScore / r.totalScore) * 100;
+  //   }, 0);
 
-    return Math.round(total / reports.length);
-  });
+  //   return Math.round(total / reports.length);
+  // });
   constructor(private apiService: ApiService) {
     effect(() => {
       const studentId = this.auth.loggedStudent()?.userId;

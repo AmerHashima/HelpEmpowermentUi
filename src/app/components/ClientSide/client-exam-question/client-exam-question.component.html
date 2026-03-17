@@ -8,7 +8,6 @@
         <app-site-button
           class="flex-grow-1"
           title="End Exam"
-          [isRTL]="isRTL()"
           type="main"
           (click)="onEndExam()"
         />
@@ -16,13 +15,11 @@
       <app-site-button
         class="flex-grow-1"
         title="Save and Continue Later"
-        [isRTL]="isRTL()"
         type="secondary"
         (click)="onSaveExamForLater()"
       />
       <app-site-button
         title="Whiteboard"
-        [isRTL]="isRTL()"
         type="main"
         icon="bi bi-easel"
         [customClass]="true"
@@ -61,7 +58,6 @@
       </div>
       <app-site-button
         title="Calculator"
-        [isRTL]="isRTL()"
         type="main"
         icon="bi bi-calculator"
         [customClass]="true"
@@ -151,14 +147,12 @@
           type="main"
           [customClass]="true"
           icon="bi bi-clipboard-data"
-          [isRTL]="isRTL()"
           (click)="onOpenQuestionBoard()"
         />
         @if (!showTranslateFlag) {
           <app-site-button
             [title]="'Translate' | translate"
             type="main"
-            [isRTL]="isRTL()"
             icon="bi bi-translate"
             [customClass]="true"
             (click)="onTranslate()"
@@ -167,7 +161,6 @@
           <app-site-button
             [title]="'Hide Translation' | translate"
             type="main"
-            [isRTL]="isRTL()"
             icon="bi bi-translate"
             [customClass]="true"
             (click)="hideTranslations()"
@@ -178,7 +171,6 @@
         @if (mode() !== "Exam") {
           <app-site-button
             title="Show Answer"
-            [isRTL]="isRTL()"
             icon="bi bi-eye-fill"
             [hidden]="showCorrectAnswerFlag"
             type="main"
@@ -187,7 +179,6 @@
         }
         <app-site-button
           title="Hide Answer"
-          [isRTL]="isRTL()"
           icon="bi bi-eye-slash-fill"
           [hidden]="!showCorrectAnswerFlag"
           type="main"
@@ -199,7 +190,6 @@
           [title]="'Previous' | translate"
           type="secondary"
           [disabled]="isFirstQuestion"
-          [isRTL]="isRTL()"
           (click)="previousQuestion()"
         />
 
@@ -209,13 +199,11 @@
           icon="bi bi-bookmark-check"
           [customClass]="true"
           [isMarked]="isMarked()"
-          [isRTL]="isRTL()"
           (click)="onMarkQuestion()"
         />
         @if (!isLastQuestion) {
           <app-site-button
             title="Next"
-            [isRTL]="isRTL()"
             [disabled]="isLastQuestion"
             type="main"
             (click)="nextQuestion()"
@@ -223,7 +211,6 @@
         } @else {
           <app-site-button
             title="Submit"
-            [isRTL]="isRTL()"
             type="main"
             (click)="submit()"
           />
@@ -277,14 +264,12 @@
         <app-site-button
           class="flex-grow-1"
           title="Cancal"
-          [isRTL]="isRTL()"
           type="secondary"
           (click)="onCancalEndExam()"
         />
         <app-site-button
           class="flex-grow-1"
           title="End Now"
-          [isRTL]="isRTL()"
           type="main"
           (click)="EndExam()"
         />

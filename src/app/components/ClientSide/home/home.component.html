@@ -1,4 +1,4 @@
-<div>
+<!-- <div>
   <app-page-banner [isRTL]="isRTL()" [media]="true">
     <div content class="d-flex flex-column gap-4">
       <div>
@@ -71,9 +71,9 @@
             | translate
         }}
       </p>
-    </div>
+    </div> -->
     <!-- <app-certification-cards (enrollCourse)="onEnrollToCourse($event)" /> -->
-    <app-certification-cards />
+    <!-- <app-certification-cards />
   </div>
 
   <div class="training d-flex flex-column gap-4 py-5" #homeServiceCards>
@@ -121,7 +121,7 @@ that meet client's expectations" | translate
   <div class="pt-5">
     <app-home-faq />
   </div>
-</div>
+</div> -->
 
 <!-- <app-generic-modal [(isOpen)]="showEnrollForm" title="Enroll form">
     <section
@@ -131,3 +131,112 @@ that meet client's expectations" | translate
 
     </section>
   </app-generic-modal> -->
+
+
+  <div>
+  <app-page-banner [isRTL]="isRTL()" [media]="true">
+    <div content class="d-flex flex-column gap-4">
+
+      <app-feature [title]="'home.hero.feature' | translate" icon="bi bi-star" />
+
+      <div class="title darkText">
+        <h1 class="line1">{{ "home.hero.line1" | translate }}</h1>
+        <h1>
+          <span>{{ "home.hero.line2_part1" | translate }}</span>
+          <span class="ps-2 mainTextColor">
+            {{ "home.hero.line2_part2" | translate }}
+          </span>
+        </h1>
+        <h1 class="mainTextColor">{{ "home.hero.line3" | translate }}</h1>
+      </div>
+
+      <p class="HomeParagraph">
+        {{ "home.hero.description" | translate }}
+      </p>
+
+      <div class="d-flex align-items-center justify-content-center justify-content-lg-start gap-3">
+        <app-site-button
+          [title]="'home.hero.startJourney' | translate"
+          [icon]="'bi bi-arrow'"
+          type="main"
+          (onClick)="onStartJourney()"
+        />
+
+        <app-site-button
+          [title]="'home.hero.corporate' | translate"
+                        [icon]="'bi bi-arrow'"
+
+          type="secondary"
+          (onClick)="onCorporateClick()"
+        />
+      </div>
+
+      <app-social-links />
+    </div>
+
+    <video
+      media
+      [src]="homeVideo"
+      autoplay
+      loop
+      [muted]="true"
+      playsinline
+      class="Homebanner-video shadow h-100"
+    ></video>
+  </app-page-banner>
+
+  <!-- Certifications -->
+  <div class="training d-flex flex-column gap-4 py-5"   #homeCertificationCards>
+    <div class="d-flex flex-column align-items-center gap-2">
+      <span class="sectionSubHeader">
+        {{ "home.certifications.subtitle" | translate }}
+      </span>
+
+      <h2 class="mainTextColor">
+        {{ "home.certifications.title" | translate }}
+      </h2>
+
+      <p class="text-center">
+        {{ "home.certifications.description" | translate }}
+      </p>
+    </div>
+
+    <app-certification-cards />
+  </div>
+
+  <!-- Services -->
+  <div class="training d-flex flex-column gap-4 py-5"  #homeServiceCards>
+    <div class="d-flex flex-column align-items-center gap-2">
+      <span class="sectionSubHeader">
+        {{ "home.services.subtitle" | translate }}
+      </span>
+
+      <h2 class="darkText mt-2">
+        {{ "home.services.title" | translate }}
+      </h2>
+    </div>
+
+    <app-home-services />
+  </div>
+
+  <!-- Articles -->
+  <div class="training d-flex flex-column align-items-center gap-4 py-5">
+    <span class="sectionSubHeader">
+      {{ "home.articles.subtitle" | translate }}
+    </span>
+
+    <h2 class="mainTextColor mt-2">
+      {{ "home.articles.title" | translate }}
+    </h2>
+
+    <p class="text-center">
+      {{ "home.articles.description" | translate }}
+    </p>
+
+    <app-home-articles />
+  </div>
+
+  <div class="pt-5">
+    <app-home-faq />
+  </div>
+</div>

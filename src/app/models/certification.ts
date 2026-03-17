@@ -130,7 +130,7 @@ export interface APIStudentExamResponse {
 
 export interface ExamSummary{
   studentId: string,
-  examId: string
+  masrterExamId: string
 }
 
 export interface APIExamSummary{

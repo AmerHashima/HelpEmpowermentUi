@@ -257,8 +257,9 @@ export class ClientExamQuestionComponent {
     // Matching Question
     else if (q.questionTypeName === 'Matching') {
       const payload = this.buildMatchingAnswers(this.left, this.middle);
-
+      console.log('matching',payload);
       if (!payload?.length) {
+        console.log('in empty');
         this.next.emit({ type: 'empty', last });
         return;
       }
@@ -336,11 +337,17 @@ export class ClientExamQuestionComponent {
   }
 
   buildMatchingAnswers(left: APIAnswer[], middle: APIAnswer[]) {
+    console.log('shaimaamiddle', middle);
+    console.log('buildMatchingAnswers');
+    const allNull = middle.every(v => v === null);
+    if(allNull){
+      return [];
+    }
     const answers = left.map((l, index) => ({
       selectedAnswerOid: l.oid,
       answerSelectedAnswerOid: middle[index]?.oid ?? null
     }));
-
+    console.log('shaimaaanswers', answers);
     return answers;
   }
 

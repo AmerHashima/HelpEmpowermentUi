@@ -1,12 +1,10 @@
-<!-- <app-page-header [title]="'Profile'" [items]="['Pages']" [active_item]="'Profile'" /> -->
 
-<!-- Start::row-1 -->
 <div class="row row-sm">
   <div class="col-xl-4">
     <div class="card mb-4">
       <div class="card-body">
         <div class="ps-0">
-          <div class="main-profile-overview">
+          <div class="main-profile-overview p-3">
             <div class="profile-image-wrapper">
               <img [src]="studentImage" alt="user image" class="profile-img" />
 
@@ -37,14 +35,15 @@
 
               <!-- <a href="javascript:void(0);" class="text-primary">More</a> -->
             </div>
-            <div class="main-profile-bio text-center">
-              <i class="bi bi-telephone pe-1"></i>
-              <span> {{ user?.mobile }} </span>
+            @if (user?.mobile) {
+              <div class="main-profile-bio text-center">
+                <i class="bi bi-telephone pe-1"></i>
+                <span> {{ user?.mobile }} </span>
+              </div>
+            }
 
-              <!-- <a href="javascript:void(0);" class="text-primary">More</a> -->
-            </div>
             <!-- main-profile-bio -->
-            <div class="row mt-3">
+            <div class="row mt-3 justify-content-center">
               <div class="col-md-4 col">
                 <h5 class="fs-17 text-center mainTextColor">
                   {{ enrolledCourses().length }}
@@ -53,22 +52,22 @@
                   {{ "Certifications" | translate }}
                 </h6>
               </div>
-              <div class="col-md-4 col">
+              <!-- <div class="col-md-4 col">
                 <h5 class="fs-17 text-center mainTextColor">
                   {{ getTotalExamsLength() }}
                 </h5>
                 <h6 class="text-small text-center text-muted fs-14 mb-0">
                   {{ "Exams" | translate }}
                 </h6>
-              </div>
-              <div class="col-md-4 col">
+              </div> -->
+              <!-- <div class="col-md-4 col">
                 <h5 class="fs-17 text-center mainTextColor">
                   {{ successRate() }}%
                 </h5>
                 <h6 class="text-small text-center text-muted fs-14 mb-0">
                   {{ "Success Rate" | translate }}
                 </h6>
-              </div>
+              </div> -->
             </div>
           </div>
           <!-- main-profile-overview -->
@@ -193,7 +192,8 @@
                         >
                           <i class="bi bi-info-circle feature-icon"></i>
                           <span class="feature-text"
-                            >You are not enrolled in any certification features</span
+                            >You are not enrolled in any certification
+                            features</span
                           >
                         </div>
                       }
@@ -237,7 +237,8 @@
                           </div>
 
                           <p class="text-muted mb-2 small">
-                            {{ exam.exam.courseName }} - {{ exam.examMode }} Mode
+                            {{ exam.exam.courseName }} -
+                            {{ exam.examMode }} Mode
                           </p>
 
                           <!-- Progress -->
@@ -255,7 +256,6 @@
                             <app-site-button
                               class="flex-grow-1 align-content-end"
                               title="Continue Exam"
-                              [isRTL]="isRTL()"
                               type="main"
                               (click)="goToExam(exam)"
                             />
@@ -270,10 +270,8 @@
                             class="d-flex justify-content-between align-items-start mb-2"
                           >
                             <h6 class="mb-0">{{ exam.examName }}</h6>
-                            <span
-                              class="badge bg-success"
-                            >
-                              {{ 'Finished' | translate }}
+                            <span class="badge bg-success">
+                              {{ "Finished" | translate }}
                             </span>
                           </div>
 
@@ -294,11 +292,12 @@
 
                           <ng-container>
                             <div class="text-center text-success fw-bold mb-2">
-                              Success Rate: {{ (exam.obtainedScore / exam.totalScore) * 100 }}%
+                              Success Rate:
+                              {{
+                                (exam.obtainedScore / exam.totalScore) * 100
+                              }}%
                             </div>
                           </ng-container>
-
-
                         </div>
                       </div>
                     }
@@ -426,10 +425,7 @@
                         title="Save"
                         type="main"
                         htmlType="submit"
-                        [icon]="
-                          isRTL() ? 'bi bi-arrow-left' : 'bi bi-arrow-right'
-                        "
-                        [isRTL]="isRTL()"
+                        [icon]="'bi bi-arrow'"
                       ></app-site-button>
                     </div>
                   </form>
@@ -500,10 +496,7 @@
                         title="Change Password"
                         type="main"
                         htmlType="submit"
-                        [icon]="
-                          isRTL() ? 'bi bi-arrow-left' : 'bi bi-arrow-right'
-                        "
-                        [isRTL]="isRTL()"
+                        [icon]="'bi bi-arrow'"
                       ></app-site-button>
                     </div>
                   </form>

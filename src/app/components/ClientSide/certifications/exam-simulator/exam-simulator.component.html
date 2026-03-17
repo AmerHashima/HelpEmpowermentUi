@@ -1,8 +1,8 @@
 <div class="certification pagePadding">
   <!-- @if(!chooseExam){ -->
   <!-- Banner - shown only if not purchased -->
-   <ng-container *ngIf="hydrated() && (!isEnrolled() || !isLoggedIn())">
-  <!-- <ng-container *ngIf="!isEnrolled() || !isLoggedIn()"> -->
+  <ng-container *ngIf="hydrated() && (!isEnrolled() || !isLoggedIn())">
+    <!-- <ng-container *ngIf="!isEnrolled() || !isLoggedIn()"> -->
     <app-page-banner [isRTL]="isRTL()" [media]="true">
       <!-- Content projection -->
       <div content class="d-flex flex-column gap-3 pe-xl-5">
@@ -39,14 +39,14 @@
           <div class="d-flex align-content-center gap-3">
             <app-site-button
               title="examSimulator.buyNow"
-              [icon]="isRTL() ? 'bi bi-arrow-left' : 'bi bi-arrow-right'"
+              [icon]="'bi bi-arrow'"
               type="main"
               (click)="buyNow()"
             ></app-site-button>
 
             <app-site-button
               title="examSimulator.addToCart"
-              [icon]="isRTL() ? 'bi bi-arrow-left' : 'bi bi-arrow-right'"
+              [icon]="'bi bi-arrow'"
               type="secondary"
               (click)="addToCart()"
             ></app-site-button>
@@ -68,29 +68,29 @@
 
   <!-- Benefits section -->
 
-   @if(   hydrated() && (!isEnrolled() || !isLoggedIn())){
-   <!-- @if(!isEnrolled() || !isLoggedIn()){ -->
-  <div class="CertifticationBenfits d-flex flex-column gap-5 pt-5 pb-5">
-    <div class="d-flex flex-column align-items-center gap-2">
-      <h2 class="mainTextColor">
-        {{ "examSimulator.everythingYouNeed" | translate }}
-      </h2>
-      <p class="CertifticationBenfitsSubTitle">
-        {{ "examSimulator.masterPmpQuestions" | translate }}
-      </p>
-    </div>
+  @if (hydrated() && (!isEnrolled() || !isLoggedIn())) {
+    <!-- @if(!isEnrolled() || !isLoggedIn()){ -->
+    <div class="CertifticationBenfits d-flex flex-column gap-5 pt-5 pb-5">
+      <div class="d-flex flex-column align-items-center gap-2">
+        <h2 class="mainTextColor">
+          {{ "examSimulator.everythingYouNeed" | translate }}
+        </h2>
+        <p class="CertifticationBenfitsSubTitle">
+          {{ "examSimulator.masterPmpQuestions" | translate }}
+        </p>
+      </div>
 
-    <div class="examBenfits">
-      @for (item of examSimulatorBenfits; let i = $index; track item) {
-        <app-icon-card
-          [title]="item.title"
-          [description]="item.description"
-          [icon]="item.icon"
-        ></app-icon-card>
-      }
+      <div class="examBenfits">
+        @for (item of examSimulatorBenfits; let i = $index; track item) {
+          <app-icon-card
+            [title]="item.title"
+            [description]="item.description"
+            [icon]="item.icon"
+          ></app-icon-card>
+        }
+      </div>
     </div>
-  </div>
-   }
+  }
 
   <!-- } -->
 
@@ -118,9 +118,8 @@
       </p>
     </div>
 
-       <ng-container *ngIf="hydrated() && (!isEnrolled() || !isLoggedIn())">
-
-    <!-- <ng-container *ngIf="!isEnrolled() || !isLoggedIn()"> -->
+    <ng-container *ngIf="hydrated() && (!isEnrolled() || !isLoggedIn())">
+      <!-- <ng-container *ngIf="!isEnrolled() || !isLoggedIn()"> -->
       <!-- @if(!chooseExam){ -->
 
       <div class="d-flex justify-content-center">
@@ -185,9 +184,9 @@
 
           <div class="d-flex align-content-stretch gap-3 w-100">
             <app-site-button
-              class="w-100 site-primary-button "
+              class="w-100 site-primary-button"
               title="examSimulator.startFreeExam"
-              [icon]="isRTL() ? 'bi bi-arrow-left' : 'bi bi-arrow-right'"
+              [icon]="'bi bi-arrow'"
               type="main"
               (click)="navigateToFreeExam()"
             ></app-site-button>
@@ -204,8 +203,8 @@
       *ngIf="isEnrolled() && isLoggedIn()"
     ></app-simulator-exams> -->
     <app-simulator-exams
-  *ngIf="hydrated() && isEnrolled() && isLoggedIn()"
-></app-simulator-exams>
+      *ngIf="hydrated() && isEnrolled() && isLoggedIn()"
+    ></app-simulator-exams>
   </div>
 </div>
 

@@ -30,7 +30,7 @@ export class ProfileComponent {
   totalExams = this.studentExamService.reports
   studentExams = computed(() =>
     this.totalExams().filter(report => report.startedAt && report.finishedAt))
-  successRate = this.studentExamService.successRate
+  // successRate = this.studentExamService.successRate
   private shared = inject(Shared);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
@@ -218,9 +218,9 @@ export class ProfileComponent {
     if (!total) return 0;
     return Math.round((exam.obtainedScore / total) * 100);
   }
-  getTotalExamsLength() {
-    return this.studentExams().length + this.savedExams().length
-  }
+  // getTotalExamsLength() {
+  //   return this.studentExams().length + this.savedExams().length
+  // }
 }
 
 

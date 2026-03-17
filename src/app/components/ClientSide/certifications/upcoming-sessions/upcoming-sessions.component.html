@@ -3,8 +3,7 @@
     <div class="sessions-list d-flex flex-column gap-3 p-2">
       @for (session of sessions(); track $index) {
         <div
-          class="session-card d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3
-          p-3 border rounded"
+          class="session-card d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 p-3 border rounded"
         >
           <!-- Date & Time -->
           <div class="d-flex flex-column gap-2 flex-grow-1">
@@ -45,7 +44,7 @@
           @if (!isEnrolled() && type() != "webinar") {
             <app-site-button
               title="Book Trial"
-              [icon]="isRTL() ? 'bi bi-arrow-left' : 'bi bi-arrow-right'"
+              [icon]="'bi bi-arrow'"
               type="main"
               (click)="bookNow(session)"
             ></app-site-button>
@@ -53,7 +52,7 @@
           @if (type() == "webinar") {
             <app-site-button
               title="Register Now"
-              [icon]="isRTL() ? 'bi bi-arrow-left' : 'bi bi-arrow-right'"
+              [icon]="'bi bi-arrow'"
               type="main"
               (click)="register.emit()"
             ></app-site-button>

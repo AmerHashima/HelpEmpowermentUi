@@ -41,7 +41,8 @@
   }"
   (click)="onClick.emit()"
 >
-  @if ((icon() && customClass()) || title().includes('Answer')) {
+
+  <!-- @if ((icon() && customClass()) || title().includes('Answer')) {
     <i [class]="icon()"></i>
   }
 
@@ -49,5 +50,17 @@
 
   @if (icon() && !customClass() && !title().includes('Answer')) {
     <i [class]="icon()"></i>
-  }
+  } -->
+
+  @if (icon() && getIconPosition() === 'start') {
+  <i [class]="getComputedIcon()"></i>
+}
+
+<span>{{ title() | translate }}</span>
+
+@if (icon() && getIconPosition() === 'end') {
+  <i [class]="getComputedIcon()"></i>
+}
+
+
 </button>

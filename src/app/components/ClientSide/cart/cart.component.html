@@ -14,8 +14,7 @@
         <app-site-button
           title="Browse Courses & Exams"
           type="main"
-          [icon]="isRTL() ? 'bi bi-arrow-left' : 'bi bi-arrow-right'"
-          [isRTL]="isRTL()"
+          [icon]="'bi bi-arrow'"
           (click)="BrowseCourses()"
         ></app-site-button>
       </div>
@@ -102,8 +101,7 @@
                 <app-site-button
                   title="Apply"
                   type="main"
-                  [icon]="isRTL() ? 'bi bi-arrow-left' : 'bi bi-arrow-right'"
-                  [isRTL]="isRTL()"
+                  [icon]="'bi bi-arrow'"
                   [disabled]="!couponInput.value"
                   (click)="applyCoupon(couponInput.value)"
                 ></app-site-button>
@@ -143,8 +141,7 @@
           <app-site-button
             title="Proceed to Checkout"
             type="main"
-            [icon]="isRTL() ? 'bi bi-arrow-left' : 'bi bi-arrow-right'"
-            [isRTL]="isRTL()"
+            [icon]="'bi bi-arrow'"
             [disabled]="cartItems().length === 0"
             (click)="navigateToCheckout()"
           ></app-site-button>

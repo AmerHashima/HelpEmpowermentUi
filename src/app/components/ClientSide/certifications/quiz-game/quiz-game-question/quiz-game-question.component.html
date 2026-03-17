@@ -85,7 +85,6 @@
     <app-site-button
       [title]="'Quit' | translate"
       type="secondary"
-      [isRTL]="isRTL()"
       (click)="QuitQuiz()"
     />
     <app-site-button
@@ -93,19 +92,16 @@
       type="main"
       icon="bi bi-bookmark-check"
       [customClass]="true"
-      [isRTL]="isRTL()"
       (click)="ResetQuiz()"
     />
     @if(currentLevelIndex() !=18){
        <app-site-button
       title="Next"
-      [isRTL]="isRTL()"
       type="main"
       (click)="nextQuestion()"
     />}@else{
-          <app-site-button
+      <app-site-button
       title="Finish"
-      [isRTL]="isRTL()"
       type="main"
       (click)="finish()"/>
     }
@@ -129,13 +125,11 @@
         <app-site-button
           [title]="'Cancel' | translate"
           type="secondary"
-          [isRTL]="isRTL()"
           (click)="cancalQuiz()"
         />
 
         <app-site-button
           title="Confirm"
-          [isRTL]="isRTL()"
           type="main"
           (click)="confirmQuit()"
         />
@@ -161,13 +155,11 @@
         <app-site-button
           [title]="'Cancel' | translate"
           type="secondary"
-          [isRTL]="isRTL()"
           (click)="cancelResetQuiz()"
         />
 
         <app-site-button
           title="Confirm"
-          [isRTL]="isRTL()"
           type="main"
           (click)="confirmResetQuiz()"
         />
