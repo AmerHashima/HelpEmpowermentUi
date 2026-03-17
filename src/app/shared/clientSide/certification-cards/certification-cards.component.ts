@@ -22,20 +22,26 @@ export interface CertificationItem {
 
 export const certifications: CertificationItem[] = [
   {
-    imgAlt: 'Certification 1 alt',
-    courseDuration: '35 Hours',
-    tags: ['Advanced', 'Global Standard'],
-    courseAbb: 'Project Management Professional',
-    courseName: 'PMP® Certification',
-    courseCode:'PMP',
+    imgAlt: 'home.certifications.pmp.alt',
+    courseDuration: 'home.certifications.pmp.duration',
+    tags: [
+      'home.certifications.tags.advanced',
+      'home.certifications.tags.global'
+    ],
+    courseAbb: 'home.certifications.pmp.subtitle',
+    courseName: 'home.certifications.pmp.title',
+    courseCode: 'PMP',
     rateValue: 4.8,
   },
   {
-    imgAlt: 'Certification 2 alt',
-    courseDuration: '23 Hours',
-    tags: ['Foundational', 'Career Starter'],
-    courseAbb: 'Certified Associate in Project Management',
-    courseName: 'CAPM® Certification',
+    imgAlt: 'home.certifications.capm.alt',
+    courseDuration: 'home.certifications.capm.duration',
+    tags: [
+      'home.certifications.tags.foundational',
+      'home.certifications.tags.starter'
+    ],
+    courseAbb: 'home.certifications.capm.subtitle',
+    courseName: 'home.certifications.capm.title',
     courseCode: 'CAPM',
     rateValue: 4.8,
   },

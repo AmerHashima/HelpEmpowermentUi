@@ -19,40 +19,33 @@ export class HomeServicesComponent {
   items = [
     {
       icon: "bi bi-diagram-3",
-      title: "PMO Setup & Operation",
-      description:
-        "Service involves establishing a Project Management Office (PMO) within the organization",
+      title: "home.services.items.pmo.title",
+      description: "home.services.items.pmo.description",
       route: "pmo",
-
     },
     {
       icon: "bi bi-clipboard-data",
-      title: "Project Management Maturity Assessment",
-      description: "Benchmark Your Capabilities. Chart Your Growth.",
+      title: "home.services.items.maturity.title",
+      description: "home.services.items.maturity.description",
       route: "maturity-assessment",
-
     },
     {
       icon: "bi bi-mortarboard",
-      title: "Customized Training",
-      description: "Tailored Excellence: Build Your Own Training Solution",
+      title: "home.services.items.training.title",
+      description: "home.services.items.training.description",
       route: "training",
-
     },
     {
       icon: "bi bi-people",
-      title: "Manpower (Post Your Vacancy)",
-      description:
-        "We empower your business with our network of exceptional professionals.",
+      title: "home.services.items.manpower.title",
+      description: "home.services.items.manpower.description",
       route: "manpower",
-
     },
     {
       icon: "bi bi-bar-chart",
-      title: "Project Management Information System (PMIS)",
-      description: "Empower Your Decisions with Smarter Data Insights",
+      title: "home.services.items.pmis.title",
+      description: "home.services.items.pmis.description",
       route: "pmis",
-
     }
   ];
 
@@ -72,11 +65,11 @@ export class HomeServicesComponent {
     const width = window.innerWidth;
 
     if (width < 768) {
-      this.visibleCount.set(1); 
+      this.visibleCount.set(1);
     } else if (width < 992) {
       this.visibleCount.set(2);
     } else {
-      this.visibleCount.set(3); 
+      this.visibleCount.set(3);
     }
   }
 

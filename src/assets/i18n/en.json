@@ -39,20 +39,67 @@
       "corporate": "For Corporate"
     },
     "certifications": {
+        "pmp": {
+          "title": "PMP® Certification",
+          "subtitle": "Project Management Professional",
+          "duration": "35 Hours",
+          "alt": "PMP Certification"
+        },
+        "capm": {
+          "title": "CAPM® Certification",
+          "subtitle": "Certified Associate in Project Management",
+          "duration": "23 Hours",
+          "alt": "CAPM Certification"
+        },
+        "tags": {
+          "advanced": "Advanced",
+          "global": "Global Standard",
+          "foundational": "Foundational",
+          "starter": "Career Starter"
+        },
       "subtitle": "Excellence in Training",
       "title": "Empower your Expertise",
       "description": "Move beyond theory. Our world-class certifications provide the actionable framework to turn knowledge into tangible results and recognized authority."
     },
     "services": {
       "subtitle": "OUR EXPERTISE",
-      "title": "Delivering tailored solutions that meet client's expectations"
+      "title": "Delivering tailored solutions that meet client's expectations",
+          "items": {
+            "pmo": {
+              "title": "PMO Setup & Operation",
+              "description": "Service involves establishing a Project Management Office (PMO) within the organization"
+            },
+            "maturity": {
+              "title": "Project Management Maturity Assessment",
+              "description": "Benchmark Your Capabilities. Chart Your Growth."
+            },
+            "training": {
+              "title": "Customized Training",
+              "description": "Tailored Excellence: Build Your Own Training Solution"
+            },
+            "manpower": {
+              "title": "Manpower (Post Your Vacancy)",
+              "description": "We empower your business with our network of exceptional professionals."
+            },
+            "pmis": {
+              "title": "Project Management Information System (PMIS)",
+              "description": "Empower Your Decisions with Smarter Data Insights"
+            }
+        }
     },
     "articles": {
       "subtitle": "THOUGHT LEADERSHIP",
       "title": "Latest Insights",
       "description": "Strategies, trends, and perspectives from our industry experts."
+    },
+    "faq": {
+      "feature": "Support",
+      "title": "Frequently Asked Questions",
+      "description": "Find clarity on our training methodologies, service delivery, and engagement models.",
+      "contactSupport": "Contact Support"
     }
   },
+
   "footer": {
     "image": "Footer image",
     "copyright": "© 2026 Help Empowerment LLC. All rights reserved.",
@@ -395,5 +442,7 @@
     "checkout":"Checkout",
     "performance-levels":"Performance Levels"
   },
-  "courseOutline": "Course Outline"
+  "courseOutline": "Course Outline",
+  "Certification":"Certification",
+  "Enroll Now":"Enroll Now"
 }

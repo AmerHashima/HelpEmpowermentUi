@@ -1,31 +1,29 @@
-<!-- src\app\components\ClientSide\home\home-faq\home-faq.component.html -->
-<div class="faqHomeSection gap-5 py-5" [class.rtl]="shared.isRtl()">
+a<div class="faqHomeSection gap-5 py-5" [class.rtl]="shared.isRtl()">
   <div class="row g-5">
     <div class="col-xl-4 col-md-6">
       <div class="d-flex flex-column gap-3">
         <div>
-          <app-feature title="Support" icon="bi bi-headset" />
+          <app-feature [title]="'home.faq.feature' | translate" icon="bi bi-headset" />
         </div>
 
         <div class="darkText">
           <h1 class="faqTitle">
-            {{ "Frequently Asked Question" | translate }}
+              {{ "home.faq.title" | translate }}
           </h1>
         </div>
 
         <div>
           <p class="py-lg-2">
-            {{
-              "Find clarity on our training methodologies, service delivery, and engagement models."
-                | translate
-            }}
+
+                  {{ "home.faq.description" | translate }}
+
           </p>
         </div>
 
         <div class="d-flex align-items-center gap-3">
           <app-site-button
             class="w-100"
-            title="Contact Support"
+            title="home.faq.contactSupport"
                           [icon]="'bi bi-arrow'"
 
             type="main"

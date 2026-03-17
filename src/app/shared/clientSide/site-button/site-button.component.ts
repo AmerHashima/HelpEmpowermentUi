@@ -22,7 +22,6 @@ export class SiteButtonComponent {
 
     if (!icon) return '';
 
-    // لو الأيقونة arrow → نبدّلها حسب الاتجاه
     if (icon.includes('arrow')) {
       return this.isRTL() ? 'bi bi-arrow-left' : 'bi bi-arrow-right';
     }
@@ -38,7 +37,6 @@ export class SiteButtonComponent {
   disabled = input<boolean>(false);
   onClick = output<void>();
 
-  // isRTL = input<boolean>(false);
   isRTL = this.shared.isRtl;
 
   getIconPosition(): 'start' | 'end' {
@@ -48,12 +46,10 @@ export class SiteButtonComponent {
 
     const icon = this.icon();
 
-    // لو arrow → اربطه بالـ RTL
     if (icon?.includes('arrow')) {
       return 'end'
     }
 
-    // default لباقي الأيقونات
     return 'start';
   }
 }
