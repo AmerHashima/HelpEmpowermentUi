@@ -99,7 +99,64 @@
       "contactSupport": "Contact Support"
     }
   },
-
+"about": {
+  "hero": {
+    "feature": "Founder Message",
+    "question1": "A question has always driven me:",
+    "question2": "Why does so much training fail to deliver real results?",
+    "paragraph1": "I've observed the same struggle with PMO setup & operation and related project management activities where theory often fails to translate into effective practice. I founded",
+    "paragraph2": "with a single mission: to bridge the frustrating gap between theoretical knowledge and real-world success.",
+    "paragraph3": "In a world saturated with information, true power is no longer just in knowing, it's in doing."
+  },
+  "promise": {
+    "prefix": "That’s why our core promise is:",
+    "middle": "Linking Knowledge to",
+    "highlight": "Practical Execution"
+  },
+  "content": {
+    "bridgeBold": "We bridge",
+    "bridgeText": "the critical gap between learning and doing. Knowledge alone is not power; execution is.",
+    "teach": "We don't just teach;",
+    "equip": "we equip.",
+    "consult": "We don't just consult;",
+    "implement": "we implement.",
+    "commitmentBold": "We are committed",
+    "commitmentText": "to delivering training and services that reflect real-world challenges.",
+    "communityBold": "Our Training & Services Community:",
+    "communityText": "We are building a strong professional community focused on excellence and transformation."
+  },
+  "services": {
+    "individualEmpowerment": "Individual Empowerment",
+    "organizationalEmpowerment": "Organizational Empowerment",
+    "professionalCertifications": "Professional Certifications",
+    "pmoSetup": "PMO Setup & Operation",
+    "pmMaturity": "Project Management Maturity Assessment",
+    "pmis": "Project Management Information System (PMIS)",
+    "manpower": "Manpower Solutions",
+    "customTraining": "Customized Training",
+    "focusedTrainingTitle": "Focused, Practical Training:",
+    "focusedTrainingDesc": "Gain skills you can use at work the very next day.",
+    "jobReadyTitle": "Practical, Job-Ready Services:",
+    "jobReadyDesc": "Use what you learn immediately in your daily work.",
+    "globalCertTitle": "Globally Updated Certifications:",
+    "globalCertDesc": "Learn the latest standards that employers demand.",
+    "studyPlanTitle": "Smart Study Planning:",
+    "studyPlanDesc": "Follow a personalized path that maximizes your time and results.",
+    "expertTitle": "Learn from Certified Experts:",
+    "expertDesc": "Train with professionals who apply theory in real projects.",
+    "supportTitle": "Always-On Technical Support:",
+    "supportDesc": "Get instant help when you need it."
+  },
+  "footer": {
+    "promiseBold": "We promise",
+    "promiseText": "to deliver real value with practical, applicable solutions.",
+    "name": "Mahmoud Elhelbawi",
+    "title": "Founder"
+  },
+  "differ": {
+    "title": "What Makes Us Different"
+  }
+},
   "footer": {
     "image": "Footer image",
     "copyright": "© 2026 Help Empowerment LLC. All rights reserved.",
