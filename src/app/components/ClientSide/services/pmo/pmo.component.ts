@@ -15,37 +15,36 @@ import { ServiceCardComponent } from '../service-card/service-card.component';
   styleUrl: './pmo.component.scss'
 })
 export class PmoComponent {
-  pmoCardsInfo=[
+  pmoCardsInfo = [
     {
       icon: "bi bi-compass",
-      header: "Success Rates and Effectiveness",
-      text: "Project success rates improve by 71% in organizations with an effective PMO.",
-      source:
-        'Source: The "Pulse of the Profession" study by the Project Management Institute (PMI).',
+      header: "pmo.cards.success.header",
+      text: "pmo.cards.success.text",
+      source: "pmo.cards.success.source",
     },
     {
       icon: "bi bi-bar-chart",
-      header: "Adherence to Budget and Schedule",
-      text: "64% of projects are completed within the allocated budget in organizations with a PMO, and on-time project completion improves by 58%.",
-      source: 'Source: The "The State of the PMO" report by PwC.',
+      header: "pmo.cards.budget.header",
+      text: "pmo.cards.budget.text",
+      source: "pmo.cards.budget.source",
     },
     {
       icon: "bi bi-nut",
-      header: "Return on Investment (ROI) and Strategic Alignment",
-      text: "52% increase in the alignment of projects with the organization's strategic goals and a 45% improvement in project ROI.",
-      source: "Source: Research from PMI and Gartner.",
+      header: "pmo.cards.roi.header",
+      text: "pmo.cards.roi.text",
+      source: "pmo.cards.roi.source",
     },
     {
       icon: "bi bi-diagram-3-fill",
-      header: "Adoption and Strategic Importance",
-      text: "85% of major global companies have a PMO, and 78% of successful organizations define the PMO as a critical factor for their success.",
-      source: 'Source: The "The Value of PMO" survey by PM Solutions Research.',
+      header: "pmo.cards.adoption.header",
+      text: "pmo.cards.adoption.text",
+      source: "pmo.cards.adoption.source",
     },
     {
       icon: "bi bi-mortarboard-fill",
-      header: "Financial Return on Investment in a PMO",
-      text: "We train your teams On average, for every $1 invested in a PMO, the return is $2.50, and the failure rate of major projects decreases by 55%. maximize the system's potential",
-      source: 'Source: The "The ROI of PMO" study by the PM World Journal.',
+      header: "pmo.cards.financial.header",
+      text: "pmo.cards.financial.text",
+      source: "pmo.cards.financial.source",
     },
-  ]
+  ];
 }

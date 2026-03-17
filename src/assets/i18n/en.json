@@ -147,6 +147,8 @@
     "supportTitle": "Always-On Technical Support:",
     "supportDesc": "Get instant help when you need it."
   },
+
+
   "footer": {
     "promiseBold": "We promise",
     "promiseText": "to deliver real value with practical, applicable solutions.",
@@ -254,7 +256,34 @@
     "messagePlaceholder": "Write your message here...",
     "contactBtn": "Send Message"
   },
-  "PMO": {
+  "pmo": {
+      "cards": {
+        "success": {
+          "header": "Success Rates and Effectiveness",
+          "text": "Project success rates improve by 71% in organizations with an effective PMO.",
+          "source": "Source: The \"Pulse of the Profession\" study by the Project Management Institute (PMI)."
+        },
+        "budget": {
+          "header": "Adherence to Budget and Schedule",
+          "text": "64% of projects are completed within the allocated budget in organizations with a PMO, and on-time project completion improves by 58%.",
+          "source": "Source: The \"State of the PMO\" report by PwC."
+        },
+        "roi": {
+          "header": "Return on Investment (ROI) and Strategic Alignment",
+          "text": "52% increase in alignment of projects with strategic goals and 45% improvement in project ROI.",
+          "source": "Source: Research from PMI and Gartner."
+        },
+        "adoption": {
+          "header": "Adoption and Strategic Importance",
+          "text": "85% of major global companies have a PMO, and 78% of successful organizations consider it a critical success factor.",
+          "source": "Source: The \"Value of PMO\" survey by PM Solutions Research."
+        },
+        "financial": {
+          "header": "Financial Return on Investment in a PMO",
+          "text": "For every $1 invested in a PMO, the return is $2.50, and project failure rates decrease by 55%.",
+          "source": "Source: The \"ROI of PMO\" study by the PM World Journal."
+        }
+      },
     "DESCRIPTION": "The service involves establishing a Project Management Office (PMO) within the organization to centralize project management functions, standardize processes, and provide governance and support for projects. This includes defining the PMO's structure, roles and responsibilities, processes, tools, and methodologies tailored to meet the organization's specific needs and goals.",
     "IMPACT_TITLE": "Impact of a PMO",
     "IMPACT_TEXT": "The impact of a Project Management Office (PMO) extends beyond just improving project performance; it also enhances the organization's competitive position and ensures a tangible return on investment. These documented statistics reflect why the PMO has become a cornerstone of success for ambitious organizations worldwide.",
@@ -285,9 +314,55 @@
     "SECTION_TAG_HEADER": "At \"Help Empowerment\"",
     "SECTION_TAG_TEXT": "We deliver guaranteed outcomes including faster data-driven decisions, complete portfolio visibility, 70% time savings on report generation, and enhanced collaboration, ensuring measurable improvements in efficiency and transparency.",
     "ENROLL_TITLE_1": "Ready to Empower Your Organization?",
-    "ENROLL_TITLE_2": "Contact us today for a custom PMIS solution designed for your success"
+    "ENROLL_TITLE_2": "Contact us today for a custom PMIS solution designed for your success",
+      "cards": {
+        "custom": {
+          "header": "Custom Design & Implementation",
+          "text": "We design and implement custom PMIS solutions tailored to your organization's needs."
+        },
+        "dashboard": {
+          "header": "Real-Time Dashboards",
+          "text": "We develop real-time dashboards and performance indicators to monitor project health."
+        },
+        "integration": {
+          "header": "Tool Integration",
+          "text": "We integrate tools like Microsoft Project, Jira, and Asana into one unified system."
+        },
+        "connectivity": {
+          "header": "Cross-Department Connectivity",
+          "text": "We connect data across departments for full visibility and better decision-making."
+        },
+        "training": {
+          "header": "Team Training",
+          "text": "We train your teams to maximize the system’s potential."
+        }
+      },
+      "benefits": {
+        "tracking": "47% increase in project tracking efficiency (PMI – Pulse of the Profession)",
+        "reporting": "52% improvement in project reporting accuracy (Gartner Study)",
+        "time": "35% time savings in data collection and reporting (PwC Research)"
+      }
   },
+
   "assessment": {
+      "cards": {
+        "strengths": {
+          "header": "Identifying strengths and weaknesses",
+          "text": "Assessing current project management practices to identify areas where your organization excels and areas that need improvement."
+        },
+        "improvement": {
+          "header": "Defining improvement strategies",
+          "text": "Developing strategies and action plans to enhance project management practices and capabilities within the organization."
+        },
+        "baseline": {
+          "header": "Establishing a baseline",
+          "text": "Establishing a benchmark of the organization's current project management maturity level to measure progress over time."
+        },
+        "performance": {
+          "header": "Enhancing project performance",
+          "text": "Improving project success rates, delivery times, cost-effectiveness, and overall outcomes by applying best practices."
+        }
+      },
     "MAIN_TITLE": "Project Management Maturity Assessment",
     "MAIN_DESCRIPTION": "A project management maturity assessment evaluates your organization's project management processes, tools, and practices, providing insights to improve efficiency and effectiveness.",
     "ENROLL_TITLE_1": "Interested in a PM Maturity Assessment?",
@@ -302,6 +377,20 @@
     "SECTION_TAG_TEXT": "We have conducted PM Maturity Assessments numerous times for diverse clients. We recommend that every organization perform this assessment annually to measure progress and development in their project management activities."
   },
   "training": {
+      "examples": {
+        "itStrategy": "IT Organization Strategy",
+        "portfolioManagement": "Portfolios, Programs & Projects Management in Construction",
+        "pmoVision": "PMO Vision in Government Sector",
+        "okrKpi": "OKRs & KPIs",
+        "reports": "Smart Reports and Dashboards",
+        "methodology": "PMO Methodology",
+        "governance": "PMO Governance & Templates",
+        "finance": "Smart Financing (Cashflow in/out – Budgeting)",
+        "capacity": "Capabilities & Capacity Management",
+        "quality": "Quality Management (QMS)",
+        "vendor": "Vendor Management",
+        "feasibility": "Feasibility Studies"
+      },
     "MAIN_TITLE": "Tailored Excellence: Build Your Own Training Solution",
     "MAIN_DESCRIPTION": "Move beyond one-size-fits-all programs. Our Customized Training service is a collaborative partnership designed to address your organization's unique challenges, culture, and strategic objectives directly. We don't just deliver courses; we co-create targeted learning experiences that drive measurable performance improvement and align perfectly with your business goals.",
     "SECOND_DESCRIPTION": "We work closely with your leadership and subject-matter experts to analyze gaps, define precise learning outcomes, and develop a curriculum that resonates with your team. From integrating your real-world case studies and internal methodologies to aligning with your specific software and workflows, we ensure every module is relevant, practical, and immediately applicable.",
@@ -501,5 +590,14 @@
   },
   "courseOutline": "Course Outline",
   "Certification":"Certification",
-  "Enroll Now":"Enroll Now"
+  "Enroll Now":"Enroll Now",
+  "Upload Files":"Upload Files",
+  "Drag your CV here to upload (PDF, DOC, DOCX)":"Drag your CV here to upload (PDF, DOC, DOCX)",
+  "Drop your CV here or click to upload":"Drop your CV here or click to upload",
+  "Contact US":"Contact US",
+  "Follow us":"Follow us",
+  "Our Location":"Our Location",
+    "Hi, We are always here to help you": "Hi, We are always here to help you.",
+    "Email Us":"Email Us",
+    "Visit Us":"Visit Us"
 }

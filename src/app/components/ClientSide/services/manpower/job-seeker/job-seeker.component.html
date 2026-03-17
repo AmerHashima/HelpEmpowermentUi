@@ -122,7 +122,7 @@
                       name="attachments"
                       [(ngModel)]="job.attachments"
                       [multiple]="false"
-                      label="Drag your CV here to upload (PDF, DOC, DOCX)"
+                      [label]="'Drag your CV here to upload (PDF, DOC, DOCX)' | translate"
                       accept=".pdf,.doc,.docx"
                     ></app-file-upload>
                 </div>

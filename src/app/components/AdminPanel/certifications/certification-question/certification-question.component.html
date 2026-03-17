@@ -92,7 +92,7 @@
               <app-file-upload
                 formControlName="files"
                 [multiple]="false"
-                label="Upload files"
+                [label]="'Upload Files' | translate"
               ></app-file-upload>
             </div>
           </div>
@@ -133,7 +133,7 @@
           ></spk-ng-select>
         </div>
 
-       
+
 
         <!-- Uncomment if file upload is actually used -->
         <!--
@@ -156,7 +156,7 @@
   <ng-container
     *ngIf="
       activeSection() === 'MCQ' ||
-      activeSection() === 'Multiple Choice Question' 
+      activeSection() === 'Multiple Choice Question'
 
     "
   >
@@ -436,7 +436,7 @@
             formControlName="questionExplination"
             label=" Explanation"
             placeholder="Enter the explanation here..."
-            
+
           ></app-textarea>
         </div>
       </div>

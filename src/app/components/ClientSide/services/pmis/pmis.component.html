@@ -3,8 +3,8 @@
     <div class="col-12 col-xl-8">
       <div class="serviceContent flex-grow-1">
         <app-services-page
-         [mainTitle]="'PMIS.MAIN_TITLE'"
-          [mainParagraph]="'PMIS.MAIN_DESCRIPTION'"
+         [mainTitle]="'pmis.MAIN_TITLE'"
+          [mainParagraph]="'pmis.MAIN_DESCRIPTION'"
           [pointSection]="whatWeDeliverSection"
           [titledSection2]="keyBenefitsSection"
           [sectionTag]="pmisTagSection"
@@ -14,10 +14,10 @@
 
     <div class="col-12 col-xl-4">
       <div class="shadow-sm rounded p-2">
-        <app-enroll-form page="Project Management Information System (PMIS)">
+        <app-enroll-form page="Project Management Information System (pmis)">
           <p form-title class="serviceTitle d-flex flex-column gap-1">
-            <span>{{ "PMIS.ENROLL_TITLE_1" | translate }}</span>
-            <span>{{ "PMIS.ENROLL_TITLE_2" | translate }}</span>
+            <span>{{ "pmis.ENROLL_TITLE_1" | translate }}</span>
+            <span>{{ "pmis.ENROLL_TITLE_2" | translate }}</span>
           </p>
         </app-enroll-form>
       </div>
@@ -27,14 +27,14 @@
 
 <ng-template #whatWeDeliverSection>
   <app-service-point
-    mainTitle="PMIS.WHAT_WE_DELIVER_TITLE"
-    subTitle="PMIS.WHAT_WE_DELIVER_SUBTITLE"
+    mainTitle="pmis.WHAT_WE_DELIVER_TITLE"
+    subTitle="pmis.WHAT_WE_DELIVER_SUBTITLE"
     [cardPointsInfo]="servicePmisCardsInfo"
   />
 </ng-template>
 
 <ng-template #keyBenefitsSection>
-  <app-service-title mainTitle="PMIS.KEY_BENEFITS_TITLE">
+  <app-service-title mainTitle="pmis.KEY_BENEFITS_TITLE">
     <div class="keyBenfits d-flex flex-column gap-2">
       @for (item of keyBenfits; track item.text) {
         <p class="d-flex align-items-center gap-2">
@@ -52,7 +52,7 @@
   <app-service-card
     newClass="serviceTag"
     icon="bi bi-kanban-fill"
-    header="PMIS.SECTION_TAG_HEADER"
-    text="PMIS.SECTION_TAG_TEXT"
+    header="pmis.SECTION_TAG_HEADER"
+    text="pmis.SECTION_TAG_TEXT"
   />
 </ng-template>

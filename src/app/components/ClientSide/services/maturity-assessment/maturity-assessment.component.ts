@@ -17,23 +17,23 @@ export class MaturityAssessmentComponent {
   serviceAssesmentCardsInfo = [
     {
       icon: "bi bi-nut",
-      header: "Identifying strengths and weaknesses",
-      text: "Assessing current project management practices to identify areas where your organization excels and areas that need improvement.",
+      header: "assessment.cards.strengths.header",
+      text: "assessment.cards.strengths.text",
     },
     {
       icon: "bi bi-nut",
-      header: "Defining improvement strategies",
-      text: "Developing strategies and action plans to enhance project management practices and capabilities within the organization",
+      header: "assessment.cards.improvement.header",
+      text: "assessment.cards.improvement.text",
     },
     {
       icon: "bi bi-nut",
-      header: "Establishing a baseline",
-      text: "Establishing a benchmark of organization's current project management maturity level to measure progress over time.",
+      header: "assessment.cards.baseline.header",
+      text: "assessment.cards.baseline.text",
     },
     {
       icon: "bi bi-nut",
-      header: "Enhancing project performance",
-      text: "Improving project success rates, delivery times, cost-effectiveness, and overall project outcomes by implementing best practices in project management."
+      header: "assessment.cards.performance.header",
+      text: "assessment.cards.performance.text",
     },
   ];
 }

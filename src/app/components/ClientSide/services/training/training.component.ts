@@ -12,53 +12,17 @@ import { EnrollFormComponent } from '../enroll-form/enroll-form.component';
 })
 export class TrainingComponent {
   examples = [
-    {
-      icon: "bi bi-bullseye",
-      text: "IT Organization Strategy",
-    },
-    {
-      icon: "bi bi-kanban",
-      text: "Portfolios, Programs & Projects Management in Constructions",
-    },
-    {
-      icon: "bi bi-diagram-3",
-      text: "PMO Vision in government sector",
-    },
-    {
-      icon: "bi bi-graph-up-arrow",
-      text: "OKRs & KPIs",
-    },
-    {
-      icon: "bi bi-bar-chart-line",
-      text: "Smart Reports and Dashboards",
-    },
-    {
-      icon: "bi bi-gear-wide-connected",
-      text: "PMO Methodology",
-    },
-    {
-      icon: "bi bi-journal-check",
-      text: "PMO Governance & Templates",
-    },
-    {
-      icon: "bi bi-cash-coin",
-      text: "Smart financing (Cashflow in/out – Budgeting)",
-    },
-    {
-      icon: "bi bi-people",
-      text: "Capabilities & Capacity Management",
-    },
-    {
-      icon: "bi bi-patch-check",
-      text: "Quality Management (QMS)",
-    },
-    {
-      icon: "bi bi-truck",
-      text: "Vendor Management",
-    },
-    {
-      icon: "bi bi-mortarboard",
-      text: "Feasibility studies",
-    },
+    { icon: "bi bi-bullseye", text: "training.examples.itStrategy" },
+    { icon: "bi bi-kanban", text: "training.examples.portfolioManagement" },
+    { icon: "bi bi-diagram-3", text: "training.examples.pmoVision" },
+    { icon: "bi bi-graph-up-arrow", text: "training.examples.okrKpi" },
+    { icon: "bi bi-bar-chart-line", text: "training.examples.reports" },
+    { icon: "bi bi-gear-wide-connected", text: "training.examples.methodology" },
+    { icon: "bi bi-journal-check", text: "training.examples.governance" },
+    { icon: "bi bi-cash-coin", text: "training.examples.finance" },
+    { icon: "bi bi-people", text: "training.examples.capacity" },
+    { icon: "bi bi-patch-check", text: "training.examples.quality" },
+    { icon: "bi bi-truck", text: "training.examples.vendor" },
+    { icon: "bi bi-mortarboard", text: "training.examples.feasibility" }
   ];
 }

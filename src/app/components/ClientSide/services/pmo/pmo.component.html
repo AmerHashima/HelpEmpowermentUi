@@ -3,7 +3,7 @@
     <div class="col-12 col-xl-8">
       <div class="serviceContent flex-grow-1">
         <app-services-page
-          [mainParagraph]="'PMO.DESCRIPTION'"
+          [mainParagraph]="'pmo.DESCRIPTION'"
           [titledSection]="impactSection"
           [pointSection]="provenResultsSection"
           [titledSection2]="ourServicesSection"
@@ -13,10 +13,10 @@
     </div>
     <div class="col-12 col-xl-4">
       <div class="shadow-sm rounded p-2">
-        <app-enroll-form page="PMO Setup & Operation">
+        <app-enroll-form page="pmo Setup & Operation">
           <p form-title class="serviceTitle d-flex flex-column gap-1">
             <span>
-              {{ "PMO.ENROLL_MESSAGE" | translate }}
+              {{ "pmo.ENROLL_MESSAGE" | translate }}
             </span>
           </p>
         </app-enroll-form>
@@ -26,21 +26,21 @@
 </div>
 
 <ng-template #impactSection>
-  <app-service-title mainTitle="PMO.IMPACT_TITLE" text="PMO.IMPACT_TEXT" />
+  <app-service-title mainTitle="pmo.IMPACT_TITLE" text="pmo.IMPACT_TEXT" />
 </ng-template>
 
 <ng-template #provenResultsSection>
   <app-service-point
-    mainTitle="PMO.PROVEN_RESULTS_TITLE"
-    subTitle="PMO.PROVEN_RESULTS_SUBTITLE"
+    mainTitle="pmo.PROVEN_RESULTS_TITLE"
+    subTitle="pmo.PROVEN_RESULTS_SUBTITLE"
     [cardPointsInfo]="pmoCardsInfo"
   />
 </ng-template>
 
 <ng-template #ourServicesSection>
   <app-service-title
-    mainTitle="PMO.OUR_SERVICES_TITLE"
-    text="PMO.OUR_SERVICES_TEXT"
+    mainTitle="pmo.OUR_SERVICES_TITLE"
+    text="pmo.OUR_SERVICES_TEXT"
   />
 </ng-template>
 
@@ -48,7 +48,7 @@
   <app-service-card
     newClass="serviceTag"
     icon="bi bi-kanban-fill"
-    header="PMO.HELP_EMPOWERMENT_HEADER"
-    text="PMO.HELP_EMPOWERMENT_TEXT"
+    header="pmo.HELP_EMPOWERMENT_HEADER"
+    text="pmo.HELP_EMPOWERMENT_TEXT"
   />
 </ng-template>
