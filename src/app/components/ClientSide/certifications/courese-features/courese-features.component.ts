@@ -14,11 +14,6 @@ import { StudentService } from '../../../../Services/student-service.service';
 })
 export class CoureseFeaturesComponent {
   private shared = inject(Shared);
-  private auth = inject(AuthService);
-  // hasBought = this.auth.hasBought;
-  private studentService = inject(StudentService);
-
-  isRTL = this.shared.isRtl;
   certification = this.shared.currentCertificate;
   type = input<string>('features');
   isEnrolled = input<boolean>(false);

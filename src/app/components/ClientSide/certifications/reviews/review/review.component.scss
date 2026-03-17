@@ -48,13 +48,13 @@
   font-size: 1.1rem;
 }
 
-/* RTL support */
 :host-context([dir="rtl"]) {
-  .reviewContent .d-flex.align-items-center {
-    flex-direction: row-reverse;
+  .reviewTag .d-flex {
+    direction: rtl;
+    justify-content: flex-start;
   }
 
-  .reviewTag .d-flex {
-    flex-direction: row-reverse;
+  .reviewTag span:first-child {
+    margin-left: 4px;
   }
 }

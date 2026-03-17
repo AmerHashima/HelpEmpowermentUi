@@ -14,12 +14,12 @@ export class ManpowerComponent {
   lang=this.shared.lang;
   tabs = [
     {
-      header: 'Post a vacancy',
+      header: 'manpower.postVacancy',
       icon: 'bi bi-file-earmark-plus',
       route: `/${this.lang()}/services/manpower/post-vacancy`
     },
     {
-      header: 'Job Seeker',
+      header: 'manpower.jobSeeker',
       icon: 'bi bi-person-vcard',
       route: `/${this.lang()}/services/manpower/job-seeker`
     }

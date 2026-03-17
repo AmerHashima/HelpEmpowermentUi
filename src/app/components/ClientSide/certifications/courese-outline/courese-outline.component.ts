@@ -13,30 +13,30 @@ export class CoureseOutlineComponent {
   private shared=inject(Shared);
   certification=this.shared.currentCertificate;
   courseOutlines = computed(() => {
-    if (this.certification() == 'pmp')
+    if (this.certification() === 'pmp')
       return [
-        "Leadership Level",
-        "Project Management Fundamentals & Framework",
-        "Project Life Cycles & Development Approaches",
-        "Project Integration Management",
-        "Scope, Schedule, and Cost Management",
-        "Quality, Resource, and Communications Management",
-        "Risk, Procurement, and Stakeholder Management",
-        "Professional Responsibility & Ethics",
-        "Real-world scenario simulations, tool-based planning exercises, and agile methodology implementation",
-        "Applying the main domains “People, Process & Business Environment” in the 49 processes.",
+        'courseOutlines.pmp.0',
+        'courseOutlines.pmp.1',
+        'courseOutlines.pmp.2',
+        'courseOutlines.pmp.3',
+        'courseOutlines.pmp.4',
+        'courseOutlines.pmp.5',
+        'courseOutlines.pmp.6',
+        'courseOutlines.pmp.7',
+        'courseOutlines.pmp.8',
+        'courseOutlines.pmp.9',
       ];
     else
       return [
-        "Foundation & Awareness Level",
-        "Project Management Fundamentals & Framework",
-        "Project Life Cycles & Development Approaches",
-        "Project Integration Management",
-        "Scope, Schedule, and Cost Management",
-        "Quality, Resource, and Communications Management",
-        "Risk, Procurement, and Stakeholder Management",
-        "Professional Responsibility & Ethics",
-        "Real-world scenario simulations, tool-based planning exercises, and agile methodology"
+        'courseOutlines.capm.0',
+        'courseOutlines.capm.1',
+        'courseOutlines.capm.2',
+        'courseOutlines.capm.3',
+        'courseOutlines.capm.4',
+        'courseOutlines.capm.5',
+        'courseOutlines.capm.6',
+        'courseOutlines.capm.7',
+        'courseOutlines.capm.8',
       ];
-  })
+  });
 }

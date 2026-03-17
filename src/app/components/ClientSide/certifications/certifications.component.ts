@@ -24,42 +24,42 @@ export class CertificationsComponent {
   currentCertification = this.shared.currentCertificate;
   tabs = computed(() => [
     {
-      header: 'Exam Simulator',
+      header: 'tabs.examSimulator',
       icon: 'bi bi-journal-check',
       route: `/${this.lang()}/certifications/${this.currentCertification()}/exam-simulator`
     },
     {
-      header: 'Recorded Course',
+      header: 'tabs.recordedCourse',
       icon: 'bi bi-play-btn',
       route: `/${this.lang()}/certifications/${this.currentCertification()}/recorded-course`
     },
     {
-      header: 'Live Course',
+      header: 'tabs.liveCourse',
       icon: 'bi bi-camera-video',
       route: `/${this.lang()}/certifications/${this.currentCertification()}/live-course`
     },
     {
-      header: 'Webinar',
+      header: 'tabs.webinar',
       icon: 'bi bi-people',
       route: `/${this.lang()}/certifications/${this.currentCertification()}/webinar`
     },
     {
-      header: 'Quiz Game',
+      header: 'tabs.quizGame',
       icon: 'bi bi-controller',
       route: `/${this.lang()}/certifications/${this.currentCertification()}/quiz-game`
     },
     {
-      header: 'Articles',
+      header: 'tabs.articles',
       icon: 'bi bi-file-text',
       route: `/${this.lang()}/certifications/${this.currentCertification()}/articles`
     },
     {
-      header: 'FAQS',
+      header: 'tabs.faqs',
       icon: 'bi bi-question-circle',
       route: `/${this.lang()}/certifications/${this.currentCertification()}/faq`
     },
     {
-      header: 'Reviews',
+      header: 'tabs.reviews',
       icon: 'bi bi-star',
       route: `/${this.lang()}/certifications/${this.currentCertification()}/reviews`
     }

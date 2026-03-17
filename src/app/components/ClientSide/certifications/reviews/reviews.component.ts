@@ -40,40 +40,36 @@ export class ReviewsComponent {
       reviewerName: "Ahmed Hassan",
       reviewerImage: "assets/images/reviewers/person.png",
       reviewDate: "10/21/2026",
-      reviewTopic: "PMP",
+      reviewTopic: "reviews.topics.pmp",
       reviewRate: 5,
-      reviewDescription:
-        "The PMP course was extremely well structured and easy to follow. The explanations were clear, practical, and helped me pass the exam on my first attempt.",
+      reviewDescription: "reviews.items.0.description",
     },
     {
       id: 2,
       reviewerName: "Sarah Ali",
       reviewerImage: "assets/images/reviewers/person.png",
       reviewDate: "09/12/2026",
-      reviewTopic: "Agile Management",
+      reviewTopic: "reviews.topics.agile",
       reviewRate: 4,
-      reviewDescription:
-        "Great learning experience overall. The real-world examples made complex concepts easier to understand. I highly recommend this course for professionals.",
+      reviewDescription: "reviews.items.1.description",
     },
     {
       id: 3,
       reviewerName: "Mohamed Samir",
       reviewerImage: "assets/images/reviewers/person.png",
       reviewDate: "08/03/2026",
-      reviewTopic: "Scrum Master",
+      reviewTopic: "reviews.topics.scrum",
       reviewRate: 5,
-      reviewDescription:
-        "Excellent content and instructor support. The mock exams and practice questions were very close to the real exam and boosted my confidence.",
+      reviewDescription: "reviews.items.2.description",
     },
     {
       id: 4,
       reviewerName: "Lina Youssef",
       reviewerImage: "assets/images/reviewers/person.png",
       reviewDate: "07/18/2026",
-      reviewTopic: "Project Management",
+      reviewTopic: "reviews.topics.projectManagement",
       reviewRate: 4,
-      reviewDescription:
-        "Well-organized course with a strong focus on practical application. The materials were up-to-date and easy to understand.",
+      reviewDescription: "reviews.items.3.description",
     },
   ];
   showConfirm = false;

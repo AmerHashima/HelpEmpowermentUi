@@ -48,8 +48,7 @@ outline: none !important;
 }
 
 /* RTL support */
-:host-context([dir="rtl"]) {
-  .custom-checkbox-wrapper {
+  [dir="rtl"] .custom-checkbox-wrapper {
     flex-direction: row-reverse;
   }
-}
+

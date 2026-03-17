@@ -14,13 +14,13 @@
 
           <div class="reviewTag text-muted small">
             <div class="d-flex align-items-center gap-2">
-              <span>Reviewed:</span>
-              <span>{{ reviewDate() }}</span>
+              <span>{{'Reviewed:' | translate}}</span>
+              <span>{{ reviewDate() | date:'mediumDate'}}</span>
             </div>
 
             <div class="d-flex align-items-center gap-2">
-              <span>Topic:</span>
-              <span>{{ reviewTopic() }}</span>
+              <span>{{'Topic:' | translate}}</span>
+              <span>{{ reviewTopic() | translate}}</span>
             </div>
           </div>
         </div>
@@ -33,7 +33,7 @@
 
     <!-- Review text with read more/less -->
     <p class="reviewText">
-      {{ displayedText() }}
+      {{ displayedText() | translate}}
 
       @if (isLongText()) {
         <span

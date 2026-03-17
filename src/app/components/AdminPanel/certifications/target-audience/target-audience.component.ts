@@ -15,16 +15,16 @@ export class TargetAudienceComponent {
 
 
   targetAudiences = computed(() => {
-    if (this.certification() == 'pmp')
+    if (this.certification() === 'pmp')
       return [
-        "Experienced project managers ",
-        "PMO members",
-        "Consultant",
-        "Department Heads",
-        "Team leads",
+        'targetAudiences.pmp.0',
+        'targetAudiences.pmp.1',
+        'targetAudiences.pmp.2',
+        'targetAudiences.pmp.3',
+        'targetAudiences.pmp.4',
       ];
     else
       return [];
-  })
+  });
   readonly accordionTitle = 'Target Audience';
 }

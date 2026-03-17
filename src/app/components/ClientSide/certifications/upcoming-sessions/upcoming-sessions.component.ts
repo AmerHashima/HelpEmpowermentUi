@@ -29,26 +29,26 @@ export class UpcomingSessionsComponent {
     if (this.type() === 'webinar') {
       return [
         {
-          date: 'Jan 15, 2026',
-          time: '10:00 AM - 2:00 PM EST',
+          date: 'sessions.date.jan15',
+          time: 'sessions.time.morningSlot',
           title: 'sessions.webinar.session1'
         }
       ];
     } else {
       return [
         {
-          date: 'Jan 15, 2026',
-          time: '10:00 AM - 2:00 PM EST',
+          date: 'sessions.date.jan15',
+          time: 'sessions.time.morningSlot',
           title: 'sessions.course.integration'
         },
         {
-          date: 'Jan 15, 2026',
-          time: '10:00 AM - 2:00 PM EST',
+          date: 'sessions.date.jan16',
+          time: 'sessions.time.morningSlot',
           title: 'sessions.course.integration'
         },
         {
-          date: 'Jan 15, 2026',
-          time: '10:00 AM - 2:00 PM EST',
+          date: 'sessions.date.jan17',
+          time: 'sessions.time.morningSlot',
           title: 'sessions.course.integration'
         }
       ];

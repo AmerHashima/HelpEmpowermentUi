@@ -2,7 +2,7 @@
   <app-accordion [title]="accordionTitle">
     <div class="instructor-content d-flex flex-column gap-4">
       <!-- Introduction paragraph -->
-      <p>{{ instructor().introParagragh }}</p>
+      <p>{{ instructor().introParagragh | translate}}</p>
 
       <!-- Skills / Services grid -->
       <div class="row gy-2">
@@ -15,7 +15,7 @@
             ></app-service-card>
           </div>
         } @empty {
-          <div class="text-muted text-center py-3">No skills listed</div>
+          <div class="text-muted text-center py-3">{{'No skills listed' | translate}}</div>
         }
       </div>
 
@@ -36,7 +36,7 @@
             </div>
           } @empty {
             <div class="text-muted text-center py-2">
-              No certifications listed
+             {{ 'No certifications listed' | translate}}
             </div>
           }
         </div>

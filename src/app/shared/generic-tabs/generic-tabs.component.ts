@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import {  RouterModule } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 export interface TabItem {
   header: string;
   icon?: string;
@@ -7,7 +8,7 @@ export interface TabItem {
 }
 @Component({
   selector: 'app-generic-tabs',
-  imports: [RouterModule],
+  imports: [RouterModule,TranslatePipe],
   templateUrl: './generic-tabs.component.html',
   styleUrl: './generic-tabs.component.scss'
 })

@@ -438,6 +438,7 @@
     "unlockMessage": "Unlock your next level, join our courses and gain the skills to turn your goals into reality."
   },
   "examSimulator": {
+    "price":"299 AED",
     "masterPmp": "Master the PMP exam environment.",
     "realisticSimulation": "Your most realistic exam simulation begins now.",
     "description": "The closest experience to the real exam, available whenever you need it. Build unshakable exam-day confidence with full-length simulated tests designed by PMP-certified experts. Practice with hundreds of realistic, scenario-based questions that mirror PMI's style and complexity. Learn from detailed answer explanations that don't just tell you what's right—they show you why. Track your progress across every domain and identify exactly where to focus your final study efforts. A structured simulation path designed for your success. 9 Exams – 1,620 Questions – Practice Mode & Exam Mode – Reports & Lesson learned Questions – 9 months access",
@@ -447,6 +448,7 @@
     "masterPmpQuestions": "Master the PMP exam with 1,640 realistic questions designed to ensure your success",
     "tryBeforeBuy": "Try Before you Buy",
     "experienceFree": "Experience the Exam Simulator for Free",
+    "ExperienceExamSimulator":"ExperienceExamSimulator",
     "testBothModes": "Test both Practice Mode and Exam Mode to see how our simulator helps you succeed",
     "freeExam": "Free Exam",
     "freePreviewDescription": "Start with a free 10-question preview. The paid version delivers more of that great experience",
@@ -454,7 +456,72 @@
     "reportsAndLessons": "Reports - Lesson Learned Questions",
     "startFreeExam": "Start Free Exam - Try Now"
   },
+
+  "min":"min",
+      "Exam1": "Exam 1",
+      "Exam2": "Exam 2",
+      "Exam3": "Exam 3",
+      "Exam4": "Exam 4",
+      "Exam5": "Exam 5",
+      "Exam 6": "Exam 6",
+      "Exam 7": "Exam 7",
+      "Exam 8": "Exam 8",
+      "Exam 9": "Exam 9",
+  "examSimulatorBenefits": [
+    {
+      "title": "Always Current",
+      "description": "Matches the latest PMP exam format and content."
+    },
+    {
+      "title": "Massive Practice Bank",
+      "description": "1,620 realistic questions across 9 full exams."
+    },
+    {
+      "title": "Two Smart Modes",
+      "description": "Practice without time pressure or simulate the real exam."
+    },
+    {
+      "title": "Learn, Don't Memorize",
+      "description": "Detailed explanations for every answer to build understanding."
+    },
+    {
+      "title": "Lesson Learned Feature",
+      "description": "Practice your incorrect questions until they become strengths."
+    },
+    {
+      "title": "Performance Dashboard",
+      "description": "See exactly what to improve with clear visual reports."
+    },
+    {
+      "title": "Unlimited Attempts",
+      "description": "Practice as much as you need until you feel fully ready."
+    },
+    {
+      "title": "9-Month Access",
+      "description": "Full 9 months of unlimited access to all simulator features."
+    },
+    {
+      "title": "Always Here to Help",
+      "description": "Reach out anytime, we're here to ensure your journey to PMP success is smooth and supported."
+    }
+  ],
+  "Experience the Exam Simulator":"Experience the Exam Simulator",
   "exam": {
+        "practiceMode": "Practice Mode",
+        "examMode": "Exam Mode",
+        "reports": "Reports",
+        "lessonLearned": "Lesson Learned Questions",
+        "noTime": "No Time",
+        "withTime": "With Time",
+        "showAnswers": "You can show the answers directly",
+        "hideAnswers": "You can’t show the answers directly",
+        "mustSolveFirst": "Must solve Exam Mode first",
+        "backToSimulator": "Back To Exam Simulator",
+        "alertMessage": "Alert Message",
+        "mustCompleteExam": "You must be enrolled in the exam and complete it in Exam Mode to view the report and lesson learned questions",
+        "clearLessonMessage": "Please clear the Lesson Learned section before starting a new exam. You won’t be able to begin the new exam until the Lesson Learned has been completed or cleared.",
+        "cancel": "Cancel",
+        "clearNow": "Clear Now",
     "practiceAndExamMode": "Practice Mode - Exam Mode",
     "reportsAndLessons": "Reports - Lesson Learned Questions"
   },
@@ -474,14 +541,41 @@
     "readLess": "Read Less"
   },
   "recordedCourse": {
+    "price":"199 AED",
     "masterPmp": "Learn PMP mastery on your own schedule,",
     "title": " your journey to PMP can begin right now",
     "description": "World-class PMP training that fits your calendar, not the other way around. Access proven PMP strategies from certified experts, available 24/7. Master every domain of the PMBOK®️ Guide at the pace that works for you. Pause, rewind, and revisit complex topics until they click—on your terms. A structured path to certification designed for busy professionals. Downloadable resources, templates, and study guides to reinforce learning."
   },
   "liveCourse": {
+    "price":"579 AED",
     "masterPmp": "Transform your career with live PMP guidance,",
     "title": " Your interactive path to certification begins now.",
     "description": "Real-time instruction that brings the PMBOK®️ Guide to life in your own projects. Get direct, personalized answers from expert instructors who guide you through every complex topic. Connect your PMP study directly to your current role—learn strategies you can apply immediately to enhance your real-world project management practice. Collaborate with peers facing similar challenges in a dynamic, supportive cohort. A structured yet adaptive live journey designed to certify you and elevate your professional impact from day one."
+  },
+  "courseOutlines": {
+    "pmp": [
+      "Leadership Level",
+      "Project Management Fundamentals & Framework",
+      "Project Life Cycles & Development Approaches",
+      "Project Integration Management",
+      "Scope, Schedule, and Cost Management",
+      "Quality, Resource, and Communications Management",
+      "Risk, Procurement, and Stakeholder Management",
+      "Professional Responsibility & Ethics",
+      "Real-world scenario simulations, tool-based planning exercises, and agile methodology implementation",
+      "Applying the main domains “People, Process & Business Environment” in the 49 processes."
+    ],
+    "capm": [
+      "Foundation & Awareness Level",
+      "Project Management Fundamentals & Framework",
+      "Project Life Cycles & Development Approaches",
+      "Project Integration Management",
+      "Scope, Schedule, and Cost Management",
+      "Quality, Resource, and Communications Management",
+      "Risk, Procurement, and Stakeholder Management",
+      "Professional Responsibility & Ethics",
+      "Real-world scenario simulations, tool-based planning exercises, and agile methodology"
+    ]
   },
   "quizGame": {
     "masterPmp": "Level Up Your PMP Knowledge",
@@ -505,6 +599,28 @@
     "description": "Go beyond the exam with real-world PMP wisdom. Access our curated library of articles where PMI standards meet practical execution. Discover how certified professionals apply methodologies in real environments, adapt to industry trends, and solve complex project challenges. Stay ahead with updates on evolving frameworks, practical case studies, and strategies you can implement immediately. This is where certification knowledge transforms into career authority."
   },
   "reviews": {
+      "topics": {
+        "pmp": "PMP",
+        "agile": "Agile Management",
+        "scrum": "Scrum Master",
+        "projectManagement": "Project Management"
+      },
+      "Topic:":"Topic:",
+      "Reviewed":"Reviewed",
+    "items": [
+      {
+        "description": "The PMP course was extremely well structured and easy to follow. The explanations were clear, practical, and helped me pass the exam on my first attempt."
+      },
+      {
+        "description": "Great learning experience overall. The real-world examples made complex concepts easier to understand. I highly recommend this course for professionals."
+      },
+      {
+        "description": "Excellent content and instructor support. The mock exams and practice questions were very close to the real exam and boosted my confidence."
+      },
+      {
+        "description": "Well-organized course with a strong focus on practical application. The materials were up-to-date and easy to understand."
+      }
+    ],
     "masterPmp": "Level Up Your PMP Confidence,",
     "title": " Proven by Real Success Stories",
     "addReview": "Add Review",
@@ -513,6 +629,20 @@
     "trustedBy": "Trusted by professionals who passed the PMP with confidence.",
     "description": "Built to deliver results—not just content.Our approach transforms PMP preparation into an active experience, reinforcing essential knowledge through practice, progress tracking, and measurable improvement. The feedback speaks for itself."
   },
+    "tabs": {
+      "examSimulator": "Exam Simulator",
+      "recordedCourse": "Recorded Course",
+      "liveCourse": "Live Course",
+      "webinar": "Webinar",
+      "quizGame": "Quiz Game",
+      "articles": "Articles",
+      "faqs": "FAQs",
+      "reviews": "Reviews"
+    },
+    "manpower": {
+      "postVacancy": "Post a vacancy",
+      "jobSeeker": "Job Seeker"
+    },
   "addReview": {
     "title": "Share your experience with us",
     "reviewButton": "Add Review"
@@ -521,14 +651,24 @@
     "title": "Register for the Webinar",
     "subTitle": "Fill in your details below to secure your free spot."
   },
-    "sessions": {
-      "webinar": {
-        "session1": "The PMP Blueprint: Your Roadmap from Application to Exam Success"
-      },
-      "course": {
-        "integration": "Project Integration Management"
-      }
-    },
+"sessions": {
+  "date": {
+    "jan15": "Jan 15, 2026",
+    "jan16": "Jan 16, 2026",
+    "jan17": "Jan 17, 2026"
+  },
+  "time": {
+    "morningSlot": "10:00 AM - 2:00 PM EST"
+  },
+  "webinar": {
+    "session1": "Introduction Session"
+  },
+  "course": {
+    "integration": "Integration Session"
+  }
+},
+"2 Hours": "2 Hours",
+"Free": "Free",
   "pmpFaq": {
     "question1": "What does PMI and PMP mean?",
     "answer1": "PMI (Project Management Institute): The world's leading association for project management professionals that sets global standards.\n\nPMP (Project Management Professional): The most important international certification in project management, issued by PMI to experts who meet strict experience and exam requirements.",
@@ -597,6 +737,142 @@
     "performance-levels":"Performance Levels"
   },
   "courseOutline": "Course Outline",
+  "Course Content":"Course Content",
+    "courseCon": {
+      "session1": {
+        "title": "Session (1) – PMI & PMP Introduction",
+        "duration": "2:00"
+      },
+      "session2": {
+        "title": "Session (2) – Framework Part 1",
+        "duration": "3:00"
+      },
+      "session3": {
+        "title": "Session (3) – Framework Part 2",
+        "duration": "3:00"
+      },
+      "session4": {
+        "title": "Session (4) – Agile",
+        "duration": "2:00"
+      },
+      "session5": {
+        "title": "Session (5) – Questions",
+        "duration": "2:00"
+      },
+      "session6": {
+        "title": "Session (6) – 49 Processes",
+        "duration": "4:00"
+      },
+      "session7": {
+        "title": "Session (7) – Integration",
+        "duration": "2:00"
+      },
+      "session8": {
+        "title": "Session (8) – Scope",
+        "duration": "2:00"
+      },
+      "session9": {
+        "title": "Session (9) – Questions",
+        "duration": "2:00"
+      },
+      "session10": {
+        "title": "Session (10) – Schedule",
+        "duration": "2:00"
+      },
+      "session11": {
+        "title": "Session (11) – Cost",
+        "duration": "2:00"
+      },
+      "session12": {
+        "title": "Session (12) – Quality",
+        "duration": "2:00"
+      },
+      "session13": {
+        "title": "Session (13) – Resource",
+        "duration": "2:00"
+      },
+      "session14": {
+        "title": "Session (14) – Questions",
+        "duration": "2:00"
+      },
+      "session15": {
+        "title": "Session (15) – Communication",
+        "duration": "2:00"
+      },
+      "session16": {
+        "title": "Session (16) – Risk",
+        "duration": "2:00"
+      },
+      "session17": {
+        "title": "Session (17) – Procurement",
+        "duration": "2:00"
+      },
+      "session18": {
+        "title": "Session (18) – Stakeholders",
+        "duration": "2:00"
+      },
+      "session19": {
+        "title": "Session (19) – Questions",
+        "duration": "2:00"
+      },
+      "session20": {
+        "title": "Session (20) – Revision",
+        "duration": "3:00"
+      }
+    },
+    "targetAudiences": {
+      "pmp": [
+        "Experienced project managers",
+        "PMO members",
+        "Consultants",
+        "Department Heads",
+        "Team Leads"
+      ]
+    },
+    "Upcoming Live Sessions":"Upcoming Live Sessions",
+    "instructor": {
+      "introParagragh": "Expert in translating the organizational strategy into tangible results with 20 years of hands-on experience, I build the frameworks for lasting success. My expertise covers the full spectrum of strategic delivery:",
+      "skills": [
+        {
+          "header": "Strategic Project & Program Leadership",
+          "text": "Directly leading complex initiatives to deliver high-value outcomes on scope, time, and budget."
+        },
+        {
+          "header": "Portfolio Optimization",
+          "text": "Aligning project investments with core business strategy to maximize return and manage risk."
+        },
+        {
+          "header": "PMO Design & Implementation",
+          "text": "Establishing and leading Project Management Offices as strategic centers of excellence."
+        },
+        {
+          "header": "Project Management Maturity",
+          "text": "Assessing and elevating organizational capabilities to improve efficiency and reduce risk."
+        }
+      ],
+      "certifications": [
+        "B.Sc. of Electrical Engineering (Computer & Automatic Control)",
+        "Authorized Training Partner (PMI - ATP) Instructor",
+        "PMI - Program Management Professional (PgMP)",
+        "PMI - Project Management Professional (PMP)",
+        "PMI – Project Management Office – Certified Practitioner (PMO-CP)",
+        "PMI - Agile Certified Practitioner (PMI-ACP)",
+        "PMI - Professional in Business Analysis (PMI-PBA)",
+        "AXELOS – P3O certificate in Portfolio, Program and Project Offices",
+        "AXELOS – ITIL Foundation Certificate in IT Services Management",
+        "CompTIA Project+ PK0-003",
+        "Managing Projects with Microsoft Project 2013",
+        "Cisco Certified Network Associate (CCNA)",
+        "Cisco Certified Network Professional (CCNP)",
+        "PMI - Train The Trainer",
+        "Microsoft Certified Technology Specialist (MCTS)"
+      ]
+    },
+    "Course Features": "Course Features",
+    "Instructor Info":"Instructor Info",
+    "Professional Certifications":"Professional Certifications",
+    "No skills listed":"No skills listed",
+    "No certifications listed":"No certifications listed",
   "Certification":"Certification",
   "Enroll Now":"Enroll Now",
   "Upload Files":"Upload Files",

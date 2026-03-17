@@ -44,63 +44,60 @@ export class ExamSimulatorComponent {
   //  chooseExam:boolean=false;
   examSimulatorBenfits = [
     {
-      title: "Always Current",
+      title: "examSimulatorBenefits.0.title",
       icon: "bi bi-arrow-clockwise",
-      description: "Matches the latest PMP exam format and content.",
+      description: "examSimulatorBenefits.0.description",
       gap: "gap-1",
     },
     {
-      title: "Massive Practice Bank",
+      title: "examSimulatorBenefits.1.title",
       icon: "bi bi-database",
-      description: "1,620 realistic questions across 9 full exams.",
+      description: "examSimulatorBenefits.1.description",
       gap: "gap-1",
     },
     {
-      title: "Two Smart Modes",
+      title: "examSimulatorBenefits.2.title",
       icon: "bi bi-toggles",
-      description: "Practice without time pressure or simulate the real exam.",
+      description: "examSimulatorBenefits.2.description",
       gap: "gap-1",
     },
     {
-      title: "Learn, Don't Memorize",
+      title: "examSimulatorBenefits.3.title",
       icon: "bi bi-lightbulb",
-      description:
-        "Detailed explanations for every answer to build understanding.",
+      description: "examSimulatorBenefits.3.description",
       gap: "gap-1",
     },
     {
-      title: "Lesson Learned Feature",
+      title: "examSimulatorBenefits.4.title",
       icon: "bi bi-journal-check",
-      description:
-        "Practice your incorrect questions until they become strengths.",
+      description: "examSimulatorBenefits.4.description",
       gap: "gap-1",
     },
     {
-      title: "Performance Dashboard",
+      title: "examSimulatorBenefits.5.title",
       icon: "bi bi-bar-chart-line",
-      description: "See exactly what to improve with clear visual reports.",
+      description: "examSimulatorBenefits.5.description",
       gap: "gap-1",
     },
     {
-      title: "Unlimited Attempts",
+      title: "examSimulatorBenefits.6.title",
       icon: "bi bi-infinity",
-      description: "Practice as much as you need until you feel fully ready.",
+      description: "examSimulatorBenefits.6.description",
       gap: "gap-1",
     },
     {
-      title: "9-Month Access",
+      title: "examSimulatorBenefits.7.title",
       icon: "bi bi-calendar-check",
-      description: "Full 9 months of unlimited access to all simulator features.",
+      description: "examSimulatorBenefits.7.description",
       gap: "gap-1",
     },
     {
-      title: "Always Here to Help",
+      title: "examSimulatorBenefits.8.title",
       icon: "bi bi-headset",
-      description:
-        "Reach out anytime, we're here to ensure your journey to PMP success is smooth and supported.",
+      description: "examSimulatorBenefits.8.description",
       gap: "gap-1",
-    },
-  ];;
+    }
+  ];
 
   simulatorVideo = 'assets/videos/SimulatorVideo.mp4';
   enrollImage = 'assets/images/enroll.png';
@@ -118,7 +115,7 @@ export class ExamSimulatorComponent {
       this.hydrated.set(true);
     }
   }
-  
+
   navigateToFreeExam() {
     // this.chooseExam=true;
     this.shared.currentExamId.set('free');

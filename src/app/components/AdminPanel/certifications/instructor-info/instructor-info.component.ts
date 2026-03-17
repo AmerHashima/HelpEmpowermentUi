@@ -25,46 +25,48 @@ export class InstructorInfoComponent {
   certification = this.shared.currentCertificate;
 
   instructor = signal<any>({
-    introParagragh: "Expert in translating the organizational strategy into tangible results with 20 years of hands-on experience, I build the frameworks for lasting success. My expertise covers the full spectrum of strategic delivery:",
+    introParagragh: 'instructor.introParagragh',
+
     skills: [
       {
         icon: "bi bi-person-badge",
-        header: "Strategic Project & Program Leadership",
-        text: "Directly leading complex initiatives to deliver high-value outcomes on scope, time, and budget."
+        header: "instructor.skills.0.header",
+        text: "instructor.skills.0.text"
       },
       {
         icon: "bi bi-briefcase",
-        header: "Portfolio Optimization",
-        text: "Aligning project investments with core business strategy to maximize return and manage risk."
+        header: "instructor.skills.1.header",
+        text: "instructor.skills.1.text"
       },
       {
         icon: "bi bi-building",
-        header: "PMO Design & Implementation",
-        text: "Establishing and leading Project Management Offices as strategic centers of excellence."
+        header: "instructor.skills.2.header",
+        text: "instructor.skills.2.text"
       },
       {
         icon: "bi bi-bar-chart",
-        header: "Project Management Maturity",
-        text: "Assessing and elevating organizational capabilities to improve efficiency and reduce risk."
+        header: "instructor.skills.3.header",
+        text: "instructor.skills.3.text"
       }
     ],
+
     certifcations: [
-      "B.Sc. of Electrical Engineering (Computer & Automatic Control)",
-      "Authorized Training Partner (PMI - ATP) Instructor",
-      "PMI - Program Management Professional (PgMP)",
-      "PMI - Project Management Professional (PMP)",
-      "PMI – Project Management Office – Certified Practitioner (PMO-CP)",
-      "PMI - Agile Certified Practitioner (PMI-ACP)",
-      "PMI - Professional in Business Analysis (PMI-PBA)",
-      "AXELOS – P3O certificate in Portfolio, Program and Project Offices",
-      "AXELOS – ITIL Foundation Certificate in IT Services Management",
-      "CompTIA Project+ PK0-003",
-      "Managing Projects with Microsoft Project 2013",
-      "Cisco Certified Network Associate (CCNA)",
-      "Cisco Certified Network Professional (CCNP)",
-      "PMI - Train The Trainer",
-      "Microsoft Certified Technology Specialist (MCTS)"
+      "instructor.certifications.0",
+      "instructor.certifications.1",
+      "instructor.certifications.2",
+      "instructor.certifications.3",
+      "instructor.certifications.4",
+      "instructor.certifications.5",
+      "instructor.certifications.6",
+      "instructor.certifications.7",
+      "instructor.certifications.8",
+      "instructor.certifications.9",
+      "instructor.certifications.10",
+      "instructor.certifications.11",
+      "instructor.certifications.12",
+      "instructor.certifications.13",
+      "instructor.certifications.14"
     ]
-  })
+  });
   readonly accordionTitle = 'Instructor Info'
 }
