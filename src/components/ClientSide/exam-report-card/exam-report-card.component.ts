@@ -1,12 +1,13 @@
 import { Component, computed, inject, input, output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { Shared } from '../../../app/shared/Services/shared/shared';
 import { SiteButtonComponent } from '../../../app/shared/clientSide/site-button/site-button.component';
 import { Router } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 
 
 export interface ExamReport {
-  title: string;
+  title: number;
   date: string;
   duration: number;
   correct: number;
@@ -21,7 +22,7 @@ export interface ExamReport {
   selector: 'app-exam-report-card',
   standalone: true,
   imports: [
-    CommonModule, SiteButtonComponent ],
+    CommonModule, SiteButtonComponent,TranslatePipe,DatePipe ],
   templateUrl: './exam-report-card.component.html',
   styleUrl: './exam-report-card.component.scss'
 })

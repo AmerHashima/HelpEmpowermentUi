@@ -20,6 +20,8 @@ export class ExamReportsComponent {
   private auth = inject(AuthService);
   private shared = inject(Shared);
   currentExamId = this.shared.currentExamId
+  currentExam = this.shared.currentExam
+
   private datePipe = inject(DatePipe);
   studentId = computed(() => this.auth.loggedStudent()?.userId);
   averageScore = computed(() => {

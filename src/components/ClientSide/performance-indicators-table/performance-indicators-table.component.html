@@ -1,4 +1,4 @@
-    <div class="table-responsive">
+    <!-- <div class="table-responsive">
       <table class="table table-striped table-bordered">
         <thead>
           <tr>
@@ -90,4 +90,51 @@
           </tr>
         </tbody>
       </table>
-    </div>
+    </div> -->
+
+    <div class="table-responsive">
+  <table class="table table-striped table-bordered">
+    <thead>
+      <tr>
+        <th>{{ 'performance.level' | translate }}</th>
+        <th class="header">{{ 'performance.peopleDomain' | translate }}</th>
+        <th class="header">{{ 'performance.processDomain' | translate }}</th>
+        <th class="header">{{ 'performance.businessDomain' | translate }}</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <!-- Above Target -->
+      <tr>
+        <td class="aboveTarget">{{ 'performance.aboveTarget' | translate }}</td>
+        <td>{{ 'performance.rows.above.people' | translate }}</td>
+        <td>{{ 'performance.rows.above.process' | translate }}</td>
+        <td>{{ 'performance.rows.above.business' | translate }}</td>
+      </tr>
+
+      <!-- Target -->
+      <tr>
+        <td class="target">{{ 'performance.target' | translate }}</td>
+        <td>{{ 'performance.rows.target.people' | translate }}</td>
+        <td>{{ 'performance.rows.target.process' | translate }}</td>
+        <td>{{ 'performance.rows.target.business' | translate }}</td>
+      </tr>
+
+      <!-- Below Target -->
+      <tr>
+        <td class="belowTarget">{{ 'performance.belowTarget' | translate }}</td>
+        <td>{{ 'performance.rows.below.people' | translate }}</td>
+        <td>{{ 'performance.rows.below.process' | translate }}</td>
+        <td>{{ 'performance.rows.below.business' | translate }}</td>
+      </tr>
+
+      <!-- Needs Improvement -->
+      <tr>
+        <td class="improvement">{{ 'performance.needsImprovement' | translate }}</td>
+        <td>{{ 'performance.rows.improvement.people' | translate }}</td>
+        <td>{{ 'performance.rows.improvement.process' | translate }}</td>
+        <td>{{ 'performance.rows.improvement.business' | translate }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

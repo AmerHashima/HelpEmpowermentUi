@@ -1,17 +1,15 @@
 @if (!lessonCleared()) {
   <div class="lesson-container container py-4">
-    <h4 class="title mb-3">Lesson Learned Questions</h4>
+    <h4 class="title mb-3">{{ "lesson.title" | translate }}</h4>
 
     <div class="row g-3">
-      <!-- Exam Summary -->
       <div class="col-lg-4">
         <div class="card summary-card p-3">
-          <h6 class="fw-bold">Exam Summary</h6>
+          <h6 class="fw-bold">{{ "lesson.examSummary" | translate }}</h6>
           <div class="score">
             {{ statusStats().correct.count }}/{{ total() }}
           </div>
 
-          <!-- donut placeholder -->
           <div class="chart">
             <div class="donut" [style.background]="donutStyle()"></div>
           </div>
@@ -20,7 +18,7 @@
             <div class="legend-item">
               <div class="d-flex gap-1 align-items-center">
                 <span class="dot wrong"></span>
-                Wrong Answers
+                {{ "lesson.wrongAnswers" | translate }}
               </div>
               <span class="percent"
                 >{{ statusStats().incorrect.percentage }}%</span
@@ -30,7 +28,7 @@
             <div class="legend-item">
               <div class="d-flex gap-1 align-items-center">
                 <span class="dot correct"></span>
-                Correct Answer
+               {{ "lesson.correctAnswers" | translate }}
               </div>
               <span class="percent"
                 >{{ statusStats().correct.percentage }}%</span
@@ -40,7 +38,7 @@
             <div class="legend-item">
               <div class="d-flex gap-1 align-items-center">
                 <span class="dot na"></span>
-                Not Answered
+                {{ "lesson.notAnswered" | translate }}
               </div>
               <span class="percent"
                 >{{ statusStats().notAnswered.percentage }}%</span
@@ -53,18 +51,14 @@
       <div class="col-lg-8">
         <div class="practice-container d-flex flex-column px-2 pt-2 pb-4 h-100">
           <p class="text-center mb-2 w-100 darkText fw-semibold">
-            {{
-              "Great job completing the exam! You can now practice your questions
-          again based on your previous answers:" | translate
-            }}
+          {{ "lesson.description" | translate }}
           </p>
 
           <div class="row g-3 flex-grow-1">
-            <!-- Correct -->
             <div class="col-md-4">
               <div class="practice-card correct-card">
                 <div class="label text-success">
-                  ✔ {{ "Correct Questions" | translate }}
+✔ {{ "lesson.correctQuestions" | translate }}
                 </div>
 
                 <h3>{{ statusStats().correct.count }}</h3>
@@ -74,16 +68,17 @@
                   [disabled]="!statusStats().correct.count"
                   (click)="practiceQuestions('Correct')"
                 >
-                  Practice {{ statusStats().correct.count }} Questions →
+                  {{ "lesson.practice" | translate:{ count: statusStats().correct.count } }}
+
+                  <!-- Practice {{ statusStats().correct.count }} Questions → -->
                 </button>
               </div>
             </div>
 
-            <!-- Incorrect -->
             <div class="col-md-4">
               <div class="practice-card incorrect-card">
                 <div class="label text-danger">
-                  ✖ {{ "Incorrect Questions" | translate }}
+✖ {{ "lesson.incorrectQuestions" | translate }}
                 </div>
 
                 <h3>{{ statusStats().incorrect.count }}</h3>
@@ -93,16 +88,15 @@
                   [disabled]="!statusStats().incorrect.count"
                   (click)="practiceQuestions('Incorrect')"
                 >
-                  Practice {{ statusStats().incorrect.count }} Questions →
+                  {{ "lesson.practice" | translate:{ count: statusStats().incorrect.count } }}
                 </button>
               </div>
             </div>
 
-            <!-- Not Answered -->
             <div class="col-md-4">
               <div class="practice-card na-card">
                 <div class="label text-secondary">
-                  ● {{ "Not Answered Questions" | translate }}
+● {{ "lesson.notAnsweredQuestions" | translate }}
                 </div>
                 <h3>{{ statusStats().notAnswered.count }}</h3>
                 <button
@@ -110,7 +104,7 @@
                   [disabled]="!statusStats().notAnswered.count"
                   (click)="practiceQuestions('Not Answered')"
                 >
-                  Practice {{ statusStats().notAnswered.count }} Questions →
+                  {{ "lesson.practice" | translate:{ count: statusStats().notAnswered.count } }}
                 </button>
               </div>
             </div>
@@ -124,18 +118,15 @@
     >
       <h5>
         <i class="bi bi-info-circle-fill"></i>
-        {{ "Important Note" | translate }}
+  {{ "lesson.importantNote" | translate }}
       </h5>
 
       <span>
-        {{
-          "You can’t start new exam mode until you clear lesson learned Question"
-            | translate
-        }}
+       <span>{{ "lesson.mustClearFirst" | translate }}</span>
       </span>
 
       <button class="btn btn-light" (click)="clearLesson()">
-        {{ "Clear Now" | translate }}
+       {{ "lesson.clearNow" | translate }}
       </button>
     </div>
   </div>
@@ -145,15 +136,15 @@
       <i class="bi bi-check-circle-fill mainTextColor display-6"></i>
 
       <h4 class="mt-3">
-        {{ "Lesson Cleared Successfully!" | translate }}
+       {{ "lesson.success" | translate }}
       </h4>
 
       <p class="text-muted w-100">
-        {{ "You can now start a new exam." | translate }}
+        {{ "lesson.startNewInfo" | translate }}
       </p>
 
       <button class="btn btn-primary mt-3" (click)="startNewExam()">
-        {{ "Start New Exam" | translate }}
+       {{ "lesson.startNewExam" | translate }}
       </button>
     </div>
   </div>

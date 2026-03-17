@@ -1,23 +1,24 @@
 <div class="exam-report-card shadow">
   <div class="header">
-    <h5 class="fw-bold darkText mb-0">{{ report().title }}</h5>
+    <h5 class="fw-bold darkText mb-0">  {{ 'examReport' | translate:{ num: report().title } }}
+</h5>
 
     <div class="status">
       @if (report().isPassed) {
         <span class="chip pass">
           <i class="bi bi-check-lg"></i>
-          Pass
+          {{'Pass' | translate}}
         </span>
       } @else {
         <span class="chip fail">
           <i class="bi bi-x-circle"></i>
-          Fail
+          {{'Fail' | translate}}
         </span>
       }
 
       <span class="chip level" [ngClass]="level()">
   <i class="bi" [ngClass]="levelIcon()"></i>
-        {{levelLabel() }}
+        {{levelLabel() | translate }}
       </span>
     </div>
   </div>
@@ -27,35 +28,35 @@
   <div class="stats">
     <div class="stat">
       <i class="bi bi-calendar"></i>
-      {{ report().date }}
+      {{ report().date | date:'mediumDate'}}
     </div>
 
     <div class="divider"></div>
 
     <div class="stat">
       <i class="bi bi-clock"></i>
-      Duration: {{ report().duration }} min
+      {{'Duration:' | translate}} {{ report().duration }} {{'min'|translate}}
     </div>
 
     <div class="divider"></div>
 
     <div class="stat">
       <i class="bi bi-check-circle"></i>
-      Correct: {{ report().correct }}
+      {{'Correct:' | translate}} {{ report().correct }}
     </div>
 
     <div class="divider"></div>
 
     <div class="stat">
       <i class="bi bi-x-circle"></i>
-      Incorrect: {{ report().incorrect }}
+      {{'Incorrect:' | translate}} {{ report().incorrect }}
     </div>
 
     <div class="divider"></div>
 
     <div class="stat">
       <i class="bi bi-exclamation-triangle"></i>
-      Not Answered : {{ report().notAnswered }}
+      {{'Not Answered :' | translate}} {{ report().notAnswered }}
     </div>
   </div>
 

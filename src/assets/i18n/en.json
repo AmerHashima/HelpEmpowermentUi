@@ -507,6 +507,14 @@
   ],
   "Experience the Exam Simulator":"Experience the Exam Simulator",
   "exam": {
+      "pass": "Pass",
+      "fail": "Fail",
+      "duration": "Duration",
+      "minutes": "min",
+      "correct": "Correct",
+      "incorrect": "Incorrect",
+      "notAnswered": "Not Answered",
+      "checkPerformance": "Check Performance Levels Indicators",
         "practiceMode": "Practice Mode",
         "examMode": "Exam Mode",
         "reports": "Reports",
@@ -525,6 +533,7 @@
     "practiceAndExamMode": "Practice Mode - Exam Mode",
     "reportsAndLessons": "Reports - Lesson Learned Questions"
   },
+
   "common": {
     "required": "This field is required",
     "invalidFormat": "Invalid format",
@@ -988,11 +997,78 @@
         }
       }
     },
+"examReport": "Exam Report {{num}}",
     "Book Trial":"Book Trial",
     "Register Now":"Register Now",
     "Webinar Agenda":"Webinar Agenda",
     "Key Takeaways":"Key Takeaways",
     "Target Audience":"Target Audience",
     "Secure Your Free Spot Now—Seats Are Limited!":"Secure Your Free Spot Now—Seats Are Limited!",
-    "Upcoming Webinars":"Upcoming Webinars"
+    "Upcoming Webinars":"Upcoming Webinars",
+    "Check Performance Levels Indicators":"Check Performance Levels Indicators",
+    "Not Answered :":"Not Answered :",
+    "Incorrect:":"Incorrect:",
+    "Correct:":"Correct:",
+    "Duration:":"Duration:",
+    "Fail":"Fail",
+    "Pass":"Pass",
+    "Above Target":"Above Target",
+    "Target":"Target",
+    "Below Target":"Below Target",
+    "Needs Improvement":"Needs Improvement",
+    "Exam Reports":"Exam Reports",
+    "Total Exam Number":"Total Exam Number",
+    "Review Your Previous Exam Attempts":"Review Your Previous Exam Attempts",
+    "performance": {
+      "level": "Performance Level",
+      "peopleDomain": "What It Means for the People Domain (42%)",
+      "processDomain": "What It Means for the Process Domain (50%)",
+      "businessDomain": "What It Means for the Business Environment Domain (8%)",
+      "aboveTarget": "Above Target",
+      "target": "Target",
+      "belowTarget": "Below Target",
+      "needsImprovement": "Needs Improvement",
+      "rows": {
+        "above": {
+          "people": "You consistently demonstrated the ability to lead, motivate, and manage a project team effectively. You excelled in conflict resolution, stakeholder engagement, team development, and communication.",
+          "process": "You showed a strong understanding of project management processes and applied predictive, agile, and hybrid approaches effectively.",
+          "business": "You connected project work to business strategy and value, understanding benefits, compliance, and external impacts."
+        },
+        "target": {
+          "people": "You demonstrated a solid understanding of managing and supporting a project team with strong leadership skills.",
+          "process": "You correctly applied processes and practices to manage projects and deliver outcomes.",
+          "business": "You understood the link between projects and business context, including governance and benefits."
+        },
+        "below": {
+          "people": "You struggled with leadership and interpersonal skills such as motivation and conflict management.",
+          "process": "You had gaps in applying project processes like planning, scheduling, and risk management.",
+          "business": "You showed weak understanding of project alignment with business goals."
+        },
+        "improvement": {
+          "people": "You need significant improvement in people management and leadership skills.",
+          "process": "Your understanding of project management processes is insufficient.",
+          "business": "You need to better understand how projects align with business strategy."
+        }
+      }
+    },
+    "Perfromance Level Indicators":"Perfromance Level Indicators",
+    "lesson": {
+      "title": "Lesson Learned Questions",
+      "examSummary": "Exam Summary",
+      "wrongAnswers": "Wrong Answers",
+      "correctAnswers": "Correct Answers",
+      "notAnswered": "Not Answered",
+      "description": "Great job completing the exam! You can now practice your questions again based on your previous answers:",
+      "correctQuestions": "Correct Questions",
+      "incorrectQuestions": "Incorrect Questions",
+      "notAnsweredQuestions": "Not Answered Questions",
+      "practice": "Practice {{count}} Questions →",
+      "importantNote": "Important Note",
+      "mustClearFirst": "You can’t start a new exam mode until you clear lesson learned questions",
+      "clearNow": "Clear Now",
+      "success": "Lesson Cleared Successfully!",
+      "startNewInfo": "You can now start a new exam.",
+      "startNewExam": "Start New Exam"
+    }
 }
+
