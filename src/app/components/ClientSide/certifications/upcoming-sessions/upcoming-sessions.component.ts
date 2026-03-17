@@ -25,33 +25,35 @@ export class UpcomingSessionsComponent {
     // hasBought = this.auth.hasBought;
   private studentService = inject(StudentService);
   isEnrolled = this.studentService.isLiveCourseEnrolled;
-    sessions=computed(()=>{
-      if(this.type() == 'webinar')
+  sessions = computed(() => {
+    if (this.type() === 'webinar') {
       return [
         {
           date: 'Jan 15, 2026',
           time: '10:00 AM - 2:00 PM EST',
-          title: "The PMP Blueprint: Your Roadmap from Application to Exam Success"
-        },];
-      else
-        return [
-    {
-      date: 'Jan 15, 2026',
-      time: '10:00 AM - 2:00 PM EST',
-      title: 'Project Integration Management'
-    },
-    {
-      date: 'Jan 15, 2026',
-      time: '10:00 AM - 2:00 PM EST',
-      title: 'Project Integration Management'
-    },
-    {
-      date: 'Jan 15, 2026',
-      time: '10:00 AM - 2:00 PM EST',
-      title: 'Project Integration Management'
+          title: 'sessions.webinar.session1'
+        }
+      ];
+    } else {
+      return [
+        {
+          date: 'Jan 15, 2026',
+          time: '10:00 AM - 2:00 PM EST',
+          title: 'sessions.course.integration'
+        },
+        {
+          date: 'Jan 15, 2026',
+          time: '10:00 AM - 2:00 PM EST',
+          title: 'sessions.course.integration'
+        },
+        {
+          date: 'Jan 15, 2026',
+          time: '10:00 AM - 2:00 PM EST',
+          title: 'sessions.course.integration'
+        }
+      ];
     }
-  ]
-    })
+  });
 
   title = input<string>('Upcoming Live Sessions');
   type = input<string>('Live Sessions');

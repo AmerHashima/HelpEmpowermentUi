@@ -37,14 +37,17 @@
 }
 }
 
-/* RTL Support */
-:host-context([dir="rtl"]) {
-  .accordion-button {
+[dir="rtl"]  .accordion-button {
     flex-direction: row-reverse;
+      text-align: right;
+
 
     &::after {
       margin-right: 0;
       margin-left: auto;
     }
   }
-}
+
+
+
+

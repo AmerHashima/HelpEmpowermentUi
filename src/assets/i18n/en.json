@@ -521,6 +521,14 @@
     "title": "Register for the Webinar",
     "subTitle": "Fill in your details below to secure your free spot."
   },
+    "sessions": {
+      "webinar": {
+        "session1": "The PMP Blueprint: Your Roadmap from Application to Exam Success"
+      },
+      "course": {
+        "integration": "Project Integration Management"
+      }
+    },
   "pmpFaq": {
     "question1": "What does PMI and PMP mean?",
     "answer1": "PMI (Project Management Institute): The world's leading association for project management professionals that sets global standards.\n\nPMP (Project Management Professional): The most important international certification in project management, issued by PMI to experts who meet strict experience and exam requirements.",
@@ -599,5 +607,116 @@
   "Our Location":"Our Location",
     "Hi, We are always here to help you": "Hi, We are always here to help you.",
     "Email Us":"Email Us",
-    "Visit Us":"Visit Us"
+    "Visit Us":"Visit Us",
+    "courseFeatures": {
+      "pmp": {
+        "features": {
+          "instantQualification": {
+            "title": "Instant Qualification",
+            "description": "Get your 35-hour certificate immediately upon completion to meet exam requirements."
+          },
+          "alwaysUpdated": {
+            "title": "Always Updated",
+            "description": "Learn the most current exam content aligned with PMI's latest standards."
+          },
+          "expertLedTraining": {
+            "title": "Expert-Led Training",
+            "description": "Learn from certified PMPs who bridge theory with real project experience."
+          },
+          "flexibleAccess": {
+            "title": "Flexible Access",
+            "description": "Review recorded course videos anytime for 9 full months after your live sessions."
+          },
+          "smartStudyPath": {
+            "title": "Smart Study Path",
+            "description": "Follow your personalized study plan to focus efficiently on what matters most."
+          },
+          "continuousSupport": {
+            "title": "Continuous Support",
+            "description": "Get answers from expert instructors and collaborate with peers throughout your journey."
+          },
+          "careerReadySkills": {
+            "title": "Career-Ready Skills",
+            "description": "Master practical techniques and real case studies you can apply directly at work."
+          },
+          "professionalNetworkAccess": {
+            "title": "Professional Network Access",
+            "description": "Join an active community of project managers for knowledge sharing, job opportunities, and career support."
+          },
+          "careerEmpowermentCircle": {
+            "title": "Career Empowerment Circle",
+            "description": "Your certification journey includes lifelong access to mentorship, networking, and exclusive job openings."
+          }
+        },
+        "webinar": {
+          "hour1": {
+            "title": "Hour 1: The Essential Knowledge of PMP",
+            "description": "Decode the Exam: Learn the structure of the PMP exam, including the crucial People, Process, and Business Environment domains and the Waterfall/Agile/Hybrid focus.\nBuild Your Action Plan: Get a clear, five-step roadmap, from navigating the PMI application to building an effective study strategy, that you can start immediately.\nMaster the PMI Mindset: Discover the critical thinking approach unique to PMI that is the key to selecting the right answers on the exam."
+          },
+          "hour2": {
+            "title": "Hour 2: Interactive Q&A",
+            "description": "Get Expert Answers: Have your specific questions about the application, study materials, and exam topics answered live by a PMP-certified professional.\nSolve Real Challenges: Discuss common study roadblocks and real-world project scenarios to understand how PMP principles are applied.\nPlan Your Path Forward: Receive personalized guidance on your next steps and learn about resources to transform your preparation from overwhelming to organized and confident."
+          },
+          "takeAway": {
+            "title": "What You Will Leave With:",
+            "description": "A clear, stress-free understanding of the entire PMP journey.\nA practical, 5-step action plan you can start immediately.\nAnswers to your most pressing questions from an expert."
+          }
+        },
+        "audience": {
+          "title": "Who Should Attend:",
+          "description": "Project Coordinators, Team Leads, and aspiring Project Managers.\nProfessionals with experience who are unsure how to qualify for the PMP.\nAnyone who has started studying but feels overwhelmed by the exam content.\nIndividuals seeking a proven, structured methodology for exam success."
+        },
+        "takeAway": {
+          "title": "What You Will Leave With:",
+          "description": "A clear, stress-free understanding of the entire PMP journey.\nA practical, 5-step action plan you can start immediately.\nAnswers to your most pressing questions from an expert."
+        }
+      },
+      "capm": {
+        "features": {
+          "instantQualification": {
+            "title": "Instant Qualification",
+            "description": "Get your 23-hour certificate immediately upon completion to meet exam requirements."
+          },
+          "alwaysUpdated": {
+            "title": "Always Updated",
+            "description": "Learn the most current exam content aligned with PMI's latest standards."
+          },
+          "expertLedTraining": {
+            "title": "Expert-Led Training",
+            "description": "Learn from certified Experts who bridge theory with real project experience."
+          },
+          "flexibleAccess": {
+            "title": "Flexible Access",
+            "description": "Review recorded course videos anytime for 9 full months after your live sessions."
+          },
+          "smartStudyPath": {
+            "title": "Smart Study Path",
+            "description": "Follow your personalized study plan to focus efficiently on what matters most."
+          },
+          "continuousSupport": {
+            "title": "Continuous Support",
+            "description": "Get answers from expert instructors and collaborate with peers throughout your journey."
+          },
+          "careerReadySkills": {
+            "title": "Career-Ready Skills",
+            "description": "Master practical techniques and real case studies you can apply directly at work."
+          },
+          "professionalNetworkAccess": {
+            "title": "Professional Network Access",
+            "description": "Join an active community of project managers for knowledge sharing, job opportunities, and career support."
+          },
+          "careerEmpowermentCircle": {
+            "title": "Career Empowerment Circle",
+            "description": "Your certification journey includes lifelong access to mentorship, networking, and exclusive job openings."
+          }
+        }
+      }
+    },
+    "Book Trial":"Book Trial",
+    "Register Now":"Register Now",
+    "Webinar Agenda":"Webinar Agenda",
+    "Key Takeaways":"Key Takeaways",
+    "Target Audience":"Target Audience",
+    "Secure Your Free Spot Now—Seats Are Limited!":"Secure Your Free Spot Now—Seats Are Limited!",
+    "Upcoming Webinars":"Upcoming Webinars"
 }
