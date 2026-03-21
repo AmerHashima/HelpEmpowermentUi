@@ -6,6 +6,8 @@ export interface QuestionState {
   questions: courseQuestion[];
   selectedQuestion: courseQuestion | null;
   success: boolean;
+practiceQuestionsSuccess: boolean;
+
   loading: boolean;
   error: string | null;
   page: number;

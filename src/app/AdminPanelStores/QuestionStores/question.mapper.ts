@@ -3,9 +3,13 @@ import { APIAnswer, APICourseQuestion, courseAnswer, courseQuestion } from "../.
 
 
 // Single question mapper
-export function mapApiQuestionToCourseQuestion(api: APICourseQuestion): courseQuestion {
+// export function mapApiQuestionToCourseQuestion(api: APICourseQuestion): courseQuestion {
+export function mapApiQuestionToCourseQuestion(api: any, studentQuestion: boolean = false): courseQuestion {
+  console.log('api',api);
   return {
-    oid: api.oid,
+    // oid: api.oid,
+    oid: studentQuestion ? api.questionOid : api.oid,
+
     coursesMasterExamOid: api.coursesMasterExamOid,
     questionText: api.questionText,
     questionExplination: api.questionExplination,
@@ -44,5 +48,11 @@ export function mapApiAnswerToCourseAnswer(api: APIAnswer): courseAnswer {
 export const mapApiAnswersToAnswers = (answers: APIAnswer[]): courseAnswer[] =>
   answers.map(mapApiAnswerToCourseAnswer);
 // Multiple questions mapper
-export const mapApiQuestionsToCourseQuestions = (questions: APICourseQuestion[]): courseQuestion[] =>
-  questions.map(mapApiQuestionToCourseQuestion);
+// export const mapApiQuestionsToCourseQuestions = (questions: APICourseQuestion[]): courseQuestion[] =>
+//   questions.map(mapApiQuestionToCourseQuestion);
+
+export const mapApiQuestionsToCourseQuestions = (
+  questions: APICourseQuestion[],
+  studentQuestion: boolean=false
+): courseQuestion[] =>
+  questions.map(q => mapApiQuestionToCourseQuestion(q, studentQuestion));

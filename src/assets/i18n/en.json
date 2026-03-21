@@ -1069,6 +1069,44 @@
       "success": "Lesson Cleared Successfully!",
       "startNewInfo": "You can now start a new exam.",
       "startNewExam": "Start New Exam"
-    }
+    },
+    "profile": {
+      "enrolledCertifications": "Enrolled Certifications",
+      "exams": "Exams",
+      "settings": "Settings",
+      "changePassword": "Change Password",
+      "certification": "Certification",
+      "noCertifications": "You haven’t enrolled in any certification yet.",
+      "examSimulator": "Exam Simulator",
+      "recordedCourses": "Recorded Courses",
+      "liveCourse": "Live Course",
+      "noFeatures": "You are not enrolled in any certification features",
+      "noExams": "No exams found yet.",
+      "saved": "Saved",
+      "inProgress": "In Progress",
+      "mode": "Mode",
+      "continueExam": "Continue Exam",
+      "completed": "Completed",
+      "successRate": "Success Rate",
+      "save": "Save",
+      "finished":"Finished",
+      "currentPassword": "Current Password",
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm Password",
+      "enterNewPassword": "Enter your new password",
+      "enterConfirmPassword": "Enter your confirm password",
+      "contactInfo":"Contact Info",
+      "certifications":"certifications",
+  "examMode": "Exam Mode"
+},
+"Practice":"Practice Mode",
+"Exam":"Exam Mode",
+  "network": {
+    "errorCode": "500",
+    "title": "Server is unavailable",
+    "description": "We’re having trouble connecting to the server. Please try again shortly.",
+    "retry": "Retry",
+    "backHome": "Back to Home"
+  }
 }
 

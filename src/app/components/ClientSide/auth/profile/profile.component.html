@@ -1,4 +1,3 @@
-
 <div class="row row-sm">
   <div class="col-xl-4">
     <div class="card mb-4">
@@ -28,7 +27,7 @@
                 </p>
               </div>
             </div>
-            <h6 class="fs-14 text-center">{{ "Contact Info" | translate }}</h6>
+            <h6 class="fs-14 text-center">{{ "profile.contactInfo" | translate }}</h6>
             <div class="main-profile-bio text-center">
               <i class="bi bi-envelope pe-2"></i>
               <span>{{ user?.email }}</span>
@@ -49,7 +48,7 @@
                   {{ enrolledCourses().length }}
                 </h5>
                 <h6 class="text-small text-muted text-center fs-14 mb-0">
-                  {{ "Certifications" | translate }}
+                  {{ "profile.certifications" | translate }}
                 </h6>
               </div>
               <!-- <div class="col-md-4 col">
@@ -90,7 +89,9 @@
                 <span class="visible-xs"
                   ><i class="bi bi-collection me-1"></i
                 ></span>
-                <span class="hidden-xs">Enrolled Certifications</span>
+                <span class="hidden-xs">{{
+                  "profile.enrolledCertifications" | translate
+                }}</span>
               </a>
               <ng-template ngbNavContent>
                 <div class="row g-2">
@@ -109,7 +110,7 @@
 
                           <div class="card-body d-flex flex-column flex-grow-1">
                             <h5 class="card-title">
-                              {{ course.courseName }} Certification
+                              {{ course.courseName }} {{'profile.certification' | translate}}
                             </h5>
                             <!-- <p class="text-muted small mb-2">
                               Mahmoud Elhelbawi
@@ -150,7 +151,7 @@
                       <div class="empty-courses text-center py-5">
                         <i class="bi bi-journal-x fs-1 text-muted"></i>
                         <p class="mt-3 text-muted w-100">
-                          You haven’t enrolled in any certification yet.
+  {{ "profile.noCertifications" | translate }}
                         </p>
                       </div>
                     }
@@ -162,7 +163,7 @@
                           (click)="navigateToCourseFeatue('exam-simulator')"
                         >
                           <i class="bi bi-controller feature-icon"></i>
-                          <span class="feature-text">Exam Simulator</span>
+<span class="feature-text">{{ "profile.examSimulator" | translate }}</span>
                         </div>
                       }
 
@@ -172,7 +173,7 @@
                           (click)="navigateToCourseFeatue('recorded-course')"
                         >
                           <i class="bi bi-play-circle feature-icon"></i>
-                          <span class="feature-text">Recorded Courses</span>
+<span class="feature-text">{{ "profile.recordedCourses" | translate }}</span>
                         </div>
                       }
 
@@ -182,7 +183,7 @@
                           (click)="navigateToCourseFeatue('live-course')"
                         >
                           <i class="bi bi-camera-video feature-icon"></i>
-                          <span class="feature-text">Live Course</span>
+<span class="feature-text">{{ "profile.liveCourse" | translate }}</span>
                         </div>
                       }
 
@@ -192,8 +193,9 @@
                         >
                           <i class="bi bi-info-circle feature-icon"></i>
                           <span class="feature-text"
-                            >You are not enrolled in any certification
-                            features</span
+                            >
+                             {{ "profile.noFeatures" | translate }}
+                            </span
                           >
                         </div>
                       }
@@ -208,13 +210,13 @@
                 <span class="visible-xs"
                   ><i class="bi bi-clipboard-check me-1"></i
                 ></span>
-                <span class="hidden-xs">Exams</span>
+                <span class="hidden-xs">{{ "profile.exams" | translate }}</span>
               </a>
               <ng-template ngbNavContent>
                 @if (studentExams().length === 0 && savedExams().length == 0) {
                   <div class="empty-exams text-center py-5">
                     <i class="bi bi-file-earmark-text fs-1 text-muted"></i>
-                    <p class="mt-3 text-muted w-100">No exams found yet.</p>
+                    <p class="mt-3 text-muted w-100">{{'profile.noExams' | translate}}</p>
                   </div>
                 } @else {
                   <div class="row g-4 exams">
@@ -232,13 +234,13 @@
                                 'bg-info': !exam.saveForLater,
                               }"
                             >
-                              {{ exam.saveForLater ? "Saved" : "In Progress" }}
+                            {{ exam.saveForLater ? ("profile.saved" | translate) : ("profile.inProgress" | translate) }}
                             </span>
                           </div>
 
                           <p class="text-muted mb-2 small">
                             {{ exam.exam.courseName }} -
-                            {{ exam.examMode }} Mode
+                            {{ exam.examMode | translate }}
                           </p>
 
                           <!-- Progress -->
@@ -249,13 +251,13 @@
                             ></div>
                           </div>
                           <small class="text-end d-block mb-2"
-                            >{{ getSavedExamProgress(exam) }}% Completed</small
+                            >{{ getSavedExamProgress(exam) }}% {{'profile.completed' | translate}}</small
                           >
 
                           <ng-container>
                             <app-site-button
                               class="flex-grow-1 align-content-end"
-                              title="Continue Exam"
+                              title="profile.continueExam"
                               type="main"
                               (click)="goToExam(exam)"
                             />
@@ -271,12 +273,12 @@
                           >
                             <h6 class="mb-0">{{ exam.examName }}</h6>
                             <span class="badge bg-success">
-                              {{ "Finished" | translate }}
+                              {{ "profile.finished" | translate }}
                             </span>
                           </div>
 
                           <p class="text-muted mb-2 small">
-                            {{ exam.examName }} - Exam Mode
+                            {{ exam.examName }} - {{ 'peofile.examMode'| translate}}
                           </p>
 
                           <!-- Progress -->
@@ -287,14 +289,15 @@
                             ></div>
                           </div>
                           <small class="text-end d-block mb-2"
-                            >{{ getExamProgress(exam) }}% Completed</small
+                            >{{ getExamProgress(exam) }}% {{'profile.completed' | translate}}</small
                           >
 
                           <ng-container>
                             <div class="text-center text-success fw-bold mb-2">
+                              {{'profile.successRate' | translate}}
                               Success Rate:
                               {{
-                                (exam.obtainedScore / exam.totalScore) * 100
+                                 getSuccessRate(exam)
                               }}%
                             </div>
                           </ng-container>
@@ -310,7 +313,9 @@
                 <span class="visible-xs"
                   ><i class="las la-cog fs-16 me-1"></i
                 ></span>
-                <span class="hidden-xs">SETTINGS</span>
+                <span class="hidden-xs">{{
+                  "profile.settings" | translate
+                }}</span>
               </a>
               <ng-template ngbNavContent>
                 <div class="border-0 p-0 form" id="settings">
@@ -422,7 +427,7 @@
                       </app-phone-input>
 
                       <app-site-button
-                        title="Save"
+                        title="profile.save"
                         type="main"
                         htmlType="submit"
                         [icon]="'bi bi-arrow'"
@@ -437,7 +442,9 @@
                 <span class="visible-xs"
                   ><i class="las la-cog fs-16 me-1"></i
                 ></span>
-                <span class="hidden-xs">Change Password</span>
+                <span class="hidden-xs">{{
+                  "profile.changePassword" | translate
+                }}</span>
               </a>
               <ng-template ngbNavContent>
                 <div class="border-0 p-0 form" id="changePassword">
@@ -452,8 +459,8 @@
                         [(ngModel)]="changePasswordForm.currentPassword"
                         required
                         minlength="6"
-                        [label]="'Current Password' | translate"
-                        [placeholder]="'Current Password' | translate"
+                        [label]="'profile.currentPassword' | translate"
+                        [placeholder]="'profile.currentPassword' | translate"
                         [icon]="'bi bi-lock'"
                         [type]="'password'"
                         [errorMessages]="{
@@ -466,9 +473,9 @@
                         [(ngModel)]="changePasswordForm.newPassword"
                         required
                         minlength="6"
-                        [label]="'New Password' | translate"
+                        [label]="'profile.newPassword' | translate"
                         [placeholder]="
-                          'Enter your current password' | translate
+                          'profile.enterNewPassword' | translate
                         "
                         [icon]="'bi bi-lock'"
                         [type]="'password'"
@@ -483,8 +490,8 @@
                         [(ngModel)]="changePasswordForm.confirmPassword"
                         required
                         minlength="6"
-                        [label]="'Confirm Password' | translate"
-                        [placeholder]="'Enter your confirm Pasword' | translate"
+                        [label]="'profile.confirmPassword' | translate"
+                        [placeholder]="'profile.enterConfirmPassword' | translate"
                         [icon]="'bi bi-lock'"
                         [type]="'password'"
                         [errorMessages]="{
@@ -493,7 +500,7 @@
                         }"
                       ></app-input>
                       <app-site-button
-                        title="Change Password"
+                        title="profile.changePassword"
                         type="main"
                         htmlType="submit"
                         [icon]="'bi bi-arrow'"

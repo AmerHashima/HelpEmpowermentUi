@@ -13,7 +13,6 @@ import {
   catchError,
   concatMap,
   debounceTime,
-  distinctUntilChanged,
   EMPTY,
   finalize,
   of,
@@ -26,6 +25,7 @@ import { initialQuestionState } from './question.slice';
 import { Filter, RequestBody, Sort, Pagination } from '../../models/rquest';
 
 import {
+  setPracticeQuestionSuccessUpdater,
   activateLoading,
   deactivateLoading,
   setError,
@@ -122,6 +122,9 @@ export const QuestionsStore = signalStore(
     setSuccess(success: boolean) {
       patchState(store, setSuccess(success));
     },
+    setPracticeQueationSuccess(success: boolean) {
+      patchState(store, setPracticeQuestionSuccessUpdater(success));
+    },
 
     setSelectedQuestion(question: courseQuestion | null) {
       patchState(store, setSelectedQuestion(question));
@@ -174,9 +177,11 @@ export const QuestionsStore = signalStore(
               console.log('res', res);
               patchState(store, (s) => ({
                 ...s,
-                questions: mapApiQuestionsToCourseQuestions(res.questions),
+                questions: mapApiQuestionsToCourseQuestions(res.questions,true),
                 total: res.total ?? 0,
               }));
+              patchState(store, setPracticeQuestionSuccessUpdater(true));
+
             }),
             catchError((err) => {
               patchState(store, setError(err?.message ?? 'Failed to load questions'));

@@ -1041,5 +1041,43 @@
     "success": "تم مسح الدروس المستفادة بنجاح!",
     "startNewInfo": "يمكنك الآن بدء اختبار جديد",
     "startNewExam": "ابدأ اختبار جديد"
+  },
+  "profile": {
+    "enrolledCertifications": "الشهادات المسجلة",
+    "exams": "الاختبارات",
+    "settings": "الإعدادات",
+    "changePassword": "تغيير كلمة المرور",
+    "certification": "شهادة",
+    "noCertifications": "لم تقم بالتسجيل في أي شهادة بعد",
+    "examSimulator": "محاكي الاختبار",
+    "recordedCourses": "الدورات المسجلة",
+    "liveCourse": "الدورة المباشرة",
+    "noFeatures": "أنت غير مسجل في أي من خصائص الشهادة",
+    "noExams": "لا توجد اختبارات حتى الآن",
+    "saved": "محفوظ",
+    "inProgress": "قيد التنفيذ",
+    "mode": "وضع",
+    "continueExam": "استكمال الاختبار",
+    "completed": "مكتمل",
+    "successRate": "نسبة النجاح",
+    "save": "حفظ",
+    "currentPassword": "كلمة المرور الحالية",
+    "newPassword": "كلمة المرور الجديدة",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "enterNewPassword": "أدخل كلمة المرور الجديدة",
+    "enterConfirmPassword": "أدخل تأكيد كلمة المرور",
+    "contactInfo": "معلومات التواصل",
+    "certifications": "الشهادات",
+    "finished": "مكتمل",
+    "examMode": "وضع الاختبار"
+  },
+  "Practice": "وضع التدريب",
+  "Exam": "وضع الاختبار",
+  "network": {
+    "errorCode": "500",
+    "title": "الخادم غير متاح",
+    "description": "نواجه مشكلة في الاتصال بالخادم حالياً، يرجى المحاولة مرة أخرى لاحقاً.",
+    "retry": "إعادة المحاولة",
+    "backHome": "العودة للرئيسية"
   }
 }

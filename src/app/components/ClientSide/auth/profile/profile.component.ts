@@ -221,6 +221,14 @@ export class ProfileComponent {
   // getTotalExamsLength() {
   //   return this.studentExams().length + this.savedExams().length
   // }
+
+  getSuccessRate(exam:any){
+    if (!exam.totalScore) return 0;
+    return Math.round(((exam.obtainedScore / exam.totalScore) * 100) * 10) / 10;
+
+
+
+  }
 }
 
 

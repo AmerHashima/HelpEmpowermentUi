@@ -9,6 +9,8 @@ import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/s
 import { GenericModelComponent } from '../../../../shared/generic-model/generic-model.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
+import { StudentExamService } from '../../../../Services/student-exam.service';
+import { CertificationService } from '../../../../Services/certification.service';
 
 @Component({
   selector: 'app-lesson-learned-questios-practice-mode',
@@ -20,6 +22,7 @@ import { ToastingMessagesService } from '../../../../shared/Services/ToastingMes
 })
 export class LessonLearnedQUestiosPracticeModeComponent {
   private platformId = inject(PLATFORM_ID);
+  private certificationService = inject(CertificationService);
   private router = inject(Router);
   private route = inject(ActivatedRoute)
   private isBrowser = isPlatformBrowser(this.platformId);
@@ -27,15 +30,14 @@ export class LessonLearnedQUestiosPracticeModeComponent {
   private shared = inject(Shared);
   private toasting = inject(ToastingMessagesService);
   isRTL = this.shared.isRtl;
+  examQuestions=signal<any[]>([]);
   private auth = inject(AuthService)
   showQuestionBoard: boolean = false;
   examChoiceAnswers: any[] = [];
   examMatchingAnswers: any[] = [];
   saveForLater: boolean = false;
   currentQuestionIndex = signal<number>(0);
-
   currentType = signal<string>('');
-
   studentExamId = signal<string>('');
   isMarked = computed(() => {
     const question = this.currentQuestion();
@@ -43,24 +45,22 @@ export class LessonLearnedQUestiosPracticeModeComponent {
 
     return this.markedQuestions().has(question.oid);
   });
-  // isAnswerLocked = computed(() => {
-  //   const q = this.currentQuestion();
-  //   if (!q) return false;
-
-  //   return (
-  //     this.revealedQuestions().has(q.oid)
-  //   );
-  // });
   questions = computed(() => {
     const list = this.questionStore.questions() ?? [];
     return [...list].sort((a, b) => a.orderNo - b.orderNo);
   });
-
-  // revealedQuestions = signal<Set<string>>(new Set());
-  // answeredBeforeReveal = signal<Set<string>>(new Set());
+  filteredExamQuestions = computed(() => {
+    const examQs = this.examQuestions();
+    const qs = this.questions();
+    if (qs.length == 0 || examQs.length ==0) return [];
+    const questionOids = new Set(qs.map(q => q.oid));
+    const examQuestions = examQs.filter(eq => questionOids.has(eq.oid));
+    return [...examQuestions].sort((a, b) => a.orderNo - b.orderNo);
+;
+  });
   answeredQuestions = signal<Set<string>>(new Set());
   boardQuestions = computed(() => {
-    const list = this.questionStore.questions() ?? [];
+    const list = this.filteredExamQuestions() ?? [];
     const marked = this.markedQuestions();
     const answered = this.answeredQuestions();
 
@@ -87,25 +87,58 @@ export class LessonLearnedQUestiosPracticeModeComponent {
   });
 
   currentQuestion = computed(() => {
-    const qs = this.questions();
+    const qs = this.filteredExamQuestions();
     const idx = this.currentQuestionIndex();
     if (qs.length === 0 || idx < 0 || idx >= qs.length) return null;
     return this.mapToClientQuestion(qs[idx], idx);
   });
 
+
   constructor() {
-    this.route.queryParamMap.subscribe(params => {
-      this.currentType.set(params.get('type') ?? '');
-      this.studentExamId.set(params.get('examId') ?? '');
+    if (this.isBrowser) {
+      this.route.queryParamMap.subscribe(params => {
+        this.currentType.set(params.get('type') ?? '');
+        this.studentExamId.set(params.get('examId') ?? '');
+      });
+    }
+
+
+    effect(() => {
+      if (!this.isBrowser) return;
+      const success = this.questionStore.practiceQuestionsSuccess();
+      if (success)
+      {
+        const requestBody=  {
+          filters: [{
+            propertyName: "coursesMasterExamOid",
+            value: this.shared.currentExamId(),
+            operation: 0
+          }],
+          sort: [],
+          pagination: {
+            getAll: true,
+            pageNumber: 0,
+            pageSize: 0,
+          },
+          columns: []
+        }
+
+        this.certificationService.searchQuestion(requestBody).subscribe({
+          next:(data:any)=>{
+            this.examQuestions.set(data.questions);
+            this.questionStore.setPracticeQueationSuccess(false);
+
+          }
+        })
+      }
     });
 
     effect(() => {
+      if (!this.isBrowser) return;
       const practiceType = this.currentType();
       const studentExamId = this.studentExamId();
       let lookupId=null;
       if (practiceType && studentExamId) {
-        console.log('in lesson learned exam qyestions')
-
         if(practiceType == 'Correct')
           lookupId ="44444444-4444-4444-4444-444444444401";
         else if(practiceType == 'Incorrect')
@@ -129,34 +162,38 @@ else lookupId = "44444444-4444-4444-4444-444444444403";
         if (this.isBrowser) {
           const key = this.getStorageKey(studentExamId);
           const saved = localStorage.getItem(key);
-          if (!saved) { this.resetExam(); return; }
-          const parsed = JSON.parse(saved);
-          this.saveForLater = parsed.saveForLater;
-            this.currentQuestionIndex.set(parsed.currentQuestionIndex ?? 0);
-            this.examChoiceAnswers = parsed.examChoiceAnswers ?? [];
-            this.examMatchingAnswers = parsed.examMatchingAnswers ?? []
-            if (parsed.markedQuestions) {
-              this.markedQuestions.set(new Set(parsed.markedQuestions));
-            }
-            // if (parsed.answeredBeforeReveal) {
-            //   this.answeredBeforeReveal.set(new Set(parsed.answeredBeforeReveal));
-            // }
-            // if (parsed.revealedQuestions) {
-            //   this.revealedQuestions.set(new Set(parsed.revealedQuestions));
-            // }
-            if (parsed.answeredQuestions) {
-              this.answeredQuestions.set(new Set(parsed.answeredQuestions));
-            }
+          if (!saved) {
+            this.resetExam();
+            return;
+          }
 
+          const parsed = JSON.parse(saved);
+
+          if (!parsed.saveForLater) {
+            this.resetExam();
+            return;
+          }
+
+          this.saveForLater = parsed.saveForLater;
+          this.currentQuestionIndex.set(parsed.currentQuestionIndex ?? 0);
+          this.examChoiceAnswers = parsed.examChoiceAnswers ?? [];
+          this.examMatchingAnswers = parsed.examMatchingAnswers ?? [];
+
+          if (parsed.markedQuestions) {
+            this.markedQuestions.set(new Set(parsed.markedQuestions));
+          }
+
+          if (parsed.answeredQuestions) {
+            this.answeredQuestions.set(new Set(parsed.answeredQuestions));
+          }
         }
       }
     });
 
 
     effect(() => {
-      if (this.questions().length > 0) {
-        console.log('questions',this.questions())
-        if (this.currentQuestionIndex() >= this.questions().length) {
+      if (this.filteredExamQuestions().length > 0) {
+        if (this.currentQuestionIndex() >= this.filteredExamQuestions().length) {
           this.currentQuestionIndex.set(0);
         }
       }
@@ -185,45 +222,31 @@ else lookupId = "44444444-4444-4444-4444-444444444403";
     });
   }
 
-  // onRevealAnswer(questionId: string) {
 
-  //   const currentAnswer = this.examChoiceAnswers.find(
-  //     x => x.questionOid === questionId
-  //   );
-
-  //   if (currentAnswer?.selectedAnswerOids?.length) {
-  //     this.answeredBeforeReveal.update(set => {
-  //       const s = new Set(set);
-  //       s.add(questionId);
-  //       return s;
-  //     });
-  //   }
-
-  //   this.revealedQuestions.update(set => {
-  //     const s = new Set(set);
-  //     s.add(questionId);
-  //     return s;
-  //   });
-  // }
 
   finishExam(end: boolean) {
-    console.log('finish practicing');
     if (this.isBrowser) {
-      this.toasting.showToast('Finish Practicing', 'success');
+      const key = this.getStorageKey(this.studentExamId());
+      localStorage.removeItem(key);
+      this.toasting.showToast('You have finished your practicing successfully', 'success');
     }
     this.router.navigate(['../../chooseExam'], {
       relativeTo: this.route,
     });
   }
 
+
+
   resetExam() {
-    console.log('in reset Exam');
     this.currentQuestionIndex.set(0);
     this.examChoiceAnswers = [];
     this.examMatchingAnswers = [];
     this.markedQuestions.set(new Set([]));
     this.answeredQuestions.set(new Set([]));
-
+    if (this.isBrowser) {
+      const key = this.getStorageKey(this.studentExamId());
+      localStorage.removeItem(key);
+    }
   }
   onOpenQuestionBoard(show: boolean) {
     this.showQuestionBoard = true
@@ -247,6 +270,8 @@ else lookupId = "44444444-4444-4444-4444-444444444403";
       x => x.questionOid === q.oid
     );
 
+    const total = this.filteredExamQuestions().length;
+
     return {
       ...q,
       answers: (q.answers || []).map((opt: any, i: number) => ({
@@ -257,11 +282,16 @@ else lookupId = "44444444-4444-4444-4444-444444444403";
           : false
       })),
       savedMatchingAnswers: savedMatching?.answers ?? [],
-      progress: Math.round(((q.orderNo!) / Math.max(1, this.questions().length)) * 100),
-      totalQuestions: this.questions().length,
+
+      orderNo: index + 1,
+
+      progress: Math.round(((index + 1) / Math.max(1, total)) * 100),
+      totalQuestions: total,
+
       maxChoices: q.answers.filter((o: any) => o.isCorrect).length || 1
     };
   }
+
 
   private getStorageKey(examId: string) {
     return `exam-progress-lesson-learned-type-${this.currentType()}-student_${this.auth.loggedStudent()?.userId}-studentExamId-${examId}`;
@@ -271,7 +301,7 @@ else lookupId = "44444444-4444-4444-4444-444444444403";
 
   updateIndex(last: boolean = false) {
     if (!last) {
-      if (this.currentQuestionIndex() < this.questions().length - 1) {
+      if (this.currentQuestionIndex() < this.filteredExamQuestions().length - 1) {
         this.currentQuestionIndex.update(i => i + 1);
       }
     } else this.finishExam(true)
@@ -328,18 +358,19 @@ else lookupId = "44444444-4444-4444-4444-444444444403";
 
     if (!studentAnswers || studentAnswers.length === 0) return false;
 
-    return studentAnswers.every((pair: any) => {
+    const isCorrect = studentAnswers.every((pair: any) => {
 
       const leftItem = question.answers.find(
-        (a: any) => a.oid === pair.leftOid
+        (a: any) => String(a.oid) === String(pair.selectedAnswerOid)
       );
 
       if (!leftItem) return false;
 
-      return leftItem.correctAnswerOid === pair.rightOid;
+      return String(leftItem.correctAnswerOid) === String(pair.answerSelectedAnswerOid);
 
     });
 
+    return isCorrect;
   }
 
   goToNext(newAnswer: any) {
@@ -347,19 +378,12 @@ else lookupId = "44444444-4444-4444-4444-444444444403";
     const q = this.currentQuestion();
     if (!q) return;
 
-    // // If answer revealed and user didn't answer before reveal → ignore answer
-    // if (this.revealedQuestions().has(q.oid) && !this.answeredBeforeReveal().has(q.oid)) {
-    //   newAnswer = { type: 'empty' };
-    // }
-
     if (newAnswer.type === 'empty') {
       this.updateIndex(newAnswer.last);
       return;
     }
 
-    // =========================
-    // MULTIPLE CHOICE QUESTION
-    // =========================
+
     if (newAnswer.type === 'Multiple Choice Question') {
 
       const existing = this.examChoiceAnswers.find(
@@ -375,21 +399,15 @@ else lookupId = "44444444-4444-4444-4444-444444444403";
         return;
       }
 
-      const correctAnswers = q.answers
-        .filter((a: any) => a.isCorrect)
-        .map((a: any) => a.oid)
-        .sort();
+      const isCorrect = this.checkMultipleChoiceAnswer(
+        q,
+        newAnswer.answers.selectedAnswerOids
+      );
 
-      const studentAnswers = [...newAnswer.answers.selectedAnswerOids].sort();
-
-      const isCorrect =
-        JSON.stringify(correctAnswers) === JSON.stringify(studentAnswers);
-
-      if (isCorrect) {
-        this.toasting.showToast('Correct Answer ✅', 'success');
-      } else {
-        this.toasting.showToast('Wrong Answer ❌', 'error');
-      }
+      this.toasting.showToast(
+        isCorrect ? 'Correct Answer ✅' : 'Wrong Answer ❌',
+        isCorrect ? 'success' : 'error'
+      );
 
       this.updateChoiceAnswer(newAnswer);
 
@@ -408,9 +426,7 @@ else lookupId = "44444444-4444-4444-4444-444444444403";
       }, 800);
     }
 
-    // =========================
-    // MATCHING QUESTION
-    // =========================
+
     else if (newAnswer.type === 'Matching') {
 
       const matchingAnswer = {
@@ -430,23 +446,15 @@ else lookupId = "44444444-4444-4444-4444-444444444403";
         return;
       }
 
-      const isCorrect = newAnswer.answers.every((pair: any) => {
+      const isCorrect = this.checkMatchingAnswer(
+        q,
+        newAnswer.answers
+      );
 
-        const leftItem = q.answers.find(
-          (a: any) => a.oid === pair.leftOid
-        );
-
-        if (!leftItem) return false;
-
-        return leftItem.correctAnswerOid === pair.rightOid;
-
-      });
-
-      if (isCorrect) {
-        this.toasting.showToast('Correct Match ✅', 'success');
-      } else {
-        this.toasting.showToast('Wrong Match ❌', 'error');
-      }
+      this.toasting.showToast(
+        isCorrect ? 'Correct Match ✅' : 'Wrong Match ❌',
+        isCorrect ? 'success' : 'error'
+      );
 
       this.updateMatchingAnswer(matchingAnswer);
 
@@ -482,8 +490,6 @@ else lookupId = "44444444-4444-4444-4444-444444444403";
         currentQuestionIndex: this.currentQuestionIndex(),
         examChoiceAnswers: this.examChoiceAnswers,
         examMatchingAnswers: this.examMatchingAnswers,
-        // revealedQuestions: Array.from(this.revealedQuestions()),
-        // answeredBeforeReveal: Array.from(this.answeredBeforeReveal()),
         markedQuestions: Array.from(this.markedQuestions()),
         answeredQuestions: Array.from(this.answeredQuestions())
       })
@@ -500,7 +506,6 @@ else lookupId = "44444444-4444-4444-4444-444444444403";
     const question = this.currentQuestion();
     if (!question) return;
 
-    // Restore Multiple Choice
     if (question.questionTypeName === 'Multiple Choice Question') {
 
       const saved = this.examChoiceAnswers.find(
@@ -515,7 +520,6 @@ else lookupId = "44444444-4444-4444-4444-444444444403";
 
     }
 
-    // Restore Matching
     else if (question.questionTypeName === 'Matching') {
 
       const saved = this.examMatchingAnswers.find(
@@ -527,19 +531,11 @@ else lookupId = "44444444-4444-4444-4444-444444444403";
       }
 
     }
-
-    // 🔒 Enforce reveal rule AFTER restore
-    // if (
-    //   this.revealedQuestions().has(question.oid) &&
-    //   !this.answeredBeforeReveal().has(question.oid)
-    // ) {
-    //   question.answers?.forEach((a: any) => a.isSelected = false);
-    // }
   }
 
   goToQuestionNumber(num: number) {
     const index = num;
-    if (index >= 0 && index < this.questions().length) {
+    if (index >= 0 && index < this.filteredExamQuestions().length) {
       this.currentQuestionIndex.set(index);
     }
   }

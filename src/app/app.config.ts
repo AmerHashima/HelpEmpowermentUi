@@ -12,6 +12,7 @@ import { HttpLoaderFactory } from '../translate-loader';
 import { studentAuthInterceptor } from './core/interceptors/student-auth.interceptor';
 import { registerLocaleData } from '@angular/common';
 import localeAr from '@angular/common/locales/ar';
+import { errorInterceptor } from './core/interceptors/error-interceptor';
 
 export function localeFactory(translate: TranslateService) {
   return translate.currentLang === 'ar' ? 'ar-EG' : 'en-US';
@@ -40,7 +41,7 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(withEventReplay()),
     provideHttpClient(
       withFetch(),
-      withInterceptors([studentAuthInterceptor])
+      withInterceptors([studentAuthInterceptor, errorInterceptor])
     ),    {
       provide: TranslateLoader,
       useFactory: HttpLoaderFactory,

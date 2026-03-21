@@ -193,6 +193,14 @@ export const setSuccess = (
   });
 };
 
+
+export const setPracticeQuestionSuccessUpdater = (
+  success: boolean
+): PartialStateUpdater<QuestionState> => {
+  return () => ({
+    practiceQuestionsSuccess:success,
+  });
+};
 export const setFiltersUpdater = (
   filters: Filter[]
 ): PartialStateUpdater<QuestionState> => {
