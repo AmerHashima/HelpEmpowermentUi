@@ -40,9 +40,66 @@ export class ExamSimulatorComponent {
   // studentToken = this.auth.studentToken;
   isLoggedIn = computed(() => !!this.auth.studentToken());
   hydrated = signal(false);
-  // certification=this.shared.currentCertificationObject
+  certification=this.shared.currentCertificationObject
   //  chooseExam:boolean=false;
-  examSimulatorBenfits = [
+
+  private capmBenefits = [
+    {
+      title: "capmBenefits.0.title",
+      icon: "bi bi-arrow-clockwise",
+      description: "capmBenefits.0.description",
+      gap: "gap-1",
+    },
+    {
+      title: "capmBenefits.1.title",
+      icon: "bi bi-database",
+      description: "capmBenefits.1.description",
+      gap: "gap-1",
+    },
+    {
+      title: "capmBenefits.2.title",
+      icon: "bi bi-toggles",
+      description: "capmBenefits.2.description",
+      gap: "gap-1",
+    },
+    {
+      title: "capmBenefits.3.title",
+      icon: "bi bi-lightbulb",
+      description: "capmBenefits.3.description",
+      gap: "gap-1",
+    },
+    {
+      title: "capmBenefits.4.title",
+      icon: "bi bi-journal-check",
+      description: "capmBenefits.4.description",
+      gap: "gap-1",
+    },
+    {
+      title: "capmBenefits.5.title",
+      icon: "bi bi-bar-chart-line",
+      description: "capmBenefits.5.description",
+      gap: "gap-1",
+    },
+    {
+      title: "capmBenefits.6.title",
+      icon: "bi bi-infinity",
+      description: "capmBenefits.6.description",
+      gap: "gap-1",
+    },
+    {
+      title: "capmBenefits.7.title",
+      icon: "bi bi-calendar-check",
+      description: "capmBenefits.7.description",
+      gap: "gap-1",
+    },
+    {
+      title: "capmBenefits.8.title",
+      icon: "bi bi-headset",
+      description: "capmBenefits.8.description",
+      gap: "gap-1",
+    }
+  ];
+  private pmpBenefits = [
     {
       title: "examSimulatorBenefits.0.title",
       icon: "bi bi-arrow-clockwise",
@@ -98,6 +155,22 @@ export class ExamSimulatorComponent {
       gap: "gap-1",
     }
   ];
+
+
+  examKey = computed(() => {
+    const cert = this.shared.currentCertificate();
+    return cert === 'capm' ? 'capm' : 'pmp';
+  });
+
+  examSimulatorBenefitsComputed = computed(() => {
+    const cert = this.shared.currentCertificate();
+
+    if (cert === 'capm') {
+      return this.capmBenefits;
+    }
+
+    return this.pmpBenefits;
+  });
 
   simulatorVideo = 'assets/videos/SimulatorVideo.mp4';
   enrollImage = 'assets/images/enroll.png';

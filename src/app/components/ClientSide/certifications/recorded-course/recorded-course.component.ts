@@ -40,6 +40,17 @@ export class RecordedCourseComponent {
   enrollImage = 'assets/images/enroll.png';
   recoedImage = "assets/images/recordedCourse.jpeg";
 
+  recordedCourseContent = computed(() => {
+    const cert = this.shared.currentCertificate();
+    const key = cert === 'capm' ? 'capm' : 'pmp';
+
+    return {
+      master: `recordedCourse.${key}.master`,
+      title: `recordedCourse.${key}.title`,
+      description: `recordedCourse.${key}.description`,
+      price: `recordedCourse.${key}.price`
+    };
+  });
 
   buyNow() {
     // Implement buy logic (e.g. open checkout, call service, etc.)

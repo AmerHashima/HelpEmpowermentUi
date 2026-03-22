@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { PageBannerComponent } from '../../../../shared/clientSide/page-banner/page-banner.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Shared } from '../../../../shared/Services/shared/shared';
@@ -17,6 +17,17 @@ export class QuizGameComponent {
   private route = inject(ActivatedRoute);
   isRTL = this.shared.isRtl;
   courseImage = "assets/images/recordedCourse.jpeg";
+  quizGameContent = computed(() => {
+    const cert = this.shared.currentCertificate();
+    const key = cert === 'capm' ? 'capm' : 'pmp';
+
+    return {
+      master: `quizGame.${key}.master`,
+      title: `quizGame.${key}.title`,
+      description: `quizGame.${key}.description`,
+      play: `quizGame.${key}.play`
+    };
+  });
   playNow(){
     this.router.navigate(['../quiz'], {
       relativeTo: this.route

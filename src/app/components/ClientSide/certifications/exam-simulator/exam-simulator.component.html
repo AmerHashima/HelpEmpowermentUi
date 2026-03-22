@@ -7,7 +7,7 @@
       <!-- Content projection -->
       <div content class="d-flex flex-column gap-3 pe-xl-5">
         <div class="d-flex flex-column gap-3">
-          <h3 class="CertificationHeader">
+          <!-- <h3 class="CertificationHeader">
             <span class="darkText">
               {{ "examSimulator.masterPmp" | translate }}
             </span>
@@ -34,6 +34,40 @@
 
           <div class="certificationPrice">
             <span class="darkText">{{'examSimulator.price' | translate}}</span>
+          </div> -->
+
+          <h3 class="CertificationHeader">
+            <span class="darkText">
+              {{ "examSimulator." + examKey() + ".master" | translate }}
+            </span>
+            <span class="mainTextColor">
+              {{
+                "examSimulator." + examKey() + ".realisticSimulation"
+                  | translate
+              }}
+            </span>
+          </h3>
+
+          <p>
+            {{ "examSimulator." + examKey() + ".description" | translate }}
+          </p>
+
+          <div class="d-flex justify-content-between rating">
+            <div class="d-flex align-items-center enrollTag gap-1">
+              <img [src]="enrollImage" alt="Enroll image" />
+              <span>2,500+ {{ "common.enrolled" | translate }}</span>
+            </div>
+
+            <div class="d-flex align-items-center gap-1">
+              <app-star-rating [value]="4.9"></app-star-rating>
+              <span class="certifictionRate">(4.9)</span>
+            </div>
+          </div>
+
+          <div class="certificationPrice">
+            <span class="darkText">
+              {{ "examSimulator." + examKey() + ".price" | translate }}
+            </span>
           </div>
 
           <div class="d-flex align-content-center gap-3">
@@ -81,7 +115,11 @@
       </div>
 
       <div class="examBenfits">
-        @for (item of examSimulatorBenfits; let i = $index; track item) {
+        @for (
+          item of examSimulatorBenefitsComputed();
+          let i = $index;
+          track item
+        ) {
           <app-icon-card
             [title]="item.title"
             [description]="item.description"
@@ -129,8 +167,8 @@
               <span><i class="bi bi-file-earmark-text"></i></span>
             </div>
 
-            <div class="d-flex  flex-grow-1 flex-column gap-1">
-              <div class="d-flex   justify-content-between align-items-center">
+            <div class="d-flex flex-grow-1 flex-column gap-1">
+              <div class="d-flex justify-content-between align-items-center">
                 <h3 class="darkText">
                   {{ "examSimulator.freeExam" | translate }}
                 </h3>

@@ -1,5 +1,5 @@
 // src\app\components\ClientSide\certifications\live-course\live-course.component.ts
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { PageBannerComponent } from '../../../../shared/clientSide/page-banner/page-banner.component';
 import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/site-button.component';
 import { CoureseAudienceComponent } from '../courese-audience/courese-audience.component';
@@ -40,6 +40,17 @@ export class LiveCourseComponent {
   enrollImage = 'assets/images/enroll.png';
   courseImage = "assets/images/recordedCourse.jpeg";
 
+  liveCourseContent = computed(() => {
+    const cert = this.shared.currentCertificate();
+    const key = cert === 'capm' ? 'capm' : 'pmp';
+
+    return {
+      master: `liveCourse.${key}.master`,
+      title: `liveCourse.${key}.title`,
+      description: `liveCourse.${key}.description`,
+      price: `liveCourse.${key}.price`
+    };
+  });
 
   buyNow() {
     console.log('Buy Now clicked');

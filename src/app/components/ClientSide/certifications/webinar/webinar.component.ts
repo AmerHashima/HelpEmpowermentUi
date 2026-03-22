@@ -1,4 +1,4 @@
-import { Component, inject, ViewChild } from '@angular/core';
+import { Component, computed, inject, ViewChild } from '@angular/core';
 import { Shared } from '../../../../shared/Services/shared/shared';
 import { PageBannerComponent } from '../../../../shared/clientSide/page-banner/page-banner.component';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -24,6 +24,17 @@ export class WebinarComponent {
   isRTL = this.shared.isRtl;
   showConfirm = false;
   courseImage = "assets/images/webinar/webinar.jpeg";
+
+  webinarContent = computed(() => {
+    const cert = this.shared.currentCertificate();
+    const key = cert === 'capm' ? 'capm' : 'pmp';
+
+    return {
+      master: `webinar.${key}.master`,
+      title: `webinar.${key}.title`,
+      description: `webinar.${key}.description`
+    };
+  });
 
   webinar = {
     fullname: '',

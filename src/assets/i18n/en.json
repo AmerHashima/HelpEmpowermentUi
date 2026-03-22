@@ -438,10 +438,18 @@
     "unlockMessage": "Unlock your next level, join our courses and gain the skills to turn your goals into reality."
   },
   "examSimulator": {
-    "price":"299 AED",
-    "masterPmp": "Master the PMP exam environment.",
-    "realisticSimulation": "Your most realistic exam simulation begins now.",
-    "description": "The closest experience to the real exam, available whenever you need it. Build unshakable exam-day confidence with full-length simulated tests designed by PMP-certified experts. Practice with hundreds of realistic, scenario-based questions that mirror PMI's style and complexity. Learn from detailed answer explanations that don't just tell you what's right—they show you why. Track your progress across every domain and identify exactly where to focus your final study efforts. A structured simulation path designed for your success. 9 Exams – 1,620 Questions – Practice Mode & Exam Mode – Reports & Lesson learned Questions – 9 months access",
+      "pmp": {
+        "master": "Master the PMP exam environment.",
+        "realisticSimulation": "Your most realistic exam simulation begins now.",
+            "description": "The closest experience to the real exam, available whenever you need it. Build unshakable exam-day confidence with full-length simulated tests designed by PMP-certified experts. Practice with hundreds of realistic, scenario-based questions that mirror PMI's style and complexity. Learn from detailed answer explanations that don't just tell you what's right—they show you why. Track your progress across every domain and identify exactly where to focus your final study efforts. A structured simulation path designed for your success. 9 Exams – 1,620 Questions – Practice Mode & Exam Mode – Reports & Lesson learned Questions – 9 months access",
+          "price": "299 AED"
+      },
+      "capm": {
+        "master": "Master CAPM",
+        "realisticSimulation": "Realistic Exam Simulation",
+        "description": "Get ready for CAPM with a realistic simulator designed for beginners and aspiring project managers.",
+        "price": "199 AED"
+      },
     "buyNow": "Buy Now",
     "addToCart": "Add to cart",
     "everythingYouNeed": "Everything You Need to Pass",
@@ -505,6 +513,44 @@
       "description": "Reach out anytime, we're here to ensure your journey to PMP success is smooth and supported."
     }
   ],
+  "capmBenefits": {
+    "0": {
+      "title": "Always Current",
+      "description": "Matches the latest CAPM exam format and content."
+    },
+    "1": {
+      "title": "Massive Practice Bank",
+      "description": "600 realistic questions across 4 full exams."
+    },
+    "2": {
+      "title": "Two Smart Modes",
+      "description": "Practice without time pressure or simulate the real exam."
+    },
+    "3": {
+      "title": "Learn, Don't Memorize",
+      "description": "Detailed explanations for every answer to build understanding."
+    },
+    "4": {
+      "title": "Lesson Learned Feature",
+      "description": "Practice your incorrect questions until they become strengths."
+    },
+    "5": {
+      "title": "Performance Analytics Dashboard",
+      "description": "See exactly what to improve with clear visual reports."
+    },
+    "6": {
+      "title": "Unlimited Attempts",
+      "description": "Practice as much as you need until you feel fully ready."
+    },
+    "7": {
+      "title": "9-Month Access",
+      "description": "Full 9 months of unlimited access to all simulator features."
+    },
+    "8": {
+      "title": "Always Here to Help",
+      "description": "Reach out anytime, we're here to support your CAPM journey."
+    }
+  },
   "Experience the Exam Simulator":"Experience the Exam Simulator",
   "exam": {
       "pass": "Pass",
@@ -550,16 +596,32 @@
     "readLess": "Read Less"
   },
   "recordedCourse": {
-    "price":"199 AED",
-    "masterPmp": "Learn PMP mastery on your own schedule,",
-    "title": " your journey to PMP can begin right now",
-    "description": "World-class PMP training that fits your calendar, not the other way around. Access proven PMP strategies from certified experts, available 24/7. Master every domain of the PMBOK®️ Guide at the pace that works for you. Pause, rewind, and revisit complex topics until they click—on your terms. A structured path to certification designed for busy professionals. Downloadable resources, templates, and study guides to reinforce learning."
+        "pmp": {
+          "price": "199 AED",
+          "master": "Learn PMP mastery on your own schedule,",
+          "title": "your journey to PMP can begin right now",
+          "description": "World-class PMP training that fits your schedule, not the other way around. Access proven PMP strategies from certified experts anytime. Master every PMBOK® Guide domain at your own pace. Pause, rewind, and revisit complex topics until they fully click. A structured learning path designed for busy professionals, including downloadable resources, templates, and study guides."
+        },
+        "capm": {
+          "price": "199 AED",
+          "master": "Start your CAPM journey at your own pace,",
+          "title": "your path to CAPM success starts here",
+          "description": "Flexible CAPM training designed for beginners and aspiring project managers. Learn core concepts step by step with easy-to-follow lessons. Study anytime, revisit topics freely, and build strong foundations in project management. Includes practical examples, downloadable materials, and guided learning to help you pass with confidence."
+        }
   },
   "liveCourse": {
-    "price":"579 AED",
-    "masterPmp": "Transform your career with live PMP guidance,",
-    "title": " Your interactive path to certification begins now.",
+      "pmp": {
+        "price": "579 AED",
+        "master": "Transform your career with live PMP guidance,",
+        "title": "Your interactive path to certification begins now.",
     "description": "Real-time instruction that brings the PMBOK®️ Guide to life in your own projects. Get direct, personalized answers from expert instructors who guide you through every complex topic. Connect your PMP study directly to your current role—learn strategies you can apply immediately to enhance your real-world project management practice. Collaborate with peers facing similar challenges in a dynamic, supportive cohort. A structured yet adaptive live journey designed to certify you and elevate your professional impact from day one."
+  },
+      "capm": {
+        "price": "579 AED",
+        "master": "Start your CAPM journey with live guidance,",
+        "title": "Your interactive learning experience begins now.",
+        "description": "Join live CAPM sessions designed for beginners. Learn project management concepts step by step with expert instructors. Ask questions in real time, engage with peers, and build confidence through guided learning. A supportive and structured path to help you pass CAPM successfully."
+      }
   },
   "courseOutlines": {
     "pmp": [
@@ -587,20 +649,35 @@
     ]
   },
   "quizGame": {
-    "masterPmp": "Level Up Your PMP Knowledge",
-    "title": " Master the Essentials Through Play",
-    "description": "Turn PMP mastery into a challenge you can’t put down. Test your skills with our interactive quiz game, built on the core subjects and essential terminology of the exam. Learn through action with intuitive drag-and-drop puzzles, quick-fire questions, and bite-sized levels designed to reinforce key concepts. Track your progress, climb the leaderboard, and see how you rank against peers while building genuine confidence from the ground up. Whether you’re starting fresh or sharpening your expertise—this is PMP prep, reinvented.",
-    "play": "Play Now"
+    "pmp": {
+      "master": "Level Up Your PMP Knowledge",
+      "title": "Master the Essentials Through Play",
+      "description": "Turn PMP mastery into an engaging challenge. Test your knowledge with an interactive quiz game built around core exam topics and terminology. Practice through drag-and-drop activities, quick questions, and bite-sized levels designed to reinforce key concepts. Track your progress, compete on the leaderboard, and build real confidence step by step.",
+      "play": "Play Now"
+    },
+    "capm": {
+      "master": "Boost Your CAPM Knowledge",
+      "title": "Learn Through Interactive Play",
+      "description": "Make learning CAPM concepts fun and effective. Practice with interactive quizzes covering essential topics and terminology. Solve quick challenges, improve step by step, and build strong fundamentals while enjoying the learning process.",
+      "play": "Play Now"
+    }
   },
   "webinar": {
-    "masterPmp": "Get Your PMP Roadmap, Live & Free. Unlock",
-    "title": " Your 2-Hour Path to Certification Clarity.",
+      "pmp": {
+        "master": "Get Your PMP Roadmap, Live & Free. Unlock",
+        "title": " Your 2-Hour Path to Certification Clarity.",
+    "description": "Join a live, interactive session to demystify the PMP certification. In just 2 hours, get a complete breakdown of PMP eligibility requirements and the current exam format. Master key terminology and get your personal questions answered live by a PMP expert. Walk away with actionable next steps and a special opportunity to explore our full suite of tools—including a hands-on look at our exam simulator and a preview of our recorded and live courses—so you can choose the right path for your success."
+  },
+      "capm": {
+        "master": "Join our CAPM webinar,",
+        "title": "start your journey with confidence",
+        "description": "Get introduced to CAPM fundamentals through live sessions. Understand the exam structure, key concepts, and how to prepare effectively with expert guidance."
+      },
     "fullnameLabel": "Full Name",
     "fullnamePlaceholder": "Enter your full name",
     "positionLabel": "Job Title / Position",
     "positionPlaceholder": "Enter your current position",
-    "webinarButton": "Register Now",
-    "description": "Join a live, interactive session to demystify the PMP certification. In just 2 hours, get a complete breakdown of PMP eligibility requirements and the current exam format. Master key terminology and get your personal questions answered live by a PMP expert. Walk away with actionable next steps and a special opportunity to explore our full suite of tools—including a hands-on look at our exam simulator and a preview of our recorded and live courses—so you can choose the right path for your success."
+    "webinarButton": "Register Now"
   },
   "courseArticles": {
     "masterPmp": "Bridge Theory with Reality, ",

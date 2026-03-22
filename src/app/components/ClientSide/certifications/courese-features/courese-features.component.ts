@@ -164,6 +164,8 @@ export class CoureseFeaturesComponent {
     console.log('buy now');
   }
 
+
+
   courseFeatures = computed(() => {
     if (this.certification() === 'pmp' && this.type() === 'features')
       return [
