@@ -41,25 +41,29 @@ export class ChooseExamComponent {
       r => r.coursesMasterExamOid === examId && r.startedAt && r.finishedAt
     );
   });
-  latestReport = signal<APIExamSummary|null>(null);
+  // latestReport = signal<APIExamSummary|null>(null);
+  latestReport = this.studentExamService.latestReport;
+
 
   private getStorageKey(examId: string, mode: string) {
     return `exam-progress-student_${this.auth.loggedStudent()?.userId}-${mode}-${examId}`;
   }
 
    ngOnInit(): void {
-      const payload: ExamSummary ={
-        studentId: this.auth.loggedStudent()?.userId!,
-        masrterExamId: this.shared.currentExamId()
-      }
-      this.studentExamService.getExamSummary(payload).subscribe({
-        next: (report) => {
-          this.latestReport.set(report);
-        },
-        error: (err) => {
-          console.log(err);
-        }
-      })
+     this.studentExamService.loadLatestReport();
+
+      // const payload: ExamSummary ={
+      //   studentId: this.auth.loggedStudent()?.userId!,
+      //   masrterExamId: this.shared.currentExamId()
+      // }
+      // this.studentExamService.getExamSummary(payload).subscribe({
+      //   next: (report) => {
+      //     this.latestReport.set(report);
+      //   },
+      //   error: (err) => {
+      //     console.log(err);
+      //   }
+      // })
 
     }
 
@@ -95,7 +99,7 @@ export class ChooseExamComponent {
 
     }
     else {
-      this.studentExamService.startExam(this.getStartExamPayload())
+      this.studentExamService.startExam(this.getStartExamPayload(mode))
         .subscribe({
           next: (exam) => {
             console.log('in start');
@@ -144,10 +148,11 @@ export class ChooseExamComponent {
     console.log('start free exam');
   }
 
-  getStartExamPayload() {
+  getStartExamPayload(mode:string) {
     const payload = {
       studentOid: this.auth.loggedStudent()?.userId!,
       coursesMasterExamOid: this.shared.currentExamId(),
+      examModeLookupId: mode === 'Exam' ? "dddddddd-dddd-dddd-1212-dddddddddd02" :"dddddddd-dddd-dddd-1212-dddddddddd01",
       attemptNo: 0,
       createdBy: this.auth.loggedStudent()?.userId!
     }
@@ -199,7 +204,14 @@ export class ChooseExamComponent {
     // };
 
     // localStorage.setItem('lessonLearnedStatus', JSON.stringify(data));
-     this.latestReport.set(null);
-     this.showClearLessonLearned=false;
+    const report = this.latestReport();
+
+    if (!report) return;
+
+    this.studentExamService.clearLessonLearnedQuestions(report).subscribe({
+      next: () => this.showClearLessonLearned = false
+    });
+    //  this.latestReport.set(null);
+    //  this.showClearLessonLearned=false;
   }
 }

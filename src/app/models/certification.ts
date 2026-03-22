@@ -118,6 +118,8 @@ export interface APIStudentExamResponse {
   passPercent:number,
   isPassed:boolean,
   examStatusLookupId:string,
+  examModeLookupId:string,
+  examModeName:string,
   examStatusName:string,
   startedAt: string | null;
   finishedAt: string | null;
@@ -146,6 +148,8 @@ export interface APIExamSummary{
   startedAt:string,
   finishedAt: string,
   totalQuestions: number,
+  examModeLookupId: string,
+  examModeName: string,
   statusSummary: StatusSummary[]
 }
 export interface StatusSummary{

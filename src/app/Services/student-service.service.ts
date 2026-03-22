@@ -150,19 +150,6 @@ export class StudentService {
       );
   }
 
-  // startExam(body: startStudentExam): Observable<APIStudentExamResponse> {
-  //   return this.apiService
-  //     .post<ApiResponse<APIStudentExamResponse>>('StudnetExams/start', body, "Exam has been started!")
-  //     .pipe(
-  //       map((response: ApiResponse<APIStudentExamResponse>) => {
-  //         if (!response.success) {
-  //           const msg = response.errors?.join(', ') || response.message || 'API failed to start exam';
-  //           throw new Error(msg);
-  //         }
-  //         return response.data;
-  //       })
-  //     );
-  // }
 
   //student Courses
   enrollCourse(body: StudentCourse): Observable<APIStudentCourse> {

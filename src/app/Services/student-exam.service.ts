@@ -7,6 +7,7 @@ import { ApiResponse, ApiSearchResponse } from '../models/apiResponse';
 import { APIExamSummary, APIStudentExamResponse, choiceQuestionExamSubmit, ExamSummary, matchingQuestionExamSubmit, startStudentExam, submitStudentExam } from '../models/certification';
 import { RequestBody } from '../models/rquest';
 import { AuthService } from './auth.service';
+import { Shared } from '../shared/Services/shared/shared';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +15,10 @@ import { AuthService } from './auth.service';
 export class StudentExamService {
 
   private auth = inject(AuthService);
+  private shared=inject(Shared);
   examIdsToDelete = this.auth.examIdsToDelete;
   reports = signal<APIStudentExamResponse[]>([]);
+  latestReport = signal<APIExamSummary | null>(null);
 
   // successRate = computed(() => {
   //   const reports = this.reports();
@@ -164,6 +167,25 @@ export class StudentExamService {
       );
   }
 
+  updateExamStatus(id: string, body: any): Observable<APIStudentExamResponse> {
+      const updateBody:any = {
+        ...body,
+        oid: id,
+      };
+
+      return this.apiService
+        .put<ApiResponse<APIStudentExamResponse>>('StudentExams', id, updateBody, 'Exam has been cleared successfully')
+        .pipe(
+          map((response: ApiResponse<APIStudentExamResponse>) => {
+            if (!response.success) {
+              const msg = response.errors?.join(', ') || response.message || 'API failed to update exam';
+              throw new Error(msg);
+            }
+            return response.data;
+          })
+        );
+    }
+
   searchStudentExam(body: RequestBody): Observable<{ studenExams: APIStudentExamResponse[]; total: number }> {
     return this.apiService
       .query<ApiSearchResponse<APIStudentExamResponse>>('StudentExams/search', body)
@@ -210,5 +232,43 @@ export class StudentExamService {
       );
   }
 
+  getExamPayload(report: APIExamSummary) {
 
+    const payload = {
+      oid: report.studentExamOid,
+      totalScore: report.totalScore,
+      obtainedScore: report.obtainedScore,
+      passPercent: report.percentage != null ? Math.round(report.percentage) : null,
+      isPassed: report.isPassed,
+      examStatusLookupId: "12516b05-9d35-4499-9122-9561dfb4a9ce",
+      examModeLookupId: report.examModeLookupId,
+      finishedAt: report.finishedAt,
+      updatedBy: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+    }
+
+    return payload;
+  }
+
+  clearLessonLearnedQuestions(report: APIExamSummary): Observable<APIStudentExamResponse> {
+    const payload = this.getExamPayload(report);
+
+    return this.updateExamStatus(payload.oid!, payload).pipe(
+      map((res) => {
+        this.latestReport.set(null);
+        return res;
+      })
+    );
+  }
+
+  loadLatestReport(): void {
+    const payload: ExamSummary = {
+      studentId: this.auth.loggedStudent()?.userId!,
+      masrterExamId: this.shared.currentExamId()
+    };
+
+    this.getExamSummary(payload).subscribe({
+      next: (report) => this.latestReport.set(report),
+      error: (err) => console.log(err)
+    });
+  }
 }

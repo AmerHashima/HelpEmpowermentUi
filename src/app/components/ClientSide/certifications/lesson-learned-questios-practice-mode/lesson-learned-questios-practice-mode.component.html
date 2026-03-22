@@ -1,19 +1,4 @@
 @if (currentQuestion()) {
-  <!-- <app-client-exam-question
-    [question]="currentQuestion()"
-    mode="practice"
-    (next)="goToNext($event)"
-    (previous)="goToPrevious()"
-    (showBoard)="onOpenQuestionBoard($event)"
-    [isMarked]="isMarked()"
-      [answerLocked]="isAnswerLocked()"
-
-    (saveForLater)="onSaveForLater()"
-    (mark)="onMarkQuestion($event)"
-      (revealAnswer)="onRevealAnswer($event)"
-
-    (finishExam)="finishExam($event)"
-  /> -->
     <app-client-exam-question
     [question]="currentQuestion()"
     mode="practice"
@@ -54,30 +39,7 @@
           <span>Answered-Marked</span>
         </div>
       </div>
-      <!-- <div class="row g-1 flex-wrap">
-        @for (
-          question of boardQuestions();
-          let index = $index;
-          track index
-        ) {
-          <div class="col-2">
-            <div
-              class="d-flex gap-1 align-items-center justify-content-center p-1 rounded rounded-2 question-box"
-              [ngClass]="question.status"
-              (click)="navigateToQuestion(index)"
-            >
-              @if (question.status == "marked") {
-                <i class="bi bi-flag-fill"></i>
-              } @else {
-                <i class="bi bi-question-circle-fill"></i>
-              }
-              <p class="text-center me-auto">Q{{ index + 1 }}</p>
-            </div>
-          </div>
-        } @empty {
-          <p>No questions</p>
-        }
-      </div> -->
+     
       <div class="row g-1 flex-wrap">
         @for (question of boardQuestions(); let index = $index; track index) {
           <div class="col-2  flex-grow-1">

@@ -1,5 +1,5 @@
 import { isPlatformBrowser, Location } from '@angular/common';
-import { Component, computed, inject, Inject,  output, PLATFORM_ID, signal } from '@angular/core';
+import { Component, computed, inject, Inject, output, PLATFORM_ID, signal } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { StudentExamService } from '../../../Services/student-exam.service';
 import { Shared } from '../../../shared/Services/shared/shared';
@@ -15,12 +15,13 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrl: './exam-lesson-learned-questions.component.scss'
 })
 export class ExamLessonLearnedQuestionsComponent {
-  private studentExamService=inject(StudentExamService);
+  private studentExamService = inject(StudentExamService);
   private auth = inject(AuthService);
-  private shared=inject(Shared);
-  private router=inject(Router);
-  private route=inject(ActivatedRoute);
-  latestReport = signal<APIExamSummary|null>(null);
+  private shared = inject(Shared);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+  // latestReport = signal<APIExamSummary | null>(null);
+  latestReport = this.studentExamService.latestReport;
   statusStats = computed(() => {
     const summary = this.latestReport()?.statusSummary ?? [];
 
@@ -44,19 +45,20 @@ export class ExamLessonLearnedQuestionsComponent {
   ) { }
 
   ngOnInit(): void {
-    const payload: ExamSummary ={
-      studentId: this.auth.loggedStudent()?.userId!,
-      masrterExamId: this.shared.currentExamId()
-    }
-    console.log(payload);
-    this.studentExamService.getExamSummary(payload).subscribe({
-      next: (report) => {
-        this.latestReport.set(report);
-      },
-      error: (err) => {
-        console.log(err);
-      }
-    })
+    this.studentExamService.loadLatestReport();
+    // const payload: ExamSummary = {
+    //   studentId: this.auth.loggedStudent()?.userId!,
+    //   masrterExamId: this.shared.currentExamId()
+    // }
+    // console.log(payload);
+    // this.studentExamService.getExamSummary(payload).subscribe({
+    //   next: (report) => {
+    //     this.latestReport.set(report);
+    //   },
+    //   error: (err) => {
+    //     console.log(err);
+    //   }
+    // })
 
   }
 
@@ -127,11 +129,33 @@ export class ExamLessonLearnedQuestionsComponent {
   }
 
   clearLesson() {
-    this.lessonCleared.set(true);
+    const report = this.latestReport();
+
+    if (!report) return;
+
+    this.studentExamService.clearLessonLearnedQuestions(report).subscribe({
+      next: () => this.lessonCleared.set(true)
+    });
   }
-  startNewExam(){
-      if (isPlatformBrowser(this.platformId)) {
-        this.location.back();
-      }
-}
+
+  startNewExam() {
+    if (isPlatformBrowser(this.platformId)) {
+      this.location.back();
+    }
+  }
+  // getExamPayload() {
+  //   const payload = {
+  //     oid: this.latestReport()?.studentExamOid,
+  //     totalScore: this.latestReport()?.totalScore,
+  //     obtainedScore: this.latestReport()?.obtainedScore,
+  //     passPercent: this.latestReport()?.percentage,
+  //     isPassed: this.latestReport()?.isPassed,
+  //     examStatusLookupId: "12516b05-9d35-4499-9122-9561dfb4a9ce",
+  //     examModeLookupId: this.latestReport()?.examModeLookupId,
+  //     finishedAt: this.latestReport()?.finishedAt,
+  //     updatedBy: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+  //   }
+
+  //   return payload;
+  // }
 }
