@@ -68,7 +68,7 @@ export class RecordedCourseComponent {
     if (this.cartService.courseExists(courseId)) {
 
       if (this.cartService.isInCart(courseId, 'recordedCourseReserv')) {
-        this.toasting.showToast('Item is already added before', 'warning');
+        this.toasting.showToast('cart.exist', 'warning');
         return;
       }
 

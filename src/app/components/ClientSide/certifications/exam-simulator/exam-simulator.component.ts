@@ -268,7 +268,7 @@ export class ExamSimulatorComponent {
     if (this.cartService.courseExists(courseId)) {
 
       if (this.cartService.isInCart(courseId, 'examSimulationReserv')) {
-        this.toasting.showToast('Item is already added before', 'warning');
+        this.toasting.showToast('cart.exist', 'warning');
         return;
       }
 

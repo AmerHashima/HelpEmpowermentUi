@@ -203,7 +203,7 @@ export class ExamComponent {
       localStorage.removeItem('currentExam');
       localStorage.removeItem('currentExamId');
       localStorage.removeItem('studentExamId');
-      this.toasting.showToast('Exam has been saved for later', 'success');
+      this.toasting.showToast('examToast.save.success', 'success');
     }
 
     this.router.navigate(['../../exam-simulator'], {
@@ -648,10 +648,10 @@ export class ExamComponent {
 
       if (newMarks.has(oid)) {
         newMarks.delete(oid);
-        this.toasting.showToast('Mark removed', 'info');
+        this.toasting.showToast('question.mark.remove', 'info');
       } else {
         newMarks.add(oid);
-        this.toasting.showToast('Question marked successfully', 'success');
+        this.toasting.showToast('question.mark.add', 'success');
       }
 
       return newMarks;

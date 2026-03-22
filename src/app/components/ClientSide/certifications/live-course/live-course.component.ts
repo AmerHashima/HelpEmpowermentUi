@@ -68,7 +68,7 @@ export class LiveCourseComponent {
     if (this.cartService.courseExists(courseId)) {
 
       if (this.cartService.isInCart(courseId, 'liveCourseReserv')) {
-        this.toasting.showToast('Item is already added before', 'warning');
+        this.toasting.showToast('cart.exist', 'warning');
         return;
       }
 

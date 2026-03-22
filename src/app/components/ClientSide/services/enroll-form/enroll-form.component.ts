@@ -79,7 +79,7 @@ export class EnrollFormComponent {
 
       // this.sendSuccess = true;
       // this.submitted.emit(enrollMessageData);  // keep your original output if needed
-       this.toasting.showToast('Your Mesaage has been sent successfully','success');
+       this.toasting.showToast('enroll.sent.success','success');
       // Optional: reset form after success
       // this.enroll = {
       //   fullname: '',
@@ -91,7 +91,7 @@ export class EnrollFormComponent {
       form.resetForm();   // clears touched state too
 
     } catch (err: any) {
-      this.toasting.showToast("Your Mesaage hasn't been sent", 'error');
+      this.toasting.showToast("enroll.sent.error", 'error');
       // console.error('EmailJS failed:', err);
       // this.sendError = 'فشل إرسال الطلب. حاول مرة أخرى أو تواصل معنا مباشرة.';
     }

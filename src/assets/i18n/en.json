@@ -12,7 +12,6 @@
       "PMP": "Project Management Professional (PMP)",
       "CAMP": "Certified Associate in Project Management (CAPM)"
     },
-
     "services_children": {
       "manpower": "Manpower",
       "PMO": "PMO Setup & Operation",
@@ -25,7 +24,38 @@
     "login": "Login",
     "signup": "Sign Up",
     "profile": "Profile",
-    "logout": "Logout"
+    "logout": "Logout",
+    "loginToast": {
+      "success": "Logged in successfully",
+      "error": "Invalid username or password"
+    },
+    "register": {
+      "success": "Account created successfully",
+      "error": "Failed to create account"
+    },
+    "logoutToast": {
+      "success": "Logged out successfully",
+      "error": "Failed to logout"
+    },
+    "password": {
+      "change": {
+        "success": "Password changed successfully",
+        "error": "Failed to change password"
+      },
+      "reset": {
+        "success": "Password reset email sent",
+        "error": "Failed to send reset email"
+      },
+      "forget": {
+        "success": "Password reset request sent",
+        "error": "Failed to send request"
+      }
+    },
+    "token": {
+      "refresh": {
+        "error": "Session expired, please login again"
+      }
+    }
   },
   "home": {
     "hero": {
@@ -39,24 +69,24 @@
       "corporate": "For Corporate"
     },
     "certifications": {
-        "pmp": {
-          "title": "PMP® Certification",
-          "subtitle": "Project Management Professional",
-          "duration": "35 Hours",
-          "alt": "PMP Certification"
-        },
-        "capm": {
-          "title": "CAPM® Certification",
-          "subtitle": "Certified Associate in Project Management",
-          "duration": "23 Hours",
-          "alt": "CAPM Certification"
-        },
-        "tags": {
-          "advanced": "Advanced",
-          "global": "Global Standard",
-          "foundational": "Foundational",
-          "starter": "Career Starter"
-        },
+      "pmp": {
+        "title": "PMP® Certification",
+        "subtitle": "Project Management Professional",
+        "duration": "35 Hours",
+        "alt": "PMP Certification"
+      },
+      "capm": {
+        "title": "CAPM® Certification",
+        "subtitle": "Certified Associate in Project Management",
+        "duration": "23 Hours",
+        "alt": "CAPM Certification"
+      },
+      "tags": {
+        "advanced": "Advanced",
+        "global": "Global Standard",
+        "foundational": "Foundational",
+        "starter": "Career Starter"
+      },
       "subtitle": "Excellence in Training",
       "title": "Empower your Expertise",
       "description": "Move beyond theory. Our world-class certifications provide the actionable framework to turn knowledge into tangible results and recognized authority."
@@ -64,28 +94,28 @@
     "services": {
       "subtitle": "OUR EXPERTISE",
       "title": "Delivering tailored solutions that meet client's expectations",
-          "items": {
-            "pmo": {
-              "title": "PMO Setup & Operation",
-              "description": "Service involves establishing a Project Management Office (PMO) within the organization"
-            },
-            "maturity": {
-              "title": "Project Management Maturity Assessment",
-              "description": "Benchmark Your Capabilities. Chart Your Growth."
-            },
-            "training": {
-              "title": "Customized Training",
-              "description": "Tailored Excellence: Build Your Own Training Solution"
-            },
-            "manpower": {
-              "title": "Manpower (Post Your Vacancy)",
-              "description": "We empower your business with our network of exceptional professionals."
-            },
-            "pmis": {
-              "title": "Project Management Information System (PMIS)",
-              "description": "Empower Your Decisions with Smarter Data Insights"
-            }
+      "items": {
+        "pmo": {
+          "title": "PMO Setup & Operation",
+          "description": "Service involves establishing a Project Management Office (PMO) within the organization"
+        },
+        "maturity": {
+          "title": "Project Management Maturity Assessment",
+          "description": "Benchmark Your Capabilities. Chart Your Growth."
+        },
+        "training": {
+          "title": "Customized Training",
+          "description": "Tailored Excellence: Build Your Own Training Solution"
+        },
+        "manpower": {
+          "title": "Manpower (Post Your Vacancy)",
+          "description": "We empower your business with our network of exceptional professionals."
+        },
+        "pmis": {
+          "title": "Project Management Information System (PMIS)",
+          "description": "Empower Your Decisions with Smarter Data Insights"
         }
+      }
     },
     "articles": {
       "subtitle": "THOUGHT LEADERSHIP",
@@ -99,66 +129,64 @@
       "contactSupport": "Contact Support"
     }
   },
-"about": {
-  "hero": {
-    "feature": "Founder Message",
-    "question1": "A question has always driven me:",
-    "question2": "Why does so much training fail to deliver real results?",
-    "paragraph1": "I've observed the same struggle with PMO setup & operation and related project management activities where theory often fails to translate into effective practice. I founded",
-    "paragraph2": "with a single mission: to bridge the frustrating gap between theoretical knowledge and real-world success.",
-    "paragraph3": "In a world saturated with information, true power is no longer just in knowing, it's in doing."
+  "about": {
+    "hero": {
+      "feature": "Founder Message",
+      "question1": "A question has always driven me:",
+      "question2": "Why does so much training fail to deliver real results?",
+      "paragraph1": "I've observed the same struggle with PMO setup & operation and related project management activities where theory often fails to translate into effective practice. I founded",
+      "paragraph2": "with a single mission: to bridge the frustrating gap between theoretical knowledge and real-world success.",
+      "paragraph3": "In a world saturated with information, true power is no longer just in knowing, it's in doing."
+    },
+    "promise": {
+      "prefix": "That’s why our core promise is:",
+      "middle": "Linking Knowledge to",
+      "highlight": "Practical Execution"
+    },
+    "content": {
+      "bridgeBold": "We bridge",
+      "bridgeText": "the critical gap between learning and doing. Knowledge alone is not power; execution is.",
+      "teach": "We don't just teach;",
+      "equip": "we equip.",
+      "consult": "We don't just consult;",
+      "implement": "we implement.",
+      "commitmentBold": "We are committed",
+      "commitmentText": "to delivering training and services that reflect real-world challenges.",
+      "communityBold": "Our Training & Services Community:",
+      "communityText": "We are building a strong professional community focused on excellence and transformation."
+    },
+    "services": {
+      "individualEmpowerment": "Individual Empowerment",
+      "organizationalEmpowerment": "Organizational Empowerment",
+      "professionalCertifications": "Professional Certifications",
+      "pmoSetup": "PMO Setup & Operation",
+      "pmMaturity": "Project Management Maturity Assessment",
+      "pmis": "Project Management Information System (PMIS)",
+      "manpower": "Manpower Solutions",
+      "customTraining": "Customized Training",
+      "focusedTrainingTitle": "Focused, Practical Training:",
+      "focusedTrainingDesc": "Gain skills you can use at work the very next day.",
+      "jobReadyTitle": "Practical, Job-Ready Services:",
+      "jobReadyDesc": "Use what you learn immediately in your daily work.",
+      "globalCertTitle": "Globally Updated Certifications:",
+      "globalCertDesc": "Learn the latest standards that employers demand.",
+      "studyPlanTitle": "Smart Study Planning:",
+      "studyPlanDesc": "Follow a personalized path that maximizes your time and results.",
+      "expertTitle": "Learn from Certified Experts:",
+      "expertDesc": "Train with professionals who apply theory in real projects.",
+      "supportTitle": "Always-On Technical Support:",
+      "supportDesc": "Get instant help when you need it."
+    },
+    "footer": {
+      "promiseBold": "We promise",
+      "promiseText": "to deliver real value with practical, applicable solutions.",
+      "name": "Mahmoud Elhelbawi",
+      "title": "Founder"
+    },
+    "differ": {
+      "title": "What Makes Us Different"
+    }
   },
-  "promise": {
-    "prefix": "That’s why our core promise is:",
-    "middle": "Linking Knowledge to",
-    "highlight": "Practical Execution"
-  },
-  "content": {
-    "bridgeBold": "We bridge",
-    "bridgeText": "the critical gap between learning and doing. Knowledge alone is not power; execution is.",
-    "teach": "We don't just teach;",
-    "equip": "we equip.",
-    "consult": "We don't just consult;",
-    "implement": "we implement.",
-    "commitmentBold": "We are committed",
-    "commitmentText": "to delivering training and services that reflect real-world challenges.",
-    "communityBold": "Our Training & Services Community:",
-    "communityText": "We are building a strong professional community focused on excellence and transformation."
-  },
-  "services": {
-    "individualEmpowerment": "Individual Empowerment",
-    "organizationalEmpowerment": "Organizational Empowerment",
-    "professionalCertifications": "Professional Certifications",
-    "pmoSetup": "PMO Setup & Operation",
-    "pmMaturity": "Project Management Maturity Assessment",
-    "pmis": "Project Management Information System (PMIS)",
-    "manpower": "Manpower Solutions",
-    "customTraining": "Customized Training",
-    "focusedTrainingTitle": "Focused, Practical Training:",
-    "focusedTrainingDesc": "Gain skills you can use at work the very next day.",
-    "jobReadyTitle": "Practical, Job-Ready Services:",
-    "jobReadyDesc": "Use what you learn immediately in your daily work.",
-    "globalCertTitle": "Globally Updated Certifications:",
-    "globalCertDesc": "Learn the latest standards that employers demand.",
-    "studyPlanTitle": "Smart Study Planning:",
-    "studyPlanDesc": "Follow a personalized path that maximizes your time and results.",
-    "expertTitle": "Learn from Certified Experts:",
-    "expertDesc": "Train with professionals who apply theory in real projects.",
-    "supportTitle": "Always-On Technical Support:",
-    "supportDesc": "Get instant help when you need it."
-  },
-
-
-  "footer": {
-    "promiseBold": "We promise",
-    "promiseText": "to deliver real value with practical, applicable solutions.",
-    "name": "Mahmoud Elhelbawi",
-    "title": "Founder"
-  },
-  "differ": {
-    "title": "What Makes Us Different"
-  }
-},
   "footer": {
     "image": "Footer image",
     "copyright": "© 2026 Help Empowerment LLC. All rights reserved.",
@@ -176,11 +204,11 @@
       "8_min": "8 MIN READ",
       "6_min": "6 MIN READ"
     },
-"article1": {
-  "title": "CAPM Application Process",
-  "summary": "Applying for the CAPM certification is simple and requires only basic education and 23 hours of training. This guide walks you through creating your PMI account, completing the application, and scheduling your exam to start your project management journey with confidence."
-},
-"article2": {
+    "article1": {
+      "title": "CAPM Application Process",
+      "summary": "Applying for the CAPM certification is simple and requires only basic education and 23 hours of training. This guide walks you through creating your PMI account, completing the application, and scheduling your exam to start your project management journey with confidence."
+    },
+    "article2": {
       "title": "PMP Study Plan",
       "summary": "Passing the PMP exam requires a structured Methodology, much like managing a real project. Based on my experience and observing many candidates, I recommend dividing your preparation into five clear Phases"
     },
@@ -257,33 +285,33 @@
     "contactBtn": "Send Message"
   },
   "pmo": {
-      "cards": {
-        "success": {
-          "header": "Success Rates and Effectiveness",
-          "text": "Project success rates improve by 71% in organizations with an effective PMO.",
-          "source": "Source: The \"Pulse of the Profession\" study by the Project Management Institute (PMI)."
-        },
-        "budget": {
-          "header": "Adherence to Budget and Schedule",
-          "text": "64% of projects are completed within the allocated budget in organizations with a PMO, and on-time project completion improves by 58%.",
-          "source": "Source: The \"State of the PMO\" report by PwC."
-        },
-        "roi": {
-          "header": "Return on Investment (ROI) and Strategic Alignment",
-          "text": "52% increase in alignment of projects with strategic goals and 45% improvement in project ROI.",
-          "source": "Source: Research from PMI and Gartner."
-        },
-        "adoption": {
-          "header": "Adoption and Strategic Importance",
-          "text": "85% of major global companies have a PMO, and 78% of successful organizations consider it a critical success factor.",
-          "source": "Source: The \"Value of PMO\" survey by PM Solutions Research."
-        },
-        "financial": {
-          "header": "Financial Return on Investment in a PMO",
-          "text": "For every $1 invested in a PMO, the return is $2.50, and project failure rates decrease by 55%.",
-          "source": "Source: The \"ROI of PMO\" study by the PM World Journal."
-        }
+    "cards": {
+      "success": {
+        "header": "Success Rates and Effectiveness",
+        "text": "Project success rates improve by 71% in organizations with an effective PMO.",
+        "source": "Source: The \"Pulse of the Profession\" study by the Project Management Institute (PMI)."
       },
+      "budget": {
+        "header": "Adherence to Budget and Schedule",
+        "text": "64% of projects are completed within the allocated budget in organizations with a PMO, and on-time project completion improves by 58%.",
+        "source": "Source: The \"State of the PMO\" report by PwC."
+      },
+      "roi": {
+        "header": "Return on Investment (ROI) and Strategic Alignment",
+        "text": "52% increase in alignment of projects with strategic goals and 45% improvement in project ROI.",
+        "source": "Source: Research from PMI and Gartner."
+      },
+      "adoption": {
+        "header": "Adoption and Strategic Importance",
+        "text": "85% of major global companies have a PMO, and 78% of successful organizations consider it a critical success factor.",
+        "source": "Source: The \"Value of PMO\" survey by PM Solutions Research."
+      },
+      "financial": {
+        "header": "Financial Return on Investment in a PMO",
+        "text": "For every $1 invested in a PMO, the return is $2.50, and project failure rates decrease by 55%.",
+        "source": "Source: The \"ROI of PMO\" study by the PM World Journal."
+      }
+    },
     "DESCRIPTION": "The service involves establishing a Project Management Office (PMO) within the organization to centralize project management functions, standardize processes, and provide governance and support for projects. This includes defining the PMO's structure, roles and responsibilities, processes, tools, and methodologies tailored to meet the organization's specific needs and goals.",
     "IMPACT_TITLE": "Impact of a PMO",
     "IMPACT_TEXT": "The impact of a Project Management Office (PMO) extends beyond just improving project performance; it also enhances the organization's competitive position and ensures a tangible return on investment. These documented statistics reflect why the PMO has become a cornerstone of success for ambitious organizations worldwide.",
@@ -296,6 +324,10 @@
     "ENROLL_MESSAGE": "Do not hesitate to contact us. Together, we will develop an integrated solution that guarantees the achievement of your organization's goals and enhances the efficiency of your operations."
   },
   "enroll": {
+    "sent": {
+      "success": "Your Mesaage has been sent successfully",
+      "error": "Your Mesaage hasn't been sent"
+    },
     "enroll": "Enroll Now",
     "message": "Fill in the form below and our team will contact you shortly.",
     "fullnameLabel": "Full Name",
@@ -315,54 +347,53 @@
     "SECTION_TAG_TEXT": "We deliver guaranteed outcomes including faster data-driven decisions, complete portfolio visibility, 70% time savings on report generation, and enhanced collaboration, ensuring measurable improvements in efficiency and transparency.",
     "ENROLL_TITLE_1": "Ready to Empower Your Organization?",
     "ENROLL_TITLE_2": "Contact us today for a custom PMIS solution designed for your success",
-      "cards": {
-        "custom": {
-          "header": "Custom Design & Implementation",
-          "text": "We design and implement custom PMIS solutions tailored to your organization's needs."
-        },
-        "dashboard": {
-          "header": "Real-Time Dashboards",
-          "text": "We develop real-time dashboards and performance indicators to monitor project health."
-        },
-        "integration": {
-          "header": "Tool Integration",
-          "text": "We integrate tools like Microsoft Project, Jira, and Asana into one unified system."
-        },
-        "connectivity": {
-          "header": "Cross-Department Connectivity",
-          "text": "We connect data across departments for full visibility and better decision-making."
-        },
-        "training": {
-          "header": "Team Training",
-          "text": "We train your teams to maximize the system’s potential."
-        }
+    "cards": {
+      "custom": {
+        "header": "Custom Design & Implementation",
+        "text": "We design and implement custom PMIS solutions tailored to your organization's needs."
       },
-      "benefits": {
-        "tracking": "47% increase in project tracking efficiency (PMI – Pulse of the Profession)",
-        "reporting": "52% improvement in project reporting accuracy (Gartner Study)",
-        "time": "35% time savings in data collection and reporting (PwC Research)"
+      "dashboard": {
+        "header": "Real-Time Dashboards",
+        "text": "We develop real-time dashboards and performance indicators to monitor project health."
+      },
+      "integration": {
+        "header": "Tool Integration",
+        "text": "We integrate tools like Microsoft Project, Jira, and Asana into one unified system."
+      },
+      "connectivity": {
+        "header": "Cross-Department Connectivity",
+        "text": "We connect data across departments for full visibility and better decision-making."
+      },
+      "training": {
+        "header": "Team Training",
+        "text": "We train your teams to maximize the system’s potential."
       }
+    },
+    "benefits": {
+      "tracking": "47% increase in project tracking efficiency (PMI – Pulse of the Profession)",
+      "reporting": "52% improvement in project reporting accuracy (Gartner Study)",
+      "time": "35% time savings in data collection and reporting (PwC Research)"
+    }
   },
-
   "assessment": {
-      "cards": {
-        "strengths": {
-          "header": "Identifying strengths and weaknesses",
-          "text": "Assessing current project management practices to identify areas where your organization excels and areas that need improvement."
-        },
-        "improvement": {
-          "header": "Defining improvement strategies",
-          "text": "Developing strategies and action plans to enhance project management practices and capabilities within the organization."
-        },
-        "baseline": {
-          "header": "Establishing a baseline",
-          "text": "Establishing a benchmark of the organization's current project management maturity level to measure progress over time."
-        },
-        "performance": {
-          "header": "Enhancing project performance",
-          "text": "Improving project success rates, delivery times, cost-effectiveness, and overall outcomes by applying best practices."
-        }
+    "cards": {
+      "strengths": {
+        "header": "Identifying strengths and weaknesses",
+        "text": "Assessing current project management practices to identify areas where your organization excels and areas that need improvement."
       },
+      "improvement": {
+        "header": "Defining improvement strategies",
+        "text": "Developing strategies and action plans to enhance project management practices and capabilities within the organization."
+      },
+      "baseline": {
+        "header": "Establishing a baseline",
+        "text": "Establishing a benchmark of the organization's current project management maturity level to measure progress over time."
+      },
+      "performance": {
+        "header": "Enhancing project performance",
+        "text": "Improving project success rates, delivery times, cost-effectiveness, and overall outcomes by applying best practices."
+      }
+    },
     "MAIN_TITLE": "Project Management Maturity Assessment",
     "MAIN_DESCRIPTION": "A project management maturity assessment evaluates your organization's project management processes, tools, and practices, providing insights to improve efficiency and effectiveness.",
     "ENROLL_TITLE_1": "Interested in a PM Maturity Assessment?",
@@ -377,20 +408,20 @@
     "SECTION_TAG_TEXT": "We have conducted PM Maturity Assessments numerous times for diverse clients. We recommend that every organization perform this assessment annually to measure progress and development in their project management activities."
   },
   "training": {
-      "examples": {
-        "itStrategy": "IT Organization Strategy",
-        "portfolioManagement": "Portfolios, Programs & Projects Management in Construction",
-        "pmoVision": "PMO Vision in Government Sector",
-        "okrKpi": "OKRs & KPIs",
-        "reports": "Smart Reports and Dashboards",
-        "methodology": "PMO Methodology",
-        "governance": "PMO Governance & Templates",
-        "finance": "Smart Financing (Cashflow in/out – Budgeting)",
-        "capacity": "Capabilities & Capacity Management",
-        "quality": "Quality Management (QMS)",
-        "vendor": "Vendor Management",
-        "feasibility": "Feasibility Studies"
-      },
+    "examples": {
+      "itStrategy": "IT Organization Strategy",
+      "portfolioManagement": "Portfolios, Programs & Projects Management in Construction",
+      "pmoVision": "PMO Vision in Government Sector",
+      "okrKpi": "OKRs & KPIs",
+      "reports": "Smart Reports and Dashboards",
+      "methodology": "PMO Methodology",
+      "governance": "PMO Governance & Templates",
+      "finance": "Smart Financing (Cashflow in/out – Budgeting)",
+      "capacity": "Capabilities & Capacity Management",
+      "quality": "Quality Management (QMS)",
+      "vendor": "Vendor Management",
+      "feasibility": "Feasibility Studies"
+    },
     "MAIN_TITLE": "Tailored Excellence: Build Your Own Training Solution",
     "MAIN_DESCRIPTION": "Move beyond one-size-fits-all programs. Our Customized Training service is a collaborative partnership designed to address your organization's unique challenges, culture, and strategic objectives directly. We don't just deliver courses; we co-create targeted learning experiences that drive measurable performance improvement and align perfectly with your business goals.",
     "SECOND_DESCRIPTION": "We work closely with your leadership and subject-matter experts to analyze gaps, define precise learning outcomes, and develop a curriculum that resonates with your team. From integrating your real-world case studies and internal methodologies to aligning with your specific software and workflows, we ensure every module is relevant, practical, and immediately applicable.",
@@ -438,25 +469,25 @@
     "unlockMessage": "Unlock your next level, join our courses and gain the skills to turn your goals into reality."
   },
   "examSimulator": {
-      "pmp": {
-        "master": "Master the PMP exam environment.",
-        "realisticSimulation": "Your most realistic exam simulation begins now.",
-            "description": "The closest experience to the real exam, available whenever you need it. Build unshakable exam-day confidence with full-length simulated tests designed by PMP-certified experts. Practice with hundreds of realistic, scenario-based questions that mirror PMI's style and complexity. Learn from detailed answer explanations that don't just tell you what's right—they show you why. Track your progress across every domain and identify exactly where to focus your final study efforts. A structured simulation path designed for your success. 9 Exams – 1,620 Questions – Practice Mode & Exam Mode – Reports & Lesson learned Questions – 9 months access",
-          "price": "299 AED"
-      },
-      "capm": {
-        "master": "Master CAPM",
-        "realisticSimulation": "Realistic Exam Simulation",
-        "description": "Get ready for CAPM with a realistic simulator designed for beginners and aspiring project managers.",
-        "price": "199 AED"
-      },
+    "pmp": {
+      "master": "Master the PMP exam environment.",
+      "realisticSimulation": "Your most realistic exam simulation begins now.",
+      "description": "The closest experience to the real exam, available whenever you need it. Build unshakable exam-day confidence with full-length simulated tests designed by PMP-certified experts. Practice with hundreds of realistic, scenario-based questions that mirror PMI's style and complexity. Learn from detailed answer explanations that don't just tell you what's right—they show you why. Track your progress across every domain and identify exactly where to focus your final study efforts. A structured simulation path designed for your success. 9 Exams – 1,620 Questions – Practice Mode & Exam Mode – Reports & Lesson learned Questions – 9 months access",
+      "price": "299 AED"
+    },
+    "capm": {
+      "master": "Master CAPM",
+      "realisticSimulation": "Realistic Exam Simulation",
+      "description": "Get ready for CAPM with a realistic simulator designed for beginners and aspiring project managers.",
+      "price": "199 AED"
+    },
     "buyNow": "Buy Now",
     "addToCart": "Add to cart",
     "everythingYouNeed": "Everything You Need to Pass",
     "masterPmpQuestions": "Master the PMP exam with 1,640 realistic questions designed to ensure your success",
     "tryBeforeBuy": "Try Before you Buy",
     "experienceFree": "Experience the Exam Simulator for Free",
-    "ExperienceExamSimulator":"ExperienceExamSimulator",
+    "ExperienceExamSimulator": "ExperienceExamSimulator",
     "testBothModes": "Test both Practice Mode and Exam Mode to see how our simulator helps you succeed",
     "freeExam": "Free Exam",
     "freePreviewDescription": "Start with a free 10-question preview. The paid version delivers more of that great experience",
@@ -464,17 +495,16 @@
     "reportsAndLessons": "Reports - Lesson Learned Questions",
     "startFreeExam": "Start Free Exam - Try Now"
   },
-
-  "min":"min",
-      "Exam1": "Exam 1",
-      "Exam2": "Exam 2",
-      "Exam3": "Exam 3",
-      "Exam4": "Exam 4",
-      "Exam5": "Exam 5",
-      "Exam 6": "Exam 6",
-      "Exam 7": "Exam 7",
-      "Exam 8": "Exam 8",
-      "Exam 9": "Exam 9",
+  "min": "min",
+  "Exam1": "Exam 1",
+  "Exam2": "Exam 2",
+  "Exam3": "Exam 3",
+  "Exam4": "Exam 4",
+  "Exam5": "Exam 5",
+  "Exam 6": "Exam 6",
+  "Exam 7": "Exam 7",
+  "Exam 8": "Exam 8",
+  "Exam 9": "Exam 9",
   "examSimulatorBenefits": [
     {
       "title": "Always Current",
@@ -551,35 +581,34 @@
       "description": "Reach out anytime, we're here to support your CAPM journey."
     }
   },
-  "Experience the Exam Simulator":"Experience the Exam Simulator",
+  "Experience the Exam Simulator": "Experience the Exam Simulator",
   "exam": {
-      "pass": "Pass",
-      "fail": "Fail",
-      "duration": "Duration",
-      "minutes": "min",
-      "correct": "Correct",
-      "incorrect": "Incorrect",
-      "notAnswered": "Not Answered",
-      "checkPerformance": "Check Performance Levels Indicators",
-        "practiceMode": "Practice Mode",
-        "examMode": "Exam Mode",
-        "reports": "Reports",
-        "lessonLearned": "Lesson Learned Questions",
-        "noTime": "No Time",
-        "withTime": "With Time",
-        "showAnswers": "You can show the answers directly",
-        "hideAnswers": "You can’t show the answers directly",
-        "mustSolveFirst": "Must solve Exam Mode first",
-        "backToSimulator": "Back To Exam Simulator",
-        "alertMessage": "Alert Message",
-        "mustCompleteExam": "You must be enrolled in the exam and complete it in Exam Mode to view the report and lesson learned questions",
-        "clearLessonMessage": "Please clear the Lesson Learned section before starting a new exam. You won’t be able to begin the new exam until the Lesson Learned has been completed or cleared.",
-        "cancel": "Cancel",
-        "clearNow": "Clear Now",
+    "pass": "Pass",
+    "fail": "Fail",
+    "duration": "Duration",
+    "minutes": "min",
+    "correct": "Correct",
+    "incorrect": "Incorrect",
+    "notAnswered": "Not Answered",
+    "checkPerformance": "Check Performance Levels Indicators",
+    "practiceMode": "Practice Mode",
+    "examMode": "Exam Mode",
+    "reports": "Reports",
+    "lessonLearned": "Lesson Learned Questions",
+    "noTime": "No Time",
+    "withTime": "With Time",
+    "showAnswers": "You can show the answers directly",
+    "hideAnswers": "You can’t show the answers directly",
+    "mustSolveFirst": "Must solve Exam Mode first",
+    "backToSimulator": "Back To Exam Simulator",
+    "alertMessage": "Alert Message",
+    "mustCompleteExam": "You must be enrolled in the exam and complete it in Exam Mode to view the report and lesson learned questions",
+    "clearLessonMessage": "Please clear the Lesson Learned section before starting a new exam. You won’t be able to begin the new exam until the Lesson Learned has been completed or cleared.",
+    "cancel": "Cancel",
+    "clearNow": "Clear Now",
     "practiceAndExamMode": "Practice Mode - Exam Mode",
     "reportsAndLessons": "Reports - Lesson Learned Questions"
   },
-
   "common": {
     "required": "This field is required",
     "invalidFormat": "Invalid format",
@@ -596,32 +625,32 @@
     "readLess": "Read Less"
   },
   "recordedCourse": {
-        "pmp": {
-          "price": "199 AED",
-          "master": "Learn PMP mastery on your own schedule,",
-          "title": "your journey to PMP can begin right now",
-          "description": "World-class PMP training that fits your schedule, not the other way around. Access proven PMP strategies from certified experts anytime. Master every PMBOK® Guide domain at your own pace. Pause, rewind, and revisit complex topics until they fully click. A structured learning path designed for busy professionals, including downloadable resources, templates, and study guides."
-        },
-        "capm": {
-          "price": "199 AED",
-          "master": "Start your CAPM journey at your own pace,",
-          "title": "your path to CAPM success starts here",
-          "description": "Flexible CAPM training designed for beginners and aspiring project managers. Learn core concepts step by step with easy-to-follow lessons. Study anytime, revisit topics freely, and build strong foundations in project management. Includes practical examples, downloadable materials, and guided learning to help you pass with confidence."
-        }
+    "pmp": {
+      "price": "199 AED",
+      "master": "Learn PMP mastery on your own schedule,",
+      "title": "your journey to PMP can begin right now",
+      "description": "World-class PMP training that fits your schedule, not the other way around. Access proven PMP strategies from certified experts anytime. Master every PMBOK® Guide domain at your own pace. Pause, rewind, and revisit complex topics until they fully click. A structured learning path designed for busy professionals, including downloadable resources, templates, and study guides."
+    },
+    "capm": {
+      "price": "199 AED",
+      "master": "Start your CAPM journey at your own pace,",
+      "title": "your path to CAPM success starts here",
+      "description": "Flexible CAPM training designed for beginners and aspiring project managers. Learn core concepts step by step with easy-to-follow lessons. Study anytime, revisit topics freely, and build strong foundations in project management. Includes practical examples, downloadable materials, and guided learning to help you pass with confidence."
+    }
   },
   "liveCourse": {
-      "pmp": {
-        "price": "579 AED",
-        "master": "Transform your career with live PMP guidance,",
-        "title": "Your interactive path to certification begins now.",
-    "description": "Real-time instruction that brings the PMBOK®️ Guide to life in your own projects. Get direct, personalized answers from expert instructors who guide you through every complex topic. Connect your PMP study directly to your current role—learn strategies you can apply immediately to enhance your real-world project management practice. Collaborate with peers facing similar challenges in a dynamic, supportive cohort. A structured yet adaptive live journey designed to certify you and elevate your professional impact from day one."
-  },
-      "capm": {
-        "price": "579 AED",
-        "master": "Start your CAPM journey with live guidance,",
-        "title": "Your interactive learning experience begins now.",
-        "description": "Join live CAPM sessions designed for beginners. Learn project management concepts step by step with expert instructors. Ask questions in real time, engage with peers, and build confidence through guided learning. A supportive and structured path to help you pass CAPM successfully."
-      }
+    "pmp": {
+      "price": "579 AED",
+      "master": "Transform your career with live PMP guidance,",
+      "title": "Your interactive path to certification begins now.",
+      "description": "Real-time instruction that brings the PMBOK®️ Guide to life in your own projects. Get direct, personalized answers from expert instructors who guide you through every complex topic. Connect your PMP study directly to your current role—learn strategies you can apply immediately to enhance your real-world project management practice. Collaborate with peers facing similar challenges in a dynamic, supportive cohort. A structured yet adaptive live journey designed to certify you and elevate your professional impact from day one."
+    },
+    "capm": {
+      "price": "579 AED",
+      "master": "Start your CAPM journey with live guidance,",
+      "title": "Your interactive learning experience begins now.",
+      "description": "Join live CAPM sessions designed for beginners. Learn project management concepts step by step with expert instructors. Ask questions in real time, engage with peers, and build confidence through guided learning. A supportive and structured path to help you pass CAPM successfully."
+    }
   },
   "courseOutlines": {
     "pmp": [
@@ -663,16 +692,16 @@
     }
   },
   "webinar": {
-      "pmp": {
-        "master": "Get Your PMP Roadmap, Live & Free. Unlock",
-        "title": " Your 2-Hour Path to Certification Clarity.",
-    "description": "Join a live, interactive session to demystify the PMP certification. In just 2 hours, get a complete breakdown of PMP eligibility requirements and the current exam format. Master key terminology and get your personal questions answered live by a PMP expert. Walk away with actionable next steps and a special opportunity to explore our full suite of tools—including a hands-on look at our exam simulator and a preview of our recorded and live courses—so you can choose the right path for your success."
-  },
-      "capm": {
-        "master": "Join our CAPM webinar,",
-        "title": "start your journey with confidence",
-        "description": "Get introduced to CAPM fundamentals through live sessions. Understand the exam structure, key concepts, and how to prepare effectively with expert guidance."
-      },
+    "pmp": {
+      "master": "Get Your PMP Roadmap, Live & Free. Unlock",
+      "title": " Your 2-Hour Path to Certification Clarity.",
+      "description": "Join a live, interactive session to demystify the PMP certification. In just 2 hours, get a complete breakdown of PMP eligibility requirements and the current exam format. Master key terminology and get your personal questions answered live by a PMP expert. Walk away with actionable next steps and a special opportunity to explore our full suite of tools—including a hands-on look at our exam simulator and a preview of our recorded and live courses—so you can choose the right path for your success."
+    },
+    "capm": {
+      "master": "Join our CAPM webinar,",
+      "title": "start your journey with confidence",
+      "description": "Get introduced to CAPM fundamentals through live sessions. Understand the exam structure, key concepts, and how to prepare effectively with expert guidance."
+    },
     "fullnameLabel": "Full Name",
     "fullnamePlaceholder": "Enter your full name",
     "positionLabel": "Job Title / Position",
@@ -685,14 +714,14 @@
     "description": "Go beyond the exam with real-world PMP wisdom. Access our curated library of articles where PMI standards meet practical execution. Discover how certified professionals apply methodologies in real environments, adapt to industry trends, and solve complex project challenges. Stay ahead with updates on evolving frameworks, practical case studies, and strategies you can implement immediately. This is where certification knowledge transforms into career authority."
   },
   "reviews": {
-      "topics": {
-        "pmp": "PMP",
-        "agile": "Agile Management",
-        "scrum": "Scrum Master",
-        "projectManagement": "Project Management"
-      },
-      "Topic:":"Topic:",
-      "Reviewed":"Reviewed",
+    "topics": {
+      "pmp": "PMP",
+      "agile": "Agile Management",
+      "scrum": "Scrum Master",
+      "projectManagement": "Project Management"
+    },
+    "Topic:": "Topic:",
+    "Reviewed": "Reviewed",
     "items": [
       {
         "description": "The PMP course was extremely well structured and easy to follow. The explanations were clear, practical, and helped me pass the exam on my first attempt."
@@ -715,20 +744,20 @@
     "trustedBy": "Trusted by professionals who passed the PMP with confidence.",
     "description": "Built to deliver results—not just content.Our approach transforms PMP preparation into an active experience, reinforcing essential knowledge through practice, progress tracking, and measurable improvement. The feedback speaks for itself."
   },
-    "tabs": {
-      "examSimulator": "Exam Simulator",
-      "recordedCourse": "Recorded Course",
-      "liveCourse": "Live Course",
-      "webinar": "Webinar",
-      "quizGame": "Quiz Game",
-      "articles": "Articles",
-      "faqs": "FAQs",
-      "reviews": "Reviews"
-    },
-    "manpower": {
-      "postVacancy": "Post a vacancy",
-      "jobSeeker": "Job Seeker"
-    },
+  "tabs": {
+    "examSimulator": "Exam Simulator",
+    "recordedCourse": "Recorded Course",
+    "liveCourse": "Live Course",
+    "webinar": "Webinar",
+    "quizGame": "Quiz Game",
+    "articles": "Articles",
+    "faqs": "FAQs",
+    "reviews": "Reviews"
+  },
+  "manpower": {
+    "postVacancy": "Post a vacancy",
+    "jobSeeker": "Job Seeker"
+  },
   "addReview": {
     "title": "Share your experience with us",
     "reviewButton": "Add Review"
@@ -737,24 +766,24 @@
     "title": "Register for the Webinar",
     "subTitle": "Fill in your details below to secure your free spot."
   },
-"sessions": {
-  "date": {
-    "jan15": "Jan 15, 2026",
-    "jan16": "Jan 16, 2026",
-    "jan17": "Jan 17, 2026"
+  "sessions": {
+    "date": {
+      "jan15": "Jan 15, 2026",
+      "jan16": "Jan 16, 2026",
+      "jan17": "Jan 17, 2026"
+    },
+    "time": {
+      "morningSlot": "10:00 AM - 2:00 PM EST"
+    },
+    "webinar": {
+      "session1": "Introduction Session"
+    },
+    "course": {
+      "integration": "Integration Session"
+    }
   },
-  "time": {
-    "morningSlot": "10:00 AM - 2:00 PM EST"
-  },
-  "webinar": {
-    "session1": "Introduction Session"
-  },
-  "course": {
-    "integration": "Integration Session"
-  }
-},
-"2 Hours": "2 Hours",
-"Free": "Free",
+  "2 Hours": "2 Hours",
+  "Free": "Free",
   "pmpFaq": {
     "question1": "What does PMI and PMP mean?",
     "answer1": "PMI (Project Management Institute): The world's leading association for project management professionals that sets global standards.\n\nPMP (Project Management Professional): The most important international certification in project management, issued by PMI to experts who meet strict experience and exam requirements.",
@@ -802,7 +831,7 @@
     "supportDesc": "Get instant help when you need it."
   },
   "pages": {
-    "capm-application-process":"CAMP",
+    "capm-application-process": "CAMP",
     "about": "About US",
     "profile": "Profile",
     "contact": "Contact US",
@@ -819,372 +848,481 @@
     "training": "Customized Training",
     "pmp": "PMP",
     "capm": "CAPM",
-    "cart":"Cart",
-    "checkout":"Checkout",
-    "performance-levels":"Performance Levels"
+    "cart": "Cart",
+    "checkout": "Checkout",
+    "performance-levels": "Performance Levels"
   },
   "courseOutline": "Course Outline",
-  "Course Content":"Course Content",
-    "courseCon": {
-      "session1": {
-        "title": "Session (1) – PMI & PMP Introduction",
-        "duration": "2:00"
+  "Course Content": "Course Content",
+  "courseCon": {
+    "session1": {
+      "title": "Session (1) – PMI & PMP Introduction",
+      "duration": "2:00"
+    },
+    "session2": {
+      "title": "Session (2) – Framework Part 1",
+      "duration": "3:00"
+    },
+    "session3": {
+      "title": "Session (3) – Framework Part 2",
+      "duration": "3:00"
+    },
+    "session4": {
+      "title": "Session (4) – Agile",
+      "duration": "2:00"
+    },
+    "session5": {
+      "title": "Session (5) – Questions",
+      "duration": "2:00"
+    },
+    "session6": {
+      "title": "Session (6) – 49 Processes",
+      "duration": "4:00"
+    },
+    "session7": {
+      "title": "Session (7) – Integration",
+      "duration": "2:00"
+    },
+    "session8": {
+      "title": "Session (8) – Scope",
+      "duration": "2:00"
+    },
+    "session9": {
+      "title": "Session (9) – Questions",
+      "duration": "2:00"
+    },
+    "session10": {
+      "title": "Session (10) – Schedule",
+      "duration": "2:00"
+    },
+    "session11": {
+      "title": "Session (11) – Cost",
+      "duration": "2:00"
+    },
+    "session12": {
+      "title": "Session (12) – Quality",
+      "duration": "2:00"
+    },
+    "session13": {
+      "title": "Session (13) – Resource",
+      "duration": "2:00"
+    },
+    "session14": {
+      "title": "Session (14) – Questions",
+      "duration": "2:00"
+    },
+    "session15": {
+      "title": "Session (15) – Communication",
+      "duration": "2:00"
+    },
+    "session16": {
+      "title": "Session (16) – Risk",
+      "duration": "2:00"
+    },
+    "session17": {
+      "title": "Session (17) – Procurement",
+      "duration": "2:00"
+    },
+    "session18": {
+      "title": "Session (18) – Stakeholders",
+      "duration": "2:00"
+    },
+    "session19": {
+      "title": "Session (19) – Questions",
+      "duration": "2:00"
+    },
+    "session20": {
+      "title": "Session (20) – Revision",
+      "duration": "3:00"
+    }
+  },
+  "targetAudiences": {
+    "pmp": [
+      "Experienced project managers",
+      "PMO members",
+      "Consultants",
+      "Department Heads",
+      "Team Leads"
+    ]
+  },
+  "Upcoming Live Sessions": "Upcoming Live Sessions",
+  "instructor": {
+    "introParagragh": "Expert in translating the organizational strategy into tangible results with 20 years of hands-on experience, I build the frameworks for lasting success. My expertise covers the full spectrum of strategic delivery:",
+    "skills": [
+      {
+        "header": "Strategic Project & Program Leadership",
+        "text": "Directly leading complex initiatives to deliver high-value outcomes on scope, time, and budget."
       },
-      "session2": {
-        "title": "Session (2) – Framework Part 1",
-        "duration": "3:00"
+      {
+        "header": "Portfolio Optimization",
+        "text": "Aligning project investments with core business strategy to maximize return and manage risk."
       },
-      "session3": {
-        "title": "Session (3) – Framework Part 2",
-        "duration": "3:00"
+      {
+        "header": "PMO Design & Implementation",
+        "text": "Establishing and leading Project Management Offices as strategic centers of excellence."
       },
-      "session4": {
-        "title": "Session (4) – Agile",
-        "duration": "2:00"
-      },
-      "session5": {
-        "title": "Session (5) – Questions",
-        "duration": "2:00"
-      },
-      "session6": {
-        "title": "Session (6) – 49 Processes",
-        "duration": "4:00"
-      },
-      "session7": {
-        "title": "Session (7) – Integration",
-        "duration": "2:00"
-      },
-      "session8": {
-        "title": "Session (8) – Scope",
-        "duration": "2:00"
-      },
-      "session9": {
-        "title": "Session (9) – Questions",
-        "duration": "2:00"
-      },
-      "session10": {
-        "title": "Session (10) – Schedule",
-        "duration": "2:00"
-      },
-      "session11": {
-        "title": "Session (11) – Cost",
-        "duration": "2:00"
-      },
-      "session12": {
-        "title": "Session (12) – Quality",
-        "duration": "2:00"
-      },
-      "session13": {
-        "title": "Session (13) – Resource",
-        "duration": "2:00"
-      },
-      "session14": {
-        "title": "Session (14) – Questions",
-        "duration": "2:00"
-      },
-      "session15": {
-        "title": "Session (15) – Communication",
-        "duration": "2:00"
-      },
-      "session16": {
-        "title": "Session (16) – Risk",
-        "duration": "2:00"
-      },
-      "session17": {
-        "title": "Session (17) – Procurement",
-        "duration": "2:00"
-      },
-      "session18": {
-        "title": "Session (18) – Stakeholders",
-        "duration": "2:00"
-      },
-      "session19": {
-        "title": "Session (19) – Questions",
-        "duration": "2:00"
-      },
-      "session20": {
-        "title": "Session (20) – Revision",
-        "duration": "3:00"
+      {
+        "header": "Project Management Maturity",
+        "text": "Assessing and elevating organizational capabilities to improve efficiency and reduce risk."
       }
-    },
-    "targetAudiences": {
-      "pmp": [
-        "Experienced project managers",
-        "PMO members",
-        "Consultants",
-        "Department Heads",
-        "Team Leads"
-      ]
-    },
-    "Upcoming Live Sessions":"Upcoming Live Sessions",
-    "instructor": {
-      "introParagragh": "Expert in translating the organizational strategy into tangible results with 20 years of hands-on experience, I build the frameworks for lasting success. My expertise covers the full spectrum of strategic delivery:",
-      "skills": [
-        {
-          "header": "Strategic Project & Program Leadership",
-          "text": "Directly leading complex initiatives to deliver high-value outcomes on scope, time, and budget."
+    ],
+    "certifications": [
+      "B.Sc. of Electrical Engineering (Computer & Automatic Control)",
+      "Authorized Training Partner (PMI - ATP) Instructor",
+      "PMI - Program Management Professional (PgMP)",
+      "PMI - Project Management Professional (PMP)",
+      "PMI – Project Management Office – Certified Practitioner (PMO-CP)",
+      "PMI - Agile Certified Practitioner (PMI-ACP)",
+      "PMI - Professional in Business Analysis (PMI-PBA)",
+      "AXELOS – P3O certificate in Portfolio, Program and Project Offices",
+      "AXELOS – ITIL Foundation Certificate in IT Services Management",
+      "CompTIA Project+ PK0-003",
+      "Managing Projects with Microsoft Project 2013",
+      "Cisco Certified Network Associate (CCNA)",
+      "Cisco Certified Network Professional (CCNP)",
+      "PMI - Train The Trainer",
+      "Microsoft Certified Technology Specialist (MCTS)"
+    ]
+  },
+  "Course Features": "Course Features",
+  "Instructor Info": "Instructor Info",
+  "Professional Certifications": "Professional Certifications",
+  "No skills listed": "No skills listed",
+  "No certifications listed": "No certifications listed",
+  "Certification": "Certification",
+  "Enroll Now": "Enroll Now",
+  "Upload Files": "Upload Files",
+  "Drag your CV here to upload (PDF, DOC, DOCX)": "Drag your CV here to upload (PDF, DOC, DOCX)",
+  "Drop your CV here or click to upload": "Drop your CV here or click to upload",
+  "Contact US": "Contact US",
+  "Follow us": "Follow us",
+  "Our Location": "Our Location",
+  "Hi, We are always here to help you": "Hi, We are always here to help you.",
+  "Email Us": "Email Us",
+  "Visit Us": "Visit Us",
+  "courseFeatures": {
+    "pmp": {
+      "features": {
+        "instantQualification": {
+          "title": "Instant Qualification",
+          "description": "Get your 35-hour certificate immediately upon completion to meet exam requirements."
         },
-        {
-          "header": "Portfolio Optimization",
-          "text": "Aligning project investments with core business strategy to maximize return and manage risk."
+        "alwaysUpdated": {
+          "title": "Always Updated",
+          "description": "Learn the most current exam content aligned with PMI's latest standards."
         },
-        {
-          "header": "PMO Design & Implementation",
-          "text": "Establishing and leading Project Management Offices as strategic centers of excellence."
+        "expertLedTraining": {
+          "title": "Expert-Led Training",
+          "description": "Learn from certified PMPs who bridge theory with real project experience."
         },
-        {
-          "header": "Project Management Maturity",
-          "text": "Assessing and elevating organizational capabilities to improve efficiency and reduce risk."
+        "flexibleAccess": {
+          "title": "Flexible Access",
+          "description": "Review recorded course videos anytime for 9 full months after your live sessions."
+        },
+        "smartStudyPath": {
+          "title": "Smart Study Path",
+          "description": "Follow your personalized study plan to focus efficiently on what matters most."
+        },
+        "continuousSupport": {
+          "title": "Continuous Support",
+          "description": "Get answers from expert instructors and collaborate with peers throughout your journey."
+        },
+        "careerReadySkills": {
+          "title": "Career-Ready Skills",
+          "description": "Master practical techniques and real case studies you can apply directly at work."
+        },
+        "professionalNetworkAccess": {
+          "title": "Professional Network Access",
+          "description": "Join an active community of project managers for knowledge sharing, job opportunities, and career support."
+        },
+        "careerEmpowermentCircle": {
+          "title": "Career Empowerment Circle",
+          "description": "Your certification journey includes lifelong access to mentorship, networking, and exclusive job openings."
         }
-      ],
-      "certifications": [
-        "B.Sc. of Electrical Engineering (Computer & Automatic Control)",
-        "Authorized Training Partner (PMI - ATP) Instructor",
-        "PMI - Program Management Professional (PgMP)",
-        "PMI - Project Management Professional (PMP)",
-        "PMI – Project Management Office – Certified Practitioner (PMO-CP)",
-        "PMI - Agile Certified Practitioner (PMI-ACP)",
-        "PMI - Professional in Business Analysis (PMI-PBA)",
-        "AXELOS – P3O certificate in Portfolio, Program and Project Offices",
-        "AXELOS – ITIL Foundation Certificate in IT Services Management",
-        "CompTIA Project+ PK0-003",
-        "Managing Projects with Microsoft Project 2013",
-        "Cisco Certified Network Associate (CCNA)",
-        "Cisco Certified Network Professional (CCNP)",
-        "PMI - Train The Trainer",
-        "Microsoft Certified Technology Specialist (MCTS)"
-      ]
-    },
-    "Course Features": "Course Features",
-    "Instructor Info":"Instructor Info",
-    "Professional Certifications":"Professional Certifications",
-    "No skills listed":"No skills listed",
-    "No certifications listed":"No certifications listed",
-  "Certification":"Certification",
-  "Enroll Now":"Enroll Now",
-  "Upload Files":"Upload Files",
-  "Drag your CV here to upload (PDF, DOC, DOCX)":"Drag your CV here to upload (PDF, DOC, DOCX)",
-  "Drop your CV here or click to upload":"Drop your CV here or click to upload",
-  "Contact US":"Contact US",
-  "Follow us":"Follow us",
-  "Our Location":"Our Location",
-    "Hi, We are always here to help you": "Hi, We are always here to help you.",
-    "Email Us":"Email Us",
-    "Visit Us":"Visit Us",
-    "courseFeatures": {
-      "pmp": {
-        "features": {
-          "instantQualification": {
-            "title": "Instant Qualification",
-            "description": "Get your 35-hour certificate immediately upon completion to meet exam requirements."
-          },
-          "alwaysUpdated": {
-            "title": "Always Updated",
-            "description": "Learn the most current exam content aligned with PMI's latest standards."
-          },
-          "expertLedTraining": {
-            "title": "Expert-Led Training",
-            "description": "Learn from certified PMPs who bridge theory with real project experience."
-          },
-          "flexibleAccess": {
-            "title": "Flexible Access",
-            "description": "Review recorded course videos anytime for 9 full months after your live sessions."
-          },
-          "smartStudyPath": {
-            "title": "Smart Study Path",
-            "description": "Follow your personalized study plan to focus efficiently on what matters most."
-          },
-          "continuousSupport": {
-            "title": "Continuous Support",
-            "description": "Get answers from expert instructors and collaborate with peers throughout your journey."
-          },
-          "careerReadySkills": {
-            "title": "Career-Ready Skills",
-            "description": "Master practical techniques and real case studies you can apply directly at work."
-          },
-          "professionalNetworkAccess": {
-            "title": "Professional Network Access",
-            "description": "Join an active community of project managers for knowledge sharing, job opportunities, and career support."
-          },
-          "careerEmpowermentCircle": {
-            "title": "Career Empowerment Circle",
-            "description": "Your certification journey includes lifelong access to mentorship, networking, and exclusive job openings."
-          }
+      },
+      "webinar": {
+        "hour1": {
+          "title": "Hour 1: The Essential Knowledge of PMP",
+          "description": "Decode the Exam: Learn the structure of the PMP exam, including the crucial People, Process, and Business Environment domains and the Waterfall/Agile/Hybrid focus.\nBuild Your Action Plan: Get a clear, five-step roadmap, from navigating the PMI application to building an effective study strategy, that you can start immediately.\nMaster the PMI Mindset: Discover the critical thinking approach unique to PMI that is the key to selecting the right answers on the exam."
         },
-        "webinar": {
-          "hour1": {
-            "title": "Hour 1: The Essential Knowledge of PMP",
-            "description": "Decode the Exam: Learn the structure of the PMP exam, including the crucial People, Process, and Business Environment domains and the Waterfall/Agile/Hybrid focus.\nBuild Your Action Plan: Get a clear, five-step roadmap, from navigating the PMI application to building an effective study strategy, that you can start immediately.\nMaster the PMI Mindset: Discover the critical thinking approach unique to PMI that is the key to selecting the right answers on the exam."
-          },
-          "hour2": {
-            "title": "Hour 2: Interactive Q&A",
-            "description": "Get Expert Answers: Have your specific questions about the application, study materials, and exam topics answered live by a PMP-certified professional.\nSolve Real Challenges: Discuss common study roadblocks and real-world project scenarios to understand how PMP principles are applied.\nPlan Your Path Forward: Receive personalized guidance on your next steps and learn about resources to transform your preparation from overwhelming to organized and confident."
-          },
-          "takeAway": {
-            "title": "What You Will Leave With:",
-            "description": "A clear, stress-free understanding of the entire PMP journey.\nA practical, 5-step action plan you can start immediately.\nAnswers to your most pressing questions from an expert."
-          }
-        },
-        "audience": {
-          "title": "Who Should Attend:",
-          "description": "Project Coordinators, Team Leads, and aspiring Project Managers.\nProfessionals with experience who are unsure how to qualify for the PMP.\nAnyone who has started studying but feels overwhelmed by the exam content.\nIndividuals seeking a proven, structured methodology for exam success."
+        "hour2": {
+          "title": "Hour 2: Interactive Q&A",
+          "description": "Get Expert Answers: Have your specific questions about the application, study materials, and exam topics answered live by a PMP-certified professional.\nSolve Real Challenges: Discuss common study roadblocks and real-world project scenarios to understand how PMP principles are applied.\nPlan Your Path Forward: Receive personalized guidance on your next steps and learn about resources to transform your preparation from overwhelming to organized and confident."
         },
         "takeAway": {
           "title": "What You Will Leave With:",
           "description": "A clear, stress-free understanding of the entire PMP journey.\nA practical, 5-step action plan you can start immediately.\nAnswers to your most pressing questions from an expert."
         }
       },
-      "capm": {
-        "features": {
-          "instantQualification": {
-            "title": "Instant Qualification",
-            "description": "Get your 23-hour certificate immediately upon completion to meet exam requirements."
-          },
-          "alwaysUpdated": {
-            "title": "Always Updated",
-            "description": "Learn the most current exam content aligned with PMI's latest standards."
-          },
-          "expertLedTraining": {
-            "title": "Expert-Led Training",
-            "description": "Learn from certified Experts who bridge theory with real project experience."
-          },
-          "flexibleAccess": {
-            "title": "Flexible Access",
-            "description": "Review recorded course videos anytime for 9 full months after your live sessions."
-          },
-          "smartStudyPath": {
-            "title": "Smart Study Path",
-            "description": "Follow your personalized study plan to focus efficiently on what matters most."
-          },
-          "continuousSupport": {
-            "title": "Continuous Support",
-            "description": "Get answers from expert instructors and collaborate with peers throughout your journey."
-          },
-          "careerReadySkills": {
-            "title": "Career-Ready Skills",
-            "description": "Master practical techniques and real case studies you can apply directly at work."
-          },
-          "professionalNetworkAccess": {
-            "title": "Professional Network Access",
-            "description": "Join an active community of project managers for knowledge sharing, job opportunities, and career support."
-          },
-          "careerEmpowermentCircle": {
-            "title": "Career Empowerment Circle",
-            "description": "Your certification journey includes lifelong access to mentorship, networking, and exclusive job openings."
-          }
-        }
+      "audience": {
+        "title": "Who Should Attend:",
+        "description": "Project Coordinators, Team Leads, and aspiring Project Managers.\nProfessionals with experience who are unsure how to qualify for the PMP.\nAnyone who has started studying but feels overwhelmed by the exam content.\nIndividuals seeking a proven, structured methodology for exam success."
+      },
+      "takeAway": {
+        "title": "What You Will Leave With:",
+        "description": "A clear, stress-free understanding of the entire PMP journey.\nA practical, 5-step action plan you can start immediately.\nAnswers to your most pressing questions from an expert."
       }
     },
-"examReport": "Exam Report {{num}}",
-    "Book Trial":"Book Trial",
-    "Register Now":"Register Now",
-    "Webinar Agenda":"Webinar Agenda",
-    "Key Takeaways":"Key Takeaways",
-    "Target Audience":"Target Audience",
-    "Secure Your Free Spot Now—Seats Are Limited!":"Secure Your Free Spot Now—Seats Are Limited!",
-    "Upcoming Webinars":"Upcoming Webinars",
-    "Check Performance Levels Indicators":"Check Performance Levels Indicators",
-    "Not Answered :":"Not Answered :",
-    "Incorrect:":"Incorrect:",
-    "Correct:":"Correct:",
-    "Duration:":"Duration:",
-    "Fail":"Fail",
-    "Pass":"Pass",
-    "Above Target":"Above Target",
-    "Target":"Target",
-    "Below Target":"Below Target",
-    "Needs Improvement":"Needs Improvement",
-    "Exam Reports":"Exam Reports",
-    "Total Exam Number":"Total Exam Number",
-    "Review Your Previous Exam Attempts":"Review Your Previous Exam Attempts",
-    "performance": {
-      "level": "Performance Level",
-      "peopleDomain": "What It Means for the People Domain (42%)",
-      "processDomain": "What It Means for the Process Domain (50%)",
-      "businessDomain": "What It Means for the Business Environment Domain (8%)",
-      "aboveTarget": "Above Target",
-      "target": "Target",
-      "belowTarget": "Below Target",
-      "needsImprovement": "Needs Improvement",
-      "rows": {
-        "above": {
-          "people": "You consistently demonstrated the ability to lead, motivate, and manage a project team effectively. You excelled in conflict resolution, stakeholder engagement, team development, and communication.",
-          "process": "You showed a strong understanding of project management processes and applied predictive, agile, and hybrid approaches effectively.",
-          "business": "You connected project work to business strategy and value, understanding benefits, compliance, and external impacts."
+    "capm": {
+      "features": {
+        "instantQualification": {
+          "title": "Instant Qualification",
+          "description": "Get your 23-hour certificate immediately upon completion to meet exam requirements."
         },
-        "target": {
-          "people": "You demonstrated a solid understanding of managing and supporting a project team with strong leadership skills.",
-          "process": "You correctly applied processes and practices to manage projects and deliver outcomes.",
-          "business": "You understood the link between projects and business context, including governance and benefits."
+        "alwaysUpdated": {
+          "title": "Always Updated",
+          "description": "Learn the most current exam content aligned with PMI's latest standards."
         },
-        "below": {
-          "people": "You struggled with leadership and interpersonal skills such as motivation and conflict management.",
-          "process": "You had gaps in applying project processes like planning, scheduling, and risk management.",
-          "business": "You showed weak understanding of project alignment with business goals."
+        "expertLedTraining": {
+          "title": "Expert-Led Training",
+          "description": "Learn from certified Experts who bridge theory with real project experience."
         },
-        "improvement": {
-          "people": "You need significant improvement in people management and leadership skills.",
-          "process": "Your understanding of project management processes is insufficient.",
-          "business": "You need to better understand how projects align with business strategy."
+        "flexibleAccess": {
+          "title": "Flexible Access",
+          "description": "Review recorded course videos anytime for 9 full months after your live sessions."
+        },
+        "smartStudyPath": {
+          "title": "Smart Study Path",
+          "description": "Follow your personalized study plan to focus efficiently on what matters most."
+        },
+        "continuousSupport": {
+          "title": "Continuous Support",
+          "description": "Get answers from expert instructors and collaborate with peers throughout your journey."
+        },
+        "careerReadySkills": {
+          "title": "Career-Ready Skills",
+          "description": "Master practical techniques and real case studies you can apply directly at work."
+        },
+        "professionalNetworkAccess": {
+          "title": "Professional Network Access",
+          "description": "Join an active community of project managers for knowledge sharing, job opportunities, and career support."
+        },
+        "careerEmpowermentCircle": {
+          "title": "Career Empowerment Circle",
+          "description": "Your certification journey includes lifelong access to mentorship, networking, and exclusive job openings."
         }
       }
+    }
+  },
+  "examReport": "Exam Report {{num}}",
+  "Book Trial": "Book Trial",
+  "Register Now": "Register Now",
+  "Webinar Agenda": "Webinar Agenda",
+  "Key Takeaways": "Key Takeaways",
+  "Target Audience": "Target Audience",
+  "Secure Your Free Spot Now—Seats Are Limited!": "Secure Your Free Spot Now—Seats Are Limited!",
+  "Upcoming Webinars": "Upcoming Webinars",
+  "Check Performance Levels Indicators": "Check Performance Levels Indicators",
+  "Not Answered :": "Not Answered :",
+  "Incorrect:": "Incorrect:",
+  "Correct:": "Correct:",
+  "Duration:": "Duration:",
+  "Fail": "Fail",
+  "Pass": "Pass",
+  "Above Target": "Above Target",
+  "Target": "Target",
+  "Below Target": "Below Target",
+  "Needs Improvement": "Needs Improvement",
+  "Exam Reports": "Exam Reports",
+  "Total Exam Number": "Total Exam Number",
+  "Review Your Previous Exam Attempts": "Review Your Previous Exam Attempts",
+  "performance": {
+    "level": "Performance Level",
+    "peopleDomain": "What It Means for the People Domain (42%)",
+    "processDomain": "What It Means for the Process Domain (50%)",
+    "businessDomain": "What It Means for the Business Environment Domain (8%)",
+    "aboveTarget": "Above Target",
+    "target": "Target",
+    "belowTarget": "Below Target",
+    "needsImprovement": "Needs Improvement",
+    "rows": {
+      "above": {
+        "people": "You consistently demonstrated the ability to lead, motivate, and manage a project team effectively. You excelled in conflict resolution, stakeholder engagement, team development, and communication.",
+        "process": "You showed a strong understanding of project management processes and applied predictive, agile, and hybrid approaches effectively.",
+        "business": "You connected project work to business strategy and value, understanding benefits, compliance, and external impacts."
+      },
+      "target": {
+        "people": "You demonstrated a solid understanding of managing and supporting a project team with strong leadership skills.",
+        "process": "You correctly applied processes and practices to manage projects and deliver outcomes.",
+        "business": "You understood the link between projects and business context, including governance and benefits."
+      },
+      "below": {
+        "people": "You struggled with leadership and interpersonal skills such as motivation and conflict management.",
+        "process": "You had gaps in applying project processes like planning, scheduling, and risk management.",
+        "business": "You showed weak understanding of project alignment with business goals."
+      },
+      "improvement": {
+        "people": "You need significant improvement in people management and leadership skills.",
+        "process": "Your understanding of project management processes is insufficient.",
+        "business": "You need to better understand how projects align with business strategy."
+      }
+    }
+  },
+  "Perfromance Level Indicators": "Perfromance Level Indicators",
+  "lesson": {
+    "title": "Lesson Learned Questions",
+    "examSummary": "Exam Summary",
+    "wrongAnswers": "Wrong Answers",
+    "correctAnswers": "Correct Answers",
+    "notAnswered": "Not Answered",
+    "description": "Great job completing the exam! You can now practice your questions again based on your previous answers:",
+    "correctQuestions": "Correct Questions",
+    "incorrectQuestions": "Incorrect Questions",
+    "notAnsweredQuestions": "Not Answered Questions",
+    "practice": "Practice {{count}} Questions →",
+    "importantNote": "Important Note",
+    "mustClearFirst": "You can’t start a new exam mode until you clear lesson learned questions",
+    "clearNow": "Clear Now",
+    "success": "Lesson Cleared Successfully!",
+    "startNewInfo": "You can now start a new exam.",
+    "startNewExam": "Start New Exam"
+  },
+  "profile": {
+    "update": {
+      "success": "Profile updated successfully",
+      "error": "Failed to update profile"
     },
-    "Perfromance Level Indicators":"Perfromance Level Indicators",
-    "lesson": {
-      "title": "Lesson Learned Questions",
-      "examSummary": "Exam Summary",
-      "wrongAnswers": "Wrong Answers",
-      "correctAnswers": "Correct Answers",
-      "notAnswered": "Not Answered",
-      "description": "Great job completing the exam! You can now practice your questions again based on your previous answers:",
-      "correctQuestions": "Correct Questions",
-      "incorrectQuestions": "Incorrect Questions",
-      "notAnsweredQuestions": "Not Answered Questions",
-      "practice": "Practice {{count}} Questions →",
-      "importantNote": "Important Note",
-      "mustClearFirst": "You can’t start a new exam mode until you clear lesson learned questions",
-      "clearNow": "Clear Now",
-      "success": "Lesson Cleared Successfully!",
-      "startNewInfo": "You can now start a new exam.",
-      "startNewExam": "Start New Exam"
+    "password": {
+      "success": "Password changed successfully",
+      "error": "Failed to change password"
     },
-    "profile": {
-      "enrolledCertifications": "Enrolled Certifications",
-      "exams": "Exams",
-      "settings": "Settings",
-      "changePassword": "Change Password",
-      "certification": "Certification",
-      "noCertifications": "You haven’t enrolled in any certification yet.",
-      "examSimulator": "Exam Simulator",
-      "recordedCourses": "Recorded Courses",
-      "liveCourse": "Live Course",
-      "noFeatures": "You are not enrolled in any certification features",
-      "noExams": "No exams found yet.",
-      "saved": "Saved",
-      "inProgress": "In Progress",
-      "mode": "Mode",
-      "continueExam": "Continue Exam",
-      "completed": "Completed",
-      "successRate": "Success Rate",
-      "save": "Save",
-      "finished":"Finished",
-      "currentPassword": "Current Password",
-      "newPassword": "New Password",
-      "confirmPassword": "Confirm Password",
-      "enterNewPassword": "Enter your new password",
-      "enterConfirmPassword": "Enter your confirm password",
-      "contactInfo":"Contact Info",
-      "certifications":"certifications",
-  "examMode": "Exam Mode"
-},
-"Practice":"Practice Mode",
-"Exam":"Exam Mode",
+    "enrolledCertifications": "Enrolled Certifications",
+    "exams": "Exams",
+    "settings": "Settings",
+    "changePassword": "Change Password",
+    "certification": "Certification",
+    "noCertifications": "You haven’t enrolled in any certification yet.",
+    "examSimulator": "Exam Simulator",
+    "recordedCourses": "Recorded Courses",
+    "liveCourse": "Live Course",
+    "noFeatures": "You are not enrolled in any certification features",
+    "noExams": "No exams found yet.",
+    "saved": "Saved",
+    "inProgress": "In Progress",
+    "mode": "Mode",
+    "continueExam": "Continue Exam",
+    "completed": "Completed",
+    "successRate": "Success Rate",
+    "save": "Save",
+    "finished": "Finished",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm Password",
+    "enterNewPassword": "Enter your new password",
+    "enterConfirmPassword": "Enter your confirm password",
+    "contactInfo": "Contact Info",
+    "certifications": "certifications",
+    "examMode": "Exam Mode"
+  },
+  "Practice": "Practice Mode",
+  "Exam": "Exam Mode",
   "network": {
     "errorCode": "500",
     "title": "Server is unavailable",
     "description": "We’re having trouble connecting to the server. Please try again shortly.",
     "retry": "Retry",
     "backHome": "Back to Home"
+  },
+  "TOAST": {
+    "SUCCESS": "Success",
+    "ERROR": "Error",
+    "INFO": "Info",
+    "WARNING": "Warning"
+  },
+  "certification": {
+    "add": {
+      "success": "Certification has been added successfully",
+      "error": "Failed to add certification"
+    },
+    "update": {
+      "success": "Certification has been updated successfully",
+      "error": "Failed to update certification"
+    },
+    "delete": {
+      "success": "Certification has been deleted successfully",
+      "error": "Failed to delete certification"
+    },
+    "load": {
+      "error": "Failed to load certification"
+    }
+  },
+  "examToast": {
+    "resume": {
+      "success": "Your Exam has been resumed"
+    },
+    "finish": {
+      "success": "You have finished your practicing successfully",
+      "correctAnswer": "correct Answer ✅",
+      "wrongAnswer": "Wrong Answer ❌",
+      "correctMatch": "correct Match ✅",
+      "wrongMatch": "Wrong Match ❌"
+    },
+    "save": {
+      "success": "Exam has been saved for later"
+    },
+    "add": {
+      "success": "Exam has been added successfully",
+      "error": "Failed to add exam"
+    },
+    "update": {
+      "success": "Exam has been updated successfully",
+      "error": "Failed to update exam"
+    },
+    "delete": {
+      "success": "Exam has been deleted successfully",
+      "error": "Failed to delete exam"
+    },
+    "load": {
+      "error": "Failed to load exam"
+    }
+  },
+  "question": {
+    "mark": {
+      "add": "Question marked successfully",
+      "remove": "Mark removed"
+    },
+    "add": {
+      "success": "Question has been added successfully",
+      "error": "Failed to add question"
+    },
+    "delete": {
+      "success": "Question has been deleted successfully",
+      "error": "Failed to delete question"
+    },
+    "load": {
+      "error": "Failed to load question"
+    },
+    "save": {
+      "success": "Question saved successfully"
+    },
+    "validation": {
+      "correctRequired": "Please mark at least one answer as correct"
+    },
+    "create": {
+      "success": "Question created — now link answers",
+      "error": "Failed to create question"
+    },
+    "update": {
+      "success": "Question updated successfully",
+      "error": "Failed to update question"
+    },
+    "matching": {
+      "update": {
+        "success": "Matching questions updated successfully",
+        "error": "Failed to update matching questions"
+      }
+    }
+  },
+  "answer": {
+    "add": {
+      "error": "Failed to add answer"
+    },
+    "delete": {
+      "success": "Answer has been deleted successfully",
+      "error": "Failed to delete answer"
+    }
+  },
+  "cart": {
+    "exist": "Item is already added before"
   }
 }
-

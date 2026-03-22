@@ -64,7 +64,7 @@ export class AuthService {
 
   registerStudent(body: AuthStudent): Observable<APIAuthStudent> {
     return this.apiService
-      .post<ApiResponse<APIAuthStudent>>('Auth/student/register', body, "User has been registerted Successfully")
+      .post<ApiResponse<APIAuthStudent>>('Auth/student/register', body, "auth.register.success")
       .pipe(
         map((response: ApiResponse<APIAuthStudent>) => {
           if (!response.success) {
@@ -78,7 +78,7 @@ export class AuthService {
 
   loginStudent(body: LoginForm): Observable<APIAuthStudent> {
     return this.apiService
-      .post<ApiResponse<APIAuthStudent>>('Auth/student/login', body, "User has been logged successfully")
+      .post<ApiResponse<APIAuthStudent>>('Auth/student/login', body, "auth.loginToast.success")
       .pipe(
         map((response: ApiResponse<APIAuthStudent>) => {
           if (!response.success) {
@@ -95,7 +95,7 @@ export class AuthService {
 
   changeStudentPassword(body: changePasswordForm): Observable<boolean> {
     return this.apiService
-      .post<ApiResponse<boolean>>('Auth/change-password', body, "Password has been changed successfully")
+      .post<ApiResponse<boolean>>('Auth/change-password', body, "auth.password.change.success")
       .pipe(
         map((response: ApiResponse<boolean>) => {
           if (!response.success) {
@@ -109,7 +109,7 @@ export class AuthService {
 
   resetStudentPassword(body: resetPasswordForm): Observable<boolean> {
     return this.apiService
-      .post<ApiResponse<boolean>>('Auth/reset-password', body, "Password Reset Request has been sent successfully")
+      .post<ApiResponse<boolean>>('Auth/reset-password', body, "auth.password.reset.success")
       .pipe(
         map((response: ApiResponse<boolean>) => {
           if (!response.success) {
@@ -122,7 +122,7 @@ export class AuthService {
   }
   forgetStudentPassword(body: forgetPasswordForm): Observable<boolean> {
     return this.apiService
-      .post<ApiResponse<boolean>>('Auth/forget-password', body, "Password Reset Request has been sent successfully")
+      .post<ApiResponse<boolean>>('Auth/forget-password', body, "auth.password.forget.success")
       .pipe(
         map((response: ApiResponse<boolean>) => {
           if (!response.success) {
@@ -135,7 +135,7 @@ export class AuthService {
   }
   refreshToken(body: refreshTokenForm): Observable<refreshTokenForm> {
     return this.apiService
-      .post<ApiResponse<refreshTokenForm>>('Auth/refresh-token', body, "Password Reset Request has been sent successfully")
+      .post<ApiResponse<refreshTokenForm>>('Auth/refresh-token', body, "")
       .pipe(
         map((response: ApiResponse<refreshTokenForm>) => {
           if (!response.success) {
@@ -206,7 +206,7 @@ export class AuthService {
 
   logout() {
     return this.apiService
-      .post<ApiResponse<boolean>>('Auth/logout', null, "User has been Logged out Successfully")
+      .post<ApiResponse<boolean>>('Auth/logout', null, "auth.logoutToast.success")
       .pipe(
         map((response: ApiResponse<boolean>) => {
           if (!response.success) {

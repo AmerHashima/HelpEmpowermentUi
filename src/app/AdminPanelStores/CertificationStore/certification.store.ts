@@ -129,13 +129,13 @@ export const CertificationsStore = signalStore(
             certifcationService.createCertification(body).pipe(
               tap((certifcation: APICertification) => {
                 patchState(store, addCertification(certifcation));
-                toasting.showToast('Certification has been added', 'success')
+                toasting.showToast('certification.add.success', 'success')
                 patchState(store, setSuccess(true));
               }),
 
               catchError((err) => {
                 patchState(store, setError(err?.msg ?? 'Failed to add Certification'));
-                toasting.showToast('Certification failed to be added', 'error')
+                toasting.showToast('certification.add.error', 'error')
                 return EMPTY;
               }),
               finalize(() => patchState(store, deactivateLoading))
@@ -151,12 +151,12 @@ export const CertificationsStore = signalStore(
               // tap((certification: APICertification) => patchState(store, updateCertification(certification))),
               tap((certifcation: APICertification) => {
                 patchState(store, updateCertification(certifcation));
-                toasting.showToast('Certification has been updated', 'success')
+                toasting.showToast('certification.update.success', 'success')
                 patchState(store, setSuccess(true));
               }),
               catchError((err) => {
                 patchState(store, setError(err?.msg ?? 'Failed to update certification'));
-                toasting.showToast('Certification failed to be updated', 'error')
+                toasting.showToast('certification.update.error', 'error')
 
                 return EMPTY;
               }),
@@ -173,7 +173,7 @@ export const CertificationsStore = signalStore(
               tap((Certification: APICertification) => patchState(store, getCertification(Certification))),
               catchError((err) => {
                 patchState(store, setError(err?.msg ?? 'Failed to load Certification'));
-                toasting.showToast('Certification failed to be loaded', 'error')
+                toasting.showToast('certification.load.error', 'error')
                 return EMPTY;
               }),
               finalize(() => patchState(store, deactivateLoading))
@@ -187,11 +187,11 @@ export const CertificationsStore = signalStore(
           switchMap((id) =>
             certifcationService.deleteCertification(id).pipe(
               tap(() => patchState(store, deleteCertification(id))),
-              tap(() => toasting.showToast('Certification has been deleted', 'success')),
+              tap(() => toasting.showToast('certification.delete.success', 'success')),
 
               catchError((err) => {
                 patchState(store, setError(err.message || 'Delete failed'));
-                toasting.showToast('Certification failed to be deleted', 'error')
+                toasting.showToast('certification.delete.error', 'error')
                 return EMPTY
               }),
               finalize(() => patchState(store, deactivateLoading))

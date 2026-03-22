@@ -214,7 +214,7 @@ else lookupId = "44444444-4444-4444-4444-444444444403";
     this.saveForLater = true;
     this.saveExamProgress();
     if (this.isBrowser) {
-      this.toasting.showToast('Exam has been saved for later', 'success');
+      this.toasting.showToast('examToast.save.success', 'success');
     }
 
     this.router.navigate(['../../chooseExam'], {
@@ -228,7 +228,7 @@ else lookupId = "44444444-4444-4444-4444-444444444403";
     if (this.isBrowser) {
       const key = this.getStorageKey(this.studentExamId());
       localStorage.removeItem(key);
-      this.toasting.showToast('You have finished your practicing successfully', 'success');
+      this.toasting.showToast('examToast.finish.success', 'success');
     }
     this.router.navigate(['../../chooseExam'], {
       relativeTo: this.route,
@@ -405,7 +405,7 @@ else lookupId = "44444444-4444-4444-4444-444444444403";
       );
 
       this.toasting.showToast(
-        isCorrect ? 'Correct Answer ✅' : 'Wrong Answer ❌',
+        isCorrect ? 'examToast.finish.correctAnswer' : 'examToast.finish.wrongAnswer',
         isCorrect ? 'success' : 'error'
       );
 
@@ -452,7 +452,7 @@ else lookupId = "44444444-4444-4444-4444-444444444403";
       );
 
       this.toasting.showToast(
-        isCorrect ? 'Correct Match ✅' : 'Wrong Match ❌',
+        isCorrect ? 'examToast.finish.correctMatch' : 'examToast.finish.wrongMatch',
         isCorrect ? 'success' : 'error'
       );
 
@@ -556,10 +556,10 @@ else lookupId = "44444444-4444-4444-4444-444444444403";
 
       if (newMarks.has(oid)) {
         newMarks.delete(oid);
-        this.toasting.showToast('Mark removed', 'info');
+        this.toasting.showToast('question.mark.remove', 'info');
       } else {
         newMarks.add(oid);
-        this.toasting.showToast('Question marked successfully', 'success');
+        this.toasting.showToast('question.mark.add', 'success');
       }
 
       return newMarks;

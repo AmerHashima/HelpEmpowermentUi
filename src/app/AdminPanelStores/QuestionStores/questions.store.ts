@@ -223,12 +223,12 @@ export const QuestionsStore = signalStore(
             service.createQuestion(body).pipe(
               tap((question: APICourseQuestion) => {
                 patchState(store, addQuestion(question));
-                toasting.showToast('Question has been added', 'success');
+                toasting.showToast('question.add.success', 'success');
                 patchState(store, setSuccess(true));
               }),
               catchError((err) => {
                 patchState(store, setError(err?.msg ?? 'Failed to add question'));
-                toasting.showToast('Question failed to be added', 'error');
+                toasting.showToast('question.add.error', 'error');
                 return EMPTY;
               }),
               finalize(() => patchState(store, deactivateLoading))
@@ -263,10 +263,10 @@ export const QuestionsStore = signalStore(
           switchMap((id) =>
             service.deleteQuestion(id).pipe(
               tap(() => patchState(store, deleteQuestion(id))),
-              tap(() => toasting.showToast('Question has been deleted', 'success')),
+              tap(() => toasting.showToast('question.delete.success', 'success')),
               catchError((err) => {
                 patchState(store, setError(err?.message ?? 'Delete failed'));
-                toasting.showToast('Question failed to be deleted', 'error')
+                toasting.showToast('question.delete.error', 'error')
                 return EMPTY;
               }),
               finalize(() => patchState(store, deactivateLoading))
@@ -310,11 +310,11 @@ export const QuestionsStore = signalStore(
             service.deleteAnswer(id).pipe(
               // tap(() => patchState(store, deleteAnswer(id))),
               tap(() => {
-                toasting.showToast('Answer has been deleted', 'success');
+                toasting.showToast('answer.delete.success', 'success');
               }),
               catchError((err) => {
                 patchState(store, setError(err?.message ?? 'Delete failed'));
-                toasting.showToast('Answer failed to be deleted', 'error')
+                toasting.showToast('answer.delete.error', 'error')
                 return EMPTY;
               }),
               finalize(() => patchState(store, deactivateLoading))

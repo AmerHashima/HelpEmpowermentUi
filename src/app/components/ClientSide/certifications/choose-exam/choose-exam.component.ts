@@ -94,7 +94,7 @@ export class ChooseExamComponent {
       this.shared.studentExamId.set(parsed.studentExamId);
       localStorage.setItem('studentExamId', parsed.studentExamId);
 
-      this.toasting.showToast('Your Exam has been resumed', 'success');
+      this.toasting.showToast('examToast.resume.success', 'success');
       this.chooseMode(mode)
 
     }

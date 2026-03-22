@@ -62,12 +62,12 @@ export const ExamsStore = signalStore(
           service.createExam(body).pipe(
             tap((exam: APIExam) => {
               patchState(store, addExam(exam));
-              toasting.showToast('Exam has been added', 'success')
+              toasting.showToast('examToast.add.success', 'success')
               patchState(store, setSuccess(true));
             }),
             catchError((err) => {
               patchState(store, setError(err?.msg ?? 'Failed to add exam'));
-              toasting.showToast('Exam failed to be added', 'error')
+              toasting.showToast('examToast.add.error', 'error')
               return EMPTY;
             }),
             finalize(() => patchState(store, deactivateLoading))
@@ -82,12 +82,12 @@ export const ExamsStore = signalStore(
           service.updateExam(id, body).pipe(
             tap((exam: APIExam) => {
               patchState(store, updateExam(exam));
-              toasting.showToast('Exam has been updated', 'success')
+              toasting.showToast('examToast.update.success', 'success')
 
             }),
             catchError((err) => {
               patchState(store, setError(err?.msg ?? 'Failed to update exam'));
-              toasting.showToast('Exam failed to be updated', 'error')
+              toasting.showToast('examToast.update.error', 'error')
               return EMPTY;
             }),
             finalize(() => patchState(store, deactivateLoading))
@@ -104,7 +104,7 @@ export const ExamsStore = signalStore(
             tap((exam: APIExam) => patchState(store, getExam(exam))),
             catchError((err) => {
               patchState(store, setError(err?.msg ?? 'Failed to load exam'));
-              toasting.showToast('Exam failed to be loaded', 'error')
+              toasting.showToast('examToast.load.error', 'error')
               return EMPTY;
             }),
             finalize(() => patchState(store, deactivateLoading))
@@ -118,13 +118,13 @@ export const ExamsStore = signalStore(
 
         return service.deleteExam(examId).pipe(
           tap(() => patchState(store, deleteExamUpdater(examId))),
-          tap(() => toasting.showToast('Exam has been deleted', 'success')),
+          tap(() => toasting.showToast('examToast.delete.success', 'success')),
           catchError((err) => {
             patchState(
               store,
               setError(err?.message || 'Failed to delete exam')
             );
-            toasting.showToast('Exam failed to be deleted', 'error')
+            toasting.showToast('examToast.delete.error', 'error')
             return EMPTY;
           }),
           finalize(() => patchState(store, deactivateLoading))

@@ -58,8 +58,7 @@ export class RegisterComponent {
       next: ()=> {
         // this.toasting.showToast('Account created suffccessfully please login','success');
         this.router.navigateByUrl(`/${this.lang()}/auth/login`);},
-      error: () => this.toasting.showToast('Failed to create User', 'error')
+      error: () => this.toasting.showToast('auth.register.error', 'error')
     })
-    console.log('Submitted credentials:', this.credentials);
   }
 }

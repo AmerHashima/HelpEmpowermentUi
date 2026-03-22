@@ -171,7 +171,7 @@ export class ProfileComponent {
       next: () => {
         // this.toasting.showToast('Account created suffccessfully please login','success');
       },
-      error: () => this.toasting.showToast('Failed to create User', 'error')
+      error: () => this.toasting.showToast('profile.update.error', 'error')
     })
   }
   onChangePassword(form: NgForm) {
@@ -188,7 +188,7 @@ export class ProfileComponent {
       next: () => {
         form.resetForm();
       },
-      error: () => this.toasting.showToast('Failed to change password', 'error')
+      error: () => this.toasting.showToast('profile.password.error', 'error')
     })
 
   }

@@ -49,7 +49,7 @@ export class LoginComponent {
         // this.toasting.showToast('User has logged suffccessfully', 'success');
         this.router.navigateByUrl(`/${this.lang()}/home`);
       },
-      error: () => this.toasting.showToast('Failed to login', 'error')
+      error: () => this.toasting.showToast('auth.loginToast.error', 'error')
     })
   }
 }

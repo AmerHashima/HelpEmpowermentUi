@@ -287,7 +287,7 @@ export class CertificationQuestionComponent {
 
     effect(() => {
       if (this.questionStore.success()) {
-        this.toast.showToast('Question saved successfully', 'success');
+        this.toast.showToast('question.save.success', 'success');
         this.questionStore.setSuccess(false);
 
         if (this.shouldNavigateBack) {
@@ -461,10 +461,10 @@ export class CertificationQuestionComponent {
         this.apiQuestions = response.answers?.filter((a: any) => a.question_Ask) || [];
         this.apiAnswers.set(response.answers?.filter((a: any) => !a.question_Ask) || []);
         this.linkDragAnswerAndQuestionFlag.set(true);
-        this.toast.showToast('Question created — now link answers', 'success');
+        this.toast.showToast('question.create.success', 'success');
       },
       error: (err) => {
-        this.toast.showToast('Failed to create question', 'error');
+        this.toast.showToast('question.create.error', 'error');
         console.error(err);
       }
     });
@@ -604,7 +604,7 @@ export class CertificationQuestionComponent {
       );
 
       if (!hasCorrectAnswer) {
-        this.toast.showToast('Please mark at least one answer as correct', 'error');
+        this.toast.showToast('question.validation.correctRequired', 'error');
         return;
       }
     }
@@ -825,12 +825,12 @@ export class CertificationQuestionComponent {
 
     this.certificationService.updateCourseQuestion(payload).subscribe({
       next: () => {
-        this.toast.showToast('Matching questions updated successfully', 'success');
+        this.toast.showToast('question.matching.update.success', 'success');
         this.location.back();
       },
       error: (err) => {
         console.error('Batch update failed', err);
-        this.toast.showToast('Failed to update matching questions', 'error');
+        this.toast.showToast('question.matching.update.error', 'error');
       }
     });
   }
@@ -846,12 +846,12 @@ export class CertificationQuestionComponent {
 
     this.certificationService.updateCourseQuestion(payload).subscribe({
       next: () => {
-        this.toast.showToast('Question updated successfully', 'success');
+        this.toast.showToast('question.update.success', 'success');
         this.location.back();
       },
       error: (err) => {
         console.error('Update failed', err);
-        this.toast.showToast('Failed to update question', 'error');
+        this.toast.showToast('question.update.error', 'error');
       }
     });
   }
