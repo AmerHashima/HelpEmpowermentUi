@@ -1,4 +1,5 @@
 {
+  "search":"Search",
   "menu": {
     "home": "Home",
     "about": "About",
@@ -21,6 +22,8 @@
     }
   },
   "auth": {
+    "noAccount": "Don't have an account?",
+    "registerLabel": "Register",
     "login": "Login",
     "signup": "Sign Up",
     "profile": "Profile",
@@ -816,7 +819,6 @@
     "manpower": "Manpower Solutions",
     "customTraining": "Customized Training",
     "individualEmpowerment": "Individual Empowerment",
-    "professionalCertifications": "Professional Certifications",
     "focusedTrainingTitle": "Focused, Practical Training:",
     "focusedTrainingDesc": "Gain skills you can use at work the very next day.",
     "jobReadyTitle": "Practical, Job-Ready Services:",
@@ -947,6 +949,7 @@
   },
   "Upcoming Live Sessions": "Upcoming Live Sessions",
   "instructor": {
+    "info":"Instructor Info",
     "introParagragh": "Expert in translating the organizational strategy into tangible results with 20 years of hands-on experience, I build the frameworks for lasting success. My expertise covers the full spectrum of strategic delivery:",
     "skills": [
       {
@@ -985,8 +988,7 @@
     ]
   },
   "Course Features": "Course Features",
-  "Instructor Info": "Instructor Info",
-  "Professional Certifications": "Professional Certifications",
+  "professionalCertifications": "Professional Certifications",
   "No skills listed": "No skills listed",
   "No certifications listed": "No certifications listed",
   "Certification": "Certification",
@@ -1250,6 +1252,9 @@
     "resume": {
       "success": "Your Exam has been resumed"
     },
+    "start": "Exam has been started!",
+    "submitted": "Exam has been submitted successfully!",
+    "clear": "Exam has been cleared successfully",
     "finish": {
       "success": "You have finished your practicing successfully",
       "correctAnswer": "correct Answer ✅",
@@ -1324,5 +1329,25 @@
   },
   "cart": {
     "exist": "Item is already added before"
+  },
+  "student": {
+    "update": {
+      "success": "Profile updated successfully"
+    },
+    "enroll": {
+      "success": "Student enrolled successfully"
+    },
+    "register": {
+      "success": "Account created successfully"
+    },
+    "course": {
+      "update": "Course information updated successfully"
+    },
+    "payment": {
+      "update": "Payment information updated successfully"
+    },
+    "progress": {
+      "update": "Progress updated successfully"
+    }
   }
 }

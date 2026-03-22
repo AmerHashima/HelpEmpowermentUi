@@ -77,7 +77,7 @@ export class StudentService {
 
   createStudent(body: Student): Observable<APIStudent> {
     return this.apiService
-      .post<ApiResponse<APIStudent>>('Students', body, "Student has been registerted Successfully")
+      .post<ApiResponse<APIStudent>>('Students', body, "student.register.success")
       .pipe(
         map((response: ApiResponse<APIStudent>) => {
           if (!response.success) {
@@ -95,7 +95,7 @@ export class StudentService {
     };
 
     return this.apiService
-      .put<ApiResponse<APIStudent>>('Students', id, updateBody, 'User info has been updated successfully')
+      .put<ApiResponse<APIStudent>>('Students', id, updateBody, 'student.update.success')
       .pipe(
         map((response: ApiResponse<APIStudent>) => {
           if (!response.success) {
@@ -154,7 +154,7 @@ export class StudentService {
   //student Courses
   enrollCourse(body: StudentCourse): Observable<APIStudentCourse> {
     return this.apiService
-      .post<ApiResponse<APIStudentCourse>>('StudentCourses/enroll', body, "Student has been enrolled Successfully")
+      .post<ApiResponse<APIStudentCourse>>('StudentCourses/enroll', body, "student.enroll.success")
       .pipe(
         map((response: ApiResponse<APIStudentCourse>) => {
           if (!response.success) {
@@ -173,7 +173,7 @@ export class StudentService {
     };
 
     return this.apiService
-      .put<ApiResponse<APIStudentCourse>>('StudentCourses', id, updateBody, 'Course info has been updated successfully')
+      .put<ApiResponse<APIStudentCourse>>('StudentCourses', id, updateBody, 'student.course.update')
       .pipe(
         map((response: ApiResponse<APIStudentCourse>) => {
           if (!response.success) {
@@ -281,7 +281,7 @@ export class StudentService {
 
 
     return this.apiService
-      .put<ApiResponse<APIStudentCourse>>('StudentCourses', id, body, 'payment info has been updated successfully', 'payment')
+      .put<ApiResponse<APIStudentCourse>>('StudentCourses', id, body, 'student.payment.update', 'payment')
       .pipe(
         map((response: ApiResponse<APIStudentCourse>) => {
           if (!response.success) {
@@ -300,7 +300,7 @@ export class StudentService {
 
 
     return this.apiService
-      .put<ApiResponse<APIStudentCourse>>('StudentCourses', id, body, 'progress info has been updated successfully', 'progress')
+      .put<ApiResponse<APIStudentCourse>>('StudentCourses', id, body, 'student.progress.update', 'progress')
       .pipe(
         map((response: ApiResponse<APIStudentCourse>) => {
           if (!response.success) {

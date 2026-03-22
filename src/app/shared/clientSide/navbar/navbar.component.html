@@ -28,8 +28,8 @@
           <div class="dropdown">
             <i class="bi bi-globe" (click)="toggleDropdown('lang')"></i>
             <ul *ngIf="openDropdown() === 'lang'">
-              <li (click)="changeLang('en')" class="text-center">English</li>
-              <li (click)="changeLang('ar')" class="text-center">العربية</li>
+              <li (click)="changeLang('en')" class="text-center">{{lang() == 'ar' ? 'اللغة الانجليزية': 'English'}}</li>
+              <li (click)="changeLang('ar')" class="text-center">{{lang() == 'ar' ? 'العربية':"Arabic"}}</li>
             </ul>
           </div>
 

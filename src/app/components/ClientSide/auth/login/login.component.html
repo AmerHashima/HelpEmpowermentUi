@@ -1,9 +1,11 @@
 <div class="container-fluid">
   <div class="row justify-content-center">
-    <div class="col-12 col-lg-6 ">
-      <section class="form w-100 d-flex flex-column align-items-stretch gap-3 my-4 p-5 rounded">
+    <div class="col-12 col-lg-6">
+      <section
+        class="form w-100 d-flex flex-column align-items-stretch gap-3 my-4 p-5 rounded"
+      >
         <div class="d-flex flex-column gap-2 w-100">
-          <h3 class="m-0 ">{{ "log.welcomeBack" | translate }}</h3>
+          <h3 class="m-0">{{ "log.welcomeBack" | translate }}</h3>
           <p>{{ "log.enterCredentials" | translate }}</p>
         </div>
 
@@ -27,7 +29,7 @@
               }"
             ></app-input> -->
 
-             <app-input
+            <app-input
               name="username"
               [(ngModel)]="credentials.username"
               required
@@ -64,7 +66,6 @@
               <span class="form-check-label">Remember Me</span>
             </label> -->
 
-
             <app-site-button
               title="log.loginButton"
               type="main"
@@ -75,10 +76,16 @@
         </form>
 
         <p class="d-flex align-items-center justify-content-center w-100">
-          <span class="pe-1">Don't have an account?</span>
-          <span class="mainTextColor fw-bold text-decoration-underline"
-          [routerLink]="`/${lang()}/auth/register`"
-          >Register</span>
+          <span class="pe-1">
+            {{ "auth.noAccount" | translate }}
+          </span>
+
+          <span
+            class="mainTextColor fw-bold text-decoration-underline"
+            [routerLink]="`/${lang()}/auth/register`"
+          >
+            {{ "auth.registerLabel" | translate }}
+          </span>
         </p>
       </section>
     </div>

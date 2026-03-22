@@ -68,5 +68,5 @@ export class InstructorInfoComponent {
       "instructor.certifications.14"
     ]
   });
-  readonly accordionTitle = 'Instructor Info'
+  readonly accordionTitle = 'instructor.info'
 }

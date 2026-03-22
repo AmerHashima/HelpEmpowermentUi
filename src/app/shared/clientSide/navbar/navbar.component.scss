@@ -293,7 +293,9 @@ ul{
 .cart-badge {
   position: absolute;
   top: -6px;
-  right: -6px;
+  // right: -6px;
+    inset-inline-end: -6px;
+
 
   background: #dc3545;
   color: white;
@@ -311,3 +313,4 @@ ul{
 
   padding: 2px 5px;
 }
+
