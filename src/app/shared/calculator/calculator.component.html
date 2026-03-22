@@ -1,9 +1,10 @@
-<mat-card class="calculator-card">
+<!-- <mat-card class="calculator-card" > -->
 
-
+<mat-card class="calculator-card force-ltr" dir="ltr">
   <mat-card-content>
     <!-- Display -->
-    <mat-form-field appearance="outline" class="full-width">
+    <!-- <mat-form-field appearance="outline" class="full-width"> -->
+      <mat-form-field appearance="fill" class="full-width force-ltr">
       <input matInput [(ngModel)]="expression" placeholder="0" readonly />
     </mat-form-field>
 

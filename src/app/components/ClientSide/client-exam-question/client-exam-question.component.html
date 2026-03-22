@@ -105,9 +105,9 @@
     @if (showTranslateFlag) {
       <div class="correctAnswer mt-3 rounded-3 d-flex gap-3 flex-column">
         <div class="d-flex flex-column">
-          <h3 class="mainTextColor text-end">الترجمة بالعربية</h3>
+          <h3 class="mainTextColor arabic-text">الترجمة بالعربية</h3>
           <div class="question-content">
-            <h2 class="question-text text-end">
+            <h2 class="question-text arabic-text">
               {{ question().questionText_Ar }}
             </h2>
 
@@ -115,7 +115,7 @@
             @if (!isMatchingQuestion) {
               <div class="options">
                 @for (opt of question().answers; track opt.letter) {
-                  <label class="option translatedOption justify-content-end">
+                  <label class="option translatedOption  rtl-option">
                     <span class="letter order-1">({{ opt.letter }})</span>
                     <span class="text me-2">{{ opt.answerText_Ar }}</span>
                   </label>
@@ -134,7 +134,7 @@
     }
     <!-- Footer controls -->
     <footer class="question-footer gap-2 flex-column flex-lg-row">
-      <div class="left-controls d-flex align-items-center gap-1">
+      <div class="left-controls d-flex align-items-center gap-1 ">
         <!-- <app-site-button
           title="Back"
           [isRTL]="isRTL()"

@@ -34,7 +34,7 @@ export class ClientExamQuestionComponent {
 
   saveForLater = output<void>();
   private shared = inject(Shared);
-  isRTL = this.shared.isRtl
+  isRTL = signal<string>('ltr');
   // question = input.required<Question>();
   question = input.required<any>();
   isMarked = input<boolean>(false);

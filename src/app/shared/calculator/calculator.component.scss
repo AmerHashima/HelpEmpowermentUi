@@ -1,5 +1,28 @@
 @use 'variables' as *;
 
+
+:host {
+  direction: ltr !important;
+}
+
+.force-ltr {
+  direction: ltr !important;
+  text-align: left;
+
+  * {
+    direction: ltr !important;
+  }
+}
+
+
+
+.mat-mdc-form-field {
+  direction: ltr !important;
+}
+.mdc-notched-outline__leading {
+  width: 12px !important; // fix broken corner
+}
+
 .mat-mdc-unelevated-button:not(:disabled){
  background-color: $primaryColor !important;
 }
@@ -14,11 +37,14 @@
 }
 
 input{
+    direction: ltr !important;
+  text-align: right !important;
   color:$headerColor !important;
 }
 .full-width { width: 100%; }
 
 .result {
+    direction: ltr;
   font-size: 2.8rem;
   text-align: right;
   min-height: 60px;
@@ -27,6 +53,7 @@ input{
 }
 
 .button-grid {
+    direction: ltr;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 8px;

@@ -7,6 +7,20 @@
   // min-height: 100vh;
 }
 
+:host {
+  direction: ltr;
+  text-align: left;
+}
+
+.exam-container {
+  direction: ltr;
+  text-align: left;
+}
+
+.exam-container * {
+  direction: ltr;
+}
+
 .exam-container {
   min-width: 75%;
   margin: 0 auto;
@@ -186,3 +200,29 @@ color:$headerColor !important;
   pointer-events: none;
   opacity: .6;
 }
+.rtl-option {
+  direction: ltr;
+  text-align: left;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+
+
+}
+
+
+.arabic-text {
+  direction: rtl;
+  text-align: right;
+}
+
+ ::ng-deep .exam-container app-site-button button{
+  direction: ltr !important;
+}
+
+ ::ng-deep .exam-container app-site-button i {
+  margin: 0 4px;
+}
+

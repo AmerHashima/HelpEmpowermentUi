@@ -14,7 +14,10 @@
   />
 }
 
-<app-generic-modal [(isOpen)]="showQuestionBoard" title="Question Board">
+<app-generic-modal [(isOpen)]="showQuestionBoard"
+title="Question Board"
+  class="force-ltr"
+  dir="ltr">
   <section
     class="form w-100 d-flex flex-column align-items-stretch gap-3 p-3 rounded"
   >
@@ -39,7 +42,7 @@
           <span>Answered-Marked</span>
         </div>
       </div>
-     
+
       <div class="row g-1 flex-wrap">
         @for (question of boardQuestions(); let index = $index; track index) {
           <div class="col-2  flex-grow-1">
