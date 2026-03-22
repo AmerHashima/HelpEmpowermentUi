@@ -1,0 +1,72 @@
+@use 'variables' as *;
+.article-container {
+  max-width: 70%;
+  margin: 40px auto;
+  padding: 0 16px;
+  line-height: 1.8;
+}
+
+.article-title {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 25px;
+  color: $headerColor;
+}
+
+.article-section {
+  margin-bottom: 35px;
+}
+
+.section-image {
+  margin: 20px 0;
+  text-align: center;
+}
+
+.section-image img {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 14px;
+}
+
+.section-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin: 15px 0 10px;
+  color: $primaryColor;
+}
+
+.section-content {
+  font-size: 16px;
+  color: $headerColor;
+  margin-bottom: 10px;
+}
+
+ul {
+  padding-left: 20px;
+  margin-top: 10px;
+}
+
+ul li {
+  margin-bottom: 8px;
+  font-size: 15px;
+  color: $headerColor;
+}
+
+ul li::marker {
+  color: $primaryColor;
+}
+
+@media (max-width: 768px) {
+  .article-title {
+    font-size: 24px;
+  }
+
+  .section-title {
+    font-size: 18px;
+  }
+
+  .section-image img {
+    max-height: 250px;
+  }
+}

@@ -81,9 +81,33 @@ export const routes: Routes = [
         path: 'calendar',
         component: CalendarComponent,
       },
+      // {
+      //   path: 'articles',
+      //   component: ArticlesComponent,
+      // },
       {
         path: 'articles',
-        component: ArticlesComponent,
+        children: [
+          {
+            path: '',
+            component: ArticlesComponent
+          },
+          {
+            path: ':category',
+            children: [
+              {
+                path: '',
+                component: ArticlesComponent
+              },
+              {
+                path: ':slug',
+                loadComponent: () =>
+                  import('./components/ClientSide/articles/article-details/article-details.component')
+                    .then(m => m.ArticleDetailsComponent)
+              }
+            ]
+          }
+        ]
       },
       {
         path: 'performance-levels',

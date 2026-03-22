@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PmpArticle2Component } from './pmp-article2.component';
+import { ArticleDetailsComponent } from './article-details.component';
 
-describe('PmpArticle2Component', () => {
-  let component: PmpArticle2Component;
-  let fixture: ComponentFixture<PmpArticle2Component>;
+describe('ArticleDetailsComponent', () => {
+  let component: ArticleDetailsComponent;
+  let fixture: ComponentFixture<ArticleDetailsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PmpArticle2Component]
+      imports: [ArticleDetailsComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(PmpArticle2Component);
+    fixture = TestBed.createComponent(ArticleDetailsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

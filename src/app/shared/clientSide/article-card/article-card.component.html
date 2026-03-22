@@ -1,5 +1,5 @@
  <div
-      class="certification-card articleCard shadow h-100"
+   class="certification-card  articleCard shadow h-100 d-flex flex-column"
       [class.rtl]="isRTL()"
     >
       <!-- Image -->
@@ -8,7 +8,8 @@
       </div>
 
       <!-- Content -->
-      <div class="certfication-content d-flex flex-column gap-3 p-3">
+      <!-- <div class="certfication-content d-flex flex-column bg-info  gap-3 p-3"> -->
+        <div class="certfication-content d-flex flex-column  gap-3 p-3 flex-grow-1">
         <!-- Date & time -->
         <div class="date d-flex align-items-center gap-2  small">
           <span>{{ date() | translate }}</span>
@@ -17,7 +18,7 @@
         </div>
 
         <!-- Title & description -->
-        <div class="d-flex flex-column gap-3">
+        <div class="d-flex flex-column   justify-content-between flex-grow-1 gap-3">
           <div class="d-flex  flex-column gap-1">
             <h3 class="articleName courseName mb-1">
               {{ title() | translate }}

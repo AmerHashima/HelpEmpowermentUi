@@ -176,11 +176,11 @@
       "8_min": "8 MIN READ",
       "6_min": "6 MIN READ"
     },
-    "article1": {
-      "title": "CAPM Study Plan",
-      "summary": "Passing the CAPM exam requires a structured Methodology, much like managing a real project. Based on my experience and observing many candidates, I recommend dividing your preparation into five clear phases."
-    },
-    "article2": {
+"article1": {
+  "title": "CAPM Application Process",
+  "summary": "Applying for the CAPM certification is simple and requires only basic education and 23 hours of training. This guide walks you through creating your PMI account, completing the application, and scheduling your exam to start your project management journey with confidence."
+},
+"article2": {
       "title": "PMP Study Plan",
       "summary": "Passing the PMP exam requires a structured Methodology, much like managing a real project. Based on my experience and observing many candidates, I recommend dividing your preparation into five clear Phases"
     },
@@ -802,6 +802,7 @@
     "supportDesc": "Get instant help when you need it."
   },
   "pages": {
+    "capm-application-process":"CAMP",
     "about": "About US",
     "profile": "Profile",
     "contact": "Contact US",

@@ -1,0 +1,29 @@
+<div class="article-container" *ngIf="article">
+
+  <h2 class="article-title">
+    {{ article.title[currentLang()] }}
+  </h2>
+
+  <div class="article-section" *ngFor="let section of article.sections">
+
+    <div *ngIf="section.image" class="section-image">
+      <img [src]="section.image" [alt]="section.imageAlt || 'article image'" />
+    </div>
+
+    <h4 *ngIf="section.title" class="section-title">
+      {{ section.title?.[currentLang()] }}
+    </h4>
+
+    <p *ngFor="let paragraph of section.content?.[currentLang()]" class="section-content">
+      {{ paragraph }}
+    </p>
+
+    <ul *ngIf="section.list?.[currentLang()]?.length">
+      <li *ngFor="let item of section.list[currentLang()]">
+        {{ item }}
+      </li>
+    </ul>
+
+  </div>
+
+</div>
