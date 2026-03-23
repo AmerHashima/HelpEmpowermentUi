@@ -36,15 +36,15 @@
          <ng-container *ngIf="recordedCourseContent() as content">
                   <h3 class="CertificationHeader">
             <span class="darkText">
-              {{ recordedCourseContent().master | translate }}
+              {{ t(recordedCourseContent().master) }}
             </span>
             <span class="mainTextColor">
-              {{ recordedCourseContent().title | translate }}
+              {{ t(recordedCourseContent().title) }}
             </span>
           </h3>
 
           <p>
-            {{ recordedCourseContent().description | translate }}
+            {{ t(recordedCourseContent().description) }}
           </p>
 
           <div class="d-flex justify-content-between rating">
@@ -61,7 +61,7 @@
 
           <div class="certificationPrice">
             <span class="darkText">
-              {{ recordedCourseContent().price | translate }}
+              {{ t(recordedCourseContent().price)  }}
             </span>
           </div>
          </ng-container>

@@ -21,8 +21,6 @@ export function localeFactory(translate: TranslateService) {
 
 export function initTranslate(translate: TranslateService) {
   return () => {
-    translate.setDefaultLang('en');
-
     const lang = translate.currentLang || 'en';
 
     return new Promise<void>((resolve) => {
@@ -33,6 +31,7 @@ export function initTranslate(translate: TranslateService) {
     });
   };
 }
+
 registerLocaleData(localeAr);
 
 export const appConfig: ApplicationConfig = {

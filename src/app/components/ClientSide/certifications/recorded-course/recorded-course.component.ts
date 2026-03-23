@@ -5,7 +5,7 @@ import { AuthService } from '../../../../Services/auth.service';
 import { PageBannerComponent } from '../../../../shared/clientSide/page-banner/page-banner.component';
 import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/site-button.component';
 import { StarRatingComponent } from '../../../../shared/star-rating/star-rating.component';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslateModule, TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { NgIf } from '@angular/common';
 import { CoureseOutlineComponent } from '../courese-outline/courese-outline.component';
 import { CoureseFeaturesComponent } from '../courese-features/courese-features.component';
@@ -52,6 +52,11 @@ export class RecordedCourseComponent {
     };
   });
 
+  private translate = inject(TranslateService);
+
+  t(key: string) {
+    return this.translate.instant(key);
+  }
   buyNow() {
     // Implement buy logic (e.g. open checkout, call service, etc.)
     console.log('Buy Now clicked');
