@@ -21,7 +21,7 @@ import { StudentService } from '../../../../Services/student-service.service';
 
 @Component({
   selector: 'app-recorded-course',
-  imports: [PageBannerComponent, SiteButtonComponent, StarRatingComponent, TranslateModule,
+  imports: [PageBannerComponent, SiteButtonComponent, StarRatingComponent, TranslateModule,NgIf,
     TranslatePipe, NgIf, CoureseOutlineComponent, CoureseFeaturesComponent, CouresePlayerComponent,
     CoureseContentComponent, ResourcesComponent, InstructorInfoComponent, TargetAudienceComponent,GenericModelComponent
   ],
