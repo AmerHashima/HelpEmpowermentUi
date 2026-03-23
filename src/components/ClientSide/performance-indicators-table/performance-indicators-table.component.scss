@@ -1,4 +1,12 @@
 @use 'variables' as *;
+
+.table{
+  --bs-table-bg: $inputBg !important;
+}
+
+.table>:not(caption)>*>*{
+  color:$inputText ;
+}
 th,td{
   padding:1rem;
   vertical-align: middle;
@@ -7,25 +15,25 @@ th,td{
 
 .aboveTarget{
   background-color: #2D571A;
-  color:white
+  color:white !important
 }
 
 .target{
   background-color: #00B342;
-  color:white
+  color:white !important
 }
 
 .belowTarget{
   background-color: #FFBD00;
-  color:#000;
+  color:#000 !important;
 }
 
 .improvement{
   background-color: #FF0000;
-  color:#fff;
+  color:#fff !important;
 }
 
-.header{
+.table .header{
   background-color: $primaryColor !important;
   color:$lightBgTextColor !important;
 }

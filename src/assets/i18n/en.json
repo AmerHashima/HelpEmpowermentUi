@@ -832,6 +832,44 @@
     "supportTitle": "Always-On Technical Support:",
     "supportDesc": "Get instant help when you need it."
   },
+  "pmis": {
+    "MAIN_TITLE": "Empower Your Decisions with Smarter Data Insights",
+    "MAIN_DESCRIPTION": "Help Empowerment enhances your project management through a customized Project Management Information System (PMIS), serving as a central hub for all your projects and programs. We don’t just deliver software—we provide a complete ecosystem that connects your tools, data, and teams into one powerful platform.",
+    "WHAT_WE_DELIVER_TITLE": "What We Deliver",
+    "WHAT_WE_DELIVER_SUBTITLE": "A fully integrated system that unifies your tools, data, and teams in one powerful platform",
+    "KEY_BENEFITS_TITLE": "Key Benefits of PMIS:",
+    "SECTION_TAG_HEADER": "At \"Help Empowerment\"",
+    "SECTION_TAG_TEXT": "We deliver measurable results, including faster data-driven decision-making, full project visibility, up to 70% reduction in reporting time, and enhanced collaboration—leading to greater efficiency and transparency.",
+    "ENROLL_TITLE_1": "Ready to Empower Your Organization?",
+    "ENROLL_TITLE_2": "Contact us today to get a customized PMIS solution tailored for your success",
+    "cards": {
+      "custom": {
+        "header": "Custom Design & Implementation",
+        "text": "We design and implement tailored PMIS solutions based on your organization’s specific needs."
+      },
+      "dashboard": {
+        "header": "Real-Time Dashboards",
+        "text": "We build real-time dashboards and KPIs to monitor project performance effectively."
+      },
+      "integration": {
+        "header": "Tool Integration",
+        "text": "We integrate tools such as Microsoft Project, Jira, and Asana into a unified system."
+      },
+      "connectivity": {
+        "header": "Cross-Department Connectivity",
+        "text": "We connect data across departments to provide a comprehensive view and support better decision-making."
+      },
+      "training": {
+        "header": "Team Training",
+        "text": "We train your teams to maximize the value and efficiency of the system."
+      }
+    },
+    "benefits": {
+      "tracking": "47% improvement in project tracking efficiency (PMI)",
+      "reporting": "52% improvement in project reporting accuracy (Gartner)",
+      "time": "35% reduction in time spent on data collection and reporting (PwC)"
+    }
+  },
   "pages": {
     "capm-application-process": "CAMP",
     "about": "About US",

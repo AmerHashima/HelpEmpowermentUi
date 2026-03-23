@@ -44,6 +44,7 @@
   display: flex;
   justify-content: space-between;
   font-size: 13px;
+  color:$headerColor;
 }
 
 .dot {
@@ -64,9 +65,9 @@
 }
 
 .practice-container {
-  border: 1px solid #d0d7de;
+  border: 1px solid $borderColor;
   border-radius: 8px;
-  background: #fff;
+  background: $inputBg;
 }
 
 .practice-card {
