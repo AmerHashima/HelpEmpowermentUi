@@ -1,5 +1,5 @@
 // src\app\app.config.ts
-import { ApplicationConfig, inject, LOCALE_ID, provideZoneChangeDetection } from '@angular/core';
+import { APP_INITIALIZER, ApplicationConfig, inject, LOCALE_ID, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter, withInMemoryScrolling } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -18,13 +18,28 @@ export function localeFactory(translate: TranslateService) {
   return translate.currentLang === 'ar' ? 'ar-EG' : 'en-US';
 }
 
+
+export function initTranslate(translate: TranslateService) {
+  return () => {
+    translate.setDefaultLang('en');
+
+    const lang = translate.currentLang || 'en';
+
+    return new Promise<void>((resolve) => {
+      translate.use(lang).subscribe({
+        next: () => resolve(),
+        error: () => resolve()
+      });
+    });
+  };
+}
 registerLocaleData(localeAr);
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes, withInMemoryScrolling({
-      scrollPositionRestoration: 'top', 
+      scrollPositionRestoration: 'top',
       anchorScrolling: 'enabled'
     })),
     provideAnimations(),
@@ -41,6 +56,12 @@ export const appConfig: ApplicationConfig = {
       useFactory: localeFactory,
       deps: [TranslateService]
     },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initTranslate,
+      deps: [TranslateService],
+      multi: true
+    },
     provideClientHydration(withEventReplay()),
     provideHttpClient(
       withFetch(),
@@ -52,6 +73,7 @@ export const appConfig: ApplicationConfig = {
     },
     TranslateModule.forRoot({
       loader: {
+
         provide: TranslateLoader,
         useFactory: HttpLoaderFactory,
         deps: [HttpClient]
