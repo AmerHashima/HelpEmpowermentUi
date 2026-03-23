@@ -1,5 +1,11 @@
-<div class="exam-container">
+<div class="exam-container" [class.blurred]="isBlurred()">
   <!-- Header -->
+  <div class="watermark-grid">
+  <div *ngFor="let i of [].constructor(8)">
+    {{ watermarkText() }}
+  </div>
+</div>
+
   <header class="exam-header flex-column flex-lg-row gap-2">
     <app-feature [title]="getExamTitle()" icon="bi bi-star" />
     <!-- <div class="mode"><span class="star">★</span> Exam 1 - Practice Mode</div> -->
@@ -247,7 +253,6 @@
     }
   </main>
 </div>
-
 
 <app-generic-modal [(isOpen)]="showConfirm" title="">
   <section

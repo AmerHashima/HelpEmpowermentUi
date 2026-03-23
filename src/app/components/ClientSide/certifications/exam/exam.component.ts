@@ -3,7 +3,7 @@ import { ClientExamQuestionComponent } from '../../client-exam-question/client-e
 import { Shared } from '../../../../shared/Services/shared/shared';
 import { QuestionsStore } from '../../../../AdminPanelStores/QuestionStores/questions.store';
 import { Filter } from '../../../../models/rquest';
-import { isPlatformBrowser, NgClass } from '@angular/common';
+import { isPlatformBrowser, NgClass, NgFor } from '@angular/common';
 import { AuthService } from '../../../../Services/auth.service';
 import { StudentExamService } from '../../../../Services/student-exam.service';
 import { choiceQuestionExamSubmit, courseExam, submitStudentExam } from '../../../../models/certification';
@@ -94,6 +94,8 @@ export class ExamComponent {
     if (qs.length === 0 || idx < 0 || idx >= qs.length) return null;
     return this.mapToClientQuestion(qs[idx], idx);
   });
+
+  // watermarkText=signal<string>('Help Emporment');
 
   constructor() {
     this.route.queryParamMap.subscribe(params => {
@@ -196,6 +198,7 @@ export class ExamComponent {
     });
   }
 
+
   onSaveForLater() {
     this.saveForLater = true;
     this.saveExamProgress();
@@ -267,6 +270,34 @@ export class ExamComponent {
     }
   }
 
+  onForceEnd(){
+    const payload: submitStudentExam = {
+      studentExamOid: this.shared.studentExamId(),
+      answers: [],
+      updatedBy: '3fa85f64-5717-4562-b3fc-2c963f66afa6'
+    }
+
+    if (this.isBrowser) {
+      this.studentExamService.submitExam(payload,'').subscribe({
+        next: (result) => {
+          const key = this.getStorageKey(this.currentExamId());
+          localStorage.removeItem(key);
+          if (this.currentMode() == 'Exam') {
+            const examResult = `examResult-${this.shared.studentExamId()}`;
+            localStorage.setItem(examResult, JSON.stringify(result));
+            this.router.navigate(['../../exam-result'], {
+              relativeTo: this.route,
+            });
+          } else {
+            this.router.navigate(['../../exam-simulator'], {
+              relativeTo: this.route,
+            });
+          }
+        }
+      })
+
+    }
+  }
   resetExam() {
     this.currentQuestionIndex.set(0);
     this.examChoiceAnswers = [];

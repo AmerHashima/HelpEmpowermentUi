@@ -1,3 +1,6 @@
+
+
+
 @if (currentQuestion()) {
   <!-- <app-client-exam-question
     [question]="currentQuestion()"
@@ -14,6 +17,12 @@
 
     (finishExam)="finishExam($event)"
   /> -->
+  <!-- <div class="watermark-grid">
+  <div *ngFor="let i of [].constructor(8)">
+    {{ watermarkText() }}
+  </div>
+</div> -->
+
     <app-client-exam-question
     [question]="currentQuestion()"
     [mode]="currentMode()"
@@ -24,7 +33,7 @@
 
     (saveForLater)="onSaveForLater()"
     (mark)="onMarkQuestion($event)"
-
+    (forceEnd)="onForceEnd()"
     (finishExam)="finishExam($event)"
   />
 }

@@ -4,25 +4,29 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { Shared } from '../../../shared/Services/shared/shared';
 import { FeatureComponent } from '../../../shared/clientSide/feature/feature.component';
 import { GenericModelComponent } from '../../../shared/generic-model/generic-model.component';
-import { isPlatformBrowser, Location } from '@angular/common';
+import { isPlatformBrowser, Location, NgFor } from '@angular/common';
 import { CalculatorComponent } from '../../../shared/calculator/calculator.component';
 import { WhiteboardComponent } from '../../../shared/whiteboard/whiteboard.component';
 import { DragComponentComponent } from '../drag-component/drag-component.component';
 import { APIAnswer } from '../../../models/certification';
 import { ExamTimerComponent } from '../certifications/exam-timer/exam-timer.component';
+import { ExamProtectionService } from '../../../Services/exam-protection.service';
+import { ToastingMessagesService } from '../../../shared/Services/ToastingMessages/toasting-messages.service';
 
 @Component({
   selector: 'app-client-exam-question',
   imports: [SiteButtonComponent, TranslatePipe, FeatureComponent, ExamTimerComponent,
-    GenericModelComponent, CalculatorComponent, WhiteboardComponent, DragComponentComponent
+    GenericModelComponent, CalculatorComponent, WhiteboardComponent, DragComponentComponent,NgFor
   ],
   templateUrl: './client-exam-question.component.html',
-  styleUrl: './client-exam-question.component.scss'
+  styleUrl: './client-exam-question.component.scss',
+  providers: [ExamProtectionService]
 })
 export class ClientExamQuestionComponent {
 
   // next = output<void>();
   // revealAnswer = output<string>();
+  watermarkText = signal<string>('Help Emporment');
   next = output<any>();
   mode = input<string>('');
   answerLocked = input<boolean>(false);
@@ -30,6 +34,7 @@ export class ClientExamQuestionComponent {
   goToQuestion = output<number>();
   mark = output<boolean>();
   finishExam = output<boolean>();
+  forceEnd = output<boolean>();
   showBoard = output<boolean>();
 
   saveForLater = output<void>();
@@ -47,6 +52,56 @@ export class ClientExamQuestionComponent {
   showCorrectAnswerFlag: boolean = false;
   showTranslateFlag: boolean = false;
 
+  private protection = inject(ExamProtectionService);
+  private toast = inject(ToastingMessagesService);
+
+
+  // UI state
+  isBlurred = signal(false);
+  violationsCount = signal(0);
+
+
+  ngOnInit() {
+   if(this.mode()== 'Exam'){
+    console.log('ib ibt',this.mode());
+     this.protection.init(
+       (type) => {
+         this.isBlurred.set(true);
+
+         const messages: any = {
+           TAB_SWITCH: 'Do not leave the exam!',
+           FAST_SWITCH: 'Suspicious behavior detected!',
+           FULLSCREEN_EXIT: 'Stay in fullscreen!',
+           DEVTOOLS: 'DevTools detected!',
+           IDLE: 'You are inactive!',
+           KEYBOARD: 'Keyboard shortcuts not allowed!'
+         };
+
+         this.showWarning(messages[type]);
+
+         setTimeout(() => {
+           this.isBlurred.set(false);
+         }, 2000);
+       },
+       () => {
+         this.forceSubmitExam();
+       }
+     );
+
+     this.protection.enterFullscreen();
+   }
+  }
+
+
+
+  showWarning(message:string) {
+    this.toast.showToast(message, 'warning');
+  }
+
+  forceSubmitExam() {
+    this.toast.showToast('Exam ended due to suspicious activity', 'error');
+    this.forceEnd.emit(true);
+  }
   constructor(
     private location: Location,
     @Inject(PLATFORM_ID) private platformId: Object
@@ -232,7 +287,7 @@ export class ClientExamQuestionComponent {
     // }
   }
 
-  submitQuestionAnswer(last:boolean=false){
+  submitQuestionAnswer(last: boolean = false) {
     this.hideAnswersAndTranslations();
 
     const q = this.question();
@@ -257,7 +312,7 @@ export class ClientExamQuestionComponent {
     // Matching Question
     else if (q.questionTypeName === 'Matching') {
       const payload = this.buildMatchingAnswers(this.left, this.middle);
-      console.log('matching',payload);
+      console.log('matching', payload);
       if (!payload?.length) {
         console.log('in empty');
         this.next.emit({ type: 'empty', last });
@@ -266,12 +321,12 @@ export class ClientExamQuestionComponent {
 
       this.next.emit({
         type: 'Matching',
-        answers: payload,last
+        answers: payload, last
       });
     }
   }
 
-  submit(){
+  submit() {
     this.submitQuestionAnswer(true);
   }
   mapToAnswerPayload(question: any) {
@@ -340,7 +395,7 @@ export class ClientExamQuestionComponent {
     console.log('shaimaamiddle', middle);
     console.log('buildMatchingAnswers');
     const allNull = middle.every(v => v === null);
-    if(allNull){
+    if (allNull) {
       return [];
     }
     const answers = left.map((l, index) => ({
@@ -367,5 +422,13 @@ export class ClientExamQuestionComponent {
   onTimeUp() {
     console.log('Time up → auto next question');
     this.nextQuestion();
+  }
+
+  ngOnDestroy() {
+    if(this.mode() == 'Exam'){
+      console.log('ib destroy', this.mode())
+
+      this.protection.destroy();
+    }
   }
 }

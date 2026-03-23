@@ -57,11 +57,11 @@ export class ToastingMessagesService {
     private translate: TranslateService
   ) { }
 
-  showToast(messageKey: string, type: ToastType, clear = false) {
+  showToast(messageKey: string, type: ToastType, clear = true) {
     this.handleToast(messageKey, type, clear);
   }
 
-  private handleToast(messageKey: string, type: ToastType, clear = false) {
+  private handleToast(messageKey: string, type: ToastType, clear = true) {
     const titleKey = `TOAST.${type.toUpperCase()}`;
 
     const title = this.translate.instant(titleKey) || type;
@@ -74,19 +74,19 @@ export class ToastingMessagesService {
     this.toastr[type](message, title);
   }
 
-  success(message: string, clear = false) {
+  success(message: string, clear = true) {
     this.handleToast(message, 'success', clear);
   }
 
-  error(message: string, clear = false) {
+  error(message: string, clear = true) {
     this.handleToast(message, 'error', clear);
   }
 
-  info(message: string, clear = false) {
+  info(message: string, clear = true) {
     this.handleToast(message, 'info', clear);
   }
 
-  warning(message: string, clear = false) {
+  warning(message: string, clear = true) {
     this.handleToast(message, 'warning', clear);
   }
 }

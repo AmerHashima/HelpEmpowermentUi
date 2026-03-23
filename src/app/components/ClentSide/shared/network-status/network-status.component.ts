@@ -7,7 +7,7 @@ import { Router, RouterLink } from '@angular/router';
 @Component({
   selector: 'app-network-status',
   standalone: true,
-  imports:[TranslatePipe,RouterLink],
+  imports:[TranslatePipe],
   templateUrl: './network-status.component.html',
   styleUrl: './network-status.component.scss'
 
