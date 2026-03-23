@@ -4,9 +4,18 @@ import { Observable } from 'rxjs';
 import { TranslateLoader } from '@ngx-translate/core';
 
 class CustomTranslateLoader implements TranslateLoader {
+  // constructor(
+  //   private http: HttpClient,
+  //   private prefix: string = './assets/i18n/',
+  //   private suffix: string = '.json'
+  // ) { }
+
+  // getTranslation(lang: string): Observable<any> {
+  //   return this.http.get(`${this.prefix}${lang}${this.suffix}`);
+  // }
   constructor(
     private http: HttpClient,
-    private prefix: string = './assets/i18n/',
+    private prefix: string = '/assets/i18n/',
     private suffix: string = '.json'
   ) { }
 
@@ -18,3 +27,6 @@ class CustomTranslateLoader implements TranslateLoader {
 export function HttpLoaderFactory(http: HttpClient): TranslateLoader {
   return new CustomTranslateLoader(http);
 }
+
+
+

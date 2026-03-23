@@ -16,6 +16,8 @@
 }
 
 .exam-container {
+    user-select: none;
+  -webkit-user-select: none;
     position: relative;
   direction: ltr;
   text-align: left;
