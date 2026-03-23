@@ -4,7 +4,7 @@ import { ServiceTitleComponent } from '../service-title/service-title.component'
 import { ServiceCardComponent } from '../service-card/service-card.component';
 import { ServicePointComponent } from '../service-point/service-point.component';
 import { ServicesPageComponent } from '../services-page/services-page.component';
-import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { TranslateModule, TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { CommonModule, NgFor } from '@angular/common';
 
 @Component({
@@ -17,6 +17,10 @@ import { CommonModule, NgFor } from '@angular/common';
   styleUrl: './pmis.component.scss'
 })
 export class PMISComponent {
+
+constructor(private translate: TranslateService) {
+  console.log('PMIS:', this.translate.instant('pmis.MAIN_TITLE'));
+}
   servicePmisCardsInfo = [
     {
       icon: "bi bi-nut",

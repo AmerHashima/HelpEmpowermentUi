@@ -33,18 +33,17 @@
           <div class="certificationPrice">
             <span class="darkText">{{"recordedCourse.price" | translate}}</span>
           </div> -->
-         <ng-container *ngIf="recordedCourseContent() as content">
-                  <h3 class="CertificationHeader">
+          <h3 class="CertificationHeader">
             <span class="darkText">
-              {{ t(recordedCourseContent().master) }}
+              {{ recordedCourseContent().master | translate }}
             </span>
             <span class="mainTextColor">
-              {{ t(recordedCourseContent().title) }}
+              {{ recordedCourseContent().title | translate }}
             </span>
           </h3>
 
           <p>
-            {{ t(recordedCourseContent().description) }}
+            {{ recordedCourseContent().description | translate }}
           </p>
 
           <div class="d-flex justify-content-between rating">
@@ -61,11 +60,9 @@
 
           <div class="certificationPrice">
             <span class="darkText">
-              {{ t(recordedCourseContent().price)  }}
+              {{ recordedCourseContent().price | translate }}
             </span>
           </div>
-         </ng-container>
-
           <div class="d-flex align-content-center gap-3">
             <app-site-button
               title="examSimulator.buyNow"

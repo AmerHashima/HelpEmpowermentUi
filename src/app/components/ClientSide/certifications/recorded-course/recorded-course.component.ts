@@ -52,11 +52,7 @@ export class RecordedCourseComponent {
     };
   });
 
-  private translate = inject(TranslateService);
 
-  t(key: string) {
-    return this.translate.instant(key);
-  }
   buyNow() {
     // Implement buy logic (e.g. open checkout, call service, etc.)
     console.log('Buy Now clicked');
