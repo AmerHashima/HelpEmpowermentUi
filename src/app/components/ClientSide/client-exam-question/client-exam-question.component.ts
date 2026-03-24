@@ -26,7 +26,7 @@ export class ClientExamQuestionComponent {
 
   // next = output<void>();
   // revealAnswer = output<string>();
-  watermarkText = signal<string>('Help Emporment');
+  watermarkText = signal<string>('Help Empowerment');
   next = output<any>();
   mode = input<string>('');
   answerLocked = input<boolean>(false);
