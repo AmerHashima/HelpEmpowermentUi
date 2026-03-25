@@ -56,8 +56,8 @@ export class SideNav {
       // ]
     },
     {
-      name: 'Students',
-      nameAr: 'الطلاب',
+      name: 'Users',
+      nameAr: 'المستخدمون',
       icon: 'bi bi-people-fill',
       route: 'students'
     },

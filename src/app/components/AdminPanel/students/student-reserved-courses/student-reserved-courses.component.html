@@ -2,7 +2,7 @@
 <div class="container-fluid py-3">
   <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
     <h4 class="mb-0">Reserved Courses</h4>
-    <a routerLink="/admin/students" class="btn btn-outline-secondary">Back to Students</a>
+    <a routerLink="/admin/students" class="btn btn-outline-secondary">Back to Users</a>
   </div>
 
   @if (loading()) {
@@ -25,7 +25,7 @@
               <span class="badge bg-primary">{{ item.progressPercentage }}%</span>
             </div>
 
-            <div class="small mb-1"><strong>Student:</strong> {{ item.studentName }}</div>
+            <div class="small mb-1"><strong>User:</strong> {{ item.studentName }}</div>
             <div class="small mb-1"><strong>Price:</strong> {{ item.price }}</div>
             <div class="small mb-1"><strong>Discount:</strong> {{ item.discountAmount }}</div>
             <div class="small mb-1"><strong>Paid:</strong> {{ item.paidAmount ?? '-' }}</div>
