@@ -1,1 +1,108 @@
-<!-- src\app\components\AdminPanel\dashboard\dashboard.component.html -->
+<div class="dashboard-container">
+
+  <!-- 🔷 USERS -->
+  <div class="section-title">Users Overview</div>
+
+  <div class="row g-3">
+    <div class="col-md-4">
+      <div class="stat-card primary">
+        <div class="stat-icon"><i class="bi bi-people-fill"></i></div>
+        <div>
+          <div class="stat-title">Total Users</div>
+          <div class="stat-value">{{ stats().totalUsers }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="stat-card success">
+        <div class="stat-icon"><i class="bi bi-person-check-fill"></i></div>
+        <div>
+          <div class="stat-title">Active Users</div>
+          <div class="stat-value">{{ stats().activeUsers }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="stat-card warning">
+        <div class="stat-icon"><i class="bi bi-person-lines-fill"></i></div>
+        <div>
+          <div class="stat-title">Current Users</div>
+          <div class="stat-value">{{ stats().currentUsers }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🔷 PMP -->
+  <div class="section-title mt-4">PMP Statistics</div>
+
+  <div class="row g-3">
+    <div class="col-md-4">
+      <div class="stat-card info">
+        <div class="stat-icon"><i class="bi bi-laptop"></i></div>
+        <div>
+          <div class="stat-title">Exam Simulator</div>
+          <div class="stat-value">{{ stats().pmpExamSimulators }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="stat-card secondary">
+        <div class="stat-icon"><i class="bi bi-camera-video-fill"></i></div>
+        <div>
+          <div class="stat-title">Recorded Courses</div>
+          <div class="stat-value">{{ stats().pmpRecordedCourses }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="stat-card dark">
+        <div class="stat-icon"><i class="bi bi-broadcast"></i></div>
+        <div>
+          <div class="stat-title">Live Courses</div>
+          <div class="stat-value">{{ stats().pmpLiveCourses }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🔷 CAPM -->
+  <div class="section-title mt-4">CAPM Statistics</div>
+
+  <div class="row g-3">
+    <div class="col-md-4">
+      <div class="stat-card info">
+        <div class="stat-icon"><i class="bi bi-laptop-fill"></i></div>
+        <div>
+          <div class="stat-title">Exam Simulator</div>
+          <div class="stat-value">{{ stats().capmExamSimulators }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="stat-card secondary">
+        <div class="stat-icon"><i class="bi bi-play-btn-fill"></i></div>
+        <div>
+          <div class="stat-title">Recorded Courses</div>
+          <div class="stat-value">{{ stats().capmRecordedCourses }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="stat-card dark">
+        <div class="stat-icon"><i class="bi bi-easel-fill"></i></div>
+        <div>
+          <div class="stat-title">Live Courses</div>
+          <div class="stat-value">{{ stats().capmLiveCourses }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

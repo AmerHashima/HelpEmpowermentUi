@@ -64,16 +64,16 @@ export class StudentService {
       );
   }
 
-  getStudents(): Observable<APIStudent[]> {
-    return this.apiService.get<ApiResponse<APIStudent[]>>('Students').pipe(
-      map((response: ApiResponse<APIStudent[]>) => {
-        if (!response.success) {
-          throw new Error(response.message || 'API failed to load students');
-        }
-        return response.data;
-      })
-    );
-  }
+  // getStudents(): Observable<APIStudent[]> {
+  //   return this.apiService.get<ApiResponse<APIStudent[]>>('Students').pipe(
+  //     map((response: ApiResponse<APIStudent[]>) => {
+  //       if (!response.success) {
+  //         throw new Error(response.message || 'API failed to load students');
+  //       }
+  //       return response.data;
+  //     })
+  //   );
+  // }
 
   createStudent(body: Student): Observable<APIStudent> {
     return this.apiService
