@@ -1,1 +1,26 @@
-<p>technical-support-policy works!</p>
+<div class="policy-container">
+
+  <div class="policy-card">
+
+    <h2>{{ 'support.title' | translate }}</h2>
+
+    <div class="section" *ngFor="let section of sections">
+
+      <h5>{{ section.title }}</h5>
+
+      <!-- Paragraphs -->
+      <p class="w-100" *ngFor="let p of section.content">
+        {{ p }}
+      </p>
+
+      <!-- List -->
+      <ul *ngIf="section.list">
+        <li *ngFor="let item of section.list">
+          {{ item }}
+        </li>
+      </ul>
+
+    </div>
+
+  </div>
+</div>

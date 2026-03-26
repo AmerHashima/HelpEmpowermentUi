@@ -1,1 +1,25 @@
-<p>privacy-notice works!</p>
+<div class="policy-container">
+
+  <div class="policy-card">
+
+    <h2>{{ 'privacy.title' | translate }}</h2>
+
+    <div class="section"
+         *ngFor="let section of (sections | async)">
+
+      <h5>{{ section.title }}</h5>
+
+      <p *ngFor="let p of section.content" class="w-100">
+        {{ p }}
+      </p>
+
+      <ul *ngIf="section.list">
+        <li *ngFor="let item of section.list">
+          {{ item }}
+        </li>
+      </ul>
+
+    </div>
+
+  </div>
+</div>

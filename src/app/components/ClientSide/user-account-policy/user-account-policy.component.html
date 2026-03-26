@@ -1,1 +1,24 @@
-<p>user-account-policy works!</p>
+<div class="policy-card">
+
+  <h2>{{ 'userPolicy.title' | translate }}</h2>
+  <h4>{{ 'userPolicy.subtitle' | translate }}</h4>
+
+  <p>{{ 'userPolicy.description' | translate }}</p>
+
+  <h5>{{ 'userPolicy.notAllowedTitle' | translate }}</h5>
+  <ul>
+    <li *ngFor="let item of ('userPolicy.notAllowed' | translate)">
+      {{ item }}
+    </li>
+  </ul>
+
+  <h5>{{ 'userPolicy.penaltyTitle' | translate }}</h5>
+  <p class="warning w-100">
+    {{ 'userPolicy.penalty' | translate }}
+  </p>
+
+  <p class="footer w-100">
+    {{ 'userPolicy.footer' | translate }}
+  </p>
+
+</div>

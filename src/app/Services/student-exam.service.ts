@@ -267,7 +267,7 @@ export class StudentExamService {
     };
 
     this.getExamSummary(payload).subscribe({
-      next: (report) => this.latestReport.set(report),
+      next: (report) => { console.log('report', report); this.latestReport.set(report);},
       error: (err) => console.log(err)
     });
   }

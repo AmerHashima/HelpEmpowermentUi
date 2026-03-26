@@ -1,1 +1,41 @@
-<p>refund-policy works!</p>
+<div class="policy-container">
+
+  <div class="policy-card">
+
+    <h2>{{ 'refund.title' | translate }}</h2>
+
+    <!-- Intro -->
+    <p class="w-100" *ngFor="let intro of introList">
+      {{ intro }}
+    </p>
+
+    <!-- Sections -->
+    <div class="section" *ngFor="let section of sections">
+
+      <h5>{{ section.title }}</h5>
+
+      <p class="w-100" *ngFor="let p of section.content">
+        {{ p }}
+      </p>
+
+      <ul *ngIf="section.list">
+        <li *ngFor="let item of section.list">
+          {{ item }}
+        </li>
+      </ul>
+
+      <!-- Steps -->
+      <ol *ngIf="section.steps" class="steps">
+        <li *ngFor="let step of section.steps">
+          {{ step }}
+        </li>
+      </ol>
+
+    </div>
+
+    <p class="footer w-100">
+      {{ 'refund.lastUpdate' | translate }}
+    </p>
+
+  </div>
+</div>

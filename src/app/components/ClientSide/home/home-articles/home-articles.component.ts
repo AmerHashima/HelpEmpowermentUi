@@ -17,15 +17,15 @@ export interface ArticleItem {
 }
 
 export const articles: ArticleItem[] = [
-  {
+    {
     category: 'capm',
-    slug: 'capm-application-process',
+    slug: 'capm-study-plan',
     imgAlt: 'Article 1 image',
     imgSrc: 'assets/images/homeArticles/article1.jpeg',
     date: 'articles.published.march_2025',
     publishTime: 'articles.read_time.8_min',
-    title: 'articles.article1.title',
-    description: 'articles.article1.summary',
+    title: 'articles.article4.title',
+    description: 'articles.article4.summary',
   },
   {
     category: 'pmp',
@@ -38,8 +38,8 @@ export const articles: ArticleItem[] = [
     description: 'articles.article2.summary',
   },
   {
-    category: 'capm',
-    slug: 'capm_study_plan',
+    category: 'general',
+    slug: 'digital-transformation-failure',
     imgAlt: 'Article 3 image',
     imgSrc: 'assets/images/homeArticles/article3.png',
     date: 'articles.published.february_2025',
@@ -47,6 +47,16 @@ export const articles: ArticleItem[] = [
     title: 'articles.article3.title',
     description: 'articles.article3.summary',
   },
+  {
+    category: 'capm',
+    slug: 'capm-application-process',
+    imgAlt: 'Article 1 image',
+    imgSrc: 'assets/images/homeArticles/article1.jpeg',
+    date: 'articles.published.march_2025',
+    publishTime: 'articles.read_time.8_min',
+    title: 'articles.article1.title',
+    description: 'articles.article1.summary',
+  } 
 ];
 @Component({
   selector: 'app-home-articles',
@@ -66,8 +76,8 @@ export class HomeArticlesComponent {
   articlesData = computed(() => {
     let displayedArticles:any=[];
     if (!this.currentCertification())
-      return articles;
-    else if (this.currentCertification() == 'capm')
+      return articles.slice(0, 3);
+        else if (this.currentCertification() == 'capm')
       return articles.filter(article => article.category == 'capm');
 
     else if (this.currentCertification() == 'pmp')
