@@ -37,7 +37,7 @@ export class ExamLessonLearnedQuestionsComponent {
   total = computed(() => this.latestReport()?.totalQuestions ?? 0);
 
   // practice = output<{ type: string }>();
-
+  // lessonCleared = computed(() => this.latestReport().examStatusLookupId == '12516b05-9d35-4499-9122-9561dfb4a9ce');
   lessonCleared = signal(false);
   constructor(
     private location: Location,
@@ -136,6 +136,8 @@ export class ExamLessonLearnedQuestionsComponent {
     this.studentExamService.clearLessonLearnedQuestions(report).subscribe({
       next: () => this.lessonCleared.set(true)
     });
+
+    // this.studentExamService.clearLessonLearnedQuestions(report).subscribe({});
   }
 
   startNewExam() {

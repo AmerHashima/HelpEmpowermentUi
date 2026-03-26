@@ -29,7 +29,7 @@ export const articles: ArticleItem[] = [
   },
   {
     category: 'pmp',
-    slug: 'pmp_study_plan',
+    slug: 'pmp-study-plan',
     imgAlt: 'Article 2 image',
     imgSrc: 'assets/images/homeArticles/article2.jpeg',
     date: 'articles.published.february_2025',

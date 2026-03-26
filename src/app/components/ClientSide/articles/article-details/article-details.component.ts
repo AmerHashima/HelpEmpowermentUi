@@ -14,6 +14,177 @@ export class ArticleDetailsComponent {
   private shared=inject(Shared);
   currentLang=this.shared.lang;
   articles = [
+
+    {
+      category: 'pmp',
+      slug: 'pmp-study-plan',
+      title: {
+        en: "PMP Study Plan",
+        ar: "خطة دراسة إدارة المشاريع الاحترافية"
+      },
+
+      sections: [
+
+        {
+          content: {
+            en: [
+              "Passing the PMP exam requires a structured methodology, much like managing a real project.",
+              "Many candidates fail because they mix phases or move forward without mastering the current one.",
+              "Based on experience, preparation should be divided into five clear phases."
+            ],
+            ar: [
+              "يتطلب النجاح في اختبار PMP اتباع منهجية واضحة تُدار كما لو كنت تدير مشروعًا حقيقيًا.",
+              "يفشل الكثيرون بسبب عدم الالتزام بمراحل الدراسة أو الانتقال دون إتقان المرحلة الحالية.",
+              "لذلك يُنصح بتقسيم رحلة الدراسة إلى خمس مراحل أساسية."
+            ]
+          }
+        },
+        {
+          image: "assets/images/homeArticles/pmp_article1-1.png",
+          imageAlt: "pmp-study-plan",
+        },
+        {
+          title: {
+            en: "Phase 1: Understanding Phase",
+            ar: "المرحلة الأولى: مرحلة الفهم"
+          },
+          content: {
+            en: [
+              "This phase builds your foundation by focusing on understanding concepts and terminology.",
+              "Avoid solving exam-like questions and focus on learning."
+            ],
+            ar: [
+              "تمثل هذه المرحلة الأساس لبناء المعرفة من خلال فهم المفاهيم والمصطلحات.",
+              "يُفضل عدم حل أسئلة المحاكاة والتركيز على الفهم."
+            ]
+          },
+          list: {
+            en: [
+              "Enroll in a PMP course and engage actively.",
+              "Review materials after each lecture.",
+              "Note unclear points and discuss them.",
+              "Do a full revision after course completion.",
+              "Focus on understanding rather than memorization.",
+              "Be able to explain concepts like Project Charter."
+            ],
+            ar: [
+              "الالتحاق بدورة PMP والمشاركة بفعالية.",
+              "مراجعة المحتوى بعد كل محاضرة.",
+              "تدوين النقاط غير الواضحة لمناقشتها.",
+              "مراجعة شاملة بعد انتهاء الدورة.",
+              "التركيز على الفهم بدلاً من الحفظ.",
+              "القدرة على شرح المصطلحات مثل ميثاق المشروع."
+            ]
+          }
+        },
+
+        {
+          title: {
+            en: "Phase 2: Simulation Practice Questions",
+            ar: "المرحلة الثانية: الأسئلة التدريبية"
+          },
+          content: {
+            en: [
+              "This phase focuses on applying knowledge using practice mode."
+            ],
+            ar: [
+              "تركز هذه المرحلة على التطبيق العملي باستخدام نمط التدريب."
+            ]
+          },
+          list: {
+            en: [
+              "Solve questions daily.",
+              "Learn from mistakes.",
+              "Read explanations carefully.",
+              "Use elimination technique.",
+              "Focus on the core of the question."
+            ],
+            ar: [
+              "حل الأسئلة يوميًا.",
+              "التعلم من الأخطاء.",
+              "قراءة التفسيرات جيدًا.",
+              "استخدام طريقة الاستبعاد.",
+              "التركيز على جوهر السؤال."
+            ]
+          }
+        },
+
+        {
+          title: {
+            en: "Phase 3: PMP Application",
+            ar: "المرحلة الثالثة: تقديم الطلب"
+          },
+          list: {
+            en: [
+              "Fill personal and professional details.",
+              "Choose exam type (online or center).",
+              "Track application status.",
+              "Approval usually takes about one week."
+            ],
+            ar: [
+              "إدخال البيانات الشخصية والمهنية.",
+              "اختيار نوع الاختبار.",
+              "متابعة حالة الطلب.",
+              "الموافقة تستغرق حوالي أسبوع."
+            ]
+          }
+        },
+
+        {
+          title: {
+            en: "Phase 4: Simulation Exams",
+            ar: "المرحلة الرابعة: اختبارات المحاكاة"
+          },
+          list: {
+            en: [
+              "Simulate real exam conditions.",
+              "Practice time management.",
+              "Maintain focus for 230 minutes.",
+              "Achieve at least 70% in mock exams."
+            ],
+            ar: [
+              "محاكاة ظروف الاختبار الحقيقية.",
+              "التدرب على إدارة الوقت.",
+              "الحفاظ على التركيز لمدة 230 دقيقة.",
+              "تحقيق نسبة 70% على الأقل."
+            ]
+          }
+        },
+
+        {
+          title: {
+            en: "Phase 5: Final Revision & Booking",
+            ar: "المرحلة الخامسة: الحجز والمراجعة النهائية"
+          },
+          list: {
+            en: [
+              "Schedule your exam.",
+              "Review all materials.",
+              "Focus on weak areas.",
+              "Build confidence before exam."
+            ],
+            ar: [
+              "حجز موعد الاختبار.",
+              "مراجعة جميع المواد.",
+              "التركيز على نقاط الضعف.",
+              "تعزيز الثقة قبل الاختبار."
+            ]
+          }
+        },
+
+        {
+          content: {
+            en: [
+              "Following this structured methodology significantly increases your chances of passing the PMP exam."
+            ],
+            ar: [
+              "اتباع هذه المنهجية يزيد بشكل كبير من فرص النجاح في اختبار PMP."
+            ]
+          }
+        }
+
+      ]
+    },
     {
       category: 'capm',
       slug: 'capm-application-process',
@@ -244,6 +415,6 @@ export class ArticleDetailsComponent {
   ngOnInit() {
     this.loadArticle();
   }
- 
+
 
 }

@@ -45,6 +45,11 @@ export class CreateNewExamComponent {
     { label: 'Inactive', value: false },
   ];
 
+  freeExam = [
+    { label: 'Free', value: true },
+    { label: 'Paid', value: false },
+  ];
+
   form = this.fb.group({
     courseOid: [''],
     courseName: [''],
@@ -55,6 +60,8 @@ export class CreateNewExamComponent {
     courseCategoryLookupId: [null as string | null],
     createdBy: [''],
     isActive: [true, [Validators.required]],
+    freeExam: [false, [Validators.required]],
+
   });
 
 
@@ -92,6 +99,7 @@ export class CreateNewExamComponent {
           createdBy: certification.createdBy,
           courseOid: certification.oid,
           isActive: false,
+          freeExam:false
         });
       }
     });
@@ -123,6 +131,7 @@ export class CreateNewExamComponent {
     const v = this.form.getRawValue();
     const payload: courseExam = {
       courseName: v.courseName!,
+      freeExam: v.freeExam!,
       courseLevelLookupId: v.courseLevelLookupId ?? null,
       durationMinutes: v.durationMinutes ?? 0,
       examName: v.examName!,

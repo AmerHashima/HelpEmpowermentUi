@@ -70,7 +70,7 @@ export class CertificationService {
       );
   }
 
-  getCertificationExams(id: string): Observable<any[]> {
+  getCertificationExams(id: string): Observable<APIExam[]> {
     return this.getByCourse<any>('CoursesMasterExams', id);
   }
 

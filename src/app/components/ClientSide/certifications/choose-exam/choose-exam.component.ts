@@ -38,10 +38,10 @@ export class ChooseExamComponent {
     const allReports = this.studentExamService.reports();
 
     return allReports.some(
+      // r => r.coursesMasterExamOid === examId && r.startedAt && r.finishedAt
       r => r.coursesMasterExamOid === examId && r.startedAt && r.finishedAt
-    );
+        && r.examModeLookupId == 'dddddddd-dddd-dddd-1212-dddddddddd02')
   });
-  // latestReport = signal<APIExamSummary|null>(null);
   latestReport = this.studentExamService.latestReport;
 
 
@@ -51,36 +51,67 @@ export class ChooseExamComponent {
 
    ngOnInit(): void {
      this.studentExamService.loadLatestReport();
-
-      // const payload: ExamSummary ={
-      //   studentId: this.auth.loggedStudent()?.userId!,
-      //   masrterExamId: this.shared.currentExamId()
-      // }
-      // this.studentExamService.getExamSummary(payload).subscribe({
-      //   next: (report) => {
-      //     this.latestReport.set(report);
-      //   },
-      //   error: (err) => {
-      //     console.log(err);
-      //   }
-      // })
-
     }
 
+
+
+  // startExam(mode: string) {
+  //   if (this.latestReport() && mode == 'Exam' && this.auth.studentToken()){
+  //      this.showClearLessonLearned=true;
+  //      return;
+  //   }
+  //   const examId = this.shared.currentExamId();
+  //   const exam = this.shared.currentExam();
+
+  //   // Free exam case
+  //   if (examId === 'free' || !this.auth.studentToken()) {
+  //     console.log('start Free exam');
+  //     return;
+  //   }
+
+
+
+  //   if (!isPlatformBrowser(this.platformId)) return;
+
+  //   const storageKey = this.getStorageKey(examId, mode);
+  //   const savedExam = localStorage.getItem(storageKey);
+
+  //   if (savedExam) {
+  //     const parsed = JSON.parse(savedExam);
+
+  //     this.shared.studentExamId.set(parsed.studentExamId);
+  //     localStorage.setItem('studentExamId', parsed.studentExamId);
+
+  //     this.toasting.showToast('examToast.resume.success', 'success');
+  //     this.chooseMode(mode)
+
+  //   }
+  //   else {
+  //     this.studentExamService.startExam(this.getStartExamPayload(mode))
+  //       .subscribe({
+  //         next: (exam) => {
+  //           console.log('in start');
+  //           this.shared.studentExamId.set(exam.oid);
+  //           localStorage.setItem('studentExamId', exam.oid);
+  //           this.chooseMode(mode)
+  //         }
+  //       });
+  //   }
+
+  // }
 
 
   startExam(mode: string) {
-    if (this.latestReport() && mode == 'Exam' && this.auth.studentToken()){
-       this.showClearLessonLearned=true;
-       return;
-    }
-    const examId = this.shared.currentExamId();
-
-    // Free exam case
-    if (examId === 'free' || !this.auth.studentToken()) {
-      console.log('start Free exam');
+    if (this.latestReport() && mode == 'Exam' && this.auth.studentToken()) {
+    // if (this.latestReport().examStatusLookupId != '12516b05-9d35-4499-9122-9561dfb4a9ce'
+    //  && mode == 'Exam' && this.auth.studentToken() && this.isEnrolled()) {
+      this.showClearLessonLearned = true;
       return;
     }
+
+    const examId = this.shared.currentExamId();
+    const exam = this.shared.currentExam();
+    console.log('startExam in Start Exam Function',exam);
 
     if (!isPlatformBrowser(this.platformId)) return;
 
@@ -88,7 +119,6 @@ export class ChooseExamComponent {
     const savedExam = localStorage.getItem(storageKey);
 
     if (savedExam) {
-      console.log('insaved');
       const parsed = JSON.parse(savedExam);
 
       this.shared.studentExamId.set(parsed.studentExamId);
@@ -138,27 +168,38 @@ export class ChooseExamComponent {
     });
   }
 
-  onStartFreeExam() {
-    // this.router.navigate(['../exams/', this.shared.currentExamId()], {
-    //   relativeTo: this.route,
-    //   queryParams: { mode: 'exam' },
-    //   queryParamsHandling: 'merge',
-    // });
+  // onStartFreeExam() {
+  //   // this.router.navigate(['../exams/', this.shared.currentExamId()], {
+  //   //   relativeTo: this.route,
+  //   //   queryParams: { mode: 'exam' },
+  //   //   queryParamsHandling: 'merge',
+  //   // });
 
-    console.log('start free exam');
-  }
+  //   console.log('start free exam');
+  // }
 
-  getStartExamPayload(mode:string) {
+  getStartExamPayload(mode: string) {
     const payload = {
-      studentOid: this.auth.loggedStudent()?.userId!,
+      studentOid: this.auth.loggedStudent()?.userId ?? null,
       coursesMasterExamOid: this.shared.currentExamId(),
-      examModeLookupId: mode === 'Exam' ? "dddddddd-dddd-dddd-1212-dddddddddd02" :"dddddddd-dddd-dddd-1212-dddddddddd01",
+      examModeLookupId: mode === 'Exam' ? "dddddddd-dddd-dddd-1212-dddddddddd02" : "dddddddd-dddd-dddd-1212-dddddddddd01",
       attemptNo: 0,
-      createdBy: this.auth.loggedStudent()?.userId!
+      createdBy: this.auth.loggedStudent()?.userId ?? null
     }
     console.log('payload', payload);
     return payload;
   }
+  // getStartExamPayload(mode:string) {
+  //   const payload = {
+  //     studentOid: this.auth.loggedStudent()?.userId!,
+  //     coursesMasterExamOid: this.shared.currentExamId(),
+  //     examModeLookupId: mode === 'Exam' ? "dddddddd-dddd-dddd-1212-dddddddddd02" :"dddddddd-dddd-dddd-1212-dddddddddd01",
+  //     attemptNo: 0,
+  //     createdBy: this.auth.loggedStudent()?.userId!
+  //   }
+  //   console.log('payload', payload);
+  //   return payload;
+  // }
   openReports() {
 
     if (this.previousExamMode() && this.isEnrolled())
@@ -169,7 +210,8 @@ export class ChooseExamComponent {
   }
 
   openLessonLearnedQuestions() {
-    if (this.previousExamMode())
+    // if (this.previousExamMode())
+    if (this.previousExamMode() && this.isEnrolled())
       this.router.navigate(['../lesson-learned'], {
         relativeTo: this.route
       });
@@ -194,16 +236,7 @@ export class ChooseExamComponent {
   }
 
   clearLessonLearned(){
-     //should send api request to clear darta
 
-    // const data = {
-    //   cleared: true,
-    //   studentId: this.auth.loggedStudent()?.userId,
-    //   examId: this.shared.currentExamId(),
-    //   clearedAt: new Date().toISOString()
-    // };
-
-    // localStorage.setItem('lessonLearnedStatus', JSON.stringify(data));
     const report = this.latestReport();
 
     if (!report) return;
@@ -211,7 +244,6 @@ export class ChooseExamComponent {
     this.studentExamService.clearLessonLearnedQuestions(report).subscribe({
       next: () => this.showClearLessonLearned = false
     });
-    //  this.latestReport.set(null);
-    //  this.showClearLessonLearned=false;
+
   }
 }

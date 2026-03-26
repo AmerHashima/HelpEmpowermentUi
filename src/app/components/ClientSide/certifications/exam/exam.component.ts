@@ -298,14 +298,15 @@ export class ExamComponent {
 
     }
   }
+
   resetExam() {
     this.currentQuestionIndex.set(0);
     this.examChoiceAnswers = [];
     this.examMatchingAnswers = [];
     this.markedQuestions.set(new Set([]));
     this.answeredQuestions.set(new Set([]));
-
   }
+  
   onOpenQuestionBoard(show: boolean) {
     this.showQuestionBoard = true
   }

@@ -15,6 +15,8 @@ import { CartService } from '../../../../Services/  cart.service';
 import { GenericModelComponent } from '../../../../shared/generic-model/generic-model.component';
 import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
 import { StudentService } from '../../../../Services/student-service.service';
+import { ExamsStore } from '../../../../AdminPanelStores/ExamsStore/exam.store';
+import { APIExam } from '../../../../models/certification';
 
 @Component({
   selector: 'app-exam-simulator',
@@ -24,6 +26,8 @@ import { StudentService } from '../../../../Services/student-service.service';
   ],
   templateUrl: './exam-simulator.component.html',
   styleUrl: './exam-simulator.component.scss',
+  providers: [ExamsStore]
+
 })
 export class ExamSimulatorComponent {
   private platformId = inject(PLATFORM_ID);
@@ -40,7 +44,8 @@ export class ExamSimulatorComponent {
   // studentToken = this.auth.studentToken;
   isLoggedIn = computed(() => !!this.auth.studentToken());
   hydrated = signal(false);
-  certification=this.shared.currentCertificationObject
+  certification=this.shared.currentCertificationObject;
+  examsStore=inject(ExamsStore);
   //  chooseExam:boolean=false;
 
   private capmBenefits = [
@@ -175,6 +180,16 @@ export class ExamSimulatorComponent {
   simulatorVideo = 'assets/videos/SimulatorVideo.mp4';
   enrollImage = 'assets/images/enroll.png';
   showConfirm: boolean = false;
+
+    freeExams = computed(() => {
+      const exams = this.examsStore.exams();
+      if (!exams?.length) return [];
+      console.log('exams',exams);
+      const filterredExams=exams.filter((exam:APIExam)=> exam.freeExam);
+      console.log('filterredExams', filterredExams);
+      return filterredExams;
+    });
+
   constructor(private router: Router, private route: ActivatedRoute) {
     effect(() => {
       const _ = this.shared.currentExamId();
@@ -189,11 +204,18 @@ export class ExamSimulatorComponent {
     }
   }
 
-  navigateToFreeExam() {
+  navigateToFreeExam(exam:APIExam) {
+    console.log('freeExam',exam);
     // this.chooseExam=true;
-    this.shared.currentExamId.set('free');
+    // this.shared.currentExamId.set('free');
+    this.shared.currentExamId.set(exam.oid);
+    this.shared.currentExam.set(exam);
+
     if (isPlatformBrowser(this.platformId)) {
-      localStorage.setItem('currentExamId', 'free');
+      // localStorage.setItem('currentExamId', 'free');
+      localStorage.setItem('currentExamId', exam.oid);
+      localStorage.setItem('currentExam', JSON.stringify(exam));
+
     }
     this.router.navigate(['../chooseExam'], {
       relativeTo: this.route
@@ -205,56 +227,6 @@ export class ExamSimulatorComponent {
     console.log('Buy Now clicked');
   }
 
-  // addToCart() {
-  //   if(this.auth.studentToken()){
-  //     const courseId = this.shared.currentCertificationObject().oid;
-  //     if(this.cartService.courseExists(courseId)){
-  //       if (this.cartService.isInCart(courseId, 'examSimulationReserv')) {
-  //         this.toasting.showToast('Item is already added before', 'warning');
-  //       }else{
-  //         const course = this.cartService.getCourse(courseId);
-  //         console.log('course', course);
-  //         if(course){
-  //           const payload = {
-  //             oid: course.oid,
-  //             quantity: course.quantity,
-  //             couponCode: course.couponCode,
-  //            examSimulationReserv: true,
-  //             recordedCourseReserv: course.recordedCourseReserv,
-  //             liveCourseReserv: course.liveCourseReserv,
-  //           }
-  //           this.cartService.updateCartItem(payload.oid, payload).subscribe({
-  //             next: (cartItem) => {
-  //               console.log('cartItem', cartItem);
-  //               this.cartService.updateBasket(cartItem);
-  //               console.log('cartItems', this.cartService.cartItems());
-  //             }
-  //           })
-  //         }
-
-  //       }
-  //     }else{
-  //       const cartPayload = {
-  //         studentId: this.auth.loggedStudent()?.userId!,
-  //         courseId: courseId,
-  //         examSimulationReserv: true,
-  //         recordedCourseReserv: false,
-  //         liveCourseReserv: false,
-  //         couponCode: "",
-  //       }
-  //       console.log('cartPayload', cartPayload);
-  //       this.cartService.addCartItem(cartPayload).subscribe({
-  //         next: (cartItem) => {
-  //           console.log('cartItem', cartItem);
-  //           this.cartService.updateBasket(cartItem);
-  //           console.log('cartItems',this.cartService.cartItems());
-  //         }
-  //       })
-  //     }
-  //   }else{
-  //     this.showConfirm=true;
-  //   }
-  // }
   addToCart(): void {
     // if (!this.auth.studentToken()) {
     if (!this.isLoggedIn()) {

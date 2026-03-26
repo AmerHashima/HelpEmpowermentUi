@@ -6,13 +6,13 @@ import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/s
 import { Router, ActivatedRoute } from '@angular/router';
 import { ExamsStore } from '../../../../AdminPanelStores/ExamsStore/exam.store';
 import { isPlatformBrowser } from '@angular/common';
+import { APIExam } from '../../../../models/certification';
 
 @Component({
   selector: 'app-simulator-exams',
   imports: [TranslateModule, TranslatePipe, SiteButtonComponent],
   templateUrl: './simulator-exams.component.html',
   styleUrl: './simulator-exams.component.scss',
-  providers: [ExamsStore]
 })
 export class SimulatorExamsComponent {
   private router = inject(Router);
@@ -26,7 +26,10 @@ export class SimulatorExamsComponent {
   items = computed(() => {
     const exams = this.examsStore.exams();
     if (!exams?.length) return [];
-    return exams;
+    console.log('exams',exams);
+    const filterredExams=exams.filter((exam:APIExam)=> !exam.freeExam);
+    console.log('filterredExams', filterredExams);
+    return filterredExams;
   });
 
   // // startIndex = 0;

@@ -321,7 +321,7 @@ export const routes: Routes = [
       {
         path: 'students',
         component: StudentsComponent,
-        data: { breadcrumb: 'Students' },
+        data: { breadcrumb: 'Users' },
       },
     ],
   },

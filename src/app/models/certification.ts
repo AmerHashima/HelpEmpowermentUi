@@ -45,7 +45,8 @@ export interface courseExam {
   durationMinutes?: number,
   orderNo?: number,
   isActive: boolean,
-  createdBy: string
+  createdBy: string,
+  freeExam:boolean
 }
 
 export interface APIExam {
@@ -65,7 +66,8 @@ export interface APIExam {
   createdAt: string,
   createdBy: string,
   updatedAt: string,
-  updatedBy: string
+  updatedBy: string,
+  freeExam:boolean
 }
 export interface courseQuestion {
   oid?: string,
@@ -100,10 +102,14 @@ export interface courseAnswer {
 }
 
 export interface startStudentExam{
-  studentOid: string,
+  // studentOid: string ,
+
+  studentOid: string | null,
 coursesMasterExamOid: string,
   attemptNo: number,
-    createdBy: string
+    createdBy: string| null,
+  // createdBy: string
+
 }
 
 export interface APIStudentExamResponse {

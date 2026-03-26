@@ -39,12 +39,12 @@ export class SideNav {
   smallScreen = signal(false);
 
   sectionOneNavItems: Navitem[] = [
-    // {
-    //   name: 'Dashboard',
-    //   nameAr: 'لوحة التحكم',
-    //   icon: 'bi bi-house-door',
-    //   route: 'dashboard'
-    // },
+    {
+      name: 'Dashboard',
+      nameAr: 'لوحة التحكم',
+      icon: 'bi bi-house-door',
+      route: 'dashboard'
+    },
     {
       name: 'Certifications',
       nameAr: 'الشهادات',

@@ -21,7 +21,7 @@ import { CertificationService } from '../../../../Services/certification.service
   standalone:true
 })
 export class LessonLearnedQUestiosPracticeModeComponent {
-  private platformId = inject(PLATFORM_ID);
+private platformId = inject(PLATFORM_ID);
   private certificationService = inject(CertificationService);
   private router = inject(Router);
   private route = inject(ActivatedRoute)
