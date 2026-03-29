@@ -552,6 +552,11 @@
   },
   "Experience the Exam Simulator": "Experience the Exam Simulator",
   "exam": {
+      "empty": {
+        "title": "No Questions Available",
+        "examMessage": "This exam cannot be started because no questions are available.",
+        "practiceMessage": "There are no practice questions available for this exam."
+      },
     "pass": "Pass",
     "fail": "Fail",
     "duration": "Duration",
@@ -591,7 +596,9 @@
     "loading": "Loading...",
     "noResults": "No results found",
     "readMore": "Read More",
-    "readLess": "Read Less"
+    "readLess": "Read Less",
+      "back": "Go Back",
+      "retry": "Retry"
   },
   "recordedCourse": {
     "pmp": {
@@ -1562,6 +1569,7 @@
             ]
           }
         ]
-      }
+      },
+      "Sharjah, UAE":"Sharjah, UAE"
 
 }

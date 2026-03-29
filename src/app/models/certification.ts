@@ -152,6 +152,7 @@ export interface APIExamSummary{
   percentage: number,
   isPassed: boolean,
   startedAt:string,
+  examStatusLookupId:string,
   finishedAt: string,
   totalQuestions: number,
   examModeLookupId: string,

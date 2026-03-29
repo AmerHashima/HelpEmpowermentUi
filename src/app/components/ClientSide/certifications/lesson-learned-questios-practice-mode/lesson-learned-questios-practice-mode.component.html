@@ -1,4 +1,4 @@
-@if (currentQuestion()) {
+<!-- @if (currentQuestion() && hasQuestions()) {
     <app-client-exam-question
     [question]="currentQuestion()"
     mode="practice"
@@ -12,6 +12,48 @@
 
     (finishExam)="finishExam($event)"
   />
+}@else {
+  <app-exam-empty-state
+    mode="Practice"
+    [store]="questionStore"
+     page="lessonLearned"
+  />
+} -->
+
+@if (viewState() === 'loading') {
+
+  <app-spinner />
+
+} @else if (viewState() === 'ready') {
+
+      <app-client-exam-question
+    [question]="currentQuestion()"
+    mode="practice"
+    (next)="goToNext($event)"
+    (previous)="goToPrevious()"
+    (showBoard)="onOpenQuestionBoard($event)"
+    [isMarked]="isMarked()"
+
+    (saveForLater)="onSaveForLater()"
+    (mark)="onMarkQuestion($event)"
+
+    (finishExam)="finishExam($event)"
+  />
+
+} @else if (viewState() === 'empty') {
+
+  <app-exam-empty-state
+    mode="Practice"
+    [store]="questionStore"
+     page="lessonLearned"
+  />
+
+} @else {
+
+  <div class="text-center p-4 text-danger">
+    Something went wrong
+  </div>
+
 }
 
 <app-generic-modal [(isOpen)]="showQuestionBoard"

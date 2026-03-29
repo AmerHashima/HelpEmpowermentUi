@@ -8,14 +8,37 @@ import { mapApiQuestionsToCourseQuestions, mapApiQuestionToCourseQuestion } from
 
 /* ===================== Loading ===================== */
 
-export const activateLoading: PartialStateUpdater<QuestionState> = () => ({
-  loading: true,
-});
+// export const activateLoading: PartialStateUpdater<QuestionState> = () => ({
+//   loading: true,
+// });
 
-export const deactivateLoading: PartialStateUpdater<QuestionState> = () => ({
-  loading: false,
-});
+// export const deactivateLoading: PartialStateUpdater<QuestionState> = () => ({
+//   loading: false,
+// });
 
+export const activateLoading: PartialStateUpdater<QuestionState> = (state) => {
+  console.log('🟢 [QuestionsStore] Loading START', {
+    prev: state.loading,
+    next: true,
+    time: new Date().toISOString()
+  });
+
+  return {
+    loading: true,
+  };
+};
+
+export const deactivateLoading: PartialStateUpdater<QuestionState> = (state) => {
+  console.log('🔴 [QuestionsStore] Loading STOP', {
+    prev: state.loading,
+    next: false,
+    time: new Date().toISOString()
+  });
+
+  return {
+    loading: false,
+  };
+};
 /* ===================== Error ===================== */
 
 export const setError = (err: any): PartialStateUpdater<QuestionState> => {

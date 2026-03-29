@@ -1,3 +1,25 @@
+    <!-- @if (currentQuestion() && hasQuestions()) {
+    <app-client-exam-question
+    [question]="currentQuestion()"
+    [mode]="currentMode()"
+    (next)="goToNext($event)"
+    (previous)="goToPrevious()"
+    (showBoard)="onOpenQuestionBoard($event)"
+    [isMarked]="isMarked()"
+
+    (saveForLater)="onSaveForLater()"
+    (mark)="onMarkQuestion($event)"
+    (forceEnd)="onForceEnd()"
+    (finishExam)="finishExam($event)"
+  />
+}@else {
+    <app-exam-empty-state
+    [mode]="currentMode()"
+    [store]="questionStore"
+  />
+} -->
+
+
 @if (viewState() === 'loading') {
 
   <app-spinner />
@@ -31,13 +53,10 @@
   </div>
 
 }
-
-<app-generic-modal
-  [(isOpen)]="showQuestionBoard"
-  title="Question Board"
+<app-generic-modal [(isOpen)]="showQuestionBoard"
+title="Question Board"
   class="force-ltr"
-  dir="ltr"
->
+  dir="ltr">
   <section
     class="form w-100 d-flex flex-column align-items-stretch gap-3 p-3 rounded"
   >
@@ -57,16 +76,16 @@
           <span class="markedTag"><i class="bi bi-circle-fill"></i></span>
           <span>Marked</span>
         </div>
-        <div class="p-1 rouneded rounded-3 d-flex align-items-center gap-1">
+           <div class="p-1 rouneded rounded-3 d-flex align-items-center gap-1">
           <span class="markedAnswered"><i class="bi bi-circle-fill"></i></span>
           <span>Answered-Marked</span>
         </div>
       </div>
       <div class="row g-1 flex-wrap">
         @for (question of boardQuestions(); let index = $index; track index) {
-          <div class="col-2 flex-grow-1">
+          <div class="col-2  flex-grow-1">
             <div
-              class="d-flex gap-1 w-100 align-items-center justify-content-center p-1 rounded rounded-2 question-box"
+              class="d-flex gap-1 w-100 align-items-center  justify-content-center p-1 rounded rounded-2 question-box"
               [ngClass]="question.status"
               (click)="navigateToQuestion(index)"
             >
@@ -86,7 +105,7 @@
               } @else {
                 <i class="bi bi-question-circle-fill"></i>
               }
-              <p class="text-center">Q{{ index + 1 }}</p>
+              <p class="text-center ">Q{{ index + 1 }}</p>
             </div>
           </div>
         } @empty {

@@ -23,43 +23,71 @@ export class ExamResultComponent {
   storageKey: string='';
 
   score = computed(() => this.examResult()?.obtainedScore ?? 0);
+  totalScore = computed(() => this.examResult()?.totalScore ?? 0);
 
-  scoreCategory = computed(() =>
-  {
-    console.log('in caregory');
-    return this.shared.getScoreCategory(this.score())
+  scoreCategory = computed(() => this.shared.getScoreCategory(this.score(), this.totalScore())
+
+  );
+
+  scoreLabel = computed(() => this.shared.getScoreLabel(this.score(), this.totalScore()));
+  // ngOnInit() {
+  //   const isBrowser = isPlatformBrowser(this.platformId);
+
+  //   if (!isBrowser) return;
+
+  //   this.storageKey = `examResult-${this.shared.studentExamId()}`;
+  //   const stored = localStorage.getItem(this.storageKey);
+  //   this.examResult.set(stored ? JSON.parse(stored) : null)
+
+  //   if (this.examResult()) {
+  //     localStorage.removeItem(this.storageKey);
+  //     localStorage.removeItem('studentExamId');
+  //   }
+
+  //   if (!this.examResult()) {
+  //     this.router.navigateByUrl(`${this.shared.lang()}/home`);
+  //   }
+  // }
+
+  getResultKey(): string {
+    const examId = this.shared.currentExamId();
+
+    const studentExamId = this.shared.studentExamId();
+
+    return studentExamId ? `examResult-${studentExamId}` : `examResult-freeEXam-${examId}`;
   }
-  );
 
-  scoreLabel = computed(() =>
-   {
-    console.log('in label');
+  isFreeExam(): boolean {
 
-    return this.shared.getScoreLabel(this.score())
-   }
-  );
+    const studentExamId = this.shared.studentExamId();
+
+    return !studentExamId ;
+  }
+
   ngOnInit() {
-    const isBrowser = isPlatformBrowser(this.platformId);
+    if (!isPlatformBrowser(this.platformId)) return;
 
-    if (!isBrowser) return;
+    const key = this.getResultKey();
+    const stored = localStorage.getItem(key);
+    const isFree = this.isFreeExam();
 
-    this.storageKey = `examResult-${this.shared.studentExamId()}`;
-    const stored = localStorage.getItem(this.storageKey);
-    this.examResult.set(stored ? JSON.parse(stored) : null)
+    this.examResult.set(stored ? JSON.parse(stored) : null);
 
-    if (this.examResult()) {
-      localStorage.removeItem(this.storageKey);
-      localStorage.removeItem('studentExamId');
+    if (stored) {
+      localStorage.removeItem(key);
+
+      if (!isFree) {
+        localStorage.removeItem('studentExamId');
+      }
     }
 
     if (!this.examResult()) {
       this.router.navigateByUrl(`${this.shared.lang()}/home`);
+      return;
     }
   }
 
   Done(){
-    // this.router.navigate(['../exam-simulator'], {
-
     this.router.navigate(['../chooseExam'], {
       relativeTo: this.route,
     });

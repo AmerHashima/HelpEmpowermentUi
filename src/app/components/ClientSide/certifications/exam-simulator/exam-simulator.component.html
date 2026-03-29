@@ -101,121 +101,123 @@
     </div>
   }
 
-
-  <div class="modes d-flex flex-column gap-5 pt-5 pb-5">
-    <div class="d-flex flex-column align-items-center gap-2">
-      @if (!isEnrolled()) {
-        <div>
+  @if (showModes()) {
+    <div class="modes d-flex flex-column gap-5 pt-5 pb-5">
+      <div class="d-flex flex-column align-items-center gap-2">
+        @if (showFreeMode()) {
           <span class="mainTextColor fst-italic">
             {{ "examSimulator.tryBeforeBuy" | translate }}
           </span>
-        </div>
-      }
-
-      <h2 class="darkText">
-        @if (isEnrolled()) {
-          {{ "ExperienceExamSimulator" | translate }}
-        } @else {
-          {{ "examSimulator.experienceFree" | translate }}
-        }
-      </h2>
-
-      <p class="CertifticationBenfitsSubTitle">
-        {{ "examSimulator.testBothModes" | translate }}
-      </p>
-    </div>
-
-    <ng-container *ngIf="hydrated() && (!isEnrolled() || !isLoggedIn())">
-      <!-- <ng-container *ngIf="!isEnrolled() || !isLoggedIn()"> -->
-      <!-- @if(!chooseExam){ -->
-
-      <div class="d-flex justify-content-center">
-        @for(exam of freeExams();track exam.oid){
-    <div class="examModeCard d-flex flex-column gap-3 shadow-sm">
-          <div class="d-flex gap-3 align-items-start">
-            <div class="icon p-3">
-              <span><i class="bi bi-file-earmark-text"></i></span>
-            </div>
-
-            <div class="d-flex flex-grow-1 flex-column gap-1">
-              <div class="d-flex justify-content-between align-items-center">
-                <h3 class="darkText">
-                  {{ "examSimulator.freeExam" | translate }}
-                </h3>
-                <app-feature
-                  title="common.freeAccess"
-                  icon="bi bi-patch-check-fill"
-                ></app-feature>
-              </div>
-
-              <p>
-                {{ "examSimulator.freePreviewDescription" | translate }}
-              </p>
-            </div>
-          </div>
-
-          <div class="examInfo d-flex align-items-center p-3">
-            <div
-              class="questions d-flex flex-column gap-2 flex-grow-1 align-items-center darkText"
-            >
-              <div class="d-flex align-items-center gap-1">
-                <i class="bi bi-question-circle"></i>
-                <span class="title">{{ "common.questions" | translate }}</span>
-              </div>
-              <span>10</span>
-            </div>
-
-            <div
-              class="d-flex flex-column gap-2 flex-grow-1 align-items-center darkText"
-            >
-              <div class="d-flex align-items-center gap-1">
-                <i class="bi bi-clock"></i>
-                <span class="title">{{ "common.duration" | translate }}</span>
-              </div>
-              <span>12min, 42 Sec</span>
-            </div>
-          </div>
-
-          <div class="d-flex align-items-center gap-2 justify-content-center">
-            <i class="bi bi-check-circle"></i>
-            <span class="darkText">
-              {{ "examSimulator.practiceAndExamMode" | translate }}
-            </span>
-          </div>
-
-          <div class="d-flex align-items-center gap-2 justify-content-center">
-            <i class="bi bi-check-circle"></i>
-            <span class="darkText">
-              {{ "examSimulator.reportsAndLessons" | translate }}
-            </span>
-          </div>
-
-          <div class="d-flex align-content-stretch gap-3 w-100">
-            <app-site-button
-              class="w-100 site-primary-button"
-              title="examSimulator.startFreeExam"
-              [icon]="'bi bi-arrow'"
-              type="main"
-              (click)="navigateToFreeExam(exam)"
-            ></app-site-button>
-          </div>
-        </div>
         }
 
+        <h2 class="darkText">
+          {{
+            showPaidMode()
+              ? ("ExperienceExamSimulator" | translate)
+              : ("examSimulator.experienceFree" | translate)
+          }}
+        </h2>
+
+        <p class="CertifticationBenfitsSubTitle">
+          {{ "examSimulator.testBothModes" | translate }}
+        </p>
       </div>
-      <!-- }@else{
-              <app-choose-exam/>
-          } -->
-    </ng-container>
 
-    <!-- Show full exams list if already purchased -->
-    <!-- <app-simulator-exams
-      *ngIf="isEnrolled() && isLoggedIn()"
-    ></app-simulator-exams> -->
-    <app-simulator-exams
-      *ngIf="hydrated() && isEnrolled() && isLoggedIn()"
-    ></app-simulator-exams>
-  </div>
+      <!-- FREE EXAMS -->
+      <ng-container *ngIf="hydrated() && (!isEnrolled() || !isLoggedIn())">
+        <div class="d-flex justify-content-center">
+          @for (exam of freeExams(); track exam.oid) {
+            <div class="examModeCard d-flex flex-column gap-3 shadow-sm">
+              <div class="d-flex gap-3 align-items-start">
+                <div class="icon p-3">
+                  <span><i class="bi bi-file-earmark-text"></i></span>
+                </div>
+
+                <div class="d-flex flex-grow-1 flex-column gap-1">
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
+                    <h3 class="darkText">
+                      {{ "examSimulator.freeExam" | translate }}
+                    </h3>
+
+                    <app-feature
+                      title="common.freeAccess"
+                      icon="bi bi-patch-check-fill"
+                    ></app-feature>
+                  </div>
+
+                  <p>
+                    {{ "examSimulator.freePreviewDescription" | translate }}
+                  </p>
+                </div>
+              </div>
+
+              <div class="examInfo d-flex align-items-center p-3">
+                <div
+                  class="questions d-flex flex-column gap-2 flex-grow-1 align-items-center darkText"
+                >
+                  <div class="d-flex align-items-center gap-1">
+                    <i class="bi bi-question-circle"></i>
+                    <span class="title">
+                      {{ "common.questions" | translate }}
+                    </span>
+                  </div>
+                  <span>{{exam.questionCount}}</span>
+                </div>
+
+                <div
+                  class="d-flex flex-column gap-2 flex-grow-1 align-items-center darkText"
+                >
+                  <div class="d-flex align-items-center gap-1">
+                    <i class="bi bi-clock"></i>
+                    <span class="title">
+                      {{ "common.duration" | translate }}
+                    </span>
+                  </div>
+                  <span>{{exam.durationMinutes}} {{'min'| translate}}</span>
+                </div>
+              </div>
+
+              <div
+                class="d-flex align-items-center gap-2 justify-content-center"
+              >
+                <i class="bi bi-check-circle"></i>
+                <span class="darkText">
+                  {{ "examSimulator.practiceAndExamMode" | translate }}
+                </span>
+              </div>
+
+              <div
+                class="d-flex align-items-center gap-2 justify-content-center"
+              >
+                <i class="bi bi-check-circle"></i>
+                <span class="darkText">
+                  {{ "examSimulator.reportsAndLessons" | translate }}
+                </span>
+              </div>
+
+              <div class="d-flex align-content-stretch gap-3 w-100">
+                <app-site-button
+                  class="w-100 site-primary-button"
+                  title="examSimulator.startFreeExam"
+                  [icon]="'bi bi-arrow'"
+                  type="main"
+                  (click)="navigateToFreeExam(exam)"
+                ></app-site-button>
+              </div>
+            </div>
+          }
+        </div>
+      </ng-container>
+
+      <!-- PAID EXAMS -->
+      <app-simulator-exams
+        [items]="exams()"
+        *ngIf="hydrated() && isEnrolled() && isLoggedIn()"
+      ></app-simulator-exams>
+    </div>
+  }
 </div>
 
 <app-generic-modal [(isOpen)]="showConfirm" title="Alert Message">

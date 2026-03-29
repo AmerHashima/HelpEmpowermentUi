@@ -11,26 +11,29 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
 import { StudentExamService } from '../../../../Services/student-exam.service';
 import { CertificationService } from '../../../../Services/certification.service';
+import { NoQuestionComponent } from '../no-question/no-question.component';
+import { SpinnerComponent } from '../../../../shared/spinner/spinner.component';
 
 @Component({
   selector: 'app-lesson-learned-questios-practice-mode',
-  imports: [ClientExamQuestionComponent, SiteButtonComponent, NgClass, GenericModelComponent],
+  imports: [ClientExamQuestionComponent, SiteButtonComponent, NgClass,
+    GenericModelComponent, NoQuestionComponent,SpinnerComponent],
   templateUrl: './lesson-learned-questios-practice-mode.component.html',
   styleUrl: './lesson-learned-questios-practice-mode.component.scss',
   providers: [QuestionsStore],
-  standalone:true
+  standalone: true
 })
 export class LessonLearnedQUestiosPracticeModeComponent {
-private platformId = inject(PLATFORM_ID);
+  private platformId = inject(PLATFORM_ID);
   private certificationService = inject(CertificationService);
   private router = inject(Router);
   private route = inject(ActivatedRoute)
   private isBrowser = isPlatformBrowser(this.platformId);
-  private questionStore = inject(QuestionsStore);
+  questionStore = inject(QuestionsStore);
   private shared = inject(Shared);
   private toasting = inject(ToastingMessagesService);
   isRTL = this.shared.isRtl;
-  examQuestions=signal<any[]>([]);
+  examQuestions = signal<any[]>([]);
   private auth = inject(AuthService)
   showQuestionBoard: boolean = false;
   examChoiceAnswers: any[] = [];
@@ -39,6 +42,8 @@ private platformId = inject(PLATFORM_ID);
   currentQuestionIndex = signal<number>(0);
   currentType = signal<string>('');
   studentExamId = signal<string>('');
+  hasQuestions = computed(() => this.filteredExamQuestions().length > 0);
+
   isMarked = computed(() => {
     const question = this.currentQuestion();
     if (!question) return false;
@@ -52,11 +57,11 @@ private platformId = inject(PLATFORM_ID);
   filteredExamQuestions = computed(() => {
     const examQs = this.examQuestions();
     const qs = this.questions();
-    if (qs.length == 0 || examQs.length ==0) return [];
+    if (qs.length == 0 || examQs.length == 0) return [];
     const questionOids = new Set(qs.map(q => q.oid));
     const examQuestions = examQs.filter(eq => questionOids.has(eq.oid));
     return [...examQuestions].sort((a, b) => a.orderNo - b.orderNo);
-;
+    ;
   });
   answeredQuestions = signal<Set<string>>(new Set());
   boardQuestions = computed(() => {
@@ -93,6 +98,18 @@ private platformId = inject(PLATFORM_ID);
     return this.mapToClientQuestion(qs[idx], idx);
   });
 
+  isInitializing = signal(true);
+  viewState = computed(() => {
+    if (this.isInitializing()) return 'loading';
+
+    if (this.hasQuestions() && this.currentQuestion()) return 'ready';
+
+    if (!this.hasQuestions()) return 'empty';
+
+    if (!this.currentQuestion()) return 'invalid';
+
+    return '';
+  });
 
   constructor() {
     if (this.isBrowser) {
@@ -106,9 +123,8 @@ private platformId = inject(PLATFORM_ID);
     effect(() => {
       if (!this.isBrowser) return;
       const success = this.questionStore.practiceQuestionsSuccess();
-      if (success)
-      {
-        const requestBody=  {
+      if (success) {
+        const requestBody = {
           filters: [{
             propertyName: "coursesMasterExamOid",
             value: this.shared.currentExamId(),
@@ -124,7 +140,8 @@ private platformId = inject(PLATFORM_ID);
         }
 
         this.certificationService.searchQuestion(requestBody).subscribe({
-          next:(data:any)=>{
+          next: (data: any) => {
+            this.isInitializing.set(false);
             this.examQuestions.set(data.questions);
             this.questionStore.setPracticeQueationSuccess(false);
 
@@ -137,26 +154,26 @@ private platformId = inject(PLATFORM_ID);
       if (!this.isBrowser) return;
       const practiceType = this.currentType();
       const studentExamId = this.studentExamId();
-      let lookupId=null;
+      let lookupId = null;
       if (practiceType && studentExamId) {
-        if(practiceType == 'Correct')
-          lookupId ="44444444-4444-4444-4444-444444444401";
-        else if(practiceType == 'Incorrect')
-        lookupId = "44444444-4444-4444-4444-444444444402";
-else lookupId = "44444444-4444-4444-4444-444444444403";
-
+        if (practiceType == 'Correct')
+          lookupId = "44444444-4444-4444-4444-444444444401";
+        else if (practiceType == 'Incorrect')
+          lookupId = "44444444-4444-4444-4444-444444444402";
+        else lookupId = "44444444-4444-4444-4444-444444444403";
+        this.isInitializing.set(true);
         const filters: Filter[] = [{
           propertyName: "questionStatusLookupId",
           value: lookupId,
           operation: 0
         },
-          {
-            propertyName: "studentExamOid",
-            value: studentExamId,
-            operation: 0
-          },
+        {
+          propertyName: "studentExamOid",
+          value: studentExamId,
+          operation: 0
+        },
 
-      ];
+        ];
         this.questionStore.setFilters([...filters]);
         this.questionStore.queryStudentExamQuestions(this.questionStore.queryRequest());
         if (this.isBrowser) {

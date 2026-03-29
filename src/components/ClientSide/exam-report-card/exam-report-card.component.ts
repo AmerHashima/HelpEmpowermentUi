@@ -15,6 +15,7 @@ export interface ExamReport {
   obtainedScore:number;
   notAnswered: number;
   isPassed: boolean;
+  totalScore:number;
 }
 
 
@@ -31,8 +32,9 @@ export class ExamReportCardComponent {
   private shared = inject(Shared);
   isRTL=this.shared.isRtl;
   report = input.required<ExamReport>();
-  level = computed(() => this.shared.getScoreCategory(this.report().obtainedScore))
-  levelLabel = computed(() => this.shared.getScoreLabel(this.report().obtainedScore))
+  level = computed(() => this.shared.getScoreCategory(this.report().obtainedScore, this.report().totalScore))
+
+  levelLabel = computed(() => this.shared.getScoreLabel(this.report().obtainedScore,this.report().totalScore))
   levelIconMap: Record<string, string> = {
     aboveTarget: 'bi-trophy',
     target: 'bi-check-circle',

@@ -51,6 +51,7 @@ import { CheckoutComponent } from './components/ClientSide/checkout/checkout.com
 import { checkoutGuard } from './Guards/ClientSideGuards/checkout.guard';
 import { PerformanceLevelsComponent } from '../components/ClientSide/performance-levels/performance-levels.component';
 import { LessonLearnedQUestiosPracticeModeComponent } from './components/ClientSide/certifications/lesson-learned-questios-practice-mode/lesson-learned-questios-practice-mode.component';
+import { examQuestionsResolver } from './Resolvers/exam-questions.resolver';
 
 export const validLangGuard: CanMatchFn = (route, segments) => {
   const lang = segments[0]?.path;
@@ -432,6 +433,16 @@ function getCertificationChildren(): Routes {
       loadComponent: () =>
         import('./components/ClientSide/certifications/exam/exam.component')
           .then(m => m.ExamComponent),
+      data: { fullPage: true },
+      // resolve: {
+      //   questions: examQuestionsResolver
+      // }
+    },
+    {
+      path: 'free-exam/:id',
+      loadComponent: () =>
+        import('./components/ClientSide/certifications/free-exam/free-exam.component')
+          .then(m => m.FreeExamComponent),
       data: { fullPage: true }
     }
   ];

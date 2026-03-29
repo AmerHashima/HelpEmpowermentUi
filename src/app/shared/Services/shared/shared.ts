@@ -57,7 +57,7 @@ export class Shared {
     if (savedstudettExamId){
       this.studentExamId.set(savedstudettExamId);
     }
-  
+
     if (
       savedExamId &&
       (currentUrl.includes('/chooseExam') || currentUrl.includes('/lesson-learned') ||currentUrl.includes('/reports') || currentUrl.includes('?mode')  )
@@ -125,30 +125,32 @@ export class Shared {
     }
   }
 
-  getScoreCategory(score:number): string {
 
-    if (score >= 150) {
+  getScoreCategory(score: number, totalScore: number): string {
+    const percentage = (score / totalScore) * 100;
+
+    if (percentage >= 83) {
       return 'aboveTarget';
-    } else if (score >= 117) {
+    } else if (percentage >= 65) {
       return 'target';
-    } else if (score >= 97) {
+    } else if (percentage >= 54) {
       return 'belowTarget';
     } else {
       return 'improvement';
     }
   }
 
-  getScoreLabel(score:number): string {
+    getScoreLabel(score: number, totalScore: number): string {
+      const percentage = (score / totalScore) * 100;
 
-    if (score >= 150) {
-      return 'Above Target';
-    } else if (score >= 117) {
-      return 'Target';
-    } else if (score >= 97) {
-      return 'Below Target';
-    } else {
-      return 'Needs Improvement';
+      if (percentage >= 83) {
+        return 'Above Target';
+      } else if (percentage >= 65) {
+        return 'Target';
+      } else if (percentage >= 54) {
+        return 'Below Target';
+      } else {
+        return 'Needs Improvement';
+      }
     }
-  }
-
 }

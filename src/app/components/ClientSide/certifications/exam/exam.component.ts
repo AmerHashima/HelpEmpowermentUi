@@ -3,7 +3,7 @@ import { ClientExamQuestionComponent } from '../../client-exam-question/client-e
 import { Shared } from '../../../../shared/Services/shared/shared';
 import { QuestionsStore } from '../../../../AdminPanelStores/QuestionStores/questions.store';
 import { Filter } from '../../../../models/rquest';
-import { isPlatformBrowser, NgClass, NgFor } from '@angular/common';
+import { AsyncPipe, isPlatformBrowser, NgClass, NgFor } from '@angular/common';
 import { AuthService } from '../../../../Services/auth.service';
 import { StudentExamService } from '../../../../Services/student-exam.service';
 import { choiceQuestionExamSubmit, courseExam, submitStudentExam } from '../../../../models/certification';
@@ -11,23 +11,28 @@ import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/s
 import { GenericModelComponent } from '../../../../shared/generic-model/generic-model.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
+import { NoQuestionComponent } from '../no-question/no-question.component';
+import { SpinnerComponent } from '../../../../shared/spinner/spinner.component';
+import { LoadingService } from '../../../../shared/Services/Loading/loading.service';
 
 
 @Component({
   selector: 'app-exam',
-  imports: [ClientExamQuestionComponent, SiteButtonComponent, NgClass, GenericModelComponent],
+  imports: [ClientExamQuestionComponent, SiteButtonComponent, NgClass,
+     GenericModelComponent,NoQuestionComponent,AsyncPipe,SpinnerComponent],
   templateUrl: './exam.component.html',
   styleUrl: './exam.component.scss',
   providers: [QuestionsStore],
   standalone: true
 })
 export class ExamComponent {
+  private loading = inject(LoadingService);
   private platformId = inject(PLATFORM_ID);
   private router = inject(Router);
   private route = inject(ActivatedRoute)
   private studentExamService = inject(StudentExamService);
   private isBrowser = isPlatformBrowser(this.platformId);
-  private questionStore = inject(QuestionsStore);
+   questionStore = inject(QuestionsStore);
   private shared = inject(Shared);
   private toasting = inject(ToastingMessagesService);
   isRTL = this.shared.isRtl;
@@ -39,12 +44,15 @@ export class ExamComponent {
   saveForLater: boolean = false;
   currentQuestionIndex = signal<number>(0);
   currentMode = signal<string>('');
-  isMarked = computed(() => {
+    isMarked = computed(() => {
     const question = this.currentQuestion();
     if (!question) return false;
 
     return this.markedQuestions().has(question.oid);
   });
+
+
+  hasQuestions = computed(() => this.questions().length > 0);
   // isAnswerLocked = computed(() => {
   //   const q = this.currentQuestion();
   //   if (!q) return false;
@@ -55,9 +63,9 @@ export class ExamComponent {
   // });
   questions = computed(() => {
     const list = this.questionStore.questions() ?? [];
+    console.log('examWQuestionslength',list.length);
     return [...list].sort((a, b) => a.orderNo - b.orderNo);
   });
-
   // revealedQuestions = signal<Set<string>>(new Set());
   // answeredBeforeReveal = signal<Set<string>>(new Set());
   answeredQuestions = signal<Set<string>>(new Set());
@@ -95,17 +103,89 @@ export class ExamComponent {
     return this.mapToClientQuestion(qs[idx], idx);
   });
 
-  // watermarkText=signal<string>('Help Emporment');
+  isInitializing = signal(true);
+  viewState = computed(() => {
+    if (this.isInitializing()) return 'loading';
+
+    if (this.hasQuestions() && this.currentQuestion()) return 'ready';
+
+    if (!this.hasQuestions()) return 'empty';
+
+    if (!this.currentQuestion()) return 'invalid';
+
+    return '';
+  });
 
   constructor() {
     this.route.queryParamMap.subscribe(params => {
       this.currentMode.set(params.get('mode') ?? '');
     });
 
+    effect(() => {
+      if (!this.questionStore.loading()) {
+        this.isInitializing.set(false);
+      }
+    });
+
+    effect(() => {
+      const examId = this.shared.currentExamId();
+
+      if (!examId) return;
+      this.isInitializing.set(true);
+      this.currentExamId.set(examId);
+      const filters: Filter[] = [{
+        propertyName: "coursesMasterExamOid",
+        value: examId,
+        operation: 0
+      }];
+      this.questionStore.setFilters(filters);
+
+
+      this.questionStore.queryQuestions(this.questionStore.queryRequest());
+    });
+
+    effect(() => {
+      if (!this.isBrowser) return;
+
+      const examId = this.currentExamId();
+      const questions = this.questions();
+
+      if (!examId || questions.length === 0) return;
+
+      const key = this.getStorageKey(examId);
+      const saved = localStorage.getItem(key);
+
+      if (!saved) {
+        this.resetExam();
+        return;
+      }
+
+      const parsed = JSON.parse(saved);
+
+      this.saveForLater = parsed.saveForLater;
+
+      if (parsed.examMode === 'Exam') {
+        this.currentQuestionIndex.set(parsed.currentQuestionIndex ?? 0);
+        this.examChoiceAnswers = parsed.examChoiceAnswers ?? [];
+        this.examMatchingAnswers = parsed.examMatchingAnswers ?? [];
+
+        if (parsed.markedQuestions) {
+          this.markedQuestions.set(new Set(parsed.markedQuestions));
+        }
+
+        if (parsed.answeredQuestions) {
+          this.answeredQuestions.set(new Set(parsed.answeredQuestions));
+        }
+      } else {
+        this.resetExam();
+      }
+    });
+
     // effect(() => {
     //   const examId = this.shared.currentExamId();
     //   this.currentExamId.set(examId);
     //   if (examId) {
+    //     console.log('in get exam qyestions')
     //     const filters: Filter[] = [{
     //       propertyName: "coursesMasterExamOid",
     //       value: examId,
@@ -116,69 +196,34 @@ export class ExamComponent {
     //     if (this.isBrowser) {
     //       const key = this.getStorageKey(examId);
     //       const saved = localStorage.getItem(key);
-    //       if (saved) {
-    //         const parsed = JSON.parse(saved);
+    //       if (!saved) { this.resetExam(); return; }
+    //       const parsed = JSON.parse(saved);
+    //       this.saveForLater = parsed.saveForLater;
+    //       if (parsed.examMode == 'Exam') {
     //         this.currentQuestionIndex.set(parsed.currentQuestionIndex ?? 0);
     //         this.examChoiceAnswers = parsed.examChoiceAnswers ?? [];
     //         this.examMatchingAnswers = parsed.examMatchingAnswers ?? []
     //         if (parsed.markedQuestions) {
     //           this.markedQuestions.set(new Set(parsed.markedQuestions));
     //         }
+    //         // if (parsed.answeredBeforeReveal) {
+    //         //   this.answeredBeforeReveal.set(new Set(parsed.answeredBeforeReveal));
+    //         // }
+    //         // if (parsed.revealedQuestions) {
+    //         //   this.revealedQuestions.set(new Set(parsed.revealedQuestions));
+    //         // }
     //         if (parsed.answeredQuestions) {
     //           this.answeredQuestions.set(new Set(parsed.answeredQuestions));
     //         }
-    //       } else {
-    //         this.currentQuestionIndex.set(0);
-    //         this.examChoiceAnswers = [];
-    //         this.examMatchingAnswers=[];
-    //         this.markedQuestions.set(new Set([]));
-    //         this.answeredQuestions.set(new Set([]));
-
+    //       }
+    //       else {
+    //         this.resetExam();
     //       }
     //     }
     //   }
     // });
-    effect(() => {
-      const examId = this.shared.currentExamId();
-      this.currentExamId.set(examId);
-      if (examId) {
-        console.log('in get exam qyestions')
-        const filters: Filter[] = [{
-          propertyName: "coursesMasterExamOid",
-          value: examId,
-          operation: 0
-        }];
-        this.questionStore.setFilters([...filters]);
-        this.questionStore.queryQuestions(this.questionStore.queryRequest());
-        if (this.isBrowser) {
-          const key = this.getStorageKey(examId);
-          const saved = localStorage.getItem(key);
-          if (!saved) { this.resetExam(); return; }
-          const parsed = JSON.parse(saved);
-          this.saveForLater = parsed.saveForLater;
-          if (parsed.examMode = 'Exam') {
-            this.currentQuestionIndex.set(parsed.currentQuestionIndex ?? 0);
-            this.examChoiceAnswers = parsed.examChoiceAnswers ?? [];
-            this.examMatchingAnswers = parsed.examMatchingAnswers ?? []
-            if (parsed.markedQuestions) {
-              this.markedQuestions.set(new Set(parsed.markedQuestions));
-            }
-            // if (parsed.answeredBeforeReveal) {
-            //   this.answeredBeforeReveal.set(new Set(parsed.answeredBeforeReveal));
-            // }
-            // if (parsed.revealedQuestions) {
-            //   this.revealedQuestions.set(new Set(parsed.revealedQuestions));
-            // }
-            if (parsed.answeredQuestions) {
-              this.answeredQuestions.set(new Set(parsed.answeredQuestions));
-            }
-          }
-          else {
-            this.resetExam();
-          }
-        }
-      }
-    });
+
+
     effect(() => {
       if (this.questions().length > 0) {
         if (this.currentQuestionIndex() >= this.questions().length) {
@@ -245,8 +290,11 @@ export class ExamComponent {
 
     if (end && this.isBrowser) {
       const message = this.currentMode() == 'Practice' ? 'Your Practice has been ended Successfully !' : 'Exam has been submitted successfully!';
+      this.loading.start();
       this.studentExamService.submitExam(payload, message).subscribe({
         next: (result) => {
+          this.loading.stop();
+
           const key = this.getStorageKey(this.currentExamId());
           localStorage.removeItem(key);
           // localStorage.removeItem('currentExam');
@@ -278,8 +326,10 @@ export class ExamComponent {
     }
 
     if (this.isBrowser) {
+      this.loading.start()
       this.studentExamService.submitExam(payload,'').subscribe({
         next: (result) => {
+          this.loading.stop();
           const key = this.getStorageKey(this.currentExamId());
           localStorage.removeItem(key);
           if (this.currentMode() == 'Exam') {
@@ -306,7 +356,7 @@ export class ExamComponent {
     this.markedQuestions.set(new Set([]));
     this.answeredQuestions.set(new Set([]));
   }
-  
+
   onOpenQuestionBoard(show: boolean) {
     this.showQuestionBoard = true
   }
@@ -691,6 +741,8 @@ export class ExamComponent {
 
     this.saveExamProgress();
   }
+
+
 
 
 }

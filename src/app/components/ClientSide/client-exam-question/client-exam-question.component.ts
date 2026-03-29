@@ -420,10 +420,16 @@ export class ClientExamQuestionComponent {
   }
 
   onTimeUp() {
-    console.log('Time up → auto next question');
+    console.log('Time up on question:', this.question());
+
+    if (this.isLastQuestion) {
+      this.submitQuestionAnswer(true);
+      return;
+    }
+
+    // normal flow
     this.nextQuestion();
   }
-
   ngOnDestroy() {
     if(this.mode() == 'Exam'){
       console.log('ib destroy', this.mode())

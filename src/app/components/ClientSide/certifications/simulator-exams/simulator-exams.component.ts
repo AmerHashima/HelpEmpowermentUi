@@ -1,5 +1,5 @@
 // src\app\components\ClientSide\certifications\simulator-exams\simulator-exams.component.ts
-import { Component, computed, inject, PLATFORM_ID, signal } from '@angular/core';
+import { Component, computed, inject, input, PLATFORM_ID, signal } from '@angular/core';
 import { Shared } from '../../../../shared/Services/shared/shared';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/site-button.component';
@@ -19,50 +19,11 @@ export class SimulatorExamsComponent {
   private platformId = inject(PLATFORM_ID);
   private route = inject(ActivatedRoute);
   private shared = inject(Shared);
-  private examsStore = inject(ExamsStore);
   isRTL = this.shared.isRtl;
-
-
-  items = computed(() => {
-    const exams = this.examsStore.exams();
-    if (!exams?.length) return [];
-    console.log('exams',exams);
-    const filterredExams=exams.filter((exam:APIExam)=> !exam.freeExam);
-    console.log('filterredExams', filterredExams);
-    return filterredExams;
-  });
-
-  // // startIndex = 0;
-  // startIndex = signal(0);
-
-  // visibleCount = 3;
+  items=input<any>();
 
 
 
-
-  // visibleItems = computed(() => {
-  //   const all = this.items();
-  //   const start = this.startIndex();
-  //   return all.slice(start, start + this.visibleCount);
-  // });
-
-  // canGoPrev = computed(() => this.startIndex() > 0);
-
-  // canGoNext = computed(() => {
-  //   return this.startIndex() + this.visibleCount < this.items().length;
-  // });
-
-  // prev() {
-  //   if (this.canGoPrev()) {
-  //     this.startIndex.update(v => v - this.visibleCount);
-  //   }
-  // }
-
-  // next() {
-  //   if (this.canGoNext()) {
-  //     this.startIndex.update(v => v + this.visibleCount);
-  //   }
-  // }
   startExam(item: any) {
     const examId = item.oid;
     this.shared.currentExam.set(item);

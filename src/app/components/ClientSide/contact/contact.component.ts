@@ -52,8 +52,7 @@ export class ContactComponent {
     {
       icon: 'bi bi-geo-alt',
       header: 'Visit Us',
-      value: 'Media City, UAE'
-    },
+      value: 'Sharjah, UAE'    },
     {
       icon: '',
       header: '',
@@ -71,8 +70,15 @@ export class ContactComponent {
 
   private sanitizer = inject(DomSanitizer);
 
+  // private readonly embedSrc =
+  //   'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3609.5!2d55.150!3d25.090!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f43496b0b!2sDubai+Media+City!5e0!3m2!1sen!2sae!4v1730000000000';
+
+  // readonly mapUrl = computed<SafeResourceUrl>(() =>
+  //   this.sanitizer.bypassSecurityTrustResourceUrl(this.embedSrc)
+  // );
+
   private readonly embedSrc =
-    'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3609.5!2d55.150!3d25.090!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f43496b0b!2sDubai+Media+City!5e0!3m2!1sen!2sae!4v1730000000000';
+    'https://www.google.com/maps?q=Sharjah,United+Arab+Emirates&output=embed';
 
   readonly mapUrl = computed<SafeResourceUrl>(() =>
     this.sanitizer.bypassSecurityTrustResourceUrl(this.embedSrc)

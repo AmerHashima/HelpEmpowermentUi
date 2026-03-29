@@ -56,7 +56,7 @@ export const articles: ArticleItem[] = [
     publishTime: 'articles.read_time.8_min',
     title: 'articles.article1.title',
     description: 'articles.article1.summary',
-  } 
+  }
 ];
 @Component({
   selector: 'app-home-articles',
@@ -75,8 +75,10 @@ export class HomeArticlesComponent {
 
   articlesData = computed(() => {
     let displayedArticles:any=[];
-    if (!this.currentCertification())
+    if (!this.currentCertification() && this.type()=='home')
       return articles.slice(0, 3);
+    if (!this.currentCertification() && this.type() != 'home')
+      return articles;
         else if (this.currentCertification() == 'capm')
       return articles.filter(article => article.category == 'capm');
 

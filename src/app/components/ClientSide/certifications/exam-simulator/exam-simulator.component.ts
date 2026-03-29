@@ -180,15 +180,40 @@ export class ExamSimulatorComponent {
   simulatorVideo = 'assets/videos/SimulatorVideo.mp4';
   enrollImage = 'assets/images/enroll.png';
   showConfirm: boolean = false;
-
+  allExams = this.examsStore.exams
     freeExams = computed(() => {
       const exams = this.examsStore.exams();
       if (!exams?.length) return [];
       console.log('exams',exams);
-      const filterredExams=exams.filter((exam:APIExam)=> exam.freeExam);
+      const filterredExams=exams.filter((exam:APIExam)=> exam.freeExam && exam.questionCount > 0);
       console.log('filterredExams', filterredExams);
       return filterredExams;
     });
+  exams = computed(() => {
+    const exams = this.examsStore.exams();
+    if (!exams?.length) return [];
+    const filterredExams = exams.filter((exam: APIExam) => !exam.freeExam);
+    // const filterredExams = exams.filter((exam: APIExam) => !exam.freeExam && exam.questionCount > 0);
+    return filterredExams;
+  });
+
+  readonly hasFreeExams = computed(() => this.freeExams().length > 0);
+  readonly hasPaidExams = computed(() => this.exams().length > 0);
+
+  readonly showModes = computed(
+    () =>
+      (this.hasFreeExams() && !this.isEnrolled()) ||
+      (this.hasPaidExams() && this.isEnrolled())
+  );
+
+  readonly showFreeMode = computed(
+    () => this.hasFreeExams() && !this.isEnrolled()
+  );
+
+  readonly showPaidMode = computed(
+    () => this.hasPaidExams() && this.isEnrolled()
+  );
+
 
   constructor(private router: Router, private route: ActivatedRoute) {
     effect(() => {
@@ -206,13 +231,10 @@ export class ExamSimulatorComponent {
 
   navigateToFreeExam(exam:APIExam) {
     console.log('freeExam',exam);
-    // this.chooseExam=true;
-    // this.shared.currentExamId.set('free');
     this.shared.currentExamId.set(exam.oid);
     this.shared.currentExam.set(exam);
 
     if (isPlatformBrowser(this.platformId)) {
-      // localStorage.setItem('currentExamId', 'free');
       localStorage.setItem('currentExamId', exam.oid);
       localStorage.setItem('currentExam', JSON.stringify(exam));
 
