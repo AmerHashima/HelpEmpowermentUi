@@ -8,10 +8,14 @@ import { ActivatedRoute } from '@angular/router';
 import { BreadcrumbService } from '../../../../Services/breadcrumb.service';
 import { ExamsStore } from '../../../../AdminPanelStores/ExamsStore/exam.store';
 import { QuestionsStore } from '../../../../AdminPanelStores/QuestionStores/questions.store';
+import { GenericModelComponent } from '../../../../shared/generic-model/generic-model.component';
+import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/site-button.component';
+import { TranslatePipe } from '@ngx-translate/core';
+import { APIExam } from '../../../../models/certification';
 
 @Component({
   selector: 'app-certification',
-  imports: [ButtonComponent],
+  imports: [ButtonComponent,GenericModelComponent,SiteButtonComponent,TranslatePipe],
   templateUrl: './certification.component.html',
   styleUrl: './certification.component.scss'
 })
@@ -27,7 +31,8 @@ export class CertificationComponent {
   certification = this.certificationStore.selectedCertification
   courseContents = [];
   exams = computed(() => this.examsStore.exams());
-
+  showConfirm:boolean=false;
+  deleteExam:APIExam | null=null;
   constructor() {
     effect(() => {
       const id = this.route.snapshot.paramMap.get('id');
@@ -70,7 +75,9 @@ export class CertificationComponent {
 
   }
   onDeleteExam(exam: any) {
-    this.examsStore.deleteExam(exam.oid);
+    this.showConfirm=true;
+    this.deleteExam=exam;
+    // this.examsStore.deleteExam(exam.oid);
   }
 
   onEditCertification() {
@@ -89,5 +96,14 @@ export class CertificationComponent {
   }
 
 
+  onConfirmDeleteExam(){
+    if (this.deleteExam){
+      this.showConfirm = false;
+      this.examsStore.deleteExam(this.deleteExam.oid);
+    }
+  }
 
+  onCancalDeleteExam(){
+    this.showConfirm=false;
+  }
 }

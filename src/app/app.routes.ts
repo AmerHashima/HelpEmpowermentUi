@@ -52,6 +52,8 @@ import { checkoutGuard } from './Guards/ClientSideGuards/checkout.guard';
 import { PerformanceLevelsComponent } from '../components/ClientSide/performance-levels/performance-levels.component';
 import { LessonLearnedQUestiosPracticeModeComponent } from './components/ClientSide/certifications/lesson-learned-questios-practice-mode/lesson-learned-questios-practice-mode.component';
 import { examQuestionsResolver } from './Resolvers/exam-questions.resolver';
+import { EditExamComponent } from './components/AdminPanel/certifications/edit-exam/edit-exam.component';
+import { SlugCertificationComponent } from './components/ClientSide/certifications/slug-certification/slug-certification.component';
 
 export const validLangGuard: CanMatchFn = (route, segments) => {
   const lang = segments[0]?.path;
@@ -152,6 +154,11 @@ export const routes: Routes = [
         path: 'certifications',
         component: clientCertifications,
         children: [
+          // {
+          //   path: ':slug',
+          //   component: SlugCertificationComponent,
+          //   children: getCertificationChildren()
+          // }
           {
             path: '',
             redirectTo: "pmp",
@@ -290,6 +297,11 @@ export const routes: Routes = [
             path: ':id/exams/create',
             component: CreateNewExamComponent,
             data: { breadcrumb: 'Create Exam' },
+          },
+          {
+            path: ':id/exams/:examId/edit',
+            component: EditExamComponent,
+            data: { breadcrumb: 'Edit Exam' },
           },
           {
             path: ':id/exams/exam/:examId',

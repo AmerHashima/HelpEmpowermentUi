@@ -6,7 +6,9 @@
     (keyup)="onFilter($event)"
   />
 </mat-form-field>
+@if(btnLabel != 'Add New Question'){
   <app-button [btnLabel]="btnLabel" [mainBtn]="true" (click)="onAddNew()" />
+}
 </div>
 
 <table mat-table [dataSource]="data" matSort class="mat-elevation-z8">

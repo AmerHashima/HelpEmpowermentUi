@@ -1,5 +1,5 @@
 // src\app\components\AdminPanel\exam-details\exam-details.component.ts
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, Inject, inject, PLATFORM_ID, signal } from '@angular/core';
 import { ExamsStore } from '../../../AdminPanelStores/ExamsStore/exam.store';
 import { CertificationService } from '../../../Services/certification.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -9,7 +9,7 @@ import { ReusableMaterialTableComponent } from '../../../shared/angular-material
 import { QuestionsStore } from '../../../AdminPanelStores/QuestionStores/questions.store';
 import { Filter, Sort } from '../../../models/rquest';
 import { ButtonComponent } from '../../../shared/button/button.component';
-import { NgIf } from '@angular/common';
+import { isPlatformBrowser, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-exam-details',
@@ -50,8 +50,7 @@ export class ExamDetailsComponent {
     },
     { field: 'actions', header: 'Actions', type: 'buttons' }
   ];
-  constructor() {
-    // Clear questions state when entering the component
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
     this.questionStore.clearQuestions();
 
     effect(() => {
@@ -107,6 +106,18 @@ export class ExamDetailsComponent {
     }
 
   }
+
+  onEditExamDetails(){
+    const examId = this.exam()?.oid;
+    if (examId) {
+      // if (isPlatformBrowser(this.platformId)) {
+      //   localStorage.setItem('editExamId', examId);
+      // }
+      this.router.navigate(['/admin/certifications', this.certId, 'exams', examId,'edit'
+      ]);
+    }
+  }
+
   onDeleteQuestion(question: any) {
     this.questionStore.deleteQuestion(question.oid);
   }

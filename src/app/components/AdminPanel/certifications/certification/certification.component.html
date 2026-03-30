@@ -2,35 +2,45 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-12">
-      <div class="w-100 d-flex justify-content-end gap-2">
-        <app-button
-          btnLabel="Delete Certification"
-          [mainBtn]="false"
-          [secondaryBtn]="true"
-          (click)="onDeleteCertification()"
-        />
-        <app-button
-          btnLabel="Edit Certification"
-          [mainBtn]="false"
-          [secondaryBtn]="false"
-          (click)="onEditCertification()"
-        />
-        <app-button
-          btnLabel="Add New Exam"
-          [mainBtn]="true"
-          (click)="onAddNewExam()"
-        />
+      <div class="row  g-3 mb-3">
+        <div class="col-xl-6 order-1 order-xl-0 d-flex flex-column align-items-center align-items-xl-start">
+          <h5 class="certificationName mb-0">
+            {{ certification()?.courseName }} Certification
+          </h5>
+          <!-- <span class="certificationAbbr">{{Project Management Professional}}</span> -->
+          <span class="certificationAbbr">{{
+            certification()?.courseDescription
+          }}</span>
+        </div>
+        <div class="col-xl-6 order-0 order-xl-1">
+          <div class="w-100 d-flex justify-content-center justify-content-xl-end gap-2">
+            <app-button
+              btnLabel="Delete Certification"
+              [mainBtn]="false"
+              [secondaryBtn]="true"
+              (click)="onDeleteCertification()"
+            />
+            <app-button
+              btnLabel="Edit Certification"
+              [mainBtn]="false"
+              [secondaryBtn]="false"
+              (click)="onEditCertification()"
+            />
+            <app-button
+              btnLabel="Add New Exam"
+              [mainBtn]="true"
+              (click)="onAddNewExam()"
+            />
+          </div>
+        </div>
       </div>
     </div>
+
     <div class="col-12">
       <div class="d-flex flex-column">
-        <h5 class="certificationName">
-          {{ certification()?.courseName }} Certification
-        </h5>
-        <span class="certificationAbbr">Project Management Professional</span>
-        <p class="certificationDescription">
+        <!-- <p class="certificationDescription">
           {{ certification()?.courseDescription }}
-        </p>
+        </p> -->
         <div class="row g-3 fleex-wrap">
           <div class="accordion accordion-flush" id="certificationAccordion">
             <div class="accordion-item mb-3 shadow">
@@ -51,90 +61,92 @@
                 class="accordion-collapse collapse show"
                 data-bs-parent="#certificationAccordion"
               >
-              <div class="accordion-body">
-  @if (exams(); as exams) {
-    @if (exams.length === 0) {
-      <div class="d-flex justify-content-center">
-        <div
-          class="card text-center p-4 border-0"
-          style="max-width: 420px"
-        >
-          <i class="bi bi-journal-x fs-1 text-muted mb-3"></i>
-          <h6 class="fw-semibold mb-1">No exams yet</h6>
-          <p class="text-muted small mb-3">
-            This certification doesn’t have any exams added yet.
-          </p>
-        </div>
-      </div>
-    } @else {
-      <div class="row g-3">
-        @for (
-          exam of exams;
-          let index = $index;
-          track exam.oid ?? index
-        ) {
-          <div class="col-md-6 col-xl-4 col-xxl-3">
-            <div
-              class="certificationExamCard d-flex flex-column shadow-sm rounded-2 p-3 gap-3"
-            >
-              <div class="d-flex align-items-center gap-1" (click)="openExamDetails(exam)">
-                <span class="iconCircle">
-                  <i class="bi bi-pencil-square"></i>
-                </span>
-                <span class="examName fw-bold">
-                  {{ exam.examName }}
-                </span>
-              </div>
+                <div class="accordion-body">
+                  @if (exams(); as exams) {
+                    @if (exams.length === 0) {
+                      <div class="d-flex justify-content-center">
+                        <div
+                          class="card text-center p-4 border-0"
+                          style="max-width: 420px"
+                        >
+                          <i class="bi bi-journal-x fs-1 text-muted mb-3"></i>
+                          <h6 class="fw-semibold mb-1">No exams yet</h6>
+                          <p class="text-muted small mb-3">
+                            This certification doesn’t have any exams added yet.
+                          </p>
+                        </div>
+                      </div>
+                    } @else {
+                      <div class="row g-3">
+                        @for (
+                          exam of exams;
+                          let index = $index;
+                          track exam.oid ?? index
+                        ) {
+                          <div class="col-md-6 col-xl-4 col-xxl-3">
+                            <div
+                              class="certificationExamCard d-flex flex-column shadow-sm rounded-2 p-3 gap-3"
+                            >
+                              <div
+                                class="d-flex align-items-center gap-1"
+                                (click)="openExamDetails(exam)"
+                              >
+                                <span class="iconCircle">
+                                  <i class="bi bi-pencil-square"></i>
+                                </span>
+                                <span class="examName fw-bold">
+                                  {{ exam.examName }}
+                                </span>
+                              </div>
 
-              <div
-                class="d-flex gap-3 justify-content-center examDetails py-2"
-              >
-                <div
-                  class="d-flex flex-column align-items-center justify-content-center"
-                >
-                  <div class="d-flex align-items-center gap-1">
-                    <i class="bi bi-question-circle"></i>
-                    <span class="fw-bold">Questions</span>
-                  </div>
-                  <span>{{ exam.questionCount }}</span>
-                </div>
+                              <div
+                                class="d-flex gap-3 justify-content-center examDetails py-2"
+                              >
+                                <div
+                                  class="d-flex flex-column align-items-center justify-content-center"
+                                >
+                                  <div class="d-flex align-items-center gap-1">
+                                    <i class="bi bi-question-circle"></i>
+                                    <span class="fw-bold">Questions</span>
+                                  </div>
+                                  <span>{{ exam.questionCount }}</span>
+                                </div>
 
-                <div class="line"></div>
+                                <div class="line"></div>
 
-                <div
-                  class="d-flex flex-column align-items-center justify-content-center"
-                >
-                  <div class="d-flex align-items-center gap-1">
-                    <i class="bi bi-clock"></i>
-                    <span class="fw-bold">Duration</span>
-                  </div>
+                                <div
+                                  class="d-flex flex-column align-items-center justify-content-center"
+                                >
+                                  <div class="d-flex align-items-center gap-1">
+                                    <i class="bi bi-clock"></i>
+                                    <span class="fw-bold">Duration</span>
+                                  </div>
                                   <span>{{ exam.durationMinutes }}</span>
+                                </div>
+                              </div>
 
+                              <div
+                                class="d-flex align-items-center justify-content-center gap-2"
+                              >
+                                <app-button
+                                  btnLabel="Add New Question"
+                                  [mainBtn]="true"
+                                  (click)="onAddNewQuestion(exam)"
+                                />
+                                <app-button
+                                  btnLabel="Delete Exam"
+                                  [secondaryBtn]="true"
+                                  [mainBtn]="false"
+                                  (click)="onDeleteExam(exam)"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        }
+                      </div>
+                    }
+                  }
                 </div>
-              </div>
-
-              <div
-                class="d-flex align-items-center justify-content-center gap-2"
-              >
-                <app-button
-                  btnLabel="Add New Question"
-                  [mainBtn]="true"
-                  (click)="onAddNewQuestion(exam)"
-                />
-                <app-button
-                  btnLabel="Delete Exam"
-                  [secondaryBtn]="true"
-                  [mainBtn]="false"
-                  (click)="onDeleteExam(exam)"
-                />
-              </div>
-            </div>
-          </div>
-        }
-      </div>
-    }
-  }
-</div>
               </div>
             </div>
             <!-- <div class="accordion-item mb-3 shadow">
@@ -189,3 +201,33 @@
     </div>
   </div>
 </div>
+
+
+<app-generic-modal [(isOpen)]="showConfirm" title="">
+  <section
+    class="form w-100 d-flex flex-column align-items-stretch gap-3 p-3 rounded"
+  >
+    <div
+      class="d-flex flex-column align-items-center justify-content-center gap-2 w-100"
+    >
+      <i class="bi bi-info-circle-fill infoColor"></i>
+      <p class="text-center darkText w-75 mx-auto">
+        {{ "Are you sure you want  to delete exam?" | translate }}
+      </p>
+      <div class="d-flex gap-2 align-items-center">
+        <app-site-button
+          class="flex-grow-1"
+          title="Cancal"
+          type="secondary"
+          (click)="onCancalDeleteExam()"
+        />
+        <app-site-button
+          class="flex-grow-1"
+          title="Delete"
+          type="main"
+          (click)="onConfirmDeleteExam()"
+        />
+      </div>
+    </div>
+  </section>
+</app-generic-modal>

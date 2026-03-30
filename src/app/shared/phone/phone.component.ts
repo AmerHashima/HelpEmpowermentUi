@@ -26,6 +26,8 @@ import { Shared } from '../Services/shared/shared';
   styleUrl: './phone.component.scss'
 })
 export class PhoneInputComponent implements ControlValueAccessor {
+  @ViewChild(NgxsmkTelInputComponent)
+  phoneInputComponent!: NgxsmkTelInputComponent;
   private shared = inject(Shared);
   isRTL = this.shared.isRtl;
 
@@ -37,7 +39,7 @@ export class PhoneInputComponent implements ControlValueAccessor {
   // readonly preferredCountries: any[] = ['EG', 'SA', 'AE', 'US'];
   // readonly initialCountry = 'SA';
 
-  readonly preferredCountries: any[] = ['SA', 'EG', 'AE', 'US'];
+  readonly preferredCountries: any[] = [ 'EG', 'AE', 'US'];
   readonly initialCountry = 'SA';
 
   readonly arabicLabels = {
@@ -56,6 +58,12 @@ export class PhoneInputComponent implements ControlValueAccessor {
 
   value: string = '';
   disabled = false;
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.phoneInputComponent?.selectCountry('SA');
+    }, 100);
+  }
 
   onChange: (val: string) => void = () => { };
   onTouched: () => void = () => { };

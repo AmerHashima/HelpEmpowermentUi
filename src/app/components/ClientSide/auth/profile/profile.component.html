@@ -1,8 +1,8 @@
 <div class="row row-sm">
   <div class="col-xl-4">
-    <div class="card mb-4">
-      <div class="card-body">
-        <div class="ps-0">
+    <div class="card mb-4 h-100">
+      <div class="card-body d-flex align-items-center justify-content-center">
+        <div class="ps-0 ">
           <div class="main-profile-overview p-3">
             <div class="profile-image-wrapper">
               <img [src]="studentImage" alt="user image" class="profile-img" />
@@ -42,7 +42,7 @@
             }
 
             <!-- main-profile-bio -->
-            <div class="row mt-3 justify-content-center">
+            <!-- <div class="row mt-3 justify-content-center">
               <div class="col-md-4 col">
                 <h5 class="fs-17 text-center mainTextColor">
                   {{ enrolledCourses().length }}
@@ -51,23 +51,23 @@
                   {{ "profile.certifications" | translate }}
                 </h6>
               </div>
-              <!-- <div class="col-md-4 col">
+              <div class="col-md-4 col">
                 <h5 class="fs-17 text-center mainTextColor">
                   {{ getTotalExamsLength() }}
                 </h5>
                 <h6 class="text-small text-center text-muted fs-14 mb-0">
                   {{ "Exams" | translate }}
                 </h6>
-              </div> -->
-              <!-- <div class="col-md-4 col">
+              </div>
+              <div class="col-md-4 col">
                 <h5 class="fs-17 text-center mainTextColor">
                   {{ successRate() }}%
                 </h5>
                 <h6 class="text-small text-center text-muted fs-14 mb-0">
                   {{ "Success Rate" | translate }}
                 </h6>
-              </div> -->
-            </div>
+              </div>
+            </div> -->
           </div>
           <!-- main-profile-overview -->
         </div>
@@ -205,7 +205,7 @@
                 <!-- } -->
               </ng-template>
             </li>
-            <li [ngbNavItem]="2" class="">
+            <!-- <li [ngbNavItem]="2" class="">
               <a ngbNavLink data-bs-toggle="tab" aria-expanded="false">
                 <span class="visible-xs"
                   ><i class="bi bi-clipboard-check me-1"></i
@@ -243,7 +243,6 @@
                             {{ exam.examMode | translate }}
                           </p>
 
-                          <!-- Progress -->
                           <div class="progress mb-2" style="height: 6px">
                             <div
                               class="progress-bar"
@@ -281,7 +280,6 @@
                             {{ exam.examName }} - {{ 'peofile.examMode'| translate}}
                           </p>
 
-                          <!-- Progress -->
                           <div class="progress mb-2" style="height: 6px">
                             <div
                               class="progress-bar"
@@ -307,7 +305,7 @@
                   </div>
                 }
               </ng-template>
-            </li>
+            </li> -->
             <li [ngbNavItem]="4" class="">
               <a ngbNavLink data-bs-toggle="tab" aria-expanded="false">
                 <span class="visible-xs"

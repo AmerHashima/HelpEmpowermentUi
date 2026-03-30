@@ -1,0 +1,134 @@
+<!-- src\app\components\AdminPanel\create-new-exam\create-new-exam.component.html -->
+<form
+  [formGroup]="form"
+  (ngSubmit)="onSubmit()"
+  class="d-flex flex-column gap-4 p-3"
+>
+  <div class="row flex-wrap g-2">
+ <!-- <div class="col-lg-4"> -->
+      <!-- <app-input
+        formControlName="courseOid"
+        label="Course Id"
+        type="text"
+        placeholder=""
+        icon=""
+        [readOnly]="true"
+        [errorMessages]="{
+          required: 'Course Id is required',
+        }"
+      />
+    </div> -->
+    <div class="col-lg-4">
+      <app-input
+        formControlName="courseName"
+        label="Course Name"
+        type="text"
+        placeholder=""
+        icon=""
+        [readOnly]="true"
+        [errorMessages]="{
+          required: 'Course Name is required',
+        }"
+      />
+    </div>
+    <div class="col-lg-4">
+      <app-input
+        formControlName="examName"
+        label="Exam Name"
+        type="text"
+        placeholder="Enter exam name"
+        icon=""
+        [errorMessages]="{
+          required: 'Exam Name is required',
+        }"
+      />
+    </div>
+       <div class="col-lg-4">
+      <app-input
+        formControlName="durationMinutes"
+        label="Duration In Minutes"
+        type="text"
+        placeholder=""
+        icon=""
+        [errorMessages]="{
+          required: 'Duration In Minutes is required',
+        }"
+      />
+    </div>
+       <div class="col-lg-4">
+      <app-input
+        formControlName="questionCount"
+        label="Question Count"
+        type="text"
+        placeholder=""
+        icon=""
+        [errorMessages]="{
+          required: 'Question Count is required',
+        }"
+      />
+    </div>
+    <!-- <div class="col-lg-4">
+      <spk-ng-select
+        formControlName="courseLevelLookupId"
+        label="Course Level"
+        [options]="courseLevels$ | async"
+        bindLabel="lookupNameEn"
+        bindValue="oid"
+        [multiple]="false"
+        placeholder="Choose Course Level"
+        selectClass="form-control "
+      />
+    </div>
+    <div class="col-lg-4">
+      <spk-ng-select
+        formControlName="courseCategoryLookupId"
+        label="Course Category"
+        [options]="courseCategories$ | async"
+        bindLabel="lookupNameEn"
+        bindValue="oid"
+        [multiple]="false"
+        placeholder="Choose Course Category"
+        selectClass="form-control"
+      />
+    </div> -->
+    <!-- <div class="col-lg-4">
+      <spk-ng-select
+        formControlName="createdBy"
+        label="Creator"
+        [options]="users"
+        [multiple]="false"
+        placeholder="Choose User"
+        selectClass="form-control"
+      />
+    </div> -->
+      <div class="col-lg-4">
+      <spk-ng-select
+        formControlName="isActive"
+        label="Status"
+        [options]="status"
+        bindLabel="label"
+        bindValue="value"
+        [multiple]="false"
+        placeholder="Choose Status"
+        selectClass="form-control"
+      />
+    </div>
+          <div class="col-lg-4">
+      <spk-ng-select
+        formControlName="freeExam"
+        label="Free Exam"
+        [options]="freeExam"
+        bindLabel="label"
+        bindValue="value"
+        [multiple]="false"
+        placeholder="Choose "
+        selectClass="form-control"
+      />
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-end gap-2">
+    <app-button btnLabel="Cancel" [mainBtn]="false" (click)="cancel()" />
+    <app-button btnLabel="Update Exam" buttonType="submit" />
+  </div>
+</form>

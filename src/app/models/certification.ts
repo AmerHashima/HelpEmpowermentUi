@@ -8,7 +8,8 @@ export interface Certification {
   courseDescription: string,
   courseLevelLookupId: string | null,
   courseCategoryLookupId: string | null,
-  createdBy: string,
+  createdBy?: string,
+  updatedBy?: string,
   isActive: boolean,
   questionCount: number,
 

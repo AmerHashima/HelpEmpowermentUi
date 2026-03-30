@@ -138,20 +138,45 @@ export class CreateNewCertificationComponent {
     this.store.updateCertification({ id: this.certification()?.oid!, body: this.getPayload() });
   }
 
+  // getPayload() {
+  //   const v = this.form.getRawValue();
+  //   const payload: Certification = {
+  //     ...(this.certification()?.oid ? { oid: this.certification()?.oid } : {}),
+  //     courseCode: v.courseCode!,
+  //     courseName: v.courseName!,
+  //     courseDescription: v.courseDescription!,
+  //     durationMinutes: v.durationMinutes!,
+  //     courseLevelLookupId: v.courseLevelLookupId ?? null,
+  //     courseCategoryLookupId: v.courseCategoryLookupId ?? null,
+  //     createdBy: v.createdBy!,
+  //     questionCount: v.questionCount!,
+  //     isActive: v.isActive!,
+  //   };
+  //   return payload;
+  // }
   getPayload() {
     const v = this.form.getRawValue();
+    const isEdit = !!this.certification()?.oid;
+
     const payload: Certification = {
-      ...(this.certification()?.oid ? { oid: this.certification()?.oid } : {}),
-      courseCode: v.courseCode!,
+      ...(isEdit ? { oid: this.certification()?.oid } : {}),
+
+      // courseCode: v.courseCode!,
+      courseCode: v.courseName!,
       courseName: v.courseName!,
       courseDescription: v.courseDescription!,
       durationMinutes: v.durationMinutes!,
       courseLevelLookupId: v.courseLevelLookupId ?? null,
       courseCategoryLookupId: v.courseCategoryLookupId ?? null,
-      createdBy: v.createdBy!,
+
+      ...(isEdit
+        ? { updatedBy: v.createdBy! }
+        : { createdBy: v.createdBy! }),
+
       questionCount: v.questionCount!,
       isActive: v.isActive!,
     };
+
     return payload;
   }
   cancel() {

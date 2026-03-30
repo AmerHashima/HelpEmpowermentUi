@@ -1,4 +1,4 @@
-import { Component, Inject, inject, input, output, PLATFORM_ID, signal, SimpleChanges } from '@angular/core';
+import { Component, effect, Inject, inject, input, output, PLATFORM_ID, signal, SimpleChanges } from '@angular/core';
 import { SiteButtonComponent } from '../../../shared/clientSide/site-button/site-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Shared } from '../../../shared/Services/shared/shared';
@@ -106,6 +106,10 @@ export class ClientExamQuestionComponent {
     private location: Location,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
+
+    effect(() => {
+      console.log(this.question());
+    })
     // effect(() => {
 
     //   if (this.answerLocked()) {
@@ -119,6 +123,8 @@ export class ClientExamQuestionComponent {
 
 
   ngOnChanges(changes: SimpleChanges) {
+
+
 
     if (changes['question']) {
       this.hideAnswersAndTranslations();

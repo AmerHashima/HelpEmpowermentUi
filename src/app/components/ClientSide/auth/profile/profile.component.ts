@@ -28,8 +28,8 @@ export class ProfileComponent {
   private studentService = inject(StudentService);
   private studentExamService = inject(StudentExamService);
   totalExams = this.studentExamService.reports
-  studentExams = computed(() =>
-    this.totalExams().filter(report => report.startedAt && report.finishedAt))
+  // studentExams = computed(() =>
+  //   this.totalExams().filter(report => report.startedAt && report.finishedAt))
   // successRate = this.studentExamService.successRate
   private shared = inject(Shared);
   private router = inject(Router);
@@ -39,7 +39,7 @@ export class ProfileComponent {
   lang = this.shared.lang;
   studentImage = "assets/images/profile/person.png";
   enrolledCourses = this.studentService.enrolledCourses;
-  savedExams = signal<any[]>([]);
+  // savedExams = signal<any[]>([]);
 
   user: any;
 
@@ -85,10 +85,10 @@ export class ProfileComponent {
     })
   }
 
-  ngOnInit(): void {
-    this.savedExams.set(this.loadSavedExams());
+  // ngOnInit(): void {
+  //   this.savedExams.set(this.loadSavedExams());
 
-  }
+  // }
 
   handleFileInput(event: any): void {
     const file = event.target.files[0];
@@ -100,49 +100,50 @@ export class ProfileComponent {
       reader.readAsDataURL(file);
     }
   }
-  goToExam(exam: any) {
-    const courseName = exam.exam.courseName.toLowerCase();
-    const currentExamId = exam.exam.oid
-    this.shared.studentExamId.set(exam.studentExamId);
-    localStorage.setItem('studentExamId', exam.studentExamId);
-    localStorage.setItem('currentExamId', exam.exam.oid);
-    localStorage.setItem('currentExam', JSON.stringify(exam.exam));
-    this.shared.currentExamId.set(exam.exam.oid);
-    this.shared.currentExam.set(exam.exam);
-    this.router.navigate(['../../certifications/', courseName, 'exams', currentExamId], {
-      relativeTo: this.route,
-      queryParams: { mode: exam.examMode },
-      queryParamsHandling: 'merge',
-    });
-  }
 
-  loadSavedExams(): any[] {
-    const studentId = this.authService.loggedStudent()?.userId;
-    if (!studentId) return [];
+  // goToExam(exam: any) {
+  //   const courseName = exam.exam.courseName.toLowerCase();
+  //   const currentExamId = exam.exam.oid
+  //   this.shared.studentExamId.set(exam.studentExamId);
+  //   localStorage.setItem('studentExamId', exam.studentExamId);
+  //   localStorage.setItem('currentExamId', exam.exam.oid);
+  //   localStorage.setItem('currentExam', JSON.stringify(exam.exam));
+  //   this.shared.currentExamId.set(exam.exam.oid);
+  //   this.shared.currentExam.set(exam.exam);
+  //   this.router.navigate(['../../certifications/', courseName, 'exams', currentExamId], {
+  //     relativeTo: this.route,
+  //     queryParams: { mode: exam.examMode },
+  //     queryParamsHandling: 'merge',
+  //   });
+  // }
 
-    const prefix = `exam-progress-student_${studentId}`;
-    const exams: any[] = [];
+  // loadSavedExams(): any[] {
+  //   const studentId = this.authService.loggedStudent()?.userId;
+  //   if (!studentId) return [];
 
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      if (!key || !key.startsWith(prefix)) continue;
+  //   const prefix = `exam-progress-student_${studentId}`;
+  //   const exams: any[] = [];
 
-      const item = localStorage.getItem(key);
-      if (!item) continue;
+  //   for (let i = 0; i < localStorage.length; i++) {
+  //     const key = localStorage.key(i);
+  //     if (!key || !key.startsWith(prefix)) continue;
 
-      try {
-        exams.push(JSON.parse(item));
-      } catch {
-        console.warn('Invalid exam storage item', key);
-      }
-    }
+  //     const item = localStorage.getItem(key);
+  //     if (!item) continue;
 
-    return exams;
-  }
+  //     try {
+  //       exams.push(JSON.parse(item));
+  //     } catch {
+  //       console.warn('Invalid exam storage item', key);
+  //     }
+  //   }
 
-  continueCourse(course: any) {
-    this.router.navigateByUrl(`/${this.lang()}/certifications/${course.courseName.toLowerCase()}/recorded-course`);
-  }
+  //   return exams;
+  // }
+
+  // continueCourse(course: any) {
+  //   this.router.navigateByUrl(`/${this.lang()}/certifications/${course.courseName.toLowerCase()}/recorded-course`);
+  // }
 
   getCourseImage(course: APIStudentCourse) {
     console.log(course.courseName.toLowerCase());
@@ -201,34 +202,32 @@ export class ProfileComponent {
     });
   }
 
-  getSavedExamProgress(exam: any): number {
-    const answered =
-      (exam.examChoiceAnswers?.length ?? 0) +
-      (exam.examMatchingAnswers?.length ?? 0);
 
-    const total = exam.exam?.questionCount ?? 0;
+  // getSavedExamProgress(exam: any): number {
+  //   const answered =
+  //     (exam.examChoiceAnswers?.length ?? 0) +
+  //     (exam.examMatchingAnswers?.length ?? 0);
 
-    if (!total) return 0;
+  //   const total = exam.exam?.questionCount ?? 0;
 
-    return Math.round((answered / total) * 100);
-  }
+  //   if (!total) return 0;
 
-  getExamProgress(exam: any) {
-    const total = exam.totalScore ?? 0;
-    if (!total) return 0;
-    return Math.round((exam.obtainedScore / total) * 100);
-  }
+  //   return Math.round((answered / total) * 100);
+  // }
+
+  // getExamProgress(exam: any) {
+  //   const total = exam.totalScore ?? 0;
+  //   if (!total) return 0;
+  //   return Math.round((exam.obtainedScore / total) * 100);
+  // }
   // getTotalExamsLength() {
   //   return this.studentExams().length + this.savedExams().length
   // }
 
-  getSuccessRate(exam:any){
-    if (!exam.totalScore) return 0;
-    return Math.round(((exam.obtainedScore / exam.totalScore) * 100) * 10) / 10;
-
-
-
-  }
+  // getSuccessRate(exam:any){
+  //   if (!exam.totalScore) return 0;
+  //   return Math.round(((exam.obtainedScore / exam.totalScore) * 100) * 10) / 10;
+  // }
 }
 
 
