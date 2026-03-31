@@ -45,7 +45,7 @@ export class ExamLessonLearnedQuestionsComponent {
   ) { }
 
   ngOnInit(): void {
-    this.studentExamService.loadLatestReport();
+    // this.studentExamService.loadLatestReport();
     // const payload: ExamSummary = {
     //   studentId: this.auth.loggedStudent()?.userId!,
     //   masrterExamId: this.shared.currentExamId()

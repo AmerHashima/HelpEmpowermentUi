@@ -12,6 +12,7 @@ import { APIAnswer } from '../../../models/certification';
 import { ExamTimerComponent } from '../certifications/exam-timer/exam-timer.component';
 import { ExamProtectionService } from '../../../Services/exam-protection.service';
 import { ToastingMessagesService } from '../../../shared/Services/ToastingMessages/toasting-messages.service';
+import { AuthService } from '../../../Services/auth.service';
 
 @Component({
   selector: 'app-client-exam-question',
@@ -39,6 +40,7 @@ export class ClientExamQuestionComponent {
 
   saveForLater = output<void>();
   private shared = inject(Shared);
+  // private auth=inject(AuthService);
   isRTL = signal<string>('ltr');
   question = input.required<any>();
   isMarked = input<boolean>(false);
@@ -60,6 +62,9 @@ export class ClientExamQuestionComponent {
 
   showResultState = signal(false);
   ngOnInit() {
+    // if(this.auth.studentToken()){
+    //   this.watermarkText.set(`Help Empowerment - ${this.auth.loggedStudent()?.userId} - ${new Date().toISOString()}`);
+    // }
    if(this.mode()== 'Exam'){
      this.protection.init(
        (type) => {
@@ -71,7 +76,9 @@ export class ClientExamQuestionComponent {
            FULLSCREEN_EXIT: 'Stay in fullscreen!',
            DEVTOOLS: 'DevTools detected!',
            IDLE: 'You are inactive!',
-           KEYBOARD: 'Keyboard shortcuts not allowed!'
+           KEYBOARD: 'Keyboard shortcuts not allowed!',
+           PRINT: 'Printing is not allowed!',
+           SCREENSHOT: 'Screenshots are not allowed!'
          };
 
          this.showWarning(messages[type]);

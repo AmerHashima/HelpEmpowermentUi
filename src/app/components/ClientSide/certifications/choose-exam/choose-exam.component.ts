@@ -55,6 +55,9 @@ export class ChooseExamComponent {
 
 
   ngOnInit(): void {
+    const studentId = this.auth.loggedStudent()?.userId;
+    if (!studentId) return;
+    this.studentExamService.loadReports(studentId);
     this.studentExamService.loadLatestReport();
   }
 
@@ -81,7 +84,7 @@ export class ChooseExamComponent {
     const examId = this.shared.currentExamId();
     const exam = this.shared.currentExam();
     const freeExam = exam?.freeExam ?? false;
-
+    console.log('(this.shouldBlockExamStart(mode)) ', (this.shouldBlockExamStart(mode)));
     if (this.shouldBlockExamStart(mode)) {
       this.showClearLessonLearned = true;
       return;
@@ -98,14 +101,49 @@ export class ChooseExamComponent {
     this.handleStartNewExam(mode, freeExam);
   }
 
+  // private shouldBlockExamStart(mode: 'Practice' | 'Exam'): boolean {
+  //   return !!(
+  //     this.latestReport() &&
+  //     this.latestReport()?.examStatusLookupId !== '12516b05-9d35-4499-9122-9561dfb4a9ce' &&
+  //     mode === 'Exam' &&
+  //     this.auth.studentToken() &&
+  //     this.isEnrolled()
+  //   );
+  // }
+
   private shouldBlockExamStart(mode: 'Practice' | 'Exam'): boolean {
-    return !!(
-      this.latestReport() &&
-      this.latestReport()?.examStatusLookupId !== '12516b05-9d35-4499-9122-9561dfb4a9ce' &&
-      mode === 'Exam' &&
-      this.auth.studentToken() &&
-      this.isEnrolled()
-    );
+    const latestReport = this.latestReport();
+    const hasReport = !!latestReport;
+
+    const statusCheck =
+      latestReport?.examStatusLookupId !== '12516b05-9d35-4499-9122-9561dfb4a9ce';
+
+    const isExamMode = mode === 'Exam';
+
+    const hasToken = !!this.auth.studentToken();
+
+    const enrolled = this.isEnrolled();
+
+    console.log('--- shouldBlockExamStart DEBUG ---');
+    console.log('latestReport exists:', latestReport);
+    console.log('latestReport exists:', hasReport);
+    console.log('examStatusLookupId:', latestReport?.examStatusLookupId);
+    console.log('statusCheck (not finished):', statusCheck);
+    console.log('mode === Exam:', isExamMode);
+    console.log('has token:', hasToken);
+    console.log('is enrolled:', enrolled);
+
+    const result =
+      hasReport &&
+      statusCheck &&
+      isExamMode &&
+      hasToken &&
+      enrolled;
+
+    console.log('FINAL RESULT:', result);
+    console.log('----------------------------------');
+
+    return result;
   }
 
   private handleResumeExam(savedExam: string, freeExam: boolean,mode:string) {
@@ -176,7 +214,6 @@ export class ChooseExamComponent {
   }
 
   openReports() {
-
     if (this.previousExamMode() && this.isEnrolled())
       this.router.navigate(['../reports'], {
         relativeTo: this.route

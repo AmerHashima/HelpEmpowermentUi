@@ -135,6 +135,12 @@ export interface APIStudentExamResponse {
   updatedAt: string,
   updatedBy: string,
   examQuestions: APIStudentExamQuestion[]
+  statusSummary: StatusSummary[],
+  summary?:{
+    correct:number,
+    incorrect:number,
+    notAnswered:number
+  }
 }
 
 export interface ExamSummary{

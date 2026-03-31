@@ -37,15 +37,40 @@ export class ExamReportsComponent {
     return Math.round(total / reports.length);
   });
 
+  // ngOnInit(): void {
+  //   const studentId = this.auth.loggedStudent()?.userId;
+
+  //     if (!studentId) return;
+  //   this.studentService.loadReports(studentId);
+
+  // }
+  
+  // reports = computed(() => {
+  //   const examId = this.currentExamId();
+  //   const allReports = this.studentService.reports();
+  //   console.log('allReports', allReports);
+  //   return allReports.filter(
+  //     r => r.coursesMasterExamOid === examId && r.startedAt && r.finishedAt
+  //   );
+  // });
+
   reports = computed(() => {
     const examId = this.currentExamId();
     const allReports = this.studentService.reports();
-    console.log('allReports', allReports);
-    return allReports.filter(
-      r => r.coursesMasterExamOid === examId && r.startedAt && r.finishedAt
-    );
-  });
 
+    // return [...allReports
+    //   .filter(r =>
+    //     r.coursesMasterExamOid === examId &&
+    //     r.startedAt &&
+    //     r.finishedAt
+    //   )
+    return [...allReports
+      .filter(r =>
+        r.coursesMasterExamOid === examId
+      )
+      .sort((a, b) => (b.attemptNo ?? 0) - (a.attemptNo ?? 0))
+    ];
+  });
   formatDate(date: string | null): string {
     return date ? this.datePipe.transform(date, 'MMM d, y') ?? '' : '';
   }

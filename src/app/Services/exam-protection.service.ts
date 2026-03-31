@@ -7,6 +7,8 @@ type ViolationType =
   | 'DEVTOOLS'
   | 'IDLE'
   | 'KEYBOARD'
+  | 'PRINT'
+  | 'SCREENSHOT'
   | 'FAST_SWITCH';
 
 interface ViolationLog {
@@ -57,6 +59,11 @@ export class ExamProtectionService {
       }
     };
 
+
+    window.onbeforeprint = () => {
+      this.handleViolation('PRINT', onViolation, onTerminate);
+    };
+
     this.fullscreenHandler = () => {
       if (!document.fullscreenElement) {
         this.handleViolation('FULLSCREEN_EXIT', onViolation, onTerminate);
@@ -68,9 +75,15 @@ export class ExamProtectionService {
 
       const isShortcut =
         (e.ctrlKey || e.metaKey) &&
-        ['c', 'v', 'x', 'a', 'u', 's'].includes(key);
+        ['c', 'v', 'x', 'a', 'u', 's', 'p'].includes(key); 
 
       const isDevToolsKey = key === 'f12';
+      const isPrintScreen = key === 'printscreen';
+
+      if (isPrintScreen) {
+        this.handleViolation('SCREENSHOT', onViolation, onTerminate);
+        return;
+      }
 
       if (isShortcut || isDevToolsKey) {
         e.preventDefault();

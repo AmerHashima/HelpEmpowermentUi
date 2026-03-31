@@ -1,11 +1,13 @@
 <div class="container-fluid">
   <div class="row g-3">
     <div class="col-12">
-      <h5 class="mainTextColor fw-bold">{{currentExam()?.examName}} Reports</h5>
+      <h5 class="mainTextColor fw-bold">
+        {{ currentExam()?.examName }} Reports
+      </h5>
       <p>{{ "Review Your Previous Exam Attempts" | translate }}</p>
     </div>
     <div class="col-12">
-      <div class="row ">
+      <div class="row">
         <div class="col-12">
           <div
             class="reportScoreCard gap-3 d-flex align-items-center p-3 rounded-3 shadow-sm"
@@ -14,8 +16,10 @@
               <i class="bi bi-journal-check"></i>
             </span>
             <div class="d-flex flex-column gap-1">
-              <h6 class="darkText fw-bold">{{'Total Exam Number' | translate}}</h6>
-              <span class="fw-light">{{reports().length}}</span>
+              <h6 class="darkText fw-bold">
+                {{ "Total Exam Number" | translate }}
+              </h6>
+              <span class="fw-light">{{ reports().length }}</span>
             </div>
           </div>
         </div>
@@ -37,23 +41,28 @@
     <div class="col-12">
       <div class="row gy-3">
         <div class="col-12">
-          <h5 class="mainTextColor fw-bold">{{'Exam Reports' | translate}}</h5>
+          <h5 class="mainTextColor fw-bold">
+            {{ "Exam Reports" | translate }}
+          </h5>
         </div>
-        @for (report of reports(); track report; let index = $index) {
+        @for (report of reports(); track report.oid; let index = $index) {
           <div class="col-12">
             <div class="reportCard">
               <app-exam-report-card
                 [report]="{
-                 title: index + 1,
-                date: formatDate(report.startedAt),
-                duration: getDurationInMinutes(report.startedAt, report.finishedAt),
-                correct: report.obtainedScore,
-                incorrect: 84,
-                obtainedScore:report.obtainedScore,
-                notAnswered: 2,
-                isPassed: report.isPassed,
-                totalScore:report.totalScore
-              }"
+                  title: index + 1,
+                  date: formatDate(report.startedAt),
+                  duration: getDurationInMinutes(
+                    report.startedAt,
+                    report.finishedAt
+                  ),
+                  correct: report.obtainedScore,
+                  incorrect: report.summary?.incorrect ?? 0,
+                  obtainedScore: report.obtainedScore,
+                  notAnswered: report.summary?.notAnswered ?? 0,
+                  isPassed: report.isPassed,
+                  totalScore: report.totalScore,
+                }"
                 (viewLessons)="onViewLessons()"
                 (checkPerformance)="onCheckPerformance()"
               />
