@@ -5,7 +5,6 @@ import { APIAnswer, APICourseQuestion, courseAnswer, courseQuestion } from "../.
 // Single question mapper
 // export function mapApiQuestionToCourseQuestion(api: APICourseQuestion): courseQuestion {
 export function mapApiQuestionToCourseQuestion(api: any, studentQuestion: boolean = false): courseQuestion {
-  console.log('api',api);
   return {
     // oid: api.oid,
     oid: studentQuestion ? api.questionOid : api.oid,

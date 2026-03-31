@@ -30,24 +30,7 @@ export class ExamResultComponent {
   );
 
   scoreLabel = computed(() => this.shared.getScoreLabel(this.score(), this.totalScore()));
-  // ngOnInit() {
-  //   const isBrowser = isPlatformBrowser(this.platformId);
 
-  //   if (!isBrowser) return;
-
-  //   this.storageKey = `examResult-${this.shared.studentExamId()}`;
-  //   const stored = localStorage.getItem(this.storageKey);
-  //   this.examResult.set(stored ? JSON.parse(stored) : null)
-
-  //   if (this.examResult()) {
-  //     localStorage.removeItem(this.storageKey);
-  //     localStorage.removeItem('studentExamId');
-  //   }
-
-  //   if (!this.examResult()) {
-  //     this.router.navigateByUrl(`${this.shared.lang()}/home`);
-  //   }
-  // }
 
   getResultKey(): string {
     const examId = this.shared.currentExamId();

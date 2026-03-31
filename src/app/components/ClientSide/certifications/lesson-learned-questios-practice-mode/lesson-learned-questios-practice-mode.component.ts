@@ -421,10 +421,10 @@ export class LessonLearnedQUestiosPracticeModeComponent {
         newAnswer.answers.selectedAnswerOids
       );
 
-      this.toasting.showToast(
-        isCorrect ? 'examToast.finish.correctAnswer' : 'examToast.finish.wrongAnswer',
-        isCorrect ? 'success' : 'error'
-      );
+      // this.toasting.showToast(
+      //   isCorrect ? 'examToast.finish.correctAnswer' : 'examToast.finish.wrongAnswer',
+      //   isCorrect ? 'success' : 'error'
+      // );
 
       this.updateChoiceAnswer(newAnswer);
 
@@ -468,10 +468,10 @@ export class LessonLearnedQUestiosPracticeModeComponent {
         newAnswer.answers
       );
 
-      this.toasting.showToast(
-        isCorrect ? 'examToast.finish.correctMatch' : 'examToast.finish.wrongMatch',
-        isCorrect ? 'success' : 'error'
-      );
+      // this.toasting.showToast(
+      //   isCorrect ? 'examToast.finish.correctMatch' : 'examToast.finish.wrongMatch',
+      //   isCorrect ? 'success' : 'error'
+      // );
 
       this.updateMatchingAnswer(matchingAnswer);
 
@@ -583,5 +583,12 @@ export class LessonLearnedQUestiosPracticeModeComponent {
     });
 
     this.saveExamProgress();
+  }
+
+  ngOnDestroy(): void {
+    if (!this.isBrowser) return;
+    const key = this.getStorageKey(this.studentExamId());
+    if (key && !this.saveForLater)
+      localStorage.removeItem(key);
   }
 }

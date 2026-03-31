@@ -1,3 +1,5 @@
+
+
 import { Component, computed, effect, inject, PLATFORM_ID, signal } from '@angular/core';
 import { ClientExamQuestionComponent } from '../../client-exam-question/client-exam-question.component';
 import { Shared } from '../../../../shared/Services/shared/shared';
@@ -10,86 +12,89 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
 import { NoQuestionComponent } from '../no-question/no-question.component';
 import { SpinnerComponent } from '../../../../shared/spinner/spinner.component';
+import { APIExam } from '../../../../models/certification';
+import { AuthService } from '../../../../Services/auth.service';
 
 @Component({
   selector: 'app-free-exam',
   imports: [ClientExamQuestionComponent, SiteButtonComponent, NgClass, NoQuestionComponent,
-     GenericModelComponent,SpinnerComponent],
+    GenericModelComponent, SpinnerComponent],
   templateUrl: './free-exam.component.html',
   styleUrl: './free-exam.component.scss',
   providers: [QuestionsStore],
 
 })
 export class FreeExamComponent {
-   private platformId = inject(PLATFORM_ID);
-    private router = inject(Router);
-    private route = inject(ActivatedRoute)
-    private isBrowser = isPlatformBrowser(this.platformId);
-    questionStore = inject(QuestionsStore);
-    private shared = inject(Shared);
-    private toasting = inject(ToastingMessagesService);
-    isRTL = this.shared.isRtl;
-    showQuestionBoard: boolean = false;
-    examChoiceAnswers: any[] = [];
-    examMatchingAnswers: any[] = [];
-    currentExamId = signal<string>('');
-    saveForLater: boolean = false;
-    currentQuestionIndex = signal<number>(0);
-    currentMode = signal<string>('');
+  private platformId = inject(PLATFORM_ID);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute)
+  private auth=inject(AuthService);
+  private isBrowser = isPlatformBrowser(this.platformId);
+  questionStore = inject(QuestionsStore);
+  private shared = inject(Shared);
+  private toasting = inject(ToastingMessagesService);
+  isRTL = this.shared.isRtl;
+  showQuestionBoard: boolean = false;
+  examChoiceAnswers: any[] = [];
+  examMatchingAnswers: any[] = [];
+  currentExamId = signal<string>('');
+  saveForLater: boolean = false;
+  currentQuestionIndex = signal<number>(0);
+  currentMode = signal<string>('');
   resultState = signal({
     correct: 0,
     wrong: 0,
     answered: 0
   });
-    isMarked = computed(() => {
-      const question = this.currentQuestion();
-      if (!question) return false;
+  isMarked = computed(() => {
+    const question = this.currentQuestion();
+    if (!question) return false;
 
-      return this.markedQuestions().has(question.oid);
-    });
+    return this.markedQuestions().has(question.oid);
+  });
 
   hasQuestions = computed(() => this.questions().length > 0);
-    questions = computed(() => {
-      const list = this.questionStore.questions() ?? [];
-      return [...list].sort((a, b) => a.orderNo - b.orderNo);
-    });
+  questions = computed(() => {
+    const list = this.questionStore.questions() ?? [];
+    return [...list].sort((a, b) => a.orderNo - b.orderNo);
+  });
 
-    answeredQuestions = signal<Set<string>>(new Set());
-    boardQuestions = computed(() => {
-      const list = this.questionStore.questions() ?? [];
-      const marked = this.markedQuestions();
-      const answered = this.answeredQuestions();
+  answeredQuestions = signal<Set<string>>(new Set());
+  boardQuestions = computed(() => {
+    const list = this.questionStore.questions() ?? [];
+    const marked = this.markedQuestions();
+    const answered = this.answeredQuestions();
 
-      return [...list]
-        .sort((a, b) => a.orderNo - b.orderNo)
-        .map((q, i) => {
-          const isMarked = marked.has(q.oid!);
-          const isAnswered = answered.has(q.oid!);
+    return [...list]
+      .sort((a, b) => a.orderNo - b.orderNo)
+      .map((q, i) => {
+        const isMarked = marked.has(q.oid!);
+        const isAnswered = answered.has(q.oid!);
 
-          let status = 'notVisited';
-          if (isMarked && isAnswered) {
-            status = 'marked-answered';
-          } else if (isMarked) {
-            status = 'marked';
-          } else if (isAnswered) {
-            status = 'answered';
-          }
+        let status = 'notVisited';
+        if (isMarked && isAnswered) {
+          status = 'marked-answered';
+        } else if (isMarked) {
+          status = 'marked';
+        } else if (isAnswered) {
+          status = 'answered';
+        }
 
-          return {
-            ...q,
-            status
-          };
-        });
-    });
+        return {
+          ...q,
+          status
+        };
+      });
+  });
 
-    currentQuestion = computed(() => {
-      const qs = this.questions();
-      const idx = this.currentQuestionIndex();
-      if (qs.length === 0 || idx < 0 || idx >= qs.length) return null;
-      return this.mapToClientQuestion(qs[idx], idx);
-    });
+  currentQuestion = computed(() => {
+    const qs = this.questions();
+    const idx = this.currentQuestionIndex();
+    if (qs.length === 0 || idx < 0 || idx >= qs.length) return null;
+    return this.mapToClientQuestion(qs[idx], idx);
+  });
 
-
+  answerResult = signal<Map<string, boolean>>(new Map());
   isInitializing = signal(true);
   viewState = computed(() => {
     if (this.isInitializing()) return 'loading';
@@ -103,85 +108,86 @@ export class FreeExamComponent {
     return '';
   });
 
-    constructor() {
-      this.route.queryParamMap.subscribe(params => {
-        this.currentMode.set(params.get('mode') ?? '');
-      });
+  constructor() {
+    this.route.queryParamMap.subscribe(params => {
+      this.currentMode.set(params.get('mode') ?? '');
+    });
 
-      effect(() => {
-        if (!this.questionStore.loading()) {
-          this.isInitializing.set(false);
-        }
-      });
-
-      effect(() => {
-        const examId = this.shared.currentExamId();
-        if (examId) {
-          this.currentExamId.set(examId);
-          this.isInitializing.set(true);
-          const filters: Filter[] = [{
-            propertyName: "coursesMasterExamOid",
-            value: examId,
-            operation: 0
-          }];
-          this.questionStore.setFilters([...filters]);
-          this.questionStore.queryQuestions(this.questionStore.queryRequest());
-          if (this.isBrowser) {
-            const key = this.getStorageKey(examId);
-            const saved = localStorage.getItem(key);
-            if (!saved) { this.resetExam(); return; }
-            const parsed = JSON.parse(saved);
-            this.saveForLater = parsed.saveForLater;
-            if (parsed.examMode == 'Exam') {
-              this.currentQuestionIndex.set(parsed.currentQuestionIndex ?? 0);
-              this.examChoiceAnswers = parsed.examChoiceAnswers ?? [];
-              this.examMatchingAnswers = parsed.examMatchingAnswers ?? []
-              if (parsed.markedQuestions) {
-                this.markedQuestions.set(new Set(parsed.markedQuestions));
-              }
-              if (parsed.answeredQuestions) {
-                this.answeredQuestions.set(new Set(parsed.answeredQuestions));
-              }
-            }
-            else {
-              this.resetExam();
-            }
-          }
-        }
-      });
-      effect(() => {
-        if (this.questions().length > 0) {
-          if (this.currentQuestionIndex() >= this.questions().length) {
-            this.currentQuestionIndex.set(0);
-          }
-        }
-      });
-
-      effect(() => {
-        if (!this.isBrowser) return;
-
-        const examId = this.currentExamId();
-        const index = this.currentQuestionIndex();
-
-        if (!examId) return;
-        this.saveExamProgress();
-      });
-    }
-
-
-    onSaveForLater() {
-      this.saveForLater = true;
-      this.saveExamProgress();
-      if (this.isBrowser) {
-        localStorage.removeItem('currentExam');
-        localStorage.removeItem('currentExamId');
-        this.toasting.showToast('examToast.save.success', 'success');
+    effect(() => {
+      if (!this.questionStore.loading()) {
+        this.isInitializing.set(false);
       }
+    });
 
-      this.router.navigate(['../../exam-simulator'], {
-        relativeTo: this.route,
-      });
+    effect(() => {
+      const examId = this.shared.currentExamId();
+      if (examId) {
+        this.currentExamId.set(examId);
+        this.isInitializing.set(true);
+        const filters: Filter[] = [{
+          propertyName: "coursesMasterExamOid",
+          value: examId,
+          operation: 0
+        }];
+        this.questionStore.setFilters([...filters]);
+        this.questionStore.queryQuestions(this.questionStore.queryRequest());
+        if (this.isBrowser) {
+          const key = this.getStorageKey(examId);
+          const saved = localStorage.getItem(key);
+          if (!saved) { this.resetExam(); return; }
+          const parsed = JSON.parse(saved);
+          this.saveForLater = parsed.saveForLater;
+          if (this.saveForLater) {
+            this.currentQuestionIndex.set(parsed.currentQuestionIndex ?? 0);
+            this.examChoiceAnswers = parsed.examChoiceAnswers ?? [];
+            this.examMatchingAnswers = parsed.examMatchingAnswers ?? []
+            if (parsed.markedQuestions) {
+              this.markedQuestions.set(new Set(parsed.markedQuestions));
+            }
+            if (parsed.answeredQuestions) {
+              this.answeredQuestions.set(new Set(parsed.answeredQuestions));
+            }
+            if (parsed.answerResult) {
+              this.answerResult.set(new Map(parsed.answerResult));
+            }
+          }
+          else {
+            this.resetExam();
+          }
+        }
+      }
+    });
+    effect(() => {
+      if (this.questions().length > 0) {
+        if (this.currentQuestionIndex() >= this.questions().length) {
+          this.currentQuestionIndex.set(0);
+        }
+      }
+    });
+
+    effect(() => {
+      if (!this.isBrowser) return;
+
+      const examId = this.currentExamId();
+      const index = this.currentQuestionIndex();
+      if (!examId) return;
+      this.saveExamProgress();
+    });
+  }
+
+
+
+  onSaveForLater() {
+    this.saveForLater = true;
+    this.saveExamProgress();
+    if (this.isBrowser) {
+      this.toasting.showToast('examToast.save.success', 'success');
     }
+    this.router.navigate(['../../chooseExam'], {
+      relativeTo: this.route,
+    });
+  }
+
 
 
 
@@ -190,52 +196,53 @@ export class FreeExamComponent {
     if (this.isBrowser) {
       const key = this.getStorageKey(this.currentExamId());
       localStorage.removeItem(key);
-      if(this.currentMode() == 'Practice'){
+      if (this.currentMode() == 'Practice') {
         this.toasting.showToast('examToast.finish.success', 'success');
         this.router.navigate(['../../chooseExam'], {
           relativeTo: this.route,
         });
       }
-    else {
+      else {
         const result = this.calculcateExamModeResult();
         const examResult = `examResult-freeEXam-${this.currentExamId()}`;
         localStorage.setItem(examResult, JSON.stringify(result));
         this.router.navigate(['../../exam-result'], {
           relativeTo: this.route,
         });
-    }
+      }
     }
 
   }
 
 
-    onForceEnd(){
-      if (this.isBrowser) {
-        const key = this.getStorageKey(this.currentExamId());
-        localStorage.removeItem(key);
-        if (this.currentMode() == 'Exam') {
-          const result=this.calculcateExamModeResult();
-          const examResult = `examResult-freeEXam-${this.currentExamId()}`;
-          localStorage.setItem(examResult, JSON.stringify(result));
-          this.router.navigate(['../../exam-result'], {
-            relativeTo: this.route,
-          });
-        } else {
-          this.router.navigate(['../../exam-simulator'], {
-            relativeTo: this.route,
-          });
-        }
+  onForceEnd() {
+    if (this.isBrowser) {
 
+      const key = this.getStorageKey(this.currentExamId());
+      localStorage.removeItem(key);
+      if (this.currentMode() == 'Exam') {
+        const result = this.calculcateExamModeResult();
+        const examResult = `examResult-freeEXam-${this.currentExamId()}`;
+        localStorage.setItem(examResult, JSON.stringify(result));
+        this.router.navigate(['../../exam-result'], {
+          relativeTo: this.route,
+        });
+      } else {
+        this.router.navigate(['../../exam-simulator'], {
+          relativeTo: this.route,
+        });
       }
-    }
 
-  calculcateExamModeResult(){
+    }
+  }
+
+  calculcateExamModeResult() {
     const totalScore = this.questions().length;
     const { correct } = this.resultState();
 
     const obtainedScore = correct;
 
-    const passPercent =  60;
+    const passPercent = 60;
 
     const percentage = totalScore > 0
       ? (obtainedScore / totalScore) * 100
@@ -254,55 +261,68 @@ export class FreeExamComponent {
   }
 
   resetExam() {
-      this.currentQuestionIndex.set(0);
-      this.examChoiceAnswers = [];
-      this.examMatchingAnswers = [];
-      this.markedQuestions.set(new Set([]));
-      this.answeredQuestions.set(new Set([]));
+    this.currentQuestionIndex.set(0);
+    this.examChoiceAnswers = [];
+    this.examMatchingAnswers = [];
+    this.markedQuestions.set(new Set([]));
+    this.answeredQuestions.set(new Set([]));
+  }
+
+  onOpenQuestionBoard(show: boolean) {
+    this.showQuestionBoard = true
+  }
+  closeQuestionBoard() {
+    this.showQuestionBoard = false;
+  }
+  navigateToQuestion(q: number) {
+    this.goToQuestionNumber(q)
+    this.showQuestionBoard = false;
+  }
+
+
+  private mapToClientQuestion(q: any, index: number): any {
+
+    const savedChoice = this.examChoiceAnswers.find(
+      x => x.questionOid === q.oid
+    );
+
+    const savedMatching = this.examMatchingAnswers.find(
+      x => x.questionOid === q.oid
+    );
+
+    return {
+      ...q,
+      answers: (q.answers || []).map((opt: any, i: number) => ({
+        ...opt,
+        letter: String.fromCharCode(65 + i),
+        isSelected: savedChoice
+          ? savedChoice.selectedAnswerOids.includes(opt.oid)
+          : false
+      })),
+      savedMatchingAnswers: savedMatching?.answers ?? [],
+      progress: Math.round(((q.orderNo!) / Math.max(1, this.questions().length)) * 100),
+      totalQuestions: this.questions().length,
+      maxChoices: q.answers.filter((o: any) => o.isCorrect).length || 1
+    };
+  }
+
+
+  private getStorageKey(Id:string): string {
+    if (!Id) return '';
+    const exam=this.shared.currentExam();
+    if(!exam) return '';
+    const examId = Id;
+    const mode = this.currentMode();
+    const userId = this.auth.loggedStudent()?.userId;
+    const hasToken = this.auth.studentToken();
+    if (exam.freeExam) {
+      return hasToken
+        ? `exam-progress-freeExam-${userId}-${mode}-${examId}`
+        : `exam-progress-freeExam-${mode}-${examId}`;
     }
 
-    onOpenQuestionBoard(show: boolean) {
-      this.showQuestionBoard = true
-    }
-    closeQuestionBoard() {
-      this.showQuestionBoard = false;
-    }
-    navigateToQuestion(q: number) {
-      this.goToQuestionNumber(q)
-      this.showQuestionBoard = false;
-    }
-
-
-    private mapToClientQuestion(q: any, index: number): any {
-
-      const savedChoice = this.examChoiceAnswers.find(
-        x => x.questionOid === q.oid
-      );
-
-      const savedMatching = this.examMatchingAnswers.find(
-        x => x.questionOid === q.oid
-      );
-
-      return {
-        ...q,
-        answers: (q.answers || []).map((opt: any, i: number) => ({
-          ...opt,
-          letter: String.fromCharCode(65 + i),
-          isSelected: savedChoice
-            ? savedChoice.selectedAnswerOids.includes(opt.oid)
-            : false
-        })),
-        savedMatchingAnswers: savedMatching?.answers ?? [],
-        progress: Math.round(((q.orderNo!) / Math.max(1, this.questions().length)) * 100),
-        totalQuestions: this.questions().length,
-        maxChoices: q.answers.filter((o: any) => o.isCorrect).length || 1
-      };
-    }
-
-    private getStorageKey(examId: string) {
-      return `exam-progress-freeExam-${this.currentMode()}-${examId}`;
-    }
-
+    return `exam-progress-student_${userId}-${mode}-${examId}`;
+  }
 
   updateIndex(last: boolean = false) {
     if (!last) {
@@ -419,18 +439,18 @@ export class FreeExamComponent {
         });
       }
 
-      if (this.currentMode() === 'Practice') {
-        this.toasting.showToast(
-          isCorrect ? 'examToast.finish.correctAnswer' : 'examToast.finish.wrongAnswer',
-          isCorrect ? 'success' : 'error'
-        );
-      }
+      // if (this.currentMode() === 'Practice') {
+      //   this.toasting.showToast(
+      //     isCorrect ? 'examToast.finish.correctAnswer' : 'examToast.finish.wrongAnswer',
+      //     isCorrect ? 'success' : 'error'
+      //   );
+      // }
 
       this.saveExamProgress();
 
       setTimeout(() => {
         this.updateIndex(newAnswer.last);
-      }, 800);
+      }, 500);
     }
 
 
@@ -482,6 +502,7 @@ export class FreeExamComponent {
   }
 
 
+
   private updateResult(q: any, isCorrect: boolean, prevCorrect: boolean | null) {
     this.resultState.update(r => {
       let { correct, wrong, answered } = r;
@@ -510,6 +531,7 @@ export class FreeExamComponent {
 
     const key = this.getStorageKey(this.currentExamId());
 
+    if(!key) return;
     localStorage.setItem(
       key,
       JSON.stringify({
@@ -520,7 +542,8 @@ export class FreeExamComponent {
         examChoiceAnswers: this.examChoiceAnswers,
         examMatchingAnswers: this.examMatchingAnswers,
         markedQuestions: Array.from(this.markedQuestions()),
-        answeredQuestions: Array.from(this.answeredQuestions())
+        answeredQuestions: Array.from(this.answeredQuestions()),
+        answerResult: Array.from(this.answerResult().entries())
       })
     );
   }
@@ -597,4 +620,10 @@ export class FreeExamComponent {
     this.saveExamProgress();
   }
 
+  ngOnDestroy(): void {
+    if (!this.isBrowser) return;
+    const key = this.getStorageKey(this.currentExamId());
+    if (key && !this.saveForLater)
+      localStorage.removeItem(key);
+  }
 }

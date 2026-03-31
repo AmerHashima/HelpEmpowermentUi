@@ -1,25 +1,3 @@
-<!-- @if (currentQuestion() && hasQuestions()) {
-    <app-client-exam-question
-    [question]="currentQuestion()"
-    mode="practice"
-    (next)="goToNext($event)"
-    (previous)="goToPrevious()"
-    (showBoard)="onOpenQuestionBoard($event)"
-    [isMarked]="isMarked()"
-
-    (saveForLater)="onSaveForLater()"
-    (mark)="onMarkQuestion($event)"
-
-    (finishExam)="finishExam($event)"
-  />
-}@else {
-  <app-exam-empty-state
-    mode="Practice"
-    [store]="questionStore"
-     page="lessonLearned"
-  />
-} -->
-
 @if (viewState() === 'loading') {
 
   <app-spinner />

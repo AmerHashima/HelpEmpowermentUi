@@ -63,7 +63,6 @@ export class ExamComponent {
   // });
   questions = computed(() => {
     const list = this.questionStore.questions() ?? [];
-    console.log('examWQuestionslength',list.length);
     return [...list].sort((a, b) => a.orderNo - b.orderNo);
   });
   // revealedQuestions = signal<Set<string>>(new Set());
@@ -104,6 +103,7 @@ export class ExamComponent {
   });
 
   isInitializing = signal(true);
+  isExamFinalized = false;
   viewState = computed(() => {
     if (this.isInitializing()) return 'loading';
 
@@ -127,101 +127,47 @@ export class ExamComponent {
       }
     });
 
+
     effect(() => {
       const examId = this.shared.currentExamId();
-
-      if (!examId) return;
-      this.isInitializing.set(true);
       this.currentExamId.set(examId);
-      const filters: Filter[] = [{
-        propertyName: "coursesMasterExamOid",
-        value: examId,
-        operation: 0
-      }];
-      this.questionStore.setFilters(filters);
-
-
-      this.questionStore.queryQuestions(this.questionStore.queryRequest());
-    });
-
-    effect(() => {
-      if (!this.isBrowser) return;
-
-      const examId = this.currentExamId();
-      const questions = this.questions();
-
-      if (!examId || questions.length === 0) return;
-
-      const key = this.getStorageKey(examId);
-      const saved = localStorage.getItem(key);
-
-      if (!saved) {
-        this.resetExam();
-        return;
-      }
-
-      const parsed = JSON.parse(saved);
-
-      this.saveForLater = parsed.saveForLater;
-
-      if (parsed.examMode === 'Exam') {
-        this.currentQuestionIndex.set(parsed.currentQuestionIndex ?? 0);
-        this.examChoiceAnswers = parsed.examChoiceAnswers ?? [];
-        this.examMatchingAnswers = parsed.examMatchingAnswers ?? [];
-
-        if (parsed.markedQuestions) {
-          this.markedQuestions.set(new Set(parsed.markedQuestions));
+      if (examId) {
+        const filters: Filter[] = [{
+          propertyName: "coursesMasterExamOid",
+          value: examId,
+          operation: 0
+        }];
+        this.questionStore.setFilters([...filters]);
+        this.questionStore.queryQuestions(this.questionStore.queryRequest());
+        if (this.isBrowser) {
+          const key = this.getStorageKey(examId);
+          const saved = localStorage.getItem(key);
+          if (!saved) { this.resetExam(); return; }
+          const parsed = JSON.parse(saved);
+          this.saveForLater = parsed.saveForLater;
+          if (this.saveForLater) {
+            this.currentQuestionIndex.set(parsed.currentQuestionIndex ?? 0);
+            this.examChoiceAnswers = parsed.examChoiceAnswers ?? [];
+            this.examMatchingAnswers = parsed.examMatchingAnswers ?? []
+            if (parsed.markedQuestions) {
+              this.markedQuestions.set(new Set(parsed.markedQuestions));
+            }
+            // if (parsed.answeredBeforeReveal) {
+            //   this.answeredBeforeReveal.set(new Set(parsed.answeredBeforeReveal));
+            // }
+            // if (parsed.revealedQuestions) {
+            //   this.revealedQuestions.set(new Set(parsed.revealedQuestions));
+            // }
+            if (parsed.answeredQuestions) {
+              this.answeredQuestions.set(new Set(parsed.answeredQuestions));
+            }
+          }
+          else {
+            this.resetExam();
+          }
         }
-
-        if (parsed.answeredQuestions) {
-          this.answeredQuestions.set(new Set(parsed.answeredQuestions));
-        }
-      } else {
-        this.resetExam();
       }
     });
-
-    // effect(() => {
-    //   const examId = this.shared.currentExamId();
-    //   this.currentExamId.set(examId);
-    //   if (examId) {
-    //     console.log('in get exam qyestions')
-    //     const filters: Filter[] = [{
-    //       propertyName: "coursesMasterExamOid",
-    //       value: examId,
-    //       operation: 0
-    //     }];
-    //     this.questionStore.setFilters([...filters]);
-    //     this.questionStore.queryQuestions(this.questionStore.queryRequest());
-    //     if (this.isBrowser) {
-    //       const key = this.getStorageKey(examId);
-    //       const saved = localStorage.getItem(key);
-    //       if (!saved) { this.resetExam(); return; }
-    //       const parsed = JSON.parse(saved);
-    //       this.saveForLater = parsed.saveForLater;
-    //       if (parsed.examMode == 'Exam') {
-    //         this.currentQuestionIndex.set(parsed.currentQuestionIndex ?? 0);
-    //         this.examChoiceAnswers = parsed.examChoiceAnswers ?? [];
-    //         this.examMatchingAnswers = parsed.examMatchingAnswers ?? []
-    //         if (parsed.markedQuestions) {
-    //           this.markedQuestions.set(new Set(parsed.markedQuestions));
-    //         }
-    //         // if (parsed.answeredBeforeReveal) {
-    //         //   this.answeredBeforeReveal.set(new Set(parsed.answeredBeforeReveal));
-    //         // }
-    //         // if (parsed.revealedQuestions) {
-    //         //   this.revealedQuestions.set(new Set(parsed.revealedQuestions));
-    //         // }
-    //         if (parsed.answeredQuestions) {
-    //           this.answeredQuestions.set(new Set(parsed.answeredQuestions));
-    //         }
-    //       }
-    //       else {
-    //         this.resetExam();
-    //       }
-    //     }
-    //   }
-    // });
 
 
     effect(() => {
@@ -244,17 +190,32 @@ export class ExamComponent {
   }
 
 
+  // onSaveForLater() {
+  //   this.saveForLater = true;
+  //   this.saveExamProgress();
+  //   if (this.isBrowser) {
+  //     localStorage.removeItem('currentExam');
+  //     localStorage.removeItem('currentExamId');
+  //     localStorage.removeItem('studentExamId');
+  //     this.toasting.showToast('examToast.save.success', 'success');
+  //   }
+
+  //   this.router.navigate(['../../exam-simulator'], {
+  //     relativeTo: this.route,
+  //   });
+  // }
+
   onSaveForLater() {
     this.saveForLater = true;
+    this.isExamFinalized = true;
+
     this.saveExamProgress();
     if (this.isBrowser) {
-      localStorage.removeItem('currentExam');
-      localStorage.removeItem('currentExamId');
       localStorage.removeItem('studentExamId');
       this.toasting.showToast('examToast.save.success', 'success');
     }
 
-    this.router.navigate(['../../exam-simulator'], {
+    this.router.navigate(['../../chooseExam'], {
       relativeTo: this.route,
     });
   }
@@ -281,7 +242,7 @@ export class ExamComponent {
   // }
 
   finishExam(end: boolean) {
-    console.log('studentExamId', this.shared.studentExamId());
+    this.isExamFinalized = true;
     const payload: submitStudentExam = {
       studentExamOid: this.shared.studentExamId(),
       answers: [],
@@ -289,7 +250,9 @@ export class ExamComponent {
     }
 
     if (end && this.isBrowser) {
-      const message = this.currentMode() == 'Practice' ? 'Your Practice has been ended Successfully !' : 'Exam has been submitted successfully!';
+      // const message = this.currentMode() == 'Practice' ? 'Your Practice has been ended Successfully !' : 'Exam has been submitted successfully!';
+
+      const message ='Exam has been submitted successfully!';
       this.loading.start();
       this.studentExamService.submitExam(payload, message).subscribe({
         next: (result) => {
@@ -307,11 +270,8 @@ export class ExamComponent {
             this.router.navigate(['../../exam-result'], {
               relativeTo: this.route,
             });
-          }else{
-            this.router.navigate(['../../exam-simulator'], {
-              relativeTo: this.route,
-            });
           }
+
         }
       })
 
@@ -336,10 +296,6 @@ export class ExamComponent {
             const examResult = `examResult-${this.shared.studentExamId()}`;
             localStorage.setItem(examResult, JSON.stringify(result));
             this.router.navigate(['../../exam-result'], {
-              relativeTo: this.route,
-            });
-          } else {
-            this.router.navigate(['../../exam-simulator'], {
               relativeTo: this.route,
             });
           }
@@ -476,7 +432,6 @@ export class ExamComponent {
                 return s;
               });
             }
-
             this.saveExamProgress();
             this.updateIndex(newAnswer.last);
           }
@@ -612,6 +567,7 @@ export class ExamComponent {
     } else {
       this.examMatchingAnswers.push(matchingPayload);
     }
+
     this.saveExamProgress()
   }
 
@@ -638,7 +594,6 @@ export class ExamComponent {
 
   private saveExamProgress() {
     if (!this.isBrowser) return;
-
     const key = this.getStorageKey(this.currentExamId());
 
     localStorage.setItem(
@@ -742,7 +697,22 @@ export class ExamComponent {
     this.saveExamProgress();
   }
 
+  ngOnDestroy(): void {
+    if (!this.isBrowser) return;
 
+    if (this.isExamFinalized || this.saveForLater) return;
 
+    const key = this.getStorageKey(this.currentExamId());
+
+    const payload = JSON.stringify({
+      studentExamOid: this.shared.studentExamId(),
+      answers: [],
+      updatedBy: '...'
+    });
+
+    navigator.sendBeacon('/api/submit-exam', payload);
+
+    localStorage.removeItem(key);
+  }
 
 }

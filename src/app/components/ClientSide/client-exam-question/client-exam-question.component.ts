@@ -29,7 +29,7 @@ export class ClientExamQuestionComponent {
   watermarkText = signal<string>('Help Empowerment');
   next = output<any>();
   mode = input<string>('');
-  answerLocked = input<boolean>(false);
+  // answerLocked = input<boolean>(false);
   previous = output<void>();
   goToQuestion = output<number>();
   mark = output<boolean>();
@@ -40,12 +40,10 @@ export class ClientExamQuestionComponent {
   saveForLater = output<void>();
   private shared = inject(Shared);
   isRTL = signal<string>('ltr');
-  // question = input.required<Question>();
   question = input.required<any>();
   isMarked = input<boolean>(false);
   savedMiddle: any[] = [];
   showConfirm: boolean = false;
-  // showQuestionBoard:boolean=false;
   showCalculator: boolean = false;
   showWhiteboard: boolean = false;
   examAnswers = [];
@@ -60,10 +58,9 @@ export class ClientExamQuestionComponent {
   isBlurred = signal(false);
   violationsCount = signal(0);
 
-
+  showResultState = signal(false);
   ngOnInit() {
    if(this.mode()== 'Exam'){
-    console.log('ib ibt',this.mode());
      this.protection.init(
        (type) => {
          this.isBlurred.set(true);
@@ -107,9 +104,7 @@ export class ClientExamQuestionComponent {
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
 
-    effect(() => {
-      console.log(this.question());
-    })
+
     // effect(() => {
 
     //   if (this.answerLocked()) {
@@ -127,7 +122,9 @@ export class ClientExamQuestionComponent {
 
 
     if (changes['question']) {
+      this.showResultState.set(false);
       this.hideAnswersAndTranslations();
+
     }
     if (changes['question'] && this.isMatchingQuestion) {
 
@@ -136,7 +133,6 @@ export class ClientExamQuestionComponent {
       const left = q?.answers.filter((a: APIAnswer) => a.question_Ask) ?? [];
       const right = q?.answers.filter((a: APIAnswer) => !a.question_Ask) ?? [];
 
-      // reset arrays
       this.middle = new Array(left.length).fill(null);
       this._rightItems = [...right];
 
@@ -152,7 +148,6 @@ export class ClientExamQuestionComponent {
 
             this.middle[index] = match;
 
-            // remove from right column
             this._rightItems = this._rightItems.filter(
               r => r.oid !== match.oid
             );
@@ -162,8 +157,6 @@ export class ClientExamQuestionComponent {
         });
         this.savedMiddle = [...this.middle]
       }
-
-      console.log('middle', this.middle);
     }
 
   }
@@ -179,8 +172,7 @@ export class ClientExamQuestionComponent {
   }
 
   selectOption(opt: any['answers'][number]) {
-    if (this.answerLocked()) return;
-    console.log('answerLocked', this.answerLocked());
+    // if (this.answerLocked()) return;
     if (this.isMatchingQuestion) return;
 
     const question = this.question();
@@ -220,7 +212,6 @@ export class ClientExamQuestionComponent {
   EndExam() {
     this.showConfirm = false;
     this.finishExam.emit(true);
-    console.log('confirm end exam');
   }
   onCancalEndExam() {
     this.showConfirm = false;
@@ -250,51 +241,17 @@ export class ClientExamQuestionComponent {
   }
   hideAnswer() {
     this.showCorrectAnswerFlag = false;
-
   }
 
 
   nextQuestion() {
     if (this.isLastQuestion) return;
     this.submitQuestionAnswer();
-    // this.hideAnswersAndTranslations();
-
-    // const q = this.question();
-
-    // if (!q) return;
-
-    // // Multiple Choice Question
-    // if (q.questionTypeName === 'Multiple Choice Question') {
-    //   const payload = this.mapToAnswerPayload(q);
-
-    //   if (!payload?.selectedAnswerOids?.length) {
-    //     this.next.emit({ type: 'empty' });
-    //     return;
-    //   }
-
-    //   this.next.emit({
-    //     type: 'Multiple Choice Question',
-    //     answers: payload
-    //   });
-    // }
-    // // Matching Question
-    // else if (q.questionTypeName === 'Matching') {
-    //   const payload = this.buildMatchingAnswers(this.left, this.middle);
-
-    //   if (!payload?.length) {
-    //     this.next.emit({ type: 'empty' });
-    //     return;
-    //   }
-
-    //   this.next.emit({
-    //     type: 'Matching',
-    //     answers: payload
-    //   });
-    // }
   }
 
   submitQuestionAnswer(last: boolean = false) {
     this.hideAnswersAndTranslations();
+      this.showResultState.set(false);
 
     const q = this.question();
 
@@ -309,6 +266,11 @@ export class ClientExamQuestionComponent {
         return;
       }
 
+
+      if (this.mode() !== 'Exam') {
+        this.showResultState.set(true);
+      }
+
       this.next.emit({
         type: 'Multiple Choice Question',
         answers: payload,
@@ -318,18 +280,22 @@ export class ClientExamQuestionComponent {
     // Matching Question
     else if (q.questionTypeName === 'Matching') {
       const payload = this.buildMatchingAnswers(this.left, this.middle);
-      console.log('matching', payload);
       if (!payload?.length) {
-        console.log('in empty');
         this.next.emit({ type: 'empty', last });
         return;
       }
 
+
+      if (this.mode() !== 'Exam') {
+        this.showResultState.set(true);
+      }
       this.next.emit({
         type: 'Matching',
         answers: payload, last
       });
     }
+
+
   }
 
   submit() {
@@ -398,8 +364,7 @@ export class ClientExamQuestionComponent {
   }
 
   buildMatchingAnswers(left: APIAnswer[], middle: APIAnswer[]) {
-    console.log('shaimaamiddle', middle);
-    console.log('buildMatchingAnswers');
+
     const allNull = middle.every(v => v === null);
     if (allNull) {
       return [];
@@ -408,7 +373,6 @@ export class ClientExamQuestionComponent {
       selectedAnswerOid: l.oid,
       answerSelectedAnswerOid: middle[index]?.oid ?? null
     }));
-    console.log('shaimaaanswers', answers);
     return answers;
   }
 
@@ -426,8 +390,6 @@ export class ClientExamQuestionComponent {
   }
 
   onTimeUp() {
-    console.log('Time up on question:', this.question());
-
     if (this.isLastQuestion) {
       this.submitQuestionAnswer(true);
       return;
@@ -436,10 +398,57 @@ export class ClientExamQuestionComponent {
     // normal flow
     this.nextQuestion();
   }
+
+  get correctAnswersCount(): number {
+    return this.question()?.answers?.filter((a: any) => a.isCorrect).length || 0;
+  }
+
+  get selectedCorrectCount(): number {
+    return this.question()?.answers?.filter((a: any) => a.isSelected && a.isCorrect).length || 0;
+  }
+
+  get hasAnyCorrectSelected(): boolean {
+    return this.selectedCorrectCount > 0;
+  }
+
+  get isMultipleCorrect(): boolean {
+    return this.correctAnswersCount > 1;
+  }
+
+  isWrong(opt: any): boolean {
+    return (
+      this.mode() !== 'Exam' &&
+      (
+        (this.showResultState() || this.showCorrectAnswerFlag) &&
+        opt.isSelected &&
+        !opt.isCorrect
+      )
+    );
+  }
+
+  isCorrect(opt: any): boolean {
+    if (this.mode() === 'Exam') return false;
+
+    if (this.showCorrectAnswerFlag) {
+      return opt.isCorrect;
+    }
+
+    if (this.showResultState()) {
+
+      if (!this.isMultipleCorrect) {
+        return opt.isSelected && opt.isCorrect;
+      }
+
+      if (this.isMultipleCorrect) {
+        return this.hasAnyCorrectSelected && opt.isCorrect;
+      }
+    }
+
+    return false;
+  }
+
   ngOnDestroy() {
     if(this.mode() == 'Exam'){
-      console.log('ib destroy', this.mode())
-
       this.protection.destroy();
     }
   }

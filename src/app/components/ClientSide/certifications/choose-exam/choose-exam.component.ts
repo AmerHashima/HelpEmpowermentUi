@@ -59,22 +59,29 @@ export class ChooseExamComponent {
   }
 
 
-  private getStorageKey(examId: string, mode: string, free: boolean = false) {
-    if (!free)
-      return `exam-progress-student_${this.auth.loggedStudent()?.userId}-${mode}-${examId}`;
-    else return `exam-progress-freeExam-${mode}-${examId}`;
 
+  private getStorageKey(examId: string, mode: string, free: boolean = false): string {
+    const userId = this.auth.loggedStudent()?.userId;
+    const hasToken = this.auth.studentToken();
+
+    const isFreeWithUser = free && hasToken;
+
+    const prefix = isFreeWithUser
+      ? `exam-progress-freeExam-${userId}`
+      : free
+        ? `exam-progress-freeExam`
+        : `exam-progress-student_${userId}`;
+
+    return `${prefix}-${mode}-${examId}`;
   }
 
   startExam(mode: 'Practice' | 'Exam') {
-
     if (!isPlatformBrowser(this.platformId)) return;
 
     const examId = this.shared.currentExamId();
     const exam = this.shared.currentExam();
     const freeExam = exam?.freeExam ?? false;
 
-    // 🔥 1. Guard: Non-cleared exam
     if (this.shouldBlockExamStart(mode)) {
       this.showClearLessonLearned = true;
       return;
@@ -83,13 +90,11 @@ export class ChooseExamComponent {
     const storageKey = this.getStorageKey(examId, mode, freeExam);
     const savedExam = localStorage.getItem(storageKey);
 
-    // 🔥 2. Resume existing exam
     if (savedExam) {
-      this.handleResumeExam(savedExam, freeExam);
+      this.handleResumeExam(savedExam, freeExam,mode);
       return;
     }
 
-    // 🔥 3. Start new exam
     this.handleStartNewExam(mode, freeExam);
   }
 
@@ -103,11 +108,11 @@ export class ChooseExamComponent {
     );
   }
 
-  private handleResumeExam(savedExam: string, freeExam: boolean) {
+  private handleResumeExam(savedExam: string, freeExam: boolean,mode:string) {
 
     const parsed = JSON.parse(savedExam);
 
-    if (!freeExam) {
+    if (mode == 'Exam' && !freeExam) {
       this.shared.studentExamId.set(parsed.studentExamId);
       localStorage.setItem('studentExamId', parsed.studentExamId);
     }
@@ -119,129 +124,25 @@ export class ChooseExamComponent {
 
   private handleStartNewExam(mode: 'Practice' | 'Exam', freeExam: boolean) {
 
-    if (freeExam) {
+    if (!freeExam && mode == 'Exam') {
+      this.loading.start();
+      this.studentExamService.startExam(this.getStartExamPayload(mode))
+        .subscribe({
+          next: (exam) => {
+            this.loading.stop();
+            this.shared.studentExamId.set(exam.oid);
+            localStorage.setItem('studentExamId', exam.oid);
+            this.chooseMode(mode);
+          }
+        });
+    }
+    else{
+      this.toasting.showToast('examToast.start','success');
       this.chooseMode(mode);
       return;
     }
-    this.loading.start();
-    this.studentExamService.startExam(this.getStartExamPayload(mode))
-      .subscribe({
-        next: (exam) => {
-          this.loading.stop();
-          this.shared.studentExamId.set(exam.oid);
-          localStorage.setItem('studentExamId', exam.oid);
-          this.chooseMode(mode);
-        }
-      });
+
   }
-
-  // startExam(mode: 'Practice' | 'Exam') {
-  //   // if (this.latestReport() && mode == 'Exam' && this.auth.studentToken()) {
-  //   console.log('latest rep[prt', this.latestReport());
-  //   console.log('mode', mode);
-  //   console.log(' this.auth.studentToken()', this.auth.studentToken());
-  //   console.log('this.isEnrolled()', 'this.isEnrolled()');
-
-  //   //non cleared exam check
-  //   if (this.latestReport() && this.latestReport()?.examStatusLookupId != '12516b05-9d35-4499-9122-9561dfb4a9ce'
-  //     && mode == 'Exam' && this.auth.studentToken() && this.isEnrolled()) {
-  //     console.log('showClearLessonLearned', this.showClearLessonLearned);
-  //     this.showClearLessonLearned = true;
-  //     return;
-  //   }
-
-  //   const examId = this.shared.currentExamId();
-  //   const exam = this.shared.currentExam();
-  //   const freeExam = exam?.freeExam
-
-  //   if (!isPlatformBrowser(this.platformId)) return;
-
-  //   const storageKey = this.getStorageKey(examId, mode, freeExam);
-  //   const savedExam = localStorage.getItem(storageKey);
-
-  //   if (savedExam) {
-  //     const parsed = JSON.parse(savedExam);
-
-  //     if (!freeExam) {
-  //       this.shared.studentExamId.set(parsed.studentExamId);
-  //       localStorage.setItem('studentExamId', parsed.studentExamId);
-  //     }
-  //     this.toasting.showToast('examToast.resume.success', 'success');
-  //     this.chooseMode(mode)
-  //   }
-  //   else {
-  //     if(!freeExam){
-  //       this.studentExamService.startExam(this.getStartExamPayload(mode))
-  //         .subscribe({
-  //           next: (exam) => {
-  //             console.log('in start');
-  //             this.shared.studentExamId.set(exam.oid);
-  //             localStorage.setItem('studentExamId', exam.oid);
-  //             this.chooseMode(mode)
-  //           }
-  //         });
-  //     } else this.chooseMode(mode)
-
-  //   }
-
-  // }
-
-  // startExam(mode: string) {
-  //   // if (this.latestReport() && mode == 'Exam' && this.auth.studentToken()) {
-  //   console.log('latest rep[prt',this.latestReport());
-  //   console.log('mode', mode);
-  //   console.log(' this.auth.studentToken()', this.auth.studentToken());
-  //   console.log('this.isEnrolled()','this.isEnrolled()');
-
-  //   if (this.latestReport()  && this.latestReport()?.examStatusLookupId != '12516b05-9d35-4499-9122-9561dfb4a9ce'
-  //    && mode == 'Exam' && this.auth.studentToken() && this.isEnrolled()) {
-  //     console.log('showClearLessonLearned', this.showClearLessonLearned);
-  //     this.showClearLessonLearned = true;
-  //     return;
-  //   }
-
-  //   const examId = this.shared.currentExamId();
-  //   const exam = this.shared.currentExam();
-  //   console.log('exam',exam);
-  //   console.log('startExam in Start Exam Function',exam);
-
-  //   if (!isPlatformBrowser(this.platformId)) return;
-
-  //   const storageKey = this.getStorageKey(examId, mode);
-  //   const savedExam = localStorage.getItem(storageKey);
-
-  //   if (savedExam) {
-  //     const parsed = JSON.parse(savedExam);
-
-  //     this.shared.studentExamId.set(parsed.studentExamId);
-  //     localStorage.setItem('studentExamId', parsed.studentExamId);
-
-  //     this.toasting.showToast('examToast.resume.success', 'success');
-  //     this.chooseMode(mode)
-
-  //   }
-  //   else {
-  //     this.studentExamService.startExam(this.getStartExamPayload(mode))
-  //       .subscribe({
-  //         next: (exam) => {
-  //           console.log('in start');
-  //           this.shared.studentExamId.set(exam.oid);
-  //           localStorage.setItem('studentExamId', exam.oid);
-  //           this.chooseMode(mode)
-  //         }
-  //       });
-  //   }
-
-  // }
-
-  // chooseMode(mode: string) {
-  //   if (mode === 'Practice') {
-  //     this.onChoosePracticeMode();
-  //   }
-  //   else if (mode === 'Exam') {
-  //     this.onChooseExamMode();
-  //   }
-  // }
 
   chooseMode(mode: 'Practice' | 'Exam') {
     const freeExam=this.shared.currentExam()?.freeExam;
@@ -250,9 +151,9 @@ export class ChooseExamComponent {
 
 
   navigateToExam(mode: 'Practice' | 'Exam', freeExam: boolean = false) {
-    console.log(`in ${mode.toLowerCase()} mode`);
 
-    const baseRoute = freeExam ? '../free-exam/' : '../exams/';
+    const baseRoute = !freeExam && mode == 'Exam' ? '../exams/': '../free-exam/' ;
+
 
     this.router.navigate([baseRoute, this.shared.currentExamId()], {
       relativeTo: this.route,
@@ -261,15 +162,7 @@ export class ChooseExamComponent {
     });
   }
 
-  // onStartFreeExam() {
-  //   // this.router.navigate(['../exams/', this.shared.currentExamId()], {
-  //   //   relativeTo: this.route,
-  //   //   queryParams: { mode: 'exam' },
-  //   //   queryParamsHandling: 'merge',
-  //   // });
 
-  //   console.log('start free exam');
-  // }
 
   getStartExamPayload(mode: string) {
     const payload = {
@@ -279,20 +172,9 @@ export class ChooseExamComponent {
       attemptNo: 0,
       createdBy: this.auth.loggedStudent()?.userId ?? null
     }
-    console.log('payload', payload);
     return payload;
   }
-  // getStartExamPayload(mode:string) {
-  //   const payload = {
-  //     studentOid: this.auth.loggedStudent()?.userId!,
-  //     coursesMasterExamOid: this.shared.currentExamId(),
-  //     examModeLookupId: mode === 'Exam' ? "dddddddd-dddd-dddd-1212-dddddddddd02" :"dddddddd-dddd-dddd-1212-dddddddddd01",
-  //     attemptNo: 0,
-  //     createdBy: this.auth.loggedStudent()?.userId!
-  //   }
-  //   console.log('payload', payload);
-  //   return payload;
-  // }
+
   openReports() {
 
     if (this.previousExamMode() && this.isEnrolled())
@@ -303,7 +185,6 @@ export class ChooseExamComponent {
   }
 
   openLessonLearnedQuestions() {
-    // if (this.previousExamMode())
     if (this.previousExamMode() && this.isEnrolled())
       this.router.navigate(['../lesson-learned'], {
         relativeTo: this.route

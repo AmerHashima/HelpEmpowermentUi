@@ -1,14 +1,13 @@
 <div class="exam-container" [class.blurred]="isBlurred()">
   <!-- Header -->
   <div class="watermark-grid">
-  <div *ngFor="let i of [].constructor(8)">
-    {{ watermarkText() }}
+    <div *ngFor="let i of [].constructor(8)">
+      {{ watermarkText() }}
+    </div>
   </div>
-</div>
 
   <header class="exam-header flex-column flex-lg-row gap-2">
     <app-feature [title]="getExamTitle()" icon="bi bi-star" />
-    <!-- <div class="mode"><span class="star">★</span> Exam 1 - Practice Mode</div> -->
     <div class="actions d-flex flex-column flex-lg-row gap-2 flex-grow-1">
       @if (!isLastQuestion) {
         <app-site-button
@@ -76,18 +75,15 @@
         {{ question().questionText }}
       </h2>
 
-      <!-- @if (question().questionTypeName != "MATCHING") { -->
       @if (!isMatchingQuestion) {
         <div class="options">
           @for (opt of question().answers; track opt.letter) {
             <label
               class="option"
               [class.selected]="opt.isSelected"
-              [class.correct]="showCorrectAnswerFlag && opt.isCorrect"
-              [class.wrong]="
-                showCorrectAnswerFlag && opt.isSelected && !opt.isCorrect
-              "
-              (click)="!answerLocked() && selectOption(opt)"
+              [class.correct]="isCorrect(opt)"
+              [class.wrong]="isWrong(opt)"
+              (click)="selectOption(opt)"
             >
               <span class="letter">({{ opt.letter }})</span>
               <span class="text">{{ opt.answerText }}</span>
@@ -98,10 +94,18 @@
           }
         </div>
       } @else {
-        <app-drag-component
+        <!-- <app-drag-component
           [leftItems]="left"
           [rightItems]="right"
           [locked]="answerLocked() || showCorrectAnswerFlag"
+          [savedMiddle]="savedMiddle"
+          (rightItemsChange)="right = $event"
+          (middleChange)="onMiddleChange($event)"
+        ></app-drag-component> -->
+        <app-drag-component
+          [leftItems]="left"
+          [rightItems]="right"
+          [locked]="showCorrectAnswerFlag"
           [savedMiddle]="savedMiddle"
           (rightItemsChange)="right = $event"
           (middleChange)="onMiddleChange($event)"
@@ -117,11 +121,10 @@
               {{ question().questionText_Ar }}
             </h2>
 
-            <!-- @if (question().questionTypeName != "MATCHING") { -->
             @if (!isMatchingQuestion) {
               <div class="options">
                 @for (opt of question().answers; track opt.letter) {
-                  <label class="option translatedOption  rtl-option">
+                  <label class="option translatedOption rtl-option">
                     <span class="letter order-1">({{ opt.letter }})</span>
                     <span class="text me-2">{{ opt.answerText_Ar }}</span>
                   </label>
@@ -140,7 +143,7 @@
     }
     <!-- Footer controls -->
     <footer class="question-footer gap-2 flex-column flex-lg-row">
-      <div class="left-controls d-flex align-items-center gap-1 ">
+      <div class="left-controls d-flex align-items-center gap-1">
         <!-- <app-site-button
           title="Back"
           [isRTL]="isRTL()"
@@ -215,11 +218,7 @@
             (click)="nextQuestion()"
           />
         } @else {
-          <app-site-button
-            title="Submit"
-            type="main"
-            (click)="submit()"
-          />
+          <app-site-button title="Submit" type="main" (click)="submit()" />
         }
       </div>
     </footer>
