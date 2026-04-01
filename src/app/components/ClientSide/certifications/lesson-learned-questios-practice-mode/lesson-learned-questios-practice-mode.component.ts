@@ -247,7 +247,10 @@ export class LessonLearnedQUestiosPracticeModeComponent {
       localStorage.removeItem(key);
       this.toasting.showToast('examToast.finish.success', 'success');
     }
-    this.router.navigate(['../../chooseExam'], {
+    // this.router.navigate(['../../chooseExam'], {
+    //   relativeTo: this.route,
+    // });
+    this.router.navigate(['..'], {
       relativeTo: this.route,
     });
   }

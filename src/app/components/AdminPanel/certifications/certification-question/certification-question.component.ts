@@ -584,6 +584,7 @@ export class CertificationQuestionComponent {
         const hasMatch = answers.some(a => String(a?.oid) === desiredValue);
         const value = hasMatch ? desiredValue : String(answers[index]?.oid ?? '');
         if (!value) return;
+        console.log('value',value);
         ctrl.get('correctAnswerOid')?.setValue(value, { emitEvent: false });
       });
     }, 0);
@@ -613,7 +614,7 @@ export class CertificationQuestionComponent {
     //console.log('Form value:', this.form.value);
 
     if (this.form.invalid) {
-      this.logAllInvalidControls();
+      // this.logAllInvalidControls();
       this.form.markAllAsTouched();
       return;
     }
@@ -775,10 +776,14 @@ export class CertificationQuestionComponent {
       oid: a.oid ?? apiAnswers[index]?.oid ?? null
     }));
 
+    console.log('draganSWERS', dragAnswers);
     const questionsWithLinks = questionAnswers.map((q: any, index: number) => ({
       ...q,
       correctAnswerOid: dragAnswers[index]?.oid ?? null
     }));
+
+    console.log('questionsWithLinks', questionsWithLinks);
+
 
     return {
       oid: this.questionId || undefined,
@@ -856,35 +861,35 @@ export class CertificationQuestionComponent {
     });
   }
 
-  private logAllInvalidControls() {
-    const invalid: { path: string; errors: any; value: any }[] = [];
+  // private logAllInvalidControls() {
+  //   const invalid: { path: string; errors: any; value: any }[] = [];
 
-    const traverse = (control: AbstractControl, path: string = '') => {
-      if (control.invalid) {
-        invalid.push({
-          path: path || '(root)',
-          errors: control.errors,
-          value: control.value
-        });
-      }
+  //   const traverse = (control: AbstractControl, path: string = '') => {
+  //     if (control.invalid) {
+  //       invalid.push({
+  //         path: path || '(root)',
+  //         errors: control.errors,
+  //         value: control.value
+  //       });
+  //     }
 
-      if (control instanceof FormGroup) {
-        Object.entries(control.controls).forEach(([key, child]) => {
-          traverse(child, path ? `${path}.${key}` : key);
-        });
-      } else if (control instanceof FormArray) {
-        control.controls.forEach((child, idx) => {
-          traverse(child, path ? `${path}[${idx}]` : `${idx}`);
-        });
-      }
-    };
+  //     if (control instanceof FormGroup) {
+  //       Object.entries(control.controls).forEach(([key, child]) => {
+  //         traverse(child, path ? `${path}.${key}` : key);
+  //       });
+  //     } else if (control instanceof FormArray) {
+  //       control.controls.forEach((child, idx) => {
+  //         traverse(child, path ? `${path}[${idx}]` : `${idx}`);
+  //       });
+  //     }
+  //   };
 
-    traverse(this.form);
+  //   traverse(this.form);
 
-    if (invalid.length === 0) {
-      //console.log('No invalid controls found');
-    } else {
-      console.table(invalid);
-    }
-  }
+  //   if (invalid.length === 0) {
+  //     //console.log('No invalid controls found');
+  //   } else {
+  //     console.table(invalid);
+  //   }
+  // }
 }
