@@ -109,6 +109,8 @@
           [savedMiddle]="savedMiddle"
           (rightItemsChange)="right = $event"
           (middleChange)="onMiddleChange($event)"
+            [showResult]="showResultState()"
+  [showCorrect]="showCorrectAnswerFlag"
         ></app-drag-component>
       }
     </div>

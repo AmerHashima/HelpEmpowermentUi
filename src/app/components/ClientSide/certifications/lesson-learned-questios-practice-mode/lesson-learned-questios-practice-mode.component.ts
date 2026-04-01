@@ -234,7 +234,10 @@ export class LessonLearnedQUestiosPracticeModeComponent {
       this.toasting.showToast('examToast.save.success', 'success');
     }
 
-    this.router.navigate(['../../chooseExam'], {
+    // this.router.navigate(['../../chooseExam'], {
+    //   relativeTo: this.route,
+    // });
+    this.router.navigate(['..'], {
       relativeTo: this.route,
     });
   }

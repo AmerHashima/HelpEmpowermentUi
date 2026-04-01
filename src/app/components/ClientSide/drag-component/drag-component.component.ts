@@ -1,119 +1,3 @@
-// import { DragDropModule } from '@angular/cdk/drag-drop';
-// import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
-// import {
-//   CdkDragDrop,
-//   moveItemInArray
-// } from '@angular/cdk/drag-drop';
-// import { NgFor } from '@angular/common';
-
-// @Component({
-//   selector: 'app-drag-component',
-//   imports: [DragDropModule,NgFor],
-//   templateUrl: './drag-component.component.html',
-//   styleUrl: './drag-component.component.scss'
-// })
-// export class DragComponentComponent {
-//       @Input() leftItems: any[] = [];
-//   @Input() rightItems: any[] = [];
-//   @Input() savedMiddle: any[] = [];
-//   @Input() totalSlots = 0;
-//   // @Input() savedMiddle: any[]= [];
-//   @Output() middleChange = new EventEmitter<any[]>();
-//   @Output() rightItemsChange = new EventEmitter<any[]>();
-//   middleItems: (any | null)[] = [];
-//   // ngOnInit() {
-//   //   this.middleItems = Array(this.rightItems.length).fill(null);
-//   // }
-//   ngOnChanges(changes: SimpleChanges) {
-//     if (changes['leftItems'] || changes['totalSlots']) {
-//       const slotCount = this.totalSlots || this.leftItems?.length || 0;
-//       if (this.middleItems.length !== slotCount) {
-//         this.middleItems = Array(slotCount).fill(null);
-//       }
-//     }
-
-//     if (changes['savedMiddle'] && this.savedMiddle?.length) {
-//       this.middleItems = Array(this.middleItems.length).fill(null); // reset first
-//       this.savedMiddle.forEach((item, i) => {
-//         if (i < this.middleItems.length) {
-//           this.middleItems[i] = item;
-//         }
-//       });
-//       // Optional: emit on restore
-//       // this.middleChange.emit([...this.middleItems]);
-//     }
-//   }
-
-//   dropToMiddle(event: CdkDragDrop<any[]>) {
-//     let newMiddle = [...this.middleItems];
-//     let newRight = [...this.rightItems];
-
-//     if (event.previousContainer === event.container) {
-//       // reorder inside middle
-//       moveItemInArray(newMiddle, event.previousIndex, event.currentIndex);
-//     } else {
-//       const dragged = event.previousContainer.data[event.previousIndex];
-
-//       // remove from right
-//       newRight = newRight.filter((_, i) => i !== event.previousIndex);
-
-//       const idx = Math.min(event.currentIndex, newMiddle.length - 1);
-//       const displaced = newMiddle[idx];
-
-//       if (displaced) {
-//         newRight.push(displaced);
-//       }
-
-//       newMiddle[idx] = dragged;
-//     }
-
-//     // Final commit
-//     this.middleItems = newMiddle;
-//     this.rightItems = newRight;
-
-//     this.middleChange.emit(newMiddle);
-//     this.rightItemsChange.emit(newRight);
-//   }
-
-//   reorderMiddle(event: CdkDragDrop<any[]>) {
-//     const newMiddle = [...this.middleItems];
-//     moveItemInArray(newMiddle, event.previousIndex, event.currentIndex);
-
-//     this.middleItems = newMiddle;
-//     this.middleChange.emit(newMiddle);
-//   }
-//   // dropToMiddle(event: CdkDragDrop<any[]>) {
-//   //   if (event.previousContainer === event.container) {
-//   //     moveItemInArray(this.middleItems, event.previousIndex, event.currentIndex);
-//   //   } else {
-//   //     const draggedItem = event.previousContainer.data[event.previousIndex];
-
-//   //     // Create new array without dragged item
-//   //     const updatedRightItems = this.rightItems.filter(
-//   //       (_, index) => index !== event.previousIndex
-//   //     );
-
-//   //     const dropIndex = Math.min(event.currentIndex, this.middleItems.length - 1);
-
-//   //     const existingItem = this.middleItems[dropIndex];
-
-//   //     if (existingItem) {
-//   //       updatedRightItems.push(existingItem);
-//   //     }
-
-//   //     this.middleItems[dropIndex] = draggedItem;
-//   //     this.rightItemsChange.emit(updatedRightItems);
-//   //   }
-
-//   //   this.middleChange.emit([...this.middleItems]);
-//   // }
-
-//   // reorderMiddle(event: CdkDragDrop<any[]>) {
-//   //   moveItemInArray(this.middleItems, event.previousIndex, event.currentIndex);
-//   //   this.middleChange.emit([...this.middleItems]);
-
-//   // }
-// }
 
 
 // drag-component.component.ts
@@ -135,7 +19,9 @@ export class DragComponentComponent implements OnChanges {
   @Input() savedMiddle: any[] = [];
   @Input() totalSlots = 0;
   @Input() answersFlag = false;
-  @Input() translatedFlag=false
+  @Input() translatedFlag=false;
+  @Input() showResult = false;
+  @Input() showCorrect = false;
   locked = input<boolean>(false);
   @Output() middleChange = new EventEmitter<any[]>();
   @Output() rightItemsChange = new EventEmitter<any[]>();
@@ -217,5 +103,15 @@ export class DragComponentComponent implements OnChanges {
 
     this.middleChange.emit(newMiddle);
     this.rightItemsChange.emit(newRight);
+  }
+
+  isCorrectPair(left: any, selected: any): boolean {
+    if (!selected) return false;
+    return left.correctAnswerOid === selected?.oid;
+  }
+
+  isWrongPair(left: any, selected: any): boolean {
+    if (!selected) return false;
+    return left.correctAnswerOid !== selected?.oid;
   }
 }

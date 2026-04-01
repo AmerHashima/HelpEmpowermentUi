@@ -1,8 +1,4 @@
-
-
-
-
-
+@use 'variables' as *;
 .builder-container {
   display: flex;
   gap: 24px;
@@ -38,7 +34,7 @@
   }
 
   &.cdk-drag-preview {
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   }
 
   &.cdk-drag-placeholder {
@@ -47,14 +43,37 @@
   }
 }
 
-#middleList{
+#middleList {
   display: flex;
   flex-direction: column;
-  .item{
-      margin-bottom: 0;
-
+  .item.placeholder{
+    background: #e0e0e0 !important;
+    color: #888 !important;
   }
+  .item {
+    margin-bottom: 0;
+      background: $primaryColor !important;
+      color:$lightBgTextColor;
+  }
+
+  .item.correct {
+  background-color: #28a745 !important;
+  opacity: 1;
+  color: #fff;
+  border: 1px solid #28a745 ;
+}
+
+
+.item.wrong {
+  background-color: #dc3545 !important;
+  opacity: 1;
+  color: #fff;
+
+  border: 1px solid #dc3545;
+}
 }
 .draggable {
   cursor: grab;
 }
+
+

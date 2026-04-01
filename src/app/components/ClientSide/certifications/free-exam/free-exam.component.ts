@@ -486,12 +486,12 @@ export class FreeExamComponent {
         });
       }
 
-      if (this.currentMode() === 'Practice') {
-        this.toasting.showToast(
-          isCorrect ? 'examToast.finish.correctMatch' : 'examToast.finish.wrongMatch',
-          isCorrect ? 'success' : 'error'
-        );
-      }
+      // if (this.currentMode() === 'Practice') {
+      //   this.toasting.showToast(
+      //     isCorrect ? 'examToast.finish.correctMatch' : 'examToast.finish.wrongMatch',
+      //     isCorrect ? 'success' : 'error'
+      //   );
+      // }
 
       this.saveExamProgress();
 
