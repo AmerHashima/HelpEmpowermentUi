@@ -156,11 +156,12 @@ export class PhoneInputComponent
         'https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/utils.js'
     } as any);
 
-    // 🔥 Apply Arabic names after dropdown opens
     this.input.nativeElement.addEventListener('open:countrydropdown', () => {
       this.translateCountries();
+      this.translateSearchPlaceholder();
     });
   }
+
 
   //  Arabic Translation (REAL)
   translateCountries() {
@@ -183,6 +184,21 @@ export class PhoneInputComponent
       });
     }, 0);
   }
+
+  translateSearchPlaceholder() {
+    if (!this.isRTL()) return;
+
+    setTimeout(() => {
+      const input = document.querySelector('.iti__search-input') as HTMLInputElement;
+
+      if (input) {
+        input.placeholder = 'ابحث عن دولة أو رمز الاتصال';
+        input.setAttribute('aria-label', 'ابحث عن دولة أو رمز الاتصال');
+      }
+    }, 0);
+  }
+
+
 
   // ControlValueAccessor
   onChange = (_: any) => { };

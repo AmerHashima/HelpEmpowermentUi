@@ -604,7 +604,19 @@ p {
   text-align: right;
 }
 
+[dir="rtl"] .iti__selected-dial-code,
+[dir="rtl"] .iti__dial-code {
+  direction: ltr !important;
+  unicode-bidi: isolate;
+  text-align: left;
+    color: $inputText !important;
 
+}
+
+.iti__tel-input {
+  background-color: $inputBg !important;
+  color: $inputText !important;
+}
 
 
 /* Responsive */
