@@ -1,0 +1,136 @@
+<!-- src\app\components\AdminPanel\students\students.component.html -->
+<div class="container-fluid py-3">
+  <div class="row g-3" [hidden]="isArticlePopupOpen()">
+    <div class="col-12">
+      <div
+        class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3"
+      >
+        <h4 class="mb-0">Articles</h4>
+        <div class="d-flex gap-2 align-items-center justify-content-end">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Search by Article Title"
+            [(ngModel)]="searchText"
+            (keyup.enter)="onSearch()"
+          />
+          <app-button
+            btnLabel="Search"
+            [mainBtn]="false"
+            (click)="onSearch()"
+          />
+          <app-button
+            btnLabel="Add Article"
+            [mainBtn]="true"
+            (click)="openCreatePopup()"
+          />
+        </div>
+      </div>
+
+      @if (loading()) {
+        <div class="d-flex justify-content-center py-5">
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      }
+      <!-- @else if (errorMessage()) {
+        <div class="alert alert-danger" role="alert">
+          {{ errorMessage() }}
+        </div>
+      } -->
+      @else if (articles().length === 0) {
+        <div
+          class="empty-state d-flex flex-column align-items-center justify-content-center text-center p-5"
+        >
+          <div class="empty-icon mb-3">
+            <i class="bi bi-journal-x"></i>
+          </div>
+
+          <h5 class="mb-2">No Articles Found</h5>
+
+          <p class="text-muted mb-3">
+            You don’t have any articles yet or your search returned no results.
+          </p>
+
+          @if(!errorMessage){
+             <button class="btn btn-primary" (click)="openCreatePopup()">
+            + Create New Article
+          </button>
+          }
+        </div>
+      } @else {
+        <div class="row g-3">
+          @for (article of articles(); track article.oid) {
+            <div class="col-12 col-md-6 col-xl-4">
+              <app-article-card
+              [showIcons]="true"
+                [imgSrc]="article.imgSrc"
+                [imgAlt]="article.imgAlt"
+                [date]="article.createdAt"
+                [publishTime]="article.publishTime"
+                [title]="isRTL() ? article.title.ar : article.title.en"
+                [description]="
+                  isRTL() ? article.description.ar : article.description.en
+                "
+                (onEdit)="openEditPopup(article)"
+                (onDelete)="removeArticle(article.oid)"
+              />
+            </div>
+          }
+        </div>
+
+        <div
+          class="d-flex flex-wrap justify-content-between align-items-center mt-3 gap-2"
+        >
+          <div class="d-flex align-items-center gap-2">
+            <span class="small text-muted">Rows:</span>
+            <select
+              class="form-select form-select-sm"
+              style="width: 90px"
+              [value]="pageSize()"
+              (change)="onPageSizeChange($event)"
+            >
+              <option [value]="5">5</option>
+              <option [value]="10">10</option>
+              <option [value]="20">20</option>
+            </select>
+          </div>
+
+          <div class="small text-muted">
+            Page {{ displayPageNumber() }} of {{ totalPages() }} ({{
+              totalCount()
+            }}
+            students)
+          </div>
+
+          <div class="d-flex gap-2">
+            <button
+              class="btn btn-sm btn-outline-secondary"
+              type="button"
+              [disabled]="!canGoPrevious()"
+              (click)="previousPage()"
+            >
+              Previous
+            </button>
+            <button
+              class="btn btn-sm btn-outline-secondary"
+              type="button"
+              [disabled]="!canGoNext()"
+              (click)="nextPage()"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <app-article-form
+    [isOpen]="isArticlePopupOpen()"
+    [oid]="editingArticleId()"
+    (closed)="closeArticlePopup()"
+    (saved)="onArticleSaved()"
+  />
+</div>

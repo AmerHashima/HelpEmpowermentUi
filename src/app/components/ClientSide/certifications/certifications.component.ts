@@ -48,11 +48,11 @@ export class CertificationsComponent {
       icon: 'bi bi-controller',
       route: `/${this.lang()}/certifications/${this.currentCertification()}/quiz-game`
     },
-    {
-      header: 'tabs.articles',
-      icon: 'bi bi-file-text',
-      route: `/${this.lang()}/certifications/${this.currentCertification()}/articles`
-    },
+    // {
+    //   header: 'tabs.articles',
+    //   icon: 'bi bi-file-text',
+    //   route: `/${this.lang()}/certifications/${this.currentCertification()}/articles`
+    // },
     {
       header: 'tabs.faqs',
       icon: 'bi bi-question-circle',

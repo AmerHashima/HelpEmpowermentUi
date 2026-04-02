@@ -779,7 +779,22 @@ export class ArticleDetailsComponent {
     }
   ]
   article: any;
+   //get article from api
+  // private articleService = inject(ArticleService);
 
+  // loadArticle() {
+  //   const category = this.route.snapshot.paramMap.get('category')!;
+  //   const slug = this.route.snapshot.paramMap.get('slug')!;
+
+  //   this.articleService.getArticle(category, slug).subscribe({
+  //     next: (res) => {
+  //       this.article = res;
+  //     },
+  //     error: () => {
+  //       this.router.navigate(['/not-found']);
+  //     }
+  //   });
+  // }
   constructor(private route: ActivatedRoute,private router:Router) { }
 
   loadArticle() {

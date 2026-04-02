@@ -1,6 +1,9 @@
 /* src\app\shared\button\button.component.scss */
 @use "variables" as *;
 
+:host{
+  min-width: fit-content !important;
+}
 .btn-main {
   background-color: $primaryColor !important;
   border: none;

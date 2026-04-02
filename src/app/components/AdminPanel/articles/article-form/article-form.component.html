@@ -1,0 +1,236 @@
+<div class="container-fluid"  [hidden]="!isOpen()">
+  <div class="row gy-3">
+    <div class="col-12">
+      <h4 class="mb-0">{{oid()?"Update Article Details":"Create New Article"}}</h4>
+    </div>
+    <div class="col-12">
+      <form
+        [formGroup]="form"
+        (ngSubmit)="submit()"
+        class=""
+
+      >
+        <!-- CATEGORY -->
+        <div class="mb-3">
+          <label>Category</label>
+          <input formControlName="category" class="form-control" />
+        </div>
+
+        <!-- TITLE -->
+        <div formGroupName="title" class="mb-3">
+          <label>Title (EN)</label>
+          <input
+            formControlName="en"
+            class="form-control"
+            (blur)="generateSlug()"
+          />
+
+          <label class="mt-2">Title (AR)</label>
+          <input formControlName="ar" class="form-control" />
+        </div>
+
+        <!-- SLUG -->
+        <div class="mb-3">
+          <label>Slug</label>
+          <input formControlName="slug" class="form-control" />
+        </div>
+
+        <hr />
+
+        <!-- ADD SECTION BUTTONS -->
+        <div class="mb-3">
+          <button
+            type="button"
+            (click)="addSection('title')"
+            class="btn btn-sm btn-primary me-2"
+          >
+            + Title
+          </button>
+          <button
+            type="button"
+            (click)="addSection('content')"
+            class="btn btn-sm btn-success me-2"
+          >
+            + Content
+          </button>
+          <button
+            type="button"
+            (click)="addSection('list')"
+            class="btn btn-sm btn-warning me-2"
+          >
+            + List
+          </button>
+          <button
+            type="button"
+            (click)="addSection('image')"
+            class="btn btn-sm btn-info"
+          >
+            + Image
+          </button>
+        </div>
+
+        <hr />
+
+        <!-- SECTIONS -->
+        <div formArrayName="sections">
+          <div
+            *ngFor="let section of sections.controls; let i = index"
+            [formGroupName]="i"
+            class="card p-3 mb-3"
+          >
+            <div class="d-flex justify-content-between align-items-center">
+              <strong
+                >Section {{ i + 1 }} ({{ section.get("type")?.value }})</strong
+              >
+              <button
+                type="button"
+                class="btn btn-danger btn-sm"
+                (click)="removeSection(i)"
+              >
+                Delete
+              </button>
+            </div>
+
+            <hr />
+
+            <!-- TITLE -->
+            <div
+              *ngIf="section.get('type')?.value === 'title'"
+              formGroupName="title"
+            >
+              <input
+                formControlName="en"
+                placeholder="Title EN"
+                class="form-control mb-2"
+              />
+              <input
+                formControlName="ar"
+                placeholder="Title AR"
+                class="form-control"
+              />
+            </div>
+
+            <!-- CONTENT -->
+            <div *ngIf="section.get('type')?.value === 'content'">
+              <label>Content EN</label>
+              <div
+              *ngFor="let item of section.get('content')?.get('en')?.value || [] ;let j = index"
+              >
+                <input
+                  class="form-control mb-1"
+                  [value]="item"
+                  (input)="
+                    updateItem(
+                      section,
+                      'content',
+                      'en',
+                      j,
+                      $any($event.target).value
+                    )
+                  "
+                />
+                <button
+                  type="button"
+                  (click)="removeItem(section, 'content', 'en', j)"
+                >
+                  x
+                </button>
+              </div>
+              <button type="button" (click)="addItem(section, 'content', 'en')">
+                + Add EN
+              </button>
+
+              <label class="mt-2">Content AR</label>
+              <div
+              *ngFor="let item of section.get('content')?.get('ar')?.value || [];let j = index"
+
+              >
+                <input
+                  class="form-control mb-1"
+                  [value]="item"
+                  (input)="
+                    updateItem(
+                      section,
+                      'content',
+                      'ar',
+                      j,
+                      $any($event.target).value
+                    )
+                  "
+                />
+              </div>
+              <button type="button" (click)="addItem(section, 'content', 'ar')">
+                + Add AR
+              </button>
+            </div>
+
+            <!-- LIST -->
+            <div *ngIf="section.get('type')?.value === 'list'">
+              <label>List EN</label>
+              <div
+              *ngFor="let item of section.get('list')?.get('en')?.value || [];  let j = index"
+
+              >
+                <input
+                  class="form-control mb-1"
+                  [value]="item"
+                  (input)="
+                    updateItem(
+                      section,
+                      'list',
+                      'en',
+                      j,
+                      $any($event.target).value
+                    )
+                  "
+                />
+              </div>
+              <button type="button" (click)="addItem(section, 'list', 'en')">
+                + Add EN
+              </button>
+
+              <label class="mt-2">List AR</label>
+              <div
+              *ngFor="let item of section.get('list')?.get('ar')?.value || [];   let j = index"
+          
+              >
+                <input
+                  class="form-control mb-1"
+                  [value]="item"
+                  (input)="
+                    updateItem(
+                      section,
+                      'list',
+                      'ar',
+                      j,
+                      $any($event.target).value
+                    )
+                  "
+                />
+              </div>
+              <button type="button" (click)="addItem(section, 'list', 'ar')">
+                + Add AR
+              </button>
+            </div>
+
+            <!-- IMAGE -->
+            <div *ngIf="section.get('type')?.value === 'image'">
+              <input
+                formControlName="image"
+                placeholder="Image URL"
+                class="form-control mb-2"
+              />
+              <input
+                formControlName="imageAlt"
+                placeholder="Image Alt"
+                class="form-control"
+              />
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-dark mt-3">Save Article</button>
+      </form>
+    </div>
+  </div>
+</div>

@@ -21,6 +21,8 @@ import { CalendarComponent } from './components/ClientSide/calendar/calendar.com
 import { CertificationsComponent as clientCertifications } from './components/ClientSide/certifications/certifications.component';
 
 import { ArticlesComponent } from './components/ClientSide/articles/articles.component';
+import { ArticlesComponent as AdminArticles }  from './components/AdminPanel/articles/articles.component';
+
 import { FAQsComponent } from './components/ClientSide/faqs/faqs.component';
 import { ContactComponent } from './components/ClientSide/contact/contact.component';
 import { PmpComponent } from './components/ClientSide/certifications/pmp/pmp.component';
@@ -334,6 +336,11 @@ export const routes: Routes = [
       {
         path: 'students',
         component: StudentsComponent,
+        data: { breadcrumb: 'Users' },
+      },
+      {
+        path: 'articles',
+        component: AdminArticles,
         data: { breadcrumb: 'Users' },
       },
     ],

@@ -18,8 +18,22 @@ export class ArticleCardComponent {
   publishTime = input.required<string>();
   title = input.required<string>();
   description = input.required<string>();
+  showIcons = input<boolean>(false);
 
+  edit = output<void>();
+  delete = output<void>();
+
+  onEdit(event: Event) {
+    event.stopPropagation();
+    this.edit.emit();
+  }
+
+  onDelete(event: Event) {
+    event.stopPropagation();
+    this.delete.emit();
+  }
   onClick = output<void>();
+
 }
 
 
