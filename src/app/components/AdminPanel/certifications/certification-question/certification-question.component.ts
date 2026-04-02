@@ -779,7 +779,7 @@ export class CertificationQuestionComponent {
     console.log('draganSWERS', dragAnswers);
     const questionsWithLinks = questionAnswers.map((q: any, index: number) => {
       // Use the correctAnswerOid selected in the form dropdown; fall back to positional match
-      const selectedOid = raw.dragQuestions?.[index]?.correctAnswerOid ?? null;
+      const selectedOid = (raw.dragQuestions?.[index] as any)?.correctAnswerOid ?? null;
       const resolvedOid = selectedOid
         ?? dragAnswers[index]?.oid
         ?? null;
@@ -835,6 +835,7 @@ export class CertificationQuestionComponent {
     this.certificationService.updateCourseQuestion(payload).subscribe({
       next: () => {
         this.toast.showToast('question.matching.update.success', 'success');
+        this.questionStore.setSelectedQuestion(null);
         this.location.back();
       },
       error: (err) => {
@@ -856,6 +857,7 @@ export class CertificationQuestionComponent {
     this.certificationService.updateCourseQuestion(payload).subscribe({
       next: () => {
         this.toast.showToast('question.update.success', 'success');
+        this.questionStore.setSelectedQuestion(null);
         this.location.back();
       },
       error: (err) => {
