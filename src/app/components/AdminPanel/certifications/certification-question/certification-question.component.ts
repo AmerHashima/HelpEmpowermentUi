@@ -584,7 +584,7 @@ export class CertificationQuestionComponent {
         const hasMatch = answers.some(a => String(a?.oid) === desiredValue);
         const value = hasMatch ? desiredValue : String(answers[index]?.oid ?? '');
         if (!value) return;
-        console.log('value',value);
+        console.log('value', value);
         ctrl.get('correctAnswerOid')?.setValue(value, { emitEvent: false });
       });
     }, 0);
