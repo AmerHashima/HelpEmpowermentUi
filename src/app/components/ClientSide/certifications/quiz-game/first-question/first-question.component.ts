@@ -84,7 +84,7 @@ export class FirstQuestionComponent {
     this.bottomZone.set([]);
 
   }
-  
+
   drop(event: CdkDragDrop<string[]>) {
 
     const prevContainer = event.previousContainer;
@@ -149,8 +149,8 @@ export class FirstQuestionComponent {
       'Initiation',
       'Planning',
       'Executing',
-      'Monitoring & Control',
-      'Closing'
+      'Closing',
+            'Monitoring & Control',
     ];
 
     const placedItems = [
