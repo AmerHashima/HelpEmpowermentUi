@@ -30,6 +30,7 @@ export class Shared {
   studentExamId = signal('');
   fullPage = signal<boolean>(false);
 
+  theme = signal<string>('light');
 
   // Dependencies
   private platformId = inject(PLATFORM_ID);
