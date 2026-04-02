@@ -777,10 +777,14 @@ export class CertificationQuestionComponent {
     }));
 
     console.log('draganSWERS', dragAnswers);
-    const questionsWithLinks = questionAnswers.map((q: any, index: number) => ({
-      ...q,
-      correctAnswerOid: dragAnswers[index]?.oid ?? null
-    }));
+    const questionsWithLinks = questionAnswers.map((q: any, index: number) => {
+      // Use the correctAnswerOid selected in the form dropdown; fall back to positional match
+      const selectedOid = raw.dragQuestions?.[index]?.correctAnswerOid ?? null;
+      const resolvedOid = selectedOid
+        ?? dragAnswers[index]?.oid
+        ?? null;
+      return { ...q, correctAnswerOid: resolvedOid };
+    });
 
     console.log('questionsWithLinks', questionsWithLinks);
 
