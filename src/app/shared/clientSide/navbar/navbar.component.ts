@@ -94,6 +94,7 @@ export class ClientNavbarComponent {
     const theme = localStorage.getItem('theme') || 'light';
     document.documentElement.setAttribute('data-theme', theme);
     this.currentTheme.set(theme);
+    this.shared.theme.set(theme);
     this.hydrated.set(true);
   }
 
@@ -142,6 +143,7 @@ export class ClientNavbarComponent {
     localStorage.setItem('theme', next);
 
     this.currentTheme.set(next);
+    this.shared.theme.set(next);
   }
 
   // getTheme(): 'light' | 'dark' | null {

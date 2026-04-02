@@ -1,5 +1,4 @@
-<!-- src\app\shared\phone\phone.component.html -->
-<div [dir]="isRTL() ? 'rtl' : 'ltr'"
+<!-- <div [dir]="isRTL() ? 'rtl' : 'ltr'"
 	class="field">
 	<label for="phone">
 		{{ labelKey | translate }}
@@ -8,24 +7,6 @@
 			*
 		</span>
 	</label>
-	<!-- <ngxsmk-tel-input
-  name="phone"
-  [(ngModel)]="value"
-  (ngModelChange)="onValueChange($event)"
-  #phoneInput="ngModel"
-  [required]="required"
-  [dir]="isRTL() ? 'rtl' : 'ltr'"
-  [preferredCountries]="preferredCountries"
-  [initialCountry]="'sa'"
-  [i18n]="arabicLabels"
-  [localizedCountries]="arabicCountries"
-  [disabled]="disabled"
-  [nationalMode]="false"
-  [separateDialCode]="true"
-  [allowDropdown]="true"
-  [formatAsYouType]="true"
-  [digitsOnly]="false"
-></ngxsmk-tel-input> -->
 <ngxsmk-tel-input
   name="phone"
   [(ngModel)]="value"
@@ -38,8 +19,7 @@
   [enableAutoCountrySelect]="false"
   [autoSelectCountry]="false"
   [i18n]="arabicLabels"
-[onlyCountries]="['SA', 'EG', 'AE', 'US']"
-  [localizedCountries]="arabicCountries"
+[countryNames]="isRTL() ? arabicCountries : null"
   [disabled]="disabled"
   [nationalMode]="false"
   [separateDialCode]="true"
@@ -47,8 +27,6 @@
   [formatAsYouType]="true"
 ></ngxsmk-tel-input>
 
-
-	<!-- Required error – only if touched and still empty -->
 	<div *ngIf="
       phoneInput?.touched &&
       phoneInput?.invalid &&
@@ -59,7 +37,6 @@
 	</div>
 
 
-	<!-- Invalid number/format error – only if touched -->
 	<div *ngIf="
       phoneInput?.touched &&
       phoneInput?.invalid &&
@@ -68,9 +45,21 @@
 		class="error text-danger small mt-1">
 		{{ "register.phoneInvalid" | translate }}
 	</div>
+</div>
 
+ -->
+<div [dir]="isRTL() ? 'rtl' : 'ltr'" class="field" class="d-flex flex-column w-100">
 
-	<!-- You can add more specific errors if the lib exposes them, e.g. -->
-	<!-- *ngIf="phoneInput?.touched && phoneInput?.errors?.['phoneInvalidCountryCode']" -->
-	<!-- etc. – check browser dev tools or //console.log(phoneInput.errors) to see available keys -->
+  <label>
+    {{ labelKey }}
+    <span *ngIf="required" class="text-danger">*</span>
+  </label>
+
+  <input
+    #phoneInput
+    type="tel"
+    class="form-control"
+    (input)="onInput()"
+  />
+
 </div>
