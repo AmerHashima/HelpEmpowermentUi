@@ -2,7 +2,10 @@
 @use "variables" as *;
 @use "./light-theme";
 @use "./dark-theme";
-
+:root {
+  --iti-path-flags-1x: url('/assets/intl-tel-input/img/flags.webp');
+  --iti-path-flags-2x: url('/assets/intl-tel-input/img/flags@2x.webp');
+}
 html {
   padding: 0px;
   margin: 0px;
@@ -569,6 +572,39 @@ p {
   margin-top: 20px;
   text-align: center;
 }
+
+//phone component
+[dir="rtl"] .iti {
+  direction: rtl;
+}
+
+
+[dir="rtl"] .iti__country-container {
+  right: 0;
+  left: auto;
+}
+
+[dir="rtl"] .iti__tel-input {
+  padding-right: 90px !important;
+  padding-left: 10px !important;
+  text-align: right;
+}
+
+[dir="rtl"] .iti__selected-country {
+  direction: rtl;
+}
+
+[dir="rtl"] .iti__dropdown-content {
+  right: 0;
+  left: auto;
+  text-align: right;
+}
+
+[dir="rtl"] .iti__country-list {
+  text-align: right;
+}
+
+
 
 
 /* Responsive */
