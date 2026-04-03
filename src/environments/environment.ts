@@ -7,6 +7,8 @@ export const environment = {
   baseUrl: 'http://144.91.127.150:8080/api',
   mailServiceId: "service_qa9ozck",
   mailTemolateId: "template_1sqbwoa",
+  resetTemolateId: "template_ye2kx3n",
+
   mailPublicKey: "o3-i7ksFLJZT2C6GV",
   // baseUrl:"http://localhost:5075/api",
   firebase: {

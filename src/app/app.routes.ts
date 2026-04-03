@@ -56,6 +56,9 @@ import { LessonLearnedQUestiosPracticeModeComponent } from './components/ClientS
 import { examQuestionsResolver } from './Resolvers/exam-questions.resolver';
 import { EditExamComponent } from './components/AdminPanel/certifications/edit-exam/edit-exam.component';
 import { SlugCertificationComponent } from './components/ClientSide/certifications/slug-certification/slug-certification.component';
+import { ForgetPasswordComponent } from './components/ClientSide/auth/forget-password/forget-password.component';
+import { ResetPasswordComponent } from './components/ClientSide/auth/reset-password/reset-password.component';
+import { ResetPasswordOTPComponent } from './components/ClientSide/auth/reset-password-otp/reset-password-otp.component';
 
 export const validLangGuard: CanMatchFn = (route, segments) => {
   const lang = segments[0]?.path;
@@ -243,6 +246,21 @@ export const routes: Routes = [
             component: LoginComponent,
             canActivate: [clientGuestGuard]
 
+          },
+          {
+            path: "forget-password",
+            component: ForgetPasswordComponent,
+            canActivate: [clientGuestGuard]
+          },
+          {
+            path: "reset-password",
+            component: ResetPasswordComponent,
+            canActivate: [clientGuestGuard]
+          },
+          {
+            path: "verify-otp",
+            component: ResetPasswordOTPComponent,
+            canActivate: [clientGuestGuard]
           },
           {
             path: "register",

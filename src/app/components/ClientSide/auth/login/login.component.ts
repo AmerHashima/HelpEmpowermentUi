@@ -52,4 +52,8 @@ export class LoginComponent {
       error: () => this.toasting.showToast('auth.loginToast.error', 'error')
     })
   }
+
+  goToForgetPassword() {
+    this.router.navigate([`/${this.lang()}/auth/forget-password`]);
+  }
 }

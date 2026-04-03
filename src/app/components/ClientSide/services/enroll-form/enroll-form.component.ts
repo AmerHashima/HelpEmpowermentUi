@@ -76,24 +76,11 @@ export class EnrollFormComponent {
       );
 
       console.log('SUCCESS!', response.status, response.text);
-
-      // this.sendSuccess = true;
-      // this.submitted.emit(enrollMessageData);  // keep your original output if needed
        this.toasting.showToast('enroll.sent.success','success');
-      // Optional: reset form after success
-      // this.enroll = {
-      //   fullname: '',
-      //   organizationname: "",
-      //   email: '',
-      //   phone: "",
-      //   notes: '',
-      // };
-      form.resetForm();   // clears touched state too
+      form.resetForm();  
 
     } catch (err: any) {
       this.toasting.showToast("enroll.sent.error", 'error');
-      // console.error('EmailJS failed:', err);
-      // this.sendError = 'فشل إرسال الطلب. حاول مرة أخرى أو تواصل معنا مباشرة.';
     }
     //  finally {
     //   this.isSending = false;

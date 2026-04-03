@@ -234,7 +234,8 @@ export default class ApiService {
           !url.includes('submit-multiple') &&
           !url.includes('validate-answers') &&
           !url.includes('refresh-token') &&
-          !url.includes('summary')
+          !url.includes('summary')&&
+          !url.includes('forgot-password')
         ) {
           this.toasting.showToast(successMessage, 'success');
         }

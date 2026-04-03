@@ -56,15 +56,17 @@
               }"
             ></app-input>
 
-            <!-- <label class="form-check">
-              <input
+            <label class="">
+              <!-- <input
                 name="rememberMe"
                 [(ngModel)]="credentials.rememberMe"
                 type="checkbox"
                 class="form-check-input"
-              />
-              <span class="form-check-label">Remember Me</span>
-            </label> -->
+              /> -->
+              <span class="form-check-label"
+                (click)="goToForgetPassword()"
+              >Foregt Password?</span>
+            </label>
 
             <app-site-button
               title="log.loginButton"

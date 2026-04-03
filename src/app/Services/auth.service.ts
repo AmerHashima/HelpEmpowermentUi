@@ -122,11 +122,25 @@ export class AuthService {
   }
   forgetStudentPassword(body: forgetPasswordForm): Observable<boolean> {
     return this.apiService
-      .post<ApiResponse<boolean>>('Auth/forget-password', body, "auth.password.forget.success")
+      .post<ApiResponse<boolean>>('Auth/forgot-password', body, "auth.password.forget.success")
       .pipe(
         map((response: ApiResponse<boolean>) => {
           if (!response.success) {
             const msg = response.errors?.join(', ') || response.message || 'API failed to send mail';
+            throw new Error(msg);
+          }
+          return response.data;
+        })
+      );
+  }
+
+  verifyOtp(body: { email: string, otp: string }): Observable<boolean> {
+    return this.apiService
+      .post<ApiResponse<boolean>>('Auth/verify-otp', body, "auth.otp.verify.success")
+      .pipe(
+        map((response: ApiResponse<boolean>) => {
+          if (!response.success) {
+            const msg = response.errors?.join(', ') || response.message || 'API failed to verify OTP';
             throw new Error(msg);
           }
           return response.data;

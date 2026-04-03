@@ -1,5 +1,5 @@
 {
-  "search":"Search",
+  "search": "Search",
   "menu": {
     "home": "Home",
     "about": "About",
@@ -215,14 +215,14 @@
       "title": "PMP Study Plan",
       "summary": "Passing the PMP exam requires a structured Methodology, much like managing a real project. Based on my experience and observing many candidates, I recommend dividing your preparation into five clear Phases"
     },
-  "article3": {
-    "title": "Three Reasons Why Most Digital Transformation Plans Fail",
-    "summary": "70% of digital transformation initiatives fail to achieve their goals despite massive investments—and the reason is rarely technical. This article explores the three hidden causes behind failure: digital patching instead of real transformation, loss-driven decision making, and resistance to transparency."
-  },
-  "article4": {
-    "title": "CAPM Study Plan",
-    "summary": "Passing the CAPM exam requires a structured methodology, much like managing a real project. This guide breaks your preparation into five clear phases, helping you build strong understanding, practice effectively, and confidently prepare for the exam."
-  }
+    "article3": {
+      "title": "Three Reasons Why Most Digital Transformation Plans Fail",
+      "summary": "70% of digital transformation initiatives fail to achieve their goals despite massive investments—and the reason is rarely technical. This article explores the three hidden causes behind failure: digital patching instead of real transformation, loss-driven decision making, and resistance to transparency."
+    },
+    "article4": {
+      "title": "CAPM Study Plan",
+      "summary": "Passing the CAPM exam requires a structured methodology, much like managing a real project. This guide breaks your preparation into five clear phases, helping you build strong understanding, practice effectively, and confidently prepare for the exam."
+    }
   },
   "faq": {
     "question1": "What services do you offer?",
@@ -552,11 +552,11 @@
   },
   "Experience the Exam Simulator": "Experience the Exam Simulator",
   "exam": {
-      "empty": {
-        "title": "No Questions Available",
-        "examMessage": "This exam cannot be started because no questions are available.",
-        "practiceMessage": "There are no practice questions available for this exam."
-      },
+    "empty": {
+      "title": "No Questions Available",
+      "examMessage": "This exam cannot be started because no questions are available.",
+      "practiceMessage": "There are no practice questions available for this exam."
+    },
     "pass": "Pass",
     "fail": "Fail",
     "duration": "Duration",
@@ -597,8 +597,8 @@
     "noResults": "No results found",
     "readMore": "Read More",
     "readLess": "Read Less",
-      "back": "Go Back",
-      "retry": "Retry"
+    "back": "Go Back",
+    "retry": "Retry"
   },
   "recordedCourse": {
     "pmp": {
@@ -844,14 +844,14 @@
     }
   },
   "pages": {
-    "technical-support-policy":"Technical Support Policy",
-    "privacy-notice":"Privacy Notice",
-    "refund-policy":"Refund Policy",
-    "user-account-policy":"User Account Policy",
+    "technical-support-policy": "Technical Support Policy",
+    "privacy-notice": "Privacy Notice",
+    "refund-policy": "Refund Policy",
+    "user-account-policy": "User Account Policy",
     "capm-application-process": "CAMP",
-    "digital-transformation-failure":"General Article",
-    "pmp-study-plan":"PMP",
-    "capm-study-plan":"CAPM",
+    "digital-transformation-failure": "General Article",
+    "pmp-study-plan": "PMP",
+    "capm-study-plan": "CAPM",
     "about": "About US",
     "profile": "Profile",
     "contact": "Contact US",
@@ -967,7 +967,7 @@
   },
   "Upcoming Live Sessions": "Upcoming Live Sessions",
   "instructor": {
-    "info":"Instructor Info",
+    "info": "Instructor Info",
     "introParagragh": "Expert in translating the organizational strategy into tangible results with 20 years of hands-on experience, I build the frameworks for lasting success. My expertise covers the full spectrum of strategic delivery:",
     "skills": [
       {
@@ -1368,208 +1368,232 @@
       "update": "Progress updated successfully"
     }
   },
-    "userPolicy": {
-      "title": "User Account Policy",
-      "subtitle": "One Person, One Account",
-      "description": "To keep our learning experience fair and secure, your account is for your personal use only.",
-      "notAllowedTitle": "What’s Not Allowed:",
-      "notAllowed": [
-        "Sharing your login details with anyone",
-        "Letting others use your account to access courses",
-        "Streaming or showing course content to groups without permission",
-        "Downloading or sharing course materials"
-      ],
-      "penaltyTitle": "If We Detect Sharing:",
-      "penalty": "We will suspend or close your account immediately—without a refund.",
-      "footer": "This policy protects your learning journey and keeps our content safe for everyone."
+  "userPolicy": {
+    "title": "User Account Policy",
+    "subtitle": "One Person, One Account",
+    "description": "To keep our learning experience fair and secure, your account is for your personal use only.",
+    "notAllowedTitle": "What’s Not Allowed:",
+    "notAllowed": [
+      "Sharing your login details with anyone",
+      "Letting others use your account to access courses",
+      "Streaming or showing course content to groups without permission",
+      "Downloading or sharing course materials"
+    ],
+    "penaltyTitle": "If We Detect Sharing:",
+    "penalty": "We will suspend or close your account immediately—without a refund.",
+    "footer": "This policy protects your learning journey and keeps our content safe for everyone."
+  },
+  "privacy": {
+    "title": "Privacy Notice",
+    "sections": [
+      {
+        "title": "1. Introduction",
+        "content": [
+          "At Help Empowerment, we take your data privacy seriously.",
+          "We are committed to the highest standards of data protection across all markets where we operate.",
+          "Your use of our website and services involves providing certain personal data necessary to deliver an exceptional and secure experience.",
+          "We encourage you to read this notice carefully."
+        ]
+      },
+      {
+        "title": "2. Overview",
+        "content": [
+          "Our platform enables you to purchase training courses, access exam resources, and subscribe to our newsletter.",
+          "This notice outlines our practices to help you make informed decisions about your data."
+        ]
+      },
+      {
+        "title": "3. Primary Purposes of Data Collection",
+        "list": [
+          "Deliver specialized training and consulting services",
+          "Enhance platform content and services",
+          "Communicate updates and offers",
+          "Manage user accounts securely",
+          "Comply with legal requirements"
+        ]
+      },
+      {
+        "title": "4. Data Sharing",
+        "list": [
+          "Payment service providers",
+          "Cloud hosting platforms",
+          "Certification bodies (e.g., PMI)"
+        ],
+        "content": [
+          "All partners follow strict data protection standards."
+        ]
+      },
+      {
+        "title": "5. Security and Protection",
+        "list": [
+          "Data encryption",
+          "Protection against unauthorized access",
+          "Regular backups",
+          "Staff security training"
+        ]
+      },
+      {
+        "title": "6. Your Rights",
+        "list": [
+          "Access your data",
+          "Correct inaccurate data",
+          "Request deletion",
+          "Withdraw consent",
+          "Transfer data"
+        ]
+      },
+      {
+        "title": "7. Retention Policy",
+        "content": [
+          "We retain your data only as long as necessary or required by law."
+        ]
+      },
+      {
+        "title": "8. Forum and Community",
+        "list": [
+          "Use real name and valid email",
+          "Follow professional etiquette",
+          "Public visibility of shared data"
+        ]
+      },
+      {
+        "title": "9. Updates and Changes",
+        "content": [
+          "We may update this notice and notify you of significant changes."
+        ]
+      },
+      {
+        "title": "10. Contact Us",
+        "content": [
+          "Help Empowerment",
+          "Email: Support@helpempowerment.com",
+          "Website: www.helpempowerment.com",
+          "Last Updated: 01 Feb 2026"
+        ]
+      }
+    ]
+  },
+  "refund": {
+    "title": "Refund Policy",
+    "intro": [
+      "We are committed to fair and transparent service.",
+      "We encourage you to review free samples or demos before purchasing."
+    ],
+    "sections": [
+      {
+        "title": "Live & Interactive Courses",
+        "content": [
+          "A full refund is available if you contact us before the start of the second session.",
+          "Once the second session begins, refunds cannot be issued."
+        ]
+      },
+      {
+        "title": "Digital Products",
+        "content": [
+          "No refunds are available for digital products once access is granted.",
+          "These include exam simulators, recorded courses, and bundles."
+        ]
+      },
+      {
+        "title": "Non-Refundable Items",
+        "list": [
+          "Activated exam vouchers",
+          "Downloaded materials",
+          "Custom training programs",
+          "Membership or subscription fees after billing starts"
+        ]
+      },
+      {
+        "title": "How to Request a Refund",
+        "steps": [
+          "Email support@helpempowerment.com with your details",
+          "You will receive a case number within 24 hours",
+          "We may contact you for clarification or alternatives"
+        ]
+      },
+      {
+        "title": "Processing Timeline",
+        "list": [
+          "Refunds processed within 10–14 business days",
+          "Issued to original payment method",
+          "International refunds may take longer"
+        ]
+      }
+    ],
+    "lastUpdate": "Last Updated: 01 Feb 2026"
+  },
+  "support": {
+    "title": "Technical Support Policy",
+    "sections": [
+      {
+        "title": "Our Commitment",
+        "content": [
+          "We are here to help.",
+          "If you face any technical issues while using our platform, our support team will assist you quickly and effectively."
+        ]
+      },
+      {
+        "title": "How to Reach Us",
+        "list": [
+          "Email: Support@helpempowerment.com"
+        ]
+      },
+      {
+        "title": "What We Can Help With",
+        "list": [
+          "Problems logging in or accessing your account",
+          "Issues with course videos, materials, or the exam simulator",
+          "Payment or checkout errors",
+          "Technical errors on the platform"
+        ]
+      },
+      {
+        "title": "When We’re Available",
+        "list": [
+          "Sunday – Thursday",
+          "9:00 AM – 4:00 PM (GMT+3)"
+        ]
+      },
+      {
+        "title": "What to Expect",
+        "list": [
+          "Response within 24 business hours",
+          "Mention 'URGENT' for urgent issues",
+          "Complex issues may take longer"
+        ]
+      },
+      {
+        "title": "If You’re Not Satisfied",
+        "content": [
+          "If you don’t receive a response within 72 hours, please email again or contact via WhatsApp for escalation."
+        ]
+      }
+    ]
+  },
+  "Sharjah, UAE": "Sharjah, UAE",
+  "forgetPassword": {
+    "title": "Forgot Password?",
+    "description": "Enter your email to receive a password reset link",
+    "emailSent": " Password reset link has been sent",
+    "resendIn": "Resend in {{seconds}} seconds",
+    "resend": "Resend email",
+    "sendEmail": "Send Reset Link"
+  },
+    "otp": {
+      "title": "Verify Code",
+      "description": "Enter the code sent to your email",
+      "label": "OTP Code",
+      "verify": "Verify",
+      "invalid": "Invalid or expired code"
     },
-      "privacy": {
-        "title": "Privacy Notice",
-        "sections": [
-          {
-            "title": "1. Introduction",
-            "content": [
-              "At Help Empowerment, we take your data privacy seriously.",
-              "We are committed to the highest standards of data protection across all markets where we operate.",
-              "Your use of our website and services involves providing certain personal data necessary to deliver an exceptional and secure experience.",
-              "We encourage you to read this notice carefully."
-            ]
-          },
-          {
-            "title": "2. Overview",
-            "content": [
-              "Our platform enables you to purchase training courses, access exam resources, and subscribe to our newsletter.",
-              "This notice outlines our practices to help you make informed decisions about your data."
-            ]
-          },
-          {
-            "title": "3. Primary Purposes of Data Collection",
-            "list": [
-              "Deliver specialized training and consulting services",
-              "Enhance platform content and services",
-              "Communicate updates and offers",
-              "Manage user accounts securely",
-              "Comply with legal requirements"
-            ]
-          },
-          {
-            "title": "4. Data Sharing",
-            "list": [
-              "Payment service providers",
-              "Cloud hosting platforms",
-              "Certification bodies (e.g., PMI)"
-            ],
-            "content": [
-              "All partners follow strict data protection standards."
-            ]
-          },
-          {
-            "title": "5. Security and Protection",
-            "list": [
-              "Data encryption",
-              "Protection against unauthorized access",
-              "Regular backups",
-              "Staff security training"
-            ]
-          },
-          {
-            "title": "6. Your Rights",
-            "list": [
-              "Access your data",
-              "Correct inaccurate data",
-              "Request deletion",
-              "Withdraw consent",
-              "Transfer data"
-            ]
-          },
-          {
-            "title": "7. Retention Policy",
-            "content": [
-              "We retain your data only as long as necessary or required by law."
-            ]
-          },
-          {
-            "title": "8. Forum and Community",
-            "list": [
-              "Use real name and valid email",
-              "Follow professional etiquette",
-              "Public visibility of shared data"
-            ]
-          },
-          {
-            "title": "9. Updates and Changes",
-            "content": [
-              "We may update this notice and notify you of significant changes."
-            ]
-          },
-          {
-            "title": "10. Contact Us",
-            "content": [
-              "Help Empowerment",
-              "Email: Support@helpempowerment.com",
-              "Website: www.helpempowerment.com",
-              "Last Updated: 01 Feb 2026"
-            ]
-          }
-        ]
-      },
-      "refund": {
-        "title": "Refund Policy",
-        "intro": [
-          "We are committed to fair and transparent service.",
-          "We encourage you to review free samples or demos before purchasing."
-        ],
-        "sections": [
-          {
-            "title": "Live & Interactive Courses",
-            "content": [
-              "A full refund is available if you contact us before the start of the second session.",
-              "Once the second session begins, refunds cannot be issued."
-            ]
-          },
-          {
-            "title": "Digital Products",
-            "content": [
-              "No refunds are available for digital products once access is granted.",
-              "These include exam simulators, recorded courses, and bundles."
-            ]
-          },
-          {
-            "title": "Non-Refundable Items",
-            "list": [
-              "Activated exam vouchers",
-              "Downloaded materials",
-              "Custom training programs",
-              "Membership or subscription fees after billing starts"
-            ]
-          },
-          {
-            "title": "How to Request a Refund",
-            "steps": [
-              "Email support@helpempowerment.com with your details",
-              "You will receive a case number within 24 hours",
-              "We may contact you for clarification or alternatives"
-            ]
-          },
-          {
-            "title": "Processing Timeline",
-            "list": [
-              "Refunds processed within 10–14 business days",
-              "Issued to original payment method",
-              "International refunds may take longer"
-            ]
-          }
-        ],
-        "lastUpdate": "Last Updated: 01 Feb 2026"
-      },
-      "support": {
-        "title": "Technical Support Policy",
-        "sections": [
-          {
-            "title": "Our Commitment",
-            "content": [
-              "We are here to help.",
-              "If you face any technical issues while using our platform, our support team will assist you quickly and effectively."
-            ]
-          },
-          {
-            "title": "How to Reach Us",
-            "list": [
-              "Email: Support@helpempowerment.com"
-            ]
-          },
-          {
-            "title": "What We Can Help With",
-            "list": [
-              "Problems logging in or accessing your account",
-              "Issues with course videos, materials, or the exam simulator",
-              "Payment or checkout errors",
-              "Technical errors on the platform"
-            ]
-          },
-          {
-            "title": "When We’re Available",
-            "list": [
-              "Sunday – Thursday",
-              "9:00 AM – 4:00 PM (GMT+3)"
-            ]
-          },
-          {
-            "title": "What to Expect",
-            "list": [
-              "Response within 24 business hours",
-              "Mention 'URGENT' for urgent issues",
-              "Complex issues may take longer"
-            ]
-          },
-          {
-            "title": "If You’re Not Satisfied",
-            "content": [
-              "If you don’t receive a response within 72 hours, please email again or contact via WhatsApp for escalation."
-            ]
-          }
-        ]
-      },
-      "Sharjah, UAE":"Sharjah, UAE"
-
+      "resetPassword": {
+        "title": "Reset Password",
+        "description": "Enter your new password",
+        "newPassword": "New Password",
+        "confirmPassword": "Confirm Password",
+        "submit": "Reset Password",
+        "success": "Password updated successfully. Redirecting to login...",
+        "error": "Something went wrong. Try again.",
+        "passwordMismatch": "Passwords do not match"
+      }
 }
