@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FeatureComponent } from '../../../../../shared/clientSide/feature/feature.component';
 import { SiteButtonComponent } from '../../../../../shared/clientSide/site-button/site-button.component';
 import { Shared } from '../../../../../shared/Services/shared/shared';
@@ -668,33 +668,92 @@ export class QuizGameQuestionComponent {
     },
   ];
 
+  attempts = signal(0);
+  maxAttempts = 2;
 
   currentLevel = computed(() => this.levels[this.currentLevelIndex()]);
+  // onGetQuestionResult(isCorrect: boolean) {
+  //   this.next.set(false);
+  //   if (!isCorrect) {
+  //     this.showMessage = true;
+  //     this.levelMessage.set({
+  //       message: 'OOPS, Your Answer is not correct\nTry Again Later....',
+  //       isCorrect: false
+  //     })
+  //     return;
+  //   }
+
+
+  //   this.score.update(s => s + 1);
+  //   console.log(this.currentLevelIndex());
+  //   console.log(this.currentLevelIndex() < this.levels.length - 1)
+  //   if (this.currentLevelIndex() < this.levels.length - 1) {
+  //     this.currentLevelIndex.update(i => i + 1);
+  //   }else{
+  //     this.showMessage=true;
+  //     this.levelMessage.set({
+  //       message: 'Well Done,You have rock it',
+  //       isCorrect: true
+  //     })
+  //   }
+
+  // }
+
+  constructor(){
+    effect(() => {
+      this.currentLevelIndex();
+      this.attempts.set(0);
+    });
+  }
   onGetQuestionResult(isCorrect: boolean) {
     this.next.set(false);
-    if (!isCorrect) {
-      this.showMessage = true;
-      this.levelMessage.set({
-        message: 'OOPS, Your Answer is not correct\nTry Again Later....',
-        isCorrect: false
-      })
+
+    // ✅ correct answer
+    if (isCorrect) {
+      this.attempts.set(0); // reset attempts for next question
+      this.score.update(s => s + 1);
+
+      if (this.currentLevelIndex() < this.levels.length - 1) {
+        this.currentLevelIndex.update(i => i + 1);
+      } else {
+        this.showMessage = true;
+        this.levelMessage.set({
+          message: 'Well Done, You have rocked it 🎉',
+          isCorrect: true
+        });
+      }
+
       return;
     }
 
+    // ❌ wrong answer
+    this.attempts.update(a => a + 1);
 
-    this.score.update(s => s + 1);
-    console.log(this.currentLevelIndex());
-    console.log(this.currentLevelIndex() < this.levels.length - 1)
-    if (this.currentLevelIndex() < this.levels.length - 1) {
-      this.currentLevelIndex.update(i => i + 1);
-    }else{
-      this.showMessage=true;
+    // 🔥 FIRST FAIL → allow retry
+    if (this.attempts() < this.maxAttempts) {
+      this.showMessage = true;
       this.levelMessage.set({
-        message: 'Well Done,You have rock it',
-        isCorrect: true
-      })
+        message: `Wrong answer ❌\nTry again (${this.maxAttempts - this.attempts()} attempt left)`,
+        isCorrect: false
+      });
+      return;
     }
 
+    // 💥 SECOND FAIL → quit
+    this.showMessage = true;
+    this.levelMessage.set({
+      message: 'You failed twice ❌ Quiz ended.',
+      isCorrect: false
+    });
+
+    this.gameFinished.set(true);
+
+    // optional: navigate after delay
+    setTimeout(() => {
+      this.router.navigate(['../quiz-game'], {
+        relativeTo: this.route
+      });
+    }, 2000);
   }
 
   nextQuestion() {
@@ -729,10 +788,23 @@ export class QuizGameQuestionComponent {
   cancalQuiz() {
     this.showConfirm = false;
   }
-  closeResultMessage(){
+  // closeResultMessage(){
+  //   this.router.navigate(['../quiz-game'], {
+  //     relativeTo: this.route
+  //   });}
+
+  closeResultMessage() {
+    this.showMessage = false;
+
+    if (!this.gameFinished()) {
+      return;
+    }
+
+    // ✅ game finished → go back
     this.router.navigate(['../quiz-game'], {
       relativeTo: this.route
-    });}
+    });
+  }
 
     finish(){
       this.next.set(true);

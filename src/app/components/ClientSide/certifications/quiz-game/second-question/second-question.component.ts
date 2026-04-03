@@ -84,7 +84,7 @@ export class SecondQuestionComponent {
       return;
     }
 
-  
+
     if (isFromZone && isToZone) {
 
       // Target empty → simple move
@@ -131,4 +131,6 @@ export class SecondQuestionComponent {
 
     this.isCorrect.emit(allCorrect);
   }
+
+
 }
