@@ -77,3 +77,10 @@ th, td {
   white-space: pre-line;
   cursor: grab;
 }
+
+.table-wrapper {
+  max-height: 900px;
+    overflow-y: auto;
+
+  border: 1px solid $borderColor;
+}
