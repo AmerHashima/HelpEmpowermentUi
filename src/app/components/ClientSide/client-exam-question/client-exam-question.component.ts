@@ -94,6 +94,7 @@ export class ClientExamQuestionComponent {
 
      this.protection.enterFullscreen();
    }
+    else this.protection.enterFullscreen();
   }
 
 
