@@ -8,12 +8,13 @@
           class="logo"
         /> -->
 
-         @if(currentTheme() == 'light'){
-          <img src="assets/images/clientNavbar/logo.png" alt="Logo" class="logo" />
-    }
-    @else{
-          <img src="assets/images/clientNavbar/dark-logo.jpeg" alt="Logo" class="logo" />
-    }
+        @if (currentTheme()) {
+          @if (currentTheme() === "light") {
+            <img src="assets/images/clientNavbar/logo.png" class="logo" />
+          } @else {
+            <img src="assets/images/clientNavbar/dark-logo.jpeg" class="logo" />
+          }
+        }
       </div>
 
       <div class="right-actions">
@@ -28,8 +29,12 @@
           <div class="dropdown">
             <i class="bi bi-globe" (click)="toggleDropdown('lang')"></i>
             <ul *ngIf="openDropdown() === 'lang'">
-              <li (click)="changeLang('en')" class="text-center">{{lang() == 'ar' ? 'اللغة الانجليزية': 'English'}}</li>
-              <li (click)="changeLang('ar')" class="text-center">{{lang() == 'ar' ? 'العربية':"Arabic"}}</li>
+              <li (click)="changeLang('en')" class="text-center">
+                {{ lang() == "ar" ? "اللغة الانجليزية" : "English" }}
+              </li>
+              <li (click)="changeLang('ar')" class="text-center">
+                {{ lang() == "ar" ? "العربية" : "Arabic" }}
+              </li>
             </ul>
           </div>
 
@@ -76,44 +81,43 @@
               {{ cartCount() }}
             </span>
           </div>
-          @if(hydrated()){
-     @if (isLoggedIn()) {
-            <div class="dropdown">
-              <i
-                class="bi bi-person-circle"
-                (click)="toggleDropdown('auth')"
-              ></i>
-              <ul *ngIf="openDropdown() === 'auth'" class="shadow">
-                <li (click)="navigate('/' + lang() + '/auth/profile')">
-                  <i class="bi bi-person"></i>
-                  {{ "auth.profile" | translate }}
-                </li>
-                <li (click)="logout()">
-                  <i class="bi bi-box-arrow-right"></i>
-                  {{ "auth.logout" | translate }}
-                </li>
-              </ul>
-            </div>
-          } @else {
-            <div class="dropdown">
-              <i
-                class="bi bi-box-arrow-in-right"
-                (click)="toggleDropdown('auth')"
-              ></i>
-              <ul *ngIf="openDropdown() === 'auth'" class="shadow">
-                <li (click)="navigate('/' + lang() + '/auth/login')">
-                  <i class="bi bi-box-arrow-in-right"></i>
-                  {{ "auth.login" | translate }}
-                </li>
-                <li (click)="navigate('/' + lang() + '/auth/register')">
-                  <i class="bi bi-person-plus"></i>
-                  {{ "auth.signup" | translate }}
-                </li>
-              </ul>
-            </div>
+          @if (hydrated()) {
+            @if (isLoggedIn()) {
+              <div class="dropdown">
+                <i
+                  class="bi bi-person-circle"
+                  (click)="toggleDropdown('auth')"
+                ></i>
+                <ul *ngIf="openDropdown() === 'auth'" class="shadow">
+                  <li (click)="navigate('/' + lang() + '/auth/profile')">
+                    <i class="bi bi-person"></i>
+                    {{ "auth.profile" | translate }}
+                  </li>
+                  <li (click)="logout()">
+                    <i class="bi bi-box-arrow-right"></i>
+                    {{ "auth.logout" | translate }}
+                  </li>
+                </ul>
+              </div>
+            } @else {
+              <div class="dropdown">
+                <i
+                  class="bi bi-box-arrow-in-right"
+                  (click)="toggleDropdown('auth')"
+                ></i>
+                <ul *ngIf="openDropdown() === 'auth'" class="shadow">
+                  <li (click)="navigate('/' + lang() + '/auth/login')">
+                    <i class="bi bi-box-arrow-in-right"></i>
+                    {{ "auth.login" | translate }}
+                  </li>
+                  <li (click)="navigate('/' + lang() + '/auth/register')">
+                    <i class="bi bi-person-plus"></i>
+                    {{ "auth.signup" | translate }}
+                  </li>
+                </ul>
+              </div>
+            }
           }
-          }
-
         </div>
       </div>
     </div>

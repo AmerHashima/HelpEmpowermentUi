@@ -1,5 +1,5 @@
 // src\app\components\ClientSide\auth\profile\profile.component.ts
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal, ViewChild } from '@angular/core';
 import { AuthService, changePasswordForm } from '../../../../Services/auth.service';
 import { Shared } from '../../../../shared/Services/shared/shared';
 import { NgClass, NgIf, TitleCasePipe } from '@angular/common';
@@ -14,6 +14,7 @@ import { ToastingMessagesService } from '../../../../shared/Services/ToastingMes
 import { StudentService } from '../../../../Services/student-service.service';
 import { APIStudentCourse } from '../../../../models/student-course';
 import { StudentExamService } from '../../../../Services/student-exam.service';
+import { APIStudent } from '../../../../models/student';
 @Component({
   selector: 'app-profile',
   standalone: true,
@@ -24,6 +25,7 @@ import { StudentExamService } from '../../../../Services/student-exam.service';
   styleUrl: './profile.component.scss'
 })
 export class ProfileComponent {
+  @ViewChild('registerForm') form!:NgForm
   private authService = inject(AuthService);
   private studentService = inject(StudentService);
   private studentExamService = inject(StudentExamService);
@@ -41,7 +43,6 @@ export class ProfileComponent {
   enrolledCourses = this.studentService.enrolledCourses;
   // savedExams = signal<any[]>([]);
 
-  user: any;
 
 
   credentials = {
@@ -61,26 +62,28 @@ export class ProfileComponent {
   }
   showCourseDetailsFlag: boolean = false;
   course = signal<APIStudentCourse | null>(null)
+  user = computed(() => this.authService.loggedStudent());
   hasAnyCourseFeature = computed(() => {
     const c = this.course();
     return !!(c?.examSimulationReserv || c?.recordedCourseReserv || c?.liveCourseReserv);
   });
   constructor() {
     effect(() => {
-      this.user = this.authService.loggedStudent();
-
-      if (this.user) {
-        const names = this.user.nameEn.split(' ');
-        const namesAr = this.user.nameAr.split(' ');
+      // this.user = this.authService.loggedStudent();
+      const user=this.user()
+      if (user) {
+        const names = user.nameEn.split(' ');
+        const namesAr = user.nameAr.split(' ');
         this.credentials = {
           firstName: names[0] || '',
           lastName: names[1] || '',
           firstNameAr: namesAr[0] || '',
           lastNameAr: namesAr[1] || '',
-          username: this.user.username || '',
-          email: this.user.email || '',
-          mobile: this.user.mobile || '',
+          username: user.username || '',
+          email: user.email || '',
+          mobile: user.mobile || '',
         };
+        
       }
     })
   }
@@ -157,8 +160,9 @@ export class ProfileComponent {
     this.course.set(course);
   }
   onUpdateInfo() {
+    console.log(this.user());
     const payload = {
-      oid: this.user.oid,
+      oid: this.user()?.userId ?? '',
       nameEn: `${this.credentials.firstName} ${this.credentials.lastName}`,
       nameAr: `${this.credentials.firstNameAr} ${this.credentials.lastNameAr}`,
       email: this.credentials.email,
@@ -168,8 +172,25 @@ export class ProfileComponent {
       updatedBy: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
     };
 
+    console.log('payload',payload);
+    console.log('mobile', this.credentials.mobile);
     this.studentService.updateStudent(payload.oid, payload).subscribe({
-      next: () => {
+      next: (newStudent:APIStudent) => {
+
+        const current = this.authService.loggedStudent();
+
+        if (!current) return;
+
+        const updatedStudent={
+          ...current,
+          nameEn: newStudent.nameEn,
+          nameAr: newStudent.nameAr,
+          email: newStudent.email,
+          mobile: newStudent.mobile,
+          username: newStudent.username
+        }
+        this.authService.loggedStudent.set(updatedStudent);
+        this.authService.updatedLoggedStudent(updatedStudent)
         // this.toasting.showToast('Account created suffccessfully please login','success');
       },
       error: () => this.toasting.showToast('profile.update.error', 'error')

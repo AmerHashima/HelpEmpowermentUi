@@ -573,51 +573,50 @@ p {
   text-align: center;
 }
 
-//phone component
+
+/* Root direction */
 [dir="rtl"] .iti {
   direction: rtl;
 }
 
-
-[dir="rtl"] .iti__country-container {
+/* Flag container (v17 uses this) */
+[dir="rtl"] .iti__flag-container {
   right: 0;
   left: auto;
 }
 
-[dir="rtl"] .iti__tel-input {
+/* Input (safer selector than iti__tel-input) */
+[dir="rtl"] .iti input {
   padding-right: 90px !important;
   padding-left: 10px !important;
   text-align: right;
 }
 
-[dir="rtl"] .iti__selected-country {
+/* Selected flag (v17 name) */
+[dir="rtl"] .iti__selected-flag {
   direction: rtl;
 }
 
-[dir="rtl"] .iti__dropdown-content {
+/* Dropdown list (v17 uses this instead of dropdown-content) */
+[dir="rtl"] .iti__country-list {
   right: 0;
   left: auto;
   text-align: right;
 }
 
-[dir="rtl"] .iti__country-list {
-  text-align: right;
-}
-
-[dir="rtl"] .iti__selected-dial-code,
+/* Dial code always LTR */
 [dir="rtl"] .iti__dial-code {
   direction: ltr !important;
   unicode-bidi: isolate;
   text-align: left;
-    color: $inputText !important;
-
-}
-
-.iti__tel-input {
-  background-color: $inputBg !important;
   color: $inputText !important;
 }
 
+/* Theme styling (safer selector) */
+.iti input {
+  background-color: $inputBg !important;
+  color: $inputText !important;
+}
 
 /* Responsive */
 @media (max-width: 768px) {

@@ -1,53 +1,4 @@
-<!-- <div [dir]="isRTL() ? 'rtl' : 'ltr'"
-	class="field">
-	<label for="phone">
-		{{ labelKey | translate }}
-		<span *ngIf="required"
-			class="text-danger">
-			*
-		</span>
-	</label>
-<ngxsmk-tel-input
-  name="phone"
-  [(ngModel)]="value"
-  (ngModelChange)="onValueChange($event)"
-  #phoneInput="ngModel"
-  [required]="required"
-  [dir]="isRTL() ? 'rtl' : 'ltr'"
-  [preferredCountries]="preferredCountries"
-  [initialCountry]="initialCountry"
-  [enableAutoCountrySelect]="false"
-  [autoSelectCountry]="false"
-  [i18n]="arabicLabels"
-[countryNames]="isRTL() ? arabicCountries : null"
-  [disabled]="disabled"
-  [nationalMode]="false"
-  [separateDialCode]="true"
-  [allowDropdown]="true"
-  [formatAsYouType]="true"
-></ngxsmk-tel-input>
 
-	<div *ngIf="
-      phoneInput?.touched &&
-      phoneInput?.invalid &&
-      phoneInput?.errors?.['required']
-    "
-		class="error text-danger small mt-1">
-		{{ "register.phoneRequired" | translate }}
-	</div>
-
-
-	<div *ngIf="
-      phoneInput?.touched &&
-      phoneInput?.invalid &&
-      phoneInput?.errors?.['invalidNumber']
-    "
-		class="error text-danger small mt-1">
-		{{ "register.phoneInvalid" | translate }}
-	</div>
-</div>
-
- -->
 <div [dir]="isRTL() ? 'rtl' : 'ltr'" class="field" class="d-flex flex-column w-100">
 
   <label>
@@ -58,8 +9,20 @@
   <input
     #phoneInput
     type="tel"
+     [value]="value"
     class="form-control"
-    (input)="onInput()"
-  />
+      [placeholder]="placeholder"
 
+    (input)="onInput()"
+      (blur)="onBlur()"
+
+  />
+<div *ngIf="touched && !rawValue" class="text-danger small">
+  {{ 'register.phoneRequired' | translate }}
+</div>
+
+<!-- INVALID -->
+<div *ngIf="touched && rawValue && !isValid" class="text-danger small">
+  {{ 'register.phoneInvalid' | translate }} - Example : {{ placeholder }}
+</div>
 </div>

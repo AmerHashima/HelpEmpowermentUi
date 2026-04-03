@@ -1,102 +1,6 @@
-// import { Component, CUSTOM_ELEMENTS_SCHEMA, effect, forwardRef, inject, Input, signal, ViewChild } from '@angular/core';
-// import {  NgIf } from '@angular/common';
-// import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
-// import { NgxsmkTelInputComponent } from 'ngxsmk-tel-input';
-// import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
-// import { Shared } from '../Services/shared/shared';
-// import { COUNTRIES_AR } from '../../data/countries';
-// @Component({
-//   selector: 'app-phone-input',
-//   standalone: true,
-//   imports: [
-//     TranslateModule,
-//     TranslatePipe,
-//     NgxsmkTelInputComponent,
-//     FormsModule,
-//     NgIf
-//   ],
-//   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-//   providers: [
-//     {
-//       provide: NG_VALUE_ACCESSOR,
-//       useExisting: forwardRef(() => PhoneInputComponent),
-//       multi: true
-//     }
-//   ],
-//   templateUrl: './phone.component.html',
-//   styleUrl: './phone.component.scss'
-// })
-// export class PhoneInputComponent implements ControlValueAccessor {
-//   @ViewChild(NgxsmkTelInputComponent)
-//   phoneInputComponent!: NgxsmkTelInputComponent;
-
-//   private shared = inject(Shared);
-
-//   isRTL = this.shared.isRtl;
-
-//   @Input() labelKey = '';
-//   @Input() required = true;
 
 
 
-//   readonly preferredCountries: any[] = [ 'EG', 'AE', 'US'];
-//   readonly initialCountry = 'SA';
-
-//   readonly arabicLabels = {
-//     searchPlaceholder: 'ابحث عن دولة أو رمز الاتصال',
-//     noCountrySelected: 'لم يتم اختيار دولة',
-//     noResultsFound: 'لا توجد نتائج',
-//     selectCountry: 'اختر الدولة'
-//   };
-
-//   readonly arabicCountries = COUNTRIES_AR;
-
-//   value: string = '';
-//   disabled = false;
-
-
-
-//   ngAfterViewInit() {
-//     setTimeout(() => {
-//       this.phoneInputComponent?.selectCountry('SA');
-//     }, 100);
-//   }
-
-
-
-//   onChange: (val: string) => void = () => { };
-//   onTouched: () => void = () => { };
-
-
-
-
-//   writeValue(value: string): void {
-//     this.value = value || '';
-//   }
-
-
-
-
-//   registerOnChange(fn: any): void {
-//     this.onChange = fn;
-//   }
-
-//   registerOnTouched(fn: any): void {
-//     this.onTouched = fn;
-//   }
-
-//   setDisabledState(isDisabled: boolean): void {
-//     this.disabled = isDisabled;
-//   }
-
-//   onValueChange(newValue: string) {
-//     this.value = newValue;
-//     this.onChange(newValue);
-//     this.onTouched();
-//   }
-
-
-// }
 import {
   Component,
   ElementRef,
@@ -104,22 +8,29 @@ import {
   inject,
   Input,
   ViewChild,
-  AfterViewInit
+  AfterViewInit,
+  PLATFORM_ID,
+  computed
 } from '@angular/core';
 import {
+  AbstractControl,
   ControlValueAccessor,
-  NG_VALUE_ACCESSOR
+  NG_VALIDATORS,
+  NG_VALUE_ACCESSOR,
+  ValidationErrors,
+  Validator
 } from '@angular/forms';
 import intlTelInput from 'intl-tel-input';
 import { Shared } from '../Services/shared/shared';
 import { COUNTRIES_AR } from '../../data/countries';
-import { NgIf } from '@angular/common';
-import { isPlatformBrowser } from '@angular/common';
-import { PLATFORM_ID } from '@angular/core';
+import { NgIf, isPlatformBrowser } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
+import { ChangeDetectorRef } from '@angular/core';
+
 @Component({
   selector: 'app-phone-input',
   standalone: true,
-  imports:[NgIf],
+  imports: [NgIf, TranslatePipe],
   templateUrl: './phone.component.html',
   styleUrl: './phone.component.scss',
   providers: [
@@ -127,24 +38,40 @@ import { PLATFORM_ID } from '@angular/core';
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => PhoneInputComponent),
       multi: true
+    },
+    {
+      provide: NG_VALIDATORS,
+      useExisting: forwardRef(() => PhoneInputComponent),
+      multi: true
     }
   ]
 })
-export class PhoneInputComponent
-  implements ControlValueAccessor, AfterViewInit {
+export class PhoneInputComponent  implements ControlValueAccessor, AfterViewInit, Validator {
+
+private cdr = inject(ChangeDetectorRef);
   @ViewChild('phoneInput', { static: true })
   input!: ElementRef<HTMLInputElement>;
 
   private shared = inject(Shared);
   private platformId = inject(PLATFORM_ID);
+
   isRTL = this.shared.isRtl;
 
   @Input() labelKey = '';
   @Input() required = true;
-
   iti: any;
   value: string = '';
+  placeholder = '';
+  isValid = true;
+  touched = false;
 
+  private pendingValue: string | null = null;
+  private onValidatorChange = () => { };
+  get rawValue(): string {
+    return this.input?.nativeElement?.value || '';
+  }
+
+  // ================= INIT =================
   ngAfterViewInit() {
     if (!isPlatformBrowser(this.platformId)) return;
 
@@ -152,62 +79,137 @@ export class PhoneInputComponent
       initialCountry: 'sa',
       preferredCountries: ['eg', 'ae', 'us'],
       separateDialCode: true,
-      utilsScript:
-        'https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/utils.js'
-    } as any);
+      utilsScript: '/assets/utils.js'
+    });
+
+    // 🔥 CRITICAL FIX
+    Promise.resolve().then(() => {
+      if (!this.value) {
+        this.iti.setCountry('sa');
+      }
+    });
+
+
+    if (this.pendingValue) {
+      this.iti.setNumber(this.pendingValue);
+
+      this.isValid = this.iti.isValidNumber();
+
+      this.onChange(this.iti.getNumber());
+
+      this.onValidatorChange();
+
+      this.pendingValue = null;
+    }
+
+    this.updatePlaceholder();
+
+    this.input.nativeElement.addEventListener('countrychange', () => {
+      this.updatePlaceholder();
+    });
 
     this.input.nativeElement.addEventListener('open:countrydropdown', () => {
       this.translateCountries();
-      this.translateSearchPlaceholder();
+      // this.translateSearchPlaceholder();
     });
   }
 
-
-  //  Arabic Translation (REAL)
-  translateCountries() {
-    if (!this.isRTL()) return;
-
-    setTimeout(() => {
-      const items = document.querySelectorAll('.iti__country');
-
-      items.forEach((item: any) => {
-        const code = item.getAttribute('data-country-code');
-        const nameEl = item.querySelector('.iti__country-name');
-
-        if (!code || !nameEl) return;
-
-        const ar = COUNTRIES_AR[code.toLowerCase()];
-
-        if (ar) {
-          nameEl.textContent = ar;
-        }
-      });
-    }, 0);
+  registerOnValidatorChange(fn: () => void): void {
+    this.onValidatorChange = fn;
   }
 
-  translateSearchPlaceholder() {
-    if (!this.isRTL()) return;
+  validate(control: AbstractControl): ValidationErrors | null {
+    if (!this.value) {
+      return { required: true };
+    }
 
-    setTimeout(() => {
-      const input = document.querySelector('.iti__search-input') as HTMLInputElement;
+    if (!this.isValid) {
+      return { invalidPhone: true };
+    }
 
-      if (input) {
-        input.placeholder = 'ابحث عن دولة أو رمز الاتصال';
-        input.setAttribute('aria-label', 'ابحث عن دولة أو رمز الاتصال');
+    return null;
+  }
+
+
+  updatePlaceholder() {
+      if (!this.iti) return;
+
+      const { iso2 } = this.iti.getSelectedCountryData();
+
+      const patterns: Record<string, string> = {
+        // 🌍 الدول العربية
+        eg: '010xxxxxxxx',
+        sa: '05xxxxxxxx',
+        ae: '05xxxxxxxx',
+        kw: '5xxxxxxxx',
+        qa: '3xxxxxxxx',
+        om: '9xxxxxxxx',
+        bh: '3xxxxxxxx',
+        lb: '7xxxxxxxx',
+        ma: '06xxxxxxxx',
+        dz: '05xxxxxxxx',
+        ye: '7xxxxxxxx',
+
+        // 🌍 أوروبا
+        fr: '06xxxxxxxx',
+        de: '015xxxxxxxx',
+        es: '6xxxxxxxx',
+        it: '3xxxxxxxx',
+        nl: '06xxxxxxxx',
+        se: '07xxxxxxxx',
+        ch: '07xxxxxxxx',
+
+        // 🌍 أمريكا
+        us: '2015550123',
+        ca: '2042345678',
+        br: '11987654321',
+        ar: '91123456789',
+
+        // 🌍 آسيا
+        tr: '05xxxxxxxx',
+        in: '09123456789',
+        cn: '13123456789',
+        jp: '09012345678',
+        bd: '018xxxxxxxx',
+
+        // 🌍 أخرى
+        au: '0412345678',
+        at: '06641234567',
+        be: '0470123456',
+        az: '0501234567',
+        am: '091234567'
+      };
+
+      if (patterns[iso2]) {
+        this.placeholder = patterns[iso2];
+      } else {
+        this.placeholder = 'XXXXXXXX';
       }
-    }, 0);
-  }
+    this.cdr.detectChanges();
+    }
 
 
-
-  // ControlValueAccessor
   onChange = (_: any) => { };
   onTouched = () => { };
 
+
+
   writeValue(value: string): void {
     this.value = value || '';
+
+    if (!this.value) return;
+
     if (this.iti) {
       this.iti.setNumber(this.value);
+
+      this.isValid = this.iti.isValidNumber();
+
+      this.onChange(this.iti.getNumber());
+
+      // 🔥 THIS LINE FIXES YOUR ISSUE
+      this.onValidatorChange();
+    } else {
+      this.pendingValue = this.value;
     }
   }
 
@@ -219,11 +221,89 @@ export class PhoneInputComponent
     this.onTouched = fn;
   }
 
+  // ================= INPUT =================
+
   onInput() {
-    const number = this.iti.getNumber();
-    this.value = number;
-    this.onChange(number);
+    if (!this.iti) return;
+
+    this.touched = true;
+
+    const raw = this.input.nativeElement.value.trim();
+    this.value = raw;
+
+    if (!raw) {
+      this.isValid = false;
+      this.onChange('');
+      return;
+    }
+
+    // ✅ light validation during typing
+    this.isValid = raw.length >= 6;
+
+    this.onChange(this.value);
   }
 
+  onBlur() {
+    this.onTouched();
 
+    if (!this.iti) return;
+
+    if (this.iti.isValidNumber()) {
+      const full = this.iti.getNumber();
+
+      this.isValid = true;
+      this.onChange(full);
+    } else {
+      this.isValid = false;
+    }
+
+    this.onValidatorChange();
+  }
+
+ 
+
+  translateCountries() {
+    setTimeout(() => {
+      const items = document.querySelectorAll('.iti__country');
+
+      items.forEach((item: any) => {
+        const code = item.getAttribute('data-country-code');
+        const nameEl = item.querySelector('.iti__country-name');
+
+        if (!code || !nameEl) return;
+
+        if (this.isRTL()) {
+          const ar = COUNTRIES_AR[code.toLowerCase()];
+          if (ar) nameEl.textContent = ar;
+        } else {
+          const original = nameEl.getAttribute('data-original-name');
+
+          if (original) {
+            nameEl.textContent = original;
+          } else {
+            nameEl.setAttribute('data-original-name', nameEl.textContent);
+          }
+        }
+      });
+    });
+  }
+
+  // translateSearchPlaceholder() {
+  //   setTimeout(() => {
+  //     const input = document.querySelector('.iti__search-input') as HTMLInputElement;
+
+  //     if (!input) return;
+
+  //     if (this.isRTL()) {
+  //       input.placeholder = 'ابحث عن دولة أو رمز الاتصال';
+  //       input.setAttribute('aria-label', input.placeholder);
+  //     } else {
+  //       const defaultText = 'Search country or dial code';
+
+  //       input.placeholder = defaultText;
+  //       input.setAttribute('aria-label', defaultText);
+  //     }
+  //   });
+  // }
 }
+

@@ -280,7 +280,7 @@ export class AuthService {
   }
 
 
-  private updatedLoggedStudent(data: APIAuthStudent) {
+   updatedLoggedStudent(data: APIAuthStudent) {
     this.loggedStudent.set(data);
     this.studentToken.set(data.token);
 
