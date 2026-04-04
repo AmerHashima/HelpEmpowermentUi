@@ -584,7 +584,7 @@ export class CertificationQuestionComponent {
         const hasMatch = answers.some(a => String(a?.oid) === desiredValue);
         const value = hasMatch ? desiredValue : String(answers[index]?.oid ?? '');
         if (!value) return;
-        console.log('value',value);
+        console.log('value', value);
         ctrl.get('correctAnswerOid')?.setValue(value, { emitEvent: false });
       });
     }, 0);
@@ -777,10 +777,14 @@ export class CertificationQuestionComponent {
     }));
 
     console.log('draganSWERS', dragAnswers);
-    const questionsWithLinks = questionAnswers.map((q: any, index: number) => ({
-      ...q,
-      correctAnswerOid: dragAnswers[index]?.oid ?? null
-    }));
+    const questionsWithLinks = questionAnswers.map((q: any, index: number) => {
+      // Use the correctAnswerOid selected in the form dropdown; fall back to positional match
+      const selectedOid = (raw.dragQuestions?.[index] as any)?.correctAnswerOid ?? null;
+      const resolvedOid = selectedOid
+        ?? dragAnswers[index]?.oid
+        ?? null;
+      return { ...q, correctAnswerOid: resolvedOid };
+    });
 
     console.log('questionsWithLinks', questionsWithLinks);
 
@@ -831,6 +835,7 @@ export class CertificationQuestionComponent {
     this.certificationService.updateCourseQuestion(payload).subscribe({
       next: () => {
         this.toast.showToast('question.matching.update.success', 'success');
+        this.questionStore.setSelectedQuestion(null);
         this.location.back();
       },
       error: (err) => {
@@ -852,6 +857,7 @@ export class CertificationQuestionComponent {
     this.certificationService.updateCourseQuestion(payload).subscribe({
       next: () => {
         this.toast.showToast('question.update.success', 'success');
+        this.questionStore.setSelectedQuestion(null);
         this.location.back();
       },
       error: (err) => {
