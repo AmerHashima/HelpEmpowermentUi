@@ -1,14 +1,14 @@
 // src\app\shared\Services\ThemeService\theme.ts
 import { Injectable, signal, inject, PLATFORM_ID, effect } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { ThemeService } from 'ngxsmk-tel-input';
+// import { ThemeService } from 'ngxsmk-tel-input';
 
 @Injectable({
   providedIn: 'root'
 })
 export class Theme {
   currentTheme = signal<'light' | 'dark'>('light');
-  private phone = inject(ThemeService);
+  // private phone = inject(ThemeService);
   additionalTheme = signal('');
   fullTheme: string[] = [];
 
@@ -69,7 +69,7 @@ export class Theme {
 
   /** Set main theme: light or dark */
   setTheme(theme: 'light' | 'dark') {
-    this.phone.setTheme(theme);
+    // this.phone.setTheme(theme);
     if (!isPlatformBrowser(this.platformId)) return;
 
     this.currentTheme.set(theme);
