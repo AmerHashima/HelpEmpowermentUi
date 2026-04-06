@@ -59,15 +59,23 @@
 
       <!-- Video Player -->
       <div *ngIf="selectedVideoUrl(); else noVideo" class="player-wrapper">
+        <!-- Screen-record / blur protection overlay -->
+        <div *ngIf="isProtected()" class="protect-overlay">
+          <i class="bi bi-shield-lock-fill"></i>
+          <p>Video paused for security</p>
+        </div>
+
         <video
           class="video-element"
           [src]="selectedVideoUrl()!"
           controls
           controlsList="nodownload"
+          disablePictureInPicture
           autoplay
           preload="auto"
           playsinline
           width="100%"
+          (contextmenu)="$event.preventDefault()"
         >
           <p>Your browser does not support HTML5 video.</p>
         </video>

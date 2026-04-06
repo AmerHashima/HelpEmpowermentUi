@@ -1,5 +1,5 @@
-import { Component, inject, signal, computed, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, signal, computed, OnInit, OnDestroy, HostListener, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { CourseVideosService } from '../../../Services/course-videos.service';
 import { Shared } from '../../../shared/Services/shared/shared';
 import { CourseVideo } from '../../../models/course-video';
@@ -11,20 +11,39 @@ import { CourseVideo } from '../../../models/course-video';
   templateUrl: './videos.component.html',
   styleUrl: './videos.component.scss',
 })
-export class VideosComponent implements OnInit {
+export class VideosComponent implements OnInit, OnDestroy {
   private courseVideosService = inject(CourseVideosService);
   private shared = inject(Shared);
+  private platformId = inject(PLATFORM_ID);
 
   isRTL = this.shared.isRtl;
   videos = signal<CourseVideo[]>([]);
   selectedVideo = signal<CourseVideo | null>(null);
   loading = signal(true);
   error = signal<string | null>(null);
+  isProtected = signal(false);
 
   selectedVideoUrl = computed(() => {
     const video = this.selectedVideo();
     return video ? this.courseVideosService.getStreamUrl(video.videoUrl) : null;
   });
+
+  @HostListener('document:visibilitychange')
+  onVisibilityChange(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      this.isProtected.set(document.hidden);
+    }
+  }
+
+  @HostListener('window:blur')
+  onWindowBlur(): void {
+    this.isProtected.set(true);
+  }
+
+  @HostListener('window:focus')
+  onWindowFocus(): void {
+    this.isProtected.set(false);
+  }
 
   ngOnInit(): void {
     this.courseVideosService.getAllVideos().subscribe({
@@ -40,6 +59,10 @@ export class VideosComponent implements OnInit {
         this.loading.set(false);
       },
     });
+  }
+
+  ngOnDestroy(): void {
+    this.isProtected.set(false);
   }
 
   selectVideo(video: CourseVideo): void {
