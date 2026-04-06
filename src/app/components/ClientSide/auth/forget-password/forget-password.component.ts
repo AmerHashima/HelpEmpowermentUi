@@ -8,11 +8,10 @@ import { InputComponent } from '../../../../shared/input/input.component';
 import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/site-button.component';
 import emailjs, { type EmailJSResponseStatus } from '@emailjs/browser';
 import { environment } from '../../../../../environments/environment';
-import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-forget-password',
-  imports: [TranslatePipe,FormsModule,InputComponent,SiteButtonComponent,NgIf],
+  imports: [TranslatePipe,FormsModule,InputComponent,SiteButtonComponent],
   templateUrl: './forget-password.component.html',
   styleUrl: './forget-password.component.scss'
 })

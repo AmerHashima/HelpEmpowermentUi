@@ -6,14 +6,13 @@ import { BreadcrumbService } from '../../../Services/breadcrumb.service';
 import { RequestBody } from '../../../models/rquest';
 import { Shared } from '../../../shared/Services/shared/shared';
 import { ButtonComponent } from '../../../shared/button/button.component';
-import { NgFor, NgIf } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastingMessagesService } from '../../../shared/Services/ToastingMessages/toasting-messages.service';
 
 @Component({
   selector: 'app-articles',
-  imports: [ArticleCardComponent,ArticleFormComponent,ButtonComponent,NgFor,
-    NgIf,ReactiveFormsModule,FormsModule
+  imports: [ArticleCardComponent,ArticleFormComponent,ButtonComponent,
+    ReactiveFormsModule,FormsModule
   ],
   templateUrl: './articles.component.html',
   styleUrl: './articles.component.scss'

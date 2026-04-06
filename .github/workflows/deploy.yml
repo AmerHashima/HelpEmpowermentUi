@@ -23,9 +23,10 @@ jobs:
     - name: Pull and Restart on Server
       run: |
         ssh -i ~/.ssh/id_rsa root@144.91.127.150 "
-          cd /root/HelpEmpowermentUi &&
+         cd /root/DockerSetup/frontend &&
           git fetch origin &&
           git reset --hard origin/main &&
-          cd /root/HelpEmpowerment &&
+          cd /root/DockerSetup &&
+          docker compose down &&
           docker compose up -d --build
         "

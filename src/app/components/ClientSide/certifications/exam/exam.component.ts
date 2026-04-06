@@ -3,7 +3,7 @@ import { ClientExamQuestionComponent } from '../../client-exam-question/client-e
 import { Shared } from '../../../../shared/Services/shared/shared';
 import { QuestionsStore } from '../../../../AdminPanelStores/QuestionStores/questions.store';
 import { Filter } from '../../../../models/rquest';
-import { AsyncPipe, isPlatformBrowser, NgClass, NgFor } from '@angular/common';
+import { isPlatformBrowser, NgClass } from '@angular/common';
 import { AuthService } from '../../../../Services/auth.service';
 import { StudentExamService } from '../../../../Services/student-exam.service';
 import { choiceQuestionExamSubmit, courseExam, submitStudentExam } from '../../../../models/certification';
@@ -19,7 +19,7 @@ import { LoadingService } from '../../../../shared/Services/Loading/loading.serv
 @Component({
   selector: 'app-exam',
   imports: [ClientExamQuestionComponent, SiteButtonComponent, NgClass,
-     GenericModelComponent,NoQuestionComponent,AsyncPipe,SpinnerComponent],
+     GenericModelComponent,NoQuestionComponent,SpinnerComponent],
   templateUrl: './exam.component.html',
   styleUrl: './exam.component.scss',
   providers: [QuestionsStore],

@@ -2,7 +2,7 @@
 import { Component, computed, effect, inject, signal, ViewChild } from '@angular/core';
 import { AuthService, changePasswordForm } from '../../../../Services/auth.service';
 import { Shared } from '../../../../shared/Services/shared/shared';
-import { NgClass, NgIf, TitleCasePipe } from '@angular/common';
+import { TitleCasePipe } from '@angular/common';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -18,8 +18,8 @@ import { APIStudent } from '../../../../models/student';
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [NgClass, FormsModule, NgbNavModule, TranslatePipe, TitleCasePipe, TranslatePipe,
-    SiteButtonComponent, FormsModule, InputComponent, PhoneInputComponent
+  imports: [FormsModule, NgbNavModule, TranslatePipe, TitleCasePipe,
+    SiteButtonComponent, InputComponent, PhoneInputComponent
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
