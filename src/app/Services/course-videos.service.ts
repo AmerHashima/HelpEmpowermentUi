@@ -22,7 +22,7 @@ export class CourseVideosService {
   getAllVideos(): Observable<CourseVideo[]> {
     const body: RequestBody = {
       filters: [],
-      sort: [{ sortBy: 'orderNo', sortDirection: 'desc' }],
+      sort: [{ sortBy: 'orderNo', sortDirection: 'asc' }],
       pagination: { getAll: true, pageNumber: 0, pageSize: 0 },
       columns: [],
     };
