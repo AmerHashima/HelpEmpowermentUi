@@ -59,6 +59,7 @@ import { SlugCertificationComponent } from './components/ClientSide/certificatio
 import { ForgetPasswordComponent } from './components/ClientSide/auth/forget-password/forget-password.component';
 import { ResetPasswordComponent } from './components/ClientSide/auth/reset-password/reset-password.component';
 import { ResetPasswordOTPComponent } from './components/ClientSide/auth/reset-password-otp/reset-password-otp.component';
+import { VideosComponent } from './components/ClientSide/videos/videos.component';
 
 export const validLangGuard: CanMatchFn = (route, segments) => {
   const lang = segments[0]?.path;
@@ -275,6 +276,10 @@ export const routes: Routes = [
 
           },
         ]
+      },
+      {
+        path: 'videos',
+        component: VideosComponent,
       },
     ]
   },

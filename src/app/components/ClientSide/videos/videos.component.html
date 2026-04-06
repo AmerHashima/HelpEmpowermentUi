@@ -1,0 +1,108 @@
+<div class="videos-page" [class.rtl]="isRTL()">
+  <!-- Page Header -->
+  <div class="videos-header">
+    <h1 class="videos-title">
+      <i class="bi bi-play-circle-fill me-2"></i>Course Videos
+    </h1>
+    <p class="videos-subtitle">Browse and watch all available course sessions</p>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading()" class="videos-loading">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p>Loading videos…</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error() && !loading()" class="videos-error alert alert-danger">
+    <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ error() }}
+  </div>
+
+  <!-- Main Content -->
+  <div *ngIf="!loading() && !error()" class="videos-layout">
+
+    <!-- Sidebar: Video List -->
+    <aside class="videos-sidebar">
+      <div class="sidebar-header">
+        <i class="bi bi-collection-play me-2"></i>
+        <span>Sessions ({{ videos().length }})</span>
+      </div>
+      <ul class="video-list">
+        <li
+          *ngFor="let video of videos(); let i = index"
+          class="video-list-item"
+          [class.active]="selectedVideo()?.oid === video.oid"
+          (click)="selectVideo(video)"
+        >
+          <span class="video-index">{{ video.orderNo ?? i + 1 }}</span>
+          <div class="video-info">
+            <i class="bi bi-play-fill video-icon"></i>
+            <span class="video-name">{{ getDisplayName(video) }}</span>
+          </div>
+          <span *ngIf="video.isPreview" class="badge-preview">Preview</span>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Player Panel -->
+    <main class="videos-player-panel">
+
+      <!-- Now Playing Label -->
+      <div *ngIf="selectedVideo()" class="now-playing">
+        <i class="bi bi-broadcast me-2 text-danger"></i>
+        <strong>Now Playing:</strong>
+        <span class="ms-2">{{ getDisplayName(selectedVideo()!) }}</span>
+        <span *ngIf="selectedVideo()!.courseName" class="badge-course ms-2">{{ selectedVideo()!.courseName }}</span>
+      </div>
+
+      <!-- Video Player -->
+      <div *ngIf="selectedVideoUrl(); else noVideo" class="player-wrapper">
+        <video
+          class="video-element"
+          [src]="selectedVideoUrl()!"
+          controls
+          controlsList="nodownload"
+          autoplay
+          preload="auto"
+          playsinline
+          width="100%"
+        >
+          <p>Your browser does not support HTML5 video.</p>
+        </video>
+      </div>
+
+      <ng-template #noVideo>
+        <div class="no-video-placeholder">
+          <i class="bi bi-camera-video-off"></i>
+          <p>Select a session from the list to start watching.</p>
+        </div>
+      </ng-template>
+
+      <!-- Video Meta -->
+      <div *ngIf="selectedVideo()" class="video-meta">
+        <div class="meta-row" *ngIf="selectedVideo()!.durationSeconds">
+          <i class="bi bi-clock me-1"></i>
+          <span>Duration: {{ selectedVideo()!.durationSeconds }}s</span>
+        </div>
+        <div class="meta-row" *ngIf="selectedVideo()!.descriptionEn">
+          <i class="bi bi-info-circle me-1"></i>
+          <span>{{ isRTL() ? selectedVideo()!.descriptionAr : selectedVideo()!.descriptionEn }}</span>
+        </div>
+        <div class="meta-row">
+          <i class="bi bi-file-earmark-play me-1"></i>
+          <span>{{ selectedVideo()!.videoUrl }}</span>
+        </div>
+        <a
+          [href]="selectedVideoUrl()!"
+          target="_blank"
+          class="btn btn-sm btn-outline-primary mt-2"
+        >
+          <i class="bi bi-box-arrow-up-right me-1"></i>Open in New Tab
+        </a>
+      </div>
+
+    </main>
+  </div>
+</div>
