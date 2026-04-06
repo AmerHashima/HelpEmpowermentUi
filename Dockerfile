@@ -1,5 +1,4 @@
-# syntax=docker/dockerfile:1
-
+# Build stage
 FROM node:20-alpine AS builder
 WORKDIR /app
 
@@ -9,7 +8,7 @@ RUN npm install --legacy-peer-deps
 COPY . .
 RUN npm run build
 
-
+# Runtime stage
 FROM node:20-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
