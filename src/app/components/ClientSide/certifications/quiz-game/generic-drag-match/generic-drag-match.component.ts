@@ -105,18 +105,52 @@ droppedItems:string[][][]=[];
     transferArrayItem(prev, curr, event.previousIndex, event.currentIndex);
   }
 
-  checkAnswer() {
+  // checkAnswer() {
 
+  //   const answers = this.correctAnswers();
+  //   let correct = true;
+
+  //   this.droppedItems.forEach((slots, qIndex) => {
+
+  //     const key = `level${qIndex + 1}`;
+  //     const flatSlots = slots.flat(); // flatten 2 slots into 1 array
+
+  //     if (JSON.stringify(flatSlots) !== JSON.stringify(answers[key])) {
+  //       correct = false;
+  //     }
+  //   });
+
+  //   this.isCorrect.emit(correct);
+  // }
+
+  checkAnswer() {
     const answers = this.correctAnswers();
     let correct = true;
 
     this.droppedItems.forEach((slots, qIndex) => {
-
       const key = `level${qIndex + 1}`;
-      const flatSlots = slots.flat(); // flatten 2 slots into 1 array
+      const flatSlots = slots.flat();
 
-      if (JSON.stringify(flatSlots) !== JSON.stringify(answers[key])) {
-        correct = false;
+      const expected = answers[key] ?? [];
+
+      // 🎯 Ignore order for level 14 & 15
+      if (this.level() === 'level 13' || this.level() === 'level 14') {
+
+        const sortedDropped = [...flatSlots].sort();
+        const sortedExpected = [...expected].sort();
+
+        if (
+          sortedDropped.length !== sortedExpected.length ||
+          !sortedDropped.every((val, i) => val === sortedExpected[i])
+        ) {
+          correct = false;
+        }
+
+      } else {
+        // ✅ Order matters (default behavior)
+        if (JSON.stringify(flatSlots) !== JSON.stringify(expected)) {
+          correct = false;
+        }
       }
     });
 
