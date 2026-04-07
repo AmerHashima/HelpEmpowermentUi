@@ -85,18 +85,83 @@ export class HomeServicesComponent {
   canGoNext = computed(() => {
     return this.startIndex() < this.items.length - this.visibleCount();
   });
+  private autoSlideInterval: any;
 
-  prev() {
-    if (this.canGoPrev()) {
-      this.startIndex.update(v => v - 1);
+  ngOnInit() {
+    if (isPlatformBrowser(this.platformId)) {
+      this.startAutoSlide();
     }
   }
 
+  startAutoSlide() {
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    this.stopAutoSlide(); // مهم جدًا
+
+    this.autoSlideInterval = setInterval(() => {
+      this.nextAuto();
+    }, 4000);
+  }
+
+  stopAutoSlide() {
+    if (this.autoSlideInterval) {
+      clearInterval(this.autoSlideInterval);
+    }
+  }
+
+  nextAuto() {
+    const max = this.items.length;
+    const visible = this.visibleCount();
+
+    if (max <= visible) return;
+
+    this.startIndex.update(v => {
+      if (v >= max - visible) return 0; // loop
+      return v + 1;
+    });
+  }
+
+  // 👇 arrows (توقف auto مؤقت)
   next() {
+    this.stopAutoSlide();
+
     if (this.canGoNext()) {
       this.startIndex.update(v => v + 1);
     }
+
+    this.resumeAuto();
   }
+
+  prev() {
+    this.stopAutoSlide();
+
+    if (this.canGoPrev()) {
+      this.startIndex.update(v => v - 1);
+    }
+
+    this.resumeAuto();
+  }
+
+  resumeAuto() {
+    setTimeout(() => this.startAutoSlide(), 5000);
+  }
+
+  ngOnDestroy() {
+    this.stopAutoSlide();
+  }
+
+
+  // prev() {
+  //   if (this.canGoPrev()) {
+  //     this.startIndex.update(v => v - 1);
+  //   }
+  // }
+
+  // next() {
+  //   if (this.canGoNext()) {
+  //     this.startIndex.update(v => v + 1);
+  //   }
+  // }
 
   goToService(service:any){
     this.router.navigate(['../services/', service.route], {

@@ -184,12 +184,8 @@ export class HomeArticlesComponent {
   private shared = inject(Shared);
   private router = inject(Router);
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
-    if (isPlatformBrowser(this.platformId)) {
-      this.updateVisibleCount();
-      window.addEventListener('resize', () => this.updateVisibleCount());
-    }
-  }
+  private autoSlideInterval: any;
+
 
   isRTL = this.shared.isRtl;
   currentCertification = this.shared.currentCertificate;
@@ -198,6 +194,19 @@ export class HomeArticlesComponent {
   // 👇 slider state
   visibleCount = signal(3);
   startIndex = signal(0);
+
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+    if (isPlatformBrowser(this.platformId)) {
+      this.updateVisibleCount();
+      window.addEventListener('resize', () => this.updateVisibleCount());
+    }
+  }
+  ngOnInit() {
+    if (this.type() === 'home' && !this.currentCertification() && isPlatformBrowser(this.platformId)) {
+      this.startAutoSlide();
+    }
+  }
+
 
   updateVisibleCount() {
     const width = window.innerWidth;
@@ -238,15 +247,60 @@ export class HomeArticlesComponent {
     return this.startIndex() < this.articlesData().length - this.visibleCount();
   });
 
-  next() {
+  startAutoSlide() {
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    this.stopAutoSlide();
+
+    this.autoSlideInterval = setInterval(() => {
+      this.nextAuto();
+    }, 4000);
+  }
+
+  stopAutoSlide() {
+    if (this.autoSlideInterval) {
+      clearInterval(this.autoSlideInterval);
+    }
+  }
+
+  // 👇 auto loop (infinite)
+  nextAuto() {
     const max = this.articlesData().length;
-    this.startIndex.update(v => (v + 1) % max);
+    const visible = this.visibleCount();
+
+    if (max <= visible) return;
+
+    this.startIndex.update(v => {
+      if (v >= max - visible) return 0;
+      return v + 1;
+    });
+  }
+
+  // 👇 لما user يضغط arrows
+  next() {
+    this.stopAutoSlide();
+    if (this.canGoNext()) this.startIndex.update(v => v + 1);
   }
 
   prev() {
-    const max = this.articlesData().length;
-    this.startIndex.update(v => (v - 1 + max) % max);
+    this.stopAutoSlide();
+    if (this.canGoPrev()) this.startIndex.update(v => v - 1);
   }
+
+  ngOnDestroy() {
+    this.stopAutoSlide();
+  }
+
+
+  // next() {
+  //   const max = this.articlesData().length;
+  //   this.startIndex.update(v => (v + 1) % max);
+  // }
+
+  // prev() {
+  //   const max = this.articlesData().length;
+  //   this.startIndex.update(v => (v - 1 + max) % max);
+  // }
 
   onArticleClick(article: ArticleItem, index: number) {
     this.router.navigate([

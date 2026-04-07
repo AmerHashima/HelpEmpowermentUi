@@ -25,7 +25,9 @@
 <div class="container-fluid pt-4">
 
   @if (type() === 'home') {
-    <div class="services-slider certificationsExams">
+    <div class="services-slider certificationsExams"
+      (mouseenter)="stopAutoSlide()"
+  (mouseleave)="startAutoSlide()">
 
       <button class="arrow arrow-left" (click)="prev()" [disabled]="!canGoPrev()">
         <i class="bi bi-chevron-left"></i>

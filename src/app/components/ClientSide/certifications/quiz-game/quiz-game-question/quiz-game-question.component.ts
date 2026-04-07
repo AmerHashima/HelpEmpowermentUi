@@ -710,7 +710,7 @@ export class QuizGameQuestionComponent {
 
     // ✅ correct answer
     if (isCorrect) {
-      this.attempts.set(0); // reset attempts for next question
+      this.attempts.set(0); 
       this.score.update(s => s + 1);
 
       if (this.currentLevelIndex() < this.levels.length - 1) {
