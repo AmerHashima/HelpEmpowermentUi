@@ -23,23 +23,31 @@ export class StudentService {
   });
 
   isExamSimulatorEnrolled = computed(() =>
-    true
-    // !!this.currentCourse()?.examSimulationReserv
+    // true
+    !!this.currentCourse()?.examSimulationReserv
   );
 
   isRecordedCoursesEnrolled = computed(() =>
-    !!this.currentCourse()?.recordedCourseReserv
+    true
+    // !!this.currentCourse()?.recordedCourseReserv
   );
 
   isLiveCourseEnrolled = computed(() =>
     !!this.currentCourse()?.liveCourseReserv
+  );
+
+  totalLessonsInCourse = computed(() =>
+    this.currentCourse()?.totalLessons
+  );
+  completedLessonsInCourse = computed(() =>
+    this.currentCourse()?.completedLessons
   );
   constructor(private apiService: ApiService, private auth: AuthService, private shared: Shared) {
     effect(() => {
       const studentId = this.auth.loggedStudent()?.userId
       if (!studentId) return;
       this.getAllStudentEnrolledCourses(studentId).subscribe({
-        next: (courses) => { this.enrolledCourses.set(courses) }
+        next: (courses) => { console.log('this.enrollCourse',courses);this.enrolledCourses.set(courses) }
       });
     })
 
@@ -293,14 +301,14 @@ export class StudentService {
       );
   }
 
-  updateStudentProgress(id: string, body: {
-    completedLessons: string,
-    totalLessons: string
-  }): Observable<APIStudentCourse> {
-
-
+  updateStudentProgress(completedLessons: number): Observable<APIStudentCourse> {
+     const body={
+       completedLessons: completedLessons,
+       totalLessons:this.totalLessonsInCourse()
+     }
+    const studentId = this.auth.loggedStudent()?.userId!
     return this.apiService
-      .put<ApiResponse<APIStudentCourse>>('StudentCourses', id, body, 'student.progress.update', 'progress')
+      .put<ApiResponse<APIStudentCourse>>('StudentCourses', studentId, body, 'student.progress.update', 'progress')
       .pipe(
         map((response: ApiResponse<APIStudentCourse>) => {
           if (!response.success) {

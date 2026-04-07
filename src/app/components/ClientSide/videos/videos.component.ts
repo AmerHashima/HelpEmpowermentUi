@@ -1,8 +1,106 @@
-import { Component, inject, signal, computed, OnInit, OnDestroy, HostListener, PLATFORM_ID } from '@angular/core';
+// import { Component, inject, signal, computed, OnInit, OnDestroy, HostListener, PLATFORM_ID } from '@angular/core';
+// import { CommonModule, isPlatformBrowser } from '@angular/common';
+// import { CourseVideosService } from '../../../Services/course-videos.service';
+// import { Shared } from '../../../shared/Services/shared/shared';
+// import { CourseVideo } from '../../../models/course-video';
+// import { StudentService } from '../../../Services/student-service.service';
+
+// @Component({
+//   selector: 'app-videos',
+//   standalone: true,
+//   imports: [CommonModule],
+//   templateUrl: './videos.component.html',
+//   styleUrl: './videos.component.scss',
+// })
+// export class VideosComponent implements OnInit, OnDestroy {
+//   private courseVideosService = inject(CourseVideosService);
+//   private shared = inject(Shared);
+//   private platformId = inject(PLATFORM_ID);
+
+//   isRTL = this.shared.isRtl;
+//   videos = signal<CourseVideo[]>([]);
+//   selectedVideo = signal<CourseVideo | null>(null);
+//   certification = this.shared.currentCertificationObject;
+//   loading = signal(true);
+//   error = signal<string | null>(null);
+//   isProtected = signal(false);
+
+//   selectedVideoUrl = computed(() => {
+//     const video = this.selectedVideo();
+//     return video ? this.courseVideosService.getStreamUrl(video.videoUrl) : null;
+//   });
+
+//   @HostListener('document:visibilitychange')
+//   onVisibilityChange(): void {
+//     if (isPlatformBrowser(this.platformId)) {
+//       this.isProtected.set(document.hidden);
+//     }
+//   }
+
+//   @HostListener('window:blur')
+//   onWindowBlur(): void {
+//     this.isProtected.set(true);
+//   }
+
+//   @HostListener('window:focus')
+//   onWindowFocus(): void {
+//     this.isProtected.set(false);
+//   }
+
+//   ngOnInit(): void {
+//     const certId=this.certification()?.oid;
+//     if (!certId) {
+//       this.error.set('No certification selected.');
+//       this.loading.set(false);
+//       return;
+//     }
+//     this.courseVideosService.getAllVideos(certId).subscribe({
+//     // this.courseVideosService.getAllVideos().subscribe({
+//       next: (data) => {
+//         console.log('Fetched videos:', data);
+//         this.videos.set(data);
+//         if (data.length > 0) {
+//           this.selectedVideo.set(data[0]);
+//         }
+//         this.loading.set(false);
+//       },
+//       error: () => {
+//         this.error.set('Failed to load videos.');
+//         this.loading.set(false);
+//       },
+//     });
+//   }
+
+//   ngOnDestroy(): void {
+//     this.isProtected.set(false);
+//   }
+
+//   selectVideo(video: CourseVideo): void {
+//     this.selectedVideo.set(video);
+//   }
+
+//   getDisplayName(video: CourseVideo): string {
+//     return this.shared.isRtl() ? (video.nameAr || video.nameEn) : (video.nameEn || video.nameAr);
+//   }
+// }
+
+
+import {
+  Component,
+  inject,
+  computed,
+  signal,
+  HostListener,
+  PLATFORM_ID
+} from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { toSignal, toObservable } from '@angular/core/rxjs-interop';
+import { switchMap, map, catchError, of, startWith, distinctUntilChanged, tap, EMPTY } from 'rxjs';
+import { StudentService } from '../../../Services/student-service.service';
 import { CourseVideosService } from '../../../Services/course-videos.service';
 import { Shared } from '../../../shared/Services/shared/shared';
 import { CourseVideo } from '../../../models/course-video';
+import { ToastingMessagesService } from '../../../shared/Services/ToastingMessages/toasting-messages.service';
 
 @Component({
   selector: 'app-videos',
@@ -11,22 +109,185 @@ import { CourseVideo } from '../../../models/course-video';
   templateUrl: './videos.component.html',
   styleUrl: './videos.component.scss',
 })
-export class VideosComponent implements OnInit, OnDestroy {
+export class VideosComponent {
+  // 🔧 injections
   private courseVideosService = inject(CourseVideosService);
+  private toasting=inject(ToastingMessagesService);
+  private studentService = inject(StudentService);
   private shared = inject(Shared);
   private platformId = inject(PLATFORM_ID);
 
+  lessonsWatched = this.studentService.completedLessonsInCourse;
+  totalLessons = this.studentService.totalLessonsInCourse;
   isRTL = this.shared.isRtl;
-  videos = signal<CourseVideo[]>([]);
-  selectedVideo = signal<CourseVideo | null>(null);
-  loading = signal(true);
-  error = signal<string | null>(null);
+  certification = this.shared.currentCertificationObject;
+
   isProtected = signal(false);
+
+  videosState = toSignal(
+    toObservable(this.certification).pipe(
+      distinctUntilChanged((a, b) => a?.oid === b?.oid),
+      switchMap(cert => {
+        if (!cert?.oid) {
+          return of({
+            data: [] as CourseVideo[],
+            loading: false,
+            error: 'No certification selected'
+          });
+        }
+
+        return this.courseVideosService.getAllVideos(cert.oid).pipe(
+          map(data => ({
+            data,
+            loading: false,
+            error: null as string | null
+          })),
+          startWith({
+            data: [] as CourseVideo[],
+            loading: true,
+            error: null
+          }),
+          catchError(() =>
+            of({
+              data: [],
+              loading: false,
+              error: 'Failed to load videos'
+            })
+          )
+        );
+      })
+    ),
+    {
+      initialValue: {
+        data: [] as CourseVideo[],
+        loading: true,
+        error: null as string | null
+      }
+    }
+  );
+
+  videos = computed(() => this.videosState().data);
+  loading = computed(() => this.videosState().loading);
+  error = computed(() => this.videosState().error);
+
+  selectedVideo = signal<CourseVideo | null>(null);
+
+  constructor() {
+    const _ = computed(() => {
+      const vids = this.videos();
+      if (vids.length > 0 && !this.selectedVideo()) {
+        this.selectedVideo.set(vids[0]);
+      }
+    });
+  }
 
   selectedVideoUrl = computed(() => {
     const video = this.selectedVideo();
-    return video ? this.courseVideosService.getStreamUrl(video.videoUrl) : null;
+    return video
+      ? this.courseVideosService.getStreamUrl(video.videoUrl)
+      : null;
   });
+
+  currentIndex = computed(() => {
+    const vids = this.videos();
+    const current = this.selectedVideo();
+
+    const index = vids.findIndex(v => v.oid === current?.oid);
+    return index === -1 ? 0 : index;
+  });
+
+  playPrevious(): void {
+    const index = this.currentIndex();
+
+    if (index > 0) {
+      const prevVideo = this.videos()[index - 1];
+      this.selectedVideo.set(prevVideo);
+    }
+  }
+  playNext(): void {
+    const index = this.currentIndex();
+    const vids = this.videos();
+
+    if (index < vids.length - 1) {
+      const nextVideo = vids[index + 1];
+
+      if (!this.isLocked(nextVideo)) {
+        this.selectedVideo.set(nextVideo);
+      } else {
+        this.showLockedMessage();
+      }
+    }
+  }
+  selectVideo(video: CourseVideo): void {
+    const completed = this.lessonsWatched() ?? 0;
+    const order = video.orderNo ?? 0;
+
+    if (order <= completed + 1) {
+      this.selectedVideo.set(video);
+    } else {
+      this.showLockedMessage();
+    }
+  }
+
+  showLockedMessage(){
+    this.toasting.showToast('Please watch previous lessons first.', 'warning');
+
+  }
+
+  onVideoEnded(): void {
+    const current = this.selectedVideo();
+    if (!current) return;
+
+    const order = current.orderNo ?? 0;
+
+    this.studentService.updateStudentProgress(order + 1)
+      .pipe(
+        tap(() => this.playNext()),
+        catchError(() => {
+          this.toasting.showToast('Failed to save progress', 'error');
+          return EMPTY;
+        })
+      )
+      .subscribe();
+  }
+
+  getDisplayName(video: CourseVideo): string {
+    return this.isRTL()
+      ? (video.nameAr || video.nameEn)
+      : (video.nameEn || video.nameAr);
+  }
+
+//Helper
+
+  canPlayNext = computed(() => {
+    const vids = this.videos();
+    const index = this.currentIndex();
+
+    if (index >= vids.length - 1) return false;
+
+    const next = vids[index + 1];
+    return next && !this.isLocked(next);
+  });
+
+  isLocked(video: CourseVideo): boolean {
+    const completed = this.lessonsWatched() ?? 0;
+    const order = video.orderNo ?? 0;
+
+    return order > completed + 1;
+  }
+  isWatched(video: CourseVideo): boolean {
+    const completed = this.lessonsWatched() ?? 0;
+    const order = video.orderNo ?? 0;
+
+    return order <= completed;
+  }
+
+  isCurrent(video: CourseVideo): boolean {
+    return this.selectedVideo()?.oid === video.oid;
+  }
+
+
+  //  HostListeners (Protection)
 
   @HostListener('document:visibilitychange')
   onVisibilityChange(): void {
@@ -43,33 +304,5 @@ export class VideosComponent implements OnInit, OnDestroy {
   @HostListener('window:focus')
   onWindowFocus(): void {
     this.isProtected.set(false);
-  }
-
-  ngOnInit(): void {
-    this.courseVideosService.getAllVideos().subscribe({
-      next: (data) => {
-        this.videos.set(data);
-        if (data.length > 0) {
-          this.selectedVideo.set(data[0]);
-        }
-        this.loading.set(false);
-      },
-      error: () => {
-        this.error.set('Failed to load videos.');
-        this.loading.set(false);
-      },
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.isProtected.set(false);
-  }
-
-  selectVideo(video: CourseVideo): void {
-    this.selectedVideo.set(video);
-  }
-
-  getDisplayName(video: CourseVideo): string {
-    return this.shared.isRtl() ? (video.nameAr || video.nameEn) : (video.nameEn || video.nameAr);
   }
 }

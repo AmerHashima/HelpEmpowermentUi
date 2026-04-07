@@ -171,6 +171,11 @@ export class ChooseExamComponent {
             this.shared.studentExamId.set(exam.oid);
             localStorage.setItem('studentExamId', exam.oid);
             this.chooseMode(mode);
+            
+          },
+          error:(e)=>{
+            this.loading.stop();
+            this.toasting.showToast('examToast.startFailed','error');
           }
         });
     }

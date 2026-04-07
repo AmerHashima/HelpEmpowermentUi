@@ -1271,6 +1271,7 @@
       "success": "Your Exam has been resumed"
     },
     "start": "Exam has been started!",
+    "startFailed":"Invalid Student",
     "submitted": "Exam has been submitted successfully!",
     "clear": "Exam has been cleared successfully",
     "finish": {

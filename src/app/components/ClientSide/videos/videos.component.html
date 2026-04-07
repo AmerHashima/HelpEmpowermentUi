@@ -1,5 +1,4 @@
-<div class="videos-page" [class.rtl]="isRTL()">
-  <!-- Page Header -->
+<!-- <div class="videos-page" [class.rtl]="isRTL()">
   <div class="videos-header">
     <h1 class="videos-title">
       <i class="bi bi-play-circle-fill me-2"></i>Course Videos
@@ -7,7 +6,6 @@
     <p class="videos-subtitle">Browse and watch all available course sessions</p>
   </div>
 
-  <!-- Loading State -->
   <div *ngIf="loading()" class="videos-loading">
     <div class="spinner-border text-primary" role="status">
       <span class="visually-hidden">Loading...</span>
@@ -15,41 +13,16 @@
     <p>Loading videos…</p>
   </div>
 
-  <!-- Error State -->
   <div *ngIf="error() && !loading()" class="videos-error alert alert-danger">
     <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ error() }}
   </div>
 
-  <!-- Main Content -->
   <div *ngIf="!loading() && !error()" class="videos-layout">
 
-    <!-- Sidebar: Video List -->
-    <aside class="videos-sidebar">
-      <div class="sidebar-header">
-        <i class="bi bi-collection-play me-2"></i>
-        <span>Sessions ({{ videos().length }})</span>
-      </div>
-      <ul class="video-list">
-        <li
-          *ngFor="let video of videos(); let i = index"
-          class="video-list-item"
-          [class.active]="selectedVideo()?.oid === video.oid"
-          (click)="selectVideo(video)"
-        >
-          <span class="video-index">{{ video.orderNo ?? i + 1 }}</span>
-          <div class="video-info">
-            <i class="bi bi-play-fill video-icon"></i>
-            <span class="video-name">{{ getDisplayName(video) }}</span>
-          </div>
-          <span *ngIf="video.isPreview" class="badge-preview">Preview</span>
-        </li>
-      </ul>
-    </aside>
 
-    <!-- Player Panel -->
+
     <main class="videos-player-panel">
 
-      <!-- Now Playing Label -->
       <div *ngIf="selectedVideo()" class="now-playing">
         <i class="bi bi-broadcast me-2 text-danger"></i>
         <strong>Now Playing:</strong>
@@ -57,9 +30,7 @@
         <span *ngIf="selectedVideo()!.courseName" class="badge-course ms-2">{{ selectedVideo()!.courseName }}</span>
       </div>
 
-      <!-- Video Player -->
       <div *ngIf="selectedVideoUrl(); else noVideo" class="player-wrapper">
-        <!-- Screen-record / blur protection overlay -->
         <div *ngIf="isProtected()" class="protect-overlay">
           <i class="bi bi-shield-lock-fill"></i>
           <p>Video paused for security</p>
@@ -88,7 +59,6 @@
         </div>
       </ng-template>
 
-      <!-- Video Meta -->
       <div *ngIf="selectedVideo()" class="video-meta">
         <div class="meta-row" *ngIf="selectedVideo()!.durationSeconds">
           <i class="bi bi-clock me-1"></i>
@@ -112,5 +82,216 @@
       </div>
 
     </main>
+
+    <aside class="videos-sidebar">
+      <div class="sidebar-header">
+        <i class="bi bi-collection-play me-2"></i>
+        <span>Sessions ({{ videos().length }})</span>
+      </div>
+      <ul class="video-list">
+        <li
+          *ngFor="let video of videos(); let i = index"
+          class="video-list-item"
+          [class.active]="selectedVideo()?.oid === video.oid"
+          (click)="selectVideo(video)"
+        >
+          <span class="video-index">{{ video.orderNo ?? i + 1 }}</span>
+          <div class="video-info">
+            <i class="bi bi-play-fill video-icon"></i>
+            <span class="video-name">{{ getDisplayName(video) }}</span>
+          </div>
+          <span *ngIf="video.isPreview" class="badge-preview">Preview</span>
+        </li>
+      </ul>
+    </aside>
+  </div>
+</div> -->
+
+<div class="videos-page" [class.rtl]="isRTL()">
+  <!-- 🔄 Loading -->
+  <div *ngIf="loading()" class="videos-loading">
+    <div class="spinner-border text-primary" role="status"></div>
+    <p>Loading videos…</p>
+  </div>
+
+  <!-- ❌ Error -->
+  <div *ngIf="error() && !loading()" class="videos-error alert alert-danger">
+    <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ error() }}
+  </div>
+
+  <!-- ✅ Content -->
+  <div *ngIf="!loading() && !error()" class="videos-layout">
+    <!-- 🎥 PLAYER -->
+    <main class="videos-player-panel">
+      <div *ngIf="selectedVideo()" class="now-playing">
+        <i class="bi bi-broadcast me-2 text-danger"></i>
+        <strong>Now Playing:</strong>
+        <span class="ms-2">{{ getDisplayName(selectedVideo()!) }}</span>
+        <span *ngIf="selectedVideo()!.courseName" class="badge-course ms-2">
+          {{ selectedVideo()!.courseName }}
+        </span>
+      </div>
+
+      <div *ngIf="selectedVideoUrl(); else noVideo" class="player-wrapper">
+        <div *ngIf="isProtected()" class="protect-overlay">
+          <i class="bi bi-shield-lock-fill"></i>
+          <p>Video paused for security</p>
+        </div>
+
+        <video
+          class="video-element"
+          [src]="selectedVideoUrl()!"
+          controls
+          controlsList="nodownload"
+          disablePictureInPicture
+          autoplay
+          preload="auto"
+          playsinline
+          (ended)="onVideoEnded()"
+          width="100%"
+          (contextmenu)="$event.preventDefault()"
+        >
+          <p>Your browser does not support HTML5 video.</p>
+        </video>
+        <div class="video-controls mt-3 d-flex gap-2">
+          <!-- ⏮ Previous -->
+          <button
+            class="btn btn-outline-secondary"
+            (click)="playPrevious()"
+            [disabled]="currentIndex() === 0"
+          >
+            <i class="bi bi-skip-backward-fill"></i> Previous
+          </button>
+
+          <!-- ⏭ Next -->
+          <button
+            class="btn btn-primary"
+            (click)="playNext()"
+            [disabled]="!canPlayNext()"
+          >
+            Next <i class="bi bi-skip-forward-fill"></i>
+          </button>
+        </div>
+      </div>
+
+      <ng-template #noVideo>
+        <div class="no-video-placeholder">
+          <i class="bi bi-camera-video-off"></i>
+          <p class="w-100 text-center">
+            Select a session from the list to start watching.
+          </p>
+        </div>
+      </ng-template>
+
+      <!-- 📄 META -->
+      <div *ngIf="selectedVideo()" class="video-meta">
+        <div class="meta-row" *ngIf="selectedVideo()!.durationSeconds">
+          <i class="bi bi-clock me-1"></i>
+          <span>Duration: {{ selectedVideo()!.durationSeconds }}s</span>
+        </div>
+
+        <div class="meta-row" *ngIf="selectedVideo()!.descriptionEn">
+          <i class="bi bi-info-circle me-1"></i>
+          <span>
+            {{
+              isRTL()
+                ? selectedVideo()!.descriptionAr
+                : selectedVideo()!.descriptionEn
+            }}
+          </span>
+        </div>
+
+        <div class="meta-row">
+          <i class="bi bi-file-earmark-play me-1"></i>
+          <span>{{ selectedVideo()!.videoUrl }}</span>
+        </div>
+
+        <a
+          [href]="selectedVideoUrl()!"
+          target="_blank"
+          class="btn btn-sm btn-outline-primary mt-2"
+        >
+          <i class="bi bi-box-arrow-up-right me-1"></i>Open in New Tab
+        </a>
+      </div>
+    </main>
+
+    <!-- 📚 SIDEBAR -->
+    <aside class="videos-sidebar">
+      <div class="sidebar-header">
+        <i class="bi bi-collection-play me-2"></i>
+        <span>Sessions ({{ videos().length }})</span>
+      </div>
+
+      <ul class="video-list" *ngIf="videos().length > 0; else noSideVideos">
+        <li
+          *ngFor="let video of videos(); let i = index"
+          class="video-list-item"
+          [class.active]="isCurrent(video)"
+          [class.locked]="isLocked(video)"
+          (click)="!isLocked(video) && selectVideo(video)"
+          [attr.title]="
+            isLocked(video) ? 'You must watch previous videos first' : ''
+          "
+        >
+          <!-- 🔢 index / state -->
+          <span class="video-index">
+            <!-- ▶ Current -->
+            <i
+              *ngIf="isCurrent(video)"
+              class="bi bi-play-circle-fill text-primary"
+            ></i>
+
+            <!-- 🔒 Locked -->
+            <i
+              *ngIf="!isCurrent(video) && isLocked(video)"
+              class="bi bi-lock-fill text-danger"
+            ></i>
+
+            <!-- ✅ Watched -->
+            <i
+              *ngIf="!isCurrent(video) && !isLocked(video) && isWatched(video)"
+              class="bi bi-check-circle-fill text-success"
+            ></i>
+
+            <!-- ▶ Default -->
+            <span
+              *ngIf="!isCurrent(video) && !isLocked(video) && !isWatched(video)"
+            >
+              {{ video.orderNo ?? i + 1 }}
+            </span>
+          </span>
+
+          <!-- 🎬 info -->
+          <div class="video-info">
+            <i
+              class="bi"
+              [ngClass]="
+                isCurrent(video)
+                  ? 'bi-play-fill text-primary'
+                  : isLocked(video)
+                    ? 'bi-lock-fill text-danger'
+                    : isWatched(video)
+                      ? 'bi-check-circle-fill text-success'
+                      : 'bi-play-fill video-icon'
+              "
+            ></i>
+
+            <span class="video-name">
+              {{ getDisplayName(video) }}
+            </span>
+          </div>
+
+          <!-- 🏷 preview -->
+          <span *ngIf="video.isPreview" class="badge-preview">Preview</span>
+        </li>
+      </ul>
+      <ng-template #noSideVideos>
+        <div class="no-side-videos">
+          <i class="bi bi-camera-video-off"></i>
+          <p class="w-100 text-center">No videos available</p>
+        </div>
+      </ng-template>
+    </aside>
   </div>
 </div>

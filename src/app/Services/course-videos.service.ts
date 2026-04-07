@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import ApiService from '../shared/Services/ApiService/api.service';
-import { ApiSearchResponse } from '../models/apiResponse';
+import { ApiResponse, ApiSearchResponse } from '../models/apiResponse';
 import { RequestBody } from '../models/rquest';
 import { CourseVideo } from '../models/course-video';
 import { environment } from '../../environments/environment';
@@ -19,9 +19,25 @@ export class CourseVideosService {
       .pipe(map((res) => res.data));
   }
 
-  getAllVideos(): Observable<CourseVideo[]> {
+  // getAllVideos(): Observable<CourseVideo[]> {
+  //   const body: RequestBody = {
+  //     filters: [],
+  //     sort: [{ sortBy: 'orderNo', sortDirection: 'asc' }],
+  //     pagination: { getAll: true, pageNumber: 0, pageSize: 0 },
+  //     columns: [],
+  //   };
+  //   return this.searchVideos(body);
+  // }
+
+  getAllVideos(certId:string): Observable<CourseVideo[]> {
     const body: RequestBody = {
-      filters: [],
+      filters: [
+        {
+          propertyName: "courseOid",
+          value: certId,
+          operation: 0
+        }
+      ],
       sort: [{ sortBy: 'orderNo', sortDirection: 'asc' }],
       pagination: { getAll: true, pageNumber: 0, pageSize: 0 },
       columns: [],
