@@ -267,12 +267,12 @@ export class ClientNavbarComponent {
       icon: 'bi bi-headset',
       path: `/${this.lang()}/contact`,
     },
-    {
-      key: 'Videos',
-      translateKey: 'Videos',
-      icon: 'bi bi-play-circle',
-      path: `/${this.lang()}/videos`,
-    },
+    // {
+    //   key: 'Videos',
+    //   translateKey: 'Videos',
+    //   icon: 'bi bi-play-circle',
+    //   path: `/${this.lang()}/videos`,
+    // },
   ]);
 
   navigateHome(){

@@ -3,33 +3,6 @@
 width:100%;
 }
 
-.services-slider {
-  position: relative;
-}
-
-/* Arrows */
-.arrow {
-  position: absolute;
-  top: 60%;
-  transform: translateY(-50%);
-
-  width: 42px;
-  height: 42px;
-
-  border-radius: 50%;
-  border: none;
-
-  background-color: $lightBgTextColor;
-  color: $primaryColor;
-
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all .25s ease;
-}
-
 .arrow-left {
   left: -40px;
 }
@@ -38,12 +11,3 @@ width:100%;
   right: -40px;
 }
 
-.arrow:hover:not(:disabled) {
-  background-color: $secondaryColor;
-  color: $lightBgTextColor;
-}
-
-.arrow:disabled {
-  opacity: .4;
-  cursor: not-allowed;
-}
