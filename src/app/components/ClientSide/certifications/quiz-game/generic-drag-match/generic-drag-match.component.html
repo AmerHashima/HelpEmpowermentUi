@@ -21,7 +21,9 @@
   </div>
 
   <div class="questions-container "
-        [class.row-layout]="isRowLayout()">
+        [class.row-layout]="isRowLayout()"
+          [class.level-10]="level() === 'level 10'"
+        >
 
     @for (question of questions(); track question; let i = $index) {
       <div class="question-column gap-2"

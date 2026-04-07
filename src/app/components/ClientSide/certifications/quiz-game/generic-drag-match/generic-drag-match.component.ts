@@ -88,6 +88,8 @@ droppedItems:string[][][]=[];
     );
   }
 
+  
+
   // ngOnInit() {
   //   this.sourceOptions = [...this.options()];
 
