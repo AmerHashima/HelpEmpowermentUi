@@ -306,6 +306,7 @@ export class StudentService {
        completedLessons: completedLessons,
        totalLessons:this.totalLessonsInCourse()
      }
+    console.log('totalLessosn(', this.totalLessonsInCourse());
     const studentId = this.auth.loggedStudent()?.userId!
     return this.apiService
       .put<ApiResponse<APIStudentCourse>>('StudentCourses', studentId, body, 'student.progress.update', 'progress')

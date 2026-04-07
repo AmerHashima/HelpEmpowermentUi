@@ -91,7 +91,10 @@ import {
   computed,
   signal,
   HostListener,
-  PLATFORM_ID
+  PLATFORM_ID,
+  ViewChild,
+  ElementRef,
+  effect
 } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { toSignal, toObservable } from '@angular/core/rxjs-interop';
@@ -110,6 +113,7 @@ import { ToastingMessagesService } from '../../../shared/Services/ToastingMessag
   styleUrl: './videos.component.scss',
 })
 export class VideosComponent {
+  @ViewChild('videoPlayer') videoRef!: ElementRef<HTMLVideoElement>;
   // 🔧 injections
   private courseVideosService = inject(CourseVideosService);
   private toasting=inject(ToastingMessagesService);
@@ -173,11 +177,23 @@ export class VideosComponent {
   selectedVideo = signal<CourseVideo | null>(null);
 
   constructor() {
-    const _ = computed(() => {
+    effect(() => {
       const vids = this.videos();
+
       if (vids.length > 0 && !this.selectedVideo()) {
         this.selectedVideo.set(vids[0]);
       }
+    });
+  }
+
+  playVideo() {
+    const video = this.videoRef?.nativeElement;
+
+    if (!video) return;
+
+    video.muted = true; // مهم للأوتوبلاي
+    video.play().catch(() => {
+      console.log('Autoplay prevented');
     });
   }
 
@@ -219,12 +235,16 @@ export class VideosComponent {
     }
   }
   selectVideo(video: CourseVideo): void {
+    console.log('Attempting to select video:', video);
     const completed = this.lessonsWatched() ?? 0;
     const order = video.orderNo ?? 0;
 
     if (order <= completed + 1) {
+      console.log('Video is unlocked, selecting:', video);
       this.selectedVideo.set(video);
     } else {
+      console.log('Video is locked, selecting:', video);
+
       this.showLockedMessage();
     }
   }

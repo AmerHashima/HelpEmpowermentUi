@@ -139,9 +139,11 @@
         </div>
 
         <video
+          #videoPlayer
           class="video-element"
           [src]="selectedVideoUrl()!"
           controls
+          muted
           controlsList="nodownload"
           disablePictureInPicture
           autoplay
@@ -150,12 +152,11 @@
           (ended)="onVideoEnded()"
           width="100%"
           (contextmenu)="$event.preventDefault()"
+          (canplay)="playVideo()"
         >
           <p>Your browser does not support HTML5 video.</p>
         </video>
-        <div class="video-controls mt-3 d-flex gap-2">
-          <!-- ⏮ Previous -->
-          <button
+        <!-- <button
             class="btn btn-outline-secondary"
             (click)="playPrevious()"
             [disabled]="currentIndex() === 0"
@@ -163,15 +164,28 @@
             <i class="bi bi-skip-backward-fill"></i> Previous
           </button>
 
-          <!-- ⏭ Next -->
           <button
             class="btn btn-primary"
             (click)="playNext()"
             [disabled]="!canPlayNext()"
           >
             Next <i class="bi bi-skip-forward-fill"></i>
-          </button>
-        </div>
+          </button> -->
+        <button
+          class="video-arrow left"
+          (click)="playPrevious()"
+          [disabled]="currentIndex() === 0"
+        >
+          <i class="bi bi-chevron-left"></i>
+        </button>
+
+        <button
+          class="video-arrow right"
+          (click)="playNext()"
+          [disabled]="!canPlayNext()"
+        >
+          <i class="bi bi-chevron-right"></i>
+        </button>
       </div>
 
       <ng-template #noVideo>
@@ -234,27 +248,20 @@
             isLocked(video) ? 'You must watch previous videos first' : ''
           "
         >
-          <!-- 🔢 index / state -->
           <span class="video-index">
-            <!-- ▶ Current -->
             <i
-              *ngIf="isCurrent(video)"
-              class="bi bi-play-circle-fill text-primary"
+              class="bi"
+              [ngClass]="
+                isCurrent(video)
+                  ? 'bi-play-circle-fill '
+                  : isLocked(video)
+                    ? 'bi-lock-fill text-danger'
+                    : isWatched(video)
+                      ? 'bi-check-circle-fill text-success'
+                      : ''
+              "
             ></i>
 
-            <!-- 🔒 Locked -->
-            <i
-              *ngIf="!isCurrent(video) && isLocked(video)"
-              class="bi bi-lock-fill text-danger"
-            ></i>
-
-            <!-- ✅ Watched -->
-            <i
-              *ngIf="!isCurrent(video) && !isLocked(video) && isWatched(video)"
-              class="bi bi-check-circle-fill text-success"
-            ></i>
-
-            <!-- ▶ Default -->
             <span
               *ngIf="!isCurrent(video) && !isLocked(video) && !isWatched(video)"
             >
@@ -262,27 +269,12 @@
             </span>
           </span>
 
-          <!-- 🎬 info -->
           <div class="video-info">
-            <i
-              class="bi"
-              [ngClass]="
-                isCurrent(video)
-                  ? 'bi-play-fill text-primary'
-                  : isLocked(video)
-                    ? 'bi-lock-fill text-danger'
-                    : isWatched(video)
-                      ? 'bi-check-circle-fill text-success'
-                      : 'bi-play-fill video-icon'
-              "
-            ></i>
-
             <span class="video-name">
               {{ getDisplayName(video) }}
             </span>
           </div>
 
-          <!-- 🏷 preview -->
           <span *ngIf="video.isPreview" class="badge-preview">Preview</span>
         </li>
       </ul>
