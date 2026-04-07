@@ -26,11 +26,14 @@ export class MatchingTableComponent implements OnChanges {
   @Input() options: any[] = [];
   @Input() correctAnswers: Record<string, string> = {};
   next = input<boolean>(false);
+  reset = input<number>(0);
   correct = output<boolean>();
   // one array per row
   dropZones = signal<Record<string, any[]>>({});
   connectedDropLists: string[] = [];
   dropListConnections: string[] = [];
+  private originalOptions: any[] = [];
+
   ngOnChanges(changes: SimpleChanges) {
     if (changes['rows'] && this.rows) {
 
@@ -44,8 +47,11 @@ export class MatchingTableComponent implements OnChanges {
 
       this.dropZones.set(initial);
 
-      // ✅ Build full connection array HERE (not in template)
       this.dropListConnections = ['options', ...this.connectedDropLists];
+    }
+
+    if (changes['options'] && this.options) {
+      this.originalOptions = [...this.options];
     }
   }
   constructor() {
@@ -56,9 +62,28 @@ export class MatchingTableComponent implements OnChanges {
       }
     });
 
+    effect(() => {
+      this.reset(); 
+
+      this.resetState();
+    });
 
   }
 
+  private resetState() {
+
+    // reset drop zones
+    const initial: Record<string, any[]> = {};
+
+    this.rows.forEach(row => {
+      initial[row.id] = [];
+    });
+
+    this.dropZones.set(initial);
+
+    // 🔥 مهم جدًا
+    this.options.splice(0, this.options.length, ...this.originalOptions);
+  }
   drop(event: CdkDragDrop<any[]>, rowId?: string) {
 
     const zones = { ...this.dropZones() };

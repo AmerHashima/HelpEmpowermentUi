@@ -23,26 +23,31 @@ export class GenericDragMatchComponent {
   options = input.required<string[]>();
   correctAnswers = input.required<Record<string, string[]>>();
   dropSlotsPerQuestion = input<number>(1);
-
+  reset = input<number>(0);
   sourceOptions: string[] = [];
   // droppedItems: string[][] = [];
 droppedItems:string[][][]=[];
   readonly isRowLayout = computed(() =>
     this.level() === 'level 17' || this.level() === 'level 18'
   );
+  private originalOptions: string[] = [];
   constructor() {
+
     // effect(() => {
     //   const questions = this.questions();
     //   const options = this.options();
+    //   const slots = this.dropSlotsPerQuestion();
 
     //   if (!questions || !options) return;
 
-    //   // Reset options
     //   this.sourceOptions = [...options];
 
-    //   // Recreate drop zones (empty)
-    //   this.droppedItems = questions.map(() => []);
+    //   // Build structure dynamically
+    //   this.droppedItems = questions.map(() =>
+    //     Array.from({ length: slots }, () => [])
+    //   );
     // });
+
     effect(() => {
       const questions = this.questions();
       const options = this.options();
@@ -50,9 +55,10 @@ droppedItems:string[][][]=[];
 
       if (!questions || !options) return;
 
+      this.originalOptions = [...options];
+
       this.sourceOptions = [...options];
 
-      // Build structure dynamically
       this.droppedItems = questions.map(() =>
         Array.from({ length: slots }, () => [])
       );
@@ -63,14 +69,31 @@ droppedItems:string[][][]=[];
         this.checkAnswer();
       }
     });
+
+    effect(() => {
+      this.reset();
+
+      this.resetState();
+    })
   }
 
-  ngOnInit() {
-    this.sourceOptions = [...this.options()];
+  private resetState() {
+    const questions = this.questions();
+    const slots = this.dropSlotsPerQuestion();
 
-    // Create one drop array per question
-    this.droppedItems = this.questions().map(() => []);
+    this.sourceOptions = [...this.originalOptions];
+
+    this.droppedItems = questions.map(() =>
+      Array.from({ length: slots }, () => [])
+    );
   }
+
+  // ngOnInit() {
+  //   this.sourceOptions = [...this.options()];
+
+  //   // Create one drop array per question
+  //   this.droppedItems = this.questions().map(() => []);
+  // }
 
   drop(
     event: CdkDragDrop<string[]>,

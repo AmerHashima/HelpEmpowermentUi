@@ -167,11 +167,14 @@ export class SecondQuestionComponent {
   @Input() options: string[] = [];
 
   next = input<boolean>(false);
+  reset = input<number>(0);
+
   isCorrect = output<boolean>();
   correctAnswers = input.required<Record<string, string[]>>();
 
   dropZones1: string[][] = [];
   dropZones2: string[][] = [];
+  private originalOptions: string[] = [];
 
   constructor() {
     // ✅ FIX: prevent shared reference bug
@@ -183,8 +186,23 @@ export class SecondQuestionComponent {
         this.checkAnswer();
       }
     });
+
+    effect(() => {
+      this.reset();
+        this.resetState();
+    });
   }
 
+
+  ngOnInit() {
+    this.originalOptions = [...this.options];
+  }
+  private resetState() {
+    this.dropZones1 = Array.from({ length: this.rowsTable1 }, () => []);
+    this.dropZones2 = Array.from({ length: this.rowsTable2 }, () => []);
+
+    this.options = [...this.originalOptions];
+  }
   // ================= DRAG LOGIC =================
 
   drop(event: CdkDragDrop<string[]>) {

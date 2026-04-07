@@ -44,7 +44,6 @@ export class QuizGameQuestionComponent {
   private route = inject(ActivatedRoute);
   next = signal<boolean>(false);
   levelMessage = signal<{ message: string, isCorrect: boolean }>({ message: '', isCorrect: false });
-  resetFlag=false;
   isRTL = this.shared.isRtl;
   showConfirm: boolean = false;
   showMessage: boolean = false;
@@ -52,6 +51,7 @@ export class QuizGameQuestionComponent {
   currentLevelIndex = signal(0);
   score = signal(0);
   gameFinished = signal(false);
+  resetTrigger = signal(0);
 
 
 
@@ -669,7 +669,7 @@ export class QuizGameQuestionComponent {
   ];
 
   attempts = signal(0);
-  maxAttempts = 2;
+  // maxAttempts = 2;
 
   currentLevel = computed(() => this.levels[this.currentLevelIndex()]);
   // onGetQuestionResult(isCorrect: boolean) {
@@ -705,12 +705,62 @@ export class QuizGameQuestionComponent {
       this.attempts.set(0);
     });
   }
+  // onGetQuestionResult(isCorrect: boolean) {
+  //   this.next.set(false);
+
+  //   // ✅ correct answer
+  //   if (isCorrect) {
+  //     this.attempts.set(0);
+  //     this.score.update(s => s + 1);
+
+  //     if (this.currentLevelIndex() < this.levels.length - 1) {
+  //       this.currentLevelIndex.update(i => i + 1);
+  //     } else {
+  //       this.showMessage = true;
+  //       this.levelMessage.set({
+  //         message: 'Well Done, You have rocked it 🎉',
+  //         isCorrect: true
+  //       });
+  //     }
+
+  //     return;
+  //   }
+
+  //   // ❌ wrong answer
+  //   this.attempts.update(a => a + 1);
+
+  //   // 🔥 FIRST FAIL → allow retry
+  //   if (this.attempts() < this.maxAttempts) {
+  //     this.showMessage = true;
+  //     this.levelMessage.set({
+  //       message: `Wrong answer ❌\nTry again (${this.maxAttempts - this.attempts()} attempt left)`,
+  //       isCorrect: false
+  //     });
+  //     return;
+  //   }
+
+  //   // 💥 SECOND FAIL → quit
+  //   this.showMessage = true;
+  //   this.levelMessage.set({
+  //     message: 'You failed twice ❌ Quiz ended.',
+  //     isCorrect: false
+  //   });
+
+  //   this.gameFinished.set(true);
+
+  //   setTimeout(() => {
+  //     this.router.navigate(['../quiz-game'], {
+  //       relativeTo: this.route
+  //     });
+  //   }, 2000);
+  // }
+
   onGetQuestionResult(isCorrect: boolean) {
     this.next.set(false);
 
     // ✅ correct answer
     if (isCorrect) {
-      this.attempts.set(0); 
+      this.attempts.set(0);
       this.score.update(s => s + 1);
 
       if (this.currentLevelIndex() < this.levels.length - 1) {
@@ -726,34 +776,14 @@ export class QuizGameQuestionComponent {
       return;
     }
 
-    // ❌ wrong answer
+    // ❌ wrong answer → unlimited tries
     this.attempts.update(a => a + 1);
 
-    // 🔥 FIRST FAIL → allow retry
-    if (this.attempts() < this.maxAttempts) {
-      this.showMessage = true;
-      this.levelMessage.set({
-        message: `Wrong answer ❌\nTry again (${this.maxAttempts - this.attempts()} attempt left)`,
-        isCorrect: false
-      });
-      return;
-    }
-
-    // 💥 SECOND FAIL → quit
     this.showMessage = true;
     this.levelMessage.set({
-      message: 'You failed twice ❌ Quiz ended.',
-      isCorrect: false
+      message: `Wrong answer ❌\nKeep trying! (${this.attempts()} attempts)`,
+            isCorrect: false
     });
-
-    this.gameFinished.set(true);
-
-    // optional: navigate after delay
-    setTimeout(() => {
-      this.router.navigate(['../quiz-game'], {
-        relativeTo: this.route
-      });
-    }, 2000);
   }
 
   nextQuestion() {
@@ -762,15 +792,13 @@ export class QuizGameQuestionComponent {
   ResetQuiz() {
     this.showResetConfirm = true
   }
+
+
   confirmResetQuiz() {
-    this.showResetConfirm = false
-    if (this.currentLevelIndex() == 0){
-      this.resetFlag=true;
-    }
-    else{
-    this.currentLevelIndex.set(0);
-    }
-    this.score.set(0);
+    this.showResetConfirm = false;
+
+    this.resetTrigger.update(v => v + 1);
+    // this.attempts.set(0);
   }
   cancelResetQuiz() {
     this.showResetConfirm = false
@@ -788,10 +816,6 @@ export class QuizGameQuestionComponent {
   cancalQuiz() {
     this.showConfirm = false;
   }
-  // closeResultMessage(){
-  //   this.router.navigate(['../quiz-game'], {
-  //     relativeTo: this.route
-  //   });}
 
   closeResultMessage() {
     this.showMessage = false;

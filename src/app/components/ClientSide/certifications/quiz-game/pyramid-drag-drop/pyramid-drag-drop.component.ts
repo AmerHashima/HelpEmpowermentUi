@@ -8,14 +8,14 @@ import { CdkDragDrop, DragDropModule, moveItemInArray, transferArrayItem } from 
   templateUrl: './pyramid-drag-drop.component.html',
   styleUrls: ['./pyramid-drag-drop.component.scss']
 })
-export class PyramidDragDropComponent implements OnInit {
+export class PyramidDragDropComponent  {
 
   questions = input.required<string[]>();
   options = input.required<string[]>();
   correctAnswers = input.required<Record<string, string[]>>();
   next = input<boolean>(false);
-
-  isCorrect = output<boolean>();
+  reset = input<number>(0);
+    isCorrect = output<boolean>();
 
   sourceOptions: string[] = [];
 
@@ -23,7 +23,7 @@ export class PyramidDragDropComponent implements OnInit {
   level2: string[] = [];
   level3: string[] = [];
   level4: string[] = [];
-
+  private originalOptions: string[] = [];
 
   constructor() {
 
@@ -33,11 +33,42 @@ export class PyramidDragDropComponent implements OnInit {
       }
     });
 
+    effect(() => {
+      this.reset();
+      this.resetState();
+    });
+
+    effect(() => {
+      const opts = this.options();
+
+      if (!opts) return;
+
+      this.originalOptions = [...opts];
+      this.sourceOptions = [...opts];
+    });
+
   }
 
 
-  ngOnInit() {
-    this.sourceOptions = [...this.options()];
+  // ngOnInit() {
+  //   this.sourceOptions = [...this.options()];
+  // }
+
+  // ngOnInit() {
+  //   const initial = [...this.options()];
+  //   this.originalOptions = [...initial];
+  //   this.sourceOptions = [...initial];
+  // }
+
+  private resetState() {
+    // reset pyramid levels
+    this.level1 = [];
+    this.level2 = [];
+    this.level3 = [];
+    this.level4 = [];
+
+    // reset options
+    this.sourceOptions = [...this.originalOptions];
   }
 
   drop(event: CdkDragDrop<string[]>) {

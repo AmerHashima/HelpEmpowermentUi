@@ -29,13 +29,15 @@ export class MultiTableQuestionsComponent implements OnInit {
   options: string[] = [];
 
   correctAnswers = input.required<Record<string, string[]>>();
+
   next = input<boolean>(false);
+  reset = input<number>(0);
   isCorrect = output<boolean>();
 
   dropMatrix: string[][][] = [];
 
   connectedDropLists: string[] = [];
-
+  private originalOptions: string[] = [];
   constructor(private cdr: ChangeDetectorRef) {
 
     effect(() => {
@@ -44,9 +46,22 @@ export class MultiTableQuestionsComponent implements OnInit {
       }
     });
 
+    // effect(() => {
+    //   const correctMap = this.correctAnswers();
+    //   this.options = Object.values(correctMap).flat().sort();
+    // });
     effect(() => {
       const correctMap = this.correctAnswers();
-      this.options = Object.values(correctMap).flat().sort();
+
+      const initial = Object.values(correctMap).flat().sort();
+
+      this.originalOptions = [...initial];
+      this.options = [...initial];
+    });
+
+    effect(() => {
+    this.reset();
+        this.resetState();
     });
   }
 
@@ -54,6 +69,18 @@ export class MultiTableQuestionsComponent implements OnInit {
     this.initializeMatrix();
   }
 
+  private resetState() {
+    const rows = this.questions.length;
+    const cols = this.headers.length;
+
+    this.dropMatrix = Array.from({ length: rows }, () =>
+      Array.from({ length: cols }, () => [])
+    );
+
+    this.options = [...this.originalOptions];
+
+    this.cdr.detectChanges();
+  }
   private initializeMatrix() {
     const rows = this.questions.length;
     const cols = this.headers.length;

@@ -19,7 +19,7 @@ export class FirstQuestionComponent {
 
   next = input<boolean>(false);
   isCorrect = output<boolean>();
-  reset = input<boolean>(false);
+  reset = input<number>(0);
   sourceItems = signal<string[]>([
     'Executing',
     'Planning',
@@ -53,9 +53,9 @@ export class FirstQuestionComponent {
   constructor() {
 
     effect(() => {
-      if (this.reset()) {
+    this.reset()
         this.resetState();
-      }
+      
     });
     effect(() => {
       if (this.next()) {

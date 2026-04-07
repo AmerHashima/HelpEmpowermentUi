@@ -12,7 +12,7 @@
     @if (this.currentLevelIndex() == 0) {
       <app-first-question
         [next]="next()"
-        [reset]="resetFlag"
+        [reset]="resetTrigger()"
         (isCorrect)="onGetQuestionResult($event)"
       />
     } @else if (this.currentLevelIndex() == 1) {
@@ -22,6 +22,7 @@
         [correctAnswers]="currentLevel().correctAnswers"
         [options]="currentLevel().options ?? []"
         [next]="next()"
+        [reset]="resetTrigger()"
         (isCorrect)="onGetQuestionResult($event)"
       />
     } @else if (
@@ -33,15 +34,16 @@
         [header1]="currentLevel().header1"
         [header2]="currentLevel().header2"
         [next]="next()"
+        [reset]="resetTrigger()"
         (isCorrect)="onGetQuestionResult($event)"
       />
-    }
-     @else if (this.currentLevelIndex() == 7) {
+    } @else if (this.currentLevelIndex() == 7) {
       <app-multi-table-questions
         [headers]="currentLevel().headers ?? []"
         [questions]="currentLevel().questions"
         [correctAnswers]="currentLevel().correctAnswers"
         [next]="next()"
+        [reset]="resetTrigger()"
         (isCorrect)="onGetQuestionResult($event)"
       />
     } @else if (this.currentLevelIndex() == 8) {
@@ -50,6 +52,7 @@
         [options]="currentLevel().options ?? []"
         [correctAnswers]="currentLevel().correctAnswers"
         [next]="next()"
+        [reset]="resetTrigger()"
         (isCorrect)="onGetQuestionResult($event)"
       />
     } @else if (
@@ -61,12 +64,13 @@
         [options]="currentLevel().tableOptions"
         [correctAnswers]="currentLevel().tableCorrectAnswers"
         [next]="next()"
+        [reset]="resetTrigger()"
         (correct)="onGetQuestionResult($event)"
       >
       </app-matching-table>
-
     } @else if (this.currentLevelIndex() > 8) {
       <app-generic-drag-match
+        [reset]="resetTrigger()"
         [level]="currentLevel().level"
         [questions]="currentLevel().questions"
         [options]="currentLevel().options ?? []"
@@ -94,16 +98,10 @@
       [customClass]="true"
       (click)="ResetQuiz()"
     />
-    @if(currentLevelIndex() !=18){
-       <app-site-button
-      title="Next"
-      type="main"
-      (click)="nextQuestion()"
-    />}@else{
-      <app-site-button
-      title="Finish"
-      type="main"
-      (click)="finish()"/>
+    @if (currentLevelIndex() != 18) {
+      <app-site-button title="Next" type="main" (click)="nextQuestion()" />
+    } @else {
+      <app-site-button title="Finish" type="main" (click)="finish()" />
     }
   </footer>
 </div>
@@ -128,11 +126,7 @@
           (click)="cancalQuiz()"
         />
 
-        <app-site-button
-          title="Confirm"
-          type="main"
-          (click)="confirmQuit()"
-        />
+        <app-site-button title="Confirm" type="main" (click)="confirmQuit()" />
       </div>
     </div>
   </section>
@@ -168,7 +162,11 @@
   </section>
 </app-generic-modal>
 
-<app-generic-modal [(isOpen)]="showMessage" title="Alert Message" (close)="closeResultMessage()">
+<app-generic-modal
+  [(isOpen)]="showMessage"
+  title="Alert Message"
+  (close)="closeResultMessage()"
+>
   <section
     class="w-100 d-flex flex-column align-items-stretch gap-3 p-3 rounded"
   >

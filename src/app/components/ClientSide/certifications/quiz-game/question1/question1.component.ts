@@ -15,12 +15,15 @@ export class Question1Component {
   questions = input.required<string[]>();
   correctAnswers = input.required<Record<string, string[]>>();
   next = input<boolean>(false);
+  reset = input<number>(0);
+
   connectedLists: string[] = [];
   isCorrect = output<boolean>();
 
   // Internal state
   dropZones: string[][] = [];
   options: string[] = [];
+  private originalOptions: string[] = [];
 
   constructor() {
 
@@ -41,17 +44,39 @@ export class Question1Component {
     });
 
     // Initialize options from all correct processes (once on init or when correctAnswers changes)
+    // effect(() => {
+    //   const correctMap = this.correctAnswers();
+    //   this.options = Object.values(correctMap).flat().sort();
+    // });
     effect(() => {
       const correctMap = this.correctAnswers();
-      this.options = Object.values(correctMap).flat().sort();
+
+      const initial = Object.values(correctMap).flat().sort();
+
+      this.originalOptions = [...initial];
+      this.options = [...initial];
     });
 
+    effect(() => {
+      this.reset();
+      this.resetState();
+    });
     // React to "next" signal changes
     effect(() => {
       if (this.next()) {
         this.checkAnswers();
       }
     });
+  }
+
+
+  private resetState() {
+    const areas = this.questions();
+
+    // reset drop zones
+    this.dropZones = areas.map(() => []);
+
+    this.options.splice(0, this.options.length, ...this.originalOptions);
   }
 
   drop(event: CdkDragDrop<string[]>) {
