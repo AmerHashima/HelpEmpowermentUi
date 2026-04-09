@@ -45,7 +45,10 @@ export class StudentService {
   constructor(private apiService: ApiService, private auth: AuthService, private shared: Shared) {
     effect(() => {
       const studentId = this.auth.loggedStudent()?.userId
-      if (!studentId) return;
+      if (!studentId)  {
+        this.enrolledCourses.set([]);
+        return;
+      }
       this.getAllStudentEnrolledCourses(studentId).subscribe({
         next: (courses) => { console.log('this.enrollCourse',courses);this.enrolledCourses.set(courses) }
       });
