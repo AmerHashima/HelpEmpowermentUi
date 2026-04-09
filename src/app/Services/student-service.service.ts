@@ -28,8 +28,8 @@ export class StudentService {
   );
 
   isRecordedCoursesEnrolled = computed(() =>
-    true
-    // !!this.currentCourse()?.recordedCourseReserv
+    // true
+    !!this.currentCourse()?.recordedCourseReserv
   );
 
   isLiveCourseEnrolled = computed(() =>
@@ -50,6 +50,8 @@ export class StudentService {
         next: (courses) => { console.log('this.enrollCourse',courses);this.enrolledCourses.set(courses) }
       });
     })
+
+    effect(() => console.log(this.currentCourse()));
 
 
   }

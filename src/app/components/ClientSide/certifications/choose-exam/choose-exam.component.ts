@@ -12,6 +12,7 @@ import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/s
 import { StudentService } from '../../../../Services/student-service.service';
 import { APIExamSummary, ExamSummary } from '../../../../models/certification';
 import { LoadingService } from '../../../../shared/Services/Loading/loading.service';
+import { clearedExamStatusOid, examModeOid, practiceModeOid } from '../../../../data/lookUPS';
 
 @Component({
   selector: 'app-choose-exam',
@@ -39,10 +40,15 @@ export class ChooseExamComponent {
     const examId = this.shared.currentExamId();
     const allReports = this.studentExamService.reports();
 
+  //   return allReports.some(
+  //     // r => r.coursesMasterExamOid === examId && r.startedAt && r.finishedAt
+  //     r => r.coursesMasterExamOid === examId && r.startedAt && r.finishedAt
+  //       && r.examModeLookupId == 'dddddddd-dddd-dddd-1212-dddddddddd02')
+  // });
     return allReports.some(
       // r => r.coursesMasterExamOid === examId && r.startedAt && r.finishedAt
       r => r.coursesMasterExamOid === examId && r.startedAt && r.finishedAt
-        && r.examModeLookupId == 'dddddddd-dddd-dddd-1212-dddddddddd02')
+        && r.examModeLookupId == examModeOid)
   });
   latestReport = this.studentExamService.latestReport;
 
@@ -115,8 +121,11 @@ export class ChooseExamComponent {
     const latestReport = this.latestReport();
     const hasReport = !!latestReport;
 
+    // const statusCheck =
+    //   latestReport?.examStatusLookupId !== '12516b05-9d35-4499-9122-9561dfb4a9ce';
     const statusCheck =
-      latestReport?.examStatusLookupId !== '12516b05-9d35-4499-9122-9561dfb4a9ce';
+      latestReport?.examStatusLookupId !== clearedExamStatusOid;
+
 
     const isExamMode = mode === 'Exam';
 
@@ -171,7 +180,7 @@ export class ChooseExamComponent {
             this.shared.studentExamId.set(exam.oid);
             localStorage.setItem('studentExamId', exam.oid);
             this.chooseMode(mode);
-            
+
           },
           error:(e)=>{
             this.loading.stop();
@@ -211,7 +220,8 @@ export class ChooseExamComponent {
     const payload = {
       studentOid: this.auth.loggedStudent()?.userId ?? null,
       coursesMasterExamOid: this.shared.currentExamId(),
-      examModeLookupId: mode === 'Exam' ? "dddddddd-dddd-dddd-1212-dddddddddd02" : "dddddddd-dddd-dddd-1212-dddddddddd01",
+      // examModeLookupId: mode === 'Exam' ? "dddddddd-dddd-dddd-1212-dddddddddd02" : "dddddddd-dddd-dddd-1212-dddddddddd01",
+      examModeLookupId: mode === 'Exam' ? examModeOid : practiceModeOid,
       attemptNo: 0,
       createdBy: this.auth.loggedStudent()?.userId ?? null
     }

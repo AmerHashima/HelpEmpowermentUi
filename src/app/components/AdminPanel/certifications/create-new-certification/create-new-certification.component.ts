@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { BreadcrumbService } from '../../../../Services/breadcrumb.service';
+import { createdUpdatedOID } from '../../../../data/lookUPS';
 
 @Component({
   selector: 'app-create-certification',
@@ -31,7 +32,9 @@ export class CreateNewCertificationComponent {
   // courseLevels$ = this.certificationService.getCourseLevels();
   // courseCategories$ = this.certificationService.getCourseCategories();
   users = [
-    { label: 'Ahmed Ali', value: '3fa85f64-5717-4562-b3fc-2c963f66afa6' },
+    // { label: 'Ahmed Ali', value: '3fa85f64-5717-4562-b3fc-2c963f66afa6' },
+    { label: 'Ahmed Ali', value: createdUpdatedOID },
+
   ];
 
   status = [
@@ -50,7 +53,8 @@ export class CreateNewCertificationComponent {
     // courseCategoryLookupId: ['', [Validators.required]],
     courseLevelLookupId: [null as string | null],
     courseCategoryLookupId: [null as string | null],
-    createdBy: ['3fa85f64-5717-4562-b3fc-2c963f66afa6', [Validators.required]],
+    createdBy: [createdUpdatedOID, [Validators.required]],
+    // createdBy: ['3fa85f64-5717-4562-b3fc-2c963f66afa6', [Validators.required]],
     isActive: [true, [Validators.required]],
     files: [[] as File[]]
   });

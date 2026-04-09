@@ -6,6 +6,7 @@ import { Shared } from '../../../shared/Services/shared/shared';
 import { APIExamSummary, ExamSummary } from '../../../models/certification';
 import { AuthService } from '../../../Services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { clearedExamStatusOid } from '../../../data/lookUPS';
 
 
 @Component({
@@ -37,7 +38,9 @@ export class ExamLessonLearnedQuestionsComponent {
   total = computed(() => this.latestReport()?.totalQuestions ?? 0);
 
   // practice = output<{ type: string }>();
-  lessonCleared = computed(() => !this.latestReport()  || this.latestReport()?.examStatusLookupId == '12516b05-9d35-4499-9122-9561dfb4a9ce');
+  // lessonCleared = computed(() => !this.latestReport()  || this.latestReport()?.examStatusLookupId == '12516b05-9d35-4499-9122-9561dfb4a9ce');
+  lessonCleared = computed(() => !this.latestReport() || this.latestReport()?.examStatusLookupId == clearedExamStatusOid);
+
   // lessonCleared = signal(false);
   constructor(
     private location: Location,
