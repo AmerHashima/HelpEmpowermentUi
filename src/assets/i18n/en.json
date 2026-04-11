@@ -289,7 +289,12 @@
     "fullNamePlaceholder": "Enter your full name",
     "messageLabel": "Message",
     "messagePlaceholder": "Write your message here...",
-    "contactBtn": "Send Message"
+    "contactBtn": "Send Message",
+
+      "error": {
+        "sendMessage": "Can't send message"
+      
+    }
   },
   "pmo": {
     "cards": {

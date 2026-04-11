@@ -109,15 +109,15 @@
 
 <div class="videos-page" [class.rtl]="isRTL()">
   <!-- 🔄 Loading -->
-  <div *ngIf="loading()" class="videos-loading">
+  <!-- <div *ngIf="loading()" class="videos-loading">
     <div class="spinner-border text-primary" role="status"></div>
     <p>Loading videos…</p>
-  </div>
+  </div> -->
 
   <!-- ❌ Error -->
-  <div *ngIf="error() && !loading()" class="videos-error alert alert-danger">
+  <!-- <div *ngIf="error() && !loading()" class="videos-error alert alert-danger">
     <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ error() }}
-  </div>
+  </div> -->
 
   <!-- ✅ Content -->
   <div *ngIf="!loading() && !error()" class="videos-layout">

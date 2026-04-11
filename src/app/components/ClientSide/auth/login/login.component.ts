@@ -49,7 +49,16 @@ export class LoginComponent {
         // this.toasting.showToast('User has logged suffccessfully', 'success');
         this.router.navigateByUrl(`/${this.lang()}/home`);
       },
-      error: () => this.toasting.showToast('auth.loginToast.error', 'error')
+      error: (err) => {
+
+        const apiMessage =
+          err?.error?.message ||
+          err?.error?.errors?.[0] ||
+          'auth.loginToast.error';
+
+        this.toasting.showToast(apiMessage, 'error');
+      }
+      // error: () => this.toasting.showToast('auth.loginToast.error', 'error')
     })
   }
 

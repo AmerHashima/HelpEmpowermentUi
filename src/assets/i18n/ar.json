@@ -289,7 +289,10 @@
     "fullNamePlaceholder": "أدخل الاسم",
     "messageLabel": "الرسالة",
     "messagePlaceholder": "اكتب رسالتك",
-    "contactBtn": "إرسال"
+    "contactBtn": "إرسال",
+      "error": {
+        "sendMessage": "لا يمكن إرسال الرسالة"
+      }
   },
   "pmo": {
     "cards": {
