@@ -311,17 +311,29 @@ export class StudentService {
        completedLessons: completedLessons,
        totalLessons:this.totalLessonsInCourse()
      }
+     console.log('currentCourse',this.currentCourse());
     console.log('totalLessosn(', this.totalLessonsInCourse());
-    const studentId = this.auth.loggedStudent()?.userId!
+    const studentCourseId = this.currentCourse()?.oid;
+    // const studentId = this.auth.loggedStudent()?.userId!
     return this.apiService
-      .put<ApiResponse<APIStudentCourse>>('StudentCourses', studentId, body, 'student.progress.update', 'progress')
+      // .put<ApiResponse<APIStudentCourse>>('StudentCourses', studentId, body, 'student.progress.update', 'progress')
+      .put<ApiResponse<APIStudentCourse>>('StudentCourses', studentCourseId!, body, 'student.progress.update', 'progress')
       .pipe(
         map((response: ApiResponse<APIStudentCourse>) => {
           if (!response.success) {
             const msg = response.errors?.join(', ') || response.message || 'API failed to update progress info';
             throw new Error(msg);
           }
-          return response.data;
+          const updatedCourse = response.data;
+
+          this.enrolledCourses.update((courses) =>
+            courses.map(c =>
+              c.oid === updatedCourse.oid ? updatedCourse : c
+            )
+          );
+
+          return updatedCourse;
+          // return response.data;
         })
       );
   }

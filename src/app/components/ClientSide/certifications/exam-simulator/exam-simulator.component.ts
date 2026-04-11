@@ -230,7 +230,6 @@ export class ExamSimulatorComponent {
   }
 
   navigateToFreeExam(exam:APIExam) {
-    console.log('freeExam',exam);
     this.shared.currentExamId.set(exam.oid);
     this.shared.currentExam.set(exam);
 

@@ -272,7 +272,9 @@ export default class ApiService {
       headers: this.createHeaders(),
     }).pipe(
       tap(() => {
-        if (successMessage) {
+        if (
+          successMessage &&
+          !fullUrl.includes('progress')) {
           this.toasting.showToast(successMessage, 'success');
         }
       }),

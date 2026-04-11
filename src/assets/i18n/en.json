@@ -576,6 +576,7 @@
     "mustSolveFirst": "Must solve Exam Mode first",
     "backToSimulator": "Back To Exam Simulator",
     "alertMessage": "Alert Message",
+    "mustLogin": "You must have an account to access and try the free exam.",
     "mustCompleteExam": "You must be enrolled in the exam and complete it in Exam Mode to view the report and lesson learned questions",
     "clearLessonMessage": "Please clear the Lesson Learned section before starting a new exam. You won’t be able to begin the new exam until the Lesson Learned has been completed or cleared.",
     "cancel": "Cancel",

@@ -138,7 +138,7 @@
           <p>Video paused for security</p>
         </div>
 
-        <video
+           <video
           #videoPlayer
           class="video-element"
           [src]="selectedVideoUrl()!"
@@ -149,8 +149,10 @@
           autoplay
           preload="auto"
           playsinline
-          (ended)="onVideoEnded()"
           width="100%"
+            (play)="onVideoPlay()"
+                      (ended)="onVideoEnded()"
+
           (contextmenu)="$event.preventDefault()"
           (canplay)="playVideo()"
         >
@@ -238,12 +240,22 @@
       </div>
 
       <ul class="video-list" *ngIf="videos().length > 0; else noSideVideos">
-        <li
+        <!-- <li
           *ngFor="let video of videos(); let i = index"
           class="video-list-item"
           [class.active]="isCurrent(video)"
           [class.locked]="isLocked(video)"
           (click)="!isLocked(video) && selectVideo(video)"
+          [attr.title]="
+            isLocked(video) ? 'You must watch previous videos first' : ''
+          "
+        > -->
+           <li
+          *ngFor="let video of videos(); let i = index"
+          class="video-list-item"
+          [class.active]="isCurrent(video)"
+          [class.locked]="isLocked(video)"
+          (click)="selectVideo(video)"
           [attr.title]="
             isLocked(video) ? 'You must watch previous videos first' : ''
           "

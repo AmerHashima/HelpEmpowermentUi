@@ -175,23 +175,52 @@ export class VideosComponent {
   error = computed(() => this.videosState().error);
 
   selectedVideo = signal<CourseVideo | null>(null);
+  private initialized = false;
 
   constructor() {
     effect(() => {
       const vids = this.videos();
+      const completed = this.lessonsWatched() ?? 0;
 
-      if (vids.length > 0 && !this.selectedVideo()) {
-        this.selectedVideo.set(vids[0]);
-      }
+      if (!vids.length || this.initialized) return;
+
+      const nextVideo =
+        vids.find(v => (v.orderNo ?? 0) === completed + 1)
+        ?? vids[vids.length - 1];
+
+      this.selectedVideo.set(nextVideo);
+      this.initialized = true;
     });
   }
+  // constructor() {
+  //   // effect(() => {
+  //   //   const vids = this.videos();
+
+  //   //   if (vids.length > 0 && !this.selectedVideo()) {
+  //   //     this.selectedVideo.set(vids[0]);
+  //   //   }
+  //   // });
+
+  //   effect(() => {
+  //     const vids = this.videos();
+  //     const completed = this.lessonsWatched() ?? 0;
+
+  //     if (!vids.length) return;
+
+  //     const nextVideo =
+  //       vids.find(v => (v.orderNo ?? 0) === completed + 1)
+  //       ?? vids[vids.length - 1];
+
+  //     this.selectedVideo.set(nextVideo);
+  //   });
+  // }
 
   playVideo() {
     const video = this.videoRef?.nativeElement;
 
     if (!video) return;
 
-    video.muted = true; // مهم للأوتوبلاي
+    video.muted = true;
     video.play().catch(() => {
       console.log('Autoplay prevented');
     });
@@ -235,41 +264,50 @@ export class VideosComponent {
     }
   }
   selectVideo(video: CourseVideo): void {
-    console.log('Attempting to select video:', video);
     const completed = this.lessonsWatched() ?? 0;
     const order = video.orderNo ?? 0;
 
-    if (order <= completed + 1) {
-      console.log('Video is unlocked, selecting:', video);
+    const isUnlocked = order <= completed + 1;
+
+    if (isUnlocked) {
       this.selectedVideo.set(video);
     } else {
-      console.log('Video is locked, selecting:', video);
-
       this.showLockedMessage();
+    }
+  }
+
+  onVideoEnded(): void {
+    const index = this.currentIndex();
+    const vids = this.videos();
+
+    if (index < vids.length - 1) {
+      this.playNext();
+      setTimeout(() => this.playVideo(), 0);
+    } else {
+      this.toasting.showToast('You completed the course 🎉', 'success');
+    }
+  }
+
+
+  onVideoPlay() {
+    const video = this.selectedVideo();
+    if (!video) return;
+
+    const order = video.orderNo ?? 0;
+    const completed = this.lessonsWatched() ?? 0;
+
+    if (order <= completed) return;
+
+    if (order === completed + 1) {
+      this.studentService.updateStudentProgress(order).subscribe();
     }
   }
 
   showLockedMessage(){
     this.toasting.showToast('Please watch previous lessons first.', 'warning');
-
   }
 
-  onVideoEnded(): void {
-    const current = this.selectedVideo();
-    if (!current) return;
 
-    const order = current.orderNo ?? 0;
-
-    this.studentService.updateStudentProgress(order + 1)
-      .pipe(
-        tap(() => this.playNext()),
-        catchError(() => {
-          this.toasting.showToast('Failed to save progress', 'error');
-          return EMPTY;
-        })
-      )
-      .subscribe();
-  }
 
   getDisplayName(video: CourseVideo): string {
     return this.isRTL()

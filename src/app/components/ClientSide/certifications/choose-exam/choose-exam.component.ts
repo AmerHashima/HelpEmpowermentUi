@@ -34,6 +34,7 @@ export class ChooseExamComponent {
   private loading=inject(LoadingService);
   showConfirm = false;
   showClearLessonLearned = false;
+  showMustLogin=false;
   examName = computed(() => this.shared.currentExam()?.examName);
 
   previousExamMode = computed(() => {
@@ -86,11 +87,13 @@ export class ChooseExamComponent {
 
   startExam(mode: 'Practice' | 'Exam') {
     if (!isPlatformBrowser(this.platformId)) return;
-
     const examId = this.shared.currentExamId();
     const exam = this.shared.currentExam();
     const freeExam = exam?.freeExam ?? false;
-    console.log('(this.shouldBlockExamStart(mode)) ', (this.shouldBlockExamStart(mode)));
+    if(freeExam && !this.auth.loggedStudent()){
+      this.showMustLogin=true;
+      return;
+    }
     if (this.shouldBlockExamStart(mode)) {
       this.showClearLessonLearned = true;
       return;
