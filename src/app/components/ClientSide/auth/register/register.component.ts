@@ -1,3 +1,4 @@
+import { NgForm } from '@angular/forms';
 // src\app\components\ClientSide\auth\register\register.component.ts
 import { Component, inject } from '@angular/core';
 import { Shared } from '../../../../shared/Services/shared/shared';
@@ -40,7 +41,13 @@ export class RegisterComponent {
     // terms: false
   };
 
-  onRegister() {
+  onRegister(form:NgForm) {
+
+    if (form.invalid) {
+      form.control.markAllAsTouched(); 
+      return;
+    }
+
     const payload = {
       nameEn: `${this.credentials.firstName} ${this.credentials.lastName}`,
       // nameAr: `${this.credentials.firstNameAr} ${this.credentials.lastNameAr}`,
