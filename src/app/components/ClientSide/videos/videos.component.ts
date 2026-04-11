@@ -192,28 +192,7 @@ export class VideosComponent {
       this.initialized = true;
     });
   }
-  // constructor() {
-  //   // effect(() => {
-  //   //   const vids = this.videos();
 
-  //   //   if (vids.length > 0 && !this.selectedVideo()) {
-  //   //     this.selectedVideo.set(vids[0]);
-  //   //   }
-  //   // });
-
-  //   effect(() => {
-  //     const vids = this.videos();
-  //     const completed = this.lessonsWatched() ?? 0;
-
-  //     if (!vids.length) return;
-
-  //     const nextVideo =
-  //       vids.find(v => (v.orderNo ?? 0) === completed + 1)
-  //       ?? vids[vids.length - 1];
-
-  //     this.selectedVideo.set(nextVideo);
-  //   });
-  // }
 
   playVideo() {
     const video = this.videoRef?.nativeElement;

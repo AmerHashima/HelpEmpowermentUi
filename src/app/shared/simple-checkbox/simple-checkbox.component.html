@@ -5,6 +5,7 @@
     [checked]="internalChecked()"
     (change)="onCheckboxChange($event)"
     class="custom-checkbox"
+    [disabled]="disabled()"
   />
   <label [htmlFor]="id()" class="checkbox-label">
     {{ label() }}

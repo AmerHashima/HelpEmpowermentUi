@@ -10,8 +10,8 @@ export class SimpleCheckboxComponent {
   id = input<string>('');
   label = input<string>('');
   checked = input<boolean>(false);
-  checkedChange = output<boolean>();         
-
+  checkedChange = output<boolean>();
+  disabled = input<boolean>(false);
   internalChecked = signal(false);
 
   constructor() {
