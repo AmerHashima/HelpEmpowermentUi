@@ -1,0 +1,58 @@
+.app-shell {
+    min-height: 100vh;
+    transition: filter 120ms ease;
+}
+
+.app-shell--blurred {
+    filter: blur(10px);
+    user-select: none;
+    pointer-events: none;
+}
+
+.screenshot-warning-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(15, 23, 42, 0.35);
+}
+
+.screenshot-warning-dialog {
+    width: min(420px, 100%);
+    padding: 24px;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 24px 60px rgba(15, 23, 42, 0.28);
+    text-align: center;
+}
+
+.screenshot-warning-dialog h2 {
+    margin: 0 0 12px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.screenshot-warning-dialog p {
+    margin: 0 0 20px;
+    color: #475569;
+}
+
+.screenshot-warning-button {
+    min-width: 120px;
+    padding: 10px 16px;
+    border: 0;
+    border-radius: 10px;
+    background: #b91c1c;
+    color: #ffffff;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.screenshot-warning-button:focus-visible {
+    outline: 3px solid rgba(185, 28, 28, 0.28);
+    outline-offset: 3px;
+}

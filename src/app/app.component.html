@@ -4,6 +4,30 @@
  <app-spinner/>
 }
 
-<router-outlet></router-outlet>
+<div class="app-shell" [class.app-shell--blurred]="screenshotWarningVisible">
+	<router-outlet></router-outlet>
+</div>
+
+@if (screenshotWarningVisible) {
+	<div class="screenshot-warning-backdrop" role="presentation">
+		<section
+			aria-labelledby="screenshot-warning-title"
+			aria-modal="true"
+			class="screenshot-warning-dialog"
+			role="alertdialog"
+		>
+			<h2 id="screenshot-warning-title">Screenshot Blocked</h2>
+			<p>Taking screenshots is not allowed on this page.</p>
+			<button
+				#screenshotDialogCloseButton
+				(click)="closeScreenshotWarning()"
+				class="screenshot-warning-button"
+				type="button"
+			>
+				OK
+			</button>
+		</section>
+	</div>
+}
 
 
