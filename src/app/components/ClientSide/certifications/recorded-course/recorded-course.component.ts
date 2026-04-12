@@ -25,9 +25,9 @@ import { CourseVideo } from '../../../../models/course-video';
 
 @Component({
   selector: 'app-recorded-course',
-  imports: [PageBannerComponent, SiteButtonComponent, StarRatingComponent, TranslateModule,NgIf,
+  imports: [PageBannerComponent, SiteButtonComponent, StarRatingComponent, TranslateModule, NgIf,
     TranslatePipe, NgIf, CoureseOutlineComponent, CoureseFeaturesComponent, CouresePlayerComponent,
-    CoureseContentComponent, ResourcesComponent, InstructorInfoComponent, TargetAudienceComponent,GenericModelComponent
+    CoureseContentComponent, ResourcesComponent, InstructorInfoComponent, TargetAudienceComponent, GenericModelComponent
   ],
   templateUrl: './recorded-course.component.html',
   styleUrl: './recorded-course.component.scss'
@@ -35,11 +35,11 @@ import { CourseVideo } from '../../../../models/course-video';
 export class RecordedCourseComponent {
   private shared = inject(Shared);
   private auth = inject(AuthService);
-  private cartService=inject(CartService);
-  private toasting=inject(ToastingMessagesService);
+  private cartService = inject(CartService);
+  private toasting = inject(ToastingMessagesService);
   isRTL = this.shared.isRtl;
-  showConfirm:boolean=false;
-  private studentService=inject(StudentService);
+  showConfirm: boolean = false;
+  private studentService = inject(StudentService);
   isEnrolled = this.studentService.isRecordedCoursesEnrolled;
   hasRecordedCourseAccess = computed(
     () => this.isEnrolled() || this.studentService.showExamSimulator === true
