@@ -222,8 +222,8 @@ export class ProfileComponent {
 
   navigateToCourseFeatue(key: string) {
     const courseName = this.course()?.courseName.toLowerCase();
-    if (key == "exam-simulator")
-      this.studentService.showExamSimulator = true;
+    //if (key == "exam-simulator")
+    this.studentService.showExamSimulator = true;
     this.router.navigate(['../../certifications/', courseName, key], {
 
 

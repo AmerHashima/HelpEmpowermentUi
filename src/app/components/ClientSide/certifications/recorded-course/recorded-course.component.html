@@ -1,6 +1,6 @@
 <div class="certification d-flex gap-5 flex-column py-5">
   <!-- Banner - shown only if not purchased -->
-  <ng-container *ngIf="!isEnrolled()">
+  <ng-container *ngIf="!hasRecordedCourseAccess()">
     <app-page-banner [isRTL]="isRTL()" [media]="true">
       <!-- Content projection -->
       <div content class="d-flex flex-column gap-3 pe-xl-5">
@@ -89,14 +89,14 @@
       />
     </app-page-banner>
   </ng-container>
-  <ng-container *ngIf="isEnrolled()">
+  <ng-container *ngIf="hasRecordedCourseAccess()">
     <app-course-player />
   </ng-container>
 
   <div class="container-fluid">
     <div class="row">
-      <div [class]="isEnrolled() ? 'col-lg-12' : 'col-lg-9'">
-        @if (!isEnrolled()) {
+      <div [class]="hasRecordedCourseAccess() ? 'col-lg-12' : 'col-lg-9'">
+        @if (!hasRecordedCourseAccess()) {
           <div class="row">
             <div class="col-12">
               <app-courese-outline />
@@ -107,22 +107,22 @@
         <div class="col-12">
           <app-courese-content  [videos]="videos()"/>
         </div>
-        @if (isEnrolled()) {
+        @if (hasRecordedCourseAccess()) {
           <div class="col-12">
             <app-resources />
           </div>
         }
-        @if (!isEnrolled()) {
+        @if (!hasRecordedCourseAccess()) {
           <div class="col-12">
             <app-instructor-info />
           </div>
         }
       </div>
-      @if (!isEnrolled()) {
+      @if (!hasRecordedCourseAccess()) {
         <div class="col-lg-3">
           <div class="row">
             <div class="col-12">
-              <app-courese-features [isEnrolled]="isEnrolled()" />
+              <app-courese-features [isEnrolled]="hasRecordedCourseAccess()" />
             </div>
           </div>
           <div class="col-12">

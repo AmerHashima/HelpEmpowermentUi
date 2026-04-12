@@ -41,6 +41,9 @@ export class RecordedCourseComponent {
   showConfirm:boolean=false;
   private studentService=inject(StudentService);
   isEnrolled = this.studentService.isRecordedCoursesEnrolled;
+  hasRecordedCourseAccess = computed(
+    () => this.isEnrolled() || this.studentService.showExamSimulator === true
+  );
   enrollImage = 'assets/images/enroll.png';
   recoedImage = "assets/images/recordedCourse.jpeg";
 
