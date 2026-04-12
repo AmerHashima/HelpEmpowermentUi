@@ -74,6 +74,11 @@
       <h2 class="question-text">
         {{ question().questionText }}
       </h2>
+      @if (questionImageUrl()) {
+        <div class="question-image-wrapper my-2">
+          <img [src]="questionImageUrl()!" alt="Question image" class="img-fluid rounded" style="max-height: 300px; object-fit: contain;" />
+        </div>
+      }
 
       @if (!isMatchingQuestion) {
         <div class="options">

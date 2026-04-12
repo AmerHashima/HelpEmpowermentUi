@@ -1,7 +1,7 @@
 // src\app\Services\certification.service.ts
 import { Injectable } from '@angular/core';
 import ApiService from '../shared/Services/ApiService/api.service';
-import { map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { ApiResponse, ApiSearchResponse } from '../models/apiResponse';
 import { APICertification, APICourseQuestion, APIExam, Certification, courseExam } from '../models/certification';
@@ -485,6 +485,38 @@ export class CertificationService {
           return response.data;
         })
       );
+  }
+
+  // Question image
+  uploadQuestionImage(id: string, image: File): Observable<any> {
+    return this.apiService
+      .uploadImage<ApiResponse<any>>('CourseQuestions', id, image)
+      .pipe(
+        map((response: ApiResponse<any>) => {
+          if (!response.success) {
+            const msg = response.errors?.join(', ') || response.message || 'Failed to upload image';
+            throw new Error(msg);
+          }
+          return response.data;
+        })
+      );
+  }
+
+  getQuestionImageUrl(id: string): string {
+    return this.apiService.getImageUrl('CourseQuestions', id);
+  }
+
+  checkQuestionImage(id: string): Observable<string | null> {
+    return this.apiService.getImage('CourseQuestions', id).pipe(
+      map((blob: Blob) => (blob && blob.size > 0 ? URL.createObjectURL(blob) : null)),
+      catchError(() => of(null))
+    );
+  }
+
+  deleteQuestionImage(id: string): Observable<string | null> {
+    return this.apiService.deleteImage('CourseQuestions', id).pipe(
+      catchError(() => of(null))
+    );
   }
 
 

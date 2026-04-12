@@ -47,7 +47,7 @@ export interface courseExam {
   orderNo?: number,
   isActive: boolean,
   createdBy: string,
-  freeExam:boolean
+  freeExam: boolean
 }
 
 export interface APIExam {
@@ -68,7 +68,7 @@ export interface APIExam {
   createdBy: string,
   updatedAt: string,
   updatedBy: string,
-  freeExam:boolean
+  freeExam: boolean
 }
 export interface courseQuestion {
   oid?: string,
@@ -77,6 +77,7 @@ export interface courseQuestion {
   questionText_Ar: string,
   questionTypeLookupId: string,
   questionExplination: string,
+  questionImage?: string,
   questionScore: number,
   questionTypeName?: any,
   orderNo: number,
@@ -102,32 +103,32 @@ export interface courseAnswer {
   updatedBy?: string
 }
 
-export interface startStudentExam{
+export interface startStudentExam {
   // studentOid: string ,
 
   studentOid: string | null,
-coursesMasterExamOid: string,
+  coursesMasterExamOid: string,
   attemptNo: number,
-    createdBy: string| null,
+  createdBy: string | null,
   // createdBy: string
 
 }
 
 export interface APIStudentExamResponse {
-  oid:string,
+  oid: string,
   studentOid: string,
-  studentName:string,
+  studentName: string,
   coursesMasterExamOid: string,
   examName: string,
-  totalScore:number
+  totalScore: number
   attemptNo: number,
-  obtainedScore:number,
-  passPercent:number,
-  isPassed:boolean,
-  examStatusLookupId:string,
-  examModeLookupId:string,
-  examModeName:string,
-  examStatusName:string,
+  obtainedScore: number,
+  passPercent: number,
+  isPassed: boolean,
+  examStatusLookupId: string,
+  examModeLookupId: string,
+  examModeName: string,
+  examStatusName: string,
   startedAt: string | null;
   finishedAt: string | null;
   createdAt: string | null;
@@ -136,19 +137,19 @@ export interface APIStudentExamResponse {
   updatedBy: string,
   examQuestions: APIStudentExamQuestion[]
   statusSummary: StatusSummary[],
-  summary?:{
-    correct:number,
-    incorrect:number,
-    notAnswered:number
+  summary?: {
+    correct: number,
+    incorrect: number,
+    notAnswered: number
   }
 }
 
-export interface ExamSummary{
+export interface ExamSummary {
   studentId: string,
   masrterExamId: string
 }
 
-export interface APIExamSummary{
+export interface APIExamSummary {
   studentExamOid: string,
   studentOid: string,
   studentName: string,
@@ -158,28 +159,28 @@ export interface APIExamSummary{
   obtainedScore: number,
   percentage: number,
   isPassed: boolean,
-  startedAt:string,
-  examStatusLookupId:string,
+  startedAt: string,
+  examStatusLookupId: string,
   finishedAt: string,
   totalQuestions: number,
   examModeLookupId: string,
   examModeName: string,
   statusSummary: StatusSummary[]
 }
-export interface StatusSummary{
+export interface StatusSummary {
   questionStatusLookupId: string,
-    statusName: string,
-      count: number,
-        percentage: number
+  statusName: string,
+  count: number,
+  percentage: number
 }
 
-export interface StudentExamQuestion{
+export interface StudentExamQuestion {
   studentExamOid: string,
   questionOid: string,
   selectedAnswerOid: string,
   createdBy: string
 }
-export interface APIStudentExamQuestion{
+export interface APIStudentExamQuestion {
   oid: string,
   studentExamOid: string,
   questionOid: string,
@@ -195,10 +196,10 @@ export interface APIStudentExamQuestion{
   updatedBy: string
 }
 
-export interface submitStudentExam{
+export interface submitStudentExam {
   studentExamOid: string,
   answers: any[],
-  updatedBy:string
+  updatedBy: string
 }
 
 
@@ -212,6 +213,7 @@ export interface APICourseQuestion {
   questionTypeLookupId: string,
   questionTypeName: string,
   questionExplination: string,
+  questionImage?: string,
   questionScore: number,
   orderNo: number,
   isActive: boolean,
@@ -241,17 +243,17 @@ export interface APIAnswer {
   updatedBy: string
 }
 
-export interface matchingQuestionExamSubmit{
+export interface matchingQuestionExamSubmit {
 
   studentExamOid: string,
-    questionOid: string,
-      answers: [
-        {
-          selectedAnswerOid: string,
-          answerSelectedAnswerOid: string
-        }
-      ],
-        createdBy: string
+  questionOid: string,
+  answers: [
+    {
+      selectedAnswerOid: string,
+      answerSelectedAnswerOid: string
+    }
+  ],
+  createdBy: string
 
 }
 

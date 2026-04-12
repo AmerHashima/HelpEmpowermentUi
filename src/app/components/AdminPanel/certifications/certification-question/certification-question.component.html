@@ -86,16 +86,52 @@
           ></app-textarea>
         </div>
         <div class="col-12">
-          <div class="upload">
-            <div class="">
-              <label for="">Attachments</label>
-              <app-file-upload
-                formControlName="files"
-                [multiple]="false"
-                [label]="'Upload Files' | translate"
-              ></app-file-upload>
+          @if (questionImageUrl()) {
+            <div class="mb-2">
+              <label class="form-label fw-semibold">Current Image</label>
+              <div class="position-relative d-inline-block">
+                <img
+                  [src]="questionImageUrl()!"
+                  alt="Question image"
+                  class="img-thumbnail d-block"
+                  style="max-width: 200px; max-height: 150px; object-fit: contain;"
+                />
+                @if (imageUploading()) {
+                  <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-white bg-opacity-75 rounded">
+                    <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
+                  </div>
+                }
+              </div>
+              <div class="mt-1">
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-danger"
+                  [disabled]="imageUploading()"
+                  (click)="onDeleteImage(imageInput)"
+                >
+                  <i class="bi bi-trash me-1"></i>Delete Image
+                </button>
+              </div>
             </div>
+          }
+          <div class="">
+            <label class="form-label">{{ questionImageUrl() ? 'Change Image' : 'Upload Image' }}</label>
+            <input
+              #imageInput
+              type="file"
+              class="form-control"
+              accept="image/jpeg,image/png,image/gif,image/webp"
+              (change)="onImageSelected($event)"
+            />
+            @if (selectedImageFile()) {
+              <small class="text-muted mt-1 d-block">{{ selectedImageFile()!.name }}</small>
+            }
           </div>
+          @if (!editMode) {
+            <small class="text-info mt-1 d-block">
+              <i class="bi bi-info-circle me-1"></i>Image will be uploaded after the question is saved.
+            </small>
+          }
         </div>
         <div class="col-12 col-md-4">
           <app-input
