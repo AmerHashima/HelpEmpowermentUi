@@ -15,6 +15,7 @@ import { StudentService } from '../../../../Services/student-service.service';
 import { APIStudentCourse } from '../../../../models/student-course';
 import { StudentExamService } from '../../../../Services/student-exam.service';
 import { APIStudent } from '../../../../models/student';
+import { createdUpdatedOID } from '../../../../data/lookUPS';
 @Component({
   selector: 'app-profile',
   standalone: true,
@@ -83,7 +84,7 @@ export class ProfileComponent {
           email: user.email || '',
           mobile: user.mobile || '',
         };
-        
+
       }
     })
   }
@@ -169,7 +170,9 @@ export class ProfileComponent {
       mobile: this.credentials.mobile,
       username: this.credentials.username,
       isActive: true,
-      updatedBy: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+      updatedBy: createdUpdatedOID
+
+      // updatedBy: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
     };
 
     console.log('payload',payload);
@@ -203,7 +206,9 @@ export class ProfileComponent {
       newPassword: this.changePasswordForm.newPassword,
       confirmPassword: this.changePasswordForm.confirmPassword,
       userId: this.authService.loggedStudent()?.userId!,
-      updatedBy: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+      // updatedBy: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+      updatedBy: createdUpdatedOID
+
     };
 
     this.authService.changeStudentPassword(payload).subscribe({

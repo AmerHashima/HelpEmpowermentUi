@@ -7,7 +7,7 @@ import { InputComponent } from '../../../../shared/input/input.component';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { Shared } from '../../../../shared/Services/shared/shared';
 import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/site-button.component';
-import { FormsModule, NgControl } from '@angular/forms';
+import { FormsModule, NgControl, NgForm } from '@angular/forms';
 import { CheckboxComponent } from '../../../../shared/checkbox/checkbox.component';
 import { AuthService } from '../../../../Services/auth.service';
 import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
@@ -43,13 +43,27 @@ export class LoginComponent {
     // rememberMe: false
   };
 
-  onLoginSubmit() {
+  onLoginSubmit(form:NgForm) {
+    if (form.invalid) {
+      form.control.markAllAsTouched();
+      return;
+    }
+
     this.auth.loginStudent(this.credentials).subscribe({
       next: () => {
         // this.toasting.showToast('User has logged suffccessfully', 'success');
         this.router.navigateByUrl(`/${this.lang()}/home`);
       },
-      error: () => this.toasting.showToast('auth.loginToast.error', 'error')
+      error: (err) => {
+
+        const apiMessage =
+          err?.error?.message ||
+          err?.error?.errors?.[0] ||
+          'auth.loginToast.error';
+
+        this.toasting.showToast(apiMessage, 'error');
+      }
+      // error: () => this.toasting.showToast('auth.loginToast.error', 'error')
     })
   }
 

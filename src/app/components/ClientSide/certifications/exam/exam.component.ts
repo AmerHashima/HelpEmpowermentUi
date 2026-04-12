@@ -14,6 +14,7 @@ import { ToastingMessagesService } from '../../../../shared/Services/ToastingMes
 import { NoQuestionComponent } from '../no-question/no-question.component';
 import { SpinnerComponent } from '../../../../shared/spinner/spinner.component';
 import { LoadingService } from '../../../../shared/Services/Loading/loading.service';
+import { createdUpdatedOID } from '../../../../data/lookUPS';
 
 
 @Component({
@@ -246,7 +247,9 @@ export class ExamComponent {
     const payload: submitStudentExam = {
       studentExamOid: this.shared.studentExamId(),
       answers: [],
-      updatedBy: '3fa85f64-5717-4562-b3fc-2c963f66afa6'
+            updatedBy: createdUpdatedOID
+
+      // updatedBy: '3fa85f64-5717-4562-b3fc-2c963f66afa6'
     }
 
     if (end && this.isBrowser) {
@@ -282,7 +285,9 @@ export class ExamComponent {
     const payload: submitStudentExam = {
       studentExamOid: this.shared.studentExamId(),
       answers: [],
-      updatedBy: '3fa85f64-5717-4562-b3fc-2c963f66afa6'
+      updatedBy: createdUpdatedOID
+
+      // updatedBy: '3fa85f64-5717-4562-b3fc-2c963f66afa6'
     }
 
     if (this.isBrowser) {
@@ -576,7 +581,9 @@ export class ExamComponent {
     const payload: choiceQuestionExamSubmit = {
       studentExamOid: this.shared.studentExamId(),
       questions: [answers],
-      createdBy: '3fa85f64-5717-4562-b3fc-2c963f66afa6'
+      createdBy: createdUpdatedOID
+
+      // createdBy: '3fa85f64-5717-4562-b3fc-2c963f66afa6'
     }
     return payload
   }
@@ -586,7 +593,8 @@ export class ExamComponent {
       studentExamOid: this.shared.studentExamId(),
       questionOid: this.currentQuestion()?.oid,
       answers: answers,
-      createdBy: '3fa85f64-5717-4562-b3fc-2c963f66afa6'
+      createdBy: createdUpdatedOID
+      // createdBy: '3fa85f64-5717-4562-b3fc-2c963f66afa6'
 
     };
     return payload;

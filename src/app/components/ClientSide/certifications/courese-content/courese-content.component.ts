@@ -3,6 +3,8 @@ import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { AccordionComponent } from '../../../../shared/accordion/accordion.component';
 import { SimpleCheckboxComponent } from '../../../../shared/simple-checkbox/simple-checkbox.component';
 import { Shared } from '../../../../shared/Services/shared/shared';
+import { CourseVideo } from '../../../../models/course-video';
+import { StudentService } from '../../../../Services/student-service.service';
 
 interface CourseItem {
   title: string;
@@ -20,33 +22,62 @@ interface CourseItem {
 })
 export class CoureseContentComponent {
   private shared = inject(Shared);
+  private studentService=inject(StudentService);
+  lessonsWatched=this.studentService.completedLessonsInCourse;
+  isRTL=this.shared.isRtl;
+  videos=input<CourseVideo[]>([]);
   certification = this.shared.currentCertificate;
   // input array of lessons
 
+  // courseCon = computed(() => {
+  //   return [
+  //     { title: 'courseCon.session1.title', duration: 'courseCon.session1.duration' },
+  //     { title: 'courseCon.session2.title', duration: 'courseCon.session2.duration' },
+  //     { title: 'courseCon.session3.title', duration: 'courseCon.session3.duration' },
+  //     { title: 'courseCon.session4.title', duration: 'courseCon.session4.duration' },
+  //     { title: 'courseCon.session5.title', duration: 'courseCon.session5.duration' },
+  //     { title: 'courseCon.session6.title', duration: 'courseCon.session6.duration' },
+  //     { title: 'courseCon.session7.title', duration: 'courseCon.session7.duration' },
+  //     { title: 'courseCon.session8.title', duration: 'courseCon.session8.duration' },
+  //     { title: 'courseCon.session9.title', duration: 'courseCon.session9.duration' },
+  //     { title: 'courseCon.session10.title', duration: 'courseCon.session10.duration' },
+  //     { title: 'courseCon.session11.title', duration: 'courseCon.session11.duration' },
+  //     { title: 'courseCon.session12.title', duration: 'courseCon.session12.duration' },
+  //     { title: 'courseCon.session13.title', duration: 'courseCon.session13.duration' },
+  //     { title: 'courseCon.session14.title', duration: 'courseCon.session14.duration' },
+  //     { title: 'courseCon.session15.title', duration: 'courseCon.session15.duration' },
+  //     { title: 'courseCon.session16.title', duration: 'courseCon.session16.duration' },
+  //     { title: 'courseCon.session17.title', duration: 'courseCon.session17.duration' },
+  //     { title: 'courseCon.session18.title', duration: 'courseCon.session18.duration' },
+  //     { title: 'courseCon.session19.title', duration: 'courseCon.session19.duration' },
+  //     { title: 'courseCon.session20.title', duration: 'courseCon.session20.duration' }
+  //   ];
+  // });
+
   courseCon = computed(() => {
-    return [
-      { title: 'courseCon.session1.title', duration: 'courseCon.session1.duration' },
-      { title: 'courseCon.session2.title', duration: 'courseCon.session2.duration' },
-      { title: 'courseCon.session3.title', duration: 'courseCon.session3.duration' },
-      { title: 'courseCon.session4.title', duration: 'courseCon.session4.duration' },
-      { title: 'courseCon.session5.title', duration: 'courseCon.session5.duration' },
-      { title: 'courseCon.session6.title', duration: 'courseCon.session6.duration' },
-      { title: 'courseCon.session7.title', duration: 'courseCon.session7.duration' },
-      { title: 'courseCon.session8.title', duration: 'courseCon.session8.duration' },
-      { title: 'courseCon.session9.title', duration: 'courseCon.session9.duration' },
-      { title: 'courseCon.session10.title', duration: 'courseCon.session10.duration' },
-      { title: 'courseCon.session11.title', duration: 'courseCon.session11.duration' },
-      { title: 'courseCon.session12.title', duration: 'courseCon.session12.duration' },
-      { title: 'courseCon.session13.title', duration: 'courseCon.session13.duration' },
-      { title: 'courseCon.session14.title', duration: 'courseCon.session14.duration' },
-      { title: 'courseCon.session15.title', duration: 'courseCon.session15.duration' },
-      { title: 'courseCon.session16.title', duration: 'courseCon.session16.duration' },
-      { title: 'courseCon.session17.title', duration: 'courseCon.session17.duration' },
-      { title: 'courseCon.session18.title', duration: 'courseCon.session18.duration' },
-      { title: 'courseCon.session19.title', duration: 'courseCon.session19.duration' },
-      { title: 'courseCon.session20.title', duration: 'courseCon.session20.duration' }
-    ];
+    return (this.videos() ?? [])
+      .sort((a, b) => (a.orderNo ?? 0) - (b.orderNo ?? 0))
+      .map(video => ({
+        title: this.getDisplayName(video),
+        duration: this.formatDuration(video.durationSeconds),
+        order: video.orderNo ?? 0,
+      }));
   });
+
+  getDisplayName(video: any): string {
+    return this.isRTL()
+      ? (video.nameAr || video.nameEn)
+      : (video.nameEn || video.nameAr);
+  }
+
+  formatDuration(seconds: number | null): string {
+    if (!seconds) return '';
+
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  }
   // signal to store checkbox states
   checkedState = signal<Record<string, boolean>>({});
 
@@ -70,14 +101,11 @@ export class CoureseContentComponent {
     return title.replace(/[^a-zA-Z0-9_]/g, '_');
   }
 
-  // called when checkbox changes
-  onCheckboxChange(safeName: string, checked: boolean) {
-    console.log(checked);
-    this.checkedState.update(prev => ({
-      ...prev,
-      [safeName]: checked
-    }));
-  }
 
+
+  isChecked(order: number): boolean {
+    const completed = this.lessonsWatched() ?? 0;
+    return order <= completed;
+  }
   readonly accordionTitle = 'Course Content';
 }

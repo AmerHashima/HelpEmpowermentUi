@@ -15,6 +15,7 @@ import { TranslateService } from '../../../Services/translate.service';
 import { forkJoin } from 'rxjs';
 import { ContactUsService } from '../../../Services/contact-us.service';
 import { GenericModelComponent } from '../../../shared/generic-model/generic-model.component';
+import { ToastingMessagesService } from '../../../shared/Services/ToastingMessages/toasting-messages.service';
 interface ContactInfo {
   icon: string;
   header: string;
@@ -35,6 +36,7 @@ export class ContactComponent {
   private auth = inject(AuthService);
   private contactService = inject(ContactUsService);
   private translationService = inject(TranslateService);
+  private toasting=inject(ToastingMessagesService);
   student = this.auth.loggedStudent;
   isRTL = this.shared.isRtl;
   showConfirm: boolean = false;
@@ -116,9 +118,18 @@ export class ContactComponent {
           next: () => {
             form.resetForm();
           },
-          error: () => {
-            console.error('Error sending message');
-          }
+          error: (err) => {
+
+            const apiMessage =
+              err?.error?.message ||
+              err?.error?.errors?.[0] ||
+              'contact.error.sendMessage';
+
+            this.toasting.showToast(apiMessage, 'error');
+          },
+          // error: () => {
+          //   console.error('Error sending message');
+          // }
         });
 
       });

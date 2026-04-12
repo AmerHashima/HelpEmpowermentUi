@@ -9,6 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 import { BreadcrumbService } from '../../../../Services/breadcrumb.service';
 import { courseExam } from '../../../../models/certification';
 import { Location } from '@angular/common';
+import { createdUpdatedOID } from '../../../../data/lookUPS';
 
 @Component({
   selector: 'app-edit-exam',
@@ -25,9 +26,14 @@ export class EditExamComponent {
   private breadcrumbService = inject(BreadcrumbService);
 
   fb = inject(FormBuilder);
-  users = [
-    { label: 'Ahmed Ali', value: '3fa85f64-5717-4562-b3fc-2c963f66afa6' },
-  ];
+  // users = [
+  //   { label: 'Ahmed Ali', value: '3fa85f64-5717-4562-b3fc-2c963f66afa6' },
+  // ];
+
+    users = [
+      { label: 'Ahmed Ali', value: createdUpdatedOID },
+
+    ];
 
   status = [
     { label: 'Active', value: true },

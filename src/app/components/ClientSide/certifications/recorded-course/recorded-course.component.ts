@@ -18,6 +18,10 @@ import { CartService } from '../../../../Services/  cart.service';
 import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
 import { GenericModelComponent } from '../../../../shared/generic-model/generic-model.component';
 import { StudentService } from '../../../../Services/student-service.service';
+import { CourseVideosService } from '../../../../Services/course-videos.service';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { catchError, distinctUntilChanged, map, of, startWith, switchMap } from 'rxjs';
+import { CourseVideo } from '../../../../models/course-video';
 
 @Component({
   selector: 'app-recorded-course',
@@ -52,6 +56,52 @@ export class RecordedCourseComponent {
     };
   });
 
+  private courseVideosService = inject(CourseVideosService);
+  certification = this.shared.currentCertificationObject;
+
+  videosState = toSignal(
+    toObservable(this.certification).pipe(
+      distinctUntilChanged((a, b) => a?.oid === b?.oid),
+      switchMap(cert => {
+        if (!cert?.oid) {
+          return of({
+            data: [] as CourseVideo[],
+            loading: false,
+            error: 'No certification selected'
+          });
+        }
+
+        return this.courseVideosService.getAllVideos(cert.oid).pipe(
+          map(data => ({
+            data,
+            loading: false,
+            error: null as string | null
+          })),
+          startWith({
+            data: [] as CourseVideo[],
+            loading: true,
+            error: null
+          }),
+          catchError(() =>
+            of({
+              data: [],
+              loading: false,
+              error: 'Failed to load videos'
+            })
+          )
+        );
+      })
+    ),
+    {
+      initialValue: {
+        data: [] as CourseVideo[],
+        loading: true,
+        error: null as string | null
+      }
+    }
+  );
+
+  videos = computed(() => this.videosState().data);
 
   buyNow() {
     // Implement buy logic (e.g. open checkout, call service, etc.)

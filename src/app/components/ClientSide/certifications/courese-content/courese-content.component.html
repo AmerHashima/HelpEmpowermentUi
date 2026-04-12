@@ -1,11 +1,10 @@
 <div class="w-100">
   <app-accordion [title]="accordionTitle">
     <div class="courseInnerContent d-flex flex-column gap-2">
-      @for (item of courseCon(); let i = $index; track item) {
+      <!-- @for (item of courseCon(); let i = $index; track item) {
         <div
           class="d-flex align-items-center justify-content-between gap-1 course-item"
         >
-          <!-- Checkbox + Title -->
           <div class="d-flex align-items-center gap-1">
             <app-simple-checkbox
               [id]="getSafeName(item.title)"
@@ -17,11 +16,34 @@
             />
           </div>
 
-          <!-- Duration -->
           <div class="d-flex align-items-center gap-2 courseDuration">
             <i class="bi bi-camera-video"></i>
             <span>{{ item.duration | translate}}</span>
           </div>
+        </div>
+      } -->
+      @for (item of courseCon(); let i = $index; track item.order) {
+        <div
+          class="d-flex align-items-center justify-content-between gap-1 course-item"
+        >
+          <div class="d-flex align-items-center gap-1">
+            <app-simple-checkbox
+              [id]="getSafeName(item.title)"
+              [label]="item.title"
+              [checked]="isChecked(item.order)"
+              [disabled]="true"
+            />
+          </div>
+
+          <div class="d-flex align-items-center gap-2 courseDuration">
+            <i class="bi bi-camera-video"></i>
+            <span>{{ item.duration }}</span>
+          </div>
+        </div>
+      } @empty {
+        <div class="empty-course text-center">
+          <i class="bi bi-camera-video-off"></i>
+          <p class="w-100">{{"courseContent.empty" | translate}}</p>
         </div>
       }
     </div>

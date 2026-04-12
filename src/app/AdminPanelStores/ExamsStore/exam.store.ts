@@ -143,7 +143,6 @@ export const ExamsStore = signalStore(
   withHooks({
     onInit(store) {
       const certificationsStore = inject(CertificationsStore);
-
       effect(() => {
         const certification = certificationsStore.selectedCertification();
         if (certification?.oid) {

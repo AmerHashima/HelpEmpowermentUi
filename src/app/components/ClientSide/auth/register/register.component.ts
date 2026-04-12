@@ -1,3 +1,4 @@
+import { NgForm } from '@angular/forms';
 // src\app\components\ClientSide\auth\register\register.component.ts
 import { Component, inject } from '@angular/core';
 import { Shared } from '../../../../shared/Services/shared/shared';
@@ -40,7 +41,13 @@ export class RegisterComponent {
     // terms: false
   };
 
-  onRegister() {
+  onRegister(form:NgForm) {
+
+    if (form.invalid) {
+      form.control.markAllAsTouched(); 
+      return;
+    }
+
     const payload = {
       nameEn: `${this.credentials.firstName} ${this.credentials.lastName}`,
       // nameAr: `${this.credentials.firstNameAr} ${this.credentials.lastNameAr}`,
@@ -58,7 +65,16 @@ export class RegisterComponent {
       next: ()=> {
         // this.toasting.showToast('Account created suffccessfully please login','success');
         this.router.navigateByUrl(`/${this.lang()}/auth/login`);},
-      error: () => this.toasting.showToast('auth.register.error', 'error')
+      error: (err) => {
+
+        const apiMessage =
+          err?.error?.message ||
+          err?.error?.errors?.[0] ||
+          'auth.register.error';
+
+        this.toasting.showToast(apiMessage, 'error');
+      }
+      // error: (e) => {console.log('errot',e);this.toasting.showToast('auth.register.error', 'error');}
     })
   }
 }

@@ -8,6 +8,7 @@ import { APIExamSummary, APIStudentExamResponse, choiceQuestionExamSubmit, ExamS
 import { RequestBody } from '../models/rquest';
 import { AuthService } from './auth.service';
 import { Shared } from '../shared/Services/shared/shared';
+import { clearedExamStatusOid, createdUpdatedOID } from '../data/lookUPS';
 
 @Injectable({
   providedIn: 'root'
@@ -382,17 +383,18 @@ export class StudentExamService {
     }
 
     getExamPayload(report: APIExamSummary) {
-
       const payload = {
         oid: report.studentExamOid,
         totalScore: report.totalScore,
         obtainedScore: report.obtainedScore,
         passPercent: report.percentage != null ? Math.round(report.percentage) : null,
         isPassed: report.isPassed,
-        examStatusLookupId: "12516b05-9d35-4499-9122-9561dfb4a9ce",
+        // examStatusLookupId: "12516b05-9d35-4499-9122-9561dfb4a9ce",
+        examStatusLookupId: clearedExamStatusOid,
         examModeLookupId: report.examModeLookupId,
         finishedAt: report.finishedAt,
-        updatedBy: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+        // updatedBy: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+        updatedBy: createdUpdatedOID
       }
 
       return payload;

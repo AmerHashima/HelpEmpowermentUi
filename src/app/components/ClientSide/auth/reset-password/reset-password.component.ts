@@ -6,6 +6,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { NgIf } from '@angular/common';
 import { InputComponent } from '../../../../shared/input/input.component';
 import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/site-button.component';
+import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
 @Component({
   selector: 'app-reset-password',
   standalone: true,
@@ -17,6 +18,7 @@ export class ResetPasswordComponent {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private auth = inject(AuthService);
+  private toasting = inject(ToastingMessagesService);
 
   email = '';
   tempToken = ''; // optional if backend uses it
@@ -69,9 +71,18 @@ export class ResetPasswordComponent {
           this.router.navigate([`/${'en'}/auth/login`]);
         }, 2000);
       },
-      error: () => {
-        this.errorMessage = 'resetPassword.error';
+      error: (err) => {
+
+        const apiMessage =
+          err?.error?.message ||
+          err?.error?.errors?.[0] ||
+          'resetPassword.error';
+
+        this.toasting.showToast(apiMessage, 'error');
       },
+      // error: () => {
+      //   this.errorMessage = 'resetPassword.error';
+      // },
       complete: () => {
         this.isLoading = false;
       }

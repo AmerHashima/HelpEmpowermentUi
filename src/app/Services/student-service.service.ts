@@ -28,8 +28,8 @@ export class StudentService {
   );
 
   isRecordedCoursesEnrolled = computed(() =>
-    true
-    // !!this.currentCourse()?.recordedCourseReserv
+    // true
+    !!this.currentCourse()?.recordedCourseReserv
   );
 
   isLiveCourseEnrolled = computed(() =>
@@ -45,11 +45,16 @@ export class StudentService {
   constructor(private apiService: ApiService, private auth: AuthService, private shared: Shared) {
     effect(() => {
       const studentId = this.auth.loggedStudent()?.userId
-      if (!studentId) return;
+      if (!studentId)  {
+        this.enrolledCourses.set([]);
+        return;
+      }
       this.getAllStudentEnrolledCourses(studentId).subscribe({
         next: (courses) => { console.log('this.enrollCourse',courses);this.enrolledCourses.set(courses) }
       });
     })
+
+    effect(() => console.log(this.currentCourse()));
 
 
   }
@@ -306,17 +311,29 @@ export class StudentService {
        completedLessons: completedLessons,
        totalLessons:this.totalLessonsInCourse()
      }
+     console.log('currentCourse',this.currentCourse());
     console.log('totalLessosn(', this.totalLessonsInCourse());
-    const studentId = this.auth.loggedStudent()?.userId!
+    const studentCourseId = this.currentCourse()?.oid;
+    // const studentId = this.auth.loggedStudent()?.userId!
     return this.apiService
-      .put<ApiResponse<APIStudentCourse>>('StudentCourses', studentId, body, 'student.progress.update', 'progress')
+      // .put<ApiResponse<APIStudentCourse>>('StudentCourses', studentId, body, 'student.progress.update', 'progress')
+      .put<ApiResponse<APIStudentCourse>>('StudentCourses', studentCourseId!, body, 'student.progress.update', 'progress')
       .pipe(
         map((response: ApiResponse<APIStudentCourse>) => {
           if (!response.success) {
             const msg = response.errors?.join(', ') || response.message || 'API failed to update progress info';
             throw new Error(msg);
           }
-          return response.data;
+          const updatedCourse = response.data;
+
+          this.enrolledCourses.update((courses) =>
+            courses.map(c =>
+              c.oid === updatedCourse.oid ? updatedCourse : c
+            )
+          );
+
+          return updatedCourse;
+          // return response.data;
         })
       );
   }

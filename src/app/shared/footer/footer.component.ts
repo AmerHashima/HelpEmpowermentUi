@@ -17,7 +17,7 @@ export class FooterComponent {
   footerImage=computed(()=> {
     if(this.shared.theme() == 'light')
       return 'assets/images/footer/footer.png';
-    else return 'assets/images/footer/dark-footer.jpeg'
+    else return 'assets/images/footer/dark-footer.png'
   })
 }
 

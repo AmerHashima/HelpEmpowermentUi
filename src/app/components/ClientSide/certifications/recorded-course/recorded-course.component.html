@@ -95,34 +95,41 @@
 
   <div class="container-fluid">
     <div class="row">
-      <div class="col-lg-9">
-        <div class="row">
-          <div class="col-12">
-            <app-courese-outline />
+      <div [class]="isEnrolled() ? 'col-lg-12' : 'col-lg-9'">
+        @if (!isEnrolled()) {
+          <div class="row">
+            <div class="col-12">
+              <app-courese-outline />
+            </div>
           </div>
-        </div>
+        }
+
         <div class="col-12">
-          <app-courese-content />
+          <app-courese-content  [videos]="videos()"/>
         </div>
         @if (isEnrolled()) {
           <div class="col-12">
             <app-resources />
           </div>
         }
-        <div class="col-12">
-          <app-instructor-info />
-        </div>
-      </div>
-      <div class="col-lg-3">
-        <div class="row">
+        @if (!isEnrolled()) {
           <div class="col-12">
-            <app-courese-features [isEnrolled]="isEnrolled()" />
+            <app-instructor-info />
+          </div>
+        }
+      </div>
+      @if (!isEnrolled()) {
+        <div class="col-lg-3">
+          <div class="row">
+            <div class="col-12">
+              <app-courese-features [isEnrolled]="isEnrolled()" />
+            </div>
+          </div>
+          <div class="col-12">
+            <app-target-audience />
           </div>
         </div>
-        <div class="col-12">
-          <app-target-audience />
-        </div>
-      </div>
+      }
     </div>
   </div>
 </div>

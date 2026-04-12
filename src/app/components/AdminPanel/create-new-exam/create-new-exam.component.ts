@@ -11,6 +11,7 @@ import { CertificationsStore } from '../../../AdminPanelStores/CertificationStor
 import { ActivatedRoute } from '@angular/router';
 import { ExamsStore } from '../../../AdminPanelStores/ExamsStore/exam.store';
 import { BreadcrumbService } from '../../../Services/breadcrumb.service';
+import { createdUpdatedOID } from '../../../data/lookUPS';
 
 
 @Component({
@@ -36,9 +37,13 @@ export class CreateNewExamComponent {
 
   // courseCategories$ = this.certificationService.getCourseCategories();
 
-  users = [
-    { label: 'Ahmed Ali', value: '3fa85f64-5717-4562-b3fc-2c963f66afa6' },
-  ];
+  // users = [
+  //   { label: 'Ahmed Ali', value: '3fa85f64-5717-4562-b3fc-2c963f66afa6' },
+  // ];
+    users = [
+      { label: 'Ahmed Ali', value: createdUpdatedOID },
+
+    ];
 
   status = [
     { label: 'Active', value: true },

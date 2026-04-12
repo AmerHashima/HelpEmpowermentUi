@@ -6,6 +6,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/site-button.component';
 import { InputComponent } from '../../../../shared/input/input.component';
 import { AuthService } from '../../../../Services/auth.service';
+import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
 
 @Component({
   selector: 'app-reset-password-otp',
@@ -17,7 +18,7 @@ export class ResetPasswordOTPComponent {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private auth = inject(AuthService);
-
+  private toasting = inject(ToastingMessagesService);
   otp = '';
   email = '';
   errorMessage = '';
@@ -50,9 +51,18 @@ export class ResetPasswordOTPComponent {
           }
         });
       },
-      error: () => {
-        this.errorMessage = 'otp.invalid';
+      error: (err) => {
+
+        const apiMessage =
+          err?.error?.message ||
+          err?.error?.errors?.[0] ||
+          'otp.invalid';
+
+        this.toasting.showToast(apiMessage, 'error');
       }
+      // error: () => {
+      //   this.errorMessage = 'otp.invalid';
+      // }
     });
   }
 }
