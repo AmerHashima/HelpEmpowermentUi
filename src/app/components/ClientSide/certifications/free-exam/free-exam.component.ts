@@ -204,6 +204,7 @@ export class FreeExamComponent {
       }
       else {
         const result = this.calculcateExamModeResult();
+        this.saveExamResult(result);
         const examResult = `examResult-freeEXam-${this.currentExamId()}`;
         localStorage.setItem(examResult, JSON.stringify(result));
         this.router.navigate(['../../exam-result'], {
@@ -222,6 +223,7 @@ export class FreeExamComponent {
       localStorage.removeItem(key);
       if (this.currentMode() == 'Exam') {
         const result = this.calculcateExamModeResult();
+        this.saveExamResult(result);
         const examResult = `examResult-freeEXam-${this.currentExamId()}`;
         localStorage.setItem(examResult, JSON.stringify(result));
         this.router.navigate(['../../exam-result'], {
@@ -236,9 +238,54 @@ export class FreeExamComponent {
     }
   }
 
+
+  private saveExamResult(newResult: any) {
+    if (!this.isBrowser) return;
+
+    const userId = this.auth.loggedStudent()?.userId ?? null;
+    const key = this.shared.getExamResultsKey(userId);
+    if (!key) return;
+
+    const existing = localStorage.getItem(key);
+
+    let results: any[] = [];
+
+    if (existing) {
+      try {
+        results = JSON.parse(existing);
+      } catch {
+        results = [];
+      }
+    }
+
+    // ✅ Get attempts for same exam
+    const sameExamAttempts = results.filter(
+      r => r.coursesMasterExamOid === newResult.coursesMasterExamOid
+    );
+
+    // ✅ Calculate next attempt number
+    const nextAttemptNo =
+      sameExamAttempts.length > 0
+        ? Math.max(...sameExamAttempts.map(a => a.attemptNo ?? 0)) + 1
+        : 1;
+
+    // ✅ Add attemptNo + date
+    const resultWithAttempt = {
+      ...newResult,
+      attemptNo: nextAttemptNo,
+      date: new Date().toISOString()
+    };
+
+    // ✅ Always push (DON’T overwrite)
+    results.push(resultWithAttempt);
+
+    localStorage.setItem(key, JSON.stringify(results));
+  }
+
   calculcateExamModeResult() {
     const totalScore = this.questions().length;
-    const { correct } = this.resultState();
+    // const { correct } = this.resultState();
+    const { correct, wrong, answered } = this.resultState();
 
     const obtainedScore = correct;
 
@@ -249,6 +296,7 @@ export class FreeExamComponent {
       : 0;
 
     const isPassed = percentage >= passPercent;
+    const notAnswered = totalScore - answered;
 
     return {
       coursesMasterExamOid: this.currentExamId(),
@@ -256,7 +304,16 @@ export class FreeExamComponent {
       totalScore,
       obtainedScore,
       passPercent,
-      isPassed
+      isPassed,
+      date: new Date().toISOString(),
+      mode: this.currentMode(),
+      cleared: false,
+      summary:{
+        incorrect: wrong,
+        notAnswered
+      }
+
+
     };
   }
 
