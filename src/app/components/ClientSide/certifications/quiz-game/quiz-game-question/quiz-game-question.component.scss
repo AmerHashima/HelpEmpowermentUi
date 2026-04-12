@@ -5,6 +5,11 @@
     -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   background: #f8f9fa;
   // min-height: 100vh;
+    direction: ltr !important;
+}
+
+:host * {
+  direction: ltr !important;
 }
 
 .exam-container {

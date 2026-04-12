@@ -293,7 +293,7 @@
 
       "error": {
         "sendMessage": "Can't send message"
-      
+
     }
   },
   "pmo": {
@@ -461,7 +461,7 @@
     "masterPmpQuestions": "Master the PMP exam with 1,640 realistic questions designed to ensure your success",
     "tryBeforeBuy": "Try Before you Buy",
     "experienceFree": "Experience the Exam Simulator for Free",
-    "ExperienceExamSimulator": "ExperienceExamSimulator",
+    "ExperienceExamSimulator": "Experience Exam Simulator",
     "testBothModes": "Test both Practice Mode and Exam Mode to see how our simulator helps you succeed",
     "freeExam": "Free Exam",
     "freePreviewDescription": "Start with a free 10-question preview. The paid version delivers more of that great experience",
