@@ -376,4 +376,14 @@ export default class ApiService {
       finalize(() => this.loader.stop())
     );
   }
+
+  deleteImage(endpoint: string, id: string): Observable<string> {
+    if (this.shouldBlockRequest(endpoint)) {
+      return new Observable<string>((observer) => observer.complete());
+    }
+    this.loader.start();
+    return this.http.delete(`${this.baseUrl}/${endpoint}/${id}/image`, { responseType: 'text' }).pipe(
+      finalize(() => this.loader.stop())
+    );
+  }
 }

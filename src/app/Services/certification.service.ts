@@ -513,6 +513,12 @@ export class CertificationService {
     );
   }
 
+  deleteQuestionImage(id: string): Observable<string | null> {
+    return this.apiService.deleteImage('CourseQuestions', id).pipe(
+      catchError(() => of(null))
+    );
+  }
+
 
 
 

@@ -849,6 +849,29 @@ export class CertificationQuestionComponent {
     reader.readAsDataURL(file);
   }
 
+  onDeleteImage(imageInput: HTMLInputElement): void {
+    if (this.editMode && this.questionId) {
+      this.imageUploading.set(true);
+      this.certificationService.deleteQuestionImage(this.questionId).subscribe({
+        next: () => {
+          this.imageUploading.set(false);
+          this.questionImageUrl.set(null);
+          this.selectedImageFile.set(null);
+          imageInput.value = '';
+          this.toast.showToast('question.image.delete.success', 'success');
+        },
+        error: () => {
+          this.imageUploading.set(false);
+          this.toast.showToast('question.image.delete.error', 'error');
+        }
+      });
+    } else {
+      this.questionImageUrl.set(null);
+      this.selectedImageFile.set(null);
+      imageInput.value = '';
+    }
+  }
+
   private createNewQuestion(payload: any): void {
     this.certificationService.createQuestion(payload).subscribe({
       next: (created: any) => {

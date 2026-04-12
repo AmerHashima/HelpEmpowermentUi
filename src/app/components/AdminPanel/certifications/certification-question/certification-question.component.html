@@ -102,6 +102,16 @@
                   </div>
                 }
               </div>
+              <div class="mt-1">
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-danger"
+                  [disabled]="imageUploading()"
+                  (click)="onDeleteImage(imageInput)"
+                >
+                  <i class="bi bi-trash me-1"></i>Delete Image
+                </button>
+              </div>
             </div>
           }
           <div class="">
