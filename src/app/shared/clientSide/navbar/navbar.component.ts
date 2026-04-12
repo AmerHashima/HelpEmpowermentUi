@@ -13,6 +13,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Shared } from '../../Services/shared/shared';
 import { Theme } from '../../Services/ThemeService/theme';
 import { AuthService } from '../../../Services/auth.service';
+import { StudentService } from '../../../Services/student-service.service';
 import { CertificationsStore } from '../../../AdminPanelStores/CertificationStore/certification.store';
 import { certifications } from '../certification-cards/certification-cards.component';
 import { CartService } from '../../../Services/  cart.service';
@@ -31,8 +32,9 @@ export class ClientNavbarComponent {
   certifications = computed(() => this.certificationStore.certifications());
   private shared = inject(Shared);
   private auth = inject(AuthService);
+  private studentService = inject(StudentService);
   private cartService = inject(CartService);
-  cartCount=this.cartService.cartCount;
+  cartCount = this.cartService.cartCount;
   // loggedStudent =this.auth.loggedStudent
   isLoggedIn = computed(() => !!this.auth.studentToken());
   hydrated = signal(false);
@@ -100,17 +102,25 @@ export class ClientNavbarComponent {
 
   /** Toggle dropdown menu */
   toggleDropdown(key: string) {
+    this.studentService.showExamSimulator = false;
+
     this.openDropdown.set(this.openDropdown() === key ? null : key);
   }
 
   /** Navigate to path */
   navigate(path: string) {
+    this.studentService.showExamSimulator = false;
+    if (this.currentPath() === path) {
+      this.openDropdown.set(null);
+      return;
+    }
     this.router.navigateByUrl(path);
     this.openDropdown.set(null);
   }
 
   /** Change language → delegate to shared service */
   changeLang(newLang: 'en' | 'ar') {
+    this.studentService.showExamSimulator = false;
     this.shared.useLanguage(newLang);
 
     // Optional: update URL to match new language prefix
@@ -161,12 +171,14 @@ export class ClientNavbarComponent {
     return (localStorage.getItem('theme') as 'light' | 'dark') ?? 'light';
   }
 
-  logout(){
+  logout() {
+    this.studentService.showExamSimulator = false;
     this.auth.logout().subscribe({
-      next:()=> this.router.navigateByUrl(`${this.lang()}/auth/login`)
+      next: () => this.router.navigateByUrl(`${this.lang()}/auth/login`)
     })
   }
-  addToCart(){
+  addToCart() {
+    this.studentService.showExamSimulator = false;
     this.router.navigateByUrl(`/${this.lang()}/cart`);
   }
   /** Dynamic menu – uses current language from shared service */
@@ -275,7 +287,13 @@ export class ClientNavbarComponent {
     // },
   ]);
 
-  navigateHome(){
-    this.router.navigateByUrl(`${this.lang()}/home`);
+  navigateHome() {
+    this.studentService.showExamSimulator = false;
+    const homePath = `${this.lang()}/home`;
+    if (this.currentPath() === homePath) {
+      this.openDropdown.set(null);
+      return;
+    }
+    this.router.navigateByUrl(homePath);
   }
 }

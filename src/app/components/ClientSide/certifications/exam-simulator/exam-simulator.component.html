@@ -1,7 +1,7 @@
 <div class="certification pagePadding">
   <!-- @if(!chooseExam){ -->
   <!-- Banner - shown only if not purchased -->
-  <ng-container *ngIf="hydrated() && (!isEnrolled() || !isLoggedIn())">
+  <ng-container *ngIf="hydrated() && (!showExamSimulator() || !isLoggedIn())">
     <!-- <ng-container *ngIf="!isEnrolled() || !isLoggedIn()"> -->
     <app-page-banner [isRTL]="isRTL()" [media]="true">
       <!-- Content projection -->
@@ -73,7 +73,7 @@
 
   <!-- Benefits section -->
 
-  @if (hydrated() && (!isEnrolled() || !isLoggedIn())) {
+  @if (hydrated() && (!showExamSimulator() || !isLoggedIn())) {
     <!-- @if(!isEnrolled() || !isLoggedIn()){ -->
     <div class="CertifticationBenfits d-flex flex-column gap-5 pt-5 pb-5">
       <div class="d-flex flex-column align-items-center gap-2">
@@ -124,7 +124,7 @@
       </div>
 
       <!-- FREE EXAMS -->
-      <ng-container *ngIf="hydrated() && (!isEnrolled() || !isLoggedIn())">
+      <ng-container *ngIf="hydrated() && (!showExamSimulator() || !isLoggedIn())">
         <div class="d-flex justify-content-center">
           @for (exam of freeExams(); track exam.oid) {
             <div class="examModeCard d-flex flex-column gap-3 shadow-sm">
@@ -214,7 +214,7 @@
       <!-- PAID EXAMS -->
       <app-simulator-exams
         [items]="exams()"
-        *ngIf="hydrated() && isEnrolled() && isLoggedIn()"
+        *ngIf="hydrated() && showExamSimulator() && isLoggedIn()"
       ></app-simulator-exams>
     </div>
   }

@@ -21,7 +21,7 @@ export class StudentService {
     return this.enrolledCourses()
       .find(c => c.courseName.toLowerCase() === certification?.toLowerCase()) ?? null;
   });
-
+  showExamSimulator = false;
   isExamSimulatorEnrolled = computed(() =>
     // true
     !!this.currentCourse()?.examSimulationReserv
@@ -45,12 +45,12 @@ export class StudentService {
   constructor(private apiService: ApiService, private auth: AuthService, private shared: Shared) {
     effect(() => {
       const studentId = this.auth.loggedStudent()?.userId
-      if (!studentId)  {
+      if (!studentId) {
         this.enrolledCourses.set([]);
         return;
       }
       this.getAllStudentEnrolledCourses(studentId).subscribe({
-        next: (courses) => { console.log('this.enrollCourse',courses);this.enrolledCourses.set(courses) }
+        next: (courses) => { console.log('this.enrollCourse', courses); this.enrolledCourses.set(courses) }
       });
     })
 
@@ -307,11 +307,11 @@ export class StudentService {
   }
 
   updateStudentProgress(completedLessons: number): Observable<APIStudentCourse> {
-     const body={
-       completedLessons: completedLessons,
-       totalLessons:this.totalLessonsInCourse()
-     }
-     console.log('currentCourse',this.currentCourse());
+    const body = {
+      completedLessons: completedLessons,
+      totalLessons: this.totalLessonsInCourse()
+    }
+    console.log('currentCourse', this.currentCourse());
     console.log('totalLessosn(', this.totalLessonsInCourse());
     const studentCourseId = this.currentCourse()?.oid;
     // const studentId = this.auth.loggedStudent()?.userId!
