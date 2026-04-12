@@ -13,11 +13,12 @@ import { ExamTimerComponent } from '../certifications/exam-timer/exam-timer.comp
 import { ExamProtectionService } from '../../../Services/exam-protection.service';
 import { ToastingMessagesService } from '../../../shared/Services/ToastingMessages/toasting-messages.service';
 import { AuthService } from '../../../Services/auth.service';
+import { CertificationService } from '../../../Services/certification.service';
 
 @Component({
   selector: 'app-client-exam-question',
   imports: [SiteButtonComponent, TranslatePipe, FeatureComponent, ExamTimerComponent,
-    GenericModelComponent, CalculatorComponent, WhiteboardComponent, DragComponentComponent,NgFor
+    GenericModelComponent, CalculatorComponent, WhiteboardComponent, DragComponentComponent, NgFor
   ],
   templateUrl: './client-exam-question.component.html',
   styleUrl: './client-exam-question.component.scss',
@@ -54,52 +55,53 @@ export class ClientExamQuestionComponent {
 
   private protection = inject(ExamProtectionService);
   private toast = inject(ToastingMessagesService);
-
+  private certificationService = inject(CertificationService);
 
   // UI state
   isBlurred = signal(false);
   violationsCount = signal(0);
+  questionImageUrl = signal<string | null>(null);
 
   showResultState = signal(false);
   ngOnInit() {
     // if(this.auth.studentToken()){
     //   this.watermarkText.set(`Help Empowerment - ${this.auth.loggedStudent()?.userId} - ${new Date().toISOString()}`);
     // }
-   if(this.mode()== 'Exam'){
-     this.protection.init(
-       (type) => {
-         this.isBlurred.set(true);
+    if (this.mode() == 'Exam') {
+      this.protection.init(
+        (type) => {
+          this.isBlurred.set(true);
 
-         const messages: any = {
-           TAB_SWITCH: 'Do not leave the exam!',
-           FAST_SWITCH: 'Suspicious behavior detected!',
-           FULLSCREEN_EXIT: 'Stay in fullscreen!',
-           DEVTOOLS: 'DevTools detected!',
-           IDLE: 'You are inactive!',
-           KEYBOARD: 'Keyboard shortcuts not allowed!',
-           PRINT: 'Printing is not allowed!',
-           SCREENSHOT: 'Screenshots are not allowed!'
-         };
+          const messages: any = {
+            TAB_SWITCH: 'Do not leave the exam!',
+            FAST_SWITCH: 'Suspicious behavior detected!',
+            FULLSCREEN_EXIT: 'Stay in fullscreen!',
+            DEVTOOLS: 'DevTools detected!',
+            IDLE: 'You are inactive!',
+            KEYBOARD: 'Keyboard shortcuts not allowed!',
+            PRINT: 'Printing is not allowed!',
+            SCREENSHOT: 'Screenshots are not allowed!'
+          };
 
-         this.showWarning(messages[type]);
+          this.showWarning(messages[type]);
 
-         setTimeout(() => {
-           this.isBlurred.set(false);
-         }, 2000);
-       },
-       () => {
-         this.forceSubmitExam();
-       }
-     );
+          setTimeout(() => {
+            this.isBlurred.set(false);
+          }, 2000);
+        },
+        () => {
+          this.forceSubmitExam();
+        }
+      );
 
-     this.protection.enterFullscreen();
-   }
+      this.protection.enterFullscreen();
+    }
     else this.protection.enterFullscreen();
   }
 
 
 
-  showWarning(message:string) {
+  showWarning(message: string) {
     this.toast.showToast(message, 'warning');
   }
 
@@ -133,6 +135,14 @@ export class ClientExamQuestionComponent {
       this.showResultState.set(false);
       this.hideAnswersAndTranslations();
 
+      const q = this.question();
+      if (q?.questionImage && q.questionImage.trim() !== '') {
+        this.certificationService.checkQuestionImage(q.oid).subscribe(url => {
+          this.questionImageUrl.set(url);
+        });
+      } else {
+        this.questionImageUrl.set(null);
+      }
     }
     if (changes['question'] && this.isMatchingQuestion) {
 
@@ -259,7 +269,7 @@ export class ClientExamQuestionComponent {
 
   submitQuestionAnswer(last: boolean = false) {
     this.hideAnswersAndTranslations();
-      this.showResultState.set(false);
+    this.showResultState.set(false);
 
     const q = this.question();
 
@@ -456,7 +466,7 @@ export class ClientExamQuestionComponent {
   }
 
   ngOnDestroy() {
-    if(this.mode() == 'Exam'){
+    if (this.mode() == 'Exam') {
       this.protection.destroy();
     }
   }

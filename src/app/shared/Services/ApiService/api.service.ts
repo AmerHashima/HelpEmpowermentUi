@@ -234,7 +234,7 @@ export default class ApiService {
           !url.includes('submit-multiple') &&
           !url.includes('validate-answers') &&
           !url.includes('refresh-token') &&
-          !url.includes('summary')&&
+          !url.includes('summary') &&
           !url.includes('forgot-password')
         ) {
           this.toasting.showToast(successMessage, 'success');
@@ -341,6 +341,36 @@ export default class ApiService {
     return this.http.post<T>(`${this.baseUrl}/${url}`, body, {
       headers: this.createHeaders(),
     }).pipe(
+      finalize(() => this.loader.stop())
+    );
+  }
+
+  // ==================== FILE UPLOAD ====================
+  uploadImage<T>(endpoint: string, id: string, file: File): Observable<T> {
+    if (this.shouldBlockRequest(endpoint)) {
+      return new Observable<T>((observer) => observer.complete());
+    }
+
+    const formData = new FormData();
+    formData.append('image', file);
+
+    this.loader.start();
+
+    return this.http.post<T>(`${this.baseUrl}/${endpoint}/${id}/image`, formData).pipe(
+      finalize(() => this.loader.stop())
+    );
+  }
+
+  getImageUrl(endpoint: string, id: string): string {
+    return `${this.baseUrl}/${endpoint}/${id}/image`;
+  }
+
+  getImage(endpoint: string, id: string): Observable<Blob> {
+    if (this.shouldBlockRequest(endpoint)) {
+      return new Observable<Blob>((observer) => observer.complete());
+    }
+    this.loader.start();
+    return this.http.get(`${this.baseUrl}/${endpoint}/${id}/image`, { responseType: 'blob' }).pipe(
       finalize(() => this.loader.stop())
     );
   }

@@ -11,7 +11,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SpkNgSelectComponent } from '../../../../shared/spk-ng-select/spk-ng-select.component';
 import { ButtonComponent } from '../../../../shared/button/button.component';
 import { InputComponent } from '../../../../shared/input/input.component';
-import { FileUploadComponent } from '../../../../shared/file-upload/file-upload.component';
 import { TextareaComponent } from '../../../../shared/text-area/text-area.component';
 
 import { CertificationsStore } from '../../../../AdminPanelStores/CertificationStore/certification.store';
@@ -46,7 +45,6 @@ const DEFAULT_USER_ID = '3fa85f64-5717-4562-b3fc-2c963f66afa6';
     SpkNgSelectComponent,
     ButtonComponent,
     InputComponent,
-    FileUploadComponent,
     ReactiveFormsModule,
     NgIf,
     TextareaComponent,
@@ -105,6 +103,11 @@ export class CertificationQuestionComponent {
   pendingQuestionType = signal<any>(null);
   apiAnswers = signal<any[]>([]);
   apiQuestions: any[] = [];
+
+  // Image upload
+  selectedImageFile = signal<File | null>(null);
+  questionImageUrl = signal<string | null>(null);
+  imageUploading = signal(false);
 
   // Options
   questionTypes: any[] = [];
@@ -219,8 +222,16 @@ export class CertificationQuestionComponent {
     effect(() => {
       const q = this.question();
       if (!q) return;
-      if (q.oid)
+      if (q.oid) {
         this.questionId = q.oid;
+        if (q.questionImage != null && q.questionImage !== '') {
+          this.certificationService.checkQuestionImage(q.oid).subscribe(url => {
+            this.questionImageUrl.set(url);
+          });
+        } else {
+          this.questionImageUrl.set(null);
+        }
+      }
       this.editMode = true;
       this.choiceAnswerOrderCounter = 0;
 
@@ -462,6 +473,17 @@ export class CertificationQuestionComponent {
         this.apiAnswers.set(response.answers?.filter((a: any) => !a.question_Ask) || []);
         this.linkDragAnswerAndQuestionFlag.set(true);
         this.toast.showToast('question.create.success', 'success');
+        const imageFile = this.selectedImageFile();
+        if (imageFile && response.oid) {
+          this.certificationService.uploadQuestionImage(response.oid, imageFile).subscribe({
+            next: () => {
+              this.questionImageUrl.set(
+                this.certificationService.getQuestionImageUrl(response.oid) + '?t=' + Date.now()
+              );
+            },
+            error: () => this.toast.showToast('question.image.upload.error', 'error')
+          });
+        }
       },
       error: (err) => {
         this.toast.showToast('question.create.error', 'error');
@@ -625,7 +647,7 @@ export class CertificationQuestionComponent {
     if (!this.editMode) {
       //console.log('selectedType', this.selectedType())
       if (this.selectedType() !== 'MATCHING') {
-        this.questionStore.addQuestion(payload);
+        this.createNewQuestion(payload);
       } else {
         //console.log('subit deag questions');
         this.updateMatchingQuestions();
@@ -817,6 +839,61 @@ export class CertificationQuestionComponent {
     return type === 'matching' || type === 'match' || type === 'matchin';
   }
 
+  onImageSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0] ?? null;
+    if (!file) return;
+    this.selectedImageFile.set(file);
+    const reader = new FileReader();
+    reader.onload = (e) => this.questionImageUrl.set(e.target?.result as string);
+    reader.readAsDataURL(file);
+  }
+
+  private createNewQuestion(payload: any): void {
+    this.certificationService.createQuestion(payload).subscribe({
+      next: (created: any) => {
+        this.questionId = created.oid;
+        const imageFile = this.selectedImageFile();
+        if (imageFile && created.oid) {
+          this.certificationService.uploadQuestionImage(created.oid, imageFile).subscribe({
+            next: () => {
+              this.selectedImageFile.set(null);
+              this.questionImageUrl.set(
+                this.certificationService.getQuestionImageUrl(created.oid) + '?t=' + Date.now()
+              );
+              this.handleAfterQuestionSaved();
+            },
+            error: () => {
+              this.toast.showToast('question.image.upload.error', 'error');
+              this.handleAfterQuestionSaved();
+            }
+          });
+        } else {
+          this.handleAfterQuestionSaved();
+        }
+      },
+      error: (err) => {
+        this.toast.showToast('question.add.error', 'error');
+        console.error(err);
+      }
+    });
+  }
+
+  private handleAfterQuestionSaved(): void {
+    this.toast.showToast('question.save.success', 'success');
+    if (this.shouldNavigateBack) {
+      const certId = this.route.snapshot.paramMap.get('id') || this.selectedCertification()?.oid;
+      const examId = this.route.snapshot.paramMap.get('examId') || this.selectedExam()?.oid;
+      if (certId && examId) {
+        this.router.navigate(['/admin/certifications', certId, 'exams', 'exam', examId]);
+      } else {
+        this.location.back();
+      }
+    } else {
+      this.resetFormForNewQuestion();
+    }
+  }
+
   private resolveSelectedType(typeName?: string | null): QuestionType {
     const name = String(typeName ?? '').toLowerCase();
     if (name.includes('match')) return 'MATCHING';
@@ -856,9 +933,31 @@ export class CertificationQuestionComponent {
 
     this.certificationService.updateCourseQuestion(payload).subscribe({
       next: () => {
-        this.toast.showToast('question.update.success', 'success');
-        this.questionStore.setSelectedQuestion(null);
-        this.location.back();
+        const imageFile = this.selectedImageFile();
+        const afterUpload = () => {
+          this.toast.showToast('question.update.success', 'success');
+          this.questionStore.setSelectedQuestion(null);
+          this.location.back();
+        };
+        if (imageFile && this.questionId) {
+          this.imageUploading.set(true);
+          this.certificationService.uploadQuestionImage(this.questionId, imageFile).subscribe({
+            next: () => {
+              this.questionImageUrl.set(
+                this.certificationService.getQuestionImageUrl(this.questionId) + '?t=' + Date.now()
+              );
+              this.imageUploading.set(false);
+              afterUpload();
+            },
+            error: () => {
+              this.imageUploading.set(false);
+              this.toast.showToast('question.image.upload.error', 'error');
+              afterUpload();
+            }
+          });
+        } else {
+          afterUpload();
+        }
       },
       error: (err) => {
         console.error('Update failed', err);

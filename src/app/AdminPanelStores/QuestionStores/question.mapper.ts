@@ -12,6 +12,7 @@ export function mapApiQuestionToCourseQuestion(api: any, studentQuestion: boolea
     coursesMasterExamOid: api.coursesMasterExamOid,
     questionText: api.questionText,
     questionExplination: api.questionExplination,
+    questionImage: api.questionImage ?? '',
     questionText_Ar: api.questionText_Ar,
     questionTypeLookupId: api.questionTypeLookupId,
     questionScore: api.questionScore,
@@ -52,6 +53,6 @@ export const mapApiAnswersToAnswers = (answers: APIAnswer[]): courseAnswer[] =>
 
 export const mapApiQuestionsToCourseQuestions = (
   questions: APICourseQuestion[],
-  studentQuestion: boolean=false
+  studentQuestion: boolean = false
 ): courseQuestion[] =>
   questions.map(q => mapApiQuestionToCourseQuestion(q, studentQuestion));
