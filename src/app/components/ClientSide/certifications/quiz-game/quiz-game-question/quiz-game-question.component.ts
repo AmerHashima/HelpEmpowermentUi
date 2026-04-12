@@ -44,7 +44,6 @@ export class QuizGameQuestionComponent {
   private route = inject(ActivatedRoute);
   next = signal<boolean>(false);
   levelMessage = signal<{ message: string, isCorrect: boolean }>({ message: '', isCorrect: false });
-  isRTL = this.shared.isRtl;
   showConfirm: boolean = false;
   showMessage: boolean = false;
   showResetConfirm: boolean = false;
