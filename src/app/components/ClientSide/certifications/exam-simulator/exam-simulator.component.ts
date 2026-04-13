@@ -35,7 +35,8 @@ export class ExamSimulatorComponent {
   private shared = inject(Shared);
   private auth = inject(AuthService);
   private studentService = inject(StudentService);
-  isEnrolled =computed(()=>{
+  showExamSimulator = computed(() => this.studentService.showExamSimulator === true);
+  isEnrolled = computed(() => {
     console.log('is entolled', this.studentService.isExamSimulatorEnrolled())
     return this.studentService.isExamSimulatorEnrolled();
   })
@@ -44,8 +45,8 @@ export class ExamSimulatorComponent {
   // studentToken = this.auth.studentToken;
   isLoggedIn = computed(() => !!this.auth.studentToken());
   hydrated = signal(false);
-  certification=this.shared.currentCertificationObject;
-  examsStore=inject(ExamsStore);
+  certification = this.shared.currentCertificationObject;
+  examsStore = inject(ExamsStore);
   //  chooseExam:boolean=false;
 
   private capmBenefits = [
@@ -181,14 +182,14 @@ export class ExamSimulatorComponent {
   enrollImage = 'assets/images/enroll.png';
   showConfirm: boolean = false;
   allExams = this.examsStore.exams
-    freeExams = computed(() => {
-      const exams = this.examsStore.exams();
-      if (!exams?.length) return [];
-      console.log('exams',exams);
-      const filterredExams=exams.filter((exam:APIExam)=> exam.freeExam && exam.questionCount > 0);
-      console.log('filterredExams', filterredExams);
-      return filterredExams;
-    });
+  freeExams = computed(() => {
+    const exams = this.examsStore.exams();
+    if (!exams?.length) return [];
+    console.log('exams', exams);
+    const filterredExams = exams.filter((exam: APIExam) => exam.freeExam && exam.questionCount > 0);
+    console.log('filterredExams', filterredExams);
+    return filterredExams;
+  });
   exams = computed(() => {
     const exams = this.examsStore.exams();
     if (!exams?.length) return [];
@@ -229,7 +230,7 @@ export class ExamSimulatorComponent {
     }
   }
 
-  navigateToFreeExam(exam:APIExam) {
+  navigateToFreeExam(exam: APIExam) {
     this.shared.currentExamId.set(exam.oid);
     this.shared.currentExam.set(exam);
 

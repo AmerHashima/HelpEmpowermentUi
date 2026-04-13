@@ -26,7 +26,7 @@ import { createdUpdatedOID } from '../../../../data/lookUPS';
   styleUrl: './profile.component.scss'
 })
 export class ProfileComponent {
-  @ViewChild('registerForm') form!:NgForm
+  @ViewChild('registerForm') form!: NgForm
   private authService = inject(AuthService);
   private studentService = inject(StudentService);
   private studentExamService = inject(StudentExamService);
@@ -71,7 +71,7 @@ export class ProfileComponent {
   constructor() {
     effect(() => {
       // this.user = this.authService.loggedStudent();
-      const user=this.user()
+      const user = this.user()
       if (user) {
         const names = user.nameEn.split(' ');
         const namesAr = user.nameAr.split(' ');
@@ -175,16 +175,16 @@ export class ProfileComponent {
       // updatedBy: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
     };
 
-    console.log('payload',payload);
+    console.log('payload', payload);
     console.log('mobile', this.credentials.mobile);
     this.studentService.updateStudent(payload.oid, payload).subscribe({
-      next: (newStudent:APIStudent) => {
+      next: (newStudent: APIStudent) => {
 
         const current = this.authService.loggedStudent();
 
         if (!current) return;
 
-        const updatedStudent={
+        const updatedStudent = {
           ...current,
           nameEn: newStudent.nameEn,
           nameAr: newStudent.nameAr,
@@ -222,7 +222,11 @@ export class ProfileComponent {
 
   navigateToCourseFeatue(key: string) {
     const courseName = this.course()?.courseName.toLowerCase();
+    //if (key == "exam-simulator")
+    this.studentService.showExamSimulator = true;
     this.router.navigate(['../../certifications/', courseName, key], {
+
+
       relativeTo: this.route,
 
     });
