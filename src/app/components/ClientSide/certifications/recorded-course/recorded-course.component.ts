@@ -42,7 +42,7 @@ export class RecordedCourseComponent {
   private studentService = inject(StudentService);
   isEnrolled = this.studentService.isRecordedCoursesEnrolled;
   hasRecordedCourseAccess = computed(
-    () => this.isEnrolled() || this.studentService.showExamSimulator === true
+    () => this.isEnrolled() && this.studentService.showExamSimulator === true
   );
   enrollImage = 'assets/images/enroll.png';
   recoedImage = "assets/images/recordedCourse.jpeg";
