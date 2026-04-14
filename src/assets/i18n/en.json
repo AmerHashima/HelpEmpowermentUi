@@ -450,9 +450,9 @@
       "price": "299 AED"
     },
     "capm": {
-      "master": "Master CAPM",
-      "realisticSimulation": "Realistic Exam Simulation",
-      "description": "Get ready for CAPM with a realistic simulator designed for beginners and aspiring project managers.",
+      "master": "Master the CAPM exam environment.",
+      "realisticSimulation": "Your most realistic exam simulation begins now.",
+      "description": "The closest experience to the real exam, available whenever you need it. Build unshakable exam-day confidence with full-length simulated tests designed by PMI-certified experts. Practice with hundreds of realistic, scenario-based questions that mirror PMI's style and complexity. Learn from detailed answer explanations that don't just tell you what's right—they show you why. Track your progress across every domain and identify exactly where to focus your final study efforts. A structured simulation path designed for your success. 4 Exams – 600 Questions – Practice Mode & Exam Mode – Reports & Lesson learned Questions – 9 months access",
       "price": "199 AED"
     },
     "buyNow": "Buy Now",
@@ -610,14 +610,14 @@
     "pmp": {
       "price": "199 AED",
       "master": "Learn PMP mastery on your own schedule,",
-      "title": "your journey to PMP can begin right now",
+      "title": " your journey to CAPM can begin right now",
       "description": "World-class PMP training that fits your schedule, not the other way around. Access proven PMP strategies from certified experts anytime. Master every PMBOK® Guide domain at your own pace. Pause, rewind, and revisit complex topics until they fully click. A structured learning path designed for busy professionals, including downloadable resources, templates, and study guides."
     },
     "capm": {
       "price": "199 AED",
-      "master": "Start your CAPM journey at your own pace,",
+      "master": "Learn CAPM mastery on your own schedule, ",
       "title": "your path to CAPM success starts here",
-      "description": "Flexible CAPM training designed for beginners and aspiring project managers. Learn core concepts step by step with easy-to-follow lessons. Study anytime, revisit topics freely, and build strong foundations in project management. Includes practical examples, downloadable materials, and guided learning to help you pass with confidence."
+      "description": "World-class CAPM training that fits your schedule, not the other way around. Access proven CAPM strategies from certified experts anytime. Master every PMBOK® Guide domain at your own pace. Pause, rewind, and revisit complex topics until they fully click. A structured learning path designed for busy professionals, including downloadable resources, templates, and study guides."
     }
   },
   "liveCourse": {
@@ -629,11 +629,11 @@
     },
     "capm": {
       "price": "579 AED",
-      "master": "Start your CAPM journey with live guidance,",
-      "title": "Your interactive learning experience begins now.",
-      "description": "Join live CAPM sessions designed for beginners. Learn project management concepts step by step with expert instructors. Ask questions in real time, engage with peers, and build confidence through guided learning. A supportive and structured path to help you pass CAPM successfully."
-    }
-  },
+      "master": "Transform your career with live CAPM guidance,",
+      "title": "Your interactive path to certification begins now.",
+      "description": "Real-time instruction that brings the PMBOK®️ Guide to life in your own projects. Get direct, personalized answers from expert instructors who guide you through every complex topic. Connect your CAPM study directly to your current role—learn strategies you can apply immediately to enhance your real-world project management practice. Collaborate with peers facing similar challenges in a dynamic, supportive cohort. A structured yet adaptive live journey designed to certify you and elevate your professional impact from day one."
+
+    }  },
   "courseOutlines": {
     "pmp": [
       "Leadership Level",
