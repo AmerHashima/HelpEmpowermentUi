@@ -19,13 +19,13 @@ interface QuizLevel {
   header2: string;
   options?: string[];
   questions: string[];
-  rows?:any,
-  columns?:any,
-  tableOptions?:any,
-  tableCorrectAnswers?:any,
-  type?:string
+  rows?: any,
+  columns?: any,
+  tableOptions?: any,
+  tableCorrectAnswers?: any,
+  type?: string
   headers?: string[];
-  dropSlotsPerQuestion?:number;
+  dropSlotsPerQuestion?: number;
   correctAnswers: Record<string, string[]>;
 }
 @Component({
@@ -58,7 +58,7 @@ export class QuizGameQuestionComponent {
       title: '5 Process Group',
       header1: '',
       header2: '',
-      questions:[],
+      questions: [],
       correctAnswers: {} as Record<string, string[]>,
     },
     {
@@ -66,7 +66,7 @@ export class QuizGameQuestionComponent {
       title: 'Process Group & Knowledge Area ',
       header1: '5 Process Group',
       header2: '10 Knowledge Area',
-      options:[
+      options: [
         'Project Stakeholder Management',
         'Project Risk Management',
         'Project Cost Management',
@@ -84,7 +84,7 @@ export class QuizGameQuestionComponent {
         'Planning'
       ],
       questions: [],
-      correctAnswers:{
+      correctAnswers: {
         'Table1-0': ['Initiating'],
         'Table1-1': ['Planning'],
         'Table1-2': ['Executing'],
@@ -263,7 +263,7 @@ export class QuizGameQuestionComponent {
       title: 'Mapping between Process Group & Knowledge Area (49 Processes) ',
       header1: '',
       header2: '',
-      headers:[
+      headers: [
         'Initiating',
         'Planning',
         'Executing',
@@ -282,7 +282,7 @@ export class QuizGameQuestionComponent {
         'Project Procurement Management',
         'Project Stakeholder Management'
       ],
-      options:[
+      options: [
         "Develop project charter",
         "Identify Stakeholders",
         "Develop project management plan",
@@ -397,10 +397,10 @@ export class QuizGameQuestionComponent {
         "Manages efforts to develop specific scope"
       ],
       options: [
-          "Project",
-          "ORM",
-          "Program",
-          "Portfolio"
+        "Project",
+        "ORM",
+        "Program",
+        "Portfolio"
       ],
       correctAnswers: {
         "level1": ['ORM'],
@@ -412,7 +412,7 @@ export class QuizGameQuestionComponent {
     {
       level: 'level 9',
       title: 'Project Management Office (PMO)',
-      type:'text',
+      type: 'text',
       header1: '',
       header2: '',
       questions: [
@@ -434,7 +434,7 @@ export class QuizGameQuestionComponent {
     {
       level: 'level 10',
       title: 'Organization types according to Projects prospectives',
-      type:'image',
+      type: 'image',
       header1: '',
       header2: '',
       questions: [
@@ -489,11 +489,11 @@ export class QuizGameQuestionComponent {
       header2: '',
       questions: [
         "scrum.png",
-       "kanban.png"
+        "kanban.png"
       ],
       options: [
-       "Kanban",
-       "Scrum"
+        "Kanban",
+        "Scrum"
       ],
       correctAnswers: {
         "level1": ['Scrum'],
@@ -540,7 +540,7 @@ export class QuizGameQuestionComponent {
         "Changes can happen at any time"
       ],
       correctAnswers: {
-        "level1": ['Sprints, Sprint backlogs and product backlogs','Teams should not make changes during the sprint'],
+        "level1": ['Sprints, Sprint backlogs and product backlogs', 'Teams should not make changes during the sprint'],
         "level2": ['Cards on boards', 'Changes can happen at any time'],
       }
     },
@@ -557,11 +557,14 @@ export class QuizGameQuestionComponent {
           id: 'row1',
           columns: [
             {
-              type: 'text', value: 'Net Present Value' },
+              type: 'text', value: 'Net Present Value'
+            },
             {
-              type: 'text', value: '95000' },
+              type: 'text', value: '95000'
+            },
             {
-              type: 'text', value: '75000' }
+              type: 'text', value: '75000'
+            }
           ]
         },
         {
@@ -590,10 +593,10 @@ export class QuizGameQuestionComponent {
       level: 'level 16',
       title: 'Economic models',
       headers: ['Economic models', 'Project A', 'Project B', 'Which Project would you pick'],
-      correctAnswers:{},
+      correctAnswers: {},
       header1: '',
       header2: '',
-      questions: [  ],
+      questions: [],
       rows: [
         {
           id: 'row1',
@@ -696,7 +699,7 @@ export class QuizGameQuestionComponent {
 
   // }
 
-  constructor(){
+  constructor() {
     effect(() => {
       this.currentLevelIndex();
       this.attempts.set(0);
@@ -779,7 +782,7 @@ export class QuizGameQuestionComponent {
     this.showMessage = true;
     this.levelMessage.set({
       message: `Wrong answer ❌\nKeep trying! (${this.attempts()} attempts)`,
-            isCorrect: false
+      isCorrect: false
     });
   }
 
@@ -827,8 +830,8 @@ export class QuizGameQuestionComponent {
     });
   }
 
-    finish(){
-      this.next.set(true);
+  finish() {
+    this.next.set(true);
 
-    }
+  }
 }
