@@ -53,7 +53,6 @@ export class QuizGameQuestionComponent {
   resetTrigger = signal(0);
 
 
-
   levels: QuizLevel[] = [
     {
       level: 'level 1',

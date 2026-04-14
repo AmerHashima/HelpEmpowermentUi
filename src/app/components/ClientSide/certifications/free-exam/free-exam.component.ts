@@ -93,6 +93,9 @@ export class FreeExamComponent {
     if (qs.length === 0 || idx < 0 || idx >= qs.length) return null;
     return this.mapToClientQuestion(qs[idx], idx);
   });
+  correctQuestions = signal<Set<string>>(new Set());
+  incorrectQuestions = signal<Set<string>>(new Set());
+  notAnsweredQuestions = signal<Set<string>>(new Set());
 
   answerResult = signal<Map<string, boolean>>(new Map());
   isInitializing = signal(true);
@@ -109,6 +112,19 @@ export class FreeExamComponent {
   });
 
   constructor() {
+    effect(() => {
+      const qs = this.questions();
+
+      if (qs.length) {
+        this.notAnsweredQuestions.set(
+          new Set(
+            qs
+              .map(q => q.oid)
+              .filter((id): id is string => !!id)
+          )
+        );
+      }
+    });
     this.route.queryParamMap.subscribe(params => {
       this.currentMode.set(params.get('mode') ?? '');
     });
@@ -311,9 +327,13 @@ export class FreeExamComponent {
       summary:{
         incorrect: wrong,
         notAnswered
+      },
+
+questionAnswersOids: {
+        correct: Array.from(this.correctQuestions()),
+        incorrect: Array.from(this.incorrectQuestions()),
+        notAnswered: Array.from(this.notAnsweredQuestions())
       }
-
-
     };
   }
 
@@ -560,16 +580,73 @@ export class FreeExamComponent {
 
 
 
+  // private updateResult(q: any, isCorrect: boolean, prevCorrect: boolean | null) {
+  //   this.resultState.update(r => {
+  //     let { correct, wrong, answered } = r;
+
+  //     if (prevCorrect === null) {
+  //       answered++;
+  //       isCorrect ? correct++ : wrong++;
+  //     }
+
+  //     else {
+  //       if (prevCorrect && !isCorrect) {
+  //         correct--;
+  //         wrong++;
+  //       } else if (!prevCorrect && isCorrect) {
+  //         wrong--;
+  //         correct++;
+  //       }
+  //     }
+
+  //     return { correct, wrong, answered };
+  //   });
+  // }
+
   private updateResult(q: any, isCorrect: boolean, prevCorrect: boolean | null) {
+    const qId = q.oid;
+
+    if (prevCorrect === null) {
+      this.notAnsweredQuestions.update(s => {
+        const set = new Set(s);
+        set.delete(qId);
+        return set;
+      });
+    }
+
+    this.correctQuestions.update(s => {
+      const set = new Set(s);
+      set.delete(qId);
+      return set;
+    });
+
+    this.incorrectQuestions.update(s => {
+      const set = new Set(s);
+      set.delete(qId);
+      return set;
+    });
+
+    if (isCorrect) {
+      this.correctQuestions.update(s => {
+        const set = new Set(s);
+        set.add(qId);
+        return set;
+      });
+    } else {
+      this.incorrectQuestions.update(s => {
+        const set = new Set(s);
+        set.add(qId);
+        return set;
+      });
+    }
+
     this.resultState.update(r => {
       let { correct, wrong, answered } = r;
 
       if (prevCorrect === null) {
         answered++;
         isCorrect ? correct++ : wrong++;
-      }
-
-      else {
+      } else {
         if (prevCorrect && !isCorrect) {
           correct--;
           wrong++;

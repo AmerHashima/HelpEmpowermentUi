@@ -113,7 +113,11 @@ export interface LessonReportVM {
   obtainedScore: number;
   studentExamOid: string | null;
   examStatusLookupId: string | null;
-
+  questionAnswersOids?: {
+    correct: string[];
+    incorrect: string[];
+    notAnswered: string[];
+  };
   statusSummary: {
     statusName: string;
     count: number;
@@ -204,6 +208,7 @@ export class ExamLessonLearnedQuestionsComponent {
     private location: Location,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
+    effect(() => console.log('latestReport', this.latestReport()))
     effect(() => console.log('lessonCleared', this.lessonCleared()))
   }
 

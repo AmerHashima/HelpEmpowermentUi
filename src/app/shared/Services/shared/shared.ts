@@ -216,6 +216,7 @@ export class Shared {
         obtainedScore: last.obtainedScore,
         studentExamOid: null,
         examStatusLookupId: last.cleared ? clearedExamStatusOid : null,
+        questionAnswersOids: last.questionAnswersOids,
         statusSummary: [
           {
             statusName: 'Correct',

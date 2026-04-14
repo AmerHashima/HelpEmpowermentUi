@@ -1,5 +1,5 @@
 import { TitleCasePipe } from '@angular/common';
-import { Component, computed, inject, Input } from '@angular/core';
+import { Component, computed, effect, inject, Input } from '@angular/core';
 import { Shared } from '../../../shared/Services/shared/shared';
 import { SiteButtonComponent } from '../../../shared/clientSide/site-button/site-button.component';
 import { CartService } from '../../../Services/  cart.service';
@@ -53,7 +53,13 @@ export class CartComponent {
 
     return result;
   });
-  
+
+  constructor(){
+    effect(() => console.log('cartItems', this.cartItems()));
+    effect(() => console.log('expandedCartItems', this.expandedCartItems()));
+
+
+  }
   removeItem(cartItem: APICartItem) {
     console.log('cartItem', cartItem);
     const newCartItems = [...this.cartItems().filter((item: APICartItem) => item == cartItem)];

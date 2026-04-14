@@ -288,7 +288,7 @@ export class ExamSimulatorComponent {
     };
 
     this.cartService.updateCartItem(payload.oid, payload).subscribe({
-      next: (cartItem) => this.cartService.updateBasket(cartItem)
+      next: (cartItem) => { console.log('cartItem', cartItem);this.cartService.updateBasket(cartItem);}
     });
   }
   private addNewCourse(courseId: string): void {
@@ -303,7 +303,7 @@ export class ExamSimulatorComponent {
     };
 
     this.cartService.addCartItem(cartPayload).subscribe({
-      next: (cartItem) => this.cartService.updateBasket(cartItem)
+      next: (cartItem) => { console.log('addCartItem', cartItem); this.cartService.updateBasket(cartItem);}
     });
   }
 }
