@@ -1,9 +1,122 @@
 <!-- src\app\components\AdminPanel\students\student-reserved-courses\student-reserved-courses.component.html -->
 <div class="container-fluid py-3">
   <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
-    <h4 class="mb-0">Reserved Courses</h4>
-    <a routerLink="/admin/students" class="btn btn-outline-secondary">Back to Users</a>
+    <h4 class="mb-0">Student Courses</h4>
+    <div class="d-flex gap-2">
+      <button class="btn btn-primary" type="button" (click)="openAddForm()">Add Course</button>
+      <a routerLink="/admin/students" class="btn btn-outline-secondary">Back to Users</a>
+    </div>
   </div>
+
+  @if (successMessage()) {
+    <div class="alert alert-success" role="alert">{{ successMessage() }}</div>
+  }
+
+  @if (showAddForm()) {
+    <div class="border rounded-3 p-3 bg-white mb-3">
+    <div class="d-flex justify-content-between align-items-center gap-2 mb-3">
+      <h5 class="mb-0">Add Student Course</h5>
+      @if (loadingCertifications()) {
+        <span class="small text-muted">Loading certifications...</span>
+      }
+    </div>
+
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label small fw-semibold">Certification</label>
+        <select
+          class="form-select"
+          [ngModel]="manualEnroll().courseId"
+          (ngModelChange)="updateManualEnroll('courseId', $event)"
+        >
+          <option value="">Select certification</option>
+          @for (certification of certifications(); track certification.oid) {
+            <option [value]="certification.oid">{{ certification.courseName }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="col-md-3">
+        <label class="form-label small fw-semibold">Price</label>
+        <input
+          type="number"
+          class="form-control"
+          min="0"
+          [ngModel]="manualEnroll().price"
+          (ngModelChange)="updateManualEnroll('price', $event)"
+        />
+      </div>
+
+      <div class="col-md-3">
+        <label class="form-label small fw-semibold">Discount</label>
+        <input
+          type="number"
+          class="form-control"
+          min="0"
+          [ngModel]="manualEnroll().discountAmount"
+          (ngModelChange)="updateManualEnroll('discountAmount', $event)"
+        />
+      </div>
+
+      <div class="col-12">
+        <label class="form-label small fw-semibold">Payment Method</label>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="card, paypal, cash..."
+          [ngModel]="manualEnroll().paymentMethod"
+          (ngModelChange)="updateManualEnroll('paymentMethod', $event)"
+        />
+      </div>
+
+      <div class="col-12">
+        <div class="d-flex flex-wrap gap-3">
+          <label class="form-check-label enroll-option">
+            <input
+              class="form-check-input me-2"
+              type="checkbox"
+              [ngModel]="manualEnroll().examSimulationReserv"
+              (ngModelChange)="updateManualEnroll('examSimulationReserv', $event)"
+            />
+            Exam Simulation
+          </label>
+
+          <label class="form-check-label enroll-option">
+            <input
+              class="form-check-input me-2"
+              type="checkbox"
+              [ngModel]="manualEnroll().recordedCourseReserv"
+              (ngModelChange)="updateManualEnroll('recordedCourseReserv', $event)"
+            />
+            Recorded Course
+          </label>
+
+          <label class="form-check-label enroll-option">
+            <input
+              class="form-check-input me-2"
+              type="checkbox"
+              [ngModel]="manualEnroll().liveCourseReserv"
+              (ngModelChange)="updateManualEnroll('liveCourseReserv', $event)"
+            />
+            Live Course
+          </label>
+        </div>
+      </div>
+
+      <div class="col-12 d-flex justify-content-end">
+        <button class="btn btn-outline-secondary" type="button" (click)="cancelAddForm()">Cancel</button>
+        <button
+          class="btn btn-primary"
+          type="button"
+          [disabled]="submittingCourseId() === 'manual' || !canSubmitManualEnrollment()"
+          (click)="submitManualEnrollment()"
+        >
+          {{ submittingCourseId() === 'manual' ? 'Saving...' : 'Add Course' }}
+        </button>
+      </div>
+    </div>
+    </div>
+  }
 
   @if (loading()) {
     <div class="d-flex justify-content-center py-5">
@@ -14,7 +127,7 @@
   } @else if (errorMessage()) {
     <div class="alert alert-danger" role="alert">{{ errorMessage() }}</div>
   } @else if (courses().length === 0) {
-    <div class="alert alert-light border" role="alert">No reserved courses found for this student.</div>
+    <div class="alert alert-light border" role="alert">No student courses found for this student.</div>
   } @else {
     <div class="row g-3">
       @for (item of courses(); track item.oid) {
@@ -22,7 +135,12 @@
           <div class="border rounded-3 p-3 h-100 bg-white">
             <div class="d-flex justify-content-between mb-2">
               <h6 class="mb-0">{{ item.courseName }}</h6>
-              <span class="badge bg-primary">{{ item.progressPercentage }}%</span>
+              <div class="d-flex gap-2 align-items-center">
+                <span class="badge bg-primary">{{ item.progressPercentage }}%</span>
+                @if (editingCourseId() !== item.oid) {
+                  <button class="btn btn-sm btn-outline-primary" type="button" (click)="startEdit(item)">Edit</button>
+                }
+              </div>
             </div>
 
             <div class="small mb-1"><strong>User:</strong> {{ item.studentName }}</div>
@@ -38,6 +156,79 @@
               <span class="badge" [class.bg-success]="item.liveCourseReserv" [class.bg-secondary]="!item.liveCourseReserv">Live Course</span>
               <!-- <span class="badge" [class.bg-success]="item.isCertificateIssued" [class.bg-secondary]="!item.isCertificateIssued">Certificate Issued</span> -->
             </div>
+
+            @if (editingCourseId() === item.oid && editCourse(); as draft) {
+              <div class="enroll-editor border-top mt-3 pt-3">
+                <div class="row g-3">
+                  <div class="col-sm-6">
+                    <label class="form-label small fw-semibold">Paid Amount</label>
+                    <input type="number" class="form-control" min="0" [ngModel]="draft.paidAmount" (ngModelChange)="updateEditCourse('paidAmount', $event)" />
+                  </div>
+
+                  <div class="col-sm-6">
+                    <label class="form-label small fw-semibold">Progress %</label>
+                    <input type="number" class="form-control" min="0" max="100" [ngModel]="draft.progressPercentage" (ngModelChange)="updateEditCourse('progressPercentage', $event)" />
+                  </div>
+
+                  <div class="col-sm-6">
+                    <label class="form-label small fw-semibold">Completed Lessons</label>
+                    <input type="number" class="form-control" min="0" [ngModel]="draft.completedLessons" (ngModelChange)="updateEditCourse('completedLessons', $event)" />
+                  </div>
+
+                  <div class="col-sm-6">
+                    <label class="form-label small fw-semibold">Payment Date</label>
+                    <input type="datetime-local" class="form-control" [ngModel]="draft.paymentDate" (ngModelChange)="updateEditCourse('paymentDate', $event)" />
+                  </div>
+
+                  <div class="col-sm-6">
+                    <label class="form-label small fw-semibold">Transaction Id</label>
+                    <input type="text" class="form-control" [ngModel]="draft.transactionId" (ngModelChange)="updateEditCourse('transactionId', $event)" />
+                  </div>
+
+                  <div class="col-sm-6">
+                    <label class="form-label small fw-semibold">Payment Status Lookup Id</label>
+                    <input type="text" class="form-control" [ngModel]="draft.paymentStatusLookupId" (ngModelChange)="updateEditCourse('paymentStatusLookupId', $event)" />
+                  </div>
+
+                  <div class="col-12">
+                    <label class="form-label small fw-semibold">Enrollment Status Lookup Id</label>
+                    <input type="text" class="form-control" [ngModel]="draft.enrollmentStatusLookupId" (ngModelChange)="updateEditCourse('enrollmentStatusLookupId', $event)" />
+                  </div>
+
+                  <div class="col-12">
+                    <div class="d-flex flex-wrap gap-3">
+                      <label class="form-check-label enroll-option">
+                        <input class="form-check-input me-2" type="checkbox" [ngModel]="draft.examSimulationReserv" (ngModelChange)="updateEditCourse('examSimulationReserv', $event)" />
+                        Exam Simulation
+                      </label>
+
+                      <label class="form-check-label enroll-option">
+                        <input class="form-check-input me-2" type="checkbox" [ngModel]="draft.recordedCourseReserv" (ngModelChange)="updateEditCourse('recordedCourseReserv', $event)" />
+                        Recorded Course
+                      </label>
+
+                      <label class="form-check-label enroll-option">
+                        <input class="form-check-input me-2" type="checkbox" [ngModel]="draft.liveCourseReserv" (ngModelChange)="updateEditCourse('liveCourseReserv', $event)" />
+                        Live Course
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="col-12 d-flex justify-content-end gap-2">
+                    <button class="btn btn-outline-secondary" type="button" (click)="cancelEdit()">Cancel</button>
+                    <button class="btn btn-primary" type="button" [disabled]="submittingCourseId() === item.oid || !canSaveEdit()" (click)="saveEdit()">
+                      {{ submittingCourseId() === item.oid ? 'Saving...' : 'Save Changes' }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            } @else {
+              <div class="enroll-editor border-top mt-3 pt-3 d-flex justify-content-end">
+                <button class="btn btn-sm btn-primary" type="button" [disabled]="submittingCourseId() === item.oid || !canEnroll(item)" (click)="enrollCourse(item)">
+                  {{ submittingCourseId() === item.oid ? 'Enrolling...' : 'Enroll Student' }}
+                </button>
+              </div>
+            }
           </div>
         </div>
       }

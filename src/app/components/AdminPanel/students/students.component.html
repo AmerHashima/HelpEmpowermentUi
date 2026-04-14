@@ -44,7 +44,7 @@
         <div class="row g-3">
           @for (student of students(); track student.oid) {
             <div class="col-12 col-md-6">
-              <div class="student-card border rounded-3 p-3 h-100 bg-white" (click)="openReservedCourses(student.oid)">
+              <div class="student-card border rounded-3 p-3 h-100 bg-white">
                 <div class="d-flex justify-content-between mb-2">
                   <h6 class="mb-0">{{ student.nameEn }}</h6>
                   <span class="badge" [class.bg-success]="student.isActive" [class.bg-secondary]="!student.isActive">
@@ -68,9 +68,9 @@
                   <button class="btn btn-sm btn-outline-primary" type="button" (click)="openEditPopup(student.oid)">
                     Edit
                   </button>
-                  <!-- <button class="btn btn-sm btn-primary" type="button" >
+                  <button class="btn btn-sm btn-primary" type="button" (click)="openReservedCourses(student.oid)">
                     Reserved Courses
-                  </button> -->
+                  </button>
                   <button class="btn btn-sm btn-outline-danger" type="button" (click)="removeStudent(student.oid)">
                     Delete
                   </button>

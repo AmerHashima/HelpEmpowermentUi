@@ -42,6 +42,13 @@
       <input class="form-control" type="password" [(ngModel)]="formModel.password" />
     </div>
 
+    @if (!isEditMode()) {
+      <div class="mb-3">
+        <label class="form-label mb-1">Confirm Password *</label>
+        <input class="form-control" type="password" [(ngModel)]="formModel.confirmPassword" />
+      </div>
+    }
+
     @if (errorMessage()) {
       <div class="alert alert-danger py-2" role="alert">
         {{ errorMessage() }}

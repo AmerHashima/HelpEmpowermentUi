@@ -20,7 +20,6 @@ import { ToastingMessagesService } from '../../../../shared/Services/ToastingMes
 import { QuestionsStore } from '../../../../AdminPanelStores/QuestionStores/questions.store';
 import { TranslateService } from '../../../../Services/translate.service';
 import { BreadcrumbService } from '../../../../Services/breadcrumb.service';
-import { TranslatePipe } from '@ngx-translate/core';
 
 type QuestionType = 'MCQ' | 'MATCHING' | null;
 type SectionType = QuestionType | 'Multiple Choice Question' | 'Matching';
@@ -47,8 +46,7 @@ const DEFAULT_USER_ID = '3fa85f64-5717-4562-b3fc-2c963f66afa6';
     InputComponent,
     ReactiveFormsModule,
     NgIf,
-    TextareaComponent,
-    TranslatePipe
+    TextareaComponent
   ],
   templateUrl: './certification-question.component.html',
   styleUrl: './certification-question.component.scss'

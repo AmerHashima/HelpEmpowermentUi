@@ -2,7 +2,6 @@ import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FeatureComponent } from '../../../../../shared/clientSide/feature/feature.component';
 import { SiteButtonComponent } from '../../../../../shared/clientSide/site-button/site-button.component';
 import { Shared } from '../../../../../shared/Services/shared/shared';
-import { TranslatePipe } from '@ngx-translate/core';
 import { GenericModelComponent } from '../../../../../shared/generic-model/generic-model.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Question1Component } from '../question1/question1.component';
@@ -31,7 +30,7 @@ interface QuizLevel {
 }
 @Component({
   selector: 'app-quiz-game-question',
-  imports: [FeatureComponent, SiteButtonComponent, TranslatePipe, GenericModelComponent, Question1Component,
+  imports: [FeatureComponent, SiteButtonComponent, GenericModelComponent, Question1Component,
     FirstQuestionComponent, SecondQuestionComponent, MultiTableQuestionsComponent,
     PyramidDragDropComponent, GenericDragMatchComponent, MatchingTableComponent
   ],

@@ -44,14 +44,14 @@ export interface StudentCourse {
 
 export interface updateStudentCourse {
   oid: string,
-  paymentStatusLookupId: string
+  paymentStatusLookupId: string | null,
   paidAmount: number,
-  transactionId: string,
-  paymentDate: string,
+  transactionId: string | null,
+  paymentDate: string | null,
   examSimulationReserv: boolean,
-  recordedCourseReserv: true,
-  liveCourseReserv: true,
-  enrollmentStatusLookupId: string,
+  recordedCourseReserv: boolean,
+  liveCourseReserv: boolean,
+  enrollmentStatusLookupId: string | null,
   progressPercentage: number,
   completedLessons: number,
   updatedBy: string
