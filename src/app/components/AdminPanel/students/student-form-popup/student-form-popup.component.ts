@@ -57,6 +57,7 @@ export class StudentFormPopupComponent {
   }
 
   saveStudent(): void {
+    this.formModel.nameAr = this.formModel.nameEn;
     if (!this.formModel.nameEn.trim() || !this.formModel.nameAr.trim() || !this.formModel.email.trim() || !this.formModel.mobile.trim() || !this.formModel.username.trim()) {
       this.errorMessage.set('Please fill all required fields.');
       return;

@@ -19,7 +19,7 @@ export class Shared {
   lang = signal<'en' | 'ar'>('en');
   isRtl = computed(() => this.lang() === 'ar');
   currentCertificate = signal('');
-  certifications=signal<any>(null);
+  certifications = signal<any>(null);
   currentCertificationObject = computed(() => {
     const certName = this.currentCertificate();
     const certs = this.certifications();
@@ -27,6 +27,7 @@ export class Shared {
     const certification = certs.find((c: any) => c.courseName.toLowerCase() === certName) ?? null;
     return certification;
   });
+  currentVideoOid = signal<string>('');
   currentExamId = signal('');
   currentExam = signal<courseExam | null>(null);
   studentExamId = signal('');
@@ -66,14 +67,14 @@ export class Shared {
     const savedExamId = localStorage.getItem('currentExamId');
     const savedExam = localStorage.getItem('currentExam');
     const savedstudettExamId = localStorage.getItem('studentExamId');
-    console.log('savedstudettExamId',savedstudettExamId);
-    if (savedstudettExamId){
+    console.log('savedstudettExamId', savedstudettExamId);
+    if (savedstudettExamId) {
       this.studentExamId.set(savedstudettExamId);
     }
 
     if (
       savedExamId &&
-      (currentUrl.includes('/chooseExam') || currentUrl.includes('/lesson-learned') ||currentUrl.includes('/reports') || currentUrl.includes('?mode')  )
+      (currentUrl.includes('/chooseExam') || currentUrl.includes('/lesson-learned') || currentUrl.includes('/reports') || currentUrl.includes('?mode'))
     ) {
       this.currentExamId.set(savedExamId);
     }
@@ -153,19 +154,19 @@ export class Shared {
     }
   }
 
-    getScoreLabel(score: number, totalScore: number): string {
-      const percentage = (score / totalScore) * 100;
+  getScoreLabel(score: number, totalScore: number): string {
+    const percentage = (score / totalScore) * 100;
 
-      if (percentage >= 83) {
-        return 'Above Target';
-      } else if (percentage >= 65) {
-        return 'Target';
-      } else if (percentage >= 54) {
-        return 'Below Target';
-      } else {
-        return 'Needs Improvement';
-      }
+    if (percentage >= 83) {
+      return 'Above Target';
+    } else if (percentage >= 65) {
+      return 'Target';
+    } else if (percentage >= 54) {
+      return 'Below Target';
+    } else {
+      return 'Needs Improvement';
     }
+  }
 
   // getLatestFreeExamResult(userId: string | null): any | null {
   //   if (!userId) return null;
@@ -190,7 +191,7 @@ export class Shared {
   // }
 
 
-   getLatestFreeExamReport(userId:string|null): LessonReportVM | null {
+  getLatestFreeExamReport(userId: string | null): LessonReportVM | null {
     // const userId = this.auth.loggedStudent()?.userId;
     if (!userId) return null;
 
@@ -244,7 +245,7 @@ export class Shared {
     if (!total) return 0;
     return Math.round((value / total) * 100);
   }
-   getExamResultsKey(userId:string|null): string | null {
+  getExamResultsKey(userId: string | null): string | null {
     if (!userId) return null;
 
     return `exam-results-freeExam-certification--${this.currentCertificate()}-user-${userId}`;
@@ -252,7 +253,7 @@ export class Shared {
 
   clearFreeExamLesson(userId: string | null) {
     if (!userId) return;
-    const examId=this.currentExamId();
+    const examId = this.currentExamId();
     const key = this.getExamResultsKey(userId);
     if (!key) return;
 

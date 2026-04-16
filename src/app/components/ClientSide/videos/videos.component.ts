@@ -116,7 +116,7 @@ export class VideosComponent {
   @ViewChild('videoPlayer') videoRef!: ElementRef<HTMLVideoElement>;
   // 🔧 injections
   private courseVideosService = inject(CourseVideosService);
-  private toasting=inject(ToastingMessagesService);
+  private toasting = inject(ToastingMessagesService);
   private studentService = inject(StudentService);
   private shared = inject(Shared);
   private platformId = inject(PLATFORM_ID);
@@ -190,6 +190,11 @@ export class VideosComponent {
 
       this.selectedVideo.set(nextVideo);
       this.initialized = true;
+    });
+
+    effect(() => {
+      const video = this.selectedVideo();
+      this.shared.currentVideoOid.set(video?.oid ?? '');
     });
   }
 
@@ -282,7 +287,7 @@ export class VideosComponent {
     }
   }
 
-  showLockedMessage(){
+  showLockedMessage() {
     this.toasting.showToast('Please watch previous lessons first.', 'warning');
   }
 
@@ -294,7 +299,7 @@ export class VideosComponent {
       : (video.nameEn || video.nameAr);
   }
 
-//Helper
+  //Helper
 
   canPlayNext = computed(() => {
     const vids = this.videos();

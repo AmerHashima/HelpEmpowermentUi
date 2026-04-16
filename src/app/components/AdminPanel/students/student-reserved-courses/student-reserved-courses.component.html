@@ -4,7 +4,7 @@
     <h4 class="mb-0">Student Courses</h4>
     <div class="d-flex gap-2">
       <button class="btn btn-primary" type="button" (click)="openAddForm()">Add Course</button>
-      <a routerLink="/admin/students" class="btn btn-outline-secondary">Back to Users</a>
+      <a routerLink="/admin/students" class="btn btn-outline-secondary">Back to Student</a>
     </div>
   </div>
 
@@ -160,41 +160,6 @@
             @if (editingCourseId() === item.oid && editCourse(); as draft) {
               <div class="enroll-editor border-top mt-3 pt-3">
                 <div class="row g-3">
-                  <div class="col-sm-6">
-                    <label class="form-label small fw-semibold">Paid Amount</label>
-                    <input type="number" class="form-control" min="0" [ngModel]="draft.paidAmount" (ngModelChange)="updateEditCourse('paidAmount', $event)" />
-                  </div>
-
-                  <div class="col-sm-6">
-                    <label class="form-label small fw-semibold">Progress %</label>
-                    <input type="number" class="form-control" min="0" max="100" [ngModel]="draft.progressPercentage" (ngModelChange)="updateEditCourse('progressPercentage', $event)" />
-                  </div>
-
-                  <div class="col-sm-6">
-                    <label class="form-label small fw-semibold">Completed Lessons</label>
-                    <input type="number" class="form-control" min="0" [ngModel]="draft.completedLessons" (ngModelChange)="updateEditCourse('completedLessons', $event)" />
-                  </div>
-
-                  <div class="col-sm-6">
-                    <label class="form-label small fw-semibold">Payment Date</label>
-                    <input type="datetime-local" class="form-control" [ngModel]="draft.paymentDate" (ngModelChange)="updateEditCourse('paymentDate', $event)" />
-                  </div>
-
-                  <div class="col-sm-6">
-                    <label class="form-label small fw-semibold">Transaction Id</label>
-                    <input type="text" class="form-control" [ngModel]="draft.transactionId" (ngModelChange)="updateEditCourse('transactionId', $event)" />
-                  </div>
-
-                  <div class="col-sm-6">
-                    <label class="form-label small fw-semibold">Payment Status Lookup Id</label>
-                    <input type="text" class="form-control" [ngModel]="draft.paymentStatusLookupId" (ngModelChange)="updateEditCourse('paymentStatusLookupId', $event)" />
-                  </div>
-
-                  <div class="col-12">
-                    <label class="form-label small fw-semibold">Enrollment Status Lookup Id</label>
-                    <input type="text" class="form-control" [ngModel]="draft.enrollmentStatusLookupId" (ngModelChange)="updateEditCourse('enrollmentStatusLookupId', $event)" />
-                  </div>
-
                   <div class="col-12">
                     <div class="d-flex flex-wrap gap-3">
                       <label class="form-check-label enroll-option">

@@ -16,3 +16,14 @@ export interface CourseVideo {
   createdAt: string | null;
   attachments: any[];
 }
+
+export interface CourseVideoAttachment {
+  oid: string;
+  courseVideoOid: string;
+  videoName: string;
+  fileName: string;
+  fileUrl: string;
+  fileTypeLookupId: string | null;
+  fileTypeName: string | null;
+  createdAt: string | null;
+}
