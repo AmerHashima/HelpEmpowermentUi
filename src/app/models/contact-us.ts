@@ -13,8 +13,8 @@ export interface ContactUs {
 }
 
 
-export interface APIContact{
-  oid:string,
+export interface APIContact {
+  oid: string,
   fullName: string,
   fullNameAr: string,
   email: string,
@@ -24,15 +24,27 @@ export interface APIContact{
   subjectAr: string,
   message: string,
   messageAr: string,
-  contactTypeLookupId:string,
+  contactTypeLookupId: string,
   contactTypeName: string,
-  priorityLookupId:string,
+  priorityLookupId: string,
   priorityName: string,
   statusLookupId: string,
   statusName: string,
   response: string,
-  respondedAt:string,
+  respondedAt: string,
   ticketNumber: string,
   isRead: true,
   createdAt: string
+}
+
+export interface RespondContactUsDto {
+  response: string;
+}
+
+export interface MarkAsReadRequest {
+  isRead: boolean;
+}
+
+export interface UpdateStatusRequest {
+  statusLookupId: string;
 }

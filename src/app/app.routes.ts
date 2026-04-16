@@ -21,7 +21,7 @@ import { CalendarComponent } from './components/ClientSide/calendar/calendar.com
 import { CertificationsComponent as clientCertifications } from './components/ClientSide/certifications/certifications.component';
 
 import { ArticlesComponent } from './components/ClientSide/articles/articles.component';
-import { ArticlesComponent as AdminArticles }  from './components/AdminPanel/articles/articles.component';
+import { ArticlesComponent as AdminArticles } from './components/AdminPanel/articles/articles.component';
 
 import { FAQsComponent } from './components/ClientSide/faqs/faqs.component';
 import { ContactComponent } from './components/ClientSide/contact/contact.component';
@@ -55,6 +55,7 @@ import { PerformanceLevelsComponent } from '../components/ClientSide/performance
 import { LessonLearnedQUestiosPracticeModeComponent } from './components/ClientSide/certifications/lesson-learned-questios-practice-mode/lesson-learned-questios-practice-mode.component';
 import { examQuestionsResolver } from './Resolvers/exam-questions.resolver';
 import { EditExamComponent } from './components/AdminPanel/certifications/edit-exam/edit-exam.component';
+import { AdminContactUsComponent } from './components/AdminPanel/contact-us/contact-us.component';
 import { SlugCertificationComponent } from './components/ClientSide/certifications/slug-certification/slug-certification.component';
 import { ForgetPasswordComponent } from './components/ClientSide/auth/forget-password/forget-password.component';
 import { ResetPasswordComponent } from './components/ClientSide/auth/reset-password/reset-password.component';
@@ -364,7 +365,12 @@ export const routes: Routes = [
       {
         path: 'articles',
         component: AdminArticles,
-        data: { breadcrumb: 'Users' },
+        data: { breadcrumb: 'Articles' },
+      },
+      {
+        path: 'contact-us',
+        component: AdminContactUsComponent,
+        data: { breadcrumb: 'Contact Us' },
       },
     ],
   },

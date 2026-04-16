@@ -61,6 +61,12 @@ export class SideNav {
       icon: 'bi bi-people-fill',
       route: 'students'
     },
+    {
+      name: 'Contact Us',
+      nameAr: 'تواصل معنا',
+      icon: 'bi bi-envelope-fill',
+      route: 'contact-us'
+    },
     // {
     //   name: 'Articles',
     //   nameAr: 'المقالات',
