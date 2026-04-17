@@ -1,0 +1,24 @@
+<div #certificate class="certificate-container">
+  <div class="header">
+    <h2>Certificate of Attendance</h2>
+  </div>
+
+  <div class="content">
+    <p>Awarded to:</p>
+    <h1>{{ userName }}</h1>
+
+    <p>
+      For successfully completing training in:
+      <strong>{{ courseName }}</strong>
+    </p>
+
+    <p>Date: {{ date }} ({{ hours }} hours)</p>
+
+    <div class="footer">
+      <p>{{ instructor }}</p>
+      <span>Course Instructor</span>
+    </div>
+  </div>
+</div>
+
+<button (click)="downloadPDF()">Download Certificate</button>

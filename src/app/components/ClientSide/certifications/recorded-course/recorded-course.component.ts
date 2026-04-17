@@ -22,10 +22,11 @@ import { CourseVideosService } from '../../../../Services/course-videos.service'
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { catchError, distinctUntilChanged, map, of, startWith, switchMap } from 'rxjs';
 import { CourseVideo } from '../../../../models/course-video';
+import { FinishCertificationComponent } from '../../finish-certification/finish-certification.component';
 
 @Component({
   selector: 'app-recorded-course',
-  imports: [PageBannerComponent, SiteButtonComponent, StarRatingComponent, TranslateModule, NgIf,
+  imports: [PageBannerComponent, SiteButtonComponent, StarRatingComponent, TranslateModule, NgIf,FinishCertificationComponent,
     TranslatePipe, NgIf, CoureseOutlineComponent, CoureseFeaturesComponent, CouresePlayerComponent,
     CoureseContentComponent, ResourcesComponent, InstructorInfoComponent, TargetAudienceComponent, GenericModelComponent
   ],

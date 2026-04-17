@@ -1,5 +1,5 @@
 <footer
-  class="footer-parent d-flex flex-column align-content-center justify-content-center gap-2"
+  class=" footer-parent d-flex flex-column align-content-center justify-content-center gap-2"
 >
   <div class="footer-video d-flex align-items-center justify-content-center">
     <img [src]="footerImage()" [alt]="'footer.image' | translate" />
@@ -7,14 +7,14 @@
 
   <div class="checker-mover"></div>
 
-  <div class="footer-content">
+  <div class="footer-content ">
     <div
-      class="page-width flex-column flex-lg-row d-flex justify-content-between align-items-center"
+      class=" flex-column gap-2 flex-lg-row d-flex justify-content-between align-items-center"
     >
-      <p class="w-100 text-start">
+      <p class="w-100 text-center text-lg-start">
         {{ "footer.copyright" | translate }}
       </p>
-      <p class="d-flex justify-content-end gap-2 w-100">
+      <p class="d-flex justify-content-center justify-content-lg-end gap-2 w-100">
         <span>
           <a [routerLink]="['/', currentLang(), 'refund-policy']">
             {{ "footer.refundPolicy" | translate }}
