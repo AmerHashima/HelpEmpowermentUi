@@ -19,34 +19,53 @@ export class FinishCertificationComponent {
   @ViewChild('certificate', { static: false }) certificate!: ElementRef;
   userName=computed(()=> this.auth.loggedStudent()?.nameEn);
 
-
-
-  // courseName = computed(() => `${this.shared.currentCertificationObject().courseDescription} (${this.certCode()})`);
-  courseName = computed(() => {
+  finalCert = computed(() => {
     const cert = this.shared.currentCertificationObject();
     const local = this.localCert();
+    return this.shared.currentCertificationObject() || this.localCert();
+  });
 
-    const finalCert = cert || local;
+  CERT_CONFIG: Record<string, any> = {
+    PMP: {
+      hours: 35,
+      badge: `PMP® #1870<br>023`,
+      codeNumber: 220001
+    },
+    CAPM: {
+      hours: 23,
+      badge: `CAPM® #182<br>0429`,
+      codeNumber: 230001
+    }
+  };
 
-    if (!finalCert) return '';
 
-    return `${finalCert.courseDescription} (${finalCert.courseCode})`;
+  courseName = computed(() => {
+    const cert = this.finalCert();
+    if (!cert) return '';
+
+    return `${cert.courseDescription} (${cert.courseCode})`;
   });
 
   hours = computed(() => {
-    const cert = this.shared.currentCertificationObject();
-    const local = this.localCert();
+    const cert = this.finalCert();
+    if (!cert) return 0;
 
-    const finalCert = cert || local;
-
-    if (!finalCert) return 0;
-    else if (finalCert.courseCode == 'PMP')
-      return 35;
-    else if (finalCert.courseCode == 'CAPM')
-      return 23;
-    else return 0;
+    return this.CERT_CONFIG[cert.courseCode]?.hours ?? 0;
   });
 
+  badge = computed(() => {
+    const cert = this.finalCert();
+    if (!cert) return null;
+
+    return this.CERT_CONFIG[cert.courseCode]?.badge ?? null;
+  });
+
+  codeNumber = computed(() => {
+    const cert = this.finalCert();
+    if (!cert) return 0;
+
+    return this.CERT_CONFIG[cert.courseCode]?.codeNumber ?? 0;
+  });
 
   date =computed(() => "30 May 2026");
   private localCert = signal<any>(null);
