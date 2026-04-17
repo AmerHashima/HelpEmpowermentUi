@@ -107,17 +107,11 @@
           </div>
         }
 
-<<<<<<< Updated upstream
-||||||| Stash base
-        <div class="col-12">
-          <app-courese-content  [videos]="videos()"/>
-        </div>
-=======
-        <div class="col-12">
-          <app-courese-content [videos]="videos()" />
-        </div>
 
->>>>>>> Stashed changes
+        <!-- <div class="col-12">
+          <app-courese-content  [videos]="videos()"/>
+        </div> -->
+
         @if (hasRecordedCourseAccess()) {
           <div class="col-12">
             <app-resources />
@@ -126,6 +120,11 @@
         @if (!hasRecordedCourseAccess()) {
           <div class="col-12">
             <app-instructor-info />
+          </div>
+        }
+         @if (isCourseFinished() && hasRecordedCourseAccess()) {
+          <div class="col-12">
+            <app-download-certificate/>
           </div>
         }
       </div>

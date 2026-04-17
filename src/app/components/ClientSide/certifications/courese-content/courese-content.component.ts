@@ -104,8 +104,9 @@ export class CoureseContentComponent {
 
 
   isChecked(order: number): boolean {
-    const completed = this.lessonsWatched() ?? 0;
-    return order <= completed;
+    // const completed = this.lessonsWatched() ?? 0;
+    // return order <= completed;
+    return false;
   }
   readonly accordionTitle = 'Course Content';
 }

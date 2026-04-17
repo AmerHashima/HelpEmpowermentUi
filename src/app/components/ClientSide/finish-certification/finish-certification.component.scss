@@ -1,17 +1,353 @@
+// @use 'variables' as *;
+
+// .certificate-container {
+//   width: 100%;
+//   // height: 700px;
+//   padding: 0px;
+
+//   background: white;
+//   text-align: center;
+// }
+
+// .header {
+//   width: 100%;
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: flex-start;
+//   position: relative;
+//   padding-right: 200px;
+//   padding-top:10px;
+// }
+
+// .left {
+//   position: relative;
+// }
+
+// .left img {
+//   height: 90px;
+// }
+
+// .pmp-badge {
+//   position: absolute;
+//   top: 90px;
+//   left: 0;
+//   background: #f3c3d1;
+//   padding: 6px 12px;
+//   font-size: 16px;
+//   color: $primaryColor;
+//   line-height: 1.2;
+// }
+
+
+// .right img {
+//   height: 120px;
+// }
+
+
+// .right {
+//   display: flex;
+//   align-items: flex-start;
+//   gap: 10px;
+// }
+
+// .vertical-code {
+//   writing-mode: vertical-rl;
+//   transform: rotate(180deg) translateY(-30px);
+//   background: #f3c3d1;
+//   padding:  5px;
+
+//   font-size: 12px;
+//   color: $primaryColor;
+
+//   height: 100px;
+//   min-width: 25px;
+
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+
+//   white-space: nowrap;
+// }
+
+// .square {
+//   position: absolute;
+//   top: 0;
+//   right: 0;
+// }
+
+// .square img {
+//   width: 50px;
+//   height: 50px;
+// }
+
+
+
+// /* MAIN TITLE */
+// .main-title {
+//   text-align: center;
+//   margin-top: 30px;
+//   font-size: 40px;
+//   color: $primaryColor;
+//   font-weight: 600 !important;
+// }
+
+// .content {
+//   text-align: center;
+//   margin-top: 40px;
+//   margin-left: 100px;
+
+// }
+
+// .awarded {
+//   font-size: 20px;
+//   text-align: left;
+// }
+
+// .name {
+//   font-size: 40px;
+//   font-weight: 600;
+// }
+
+// .description {
+//   font-size: 20px;
+// }
+
+// .description span {
+//   color: $primaryColor;
+//   font-weight: bold;
+//   font-size: 30px;
+// }
+
+// .date {
+//   margin-top: 20px;
+//   font-size: 18px;
+//   text-align: left;
+// }
+
+
+
+// .instructor .name {
+//   font-size: 24px;
+//   font-weight: bold;
+// }
+
+// .instructor .role {
+//   font-size: 16px;
+// }
+
+// .website {
+//   font-size: 14px;
+//   margin-bottom:20px;
+// }
+
+
+
+// .checker-mover {
+//   position: relative;
+//   bottom:0px;
+//   width: 100%;
+//   height: 14px;
+//   opacity: 0.7;
+//   background: repeating-conic-gradient(
+//     $primaryColor 0deg 90deg,
+//     transparent 90deg 180deg
+//   );
+//   background-size: 14px 14px;
+// }
+
+
+@use 'variables' as *;
 .certificate-container {
-  width: 1000px;
-  height: 700px;
-  padding: 40px;
+  width: 1123px;
+  height: 794px;
   background: white;
+  position: relative;
+
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  position: relative;
+  padding-top:40px !important;
+  padding-right: 120px;
+}
+
+.left {
+  position: relative;
+}
+
+.left img {
+  height: 90px;
+}
+
+.pmp-badge {
+  position: absolute;
+  top: 90px;
+  left: 0;
+  background: #f3c3d1;
+  padding: 6px 12px;
+  font-size: 16px;
+  color: $primaryColor;
+}
+
+/* RIGHT */
+.right {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.right img {
+  height: 110px;
+}
+
+// .vertical-code {
+//   writing-mode: vertical-rl;
+//   transform: rotate(180deg);
+//   background: #f3c3d1;
+//   padding: 6px;
+//   font-size: 12px;
+//   color: $primaryColor;
+//   height: 100px;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+// }
+
+.vertical-code {
+  background: #f3c3d1;
+  width: 30px;
+  height: 120px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* rotate whole block */
+.inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+
+  transform: rotate(-90deg); /* 🔥 KEY FIX */
+}
+
+/* numbers */
+.inner span {
+  font-size: 12px;
+  color: $primaryColor;
+  line-height: 1;
+}
+
+/* CORNER SQUARE */
+.square {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.square img {
+  width: 50px;
+  height: 50px;
+}
+
+/* TITLE */
+.main-title {
   text-align: center;
-  border: 10px solid #b30059;
+  margin-top: 50px;
+  font-size: 40px;
+  color: $primaryColor;
+  font-weight: 600;
+}
 
-  h1 {
-    font-size: 40px;
-    margin: 20px 0;
-  }
+/* CONTENT */
+.content {
+  margin-top: 80px;
+  margin-left: 100px;
+  text-align: left;
+}
 
-  h2 {
-    color: #b30059;
-  }
+.awarded {
+  font-size: 20px;
+}
+
+.name {
+  font-size: 32px;
+  font-weight: 600;
+  margin: 20px 0;
+}
+
+.description {
+  font-size: 20px;
+}
+
+.description span {
+  color: $primaryColor;
+  font-weight: bold;
+  font-size: 24px;
+}
+
+p{
+  color:$headerColor;
+}
+
+.date {
+  margin-top: 20px;
+  font-size: 18px;
+}
+
+/* FOOTER */
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+}
+
+.instructor-name {
+  color:$headerColor;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.role {
+    color:$headerColor;
+  font-size: 16px;
+}
+
+.signature img {
+  width: 150px;
+  margin: 10px 0;
+}
+
+.website {
+    color:$headerColor;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+// /* CHECKER */
+// .checker {
+//   width: 100%;
+//   height: 14px;
+//   background: repeating-conic-gradient(
+//     #b30059 0deg 90deg,
+//     transparent 90deg 180deg
+//   );
+//   background-size: 14px 14px;
+// }
+
+.checker-img {
+  width: 100%;
+}
+/* BUTTON */
+.download-btn {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
 }

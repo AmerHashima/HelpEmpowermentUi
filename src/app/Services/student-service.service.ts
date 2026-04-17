@@ -42,6 +42,12 @@ export class StudentService {
   completedLessonsInCourse = computed(() =>
     this.currentCourse()?.completedLessons
   );
+
+  isCourseFinished = computed(() =>
+    this.currentCourse()?.completedLessons == this.currentCourse()?.totalLessons
+  );
+
+
   constructor(private apiService: ApiService, private auth: AuthService, private shared: Shared) {
     effect(() => {
       const studentId = this.auth.loggedStudent()?.userId

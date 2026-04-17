@@ -61,6 +61,7 @@ import { ForgetPasswordComponent } from './components/ClientSide/auth/forget-pas
 import { ResetPasswordComponent } from './components/ClientSide/auth/reset-password/reset-password.component';
 import { ResetPasswordOTPComponent } from './components/ClientSide/auth/reset-password-otp/reset-password-otp.component';
 import { VideosComponent } from './components/ClientSide/videos/videos.component';
+import { FinishCertificationComponent } from './components/ClientSide/finish-certification/finish-certification.component';
 
 export const validLangGuard: CanMatchFn = (route, segments) => {
   const lang = segments[0]?.path;
@@ -374,6 +375,7 @@ export const routes: Routes = [
       },
     ],
   },
+
   {
     path: '**',
     component: NotFoundComponent,
@@ -442,6 +444,13 @@ function getCertificationChildren(): Routes {
         import('./components/ClientSide/certifications/quiz-game/quiz-game-question/quiz-game-question.component')
           .then(m => m.QuizGameQuestionComponent),
       data: { fullPage: true }
+    }, {
+      path: 'download-certification',
+      loadComponent: () =>
+        import('./components/ClientSide/finish-certification/finish-certification.component')
+          .then(m => m.FinishCertificationComponent),
+      data: { fullPage: true }
+
     },
     {
       path: 'reports',

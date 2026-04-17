@@ -1,24 +1,155 @@
+<!--
+
 <div #certificate class="certificate-container">
-  <div class="header">
-    <h2>Certificate of Attendance</h2>
-  </div>
+<div class="header">
 
-  <div class="content">
-    <p>Awarded to:</p>
-    <h1>{{ userName }}</h1>
+  <div class="left">
+    <img src="/assets/images/finishCourse/logo.png" alt="logo">
 
-    <p>
-      For successfully completing training in:
-      <strong>{{ courseName }}</strong>
-    </p>
-
-    <p>Date: {{ date }} ({{ hours }} hours)</p>
-
-    <div class="footer">
-      <p>{{ instructor }}</p>
-      <span>Course Instructor</span>
+    <div class="pmp-badge">
+      PMP® #1870<br>023
     </div>
   </div>
+
+  <div class="right">
+    <img src="/assets/images/finishCourse/anotherLogo.png" alt="PMI logo">
+
+    <div class="vertical-code">
+      5090<br>220001
+    </div>
+  </div>
+
+
+
+  <div class="square">
+    <img src="/assets/images/finishCourse/square.png" alt="square">
+  </div>
+
 </div>
 
-<button (click)="downloadPDF()">Download Certificate</button>
+
+  <div class="main-title">Certificate of Attendance</div>
+
+  <div class="content">
+    <p class="awarded darkText">Awarded to:</p>
+
+    <h1 class="name text-start darkText py-4">{{ userName() }}</h1>
+
+    <p class="description text-start darkText">
+      For successfully completing training in:
+      <span>{{ courseName() }}</span>
+    </p>
+
+    <p class="date darkText">
+      Date: {{ date() }} ({{ hours() }} hours)
+    </p>
+  </div>
+
+  <div>
+    <div class="instructor">
+      <div class="name">Mahmoud Elhelbawi</div>
+      <div class="role">Course Instructor</div>
+      <div class="signature">
+        <img src="/assets/images/finishCourse/signature.png" alt="signature">
+      </div>
+    </div>
+    <div class="website">www.HelpEmpowerment.com</div>
+      <div class="checker-mover"></div>
+
+  </div>
+
+</div>
+
+
+<div class="mt-3 d-flex justify-content-center">
+    <app-site-button
+          title="Download Certificate"
+          type="main"
+          (click)="downloadPDF()"
+        />
+</div>
+ -->
+
+<div class="w-100 d-flex flex-column align-items-center">
+   <div #certificate class="certificate-container">
+
+  <!-- Header -->
+  <div class="header">
+
+    <div class="left">
+      <img src="/assets/images/finishCourse/logo.png" alt="logo">
+
+      <div class="pmp-badge">
+        PMP® #1870<br>023
+      </div>
+    </div>
+
+    <div class="right">
+      <img src="/assets/images/finishCourse/anotherLogo.png" alt="PMI logo">
+
+      <!-- <div class="vertical-code">
+        5090<br>220001
+      </div> -->
+  <div class="vertical-code">
+  <div class="inner">
+    <span>5090</span>
+    <span>220001</span>
+  </div>
+</div>
+    </div>
+
+    <div class="square">
+      <img src="/assets/images/finishCourse/square.png" alt="square">
+    </div>
+
+  </div>
+
+  <!-- Title -->
+  <div class="main-title">Certificate of Attendance</div>
+
+  <!-- Content -->
+  <div class="content">
+    <p class="awarded">Awarded to:</p>
+
+    <h1 class="name">{{ userName() }}</h1>
+
+    <p class="description">
+      For successfully completing training in:
+      <span>{{ courseName() }}</span>
+    </p>
+
+    <p class="date">
+      Date: {{ date() }} ({{ hours() }} hours)
+    </p>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="instructor">
+      <div class="instructor-name">Mahmoud Elhelbawi</div>
+      <div class="role">Course Instructor</div>
+
+      <div class="signature">
+        <img src="/assets/images/finishCourse/signature.png" alt="signature">
+      </div>
+    </div>
+
+    <div class="website">www.HelpEmpowerment.com</div>
+
+    <div>
+      <img src="/assets/images/finishCourse/checker.png" class="checker-img" />
+    </div>
+    <!-- <div class="checker"></div> -->
+  </div>
+
+</div>
+
+<div class="download-btn">
+  <app-site-button
+    title="Download Certificate"
+    type="main"
+    (click)="downloadPDF()"
+  />
+</div>
+
+</div>

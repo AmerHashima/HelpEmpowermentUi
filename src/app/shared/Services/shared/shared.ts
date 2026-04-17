@@ -1,5 +1,5 @@
 
-import { Injectable, RendererFactory2, Renderer2, signal, computed, inject, PLATFORM_ID } from '@angular/core';
+import { Injectable, RendererFactory2, Renderer2, signal, computed, inject, PLATFORM_ID, effect } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { isPlatformBrowser } from '@angular/common';
 import { certifications } from '../../clientSide/certification-cards/certification-cards.component';
@@ -23,10 +23,13 @@ export class Shared {
   currentCertificationObject = computed(() => {
     const certName = this.currentCertificate();
     const certs = this.certifications();
+    console.log('certifications',this.certifications());
     if (!certName || !certs?.length) return null;
     const certification = certs.find((c: any) => c.courseName.toLowerCase() === certName) ?? null;
     return certification;
   });
+
+
   currentVideoOid = signal<string>('');
   currentExamId = signal('');
   currentExam = signal<courseExam | null>(null);
@@ -58,6 +61,10 @@ export class Shared {
     if (isPlatformBrowser(this.platformId)) {
       this.restoreExamIdFromStorage();
     }
+
+    effect(()=>{
+      console.log('currentCertificationObject', this.currentCertificationObject());
+    })
   }
 
   private restoreExamIdFromStorage() {

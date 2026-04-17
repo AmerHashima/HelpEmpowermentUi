@@ -23,12 +23,14 @@ import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { catchError, distinctUntilChanged, map, of, startWith, switchMap } from 'rxjs';
 import { CourseVideo } from '../../../../models/course-video';
 import { FinishCertificationComponent } from '../../finish-certification/finish-certification.component';
+import { DownloadCertificateComponent } from '../download-certificate/download-certificate.component';
 
 @Component({
   selector: 'app-recorded-course',
   imports: [PageBannerComponent, SiteButtonComponent, StarRatingComponent, TranslateModule, NgIf,FinishCertificationComponent,
     TranslatePipe, NgIf, CoureseOutlineComponent, CoureseFeaturesComponent, CouresePlayerComponent,
-    CoureseContentComponent, ResourcesComponent, InstructorInfoComponent, TargetAudienceComponent, GenericModelComponent
+    CoureseContentComponent, ResourcesComponent, InstructorInfoComponent, TargetAudienceComponent, GenericModelComponent,
+    DownloadCertificateComponent
   ],
   templateUrl: './recorded-course.component.html',
   styleUrl: './recorded-course.component.scss'
@@ -45,6 +47,7 @@ export class RecordedCourseComponent {
   hasRecordedCourseAccess = computed(
     () => this.isEnrolled() && this.studentService.showExamSimulator === true
   );
+  isCourseFinished=this.studentService.isCourseFinished;
   enrollImage = 'assets/images/enroll.png';
   recoedImage = "assets/images/recordedCourse.jpeg";
 
@@ -167,4 +170,7 @@ export class RecordedCourseComponent {
       next: (cartItem) => this.cartService.updateBasket(cartItem)
     });
   }
+
+
+
 }
