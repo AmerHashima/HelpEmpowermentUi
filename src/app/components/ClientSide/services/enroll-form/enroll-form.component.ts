@@ -1,5 +1,5 @@
 // src\app\components\ClientSide\services\enroll-form\enroll-form.component.ts
-import { Component, inject, input, output } from '@angular/core';
+import { Component, effect, inject, input, output, QueryList, ViewChildren } from '@angular/core';
 import { Shared } from '../../../../shared/Services/shared/shared';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/site-button.component';
@@ -10,21 +10,36 @@ import { PhoneInputComponent } from '../../../../shared/phone/phone.component';
 import emailjs, { type EmailJSResponseStatus } from '@emailjs/browser';
 import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
 import { environment } from '../../../../../environments/environment';
+import { AuthService } from '../../../../Services/auth.service';
+import { firstValueFrom, forkJoin } from 'rxjs';
+import { ContactUsService } from '../../../../Services/contact-us.service';
+import { serviceEnrollMessageingLookup } from '../../../../data/lookUPS';
+import { TranslateService } from '../../../../Services/translate.service';
+import { GenericModelComponent } from '../../../../shared/generic-model/generic-model.component';
+import { LoadingService } from '../../../../shared/Services/Loading/loading.service';
 
 @Component({
   selector: 'app-enroll-form',
-  imports: [TranslateModule,TranslatePipe,SiteButtonComponent,InputComponent,
-    TextareaComponent,FormsModule,PhoneInputComponent
+  imports: [TranslateModule, TranslatePipe, SiteButtonComponent, InputComponent,
+    TextareaComponent, FormsModule, PhoneInputComponent, GenericModelComponent
   ],
   templateUrl: './enroll-form.component.html',
   styleUrl: './enroll-form.component.scss'
 })
 export class EnrollFormComponent {
-  private shared=inject(Shared);
-  private toasting=inject(ToastingMessagesService);
-  isRTL=this.shared.isRtl;
+  @ViewChildren(PhoneInputComponent)
+  phoneCmps!: QueryList<PhoneInputComponent>;
+  private shared = inject(Shared);
+  private contactService = inject(ContactUsService);
+  private auth = inject(AuthService);
+  private translationService = inject(TranslateService);
+  private loader=inject(LoadingService);
+  student = this.auth.loggedStudent;
+  private toasting = inject(ToastingMessagesService);
+  isRTL = this.shared.isRtl;
   readonly submitted = output<any>();
-  page=input<string>('');
+  showConfirm = false;
+  page = input<string>('');
 
   arabicLabels = {
     searchPlaceholder: 'ابحث عن دولة أو رمز الاتصال',
@@ -41,64 +56,212 @@ export class EnrollFormComponent {
   }
   enroll = {
     fullname: '',
-    organizationname:"",
+    organizationname: "",
     email: '',
     phone: "",
     notes: '',
   };
 
 
+  constructor() {
+    effect(() => {
+      const user = this.student();
 
-  // Replace your current onEnroll with this version
-  async onEnroll(form: NgForm) {
-    if (form.invalid) {
-      Object.values(form.controls).forEach(control => {
-        control.markAsTouched();
-      });
-      return;
-    }
-
-    const enrollMessageData = {
-      ...this.enroll,
-      service: this.page() || 'unknown',
-    };
-
-    console.log('Sending enroll data:', enrollMessageData);
-
-    try {
-      const response: EmailJSResponseStatus = await emailjs.send(
-        environment.mailServiceId,
-        environment.mailTemolateId,
-        enrollMessageData,
-        {
-          publicKey: environment.mailPublicKey
-        }
-      );
-
-      console.log('SUCCESS!', response.status, response.text);
-       this.toasting.showToast('enroll.sent.success','success');
-      form.resetForm();  
-
-    } catch (err: any) {
-      this.toasting.showToast("enroll.sent.error", 'error');
-    }
-    //  finally {
-    //   this.isSending = false;
-    // }
+      if (user) {
+        this.enroll.fullname = user.nameEn;
+        this.enroll.email = user.email || '';
+        this.enroll.phone = user.mobile || '';
+      }
+    });
   }
 
-  // onEnroll(form:NgForm) {
+  // Replace your current onEnroll with this version
+  // async onEnroll(form: NgForm) {
   //   if (form.invalid) {
   //     Object.values(form.controls).forEach(control => {
   //       control.markAsTouched();
   //     });
   //     return;
   //   }
-  //   const enrollMessageData={
+
+  //   const enrollMessageData = {
   //     ...this.enroll,
-  //     service:this.page()
+  //     service: this.page() || 'unknown',
+  //   };
+
+  //   console.log('Sending enroll data:', enrollMessageData);
+
+  //   try {
+  //     const response: EmailJSResponseStatus = await emailjs.send(
+  //       environment.mailServiceId,
+  //       environment.mailTemolateId,
+  //       enrollMessageData,
+  //       {
+  //         publicKey: environment.mailPublicKey
+  //       }
+  //     );
+
+  //     console.log('SUCCESS!', response.status, response.text);
+  //      this.toasting.showToast('enroll.sent.success','success');
+  //     form.resetForm();
+
+  //   } catch (err: any) {
+  //     this.toasting.showToast("enroll.sent.error", 'error');
   //   }
-  //   console.log('enroll Data', enrollMessageData);
-  //   // this.submitted.emit(this.enroll);
+  //   //  finally {
+  //   //   this.isSending = false;
+  //   // }
+  // }
+
+  async onEnroll(form: NgForm) {
+    if (this.student() && this.student()?.userId) {
+
+      if (form.invalid) {
+        Object.values(form.controls).forEach(control => {
+          control.markAsTouched();
+        });
+        this.phoneCmps?.forEach(c => c.validateOnSubmit());
+        return;
+      }
+
+      try {
+        // 🔹 1. Translations
+        const translations = await firstValueFrom(
+          forkJoin({
+            fullNameAr: this.translationService.translateEnToAr(this.enroll.fullname),
+            messageAr: this.translationService.translateEnToAr(
+              `Enroll request for ${this.page()}`
+            )
+          })
+        );
+
+        const payload = {
+          fullName: this.enroll.fullname,
+          fullNameAr: translations.fullNameAr,
+          email: this.enroll.email,
+          phone: '',
+          mobile: this.enroll.phone,
+          subject: '',
+          subjectAr: '',
+          message: `Enroll request for ${this.page()}`,
+          messageAr: translations.messageAr,
+          contactTypeLookupId: serviceEnrollMessageingLookup,
+          studentId: this.student()?.userId!
+        };
+
+        const enrollMessageData = {
+          ...this.enroll,
+          service: this.page() || 'unknown',
+        };
+
+
+        await firstValueFrom(
+          this.contactService.createContactMessage(payload, 'enroll')
+        );
+
+        try {
+          this.loader.start();
+          await emailjs.send(
+            environment.mailServiceId,
+            environment.mailTemolateId,
+            enrollMessageData,
+            { publicKey: environment.mailPublicKey }
+          );
+        } catch (emailError) {
+          this.toasting.showToast('enroll.email.failed', 'warning');
+        }
+        finally {
+          this.loader.stop();
+        }
+
+        this.toasting.showToast('enroll.sent.success', 'success');
+        form.resetForm({
+          fullname: this.student()?.nameEn || '',
+          email: this.student()?.email || '',
+          phone: this.student()?.mobile || '',
+          message: ''
+        });
+
+        this.phoneCmps?.forEach(c => c.resetState());
+
+      }
+       catch (apiError) {
+
+      }
+
+    } else {
+      this.showConfirm = true;
+    }
+  }
+
+  // async onEnroll(form: NgForm) {
+  //   if (this.student() && this.student()?.userId) {
+
+  //     if (form.invalid) {
+  //       Object.values(form.controls).forEach(control => {
+  //         control.markAsTouched();
+  //       });
+  //       this.phoneCmps?.forEach(c => c.validateOnSubmit());
+  //       return;
+  //     }
+
+  //     try {
+  //       const translations = await firstValueFrom(
+  //         forkJoin({
+  //           fullNameAr: this.translationService.translateEnToAr(this.enroll.fullname),
+  //           messageAr: this.translationService.translateEnToAr(
+  //             `Enroll request for ${this.page()}`
+  //           )
+  //         })
+  //       );
+
+  //       const payload = {
+  //         fullName: this.enroll.fullname,
+  //         fullNameAr: translations.fullNameAr,
+  //         email: this.enroll.email,
+  //         phone: '',
+  //         mobile: this.enroll.phone,
+  //         subject: '',
+  //         subjectAr: '',
+  //         message: `Enroll request for ${this.page()}`,
+  //         messageAr: translations.messageAr,
+  //         contactTypeLookupId: serviceEnrollMessageingLookup,
+  //         studentId: this.student()?.userId!
+  //       };
+
+  //       const enrollMessageData = {
+  //         ...this.enroll,
+  //         service: this.page() || 'unknown',
+  //       };
+
+  //       await Promise.all([
+  //         emailjs.send(
+  //           environment.mailServiceId,
+  //           environment.mailTemolateId,
+  //           enrollMessageData,
+  //           { publicKey: environment.mailPublicKey }
+  //         ),
+  //         firstValueFrom(this.contactService.createContactMessage(payload))
+  //       ]);
+
+  //       this.toasting.showToast('enroll.sent.success', 'success');
+
+  //       form.resetForm({
+  //         fullName: this.student()?.nameEn || '',
+  //         email: this.student()?.email || '',
+  //         phone: this.student()?.mobile || '',
+  //         message: ''
+  //       });
+
+  //       this.phoneCmps?.forEach(c => c.resetState());
+
+  //     } catch (err) {
+  //       console.error('Enroll error:', err);
+  //       this.toasting.showToast('enroll.sent.error', 'error');
+  //     }
+
+  //   } else {
+  //     this.showConfirm = true;
+  //   }
   // }
 }

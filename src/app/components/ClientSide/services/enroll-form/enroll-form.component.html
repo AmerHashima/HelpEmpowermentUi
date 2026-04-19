@@ -1,5 +1,5 @@
 <section class="enrollForm">
-  <ng-content select="[form-title]"></ng-content>
+  <ng-content select="[form-title]" class="darkText"></ng-content>
   <section
     class="form w-100 d-flex flex-column align-items-stretch gap-3 rounded mt-3"
   >
@@ -75,3 +75,20 @@
     </form>
   </section>
 </section>
+
+  <app-generic-modal [(isOpen)]="showConfirm" title="Alert Message">
+    <section
+      class="w-100 d-flex flex-column align-items-stretch gap-3 p-3 rounded"
+    >
+      <div
+        class="d-flex flex-column align-items-center justify-content-center gap-2 w-100"
+      >
+        <i class="bi bi-info-circle-fill infoColor"></i>
+        <p class="text-center darkText w-75 mx-auto">
+          {{
+            "You Must be logged to be able to contact us." | translate
+          }}
+        </p>
+      </div>
+    </section>
+  </app-generic-modal>

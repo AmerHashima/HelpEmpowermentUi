@@ -7,6 +7,7 @@ import { Shared } from '../../../../shared/Services/shared/shared';
 import { FeatureComponent } from '../../../../shared/clientSide/feature/feature.component';
 import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/site-button.component';
 import { FaqItemComponent } from '../../../../shared/faq-item/faq-item.component';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-home-faq',
@@ -19,7 +20,9 @@ import { FaqItemComponent } from '../../../../shared/faq-item/faq-item.component
 })
 export class HomeFAQComponent {
   protected readonly shared = inject(Shared);
-  private currentCertification = this.shared.currentCertificate
+  private currentCertification = this.shared.currentCertificate;
+  private router=inject(Router);
+  private route=inject(ActivatedRoute);
   // You need to provide this array – can come from service, input, or static
   questions = [
     {
@@ -102,10 +105,10 @@ export class HomeFAQComponent {
   })
 
   onContactSupport() {
-    window.location.href = 'mailto:Support@helpempowerment.com';
-    // or
-    // this.router.navigateByUrl(`/${this.lang()}/certifications/${course.courseName.toLowerCase()}/recorded-course`);
-
+    // window.location.href = 'mailto:Support@helpempowerment.com';
+      this.router.navigate(['../', 'contact'], {
+        relativeTo: this.route,
+      });
   }
 }
 

@@ -313,9 +313,12 @@ p {
 }
 
 .enrollForm .serviceTitle {
-  color: $paragraphColor;
+  color: $paraTextColor;
   width: 100%;
+
 }
+
+
 
 .ng-dropdown-panel ,   .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
    background-color: $inputBg !important;
