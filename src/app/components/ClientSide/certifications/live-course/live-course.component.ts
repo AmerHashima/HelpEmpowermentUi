@@ -38,7 +38,7 @@ export class LiveCourseComponent {
   isEnrolled = this.studentService.isLiveCourseEnrolled;
   showConfirm: boolean = false;
   enrollImage = 'assets/images/enroll.png';
-  courseImage = "assets/images/recordedCourse.jpeg";
+  courseImage = "assets/images/liveCourse/liveCourse.jpeg";
 
   liveCourseContent = computed(() => {
     const cert = this.shared.currentCertificate();
