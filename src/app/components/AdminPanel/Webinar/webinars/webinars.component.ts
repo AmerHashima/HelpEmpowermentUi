@@ -18,14 +18,12 @@ export class WebinarsComponent {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private webinarService = inject(WebinarService);
-  // 🔹 state
-  // branches = computed(() => this.store.items());
-  // total = computed(() => this.store.total());
-  // pageSize = computed(() => this.store.pageSize());
-  // loading = computed(() => this.store.loading());
+
   webinars =this.webinarService.webinars
-  total = signal<number>(0);
-  pageSize = signal<number>(10);
+  total = this.webinarService.total;
+  pageSize = this.webinarService.pageSize;
+  pageNumber=this.webinarService.pageNumber;
+  filters=this.webinarService.filters;
   loading = signal<boolean>(false);
 
   hidden = signal<boolean>(false);
@@ -87,18 +85,22 @@ export class WebinarsComponent {
 
   // 🔹 table events
   onPageChange(event: PageEvent) {
-    console.log('pagination', event);
+    this.pageNumber.set(event.pageIndex);
+    this.pageSize.set(event.pageSize);
   }
 
   onFilterChange(value: string) {
-    // this.store.setSearch(value);
+   const filters=[
+    {
+       propertyName:  "webinarName",
+      value: value,
+       operation: 0
+    }
+   ]
+    this.webinarService.filters.set([...filters]);
   }
 
-  onSortChange(sort: any) {
-    // this.store.setSort(sort);
-  }
 
-  // 🔥 NAVIGATION (ONLY change URL)
 
   handleAddNew() {
     this.router.navigate(['/admin/webinar'], {
@@ -119,6 +121,9 @@ export class WebinarsComponent {
   }
 
   handleDelete(row: any) {
+    this.webinarService.deleteWebinar(row.oid).subscribe({
+      next: () => this.pageNumber.update(p => p)
+    })
   }
 
   onCancal() {

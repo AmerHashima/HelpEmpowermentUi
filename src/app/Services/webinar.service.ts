@@ -1,7 +1,7 @@
-import { Injectable, signal } from '@angular/core';
+import { computed, effect, Injectable, signal } from '@angular/core';
 import ApiService from '../shared/Services/ApiService/api.service';
 import { ApiWebinar, Webinar } from '../models/webinar';
-import { RequestBody } from '../models/rquest';
+import { Filter, RequestBody } from '../models/rquest';
 import { map, Observable } from 'rxjs';
 import { ApiResponse, ApiSearchResponse } from '../models/apiResponse';
 import { re } from 'mathjs';
@@ -12,10 +12,35 @@ import { re } from 'mathjs';
 export class WebinarService {
   webinars=signal<ApiWebinar[]>([]);
   total = signal<number>(0);
+  pageNumber = signal<number>(0);
+  pageSize = signal<number>(10);
+  filters=signal<Filter[]>([])
+  mapWebinarsToSessions =computed(()=> {
+    return this.webinars().map(w => {
+      const start = new Date(w.webinarStartTime);
+      const end = new Date(w.webinarEndTime);
 
-  constructor(private apiService:ApiService) {
-    const requestBody={
-      filters:[],
+      return {
+        date: this.formatDate(w.webinarDate),
+        time: this.formatDuration(start, end),
+        title: w.webinarName
+      };
+    });
+  })
+
+
+  constructor(private apiService: ApiService) {
+    effect(() => {
+      const page = this.pageNumber();
+      const size = this.pageSize();
+      const filters=this.filters();
+      this.loadWebinars(page, size, filters);
+    });
+  }
+
+  loadWebinars(page: number, size: number, filters:Filter[]) {
+    const requestBody = {
+      filters: filters,
       sort: [
         {
           sortBy: "createdAt",
@@ -23,17 +48,20 @@ export class WebinarService {
         }],
       pagination: {
         getAll: false,
-        pageNumber: 0,
-        pageSize: 10
+        pageNumber: page,
+        pageSize: size
       },
-      columns:[]
+      columns: []
     }
     this.searchWebinars(requestBody).subscribe({
-      next: (res) => {this.webinars.set(res.webinars);
+      next: (res) => {
+        this.webinars.set(res.webinars);
         this.total.set(res.total);
       }
     })
   }
+
+
 
 
 
@@ -113,4 +141,28 @@ export class WebinarService {
             })
           );
       }
+      //helpers
+  formatDate(dateStr: string): string {
+    const date = new Date(dateStr);
+
+    return date.toLocaleDateString('en-US', {
+      day: 'numeric',
+      month: 'short'
+    });
+  }
+  formatDuration(start: Date, end: Date): string {
+    const startStr = start.toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    });
+
+    const endStr = end.toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    });
+
+    return `${startStr} - ${endStr}`;
+  }
 }

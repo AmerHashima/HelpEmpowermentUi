@@ -24,8 +24,10 @@ export class LiveCoursesComponent {
   // pageSize = computed(() => this.store.pageSize());
   // loading = computed(() => this.store.loading());
   liveCourses = this.liveCourseService.liveCourses
-  total = signal<number>(0);
-  pageSize = signal<number>(10);
+  total = this.liveCourseService.total;
+  pageSize = this.liveCourseService.pageSize;
+  pageNumber = this.liveCourseService.pageNumber;
+  filters = this.liveCourseService.filters
   loading = signal<boolean>(false);
 
   hidden = signal<boolean>(false);
@@ -88,41 +90,50 @@ export class LiveCoursesComponent {
 
   // 🔹 table events
   onPageChange(event: PageEvent) {
-    console.log('pagination', event);
+    this.pageNumber.set(event.pageIndex);
+    this.pageSize.set(event.pageSize);
   }
 
   onFilterChange(value: string) {
-    // this.store.setSearch(value);
+    const filters = [
+      {
+        propertyName: "courseName",
+        value: value,
+        operation: 0
+      }
+    ]
+    this.liveCourseService.filters.set([...filters]);
   }
 
-  onSortChange(sort: any) {
-    // this.store.setSort(sort);
-  }
+
 
   // 🔥 NAVIGATION (ONLY change URL)
 
   handleAddNew() {
-    this.router.navigate(['/admin/webinar'], {
+    this.router.navigate(['/admin/live-course'], {
       queryParams: { mode: 'create' }
     });
   }
 
   handleEdit(row: any) {
-    this.router.navigate(['/admin/webinar'], {
+    this.router.navigate(['/admin/live-course'], {
       queryParams: { mode: 'edit', id: row.oid }
     });
   }
 
-  handleSingleWebinarNavigation(row: any) {
-    this.router.navigate(['/admin/webinar'], {
+  handleSingleCourserNavigation(row: any) {
+    this.router.navigate(['/admin/live-course'], {
       queryParams: { mode: 'edit', id: row.oid }
     });
   }
 
   handleDelete(row: any) {
+   this.liveCourseService.deleteLiveCourse(row.oid).subscribe({
+     next: () => this.pageNumber.update(p => p)
+   })
   }
 
   onCancal() {
-    this.router.navigate(['/admin/webinar']);
+    this.router.navigate(['/admin/live-course']);
   }
 }

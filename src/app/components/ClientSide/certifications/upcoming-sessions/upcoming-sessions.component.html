@@ -41,14 +41,14 @@
             </div>
           </div>
 
-          @if (!isEnrolled() && type() != "webinar") {
+          <!-- @if (!isEnrolled() && type() != "webinar") {
             <app-site-button
               title="Book Trial"
               [icon]="'bi bi-arrow'"
               type="main"
               (click)="bookNow(session)"
             ></app-site-button>
-          }
+          } -->
           @if (type() == "webinar") {
             <app-site-button
               title="Register Now"
@@ -59,7 +59,7 @@
           }
         </div>
       } @empty {
-        <div class="shadow noReveiws rounded text-center text-muted py-5">
+        <div class=" noReveiws rounded text-center text-muted py-5">
           <i
             class="bi bi-chat-square-dots fs-1 mb-3 d-block text-secondary"
           ></i>
