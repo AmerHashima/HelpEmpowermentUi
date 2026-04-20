@@ -39,7 +39,9 @@ export class LiveCourseComponent {
   showConfirm: boolean = false;
   enrollImage = 'assets/images/enroll.png';
   courseImage = "assets/images/liveCourse/liveCourse.jpeg";
-
+  hasLiveCourseAccess = computed(
+    () => this.isEnrolled() && this.studentService.showExamSimulator === true
+  );
   liveCourseContent = computed(() => {
     const cert = this.shared.currentCertificate();
     const key = cert === 'capm' ? 'capm' : 'pmp';
