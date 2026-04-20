@@ -58,8 +58,8 @@ export class SideNav {
       route: 'students'
     },
     {
-      name: 'Contact Us',
-      nameAr: 'تواصل معنا',
+      name: 'Messages',
+      nameAr: 'الرسائل',
       icon: 'bi bi-envelope-fill',
       route: 'contact-us'
     },

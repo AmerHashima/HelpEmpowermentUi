@@ -1,9 +1,22 @@
 <div class="container-fluid py-3">
   <div class="d-flex justify-content-between align-items-center mb-3">
-    <h4 class="mb-0">Contact Us Messages</h4>
-    <button class="btn btn-outline-secondary btn-sm" (click)="loadContacts()">
+    <h4 class="mb-0">Messages</h4>
+    <div class="d-flex gap-1 align-items-center">
+        <mat-form-field
+          class="small-field"
+  subscriptSizing="dynamic"
+         appearance="outline">
+  <input
+    matInput
+    placeholder="Search..."
+    (keyup)="onFilter($event)"
+  />
+</mat-form-field>
+ <button class="btn btn-outline-secondary btn-sm" (click)="loadContacts()">
       <i class="bi bi-arrow-clockwise"></i> Refresh
     </button>
+    </div>
+
   </div>
 
   @if (loading()) {
@@ -18,7 +31,7 @@
       <!-- List -->
       <div class="col-lg-4">
         <div class="list-group">
-          @for (item of contacts(); track item.oid) {
+          @for (item of filteredContacts(); track item.oid) {
             <button
               type="button"
               class="list-group-item list-group-item-action d-flex flex-column align-items-start gap-1"
@@ -36,6 +49,10 @@
               <div class="d-flex gap-1 align-items-center justify-content-between w-100">
                 <small class="text-muted">{{ item.ticketNumber }}</small>
                 <span class="badge bg-secondary">{{ item.statusName || 'Open' }}</span>
+              </div>
+               <div class="d-flex gap-1 align-items-center justify-content-between w-100">
+                <small class="text-muted">Contact Type:</small>
+                <span class="badge bg-secondary">{{ item.contactTypeName }}</span>
               </div>
             </button>
           } @empty {
