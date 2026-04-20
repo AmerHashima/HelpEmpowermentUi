@@ -77,10 +77,7 @@ export class ContactComponent {
   constructor() {
     effect(() => this.patchUserData());
   }
-  private sanitizer = inject(DomSanitizer);
-
-
- private patchUserData(){
+  private patchUserData() {
     const user = this.student();
 
     if (user) {
@@ -88,7 +85,11 @@ export class ContactComponent {
       this.contact.email = user.email || '';
       this.contact.phone = user.mobile || '';
     }
- }
+  }
+  private sanitizer = inject(DomSanitizer);
+
+
+
   private readonly embedSrc =
     'https://www.google.com/maps?q=Sharjah,United+Arab+Emirates&output=embed';
 
