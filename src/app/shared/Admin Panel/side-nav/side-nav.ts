@@ -50,10 +50,6 @@ export class SideNav {
       nameAr: 'الشهادات',
       icon: 'bi bi-patch-check-fill',
       route: 'certifications',
-      // subItems: [
-      //   { name: 'PMP', nameAr: 'الأطباء', icon: 'bi bi-patch-check-fill', route: 'pmp' },
-      //   { name: 'CAMP', nameAr: 'إضافةطبيب جديد', icon: 'bi bi-patch-check-fill', route: 'camp' },
-      // ]
     },
     {
       name: 'Users',
@@ -67,22 +63,25 @@ export class SideNav {
       icon: 'bi bi-envelope-fill',
       route: 'contact-us'
     },
+    {
+      name: 'Live Course',
+      nameAr: 'دورة مباشرة',
+      icon: 'bi bi-broadcast',
+      route: 'live-course'
+    },
+    {
+      name: 'Webinar',
+      nameAr: 'ندوة عبر الإنترنت',
+      icon: 'bi bi-camera-video',
+      route: 'webinar'
+    }
     // {
     //   name: 'Articles',
     //   nameAr: 'المقالات',
     //   icon: 'bi bi-people-fill',
     //   route: 'articles'
     // },
-    // {
-    //   name: 'Services',
-    //   nameAr: 'الخدمات',
-    //   icon: 'bi bi-bullseye',
-    //   route: 'services',
-    //   subItems: [
-    //     { name: 'service 1', nameAr: 'خدمة ١', icon: 'bi bi-bullseye', route: 'service1' },
-    //     { name: 'service 2', nameAr: 'خدمة ٢', icon: 'bi bi-bullseye', route: 'service2' },
-    //   ]
-    // },
+
 
   ];
 

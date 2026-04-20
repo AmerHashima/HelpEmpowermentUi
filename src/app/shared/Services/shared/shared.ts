@@ -301,4 +301,11 @@ export class Shared {
       console.error('Error clearing free exam lesson:', e);
     }
   }
+
+  formatDateToISO(date: string): string {
+    if (!date) return '';
+
+    const d = new Date(date);
+    return d.toISOString();
+  }
 }

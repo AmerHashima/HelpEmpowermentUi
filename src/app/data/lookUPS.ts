@@ -8,3 +8,7 @@ export const serviceEnrollMessageingLookup ="ad551718-9b80-4aca-8b41-49216e428d3
 export const studentRoleLookUp ="55555555-5555-5555-5555-555555555503";
 export const adminRoleLookUp ="55555555-5555-5555-5555-555555555501"
 
+export const ActiveStatus = [
+  { label: 'Active', value: true },
+  { label: 'Inactive', value: false },
+];

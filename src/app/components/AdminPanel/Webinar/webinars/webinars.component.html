@@ -1,0 +1,23 @@
+<div class="p-3">
+  <div [hidden]="hidden()">
+    <app-reusable-material-table
+      [columns]="columns"
+      [data]="webinars()"
+      [totalCount]="total()"
+      [pageSize]="pageSize()"
+            title="webinar"
+
+      (pageChange)="onPageChange($event)"
+      (filterChange)="onFilterChange($event)"
+      (sortChange)="onSortChange($event)"
+      (editRow)="handleEdit($event)"
+      (deleteRow)="handleDelete($event)"
+      (onFirstCellClickChange)="handleSingleWebinarNavigation($event)"
+      (onAddNewChange)="handleAddNew()"
+    >
+    </app-reusable-material-table>
+  </div>
+  <div>
+    <app-webinar-form [hidden]="!hidden()" (cancalEvent)="onCancal()" [oid]="oid"/>
+  </div>
+</div>

@@ -1,0 +1,30 @@
+export interface Webinar{
+  oid?:string,
+  webinarName: string,
+  webinarFormat: string,
+  webinarDate: string,
+  webinarStartTime: string,
+  webinarEndTime: string,
+  timeZone: string,
+  whatsAppLink: string,
+  notes: string,
+  isActive: boolean,
+  createdBy:string
+}
+
+export interface ApiWebinar {
+  oid:string,
+  webinarName: string,
+  webinarFormat: string,
+  webinarDate: string,
+  webinarStartTime: string,
+  webinarEndTime: string,
+  timeZone: string,
+  whatsAppLink: string,
+  notes: string,
+  isActive: true,
+  createdAt: string,
+  createdBy:string,
+  updatedAt: string,
+  updatedBy:string
+}

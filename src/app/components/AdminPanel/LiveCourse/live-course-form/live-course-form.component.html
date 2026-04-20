@@ -1,0 +1,145 @@
+
+<form
+  [formGroup]="form"
+  (ngSubmit)="onSubmit()"
+  class="d-flex flex-column gap-4 p-3"
+>
+  <div class="row flex-wrap gy-2">
+    <div class="col-lg-4">
+      <app-input
+        formControlName="courseName"
+        label="Course Name"
+        type="text"
+        placeholder=""
+        icon=""
+        [errorMessages]="{
+          required: 'Name is required',
+        }"
+      />
+    </div>
+       <div class="col-lg-4">
+         <spk-ng-select
+        formControlName="courseFormat"
+        label="Course Format"
+        [options]="$any((webinarFormats$ | async) ?? [])"
+        [bindLabel]="getFormatLabel()"
+        bindValue="oid"
+        [multiple]="false"
+        placeholder="Choose Webinar Format"
+        selectClass="form-control"
+      />
+    </div>
+          <div class="col-lg-4">
+         <spk-ng-select
+        formControlName="timeZone"
+        label="Time Zone"
+        [options]="$any((timeZone$ | async) ?? [])"
+        [bindLabel]="getFormatLabel()"
+        bindValue="oid"
+        [multiple]="false"
+        placeholder="Choose Time Zone"
+        selectClass="form-control"
+      />
+    </div>
+         <div class="col-lg-4">
+      <app-input
+        formControlName="startDate"
+        label="Start Date"
+        type="date"
+        placeholder=""
+        icon=""
+        [errorMessages]="{
+          required: 'Date is required',
+        }"
+      />
+    </div>
+            <div class="col-lg-4">
+      <app-input
+        formControlName="startTime"
+        label="Start Time"
+        type="text"
+        placeholder=""
+        icon=""
+        [errorMessages]="{
+          required: 'Start Time is required',
+        }"
+      />
+    </div>
+        <div class="col-lg-4">
+      <app-input
+        formControlName="numberOfSessions"
+        label="No of Sessions"
+        type="number"
+        placeholder=""
+        icon=""
+        [errorMessages]="{
+          required: 'Number of sessions is required',
+        }"
+      />
+    </div>
+          <div class="col-lg-4">
+      <app-input
+        formControlName="totalHours"
+        label="Total Hours"
+        type="number"
+        placeholder=""
+        icon=""
+        [errorMessages]="{
+          required: 'Total Hours is required',
+        }"
+      />
+    </div>
+      <div class="col-lg-4">
+      <app-input
+        formControlName="whatsAppLink"
+        label="Whatsapp Link"
+        type="text"
+        placeholder=""
+        icon=""
+        [errorMessages]="{
+          required: 'Whatsapp Link is required',
+        }"
+      />
+    </div>
+    <div class="col-lg-4">
+      <spk-ng-select
+        formControlName="isActive"
+        label="Status"
+        [options]="status"
+        bindLabel="label"
+        bindValue="value"
+        [multiple]="false"
+        placeholder="Choose Status"
+        selectClass="form-control"
+      />
+    </div>
+      <div class="col-12">
+      <app-textarea
+        formControlName="scheduleNotes"
+        [label]="'enroll.notesLabel' | translate"
+        [placeholder]="'enroll.notesLabel' | translate"
+        [errorMessages]="{
+          required: 'Schedule Notes are required' | translate,
+        }"
+      ></app-textarea>
+    </div>
+    <div class="col-12">
+      <app-textarea
+        formControlName="notes"
+        [label]="'enroll.notesLabel' | translate"
+        [placeholder]="'enroll.notesLabel' | translate"
+        [errorMessages]="{
+          required: 'Notes is required' | translate,
+        }"
+      ></app-textarea>
+    </div>
+  </div>
+  <div class="d-flex justify-content-end gap-2">
+    <app-site-button title="Cancal" type="secondary" (click)="cancel()" />
+    <app-site-button
+      title="Save"
+      type="main"
+      htmlType="submit"
+    ></app-site-button>
+  </div>
+</form>
