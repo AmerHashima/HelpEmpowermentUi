@@ -134,12 +134,22 @@
           }
         </div>
         <div class="col-12 col-md-4">
-          <app-input
+          <!-- <app-input
             formControlName="orderNo"
             label="Question Order (Auto-calculated)"
             type="number"
             placeholder="e.g. 1, 2, 3..."
             [readOnly]="!editMode"
+            [errorMessages]="{
+              required: 'Order is required',
+            }"
+          ></app-input> -->
+              <app-input
+            formControlName="orderNo"
+            label="Question Order (Auto-calculated)"
+            type="number"
+            placeholder="e.g. 1, 2, 3..."
+            [readOnly]="false"
             [errorMessages]="{
               required: 'Order is required',
             }"
