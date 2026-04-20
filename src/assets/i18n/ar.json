@@ -1497,5 +1497,67 @@
     "success": "تم تحديث كلمة المرور بنجاح. جاري التحويل...",
     "error": "حدث خطأ، حاول مرة أخرى",
     "passwordMismatch": "كلمتا المرور غير متطابقتين"
+  },
+  "webinarDashboardForm": {
+    "webinarName": "اسم الويبينار",
+    "webinarFormat": "نوع الويبينار",
+    "timeZone": "المنطقة الزمنية",
+    "webinarDate": "تاريخ الويبينار",
+    "webinarStartTime": "وقت بداية الويبينار",
+    "webinarEndTime": "وقت نهاية الويبينار",
+    "whatsAppLink": "رابط واتساب",
+    "status": "الحالة",
+    "notes": "ملاحظات",
+    "placeholders": {
+      "webinarFormat": "اختر نوع الويبينار",
+      "timeZone": "اختر المنطقة الزمنية",
+      "status": "اختر الحالة"
+    },
+    "errors": {
+      "nameRequired": "الاسم مطلوب",
+      "formatRequired": "نوع الويبينار مطلوب",
+      "timeZoneRequired": "المنطقة الزمنية مطلوبة",
+      "dateRequired": "التاريخ مطلوب",
+      "startTimeRequired": "وقت البداية مطلوب",
+      "endTimeRequired": "وقت النهاية مطلوب",
+      "whatsappRequired": "رابط واتساب مطلوب",
+      "notesRequired": "الملاحظات مطلوبة"
+    },
+    "actions": {
+      "save": "حفظ",
+      "cancel": "إلغاء"
+    }
+  },
+  "liveCourseDashboardForm": {
+    "courseName": "اسم الكورس",
+    "courseFormat": "نوع الكورس",
+    "timeZone": "المنطقة الزمنية",
+    "startDate": "تاريخ البداية",
+    "startTime": "وقت البداية",
+    "numberOfSessions": "عدد الجلسات",
+    "totalHours": "إجمالي الساعات",
+    "whatsAppLink": "رابط واتساب",
+    "status": "الحالة",
+    "scheduleNotes": "ملاحظات الجدول",
+    "notes": "ملاحظات",
+    "placeholders": {
+      "courseFormat": "اختر نوع الكورس",
+      "timeZone": "اختر المنطقة الزمنية",
+      "status": "اختر الحالة"
+    },
+    "errors": {
+      "nameRequired": "الاسم مطلوب",
+      "dateRequired": "التاريخ مطلوب",
+      "startTimeRequired": "وقت البداية مطلوب",
+      "sessionsRequired": "عدد الجلسات مطلوب",
+      "totalHoursRequired": "إجمالي الساعات مطلوب",
+      "whatsappRequired": "رابط واتساب مطلوب",
+      "scheduleNotesRequired": "ملاحظات الجدول مطلوبة",
+      "notesRequired": "الملاحظات مطلوبة"
+    },
+    "actions": {
+      "save": "حفظ",
+      "cancel": "إلغاء"
+    }
   }
 }
