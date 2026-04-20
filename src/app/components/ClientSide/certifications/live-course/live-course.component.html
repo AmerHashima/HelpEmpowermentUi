@@ -66,33 +66,37 @@
 
   <div class="container-fluid">
     <div class="row">
-      <div class="col-lg-9">
+      <div [ngClass]="hasLiveCourseAccess() ? 'col-lg-12' : 'col-lg-9'">
         <div class="row">
           <div class="col-12">
             <app-upcoming-sessions />
           </div>
-          <div class="col-12">
-            <app-courese-outline />
-          </div>
-          <div class="col-12">
-            <app-courese-content />
-          </div>
+          @if (!hasLiveCourseAccess()) {
+            <div class="col-12">
+              <app-courese-outline />
+            </div>
+            <div class="col-12">
+              <app-courese-content />
+            </div>
 
-          <div class="col-12">
-            <app-instructor-info />
-          </div>
+            <div class="col-12">
+              <app-instructor-info />
+            </div>
+          }
         </div>
       </div>
-      <div class="col-lg-3">
-        <div class="row">
+      @if (!hasLiveCourseAccess()) {
+        <div class="col-lg-3">
+          <div class="row">
+            <div class="col-12">
+              <app-courese-features [isEnrolled]="isEnrolled()" />
+            </div>
+          </div>
           <div class="col-12">
-            <app-courese-features [isEnrolled]="isEnrolled()" />
+            <app-target-audience />
           </div>
         </div>
-        <div class="col-12">
-          <app-target-audience />
-        </div>
-      </div>
+      }
     </div>
   </div>
 </div>
