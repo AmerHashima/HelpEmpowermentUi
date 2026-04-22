@@ -1,5 +1,5 @@
 // src\app\components\ClientSide\auth\profile\profile.component.ts
-import { Component, computed, effect, inject, signal, ViewChild } from '@angular/core';
+import { Component, computed, effect, inject, QueryList, signal, ViewChild, ViewChildren } from '@angular/core';
 import { AuthService, changePasswordForm } from '../../../../Services/auth.service';
 import { Shared } from '../../../../shared/Services/shared/shared';
 import { TitleCasePipe } from '@angular/common';
@@ -26,7 +26,9 @@ import { createdUpdatedOID } from '../../../../data/lookUPS';
   styleUrl: './profile.component.scss'
 })
 export class ProfileComponent {
-  @ViewChild('registerForm') form!: NgForm
+  @ViewChild('registerForm') form!: NgForm;
+  @ViewChildren(PhoneInputComponent)
+  phoneCmps!: QueryList<PhoneInputComponent>;
   private authService = inject(AuthService);
   private studentService = inject(StudentService);
   private studentExamService = inject(StudentExamService);
@@ -162,6 +164,11 @@ export class ProfileComponent {
   }
   onUpdateInfo() {
     console.log(this.user());
+    if (this.form.invalid) {
+
+      this.phoneCmps?.forEach(c => c.validateOnSubmit());
+      return;
+    }
     const payload = {
       oid: this.user()?.userId ?? '',
       nameEn: `${this.credentials.firstName} ${this.credentials.lastName}`,
@@ -214,6 +221,7 @@ export class ProfileComponent {
     this.authService.changeStudentPassword(payload).subscribe({
       next: () => {
         form.resetForm();
+
       },
       error: () => this.toasting.showToast('profile.password.error', 'error')
     })

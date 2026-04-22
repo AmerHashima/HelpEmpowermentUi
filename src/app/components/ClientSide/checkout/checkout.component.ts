@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, QueryList, signal, ViewChildren } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputComponent } from '../../../shared/input/input.component';
 import { NgIf } from '@angular/common';
@@ -13,6 +13,8 @@ import { CartService } from '../../../Services/  cart.service';
 })
 export class CheckoutComponent {
   private cartService=inject(CartService);
+  @ViewChildren(PhoneInputComponent)
+  phoneCmps!: QueryList<PhoneInputComponent>;
   cartItems=this.cartService.cartItems;
   discontAmount=this.cartService.discountAmount;
   subTotal=this.cartService.subtotal;
@@ -34,6 +36,7 @@ export class CheckoutComponent {
   placeOrder() {
     if (this.checkoutForm.invalid) {
       this.checkoutForm.markAllAsTouched();
+      this.phoneCmps?.forEach(c => c.validateOnSubmit());
       return;
     }
 

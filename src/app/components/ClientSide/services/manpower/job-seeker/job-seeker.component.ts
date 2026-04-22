@@ -1,11 +1,11 @@
 // src\app\components\ClientSide\services\manpower\job-seeker\job-seeker.component.ts
-import { Component, inject } from '@angular/core';
+import { Component, inject, QueryList, ViewChildren } from '@angular/core';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { InputComponent } from '../../../../../shared/input/input.component';
 import { FileUploadComponent } from '../../../../../shared/file-upload/file-upload.component';
 import { Shared } from '../../../../../shared/Services/shared/shared';
 import { SiteButtonComponent } from '../../../../../shared/clientSide/site-button/site-button.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { SpkNgSelectComponent } from '../../../../../shared/spk-ng-select/spk-ng-select.component';
 import { PhoneInputComponent } from '../../../../../shared/phone/phone.component';
 
@@ -19,6 +19,8 @@ import { PhoneInputComponent } from '../../../../../shared/phone/phone.component
 export class JobSeekerComponent {
   private shared = inject(Shared);
   isRTL = this.shared.isRtl;
+  @ViewChildren(PhoneInputComponent)
+  phoneCmps!: QueryList<PhoneInputComponent>;
   jobFields = [
     { oid: 'job-001', name: 'Software Engineer' },
     { oid: 'job-002', name: 'Frontend Developer' },
@@ -49,7 +51,14 @@ export class JobSeekerComponent {
     attachments: [],
   };
 
-  onPostJob() {
+  onPostJob(form:NgForm) {
+    if (form.invalid) {
+      Object.values(form.controls).forEach(control => {
+        control.markAsTouched();
+      });
+      this.phoneCmps?.forEach(c => c.validateOnSubmit());
+      return;
+    }
     //console.log(this.job);
   }
 }

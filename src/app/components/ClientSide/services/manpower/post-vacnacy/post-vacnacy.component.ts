@@ -1,12 +1,12 @@
 // src\app\components\ClientSide\services\manpower\post-vacnacy\post-vacnacy.component.ts
-import { Component, inject } from '@angular/core';
+import { Component, inject, QueryList, ViewChildren } from '@angular/core';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { InputComponent } from '../../../../../shared/input/input.component';
 import { TextareaComponent } from '../../../../../shared/text-area/text-area.component';
 import { FileUploadComponent } from '../../../../../shared/file-upload/file-upload.component';
 import { Shared } from '../../../../../shared/Services/shared/shared';
 import { SiteButtonComponent } from '../../../../../shared/clientSide/site-button/site-button.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { SpkNgSelectComponent } from '../../../../../shared/spk-ng-select/spk-ng-select.component';
 import { PhoneInputComponent } from '../../../../../shared/phone/phone.component';
 
@@ -20,6 +20,8 @@ import { PhoneInputComponent } from '../../../../../shared/phone/phone.component
   styleUrl: './post-vacnacy.component.scss'
 })
 export class PostVacnacyComponent {
+  @ViewChildren(PhoneInputComponent)
+  phoneCmps!: QueryList<PhoneInputComponent>;
 private shared=inject(Shared);
 isRTL=this.shared.isRtl;
 
@@ -44,7 +46,14 @@ isRTL=this.shared.isRtl;
     notes:""
   };
 
-  onPostVacancy(){
+  onPostVacancy(form:NgForm){
+    if (form.invalid) {
+      Object.values(form.controls).forEach(control => {
+        control.markAsTouched();
+      });
+      this.phoneCmps?.forEach(c => c.validateOnSubmit());
+      return;
+    }
     //console.log(this.vacancy);
   }
 }
