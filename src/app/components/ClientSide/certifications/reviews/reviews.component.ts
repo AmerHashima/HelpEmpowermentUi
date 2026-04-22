@@ -33,7 +33,7 @@ export class ReviewsComponent {
   titlePart2 = input<string>('');
   description = input<string>('');
   sectionImage = input<string>('');
-  courseImage = "assets/images/webinar/webinar.jpeg";
+  courseImage = "assets/images/reviewers/review.jpeg";
   pmpReviews = [
     {
       id: 1,

@@ -19,7 +19,7 @@ export class QuizGameComponent {
   private route = inject(ActivatedRoute);
   private auth=inject(AuthService);
   isRTL = this.shared.isRtl;
-  courseImage = "assets/images/recordedCourse.jpeg";
+  courseImage = "assets/images/quizGame/quizGame.jpeg";
   showMustLogin=false;
   quizGameContent = computed(() => {
     const cert = this.shared.currentCertificate();
