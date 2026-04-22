@@ -33,12 +33,12 @@ export class UpcomingSessionsComponent {
   isEnrolled = this.studentService.isLiveCourseEnrolled;
   sessions = computed(() => {
     if (this.type() === 'webinar') {
-      return this.webinarService.mapWebinarsToSessions().filter(session => session.courseName?.toLowerCase() === this.currentCertification().toLowerCase());
-        // {
-        //   date: 'sessions.date.jan15',
-        //   time: 'sessions.time.morningSlot',
-        //   title: 'sessions.webinar.session1'
-        // }
+      // return this.webinarService.mapWebinarsToSessions().filter(session => session.courseName?.toLowerCase() === this.currentCertification().toLowerCase());
+      return  [{
+          date: 'sessions.date.jan15',
+          time: 'sessions.time.morningSlot',
+          title: 'sessions.webinar.session1'
+        }]
 
     } else {
       return this.liveCourseService.mapCoursesToSessions().filter(session => session.courseName?.toLowerCase() === this.currentCertification().toLowerCase());

@@ -143,7 +143,7 @@ export class EnrollFormComponent {
           mobile: this.enroll.phone,
           subject: '',
           subjectAr: '',
-          message: `Enroll request for ${this.page()}`,
+          message: `Enroll request for ${this.page()} ,\n Working at :${this.enroll.organizationname} \n Notes: ${this.enroll.notes}`,
           messageAr: translations.messageAr,
           contactTypeLookupId: serviceEnrollMessageingLookup,
           studentId: this.student()?.userId!

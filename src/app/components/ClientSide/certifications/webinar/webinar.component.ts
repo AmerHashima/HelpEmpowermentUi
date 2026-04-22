@@ -55,7 +55,7 @@ export class WebinarComponent {
   };
 
 
- 
+
   private patchUserData() {
     const user = this.student();
 
@@ -102,7 +102,7 @@ export class WebinarComponent {
             mobile: this.webinar.phone,
             subject: '',
             subjectAr: '',
-            message: this.shared.currentCertificate(),
+            message: `I want to register in ${this.shared.currentCertificate()} webinar,\n My Job Position is : ${this.webinar.position}`,
             messageAr: this.shared.currentCertificate(),
             contactTypeLookupId: webinarContactLookup,
             studentId: this.student()?.userId!
