@@ -7,6 +7,7 @@ import { AuthService } from '../../../../Services/auth.service';
 import { StudentService } from '../../../../Services/student-service.service';
 import { WebinarService } from '../../../../Services/webinar.service';
 import { LiveCourseService } from '../../../../Services/live-course.service';
+import { ApiWebinar } from '../../../../models/webinar';
 
 interface Session {
   date: string;
@@ -22,6 +23,7 @@ title: string;
 })
 export class UpcomingSessionsComponent {
     private shared = inject(Shared);
+    private currentCertification=this.shared.currentCertificate;
     private webinarService = inject(WebinarService);
     private liveCourseService=inject(LiveCourseService);
     private auth = inject(AuthService);
@@ -31,7 +33,7 @@ export class UpcomingSessionsComponent {
   isEnrolled = this.studentService.isLiveCourseEnrolled;
   sessions = computed(() => {
     if (this.type() === 'webinar') {
-      return this.webinarService.mapWebinarsToSessions();
+      return this.webinarService.mapWebinarsToSessions().filter(session => session.courseName?.toLowerCase() === this.currentCertification().toLowerCase());
         // {
         //   date: 'sessions.date.jan15',
         //   time: 'sessions.time.morningSlot',
@@ -39,7 +41,7 @@ export class UpcomingSessionsComponent {
         // }
 
     } else {
-      return this.liveCourseService.mapCoursesToSessions();
+      return this.liveCourseService.mapCoursesToSessions().filter(session => session.courseName?.toLowerCase() === this.currentCertification().toLowerCase());
         // {
         //   date: 'sessions.date.jan15',
         //   time: 'sessions.time.morningSlot',

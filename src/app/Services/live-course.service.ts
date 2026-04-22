@@ -21,6 +21,7 @@ export class LiveCourseService {
         date: this.formatDate(c.startDate),
         time: c.startTime,
         title: c.courseName,
+        courseName:c.courseTitle
       };
     });
   } )

@@ -1,5 +1,6 @@
 export interface Webinar{
   oid?:string,
+  courseOid:string,
   webinarName: string,
   webinarFormat: string,
   webinarDate: string,
@@ -14,6 +15,8 @@ export interface Webinar{
 
 export interface ApiWebinar {
   oid:string,
+  courseOid:string,
+  courseName:string,
   webinarName: string,
   webinarFormat: string,
   webinarDate: string,

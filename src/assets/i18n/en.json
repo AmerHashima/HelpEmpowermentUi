@@ -1527,7 +1527,7 @@
       },
       "webinarDashboardForm": {
         "webinarName": "Webinar Name",
-        "webinarFormat": "Webinar Format",
+        "certfication": "Webinar Certification",
         "timeZone": "Time Zone",
         "webinarDate": "Webinar Date",
         "webinarStartTime": "Webinar Start Time",
@@ -1536,7 +1536,7 @@
         "status": "Status",
         "notes": "Notes",
         "placeholders": {
-          "webinarFormat": "Choose Webinar Format",
+          "certfication": "Choose Certification",
           "timeZone": "Choose Time Zone",
           "status": "Choose Status"
         },

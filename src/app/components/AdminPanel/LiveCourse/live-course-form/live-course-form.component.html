@@ -6,6 +6,19 @@
 >
   <div class="row flex-wrap gy-2">
 
+      <div class="col-lg-4">
+      <spk-ng-select
+        formControlName="courseOid"
+        [label]="'webinarDashboardForm.certfication' | translate"
+        [options]="certifications()?? []"
+        bindLabel="courseName"
+        bindValue="oid"
+        [multiple]="false"
+        [placeholder]="'webinarDashboardForm.placeholders.certfication' | translate"
+        selectClass="form-control"
+      />
+    </div>
+
     <!-- Course Name -->
     <div class="col-lg-4">
       <app-input
@@ -21,7 +34,7 @@
     </div>
 
     <!-- Course Format -->
-    <div class="col-lg-4">
+    <!-- <div class="col-lg-4">
       <spk-ng-select
         formControlName="courseFormat"
         [label]="'liveCourseDashboardForm.courseFormat' | translate"
@@ -32,10 +45,10 @@
         [placeholder]="'liveCourseDashboardForm.placeholders.courseFormat' | translate"
         selectClass="form-control"
       />
-    </div>
+    </div> -->
 
     <!-- Time Zone -->
-    <div class="col-lg-4">
+    <!-- <div class="col-lg-4">
       <spk-ng-select
         formControlName="timeZone"
         [label]="'liveCourseDashboardForm.timeZone' | translate"
@@ -46,7 +59,7 @@
         [placeholder]="'liveCourseDashboardForm.placeholders.timeZone' | translate"
         selectClass="form-control"
       />
-    </div>
+    </div> -->
 
     <!-- Start Date -->
     <div class="col-lg-4">

@@ -23,7 +23,8 @@ export class WebinarService {
       return {
         date: this.formatDate(w.webinarDate),
         time: this.formatDuration(start, end),
-        title: w.webinarName
+        title: w.webinarName,
+        courseName:w.courseName
       };
     });
   })

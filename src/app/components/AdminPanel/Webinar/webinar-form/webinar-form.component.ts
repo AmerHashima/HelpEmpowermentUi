@@ -1,7 +1,7 @@
 import { Component, effect, inject, input, output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Webinar } from '../../../../models/webinar';
-import { ActiveStatus, createdUpdatedOID } from '../../../../data/lookUPS';
+import { ActiveStatus, createdUpdatedOID, webinarPresentationFormat } from '../../../../data/lookUPS';
 import { InputComponent } from '../../../../shared/input/input.component';
 import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/site-button.component';
 import { SpkNgSelectComponent } from '../../../../shared/spk-ng-select/spk-ng-select.component';
@@ -25,6 +25,7 @@ export class WebinarFormComponent {
   private shared = inject(Shared);
   private webinarService=inject(WebinarService);
   isRTL=this.shared.isRtl;
+  certifications=this.shared.certifications;
 oid=input<string>('');
   cancalEvent=output<void>();
   fb = inject(FormBuilder);
@@ -34,6 +35,7 @@ oid=input<string>('');
   // specialities = computed(() => this.store.specialities());
   form = this.fb.group({
     webinarName: ['', Validators.required],
+    courseOid: ['', Validators.required],
     webinarFormat: ['', Validators.required],
     webinarDate: ['', Validators.required],
     webinarEndTime: ['', Validators.required],
@@ -128,11 +130,14 @@ oid=input<string>('');
     const payload: Webinar = {
       ...(this.oid() ? { oid: this.oid() } : {}),
       webinarName: v.webinarName ?? '',
-      webinarFormat: v.webinarFormat ?? '',
+      // webinarFormat: v.webinarFormat ?? '',
+      webinarFormat: webinarPresentationFormat,
+      courseOid: v.courseOid ?? '',
       webinarDate: this.shared.formatDateToISO(v.webinarDate ?? '') ,
       webinarEndTime: v.webinarEndTime ?? '',
       webinarStartTime: v.webinarStartTime ?? '',
-      timeZone: v.timeZone ??'',
+      // timeZone: v.timeZone ??'',
+      timeZone:'SAR',
       whatsAppLink: v.whatsAppLink??'',
       notes: v.notes??'',
       isActive: v.isActive ?? true,

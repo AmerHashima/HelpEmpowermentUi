@@ -1,6 +1,7 @@
 export interface LiveCourse {
   oid?: string,
   courseName: string,
+  courseOid:string,
   courseFormat: string,
   startDate: string,
   startTime: string,
@@ -16,6 +17,8 @@ export interface LiveCourse {
 
 export interface APILiveCourse {
   oid: string,
+  courseOid: string,
+  courseTitle:string,
   courseName: string,
   courseFormat: string,
   startDate: string,

@@ -3,7 +3,7 @@ import { LookupService } from '../../../../Services/lookup.service';
 import { Shared } from '../../../../shared/Services/shared/shared';
 import { LiveCourseService } from '../../../../Services/live-course.service';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActiveStatus, createdUpdatedOID } from '../../../../data/lookUPS';
+import { ActiveStatus, createdUpdatedOID, webinarPresentationFormat } from '../../../../data/lookUPS';
 import { LiveCourse } from '../../../../models/liveCourse';
 import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/site-button.component';
 import { InputComponent } from '../../../../shared/input/input.component';
@@ -25,6 +25,7 @@ export class LiveCourseFormComponent {
   private shared = inject(Shared);
   private liveCourseService = inject(LiveCourseService);
   isRTL = this.shared.isRtl;
+  certifications = this.shared.certifications;
   oid = input<string>('');
   cancalEvent = output<void>();
   fb = inject(FormBuilder);
@@ -34,6 +35,7 @@ export class LiveCourseFormComponent {
   // specialities = computed(() => this.store.specialities());
   form = this.fb.group({
     courseName: ['', Validators.required],
+    courseOid: ['', Validators.required],
     courseFormat: ['', Validators.required],
     startDate: ['', Validators.required],
     startTime: ['', Validators.required],
@@ -123,10 +125,13 @@ export class LiveCourseFormComponent {
     const payload: LiveCourse = {
       ...(this.oid() ? { oid: this.oid() } : {}),
       courseName: v.courseName ?? '',
-      courseFormat: v.courseFormat ?? '',
+       courseOid: v.courseOid ?? '',
+      courseFormat: webinarPresentationFormat,
+      // courseFormat: v.courseFormat ?? '',
       startDate: this.shared.formatDateToISO(v.startDate ?? ''),
       startTime: v.startTime ?? '',
-      timeZone: v.timeZone ?? '',
+      // timeZone: v.timeZone ?? '',
+      timeZone:'SAR',
       whatsAppLink: v.whatsAppLink ?? '',
       notes: v.notes ?? '',
       totalHours: v.totalHours ?? 0,

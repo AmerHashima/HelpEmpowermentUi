@@ -8,7 +8,7 @@ export const serviceEnrollMessageingLookup ="ad551718-9b80-4aca-8b41-49216e428d3
 export const webinarContactLookup ='96c7d494-f447-4db6-960d-3bf5a4341db8';
 export const studentRoleLookUp ="55555555-5555-5555-5555-555555555503";
 export const adminRoleLookUp ="55555555-5555-5555-5555-555555555501"
-
+export const webinarPresentationFormat ="b7d45c8f-ea9b-4619-becf-e6031e9e86c1";
 export const ActiveStatus = [
   { label: 'Active', value: true },
   { label: 'Inactive', value: false },

@@ -4,6 +4,18 @@
   class="d-flex flex-column gap-4 p-3"
 >
   <div class="row flex-wrap gy-2">
+     <div class="col-lg-4">
+      <spk-ng-select
+        formControlName="courseOid"
+        [label]="'webinarDashboardForm.certfication' | translate"
+        [options]="certifications()?? []"
+        bindLabel="courseName"
+        bindValue="oid"
+        [multiple]="false"
+        [placeholder]="'webinarDashboardForm.placeholders.certfication' | translate"
+        selectClass="form-control"
+      />
+    </div>
 
     <!-- Webinar Name -->
     <div class="col-lg-4">
@@ -20,7 +32,7 @@
     </div>
 
     <!-- Webinar Format -->
-    <div class="col-lg-4">
+    <!-- <div class="col-lg-4">
       <spk-ng-select
         formControlName="webinarFormat"
         [label]="'webinarDashboardForm.webinarFormat' | translate"
@@ -31,10 +43,12 @@
         [placeholder]="'webinarDashboardForm.placeholders.webinarFormat' | translate"
         selectClass="form-control"
       />
-    </div>
+    </div> -->
+
+
 
     <!-- Time Zone -->
-    <div class="col-lg-4">
+    <!-- <div class="col-lg-4">
       <spk-ng-select
         formControlName="timeZone"
         [label]="'webinarDashboardForm.timeZone' | translate"
@@ -45,7 +59,7 @@
         [placeholder]="'webinarDashboardForm.placeholders.timeZone' | translate"
         selectClass="form-control"
       />
-    </div>
+    </div> -->
 
     <!-- Webinar Date -->
     <div class="col-lg-4">
