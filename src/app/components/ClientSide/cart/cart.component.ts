@@ -2,18 +2,18 @@ import { TitleCasePipe } from '@angular/common';
 import { Component, computed, effect, inject, Input } from '@angular/core';
 import { Shared } from '../../../shared/Services/shared/shared';
 import { SiteButtonComponent } from '../../../shared/clientSide/site-button/site-button.component';
-import { CartService } from '../../../Services/  cart.service';
+import { CartService, CartViewItem, ReservationType } from '../../../Services/  cart.service';
 import { APICartItem, CartItem } from '../../../models/cart';
 import { Router } from '@angular/router';
 
-type ReservationType =
-  | 'examSimulationReserv'
-  | 'recordedCourseReserv'
-  | 'liveCourseReserv';
+// type ReservationType =
+//   | 'examSimulationReserv'
+//   | 'recordedCourseReserv'
+//   | 'liveCourseReserv';
 
-interface CartViewItem extends APICartItem {
-  reservationType: ReservationType;
-}
+// interface CartViewItem extends APICartItem {
+//   reservationType: ReservationType;
+// }
 
 @Component({
   selector: 'app-cart',
@@ -22,50 +22,127 @@ interface CartViewItem extends APICartItem {
   styleUrl: './cart.component.scss'
 })
 export class CartComponent {
-  private shared=inject(Shared);
+  private shared = inject(Shared);
   private cartService = inject(CartService);
-  private router=inject(Router);
-  appliedCoupon=this.cartService.appliedCoupon;
+  private router = inject(Router);
+  appliedCoupon = this.cartService.appliedCoupon;
   discountAmount = this.cartService.discountAmount;
   subtotal = this.cartService.subtotal;
-  total=this.cartService.total;
-  lang=this.shared.lang;
-  isRTL=this.shared.isRtl;
+  total = this.cartService.total;
+  lang = this.shared.lang;
+  isRTL = this.shared.isRtl;
   cartItems = this.cartService.cartItems;
-  expandedCartItems = computed<CartViewItem[]>(() => {
+  expandedCartItems = this.cartService.expandedCartItems;
+  // expandedCartItems = computed<CartViewItem[]>(() => {
 
-    const result: CartViewItem[] = [];
+  //   const result: CartViewItem[] = [];
 
-    for (const item of this.cartItems()) {
+  //   for (const item of this.cartItems()) {
 
-      if (item.examSimulationReserv) {
-        result.push({ ...item, reservationType: 'examSimulationReserv' });
-      }
+  //     if (item.examSimulationReserv) {
+  //       result.push({ ...item, reservationType: 'examSimulationReserv' });
+  //     }
 
-      if (item.recordedCourseReserv) {
-        result.push({ ...item, reservationType: 'recordedCourseReserv' });
-      }
+  //     if (item.recordedCourseReserv) {
+  //       result.push({ ...item, reservationType: 'recordedCourseReserv' });
+  //     }
 
-      if (item.liveCourseReserv) {
-        result.push({ ...item, reservationType: 'liveCourseReserv' });
-      }
-    }
+  //     if (item.liveCourseReserv) {
+  //       result.push({ ...item, reservationType: 'liveCourseReserv' });
+  //     }
+  //   }
 
-    return result;
-  });
+  //   return result;
+  // });
 
-  constructor(){
+  constructor() {
     effect(() => console.log('cartItems', this.cartItems()));
     effect(() => console.log('expandedCartItems', this.expandedCartItems()));
 
-
-  }
-  removeItem(cartItem: APICartItem) {
-    console.log('cartItem', cartItem);
-    const newCartItems = [...this.cartItems().filter((item: APICartItem) => item == cartItem)];
-    this.cartItems.set(newCartItems);
   }
 
+
+  // removeItem(cartItem: APICartItem) {
+  //   console.log('cartOtem', cartItem);
+  //   // this.cartService.deleteCartItem(cartItem.oid).subscribe({
+  //   //   next: () => {
+  //   //     const newCartItems = this.cartItems().filter(
+  //   //       (item: APICartItem) => item.oid !== cartItem.oid
+  //   //     );
+
+  //   //     this.cartItems.set(newCartItems);
+  //   //   }
+  //   // });
+  // }
+
+  removeItem(item: CartViewItem) {
+    const course = this.cartService.getCourse(item.courseId);
+    if (!course) return;
+
+    if (this.isSingleFeature(course)) {
+      this.deleteWholeItem(course.oid);
+    } else {
+      this.removeSingleFeature(course, item.reservationType);
+    }
+  }
+
+  private isSingleFeature(course: APICartItem): boolean {
+    const count =
+      (course.examSimulationReserv ? 1 : 0) +
+      (course.recordedCourseReserv ? 1 : 0) +
+      (course.liveCourseReserv ? 1 : 0);
+
+    return count === 1;
+  }
+  private deleteWholeItem(oid: string): void {
+    this.cartService.deleteCartItem(oid).subscribe({
+      next: () => {
+        this.cartService.cartItems.update(items =>
+          items.filter(i => i.oid !== oid)
+        );
+      }
+    });
+  }
+
+  private removeSingleFeature(
+    course: APICartItem,
+    feature: ReservationType
+  ): void {
+    const payload = this.buildFeaturePayload(course, feature, false);
+
+    this.cartService.updateCartItem(course.oid, payload).subscribe({
+      next: (updated) => {
+        this.cartService.updateBasket(updated);
+      }
+    });
+  }
+
+  private buildFeaturePayload(
+    course: APICartItem,
+    feature: ReservationType,
+    value: boolean
+  ) {
+    return {
+      oid: course.oid,
+      quantity: course.quantity,
+      couponCode: course.couponCode,
+
+      examSimulationReserv:
+        feature === 'examSimulationReserv'
+          ? value
+          : course.examSimulationReserv,
+
+      recordedCourseReserv:
+        feature === 'recordedCourseReserv'
+          ? value
+          : course.recordedCourseReserv,
+
+      liveCourseReserv:
+        feature === 'liveCourseReserv'
+          ? value
+          : course.liveCourseReserv
+    };
+  }
   getTotalPrice(): number {
     return this.cartItems().reduce(
       (total, item) => total + (item.finalPrice ?? 0),
@@ -73,17 +150,32 @@ export class CartComponent {
     );
   }
 
-  BrowseCourses(){
+  BrowseCourses() {
     this.router.navigateByUrl(`/${this.lang()}/certifications/pmp`);
   }
 
-  navigateToCheckout(){
+  navigateToCheckout() {
     this.router.navigateByUrl(`/${this.lang()}/checkout`);
   }
   // decrease(item:any){}
   // increase(item:any){}
-  removeCoupon(){}
-applyCoupon(value:any){}
+  removeCoupon() { }
+  applyCoupon(value: any) { }
+
+  getCourdeUpperCase(name: string) {
+    return name.toUpperCase();
+  }
+  getFeaturePrice(item: any): number {
+    return this.cartService.getFeaturePrice(item);
+  }
+
+  getCourseImage(item:any){
+    switch(item.courseName.toLowerCase()){
+      case 'pmp': return '/assets/images/certifications/certfication_1.jpeg'
+      case 'capm': return '/assets/images/certifications/certfication_2.jpeg'
+      default: return ''
+    }
+  }
 }
 
 

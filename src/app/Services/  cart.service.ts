@@ -5,36 +5,96 @@ import { filter, map, Observable, switchMap } from 'rxjs';
 import { ApiResponse } from '../models/apiResponse';
 import { AuthService } from './auth.service';
 import { toObservable } from '@angular/core/rxjs-interop';
+import { Shared } from '../shared/Services/shared/shared';
 
 type ReservationKey =
   | 'examSimulationReserv'
   | 'recordedCourseReserv'
   | 'liveCourseReserv';
 
-
+export type ReservationType =
+  | 'examSimulationReserv'
+  | 'recordedCourseReserv'
+  | 'liveCourseReserv';
+export interface CartViewItem extends APICartItem {
+  reservationType: ReservationType;
+}
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
   private auth = inject(AuthService);
+  private shared = inject(Shared);
+
   studentId = computed(() => this.auth.loggedStudent()?.userId);
   cartItems = signal<APICartItem[]>([]);
   currentBasketId=signal<string>('');
+  // cartCount = computed(() =>
+  //   this.cartItems().reduce((total, item) => total + item.quantity, 0)
+  // );
   cartCount = computed(() =>
-    this.cartItems().reduce((total, item) => total + item.quantity, 0)
+    this.expandedCartItems().reduce((total, item) => total + item.quantity, 0)
   );
 
   appliedCoupon = signal<string | null>(null);
   discountAmount = signal<number>(0);
 
-  subtotal = computed(() =>
-    this.cartItems().reduce((total, item) => total + (item.finalPrice ?? 0), 0)
-  );
+  // subtotal = computed(() =>
+  //   this.cartItems().reduce((total, item) => total + (item.finalPrice ?? 0), 0)
+  // );
 
+  expandedCartItems = computed<CartViewItem[]>(() => {
+
+     const result: CartViewItem[] = [];
+
+      for (const item of this.cartItems()) {
+
+        if (item.examSimulationReserv) {
+          result.push({ ...item, reservationType: 'examSimulationReserv' });
+        }
+
+        if (item.recordedCourseReserv) {
+          result.push({ ...item, reservationType: 'recordedCourseReserv' });
+        }
+
+        if (item.liveCourseReserv) {
+          result.push({ ...item, reservationType: 'liveCourseReserv' });
+        }
+      }
+
+      return result;
+    });
   total = computed(() =>
     this.subtotal() - this.discountAmount()
   );
 
+  // subtotal = computed(() =>
+  //   this.cartItems().reduce((total, item) => {
+  //     const price =
+  //       item.finalPrice && item.finalPrice > 0
+  //         ? item.finalPrice
+  //         : this.getFeaturePrice(item);
+
+  //     return total + price;
+  //   }, 0)
+  // );
+  subtotal = computed(() =>
+    this.expandedCartItems().reduce((total, item) => {
+      const price = this.getFeaturePrice(item);
+      return total + price;
+    }, 0)
+  );
+  // subtotal = computed(() =>
+  //   this.expandedCartItems().reduce((total, item) => {
+  //     const price =
+  //       item.finalPrice && item.finalPrice > 0
+  //         ? item.finalPrice
+  //         : this.getFeaturePrice(item);
+  //      console.log('item',item);
+  //     console.log('total', total);
+  //     return total + price;
+  //   }, 0)
+  // );
   constructor(private apiService: ApiService) {
     // toObservable(this.studentId)
     //   .pipe(
@@ -73,6 +133,54 @@ export class CartService {
   }
 
 
+  getFeaturePrice(item: any): number {
+    const course = this.shared.certifications().find(
+      (c: any) => c.oid === item.courseId
+    );
+
+    const map: any = {
+      recordedCourseReserv: 'recordedCourseReservPrice',
+      examSimulationReserv: 'examSimulationReservPrice',
+      liveCourseReserv: 'liveCourseReservPrice'
+    };
+
+    const feature =
+      item.reservationType ||
+      (item.examSimulationReserv && 'examSimulationReserv') ||
+      (item.recordedCourseReserv && 'recordedCourseReserv') ||
+      (item.liveCourseReserv && 'liveCourseReserv');
+
+    const apiValue = course?.[map[feature]];
+
+    const defaults: any = {
+      capm: {
+        examSimulationReserv: 199,
+        recordedCourseReserv: 199,
+        liveCourseReserv: 579
+      },
+      pmp: {
+        examSimulationReserv: 199,
+        recordedCourseReserv: 299,
+        liveCourseReserv: 579
+      },
+      default: {
+        examSimulationReserv: 150,
+        recordedCourseReserv: 120,
+        liveCourseReserv: 300
+      }
+    };
+
+    const courseKey = item.courseName?.toLowerCase();
+
+    const fallback =
+      defaults[courseKey]?.[feature] ??
+      defaults.default?.[feature] ??
+      0;
+
+    return apiValue != null && apiValue !== 0
+      ? Number(apiValue)
+      : fallback;
+  }
   getStudentBasketItems(): Observable<APICartResponse> {
     return this.apiService
       .getSingle<ApiResponse<APICartResponse>>('StudentBaskets', this.studentId()!)
@@ -148,7 +256,7 @@ export class CartService {
   }
   deleteCartItem(id: string): Observable<boolean> {
     return this.apiService
-      .delete<ApiResponse<boolean>>('StudentBaskets', id)
+      .delete<ApiResponse<boolean>>('StudentBaskets', id,'Your Cart Item has been deleted successfully')
       .pipe(
         map((response: ApiResponse<boolean>) => {
           if (!response.success) {
@@ -191,6 +299,25 @@ export class CartService {
     return !!course?.[key];
   }
 
+  // updateBasket(cartItem: APICartItem) {
+  //   console.log('addedItem',cartItem);
+  //   this.cartItems.update(items => {
+  //     const existing = items.find(i => i.courseId === cartItem.courseId);
+
+  //     if (!existing) {
+  //       return [...items, { ...cartItem, quantity: 1 }];
+  //     }
+  //     else{
+
+  //     }
+
+  //     // return items.map(i =>
+  //     //   i.courseId === cartItem.courseId
+  //     //     ? { ...i, quantity: i.quantity + 1 }
+  //     //     : i
+  //     // );
+  //   });
+  // }
   updateBasket(cartItem: APICartItem) {
     this.cartItems.update(items => {
       const existing = items.find(i => i.courseId === cartItem.courseId);
@@ -201,11 +328,10 @@ export class CartService {
 
       return items.map(i =>
         i.courseId === cartItem.courseId
-          ? { ...i, quantity: i.quantity + 1 }
+          ? { ...cartItem }
           : i
       );
     });
   }
-
 }
 

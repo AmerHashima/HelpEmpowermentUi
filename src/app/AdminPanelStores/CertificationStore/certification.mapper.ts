@@ -14,6 +14,9 @@ export function mapApiCertificationToCertification(api: APICertification): Certi
     courseCategoryLookupId: api.courseCategoryLookupId,
     createdBy: api.createdBy,
     isActive: api.isActive,
+    recordedCourseReservPrice: api.recordedCourseReservPrice ??  null,
+    examSimulationReservPrice: api.examSimulationReservPrice ?? null,
+    liveCourseReservPrice: api.liveCourseReservPrice ??  null
   };
 }
 

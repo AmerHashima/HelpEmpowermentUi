@@ -12,26 +12,31 @@ export interface Certification {
   updatedBy?: string,
   isActive: boolean,
   questionCount: number,
+  recordedCourseReservPrice?:string | null,
+  examSimulationReservPrice?: string | null,
+  liveCourseReservPrice?: string | null
 
 }
 
 export interface APICertification {
-  oid: string,
   courseLevelName: string,
   courseCategoryName: string,
-  isActive: boolean,
-  courseCode: string,
-  courseName: string,
   durationMinutes: number,
   questionCount: number,
-
   courseDescription: string,
   courseLevelLookupId: string | null,
   courseCategoryLookupId: string | null,
+  oid: string,
+  courseCode: string,
+  courseName: string,
+  isActive: boolean,
   createdBy: string
   createdAt: string,
   updatedAt: string,
   updatedBy: string
+  recordedCourseReservPrice: string | null,
+  examSimulationReservPrice: string | null,
+  liveCourseReservPrice: string | null
 }
 
 

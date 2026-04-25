@@ -137,8 +137,10 @@ export class RecordedCourseComponent {
     this.addNewCourse(courseId);
   }
 
-  private updateExistingCourse(courseId: string): void {
 
+
+  private updateExistingCourse(courseId: string): void {
+       console.log('on update existing course');
     const course = this.cartService.getCourse(courseId);
     if (!course) return;
 
@@ -156,6 +158,7 @@ export class RecordedCourseComponent {
     });
   }
   private addNewCourse(courseId: string): void {
+    console.log('on add new course');
 
     const cartPayload = {
       studentId: this.auth.loggedStudent()?.userId!,

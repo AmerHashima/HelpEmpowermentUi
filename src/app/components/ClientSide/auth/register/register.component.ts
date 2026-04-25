@@ -68,15 +68,15 @@ export class RegisterComponent {
       next: ()=> {
         // this.toasting.showToast('Account created suffccessfully please login','success');
         this.router.navigateByUrl(`/${this.lang()}/auth/login`);},
-      error: (err) => {
+      // error: (err) => {
 
-        const apiMessage =
-          err?.error?.message ||
-          err?.error?.errors?.[0] ||
-          'auth.register.error';
+      //   const apiMessage =
+      //     err?.error?.message ||
+      //     err?.error?.errors?.[0] ||
+      //     'auth.register.error';
 
-        this.toasting.showToast(apiMessage, 'error');
-      }
+      //   this.toasting.showToast(apiMessage, 'error');
+      // }
       // error: (e) => {console.log('errot',e);this.toasting.showToast('auth.register.error', 'error');}
     })
   }

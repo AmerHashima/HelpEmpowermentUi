@@ -38,27 +38,50 @@
             ) {
               <div class="cart-card">
                 <img
-                  [src]="
-                    item.courseImage || 'assets/images/course-placeholder.jpg'
-                  "
+                 [src]="getCourseImage(item)"
                   class="course-image"
                   alt="course image"
                 />
 
                 <div class="card-content">
-                  <h3 class="course-title">
-                    {{ item.courseName | titlecase }}
-                  </h3>
-
-                  <p class="reservation-type">
-                    {{
+                  <div>
+                    <h3>      {{
                       item.reservationType === "examSimulationReserv"
                         ? "Exam Simulation"
                         : item.reservationType === "recordedCourseReserv"
                           ? "Recorded Course"
                           : "Live Course"
-                    }}
+                    }}</h3>
+                    <h3 class="mainTextColor">
+                      {{getFeaturePrice(item)}} AED
+                    </h3>
+                     <p class="reservation-type">
+                    <!-- {{
+                      item.reservationType === "examSimulationReserv"
+                        ? "Exam Simulation"
+                        : item.reservationType === "recordedCourseReserv"
+                          ? "Recorded Course"
+                          : "Live Course"
+                    }} -->
+                       {{ getCourdeUpperCase(item.courseName) }} Certification
+
                   </p>
+                  </div>
+                  <!-- <h3 class="course-title"> -->
+                    <!-- {{ item.courseName | titlecase }} -->
+                  <!-- </h3> -->
+
+                  <!-- <p class="reservation-type"> -->
+                    <!-- {{
+                      item.reservationType === "examSimulationReserv"
+                        ? "Exam Simulation"
+                        : item.reservationType === "recordedCourseReserv"
+                          ? "Recorded Course"
+                          : "Live Course"
+                    }} -->
+                       <!-- {{ item.courseName | titlecase }} Certification -->
+
+                  <!-- </p> -->
                   <!-- <h3 class="course-title">
                     {{ item.courseName | titlecase }}
                   </h3>
