@@ -7,7 +7,10 @@ import { AuthService } from '../../../../Services/auth.service';
 import { StudentService } from '../../../../Services/student-service.service';
 import { GenericModelComponent } from '../../../../shared/generic-model/generic-model.component';
 
-type StudentFormModel = Student & { confirmPassword?: string };
+type StudentFormModel = Omit<Student, 'promoDiscount'> & {
+  promoDiscount?: number | null;
+  confirmPassword?: string;
+};
 
 @Component({
   selector: 'app-student-form-popup',
@@ -111,6 +114,8 @@ export class StudentFormPopupComponent {
           email: student.email,
           mobile: student.mobile,
           username: student.username,
+          promoCode: student.promoCode ?? '',
+          promoDiscount: student.promoDiscount ?? null,
           password: '',
           confirmPassword: ''
         };
@@ -125,6 +130,8 @@ export class StudentFormPopupComponent {
   }
 
   private buildRegisterPayload(): AuthStudent {
+    const trimmedPromoCode = this.formModel.promoCode?.trim();
+
     return {
       username: this.formModel.username.trim(),
       password: this.formModel.password?.trim(),
@@ -132,11 +139,15 @@ export class StudentFormPopupComponent {
       email: this.formModel.email.trim(),
       nameEn: this.formModel.nameEn.trim(),
       nameAr: this.formModel.nameAr.trim(),
-      mobile: this.formModel.mobile.trim()
+      mobile: this.formModel.mobile.trim(),
+      promoCode: trimmedPromoCode ? trimmedPromoCode : undefined,
+      promoDiscount: this.formModel.promoDiscount ?? undefined
     };
   }
 
   private buildUpdatePayload(): Student {
+    const trimmedPromoCode = this.formModel.promoCode?.trim();
+
     return {
       oid: this.formModel.oid,
       nameEn: this.formModel.nameEn.trim(),
@@ -144,6 +155,8 @@ export class StudentFormPopupComponent {
       email: this.formModel.email.trim(),
       mobile: this.formModel.mobile.trim(),
       username: this.formModel.username.trim(),
+      promoCode: trimmedPromoCode ? trimmedPromoCode : undefined,
+      promoDiscount: this.formModel.promoDiscount ?? undefined,
       password: this.formModel.password?.trim() ? this.formModel.password.trim() : undefined
     };
   }
@@ -167,6 +180,8 @@ export class StudentFormPopupComponent {
       email: '',
       mobile: '',
       username: '',
+      promoCode: '',
+      promoDiscount: null,
       password: '',
       confirmPassword: ''
     };
