@@ -42,9 +42,10 @@
             ></app-input>
 
             <app-phone-input
+              #phoneCmp
               name="phone"
               [(ngModel)]="contact.phone"
-              [required]="false"
+              [required]="true"
               [labelKey]="'register.phoneLabel' | translate"
             >
             </app-phone-input>

@@ -1,0 +1,187 @@
+
+<form
+  [formGroup]="form"
+  (ngSubmit)="onSubmit()"
+  class="d-flex flex-column gap-4 p-3"
+>
+  <div class="row flex-wrap gy-2">
+
+      <div class="col-lg-4">
+      <spk-ng-select
+        formControlName="courseOid"
+        [label]="'webinarDashboardForm.certfication' | translate"
+        [options]="certifications()?? []"
+        bindLabel="courseName"
+        bindValue="oid"
+        [multiple]="false"
+        [placeholder]="'webinarDashboardForm.placeholders.certfication' | translate"
+        selectClass="form-control"
+      />
+    </div>
+
+    <!-- Course Name -->
+    <div class="col-lg-4">
+      <app-input
+        formControlName="courseName"
+        [label]="'liveCourseDashboardForm.courseName' | translate"
+        type="text"
+        placeholder=""
+        icon=""
+        [errorMessages]="{
+          required: 'liveCourseDashboardForm.errors.nameRequired' | translate
+        }"
+      />
+    </div>
+
+    <!-- Course Format -->
+    <!-- <div class="col-lg-4">
+      <spk-ng-select
+        formControlName="courseFormat"
+        [label]="'liveCourseDashboardForm.courseFormat' | translate"
+        [options]="$any((webinarFormats$ | async) ?? [])"
+        [bindLabel]="getFormatLabel()"
+        bindValue="oid"
+        [multiple]="false"
+        [placeholder]="'liveCourseDashboardForm.placeholders.courseFormat' | translate"
+        selectClass="form-control"
+      />
+    </div> -->
+
+    <!-- Time Zone -->
+    <!-- <div class="col-lg-4">
+      <spk-ng-select
+        formControlName="timeZone"
+        [label]="'liveCourseDashboardForm.timeZone' | translate"
+        [options]="$any((timeZone$ | async) ?? [])"
+        [bindLabel]="getFormatLabel()"
+        bindValue="oid"
+        [multiple]="false"
+        [placeholder]="'liveCourseDashboardForm.placeholders.timeZone' | translate"
+        selectClass="form-control"
+      />
+    </div> -->
+
+    <!-- Start Date -->
+    <div class="col-lg-4">
+      <app-input
+        formControlName="startDate"
+        [label]="'liveCourseDashboardForm.startDate' | translate"
+        type="date"
+        placeholder=""
+        icon=""
+        [errorMessages]="{
+          required: 'liveCourseDashboardForm.errors.dateRequired' | translate
+        }"
+      />
+    </div>
+
+    <!-- Start Time -->
+    <div class="col-lg-4">
+      <app-input
+        formControlName="startTime"
+        [label]="'liveCourseDashboardForm.startTime' | translate"
+        type="text"
+        placeholder=""
+        icon=""
+        [errorMessages]="{
+          required: 'liveCourseDashboardForm.errors.startTimeRequired' | translate
+        }"
+      />
+    </div>
+
+    <!-- Number of Sessions -->
+    <div class="col-lg-4">
+      <app-input
+        formControlName="numberOfSessions"
+        [label]="'liveCourseDashboardForm.numberOfSessions' | translate"
+        type="number"
+        placeholder=""
+        icon=""
+        [errorMessages]="{
+          required: 'liveCourseDashboardForm.errors.sessionsRequired' | translate
+        }"
+      />
+    </div>
+
+    <!-- Total Hours -->
+    <div class="col-lg-4">
+      <app-input
+        formControlName="totalHours"
+        [label]="'liveCourseDashboardForm.totalHours' | translate"
+        type="number"
+        placeholder=""
+        icon=""
+        [errorMessages]="{
+          required: 'liveCourseDashboardForm.errors.totalHoursRequired' | translate
+        }"
+      />
+    </div>
+
+    <!-- WhatsApp -->
+    <div class="col-lg-4">
+      <app-input
+        formControlName="whatsAppLink"
+        [label]="'liveCourseDashboardForm.whatsAppLink' | translate"
+        type="text"
+        placeholder=""
+        icon=""
+        [errorMessages]="{
+          required: 'liveCourseDashboardForm.errors.whatsappRequired' | translate
+        }"
+      />
+    </div>
+
+    <!-- Status -->
+    <div class="col-lg-4">
+      <spk-ng-select
+        formControlName="isActive"
+        [label]="'liveCourseDashboardForm.status' | translate"
+        [options]="status"
+        bindLabel="label"
+        bindValue="value"
+        [multiple]="false"
+        [placeholder]="'liveCourseDashboardForm.placeholders.status' | translate"
+        selectClass="form-control"
+      />
+    </div>
+
+    <!-- Schedule Notes -->
+    <div class="col-12">
+      <app-textarea
+        formControlName="scheduleNotes"
+        [label]="'liveCourseDashboardForm.scheduleNotes' | translate"
+        [placeholder]="'liveCourseDashboardForm.scheduleNotes' | translate"
+        [errorMessages]="{
+          required: 'liveCourseDashboardForm.errors.scheduleNotesRequired' | translate
+        }"
+      ></app-textarea>
+    </div>
+
+    <!-- Notes -->
+    <div class="col-12">
+      <app-textarea
+        formControlName="notes"
+        [label]="'liveCourseDashboardForm.notes' | translate"
+        [placeholder]="'liveCourseDashboardForm.notes' | translate"
+        [errorMessages]="{
+          required: 'liveCourseDashboardForm.errors.notesRequired' | translate
+        }"
+      ></app-textarea>
+    </div>
+
+  </div>
+
+  <!-- Actions -->
+  <div class="d-flex justify-content-end gap-2">
+    <app-site-button
+      [title]="'liveCourseDashboardForm.actions.cancel' | translate"
+      type="secondary"
+      (click)="cancel()"
+    />
+    <app-site-button
+      [title]="'liveCourseDashboardForm.actions.save' | translate"
+      type="main"
+      htmlType="submit"
+    />
+  </div>
+</form>

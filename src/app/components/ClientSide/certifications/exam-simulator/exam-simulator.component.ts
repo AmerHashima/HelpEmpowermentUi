@@ -35,11 +35,12 @@ export class ExamSimulatorComponent {
   private shared = inject(Shared);
   private auth = inject(AuthService);
   private studentService = inject(StudentService);
-  showExamSimulator = computed(() => this.studentService.showExamSimulator === true);
   isEnrolled = computed(() => {
     console.log('is entolled', this.studentService.isExamSimulatorEnrolled())
     return this.studentService.isExamSimulatorEnrolled();
   })
+  showExamSimulator = computed(() => this.isEnrolled() && this.studentService.showExamSimulator === true);
+
   private toasting = inject(ToastingMessagesService);
   isRTL = this.shared.isRtl;
   // studentToken = this.auth.studentToken;

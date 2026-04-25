@@ -1,6 +1,6 @@
 import { NgForm } from '@angular/forms';
 // src\app\components\ClientSide\auth\register\register.component.ts
-import { Component, inject } from '@angular/core';
+import { Component, inject, QueryList, ViewChildren } from '@angular/core';
 import { Shared } from '../../../../shared/Services/shared/shared';
 import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/site-button.component';
 import { InputComponent } from '../../../../shared/input/input.component';
@@ -20,6 +20,8 @@ import { ToastingMessagesService } from '../../../../shared/Services/ToastingMes
   styleUrl: './register.component.scss'
 })
 export class RegisterComponent {
+  @ViewChildren(PhoneInputComponent)
+  phoneCmps!: QueryList<PhoneInputComponent>;
   private shared = inject(Shared);
   private auth = inject(AuthService);
   private toasting = inject(ToastingMessagesService);
@@ -44,7 +46,8 @@ export class RegisterComponent {
   onRegister(form:NgForm) {
 
     if (form.invalid) {
-      form.control.markAllAsTouched(); 
+      form.control.markAllAsTouched();
+      this.phoneCmps?.forEach(c => c.validateOnSubmit());
       return;
     }
 

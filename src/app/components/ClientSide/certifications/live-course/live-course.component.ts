@@ -12,7 +12,7 @@ import { Shared } from '../../../../shared/Services/shared/shared';
 import { AuthService } from '../../../../Services/auth.service';
 import { StarRatingComponent } from '../../../../shared/star-rating/star-rating.component';
 import { TranslatePipe } from '@ngx-translate/core';
-import { NgIf } from '@angular/common';
+import { NgClass, NgIf } from '@angular/common';
 import { UpcomingSessionsComponent } from '../upcoming-sessions/upcoming-sessions.component';
 import { CartService } from '../../../../Services/  cart.service';
 import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
@@ -23,7 +23,8 @@ import { StudentService } from '../../../../Services/student-service.service';
   selector: 'app-live-course',
   imports: [PageBannerComponent, SiteButtonComponent,
     CoureseContentComponent, CoureseFeaturesComponent, CoureseOutlineComponent, InstructorInfoComponent,
-    TargetAudienceComponent, StarRatingComponent, TranslatePipe, NgIf, UpcomingSessionsComponent, GenericModelComponent
+    TargetAudienceComponent, StarRatingComponent, TranslatePipe, NgIf, UpcomingSessionsComponent, GenericModelComponent,
+    NgClass
   ],
   templateUrl: './live-course.component.html',
   styleUrl: './live-course.component.scss'
@@ -38,8 +39,10 @@ export class LiveCourseComponent {
   isEnrolled = this.studentService.isLiveCourseEnrolled;
   showConfirm: boolean = false;
   enrollImage = 'assets/images/enroll.png';
-  courseImage = "assets/images/recordedCourse.jpeg";
-
+  courseImage = "assets/images/liveCourse/liveCourse.jpeg";
+  hasLiveCourseAccess = computed(
+    () => this.isEnrolled() && this.studentService.showExamSimulator === true
+  );
   liveCourseContent = computed(() => {
     const cert = this.shared.currentCertificate();
     const key = cert === 'capm' ? 'capm' : 'pmp';

@@ -6,11 +6,12 @@ import { APIContact, RespondContactUsDto, UpdateStatusRequest } from '../../../m
 import { RequestBody } from '../../../models/rquest';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { switchMap, startWith, catchError, of, Subject, map } from 'rxjs';
-
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 @Component({
     selector: 'app-admin-contact-us',
     standalone: true,
-    imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule,MatFormFieldModule,MatInputModule],
     templateUrl: './contact-us.component.html',
     styleUrl: './contact-us.component.scss'
 })
@@ -25,6 +26,19 @@ export class AdminContactUsComponent {
     selectedContact = signal<APIContact | null>(null);
     respondText = signal('');
     submitting = signal(false);
+  search = signal<string>('');
+
+  filteredContacts = computed(() => {
+    const search = this.search().toLowerCase().trim();
+
+    if (!search) return this.contacts();
+
+    return this.contacts().filter(c =>
+      (c.contactTypeName ?? '').toLowerCase().includes(search) ||
+      (c.fullName ?? '').toLowerCase().includes(search) ||
+      (c.email ?? '').toLowerCase().includes(search)
+    );
+  });
 
     ngOnInit() {
         this.loadContacts();
@@ -44,6 +58,10 @@ export class AdminContactUsComponent {
             error: () => { this.error.set('Failed to load messages.'); this.loading.set(false); }
         });
     }
+
+
+
+
 
     selectContact(contact: APIContact) {
         this.selectedContact.set(contact);
@@ -88,4 +106,12 @@ export class AdminContactUsComponent {
             if (this.selectedContact()?.oid === id) this.selectedContact.set(null);
         });
     }
+
+  onFilter(event: Event) {
+    const value = (event.target as HTMLInputElement).value;
+    this.search.set(value);
+    if (this.selectedContact()) {
+      this.selectedContact.set(null);
+    }
+  }
 }

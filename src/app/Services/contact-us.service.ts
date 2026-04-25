@@ -62,9 +62,9 @@ export class ContactUsService {
   }
 
   // POST /api/ServiceContactUs
-  createContactMessage(body: ContactUs): Observable<APIContact> {
+  createContactMessage(body: ContactUs,page:string=''): Observable<APIContact> {
     return this.apiService
-      .post<ApiResponse<APIContact>>('ServiceContactUs', body, 'Message has been sent Successfully')
+      .post<ApiResponse<APIContact>>('ServiceContactUs', body, 'Message has been sent Successfully',page)
       .pipe(map(res => res.data));
   }
 

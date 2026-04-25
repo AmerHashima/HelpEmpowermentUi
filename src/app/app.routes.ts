@@ -62,6 +62,8 @@ import { ResetPasswordComponent } from './components/ClientSide/auth/reset-passw
 import { ResetPasswordOTPComponent } from './components/ClientSide/auth/reset-password-otp/reset-password-otp.component';
 import { VideosComponent } from './components/ClientSide/videos/videos.component';
 import { FinishCertificationComponent } from './components/ClientSide/finish-certification/finish-certification.component';
+import { WebinarsComponent } from './components/AdminPanel/Webinar/webinars/webinars.component';
+import { LiveCoursesComponent } from './components/AdminPanel/LiveCourse/live-courses/live-courses.component';
 
 export const validLangGuard: CanMatchFn = (route, segments) => {
   const lang = segments[0]?.path;
@@ -372,6 +374,16 @@ export const routes: Routes = [
         path: 'contact-us',
         component: AdminContactUsComponent,
         data: { breadcrumb: 'Contact Us' },
+      },
+      {
+        path: 'webinar',
+        component: WebinarsComponent,
+        data: { breadcrumb: 'Webinar' },
+      },
+      {
+        path: 'live-course',
+        component: LiveCoursesComponent,
+        data: { breadcrumb: 'Live Course' },
       },
     ],
   },

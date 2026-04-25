@@ -7,7 +7,7 @@
           <p>{{ "job.subTitle" | translate }}</p>
         </div>
 
-        <form #jobForm="ngForm" (ngSubmit)="onPostJob()" class="vacancy-form mb-0">
+        <form #jobForm="ngForm" (ngSubmit)="onPostJob(jobForm)" class="vacancy-form mb-0">
           <div class="d-flex flex-column gap-3">
             <div class="row gy-2 gx-3">
               <!-- Full Name -->

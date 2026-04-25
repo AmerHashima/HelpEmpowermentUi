@@ -26,7 +26,6 @@ import { COUNTRIES_AR } from '../../data/countries';
 import { NgIf, isPlatformBrowser } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ChangeDetectorRef } from '@angular/core';
-
 @Component({
   selector: 'app-phone-input',
   standalone: true,
@@ -59,6 +58,7 @@ private cdr = inject(ChangeDetectorRef);
 
   @Input() labelKey = '';
   @Input() required = true;
+
   iti: any;
   value: string = '';
   placeholder = '';
@@ -70,6 +70,7 @@ private cdr = inject(ChangeDetectorRef);
   get rawValue(): string {
     return this.input?.nativeElement?.value || '';
   }
+
 
   // ================= INIT =================
   ngAfterViewInit() {
@@ -118,9 +119,25 @@ private cdr = inject(ChangeDetectorRef);
     this.onValidatorChange = fn;
   }
 
+  // validate(control: AbstractControl): ValidationErrors | null {
+  //   if (!this.value) {
+  //     return { required: true };
+  //   }
+
+  //   if (!this.isValid) {
+  //     return { invalidPhone: true };
+  //   }
+
+  //   return null;
+  // }
+
   validate(control: AbstractControl): ValidationErrors | null {
-    if (!this.value) {
+    if (this.required && !this.value) {
       return { required: true };
+    }
+
+    if (!this.required && !this.value) {
+      return null;
     }
 
     if (!this.isValid) {
@@ -129,7 +146,6 @@ private cdr = inject(ChangeDetectorRef);
 
     return null;
   }
-
 
   updatePlaceholder() {
       if (!this.iti) return;
@@ -260,7 +276,7 @@ private cdr = inject(ChangeDetectorRef);
     this.onValidatorChange();
   }
 
- 
+
 
   translateCountries() {
     setTimeout(() => {
@@ -287,6 +303,31 @@ private cdr = inject(ChangeDetectorRef);
       });
     });
   }
+
+  validateOnSubmit() {
+    console.log('validateOnSubmit');
+    const raw = this.input.nativeElement.value.trim();
+
+    this.value = raw;
+     console.log('value',raw);
+    if (!raw) {
+      this.isValid = false;
+    } else {
+      this.isValid = raw.length >= 6;
+    }
+
+    this.touched = true;
+
+    this.onValidatorChange();
+    this.cdr.detectChanges();
+  }
+
+
+  resetState() {
+    this.touched = false;
+    this.isValid = true;
+  }
+
 
   // translateSearchPlaceholder() {
   //   setTimeout(() => {

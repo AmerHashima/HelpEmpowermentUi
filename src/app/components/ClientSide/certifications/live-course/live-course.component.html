@@ -1,7 +1,7 @@
 <!-- src\app\components\ClientSide\certifications\live-course\live-course.component.html -->
 <div class="certification d-flex gap-5 flex-column py-5">
   <!-- Banner - shown only if not purchased -->
-  <ng-container *ngIf="!isEnrolled()">
+  <ng-container *ngIf="!hasLiveCourseAccess()">
     <app-page-banner [isRTL]="isRTL()" [media]="true">
       <!-- Content projection -->
       <div content class="d-flex flex-column gap-3 pe-xl-5">
@@ -62,37 +62,41 @@
       />
     </app-page-banner>
   </ng-container>
-  <ng-container *ngIf="isEnrolled()"> </ng-container>
+  <!-- <ng-container *ngIf="isEnrolled()"> </ng-container> -->
 
   <div class="container-fluid">
     <div class="row">
-      <div class="col-lg-9">
+      <div [ngClass]="hasLiveCourseAccess() ? 'col-lg-12' : 'col-lg-9'">
         <div class="row">
           <div class="col-12">
             <app-upcoming-sessions />
           </div>
-          <div class="col-12">
-            <app-courese-outline />
-          </div>
-          <div class="col-12">
-            <app-courese-content />
-          </div>
+          @if (!hasLiveCourseAccess()) {
+            <div class="col-12">
+              <app-courese-outline />
+            </div>
+            <div class="col-12">
+              <app-courese-content />
+            </div>
 
-          <div class="col-12">
-            <app-instructor-info />
-          </div>
+            <div class="col-12">
+              <app-instructor-info />
+            </div>
+          }
         </div>
       </div>
-      <div class="col-lg-3">
-        <div class="row">
+      @if (!hasLiveCourseAccess()) {
+        <div class="col-lg-3">
+          <div class="row">
+            <div class="col-12">
+              <app-courese-features [isEnrolled]="isEnrolled()" />
+            </div>
+          </div>
           <div class="col-12">
-            <app-courese-features [isEnrolled]="isEnrolled()" />
+            <app-target-audience />
           </div>
         </div>
-        <div class="col-12">
-          <app-target-audience />
-        </div>
-      </div>
+      }
     </div>
   </div>
 </div>

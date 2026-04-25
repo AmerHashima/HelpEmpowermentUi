@@ -1,0 +1,161 @@
+<form
+  [formGroup]="form"
+  (ngSubmit)="onSubmit()"
+  class="d-flex flex-column gap-4 p-3"
+>
+  <div class="row flex-wrap gy-2">
+     <div class="col-lg-4">
+      <spk-ng-select
+        formControlName="courseOid"
+        [label]="'webinarDashboardForm.certfication' | translate"
+        [options]="certifications()?? []"
+        bindLabel="courseName"
+        bindValue="oid"
+        [multiple]="false"
+        [placeholder]="'webinarDashboardForm.placeholders.certfication' | translate"
+        selectClass="form-control"
+      />
+    </div>
+
+    <!-- Webinar Name -->
+    <div class="col-lg-4">
+      <app-input
+        formControlName="webinarName"
+        [label]="'webinarDashboardForm.webinarName' | translate"
+        type="text"
+        placeholder=""
+        icon=""
+        [errorMessages]="{
+          required: 'webinarDashboardForm.errors.nameRequired' | translate
+        }"
+      />
+    </div>
+
+    <!-- Webinar Format -->
+    <!-- <div class="col-lg-4">
+      <spk-ng-select
+        formControlName="webinarFormat"
+        [label]="'webinarDashboardForm.webinarFormat' | translate"
+        [options]="$any((webinarFormats$ | async) ?? [])"
+        [bindLabel]="getFormatLabel()"
+        bindValue="oid"
+        [multiple]="false"
+        [placeholder]="'webinarDashboardForm.placeholders.webinarFormat' | translate"
+        selectClass="form-control"
+      />
+    </div> -->
+
+
+
+    <!-- Time Zone -->
+    <!-- <div class="col-lg-4">
+      <spk-ng-select
+        formControlName="timeZone"
+        [label]="'webinarDashboardForm.timeZone' | translate"
+        [options]="$any((timeZone$ | async) ?? [])"
+        [bindLabel]="getFormatLabel()"
+        bindValue="oid"
+        [multiple]="false"
+        [placeholder]="'webinarDashboardForm.placeholders.timeZone' | translate"
+        selectClass="form-control"
+      />
+    </div> -->
+
+    <!-- Webinar Date -->
+    <div class="col-lg-4">
+      <app-input
+        formControlName="webinarDate"
+        [label]="'webinarDashboardForm.webinarDate' | translate"
+        type="date"
+        placeholder=""
+        icon=""
+        [errorMessages]="{
+          required: 'webinarDashboardForm.errors.dateRequired' | translate
+        }"
+      />
+    </div>
+
+    <!-- Start Time -->
+    <div class="col-lg-4">
+      <app-input
+        formControlName="webinarStartTime"
+        [label]="'webinarDashboardForm.webinarStartTime' | translate"
+        type="text"
+        placeholder=""
+        icon=""
+        [errorMessages]="{
+          required: 'webinarDashboardForm.errors.startTimeRequired' | translate
+        }"
+      />
+    </div>
+
+    <!-- End Time -->
+    <div class="col-lg-4">
+      <app-input
+        formControlName="webinarEndTime"
+        [label]="'webinarDashboardForm.webinarEndTime' | translate"
+        type="text"
+        placeholder=""
+        icon=""
+        [errorMessages]="{
+          required: 'webinarDashboardForm.errors.endTimeRequired' | translate
+        }"
+      />
+    </div>
+
+    <!-- WhatsApp -->
+    <div class="col-lg-4">
+      <app-input
+        formControlName="whatsAppLink"
+        [label]="'webinarDashboardForm.whatsAppLink' | translate"
+        type="text"
+        placeholder=""
+        icon=""
+        [errorMessages]="{
+          required: 'webinarDashboardForm.errors.whatsappRequired' | translate
+        }"
+      />
+    </div>
+
+    <!-- Status -->
+    <div class="col-lg-4">
+      <spk-ng-select
+        formControlName="isActive"
+        [label]="'webinarDashboardForm.status' | translate"
+        [options]="status"
+        bindLabel="label"
+        bindValue="value"
+        [multiple]="false"
+        [placeholder]="'webinarDashboardForm.placeholders.status' | translate"
+        selectClass="form-control"
+      />
+    </div>
+
+    <!-- Notes -->
+    <div class="col-12">
+      <app-textarea
+        formControlName="notes"
+        [label]="'webinarDashboardForm.notes' | translate"
+        [placeholder]="'webinarDashboardForm.notes' | translate"
+        [errorMessages]="{
+          required: 'webinarDashboardForm.errors.notesRequired' | translate
+        }"
+      ></app-textarea>
+    </div>
+
+  </div>
+
+  <!-- Actions -->
+  <div class="d-flex justify-content-end gap-2">
+    <app-site-button
+      [title]="'webinarDashboardForm.actions.cancel' | translate"
+      type="secondary"
+      (click)="cancel()"
+    />
+    <app-site-button
+      [title]="'webinarDashboardForm.actions.save' | translate"
+      type="main"
+      htmlType="submit"
+    ></app-site-button>
+  </div>
+</form>

@@ -1524,5 +1524,67 @@
         "success": "Password updated successfully. Redirecting to login...",
         "error": "Something went wrong. Try again.",
         "passwordMismatch": "Passwords do not match"
-      }
+      },
+      "webinarDashboardForm": {
+        "webinarName": "Webinar Name",
+        "certfication": "Webinar Certification",
+        "timeZone": "Time Zone",
+        "webinarDate": "Webinar Date",
+        "webinarStartTime": "Webinar Start Time",
+        "webinarEndTime": "Webinar End Time",
+        "whatsAppLink": "WhatsApp Link",
+        "status": "Status",
+        "notes": "Notes",
+        "placeholders": {
+          "certfication": "Choose Certification",
+          "timeZone": "Choose Time Zone",
+          "status": "Choose Status"
+        },
+        "errors": {
+          "nameRequired": "Name is required",
+          "formatRequired": "Webinar format is required",
+          "timeZoneRequired": "Time zone is required",
+          "dateRequired": "Date is required",
+          "startTimeRequired": "Start time is required",
+          "endTimeRequired": "End time is required",
+          "whatsappRequired": "WhatsApp link is required",
+          "notesRequired": "Notes are required"
+        },
+        "actions": {
+          "save": "Save",
+          "cancel": "Cancel"
+        }
+      },
+        "liveCourseDashboardForm": {
+          "courseName": "Course Name",
+          "courseFormat": "Course Format",
+          "timeZone": "Time Zone",
+          "startDate": "Start Date",
+          "startTime": "Start Time",
+          "numberOfSessions": "Number of Sessions",
+          "totalHours": "Total Hours",
+          "whatsAppLink": "WhatsApp Link",
+          "status": "Status",
+          "scheduleNotes": "Schedule Notes",
+          "notes": "Notes",
+          "placeholders": {
+            "courseFormat": "Choose Course Format",
+            "timeZone": "Choose Time Zone",
+            "status": "Choose Status"
+          },
+          "errors": {
+            "nameRequired": "Name is required",
+            "dateRequired": "Date is required",
+            "startTimeRequired": "Start time is required",
+            "sessionsRequired": "Number of sessions is required",
+            "totalHoursRequired": "Total hours are required",
+            "whatsappRequired": "WhatsApp link is required",
+            "scheduleNotesRequired": "Schedule notes are required",
+            "notesRequired": "Notes are required"
+          },
+          "actions": {
+            "save": "Save",
+            "cancel": "Cancel"
+          }
+        }
 }

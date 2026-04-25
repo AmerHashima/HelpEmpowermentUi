@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, ViewChild } from '@angular/core';
+import { Component, computed, inject, input, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { PageBannerComponent } from '../../../../shared/clientSide/page-banner/page-banner.component';
 import { Shared } from '../../../../shared/Services/shared/shared';
 import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/site-button.component';
@@ -26,6 +26,8 @@ interface ReviewItem {
 })
 export class ReviewsComponent {
   @ViewChild('newReviewForm') reviewForm!: NgForm;
+  @ViewChildren(PhoneInputComponent)
+  phoneCmps!: QueryList<PhoneInputComponent>;
   private shared=inject(Shared);
   isRTL=this.shared.isRtl;
   currentCetification=this.shared.currentCertificate;
@@ -33,7 +35,7 @@ export class ReviewsComponent {
   titlePart2 = input<string>('');
   description = input<string>('');
   sectionImage = input<string>('');
-  courseImage = "assets/images/webinar/webinar.jpeg";
+  courseImage = "assets/images/reviewers/review.jpeg";
   pmpReviews = [
     {
       id: 1,
@@ -90,9 +92,17 @@ export class ReviewsComponent {
   showAddReview() {
     this.showConfirm = true;
     this.reviewForm.resetForm();
+    this.phoneCmps?.forEach(c => c.resetState());
   }
 
-  onAddNewReview() {
+  onAddNewReview(form:NgForm) {
+    if (form.invalid) {
+      Object.values(form.controls).forEach(control => {
+        control.markAsTouched();
+      });
+      this.phoneCmps?.forEach(c => c.validateOnSubmit());
+      return;
+    }
     //send call to api
     console.log('addNewReview');
   }

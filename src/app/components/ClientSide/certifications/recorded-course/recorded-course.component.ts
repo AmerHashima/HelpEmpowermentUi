@@ -27,7 +27,7 @@ import { DownloadCertificateComponent } from '../download-certificate/download-c
 
 @Component({
   selector: 'app-recorded-course',
-  imports: [PageBannerComponent, SiteButtonComponent, StarRatingComponent, TranslateModule, NgIf,FinishCertificationComponent,
+  imports: [PageBannerComponent, SiteButtonComponent, StarRatingComponent, TranslateModule, NgIf,
     TranslatePipe, NgIf, CoureseOutlineComponent, CoureseFeaturesComponent, CouresePlayerComponent,
     CoureseContentComponent, ResourcesComponent, InstructorInfoComponent, TargetAudienceComponent, GenericModelComponent,
     DownloadCertificateComponent

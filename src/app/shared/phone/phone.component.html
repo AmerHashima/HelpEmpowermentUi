@@ -21,8 +21,13 @@
   {{ 'register.phoneRequired' | translate }}
 </div>
 
-<!-- INVALID -->
+
+
 <div *ngIf="touched && rawValue && !isValid" class="text-danger small">
   {{ 'register.phoneInvalid' | translate }} - Example : {{ placeholder }}
 </div>
+
+
+
+
 </div>

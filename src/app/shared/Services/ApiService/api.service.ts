@@ -145,7 +145,7 @@
 // src/app/shared/Services/ApiService/api.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, finalize, tap } from 'rxjs';
+import { Observable, catchError, finalize, tap, throwError } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { ToastingMessagesService } from '../ToastingMessages/toasting-messages.service';
 import { LoadingService } from '../Loading/loading.service';
@@ -162,9 +162,25 @@ export default class ApiService {
     private apiStatus: ApiStatusService
   ) { }
 
+  private handleError(error: any, url?: string) {
+    this.loader.stop();
+
+    const apiMessage =
+      error?.error?.message ||
+      error?.error?.errors?.[0] ||
+      'Something went wrong';
+
+    console.error('❌ API Error:', url, error);
+
+    this.toasting.showToast(apiMessage, 'error');
+
+    return throwError(() => error);
+  }
+
   private createHeaders(): HttpHeaders {
     return new HttpHeaders({ 'Content-Type': 'application/json' });
   }
+
 
   private shouldBlockRequest(url: string): boolean {
     if (this.apiStatus.isServerDown()) {
@@ -184,6 +200,7 @@ export default class ApiService {
     return this.http.get<T>(`${this.baseUrl}/${url}`, {
       headers: this.createHeaders(),
     }).pipe(
+      catchError(err => this.handleError(err, url)),
       finalize(() => this.loader.stop())
     );
   }
@@ -208,6 +225,7 @@ export default class ApiService {
     return this.http.get<T>(fullUrl, {
       headers: this.createHeaders(),
     }).pipe(
+      catchError(err => this.handleError(err, url)),
       finalize(() => this.loader.stop())
     );
   }
@@ -215,7 +233,8 @@ export default class ApiService {
   post<T>(
     url: string,
     body: any,
-    successMessage: string = 'Success'
+    successMessage: string = 'Success',
+    page:string=''
   ): Observable<T> {
     if (this.shouldBlockRequest(url)) {
       return new Observable<T>((observer) => observer.complete());
@@ -235,11 +254,13 @@ export default class ApiService {
           !url.includes('validate-answers') &&
           !url.includes('refresh-token') &&
           !url.includes('summary') &&
-          !url.includes('forgot-password')
+          !url.includes('forgot-password') &&
+          !page
         ) {
           this.toasting.showToast(successMessage, 'success');
         }
       }),
+      catchError(err => this.handleError(err, url)),
       finalize(() => this.loader.stop())
     );
   }
@@ -278,6 +299,7 @@ export default class ApiService {
           this.toasting.showToast(successMessage, 'success');
         }
       }),
+      catchError(err => this.handleError(err, url)),
       finalize(() => this.loader.stop())
     );
   }
@@ -303,6 +325,7 @@ export default class ApiService {
           this.toasting.showToast(successMessage, 'success');
         }
       }),
+      catchError(err => this.handleError(err, url)),
       finalize(() => this.loader.stop())
     );
   }
@@ -328,6 +351,7 @@ export default class ApiService {
           this.toasting.showToast(successMessage, 'success');
         }
       }),
+      catchError(err => this.handleError(err, url)),
       finalize(() => this.loader.stop())
     );
   }
@@ -343,6 +367,7 @@ export default class ApiService {
     return this.http.post<T>(`${this.baseUrl}/${url}`, body, {
       headers: this.createHeaders(),
     }).pipe(
+      catchError(err => this.handleError(err, url)),
       finalize(() => this.loader.stop())
     );
   }
@@ -359,6 +384,7 @@ export default class ApiService {
     this.loader.start();
 
     return this.http.post<T>(`${this.baseUrl}/${endpoint}/${id}/image`, formData).pipe(
+      catchError(err => this.handleError(err, endpoint)),
       finalize(() => this.loader.stop())
     );
   }
@@ -373,6 +399,7 @@ export default class ApiService {
     }
     this.loader.start();
     return this.http.get(`${this.baseUrl}/${endpoint}/${id}/image`, { responseType: 'blob' }).pipe(
+      catchError(err => this.handleError(err, endpoint)),
       finalize(() => this.loader.stop())
     );
   }
@@ -383,6 +410,7 @@ export default class ApiService {
     }
     this.loader.start();
     return this.http.delete(`${this.baseUrl}/${endpoint}/${id}/image`, { responseType: 'text' }).pipe(
+      catchError(err => this.handleError(err, endpoint)),
       finalize(() => this.loader.stop())
     );
   }
