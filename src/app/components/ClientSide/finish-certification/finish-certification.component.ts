@@ -14,10 +14,10 @@ import { SiteButtonComponent } from '../../../shared/clientSide/site-button/site
   styleUrl: './finish-certification.component.scss'
 })
 export class FinishCertificationComponent {
-  private auth=inject(AuthService);
-  private shared=inject(Shared);
+  private auth = inject(AuthService);
+  private shared = inject(Shared);
   @ViewChild('certificate', { static: false }) certificate!: ElementRef;
-  userName=computed(()=> this.auth.loggedStudent()?.nameEn);
+  userName = computed(() => this.auth.loggedStudent()?.nameEn);
 
   finalCert = computed(() => {
     const cert = this.shared.currentCertificationObject();
@@ -67,7 +67,7 @@ export class FinishCertificationComponent {
     return this.CERT_CONFIG[cert.courseCode]?.codeNumber ?? 0;
   });
 
-  date =computed(() => "30 May 2026");
+  date = computed(() => "30 May 2026");
   private localCert = signal<any>(null);
   private platformId = inject(PLATFORM_ID);
   private isBrowser = isPlatformBrowser(this.platformId);

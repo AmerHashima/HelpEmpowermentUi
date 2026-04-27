@@ -168,8 +168,8 @@ export class CartComponent {
     return this.cartService.getFeaturePrice(item);
   }
 
-  getCourseImage(item:any){
-    switch(item.courseName.toLowerCase()){
+  getCourseImage(item: any) {
+    switch (item.courseName.toLowerCase()) {
       case 'pmp': return '/assets/images/certifications/certfication_1.jpeg'
       case 'capm': return '/assets/images/certifications/certfication_2.jpeg'
       default: return ''

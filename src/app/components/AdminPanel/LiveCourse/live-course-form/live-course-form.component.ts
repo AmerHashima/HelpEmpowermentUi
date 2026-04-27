@@ -13,7 +13,7 @@ import { TextareaComponent } from '../../../../shared/text-area/text-area.compon
 
 @Component({
   selector: 'app-live-course-form',
-  imports: [ReactiveFormsModule,SiteButtonComponent,InputComponent,TranslatePipe,SpkNgSelectComponent,
+  imports: [ReactiveFormsModule, SiteButtonComponent, InputComponent, TranslatePipe, SpkNgSelectComponent,
     TextareaComponent
   ],
   templateUrl: './live-course-form.component.html',
@@ -124,13 +124,13 @@ export class LiveCourseFormComponent {
     const payload: LiveCourse = {
       ...(this.oid() ? { oid: this.oid() } : {}),
       courseName: v.courseName ?? '',
-       courseOid: v.courseOid ?? '',
+      courseOid: v.courseOid ?? '',
       courseFormat: webinarPresentationFormat,
       // courseFormat: v.courseFormat ?? '',
       startDate: this.shared.formatDateToISO(v.startDate ?? ''),
       startTime: v.startTime ?? '',
       // timeZone: v.timeZone ?? '',
-      timeZone:'SAR',
+      timeZone: 'SAR',
       whatsAppLink: v.whatsAppLink ?? '',
       notes: v.notes ?? '',
       totalHours: v.totalHours ?? 0,
