@@ -46,14 +46,13 @@
                 "input": "node_modules/bootstrap/dist/css",
                 "output": "/assets/styles"
               },
-                {
-                  "glob": "**/*",
-                  "input": "node_modules/intl-tel-input/build/img",
-                  "output": "assets/intl-tel-input/img"
-                }
+              {
+                "glob": "**/*",
+                "input": "node_modules/intl-tel-input/build/img",
+                "output": "assets/intl-tel-input/img"
+              }
             ],
             "styles": [
-
               "@angular/material/prebuilt-themes/azure-blue.css",
               "node_modules/@ng-select/ng-select/themes/default.theme.css",
               "node_modules/filepond/dist/filepond.min.css",
@@ -86,6 +85,17 @@
                 }
               ],
               "outputHashing": "all"
+            },
+            "test": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.test.ts"
+                }
+              ],
+              "optimization": false,
+              "sourceMap": true,
+              "extractLicenses": false
             },
             "development": {
               "optimization": false,
