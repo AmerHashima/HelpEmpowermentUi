@@ -1,4 +1,3 @@
-import { TitleCasePipe } from '@angular/common';
 import { Component, computed, effect, inject, Input } from '@angular/core';
 import { Shared } from '../../../shared/Services/shared/shared';
 import { SiteButtonComponent } from '../../../shared/clientSide/site-button/site-button.component';
@@ -17,7 +16,7 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
-  imports: [TitleCasePipe, SiteButtonComponent],
+  imports: [SiteButtonComponent],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss'
 })

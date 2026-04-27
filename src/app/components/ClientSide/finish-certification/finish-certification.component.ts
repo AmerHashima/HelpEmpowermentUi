@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, Input, inject, computed, effect, signal, PLATFORM_ID } from '@angular/core';
+import { Component, ElementRef, ViewChild, inject, computed, effect, signal, PLATFORM_ID } from '@angular/core';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { AuthService } from '../../../Services/auth.service';
@@ -115,7 +115,7 @@ export class FinishCertificationComponent {
         backgroundColor: '#ffffff',
         width: 1123,
         height: 794
-      }).then(canvas => {
+      }).then((canvas: HTMLCanvasElement) => {
 
         const imgData = canvas.toDataURL('image/png');
 

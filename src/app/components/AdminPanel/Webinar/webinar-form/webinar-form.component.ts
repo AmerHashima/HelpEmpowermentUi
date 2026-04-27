@@ -8,15 +8,12 @@ import { SpkNgSelectComponent } from '../../../../shared/spk-ng-select/spk-ng-se
 import { TextareaComponent } from '../../../../shared/text-area/text-area.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { LookupService } from '../../../../Services/lookup.service';
-import { AsyncPipe } from '@angular/common';
 import { Shared } from '../../../../shared/Services/shared/shared';
 import { WebinarService } from '../../../../Services/webinar.service';
 
 @Component({
   selector: 'app-webinar-form',
-  imports: [InputComponent,SiteButtonComponent,SpkNgSelectComponent,ReactiveFormsModule,TextareaComponent,TranslatePipe,
-    AsyncPipe
-  ],
+  imports: [InputComponent,SiteButtonComponent,SpkNgSelectComponent,ReactiveFormsModule,TextareaComponent,TranslatePipe],
   templateUrl: './webinar-form.component.html',
   styleUrl: './webinar-form.component.scss'
 })
