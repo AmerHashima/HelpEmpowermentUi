@@ -1,4 +1,3 @@
-# Build stage
 FROM node:24-alpine AS builder
 WORKDIR /app
 
@@ -6,9 +5,15 @@ COPY package*.json ./
 RUN npm install --legacy-peer-deps
 
 COPY . .
-RUN npm run build
 
-# Runtime stage
+# 👇 مهم: اختيار environment من الخارج
+ARG BUILD_ENV=production
+
+RUN if [ "$BUILD_ENV" = "test" ] ; \
+    then npm run build -- --configuration=test ; \
+    else npm run build ; \
+    fi
+
 FROM node:24-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
