@@ -228,7 +228,7 @@ export class CartService {
   addCoupon(body: { "couponCode": "string" }): Observable<APICheckout> {
     const url = `StudentBaskets/${this.currentBasketId()}/coupon`
     return this.apiService
-      .post<ApiResponse<APICheckout>>(url, body, "Checkout has been successfully completed")
+      .post<ApiResponse<APICheckout>>(url, body, "Copuon has been successfully completed")
       .pipe(
         map((response: ApiResponse<APICheckout>) => {
           if (!response.success) {

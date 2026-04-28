@@ -211,6 +211,10 @@ private cdr = inject(ChangeDetectorRef);
 
 
   writeValue(value: string): void {
+    console.log('API value:', this.value);
+    console.log('Formatted:', this.iti.getNumber());
+    console.log('Is valid:', this.iti.isValidNumber());
+    console.log('Country:', this.iti.getSelectedCountryData());
     this.value = value || '';
 
     if (!this.value) return;

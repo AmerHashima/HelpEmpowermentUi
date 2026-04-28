@@ -2,7 +2,7 @@
 import { Component, computed, effect, inject, QueryList, signal, ViewChild, ViewChildren } from '@angular/core';
 import { AuthService, changePasswordForm } from '../../../../Services/auth.service';
 import { Shared } from '../../../../shared/Services/shared/shared';
-import { TitleCasePipe } from '@angular/common';
+import { DatePipe, TitleCasePipe } from '@angular/common';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -20,7 +20,7 @@ import { createdUpdatedOID } from '../../../../data/lookUPS';
   selector: 'app-profile',
   standalone: true,
   imports: [FormsModule, NgbNavModule, TranslatePipe, TitleCasePipe,
-    SiteButtonComponent, InputComponent, PhoneInputComponent
+    SiteButtonComponent, InputComponent, PhoneInputComponent,DatePipe
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
@@ -33,9 +33,6 @@ export class ProfileComponent {
   private studentService = inject(StudentService);
   private studentExamService = inject(StudentExamService);
   totalExams = this.studentExamService.reports
-  // studentExams = computed(() =>
-  //   this.totalExams().filter(report => report.startedAt && report.finishedAt))
-  // successRate = this.studentExamService.successRate
   private shared = inject(Shared);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
@@ -44,10 +41,7 @@ export class ProfileComponent {
   lang = this.shared.lang;
   studentImage = "assets/images/profile/person.png";
   enrolledCourses = this.studentService.enrolledCourses;
-  // savedExams = signal<any[]>([]);
-
-
-
+  user = computed(() => this.studentService.innerStudent());
   credentials = {
     firstName: '',
     lastName: '',
@@ -65,7 +59,7 @@ export class ProfileComponent {
   }
   showCourseDetailsFlag: boolean = false;
   course = signal<APIStudentCourse | null>(null)
-  user = computed(() => this.authService.loggedStudent());
+  // user = computed(() => this.authService.loggedStudent());
   hasAnyCourseFeature = computed(() => {
     const c = this.course();
     return !!(c?.examSimulationReserv || c?.recordedCourseReserv || c?.liveCourseReserv);
@@ -84,9 +78,12 @@ export class ProfileComponent {
           lastNameAr: namesAr[1] || '',
           username: user.username || '',
           email: user.email || '',
-          mobile: user.mobile || '',
+          // mobile: user.mobile || '',
+          mobile: '',
+
         };
 
+        console.log('user',this.user());
       }
     })
   }
@@ -162,15 +159,24 @@ export class ProfileComponent {
     this.showCourseDetailsFlag = true;
     this.course.set(course);
   }
-  onUpdateInfo() {
+  onUpdateInfo(form:NgForm) {
     console.log(this.user());
     if (this.form.invalid) {
-
+      console.log('invalid');
+      Object.values(form.controls).forEach(control => {
+        control.markAsTouched();
+      });
       this.phoneCmps?.forEach(c => c.validateOnSubmit());
+
+      const invalidFields = Object.keys(form.controls)
+        .filter(key => form.controls[key].invalid);
+
+      console.log('Invalid fields:', invalidFields);
       return;
     }
     const payload = {
-      oid: this.user()?.userId ?? '',
+      // oid: this.user()?.userId ?? '',
+      oid: this.user()?.oid ?? '',
       nameEn: `${this.credentials.firstName} ${this.credentials.lastName}`,
       nameAr: `${this.credentials.firstNameAr} ${this.credentials.lastNameAr}`,
       email: this.credentials.email,
@@ -199,6 +205,7 @@ export class ProfileComponent {
           mobile: newStudent.mobile,
           username: newStudent.username
         }
+        this.phoneCmps?.forEach(c => c.resetState());
         this.authService.loggedStudent.set(updatedStudent);
         this.authService.updatedLoggedStudent(updatedStudent)
         // this.toasting.showToast('Account created suffccessfully please login','success');

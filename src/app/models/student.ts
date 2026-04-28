@@ -25,6 +25,9 @@ export interface APIStudent {
   username: string,
   promoCode?: string,
   promoDiscount?: number,
+  usersUsedPromo?:number,
+  totalMoneyWithPromo?:number,
+  promoToDateValid?:string|null,
   isActive: boolean,
   courses: string[],
   createdAt: string,
@@ -58,7 +61,6 @@ export interface APIAuthStudent {
   tokenExpires: string,
   userType: string,
   roles: string[]
-
 }
 
 

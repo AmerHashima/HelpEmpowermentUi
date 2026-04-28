@@ -5,6 +5,7 @@ import { SiteButtonComponent } from '../../../shared/clientSide/site-button/site
 import { CartService, CartViewItem, ReservationType } from '../../../Services/  cart.service';
 import { APICartItem, CartItem } from '../../../models/cart';
 import { Router } from '@angular/router';
+import { StudentService } from '../../../Services/student-service.service';
 
 // type ReservationType =
 //   | 'examSimulationReserv'
@@ -33,47 +34,12 @@ export class CartComponent {
   isRTL = this.shared.isRtl;
   cartItems = this.cartService.cartItems;
   expandedCartItems = this.cartService.expandedCartItems;
-  // expandedCartItems = computed<CartViewItem[]>(() => {
-
-  //   const result: CartViewItem[] = [];
-
-  //   for (const item of this.cartItems()) {
-
-  //     if (item.examSimulationReserv) {
-  //       result.push({ ...item, reservationType: 'examSimulationReserv' });
-  //     }
-
-  //     if (item.recordedCourseReserv) {
-  //       result.push({ ...item, reservationType: 'recordedCourseReserv' });
-  //     }
-
-  //     if (item.liveCourseReserv) {
-  //       result.push({ ...item, reservationType: 'liveCourseReserv' });
-  //     }
-  //   }
-
-  //   return result;
-  // });
 
   constructor() {
     effect(() => console.log('cartItems', this.cartItems()));
     effect(() => console.log('expandedCartItems', this.expandedCartItems()));
 
   }
-
-
-  // removeItem(cartItem: APICartItem) {
-  //   console.log('cartOtem', cartItem);
-  //   // this.cartService.deleteCartItem(cartItem.oid).subscribe({
-  //   //   next: () => {
-  //   //     const newCartItems = this.cartItems().filter(
-  //   //       (item: APICartItem) => item.oid !== cartItem.oid
-  //   //     );
-
-  //   //     this.cartItems.set(newCartItems);
-  //   //   }
-  //   // });
-  // }
 
   removeItem(item: CartViewItem) {
     const course = this.cartService.getCourse(item.courseId);
@@ -157,10 +123,15 @@ export class CartComponent {
   navigateToCheckout() {
     this.router.navigateByUrl(`/${this.lang()}/checkout`);
   }
-  // decrease(item:any){}
-  // increase(item:any){}
   removeCoupon() { }
-  applyCoupon(value: any) { }
+  applyCoupon(value: any) {
+    this.cartService.addCoupon(value).subscribe({
+      next:(data)=>{console.log('afterApllyCoupon',data);
+          this.cartService.discountAmount.set(data.discountAmount);
+      }
+
+    })
+  }
 
   getCourdeUpperCase(name: string) {
     return name.toUpperCase();

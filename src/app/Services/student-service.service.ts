@@ -14,8 +14,8 @@ import { Shared } from '../shared/Services/shared/shared';
   providedIn: 'root'
 })
 export class StudentService {
+  innerStudent=signal<APIStudent | null>(null);
   enrolledCourses = signal<APIStudentCourse[]>([]);
-
   currentCourse = computed(() => {
     const certification = this.shared.currentCertificate();
     return this.enrolledCourses()
@@ -58,6 +58,10 @@ export class StudentService {
       this.getAllStudentEnrolledCourses(studentId).subscribe({
         next: (courses) => { console.log('this.enrollCourse', courses); this.enrolledCourses.set(courses) }
       });
+
+      this.getStudent(studentId).subscribe({
+        next: (student: APIStudent) => this.innerStudent.set(student)
+      })
     })
 
     effect(() => console.log(this.currentCourse()));

@@ -1135,6 +1135,8 @@
       "error": "Failed to change password"
     },
     "enrolledCertifications": "Enrolled Certifications",
+    "copuons":"Coupons",
+    "noCoupons":"You haven’t enrolled in any Coupons yet.",
     "exams": "Exams",
     "settings": "Settings",
     "changePassword": "Change Password",
