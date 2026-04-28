@@ -8,13 +8,12 @@ import { LiveCourse } from '../../../../models/liveCourse';
 import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/site-button.component';
 import { InputComponent } from '../../../../shared/input/input.component';
 import { TranslatePipe } from '@ngx-translate/core';
-import { AsyncPipe } from '@angular/common';
 import { SpkNgSelectComponent } from '../../../../shared/spk-ng-select/spk-ng-select.component';
 import { TextareaComponent } from '../../../../shared/text-area/text-area.component';
 
 @Component({
   selector: 'app-live-course-form',
-  imports: [ReactiveFormsModule,SiteButtonComponent,InputComponent,TranslatePipe,AsyncPipe,SpkNgSelectComponent,
+  imports: [ReactiveFormsModule, SiteButtonComponent, InputComponent, TranslatePipe, SpkNgSelectComponent,
     TextareaComponent
   ],
   templateUrl: './live-course-form.component.html',
@@ -125,13 +124,13 @@ export class LiveCourseFormComponent {
     const payload: LiveCourse = {
       ...(this.oid() ? { oid: this.oid() } : {}),
       courseName: v.courseName ?? '',
-       courseOid: v.courseOid ?? '',
+      courseOid: v.courseOid ?? '',
       courseFormat: webinarPresentationFormat,
       // courseFormat: v.courseFormat ?? '',
       startDate: this.shared.formatDateToISO(v.startDate ?? ''),
       startTime: v.startTime ?? '',
       // timeZone: v.timeZone ?? '',
-      timeZone:'SAR',
+      timeZone: 'SAR',
       whatsAppLink: v.whatsAppLink ?? '',
       notes: v.notes ?? '',
       totalHours: v.totalHours ?? 0,

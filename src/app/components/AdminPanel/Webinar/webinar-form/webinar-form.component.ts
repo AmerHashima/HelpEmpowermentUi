@@ -8,30 +8,27 @@ import { SpkNgSelectComponent } from '../../../../shared/spk-ng-select/spk-ng-se
 import { TextareaComponent } from '../../../../shared/text-area/text-area.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { LookupService } from '../../../../Services/lookup.service';
-import { AsyncPipe } from '@angular/common';
 import { Shared } from '../../../../shared/Services/shared/shared';
 import { WebinarService } from '../../../../Services/webinar.service';
 
 @Component({
   selector: 'app-webinar-form',
-  imports: [InputComponent,SiteButtonComponent,SpkNgSelectComponent,ReactiveFormsModule,TextareaComponent,TranslatePipe,
-    AsyncPipe
-  ],
+  imports: [InputComponent, SiteButtonComponent, SpkNgSelectComponent, ReactiveFormsModule, TextareaComponent, TranslatePipe],
   templateUrl: './webinar-form.component.html',
   styleUrl: './webinar-form.component.scss'
 })
 export class WebinarFormComponent {
-  private LookupService= inject(LookupService);
+  private LookupService = inject(LookupService);
   private shared = inject(Shared);
-  private webinarService=inject(WebinarService);
-  isRTL=this.shared.isRtl;
-  certifications=this.shared.certifications;
-oid=input<string>('');
-  cancalEvent=output<void>();
+  private webinarService = inject(WebinarService);
+  isRTL = this.shared.isRtl;
+  certifications = this.shared.certifications;
+  oid = input<string>('');
+  cancalEvent = output<void>();
   fb = inject(FormBuilder);
   status = ActiveStatus;
   webinarFormats$ = this.LookupService.getWebinarFormat();
-  timeZone$=this.LookupService.getTimeZones();
+  timeZone$ = this.LookupService.getTimeZones();
   // specialities = computed(() => this.store.specialities());
   form = this.fb.group({
     webinarName: ['', Validators.required],
@@ -116,11 +113,11 @@ oid=input<string>('');
   }
   createWebinar() {
     this.webinarService.createWebinar(this.getPayload()).subscribe({
-      next:()=> this.cancel()
+      next: () => this.cancel()
     })
   }
   editWebinar() {
-    this.webinarService.updateWebinar(this.oid(),this.getPayload()).subscribe({
+    this.webinarService.updateWebinar(this.oid(), this.getPayload()).subscribe({
       next: () => this.cancel()
     })
   }
@@ -133,13 +130,13 @@ oid=input<string>('');
       // webinarFormat: v.webinarFormat ?? '',
       webinarFormat: webinarPresentationFormat,
       courseOid: v.courseOid ?? '',
-      webinarDate: this.shared.formatDateToISO(v.webinarDate ?? '') ,
+      webinarDate: this.shared.formatDateToISO(v.webinarDate ?? ''),
       webinarEndTime: v.webinarEndTime ?? '',
       webinarStartTime: v.webinarStartTime ?? '',
       // timeZone: v.timeZone ??'',
-      timeZone:'SAR',
-      whatsAppLink: v.whatsAppLink??'',
-      notes: v.notes??'',
+      timeZone: 'SAR',
+      whatsAppLink: v.whatsAppLink ?? '',
+      notes: v.notes ?? '',
       isActive: v.isActive ?? true,
       createdBy: createdUpdatedOID,
     };
@@ -154,7 +151,7 @@ oid=input<string>('');
     this.cancalEvent.emit();
   }
 
-  getFormatLabel(){
+  getFormatLabel() {
     return this.isRTL() ? 'lookupNameAr' : 'lookupNameEn'
   }
 }

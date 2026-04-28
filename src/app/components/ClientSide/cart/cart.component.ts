@@ -1,4 +1,3 @@
-import { TitleCasePipe } from '@angular/common';
 import { Component, computed, effect, inject, Input } from '@angular/core';
 import { Shared } from '../../../shared/Services/shared/shared';
 import { SiteButtonComponent } from '../../../shared/clientSide/site-button/site-button.component';
@@ -18,7 +17,7 @@ import { StudentService } from '../../../Services/student-service.service';
 
 @Component({
   selector: 'app-cart',
-  imports: [TitleCasePipe, SiteButtonComponent],
+  imports: [SiteButtonComponent],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss'
 })
@@ -140,8 +139,8 @@ export class CartComponent {
     return this.cartService.getFeaturePrice(item);
   }
 
-  getCourseImage(item:any){
-    switch(item.courseName.toLowerCase()){
+  getCourseImage(item: any) {
+    switch (item.courseName.toLowerCase()) {
       case 'pmp': return '/assets/images/certifications/certfication_1.jpeg'
       case 'capm': return '/assets/images/certifications/certfication_2.jpeg'
       default: return ''
