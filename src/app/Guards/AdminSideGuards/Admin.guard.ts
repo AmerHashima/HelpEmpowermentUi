@@ -8,11 +8,28 @@ export const adminAuthGuard: CanActivateFn = (route, state) => {
   const shared = inject(Shared);
   const authService = inject(AuthService);
 
-  const adminToken = authService.adminToken(); 
+  const adminToken = authService.adminToken();
 
   if (adminToken) {
     return true;
   }
 
-  return router.createUrlTree([`/${shared.lang()}/auth/login`]);
+  return router.createUrlTree([`/admin/login`]);
 };
+
+
+export const adminGuestGuard: CanActivateFn = (route, state) => {
+  const shared = inject(Shared);
+  const authService = inject(AuthService);
+
+  const router = inject(Router);
+  const token = authService.adminToken();
+
+
+  if (token) {
+
+    return router.createUrlTree([`/admin`]);
+  }
+
+  return true
+}

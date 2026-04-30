@@ -35,6 +35,7 @@ export class LiveCourseService {
   }
 
   loadLiveServices(page: number, size: number, filters:Filter[]){
+    console.log('inLoadservice');
     const requestBody = {
       filters: filters,
       sort: [
@@ -53,6 +54,10 @@ export class LiveCourseService {
       next: (res) => {
         this.liveCourses.set(res.courses);
         this.total.set(res.total);
+        console.log('finish service');
+      },
+        error: (err) => {
+        console.error('SUBSCRIPTION ERROR:', err);
       }
     })
   }

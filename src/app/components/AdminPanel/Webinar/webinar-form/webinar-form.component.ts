@@ -27,8 +27,8 @@ export class WebinarFormComponent {
   cancalEvent = output<void>();
   fb = inject(FormBuilder);
   status = ActiveStatus;
-  webinarFormats$ = this.LookupService.getWebinarFormat();
-  timeZone$ = this.LookupService.getTimeZones();
+  // webinarFormats$ = this.LookupService.getWebinarFormat();
+  // timeZone$ = this.LookupService.getTimeZones();
   // specialities = computed(() => this.store.specialities());
   form = this.fb.group({
     webinarName: ['', Validators.required],
@@ -45,8 +45,8 @@ export class WebinarFormComponent {
 
 
   constructor() {
-
-    effect(() => {
+     effect(()=>console.log('certific',this.certifications()));
+     effect(() => {
       const oid = this.oid();
       if (!oid) {
         this.form.reset();

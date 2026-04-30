@@ -29,8 +29,8 @@ export class LiveCourseFormComponent {
   cancalEvent = output<void>();
   fb = inject(FormBuilder);
   status = ActiveStatus;
-  webinarFormats$ = this.LookupService.getWebinarFormat();
-  timeZone$ = this.LookupService.getTimeZones();
+  // webinarFormats$ = this.LookupService.getWebinarFormat();
+  // timeZone$ = this.LookupService.getTimeZones();
   // specialities = computed(() => this.store.specialities());
   form = this.fb.group({
     courseName: ['', Validators.required],

@@ -225,8 +225,24 @@ export class CartService {
       );
   }
 
+  // addCoupon(body: { "couponCode": "string" }): Observable<APICheckout> {
+  //   const url = `StudentBaskets/${this.currentBasketId()}/coupon`
+  //   return this.apiService
+  //     .post<ApiResponse<APICheckout>>(url, body, "Copuon has been successfully completed")
+  //     .pipe(
+  //       map((response: ApiResponse<APICheckout>) => {
+  //         if (!response.success) {
+  //           const msg = response.errors?.join(', ') || response.message || 'API failed to checkout';
+  //           throw new Error(msg);
+  //         }
+  //         return response.data;
+  //       })
+  //     );
+  // }
+
   addCoupon(body: { "couponCode": "string" }): Observable<APICheckout> {
-    const url = `StudentBaskets/${this.currentBasketId()}/coupon`
+    const url = `StudentBaskets/${this.auth.loggedStudent()?.userId}/coupon`
+    
     return this.apiService
       .post<ApiResponse<APICheckout>>(url, body, "Copuon has been successfully completed")
       .pipe(
@@ -239,7 +255,6 @@ export class CartService {
         })
       );
   }
-
   updateCartItem(id: string, body: UpdateCartItem): Observable<APICartItem> {
     return this.apiService
       .put<ApiResponse<APICartItem>>('StudentBaskets', id, body, 'Cart Item has been updated successfully')

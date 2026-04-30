@@ -21,15 +21,6 @@ export class JobSeekerComponent {
   isRTL = this.shared.isRtl;
   @ViewChildren(PhoneInputComponent)
   phoneCmps!: QueryList<PhoneInputComponent>;
-  jobFields = [
-    { oid: 'job-001', name: 'Software Engineer' },
-    { oid: 'job-002', name: 'Frontend Developer' },
-    { oid: 'job-003', name: 'Backend Developer' },
-    { oid: 'job-004', name: 'Full Stack Developer' },
-    { oid: 'job-005', name: 'UI/UX Designer' },
-    { oid: 'job-006', name: 'Project Manager' },
-    { oid: 'job-007', name: 'QA Engineer' },
-  ];
   experiences = [
     { oid: 'exp-001', name: 'Internship' },
     { oid: 'exp-002', name: 'Junior Level (0–2 years)' },

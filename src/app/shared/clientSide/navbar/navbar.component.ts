@@ -17,6 +17,7 @@ import { StudentService } from '../../../Services/student-service.service';
 import { CertificationsStore } from '../../../AdminPanelStores/CertificationStore/certification.store';
 import { certifications } from '../certification-cards/certification-cards.component';
 import { CartService } from '../../../Services/  cart.service';
+import { ToastingMessagesService } from '../../Services/ToastingMessages/toasting-messages.service';
 
 @Component({
   selector: 'app-client-navbar',
@@ -29,6 +30,7 @@ import { CartService } from '../../../Services/  cart.service';
 })
 export class ClientNavbarComponent {
   private certificationStore = inject(CertificationsStore);
+  private toasting=inject(ToastingMessagesService);
   certifications = computed(() => this.certificationStore.certifications());
   private shared = inject(Shared);
   private auth = inject(AuthService);
@@ -174,7 +176,8 @@ export class ClientNavbarComponent {
   logout() {
     this.studentService.showExamSimulator = false;
     this.auth.logout().subscribe({
-      next: () => this.router.navigateByUrl(`${this.lang()}/auth/login`)
+      next: () => this.router.navigateByUrl(`${this.lang()}/auth/login`),
+      error: () => this.toasting.showToast('Logout API failed(user already logged out locally)','warning')
     })
   }
   addToCart() {

@@ -34,6 +34,7 @@
     },
     "register": {
       "success": "Account created successfully",
+      "phoneLabel":"Phone Number",
       "error": "Failed to create account"
     },
     "logoutToast": {
@@ -420,6 +421,7 @@
     "vacancyBtn": "Post Vacancy"
   },
   "job": {
+    "field":"Job Field",
     "title": "Post Your Job Application",
     "subTitle": "Let employers find your talent – upload your details and CV now.",
     "fullnameLabel": "Full Name",

@@ -24,7 +24,7 @@
               </div>
 
               <!-- Job Field -->
-              <div class="col-12 col-lg-6">
+              <!-- <div class="col-12 col-lg-6">
                 <spk-ng-select
                   name="field"
                   [(ngModel)]="job.field"
@@ -34,6 +34,19 @@
                   label="job.fieldLabel"
                   required
                 ></spk-ng-select>
+              </div> -->
+
+
+                  <div class="col-12 col-lg-6">
+                <app-input
+                  name="field"
+                  [(ngModel)]="job.field"
+                  required
+                  [label]="'job.field' | translate"
+                  [placeholder]="'job.field' | translate"
+                  [icon]="'bi bi-person'"
+                  [errorMessages]="{ required: 'Field is required' | translate }"
+                ></app-input>
               </div>
 
               <!-- Email -->
@@ -59,7 +72,7 @@
                   name="phone"
                   [(ngModel)]="job.phone"
                   [required]="true"
-                  [labelKey]="'register.phoneLabel'"
+                  [labelKey]="'register.phoneLabel' | translate"
                 ></app-phone-input>
               </div>
 

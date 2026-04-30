@@ -28,7 +28,6 @@ export class LiveCoursesComponent {
   pageSize = this.liveCourseService.pageSize;
   pageNumber = this.liveCourseService.pageNumber;
   filters = this.liveCourseService.filters
-  loading = signal<boolean>(false);
 
   hidden = signal<boolean>(false);
   oid: string = '';

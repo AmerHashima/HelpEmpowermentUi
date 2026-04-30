@@ -7,6 +7,7 @@ import { Shared } from "../../Services/shared/shared"
 import { Observable } from 'rxjs';
 import { BreadcrumbItem, BreadcrumbService } from '../../../Services/breadcrumb.service';
 import { RouterModule } from '@angular/router';
+import { AuthService } from '../../../Services/auth.service';
 
 
 @Component({
@@ -24,7 +25,6 @@ export class Navbar {
   private theme = inject(Theme);
   private translateService = inject(TranslateService);
   private platformId = inject(PLATFORM_ID);
-
   lang = this.shared.lang;
   isCollapse = this.shared.isCollapse;
   page = this.shared.page;

@@ -1,0 +1,75 @@
+<div class="container-fluid  h-100">
+ <div class="text-center">
+    <img src="assets/images/clientNavbar/logo.png" class="logo" />
+  </div>
+  <div class="row justify-content-center flex-grow-1 align-items-center">
+    <div class="col-12 col-lg-6">
+      <section
+        class="form w-100 d-flex flex-column align-items-stretch gap-3 my-4 p-5 rounded"
+      >
+        <div class="d-flex flex-column gap-2 w-100">
+          <h3 class="m-0">
+            {{ "log.welcomeBack" | translate }} - Admin Panel Login
+          </h3>
+          <p>{{ "log.enterCredentials" | translate }}</p>
+        </div>
+
+        <form
+          #loginForm="ngForm"
+          (ngSubmit)="onLoginSubmit(loginForm)"
+          class="login-form mb-0"
+        >
+          <div class="d-flex flex-column gap-3">
+            <!-- <app-input
+              name="email"
+              [(ngModel)]="credentials.email"
+              required
+              email
+              [label]="'log.emailLabel' | translate"
+              [placeholder]="'log.emailPlaceholder' | translate"
+              [icon]="'bi bi-envelope'"
+              [errorMessages]="{
+                required: 'Email is required' | translate,
+                email: 'Invalid email format' | translate,
+              }"
+            ></app-input> -->
+
+            <app-input
+              name="username"
+              [(ngModel)]="credentials.username"
+              required
+              [label]="'register.usernameLabel' | translate"
+              [placeholder]="'register.usernamePlaceholder' | translate"
+              [icon]="'bi bi-person'"
+              [errorMessages]="{
+                required: 'User Name is required' | translate,
+              }"
+            ></app-input>
+
+            <app-input
+              name="password"
+              [(ngModel)]="credentials.password"
+              required
+              minlength="6"
+              [label]="'log.passwordLabel' | translate"
+              [placeholder]="'log.passwordPlaceholder' | translate"
+              [icon]="'bi bi-lock'"
+              [type]="'password'"
+              [errorMessages]="{
+                required: 'Password is required' | translate,
+                minlength: 'At least 6 characters' | translate,
+              }"
+            ></app-input>
+
+            <app-site-button
+              title="log.loginButton"
+              type="main"
+              htmlType="submit"
+              [icon]="'bi bi-arrow'"
+            ></app-site-button>
+          </div>
+        </form>
+      </section>
+    </div>
+  </div>
+</div>

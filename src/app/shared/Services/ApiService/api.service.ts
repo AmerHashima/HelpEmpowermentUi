@@ -145,7 +145,7 @@
 // src/app/shared/Services/ApiService/api.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, catchError, finalize, tap, throwError } from 'rxjs';
+import { EMPTY, Observable, catchError, finalize, tap, throwError } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { ToastingMessagesService } from '../ToastingMessages/toasting-messages.service';
 import { LoadingService } from '../Loading/loading.service';
@@ -163,7 +163,8 @@ export default class ApiService {
   ) { }
 
   private handleError(error: any, url?: string) {
-    this.loader.stop();
+    // this.loader.stop();
+    if (this.apiStatus.isServerDown()) return throwError(() => '');
 
     const apiMessage =
       error?.error?.message ||
@@ -191,9 +192,14 @@ export default class ApiService {
   }
 
   get<T>(url: string): Observable<T> {
+    // if (this.shouldBlockRequest(url)) {
+    //   return new Observable<T>((observer) => observer.complete());
+    // }
     if (this.shouldBlockRequest(url)) {
-      return new Observable<T>((observer) => observer.complete());
+      return EMPTY;
     }
+
+    console.log('in get url', url);
 
     this.loader.start();
 
@@ -206,9 +212,13 @@ export default class ApiService {
   }
 
   getSingle<T>(url: string, id: string, type?: string): Observable<T> {
+    // if (this.shouldBlockRequest(url)) {
+    //   return new Observable<T>((observer) => observer.complete());
+    // }
     if (this.shouldBlockRequest(url)) {
-      return new Observable<T>((observer) => observer.complete());
+      return EMPTY;
     }
+    console.log('in get singke url', url);
 
     let fullUrl = '';
 
@@ -236,8 +246,11 @@ export default class ApiService {
     successMessage: string = 'Success',
     page:string=''
   ): Observable<T> {
+    // if (this.shouldBlockRequest(url)) {
+    //   return new Observable<T>((observer) => observer.complete());
+    // }
     if (this.shouldBlockRequest(url)) {
-      return new Observable<T>((observer) => observer.complete());
+      return EMPTY;
     }
 
     this.loader.start();
@@ -273,8 +286,11 @@ export default class ApiService {
     successMessage: string = 'Success',
     type?: string
   ): Observable<T> {
+    // if (this.shouldBlockRequest(url)) {
+    //   return new Observable<T>((observer) => observer.complete());
+    // }
     if (this.shouldBlockRequest(url)) {
-      return new Observable<T>((observer) => observer.complete());
+      return EMPTY;
     }
 
     let fullUrl = '';
@@ -309,8 +325,11 @@ export default class ApiService {
     id: string,
     successMessage: string = 'Success'
   ): Observable<T> {
+    // if (this.shouldBlockRequest(url)) {
+    //   return new Observable<T>((observer) => observer.complete());
+    // }
     if (this.shouldBlockRequest(url)) {
-      return new Observable<T>((observer) => observer.complete());
+      return EMPTY;
     }
 
     const fullUrl = `${this.baseUrl}/${url}/${id}`;
@@ -335,8 +354,11 @@ export default class ApiService {
     id: string,
     successMessage: string = 'Success'
   ): Observable<T> {
+    // if (this.shouldBlockRequest(url)) {
+    //   return new Observable<T>((observer) => observer.complete());
+    // }
     if (this.shouldBlockRequest(url)) {
-      return new Observable<T>((observer) => observer.complete());
+      return EMPTY;
     }
 
     const fullUrl = `${this.baseUrl}/${url}/${id}/clear`;
@@ -358,9 +380,13 @@ export default class ApiService {
 
   // ==================== QUERY ====================
   query<T>(url: string, body: any): Observable<T> {
+    // if (this.shouldBlockRequest(url)) {
+    //   return new Observable<T>((observer) => observer.complete());
+    // }
     if (this.shouldBlockRequest(url)) {
-      return new Observable<T>((observer) => observer.complete());
+      return EMPTY;
     }
+    console.log('in query url',url);
 
     this.loader.start();
 
@@ -368,14 +394,20 @@ export default class ApiService {
       headers: this.createHeaders(),
     }).pipe(
       catchError(err => this.handleError(err, url)),
-      finalize(() => this.loader.stop())
+      finalize(() => {
+        console.log('in finalize');
+        this.loader.stop()
+      })
     );
   }
 
   // ==================== FILE UPLOAD ====================
   uploadImage<T>(endpoint: string, id: string, file: File): Observable<T> {
+    // if (this.shouldBlockRequest(endpoint)) {
+    //   return new Observable<T>((observer) => observer.complete());
+    // }
     if (this.shouldBlockRequest(endpoint)) {
-      return new Observable<T>((observer) => observer.complete());
+      return EMPTY;
     }
 
     const formData = new FormData();
@@ -394,8 +426,11 @@ export default class ApiService {
   }
 
   getImage(endpoint: string, id: string): Observable<Blob> {
+    // if (this.shouldBlockRequest(endpoint)) {
+    //   return new Observable<Blob>((observer) => observer.complete());
+    // }
     if (this.shouldBlockRequest(endpoint)) {
-      return new Observable<Blob>((observer) => observer.complete());
+      return EMPTY;
     }
     this.loader.start();
     return this.http.get(`${this.baseUrl}/${endpoint}/${id}/image`, { responseType: 'blob' }).pipe(
@@ -405,8 +440,11 @@ export default class ApiService {
   }
 
   deleteImage(endpoint: string, id: string): Observable<string> {
+    // if (this.shouldBlockRequest(endpoint)) {
+    //   return new Observable<string>((observer) => observer.complete());
+    // }
     if (this.shouldBlockRequest(endpoint)) {
-      return new Observable<string>((observer) => observer.complete());
+      return EMPTY;
     }
     this.loader.start();
     return this.http.delete(`${this.baseUrl}/${endpoint}/${id}/image`, { responseType: 'text' }).pipe(

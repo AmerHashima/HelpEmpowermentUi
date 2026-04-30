@@ -64,6 +64,8 @@ import { VideosComponent } from './components/ClientSide/videos/videos.component
 import { FinishCertificationComponent } from './components/ClientSide/finish-certification/finish-certification.component';
 import { WebinarsComponent } from './components/AdminPanel/Webinar/webinars/webinars.component';
 import { LiveCoursesComponent } from './components/AdminPanel/LiveCourse/live-courses/live-courses.component';
+import { AdminLoginComponent } from './components/AdminPanel/admin-login/admin-login.component';
+import { adminAuthGuard, adminGuestGuard } from './Guards/AdminSideGuards/Admin.guard';
 
 export const validLangGuard: CanMatchFn = (route, segments) => {
   const lang = segments[0]?.path;
@@ -288,9 +290,15 @@ export const routes: Routes = [
     ]
   },
   {
+    path: 'admin/login',
+    canActivate : [adminGuestGuard],
+    component: AdminLoginComponent
+  },
+  {
     path: 'admin',
     component: AdminLayoutComponent,
     data: { breadcrumb: 'Admin' },
+    canActivateChild: [adminAuthGuard],
     children: [
       {
         path: '',

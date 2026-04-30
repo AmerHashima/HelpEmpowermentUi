@@ -24,6 +24,7 @@ import { StudentService } from '../../../Services/student-service.service';
 export class CartComponent {
   private shared = inject(Shared);
   private cartService = inject(CartService);
+
   private router = inject(Router);
   appliedCoupon = this.cartService.appliedCoupon;
   discountAmount = this.cartService.discountAmount;
@@ -124,7 +125,7 @@ export class CartComponent {
   }
   removeCoupon() { }
   applyCoupon(value: any) {
-    this.cartService.addCoupon(value).subscribe({
+    this.cartService.addCoupon({ couponCode:value }).subscribe({
       next:(data)=>{console.log('afterApllyCoupon',data);
           this.cartService.discountAmount.set(data.discountAmount);
       }
