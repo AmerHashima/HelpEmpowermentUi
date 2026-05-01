@@ -59,26 +59,28 @@ export class LiveCourseFormComponent implements OnInit {
         this.form.reset();
         return;
       }
-      // this.store.getBranch(oid);
+      this.liveCourseService.getLiveCourse(oid).subscribe({
+        next: (course) => {
+          this.form.patchValue({
+            courseName: course.courseName,
+            courseOid: course.courseOid,
+            startDate: course.startDate?.substring(0, 10) ?? '',
+            startTime: course.startTime,
+            numberOfSessions: course.numberOfSessions,
+            totalHours: course.totalHours,
+            whatsAppLink: course.whatsAppLink,
+            scheduleNotes: course.scheduleNotes,
+            notes: course.notes,
+            isActive: course.isActive,
+          });
+        },
+        error: (err) => console.error('Error loading live course:', err)
+      });
     });
 
     effect(() => {
-      // const speciality = this.store.selectedSpeciality();
-      // // const branch = this.store.selectedItem();
-      // if (branch) {
-      //   this.form.patchValue({
-      //     code: branch.code,
-      //     name: branch.name,
-      //     state: branch.state ? branch.state : null,
-      //     country: branch.country,
-      //     city: branch.city,
-      //     postalCode: branch.postalCode,
-      //     address: branch.address,
-      //     isActive: branch.isActive,
-      //   });
-      // }
+      // reserved for future computed effects
     });
-
 
   }
 

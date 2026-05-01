@@ -8,7 +8,7 @@ import { WebinarService } from '../../../../Services/webinar.service';
 
 @Component({
   selector: 'app-webinars',
-  imports: [ReusableMaterialTableComponent,WebinarFormComponent],
+  imports: [ReusableMaterialTableComponent, WebinarFormComponent],
   templateUrl: './webinars.component.html',
   styleUrl: './webinars.component.scss'
 })
@@ -19,11 +19,11 @@ export class WebinarsComponent {
   private router = inject(Router);
   private webinarService = inject(WebinarService);
 
-  webinars =this.webinarService.webinars
+  webinars = this.webinarService.webinars
   total = this.webinarService.total;
   pageSize = this.webinarService.pageSize;
-  pageNumber=this.webinarService.pageNumber;
-  filters=this.webinarService.filters;
+  pageNumber = this.webinarService.pageNumber;
+  filters = this.webinarService.filters;
   loading = signal<boolean>(false);
 
   hidden = signal<boolean>(false);
@@ -32,10 +32,10 @@ export class WebinarsComponent {
   // 🔹 columns
   columns = [
     { field: 'webinarName', header: 'Name', type: 'text' },
-    { field: 'webinarFormat', header: 'Type', type: 'text' },
+    { field: 'courseName', header: 'Course', type: 'text' },
     { field: 'webinarDate', header: 'Date', type: 'text' },
     { field: 'webinarStartTime', header: 'Start Time', type: 'text' },
-    { field: 'webinarEndTime', header: 'End Tile', type: 'text' },
+    { field: 'webinarEndTime', header: 'End Time', type: 'text' },
     {
       field: 'isActive',
       header: 'Status',
@@ -56,7 +56,7 @@ export class WebinarsComponent {
   ngOnInit() {
     this.breadcrumb.resetToRoute();
 
-    this.route.queryParams.subscribe((params:any) => {
+    this.route.queryParams.subscribe((params: any) => {
       console.log('QUERY PARAMS:', params);
 
       const mode = params['mode'];
@@ -90,13 +90,13 @@ export class WebinarsComponent {
   }
 
   onFilterChange(value: string) {
-   const filters=[
-    {
-       propertyName:  "webinarName",
-      value: value,
-       operation: 0
-    }
-   ]
+    const filters = [
+      {
+        propertyName: "webinarName",
+        value: value,
+        operation: 0
+      }
+    ]
     this.webinarService.filters.set([...filters]);
   }
 

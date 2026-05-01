@@ -11,30 +11,30 @@ import { ApiResponse, ApiSearchResponse } from '../models/apiResponse';
 })
 export class LiveCourseService {
   liveCourses = signal<APILiveCourse[]>([]);
-  total=signal<number>(0);
+  total = signal<number>(0);
   pageNumber = signal<number>(0);
   pageSize = signal<number>(10);
-  filters=signal<Filter[]>([]);
+  filters = signal<Filter[]>([]);
   mapCoursesToSessions = computed(() => {
-    return this.liveCourses().map((c:APILiveCourse) => {
+    return this.liveCourses().map((c: APILiveCourse) => {
       return {
         date: this.formatDate(c.startDate),
         time: c.startTime,
         title: c.courseName,
-        courseName:c.courseTitle
+        courseName: c.courseRefName
       };
     });
-  } )
-  constructor(private apiService:ApiService) {
+  })
+  constructor(private apiService: ApiService) {
     effect(() => {
       const page = this.pageNumber();
       const size = this.pageSize();
-      const filters=this.filters();
+      const filters = this.filters();
       this.loadLiveServices(page, size, filters);
     });
   }
 
-  loadLiveServices(page: number, size: number, filters:Filter[]){
+  loadLiveServices(page: number, size: number, filters: Filter[]) {
     const requestBody = {
       filters: filters,
       sort: [
@@ -44,7 +44,7 @@ export class LiveCourseService {
         }],
       pagination: {
         getAll: false,
-        pageNumber:page,
+        pageNumber: page,
         pageSize: size
       },
       columns: []

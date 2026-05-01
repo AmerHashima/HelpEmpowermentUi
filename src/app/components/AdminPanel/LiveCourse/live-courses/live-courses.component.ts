@@ -36,7 +36,7 @@ export class LiveCoursesComponent {
   // 🔹 columns
   columns = [
     { field: 'courseName', header: 'Name', type: 'text' },
-    { field: 'courseFormat', header: 'Type', type: 'text' },
+    { field: 'courseRefName', header: 'Course', type: 'text' },
     { field: 'startDate', header: 'Start Date', type: 'text' },
     { field: 'startTime', header: 'Start Time', type: 'text' },
     { field: 'numberOfSessions', header: 'Sessions No.', type: 'text' },

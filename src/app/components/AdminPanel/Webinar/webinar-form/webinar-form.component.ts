@@ -55,24 +55,25 @@ export class WebinarFormComponent implements OnInit {
         this.form.reset();
         return;
       }
-      // this.store.getBranch(oid);
+      this.webinarService.getWebinar(oid).subscribe({
+        next: (webinar) => {
+          this.form.patchValue({
+            webinarName: webinar.webinarName,
+            courseOid: webinar.courseOid,
+            webinarDate: webinar.webinarDate?.substring(0, 10) ?? '',
+            webinarStartTime: this.extractTime(webinar.webinarStartTime),
+            webinarEndTime: this.extractTime(webinar.webinarEndTime),
+            whatsAppLink: webinar.whatsAppLink,
+            notes: webinar.notes,
+            isActive: webinar.isActive,
+          });
+        },
+        error: (err) => console.error('Error loading webinar:', err)
+      });
     });
 
     effect(() => {
-      // const speciality = this.store.selectedSpeciality();
-      // // const branch = this.store.selectedItem();
-      // if (branch) {
-      //   this.form.patchValue({
-      //     code: branch.code,
-      //     name: branch.name,
-      //     state: branch.state ? branch.state : null,
-      //     country: branch.country,
-      //     city: branch.city,
-      //     postalCode: branch.postalCode,
-      //     address: branch.address,
-      //     isActive: branch.isActive,
-      //   });
-      // }
+      // reserved for future computed effects
     });
 
 
@@ -177,5 +178,13 @@ export class WebinarFormComponent implements OnInit {
 
   getFormatLabel() {
     return this.isRTL() ? 'lookupNameAr' : 'lookupNameEn'
+  }
+
+  private extractTime(isoString: string | null | undefined): string {
+    if (!isoString) return '';
+    // handles both "2026-04-15T03:00:00.000Z" and "03:00:00" formats
+    const match = isoString.match(/T(\d{2}:\d{2})/);
+    if (match) return match[1];
+    return isoString.substring(0, 5);
   }
 }
