@@ -15,6 +15,7 @@ import { NoQuestionComponent } from '../no-question/no-question.component';
 import { SpinnerComponent } from '../../../../shared/spinner/spinner.component';
 import { LoadingService } from '../../../../shared/Services/Loading/loading.service';
 import { createdUpdatedOID } from '../../../../data/lookUPS';
+import { ExamTimerComponent } from '../exam-timer/exam-timer.component';
 
 
 @Component({
@@ -127,6 +128,8 @@ export class ExamComponent {
         this.isInitializing.set(false);
       }
     });
+
+
 
 
     effect(() => {
@@ -451,6 +454,11 @@ export class ExamComponent {
       }
     }else this.finishExam(true)
 
+  }
+
+  onExamTimeUp() {
+    console.log('⏰ Exam finished');
+    this.finishExam(true);
   }
 
   // goToNext(newAnswer: any) {

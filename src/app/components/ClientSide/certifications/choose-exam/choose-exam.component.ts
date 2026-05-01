@@ -463,7 +463,7 @@ export class ChooseExamComponent {
     const isFree = this.shared.currentExam()?.freeExam ?? false;
 
     const latest = this.latestReport();
-
+    console.log('latest', latest);
     if (!latest) return false;
 
     const isCleared = this.isExamCleared(latest);
@@ -480,7 +480,7 @@ export class ChooseExamComponent {
 
   private isExamCleared(latest: any): boolean {
     if (!latest) return false;
-    return latest.examStatusLookupId === clearedExamStatusOid;
+    return latest.examStatusLookupId === clearedExamStatusOid ;
   }
   // private shouldBlockExamStart(mode: 'Practice' | 'Exam'): boolean {
   //   const latestReport = this.latestReport();
@@ -657,7 +657,7 @@ export class ChooseExamComponent {
 
   clearLessonLearned() {
     const isFree = this.shared.currentExam()?.freeExam ?? false;
-
+    console.log('isFree', isFree);
     // ✅ Free Exam
     if (isFree) {
       this.shared.clearFreeExamLesson(

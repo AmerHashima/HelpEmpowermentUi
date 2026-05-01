@@ -162,18 +162,47 @@ export default class ApiService {
     private apiStatus: ApiStatusService
   ) { }
 
+  // private handleError(error: any, url?: string) {
+  //   // this.loader.stop();
+  //   if (this.apiStatus.isServerDown()) return throwError(() => '');
+
+  //   // const apiMessage =
+  //   //   error?.error?.message ||
+  //   //   error?.error?.errors?.[0] ||
+  //   //   'Something went wrong';
+
+
+  //   const apiMessage =
+  //     error?.error?.message ||
+  //     error?.error?.errors?.[0]
+  //         console.error('❌ API Error:', url, error);
+  //   if (apiMessage){
+  //     this.toasting.showToast(apiMessage, 'error');
+
+  //   }
+
+  //   return throwError(() => error);
+  // }
+
+
   private handleError(error: any, url?: string) {
     // this.loader.stop();
     if (this.apiStatus.isServerDown()) return throwError(() => '');
 
-    const apiMessage =
-      error?.error?.message ||
-      error?.error?.errors?.[0] ||
-      'Something went wrong';
+    // const apiMessage =
+    //   error?.error?.message ||
+    //   error?.error?.errors?.[0] ||
+    //   'Something went wrong';
 
-    console.error('❌ API Error:', url, error);
 
-    this.toasting.showToast(apiMessage, 'error');
+    // const apiMessage =
+    //   error?.error?.message ||
+    //   error?.error?.errors?.[0]
+    // console.error('❌ API Error:', url, error);
+    // if (apiMessage) {
+    //   this.toasting.showToast(apiMessage, 'error');
+
+    // }
 
     return throwError(() => error);
   }

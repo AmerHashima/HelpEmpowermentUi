@@ -217,7 +217,7 @@ export class Shared {
 
       const last = attempts[0];
       if (!last) return null;
-
+      console.log('last',last);
       return {
         totalQuestions: last.totalScore,
         totalScore: last.totalScore,
@@ -286,9 +286,11 @@ export class Shared {
           return {
             ...r,
             cleared: true,
-            clearedAt: new Date().toISOString()
+            clearedAt: new Date().toISOString(),
           };
         }
+
+        console.log('r',r);
         return r;
       });
 

@@ -187,6 +187,7 @@ export class EnrollFormComponent {
       }
        catch (apiError) {
 
+              // this.toasting.showToast('enroll.sent.error', 'error');
       }
 
     } else {
