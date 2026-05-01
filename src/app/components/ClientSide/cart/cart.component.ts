@@ -2,9 +2,8 @@ import { Component, computed, effect, inject, Input } from '@angular/core';
 import { Shared } from '../../../shared/Services/shared/shared';
 import { SiteButtonComponent } from '../../../shared/clientSide/site-button/site-button.component';
 import { CartService, CartViewItem, ReservationType } from '../../../Services/  cart.service';
-import { APICartItem, CartItem } from '../../../models/cart';
+import { APICartItem } from '../../../models/cart';
 import { Router } from '@angular/router';
-import { StudentService } from '../../../Services/student-service.service';
 
 // type ReservationType =
 //   | 'examSimulationReserv'
@@ -123,14 +122,23 @@ export class CartComponent {
   navigateToCheckout() {
     this.router.navigateByUrl(`/${this.lang()}/checkout`);
   }
-  removeCoupon() { }
-  applyCoupon(value: any) {
-    this.cartService.addCoupon({ couponCode:value }).subscribe({
-      next:(data)=>{console.log('afterApllyCoupon',data);
-          this.cartService.discountAmount.set(data.discountAmount);
-      }
+  removeCoupon() {
+    this.cartService.clearCouponState();
+    this.cartService.getStudentBasketItems().subscribe({
+      next: (data) => this.cartService.cartItems.set(data.items ?? []),
+      error: () => this.cartService.cartItems.set([])
+    });
+  }
 
-    })
+  applyCoupon(value: string) {
+    const couponCode = value?.trim();
+    if (!couponCode) return;
+
+    this.cartService.addCoupon({ couponCode }).subscribe({
+      next: (data) => {
+        this.cartService.applyCouponData(data, couponCode);
+      }
+    });
   }
 
   getCourdeUpperCase(name: string) {

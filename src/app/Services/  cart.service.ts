@@ -1,5 +1,5 @@
 import { computed, effect, inject, Injectable, signal, } from '@angular/core';
-import { APICartItem, APICartResponse, APICheckout, CartItem, UpdateCartItem } from '../models/cart';
+import { APICartItem, APICartResponse, APICheckout, APICouponData, CartItem, UpdateCartItem } from '../models/cart';
 import ApiService from '../shared/Services/ApiService/api.service';
 import { filter, map, Observable, switchMap } from 'rxjs';
 import { ApiResponse } from '../models/apiResponse';
@@ -38,6 +38,8 @@ export class CartService {
 
   appliedCoupon = signal<string | null>(null);
   discountAmount = signal<number>(0);
+  private subTotalOverride = signal<number | null>(null);
+  private totalOverride = signal<number | null>(null);
 
   // subtotal = computed(() =>
   //   this.cartItems().reduce((total, item) => total + (item.finalPrice ?? 0), 0)
@@ -64,9 +66,11 @@ export class CartService {
 
       return result;
     });
-  total = computed(() =>
-    this.subtotal() - this.discountAmount()
-  );
+  total = computed(() => {
+    const override = this.totalOverride();
+    if (override != null) return override;
+    return this.subtotal() - this.discountAmount();
+  });
 
   // subtotal = computed(() =>
   //   this.cartItems().reduce((total, item) => {
@@ -78,12 +82,15 @@ export class CartService {
   //     return total + price;
   //   }, 0)
   // );
-  subtotal = computed(() =>
-    this.expandedCartItems().reduce((total, item) => {
+  subtotal = computed(() => {
+    const override = this.subTotalOverride();
+    if (override != null) return override;
+
+    return this.expandedCartItems().reduce((total, item) => {
       const price = this.getFeaturePrice(item);
       return total + price;
-    }, 0)
-  );
+    }, 0);
+  });
   // subtotal = computed(() =>
   //   this.expandedCartItems().reduce((total, item) => {
   //     const price =
@@ -122,6 +129,10 @@ export class CartService {
       this.getStudentBasketItems().subscribe({
         next: (data) => {
           this.cartItems.set(data.items ?? []);
+          this.subTotalOverride.set(null);
+          this.totalOverride.set(null);
+          this.discountAmount.set(0);
+          this.appliedCoupon.set(null);
         },
         error: (err) => {
           console.error('Failed to load basket', err);
@@ -240,13 +251,13 @@ export class CartService {
   //     );
   // }
 
-  addCoupon(body: { "couponCode": "string" }): Observable<APICheckout> {
+  addCoupon(body: { couponCode: string }): Observable<APICouponData> {
     const url = `StudentBaskets/${this.auth.loggedStudent()?.userId}/coupon`
     
     return this.apiService
-      .post<ApiResponse<APICheckout>>(url, body, "Copuon has been successfully completed")
+      .post<ApiResponse<APICouponData>>(url, body, "Copuon has been successfully completed")
       .pipe(
-        map((response: ApiResponse<APICheckout>) => {
+        map((response: ApiResponse<APICouponData>) => {
           if (!response.success) {
             const msg = response.errors?.join(', ') || response.message || 'API failed to checkout';
             throw new Error(msg);
@@ -254,6 +265,21 @@ export class CartService {
           return response.data;
         })
       );
+  }
+
+  applyCouponData(data: APICouponData, couponCode: string): void {
+    this.cartItems.set(data.items ?? []);
+    this.subTotalOverride.set(data.subTotal ?? null);
+    this.totalOverride.set(data.total ?? null);
+    this.discountAmount.set(data.totalDiscount ?? 0);
+    this.appliedCoupon.set(couponCode || null);
+  }
+
+  clearCouponState(): void {
+    this.appliedCoupon.set(null);
+    this.discountAmount.set(0);
+    this.subTotalOverride.set(null);
+    this.totalOverride.set(null);
   }
   updateCartItem(id: string, body: UpdateCartItem): Observable<APICartItem> {
     return this.apiService

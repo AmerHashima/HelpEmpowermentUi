@@ -65,6 +65,14 @@ export interface APICheckout {
   liveCourseReserv: boolean,
 }
 
+export interface APICouponData {
+  items: APICartItem[];
+  subTotal: number;
+  totalDiscount: number;
+  total: number;
+  itemCount: number;
+}
+
 export interface APICartResponse {
   items: APICartItem[];
 }
