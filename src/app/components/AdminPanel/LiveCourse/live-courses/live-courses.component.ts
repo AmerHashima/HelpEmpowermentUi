@@ -8,7 +8,7 @@ import { LiveCourseFormComponent } from '../live-course-form/live-course-form.co
 
 @Component({
   selector: 'app-live-courses',
-  imports: [ReusableMaterialTableComponent,LiveCourseFormComponent],
+  imports: [ReusableMaterialTableComponent, LiveCourseFormComponent],
   templateUrl: './live-courses.component.html',
   styleUrl: './live-courses.component.scss'
 })
@@ -128,9 +128,9 @@ export class LiveCoursesComponent {
   }
 
   handleDelete(row: any) {
-   this.liveCourseService.deleteLiveCourse(row.oid).subscribe({
-     next: () => this.pageNumber.update(p => p)
-   })
+    this.liveCourseService.deleteLiveCourse(row.oid).subscribe({
+      next: () => this.pageNumber.update(p => p)
+    })
   }
 
   onCancal() {

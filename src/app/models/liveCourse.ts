@@ -1,7 +1,7 @@
 export interface LiveCourse {
   oid?: string,
   courseName: string,
-  courseOid:string,
+  courseOid: string,
   courseFormat: string,
   startDate: string,
   startTime: string,
