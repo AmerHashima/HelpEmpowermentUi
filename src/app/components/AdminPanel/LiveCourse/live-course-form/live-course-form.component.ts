@@ -1,7 +1,9 @@
-import { Component, effect, inject, input, output } from '@angular/core';
+import { Component, effect, inject, input, OnInit, output, signal } from '@angular/core';
 import { LookupService } from '../../../../Services/lookup.service';
 import { Shared } from '../../../../shared/Services/shared/shared';
 import { LiveCourseService } from '../../../../Services/live-course.service';
+import { CertificationService } from '../../../../Services/certification.service';
+import { APICertification } from '../../../../models/certification';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActiveStatus, createdUpdatedOID, webinarPresentationFormat } from '../../../../data/lookUPS';
 import { LiveCourse } from '../../../../models/liveCourse';
@@ -19,32 +21,33 @@ import { TextareaComponent } from '../../../../shared/text-area/text-area.compon
   templateUrl: './live-course-form.component.html',
   styleUrl: './live-course-form.component.scss'
 })
-export class LiveCourseFormComponent {
+export class LiveCourseFormComponent implements OnInit {
   private LookupService = inject(LookupService);
   private shared = inject(Shared);
   private liveCourseService = inject(LiveCourseService);
+  private certificationService = inject(CertificationService);
   isRTL = this.shared.isRtl;
-  certifications = this.shared.certifications;
+  certifications = signal<APICertification[]>([]);
   oid = input<string>('');
   cancalEvent = output<void>();
   fb = inject(FormBuilder);
   status = ActiveStatus;
-  // webinarFormats$ = this.LookupService.getWebinarFormat();
-  // timeZone$ = this.LookupService.getTimeZones();
+  //webinarFormats$ = this.LookupService.getWebinarFormat();
+  //timeZone$ = this.LookupService.getTimeZones();
   // specialities = computed(() => this.store.specialities());
   form = this.fb.group({
     courseName: ['', Validators.required],
     courseOid: ['', Validators.required],
-    courseFormat: ['', Validators.required],
+    courseFormat: [''],
     startDate: ['', Validators.required],
-    startTime: ['', Validators.required],
-    timeZone: ['', Validators.required],
-    numberOfSessions: [0, Validators.required],
-    totalHours: [0, Validators.required],
-    whatsAppLink: ['', Validators.required],
+    startTime: [''],
+    timeZone: [''],
+    numberOfSessions: [0],
+    totalHours: [0],
+    whatsAppLink: [''],
     scheduleNotes: [''],
     notes: [''],
-    isActive: [false, Validators.required],
+    isActive: [false],
   });
 
 
@@ -56,28 +59,52 @@ export class LiveCourseFormComponent {
         this.form.reset();
         return;
       }
-      // this.store.getBranch(oid);
+      this.liveCourseService.getLiveCourse(oid).subscribe({
+        next: (course) => {
+          this.form.patchValue({
+            courseName: course.courseName,
+            courseOid: course.courseOid,
+            startDate: course.startDate?.substring(0, 10) ?? '',
+            startTime: course.startTime,
+            numberOfSessions: course.numberOfSessions,
+            totalHours: course.totalHours,
+            whatsAppLink: course.whatsAppLink,
+            scheduleNotes: course.scheduleNotes,
+            notes: course.notes,
+            isActive: course.isActive,
+          });
+        },
+        error: (err) => console.error('Error loading live course:', err)
+      });
     });
 
     effect(() => {
-      // const speciality = this.store.selectedSpeciality();
-      // // const branch = this.store.selectedItem();
-      // if (branch) {
-      //   this.form.patchValue({
-      //     code: branch.code,
-      //     name: branch.name,
-      //     state: branch.state ? branch.state : null,
-      //     country: branch.country,
-      //     city: branch.city,
-      //     postalCode: branch.postalCode,
-      //     address: branch.address,
-      //     isActive: branch.isActive,
-      //   });
-      // }
+      // reserved for future computed effects
     });
 
-
   }
+
+  ngOnInit(): void {
+    this.loadCertifications();
+  }
+
+  private loadCertifications(): void {
+    const body = {
+      filters: [],
+      sort: [{ sortBy: 'courseName', sortDirection: 'asc' }],
+      pagination: { getAll: true, pageNumber: 0, pageSize: 100 },
+      columns: []
+    };
+
+    this.certificationService.search(body).subscribe({
+      next: ({ certifications }) => this.certifications.set(certifications),
+      error: (err) => {
+        console.error('Error loading certifications:', err);
+        this.certifications.set([]);
+      }
+    });
+  }
+
   getInvalidControls(): string[] {
     const controls = this.form.controls;
 
