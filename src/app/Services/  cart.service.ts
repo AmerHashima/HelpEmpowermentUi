@@ -28,7 +28,7 @@ export class CartService {
 
   studentId = computed(() => this.auth.loggedStudent()?.userId);
   cartItems = signal<APICartItem[]>([]);
-  currentBasketId=signal<string>('');
+  currentBasketId = signal<string>('');
   // cartCount = computed(() =>
   //   this.cartItems().reduce((total, item) => total + item.quantity, 0)
   // );
@@ -47,25 +47,25 @@ export class CartService {
 
   expandedCartItems = computed<CartViewItem[]>(() => {
 
-     const result: CartViewItem[] = [];
+    const result: CartViewItem[] = [];
 
-      for (const item of this.cartItems()) {
+    for (const item of this.cartItems()) {
 
-        if (item.examSimulationReserv) {
-          result.push({ ...item, reservationType: 'examSimulationReserv' });
-        }
-
-        if (item.recordedCourseReserv) {
-          result.push({ ...item, reservationType: 'recordedCourseReserv' });
-        }
-
-        if (item.liveCourseReserv) {
-          result.push({ ...item, reservationType: 'liveCourseReserv' });
-        }
+      if (item.examSimulationReserv) {
+        result.push({ ...item, reservationType: 'examSimulationReserv' });
       }
 
-      return result;
-    });
+      if (item.recordedCourseReserv) {
+        result.push({ ...item, reservationType: 'recordedCourseReserv' });
+      }
+
+      if (item.liveCourseReserv) {
+        result.push({ ...item, reservationType: 'liveCourseReserv' });
+      }
+    }
+
+    return result;
+  });
   total = computed(() => {
     const override = this.totalOverride();
     if (override != null) return override;
@@ -222,7 +222,7 @@ export class CartService {
   }
 
   chekout(body: { "paymentMethod": "string" }): Observable<APICheckout> {
-    const url =`StudentBaskets/${this.studentId()!}/checkout`
+    const url = `StudentBaskets/${this.studentId()!}/checkout`
     return this.apiService
       .post<ApiResponse<APICheckout>>(url, body, "Checkout has been successfully completed")
       .pipe(
@@ -253,7 +253,7 @@ export class CartService {
 
   addCoupon(body: { couponCode: string }): Observable<APICouponData> {
     const url = `StudentBaskets/${this.auth.loggedStudent()?.userId}/coupon`
-    
+
     return this.apiService
       .post<ApiResponse<APICouponData>>(url, body, "Copuon has been successfully completed")
       .pipe(
@@ -297,7 +297,7 @@ export class CartService {
   }
   deleteCartItem(id: string): Observable<boolean> {
     return this.apiService
-      .delete<ApiResponse<boolean>>('StudentBaskets', id,'Your Cart Item has been deleted successfully')
+      .delete<ApiResponse<boolean>>('StudentBaskets', id, 'Your Cart Item has been deleted successfully')
       .pipe(
         map((response: ApiResponse<boolean>) => {
           if (!response.success) {
@@ -326,8 +326,8 @@ export class CartService {
   getCourse(courseId: string): APICartItem | undefined {
     return this.cartItems().find(item => item.courseId === courseId);
   }
-  courseExists( courseId: string): boolean {
-    return !!this.getCourse( courseId);
+  courseExists(courseId: string): boolean {
+    return !!this.getCourse(courseId);
   }
 
   isInCart(
@@ -335,7 +335,7 @@ export class CartService {
     key: ReservationKey
   ): boolean {
 
-    const course = this.getCourse( courseId);
+    const course = this.getCourse(courseId);
 
     return !!course?.[key];
   }
