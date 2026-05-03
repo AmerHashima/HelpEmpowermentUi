@@ -1,5 +1,5 @@
 // src\app\components\ClientSide\certifications\live-course\live-course.component.ts
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { PageBannerComponent } from '../../../../shared/clientSide/page-banner/page-banner.component';
 import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/site-button.component';
 import { CoureseAudienceComponent } from '../courese-audience/courese-audience.component';
@@ -18,10 +18,15 @@ import { CartService } from '../../../../Services/  cart.service';
 import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
 import { GenericModelComponent } from '../../../../shared/generic-model/generic-model.component';
 import { StudentService } from '../../../../Services/student-service.service';
+import { FormsModule, NgForm } from '@angular/forms';
+import { PhoneInputComponent } from '../../../../shared/phone/phone.component';
+import { LiveCourseContactLookUp } from '../../../../data/lookUPS';
+import { ContactUsService } from '../../../../Services/contact-us.service';
+import { InputComponent } from '../../../../shared/input/input.component';
 
 @Component({
   selector: 'app-live-course',
-  imports: [PageBannerComponent, SiteButtonComponent,
+  imports: [PageBannerComponent, SiteButtonComponent,FormsModule,InputComponent,PhoneInputComponent,
     CoureseContentComponent, CoureseFeaturesComponent, CoureseOutlineComponent, InstructorInfoComponent,
     TargetAudienceComponent, StarRatingComponent, TranslatePipe, NgIf, UpcomingSessionsComponent, GenericModelComponent,
     NgClass
@@ -30,14 +35,21 @@ import { StudentService } from '../../../../Services/student-service.service';
   styleUrl: './live-course.component.scss'
 })
 export class LiveCourseComponent {
+  @ViewChild('liveCourseRegisterForm') liveCourseForm!: NgForm;
+  @ViewChildren(PhoneInputComponent)
+  phoneCmps!: QueryList<PhoneInputComponent>;
   private shared = inject(Shared);
   private auth = inject(AuthService);
   private cartService = inject(CartService);
   private toasting = inject(ToastingMessagesService);
+  private contactService=inject(ContactUsService);
   isRTL = this.shared.isRtl;
+  student= this.auth.loggedStudent;
+  RegisterSession:any=null;
   private studentService = inject(StudentService);
   isEnrolled = this.studentService.isLiveCourseEnrolled;
   showConfirm: boolean = false;
+  showRegisterConfirm: boolean = false;
   enrollImage = 'assets/images/enroll.png';
   courseImage = "assets/images/liveCourse/liveCourse.jpeg";
   hasLiveCourseAccess = computed(
@@ -114,5 +126,105 @@ export class LiveCourseComponent {
     this.cartService.addCartItem(cartPayload).subscribe({
       next: (cartItem) => this.cartService.updateBasket(cartItem)
     });
+  }
+
+
+  liveCourse = {
+    fullname: '',
+    email: '',
+    phone: '',
+    position: '',
+  };
+
+
+
+  private patchUserData() {
+    const user = this.student();
+
+    if (user) {
+      this.liveCourse.fullname = user.nameEn;
+      this.liveCourse.email = user.email || '';
+      this.liveCourse.phone = user.mobile || '';
+    }
+  }
+
+  registerNow() {
+    this.showRegisterConfirm = true;
+    this.liveCourseForm.resetForm();
+    setTimeout(() => {
+      this.patchUserData();
+    });
+  }
+
+
+
+
+  onLiveCourseRegister(form: NgForm) {
+    if (this.student() && this.student()?.userId) {
+    if (form.invalid) {
+      Object.values(form.controls).forEach(control => {
+        control.markAsTouched();
+      });
+      this.phoneCmps?.forEach(c => c.validateOnSubmit());
+      return;
+    }
+
+
+      const payload = {
+        fullName: this.liveCourse.fullname,
+        fullNameAr: this.liveCourse.fullname,
+        email: this.liveCourse.email,
+        phone: '',
+        mobile: this.liveCourse.phone,
+        subject: '',
+        subjectAr: '',
+        message: this.geEnrollMessage(),
+        messageAr: this.shared.currentCertificate(),
+        contactTypeLookupId: LiveCourseContactLookUp,
+        studentId: this.student()?.userId!
+      };
+
+      this.contactService.createContactMessage(payload).subscribe({
+        next: () => {
+          form.resetForm({
+            fullname: this.student()?.nameEn || '',
+            email: this.student()?.email || '',
+            phone: this.student()?.mobile || '',
+            message: ''
+          });
+          this.phoneCmps?.forEach(c => c.resetState());
+          this.showRegisterConfirm = false;
+          this.RegisterSession=null
+        },
+        error: (err) => {
+          this.showRegisterConfirm = false;
+          this.RegisterSession = null
+          const apiMessage =
+            err?.error?.message ||
+            err?.error?.errors?.[0] ||
+            'Something went wrong while sending your request';
+
+          this.toasting.showToast(apiMessage, 'error');
+        }
+      });
+
+    }
+    else {
+      this.showConfirm=true
+    }
+  }
+  register(session:any){
+
+    this.showRegisterConfirm=true;
+    this.RegisterSession=session;
+    this.patchUserData();
+    console.log('session', this.RegisterSession);
+
+  }
+
+  geEnrollMessage() {
+    const session=this.RegisterSession;
+    return `I want to register in ${session.title} Live Course on ${session.date} at ${session.time},
+My Job Position is: ${this.liveCourse.position}`;
   }
 }

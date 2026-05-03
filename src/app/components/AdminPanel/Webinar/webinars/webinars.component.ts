@@ -122,7 +122,8 @@ export class WebinarsComponent {
 
   handleDelete(row: any) {
     this.webinarService.deleteWebinar(row.oid).subscribe({
-      next: () => this.pageNumber.update(p => p)
+      next: () => this.webinarService.reloadWebiinars(this.pageNumber())
+
     })
   }
 

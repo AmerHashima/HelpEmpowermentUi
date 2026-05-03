@@ -128,7 +128,7 @@ export class LiveCoursesComponent {
 
   handleDelete(row: any) {
     this.liveCourseService.deleteLiveCourse(row.oid).subscribe({
-      next: () => this.pageNumber.update(p => p)
+      next: () => this.liveCourseService.reloadLiveCourses(this.pageNumber())
     })
   }
 

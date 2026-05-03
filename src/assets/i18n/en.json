@@ -639,7 +639,26 @@
       "title": "Your interactive path to certification begins now.",
       "description": "Real-time instruction that brings the PMBOK®️ Guide to life in your own projects. Get direct, personalized answers from expert instructors who guide you through every complex topic. Connect your CAPM study directly to your current role—learn strategies you can apply immediately to enhance your real-world project management practice. Collaborate with peers facing similar challenges in a dynamic, supportive cohort. A structured yet adaptive live journey designed to certify you and elevate your professional impact from day one."
 
-    }  },
+    } ,
+    "fullnameLabel": "Full Name",
+    "fullnamePlaceholder": "Enter your full name",
+    "emailLabel": "Email",
+    "emailPlaceholder": "Enter your email",
+    "phoneLabel": "Phone Number",
+    "positionLabel": "Your Position",
+    "positionPlaceholder": "Enter your current position",
+    "submitButton": "Enroll Now",
+    "errors": {
+      "fullnameRequired": "Full name is required",
+      "emailRequired": "Email is required",
+      "invalidEmail": "Invalid email format",
+      "positionRequired": "Position is required"
+    }
+   },
+   "liveCourseForm": {
+    "title": "Register for Live Course",
+    "subTitle": "Fill the form to enroll in this course"
+  },
   "courseOutlines": {
     "pmp": [
       "Leadership Level",
@@ -685,6 +704,9 @@
       "master": "Get Your PMP Roadmap, Live & Free. Unlock",
       "title": " Your 2-Hour Path to Certification Clarity.",
       "description": "Join a live, interactive session to demystify the PMP certification. In just 2 hours, get a complete breakdown of PMP eligibility requirements and the current exam format. Master key terminology and get your personal questions answered live by a PMP expert. Walk away with actionable next steps and a special opportunity to explore our full suite of tools—including a hands-on look at our exam simulator and a preview of our recorded and live courses—so you can choose the right path for your success."
+    },
+    "update":{
+      "success": "Webinar updated successfully!"
     },
     "capm": {
       "master": "Join our CAPM webinar,",

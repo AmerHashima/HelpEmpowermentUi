@@ -19,12 +19,26 @@ export class LiveCourseService {
     return this.liveCourses().map((c: APILiveCourse) => {
       return {
         date: this.formatDate(c.startDate),
-        time: c.startTime,
+        time: this.formatTime(c.startTime),
         title: c.courseName,
         courseName: c.courseRefName
       };
     });
   })
+
+  formatTime(time: string): string {
+    if (!time) return '-';
+
+    const date = new Date(`1970-01-01T${time}`);
+
+    if (isNaN(date.getTime())) return '-';
+
+    return date.toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    });
+  }
   constructor(private apiService: ApiService) {
     effect(() => {
       const page = this.pageNumber();
@@ -145,5 +159,9 @@ export class LiveCourseService {
       day: 'numeric',
       month: 'short'
     });
+  }
+
+  reloadLiveCourses(page: number = 0) {
+    this.loadLiveServices(page, this.pageSize(), []);
   }
 }

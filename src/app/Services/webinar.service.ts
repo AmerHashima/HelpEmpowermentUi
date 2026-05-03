@@ -15,20 +15,36 @@ export class WebinarService {
   pageNumber = signal<number>(0);
   pageSize = signal<number>(10);
   filters=signal<Filter[]>([])
-  mapWebinarsToSessions =computed(()=> {
+  // mapWebinarsToSessions =computed(()=> {
+  //   return this.webinars().map(w => {
+  //     console.log('w',w);
+  //     const start = new Date(w.webinarStartTime);
+  //     const end = new Date(w.webinarEndTime);
+
+  //     return {
+  //       date: this.formatDate(w.webinarDate),
+  //       time: this.formatDuration(start, end),
+  //       title: w.webinarName,
+  //       courseName:w.courseName
+  //     };
+  //   });
+  // })
+
+  mapWebinarsToSessions = computed(() => {
     return this.webinars().map(w => {
-      const start = new Date(w.webinarStartTime);
-      const end = new Date(w.webinarEndTime);
+      const date = w.webinarDate.split('T')[0];
+
+      const start = new Date(`${date}T${w.webinarStartTime}`);
+      const end = new Date(`${date}T${w.webinarEndTime}`);
 
       return {
         date: this.formatDate(w.webinarDate),
         time: this.formatDuration(start, end),
         title: w.webinarName,
-        courseName:w.courseName
+        courseName: w.courseName
       };
     });
-  })
-
+  });
 
   constructor(private apiService: ApiService) {
     effect(() => {
@@ -56,6 +72,7 @@ export class WebinarService {
     }
     this.searchWebinars(requestBody).subscribe({
       next: (res) => {
+        console.log('Webinars loaded:', res.webinars);
         this.webinars.set(res.webinars);
         this.total.set(res.total);
       }
@@ -92,7 +109,9 @@ export class WebinarService {
                 const msg = response.errors?.join(', ') || response.message || 'API failed to create webinar';
                 throw new Error(msg);
               }
-              return response.data;
+              const newWebinar = response.data;
+              return newWebinar;
+              // return response.data;
             })
           );
       }
@@ -163,7 +182,10 @@ export class WebinarService {
       minute: '2-digit',
       hour12: true
     });
-
     return `${startStr} - ${endStr}`;
+  }
+
+  reloadWebiinars(page:number=0){
+      this.loadWebinars(page, this.pageSize(),[]);
   }
 }

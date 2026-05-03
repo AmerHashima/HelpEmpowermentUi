@@ -137,12 +137,18 @@ export class LiveCourseFormComponent implements OnInit {
   }
   createLiveCourse() {
     this.liveCourseService.createLiveCourse(this.getPayload()).subscribe({
-      next: () => this.cancel()
+      next: () => {
+        this.cancel();
+        this.liveCourseService.reloadLiveCourses();
+      }
     })
   }
   editLiveCourse() {
     this.liveCourseService.updateLiveCourse(this.oid(), this.getPayload()).subscribe({
-      next: () => this.cancel()
+      next: () => {
+        this.cancel();
+        this.liveCourseService.reloadLiveCourses(this.liveCourseService.pageNumber());
+      }
     })
   }
 

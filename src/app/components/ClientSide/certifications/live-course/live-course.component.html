@@ -69,7 +69,7 @@
       <div [ngClass]="hasLiveCourseAccess() ? 'col-lg-12' : 'col-lg-9'">
         <div class="row">
           <div class="col-12">
-            <app-upcoming-sessions />
+            <app-upcoming-sessions (liveCourseRegister)="register($event)"/>
           </div>
           @if (!hasLiveCourseAccess()) {
             <div class="col-12">
@@ -113,5 +113,85 @@
         {{ "You Must be logged to be able to contact us." | translate }}
       </p>
     </div>
+  </section>
+</app-generic-modal>
+
+<app-generic-modal [(isOpen)]="showRegisterConfirm" title="">
+  <section
+    class="form w-100 d-flex flex-column align-items-stretch gap-3 p-3 rounded"
+  >
+    <div class="d-flex flex-column gap-2 w-100">
+      <h3 class="m-0 text-center">{{ "liveCourseForm.title" | translate }}</h3>
+      <p class="text-center w-100">{{ "liveCourseForm.subTitle" | translate }}</p>
+    </div>
+
+    <form
+      #liveCourseRegisterForm="ngForm"
+      (ngSubmit)="onLiveCourseRegister(liveCourseRegisterForm)"
+      class="webinar-form mb-0"
+    >
+      <div class="d-flex flex-column gap-3">
+
+        <!-- Full Name -->
+        <app-input
+          name="fullname"
+          [(ngModel)]="liveCourse.fullname"
+          required
+          [label]="'liveCourse.fullnameLabel' | translate"
+          [placeholder]="'liveCourse.fullnamePlaceholder' | translate"
+          [icon]="'bi bi-user'"
+          [errorMessages]="{
+            required: 'liveCourse.errors.fullnameRequired' | translate
+          }"
+        ></app-input>
+
+        <!-- Email -->
+        <app-input
+          name="email"
+          [(ngModel)]="liveCourse.email"
+          required
+          email
+          [label]="'liveCourse.emailLabel' | translate"
+          [placeholder]="'liveCourse.emailPlaceholder' | translate"
+          [icon]="'bi bi-envelope'"
+          [errorMessages]="{
+            required: 'liveCourse.errors.emailRequired' | translate,
+            email: 'liveCourse.errors.invalidEmail' | translate
+          }"
+        ></app-input>
+
+        <!-- Phone -->
+        <app-phone-input
+          name="phone"
+          [(ngModel)]="liveCourse.phone"
+          [required]="true"
+          [labelKey]="'liveCourse.phoneLabel' | translate"
+        >
+        </app-phone-input>
+
+        <!-- Position -->
+        <app-input
+          name="position"
+          [(ngModel)]="liveCourse.position"
+          required
+          [label]="'liveCourse.positionLabel' | translate"
+          [placeholder]="'liveCourse.positionPlaceholder' | translate"
+          [icon]="'bi bi-person-workspace'"
+          [type]="'text'"
+          [errorMessages]="{
+            required: 'liveCourse.errors.positionRequired' | translate
+          }"
+        ></app-input>
+
+        <!-- Submit -->
+        <app-site-button
+          [title]="'liveCourse.submitButton' | translate"
+          type="main"
+          htmlType="submit"
+          [icon]="'bi bi-arrow'"
+        ></app-site-button>
+
+      </div>
+    </form>
   </section>
 </app-generic-modal>

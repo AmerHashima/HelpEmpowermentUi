@@ -31,32 +31,14 @@ export class UpcomingSessionsComponent {
     // hasBought = this.auth.hasBought;
   private studentService = inject(StudentService);
   isEnrolled = this.studentService.isLiveCourseEnrolled;
+  isWebinar=computed(()=> this.type() === 'webinar');
   sessions = computed(() => {
     if (this.type() === 'webinar') {
-      // return this.webinarService.mapWebinarsToSessions().filter(session => session.courseName?.toLowerCase() === this.currentCertification().toLowerCase());
-      return  [{
-          date: 'sessions.date.jan15',
-          time: 'sessions.time.morningSlot',
-          title: 'sessions.webinar.session1'
-        }]
+      return this.webinarService.mapWebinarsToSessions().filter(session => session.courseName?.toLowerCase() === this.currentCertification().toLowerCase());
+
 
     } else {
       return this.liveCourseService.mapCoursesToSessions().filter(session => session.courseName?.toLowerCase() === this.currentCertification().toLowerCase());
-        // {
-        //   date: 'sessions.date.jan15',
-        //   time: 'sessions.time.morningSlot',
-        //   title: 'sessions.course.integration'
-        // },
-        // {
-        //   date: 'sessions.date.jan16',
-        //   time: 'sessions.time.morningSlot',
-        //   title: 'sessions.course.integration'
-        // },
-        // {
-        //   date: 'sessions.date.jan17',
-        //   time: 'sessions.time.morningSlot',
-        //   title: 'sessions.course.integration'
-        // }
 
     }
   });
@@ -64,13 +46,10 @@ export class UpcomingSessionsComponent {
   title = input<string>('Upcoming Live Sessions');
   type = input<string>('Live Sessions');
   register = output<void>();
-
+  liveCourseRegister = output<any>();
   constructor(){
     effect(()=>console.log('sessions',this.sessions()));
   }
-  //   bookNow(session:any){
-
-  // }
-
+  
 
 }

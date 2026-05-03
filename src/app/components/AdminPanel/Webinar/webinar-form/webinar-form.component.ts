@@ -138,12 +138,18 @@ export class WebinarFormComponent implements OnInit {
   }
   createWebinar() {
     this.webinarService.createWebinar(this.getPayload()).subscribe({
-      next: () => this.cancel()
+      next: () =>{
+        this.cancel();
+        this.webinarService.reloadWebiinars();
+      }
     })
   }
   editWebinar() {
     this.webinarService.updateWebinar(this.oid(), this.getPayload()).subscribe({
-      next: () => this.cancel()
+      next: () => {
+        this.cancel();
+        this.webinarService.reloadWebiinars(this.webinarService.pageNumber());
+      }
     })
   }
 
