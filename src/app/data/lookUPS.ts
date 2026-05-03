@@ -9,6 +9,9 @@ export const webinarContactLookup ='96c7d494-f447-4db6-960d-3bf5a4341db8';
 export const studentRoleLookUp ="55555555-5555-5555-5555-555555555503";
 export const adminRoleLookUp ="55555555-5555-5555-5555-555555555501"
 export const webinarPresentationFormat ="b7d45c8f-ea9b-4619-becf-e6031e9e86c1";
+export const PostVacancyContactLookUp ="f92fa366-b9a6-4f9b-9ee3-e93b62f17a51";
+export const JobSeekerContactLookUp = "6ab0ede2-c551-4bcd-b673-282e8be9c9e1";
+
 export const ActiveStatus = [
   { label: 'Active', value: true },
   { label: 'Inactive', value: false },

@@ -418,7 +418,9 @@
     "jobDescriptionPlaceholder": "Describe the job responsibilities and requirements",
     "notesLabel": "Additional Notes",
     "notesPlaceholder": "Add any additional information here",
-    "vacancyBtn": "Post Vacancy"
+    "vacancyBtn": "Post Vacancy",
+    "mustLogged": "You must be logged in to post a vacancy.",
+    "error":"Can't post vacancy"
   },
   "job": {
     "field":"Job Field",
@@ -435,7 +437,9 @@
     "expectedSalaryLabel": "Expected Salary",
     "expectedSalaryPlaceholder": "Enter your desired salary",
     "uploadCVLabel": "Upload CV",
-    "jobBtn": "Submit Application"
+    "jobBtn": "Submit Application",
+        "mustLogged": "You must be logged in to seek a job.",
+        "error":"Can't submit job application"
   },
   "calendar": {
     "startDate": "Start Date",

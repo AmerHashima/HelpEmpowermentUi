@@ -454,7 +454,9 @@
     "jobDescriptionPlaceholder": "اكتب تفاصيل الوظيفة والمتطلبات",
     "notesLabel": "ملاحظات إضافية",
     "notesPlaceholder": "أضف أي معلومات إضافية",
-    "vacancyBtn": "نشر الوظيفة"
+    "vacancyBtn": "نشر الوظيفة",
+      "mustLogged": "يجب تسجيل الدخول لتتمكن من نشر وظيفة.",
+        "error": "لا يمكن نشر الوظيفة"
   },
   "job": {
         "field": "مجال العمل",
@@ -471,7 +473,10 @@
     "expectedSalaryLabel": "الراتب المتوقع",
     "expectedSalaryPlaceholder": "أدخل راتبك المتوقع",
     "uploadCVLabel": "رفع السيرة الذاتية",
-    "jobBtn": "إرسال الطلب"
+    "jobBtn": "إرسال الطلب",
+      "mustLogged": "يجب تسجيل الدخول للتقدم إلى وظيفة.",
+      "error": "تعذر إرسال طلب التوظيف."
+    
   },
   "calendar": {
     "startDate": "تاريخ البداية",
