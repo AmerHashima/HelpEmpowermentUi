@@ -111,6 +111,14 @@ export class FreeExamComponent {
     return '';
   });
 
+  remainingTime = signal<number>(0);
+
+  examDuration = computed(() =>
+    (this.shared.currentExam()?.durationMinutes ?? 0) * 60
+  );
+
+  private timerInitialized = false;
+
   constructor() {
     effect(() => {
       const qs = this.questions();
@@ -189,9 +197,36 @@ export class FreeExamComponent {
       if (!examId) return;
       this.saveExamProgress();
     });
+
+    effect(() => {
+      const examId = this.currentExamId();
+      if (!examId || !this.isBrowser || this.timerInitialized) return;
+
+      this.timerInitialized = true;
+
+      const key = `exam-time-${examId}`;
+      const saved = localStorage.getItem(key);
+
+      this.remainingTime.set(saved ? +saved : this.examDuration());
+    });
   }
 
 
+  onTimerTick(time: number) {
+    if (!this.isBrowser) return;
+
+    this.remainingTime.set(time);
+
+    const key = `exam-time-${this.currentExamId()}`;
+    localStorage.setItem(key, time.toString());
+  }
+
+  onExamTimeUp() {
+    if (!this.isBrowser) return;
+
+    localStorage.removeItem(`exam-time-${this.currentExamId()}`);
+    this.finishExam(true);
+  }
 
   onSaveForLater() {
     this.saveForLater = true;
@@ -210,6 +245,7 @@ export class FreeExamComponent {
 
   finishExam(end: boolean) {
     if (this.isBrowser) {
+
       const key = this.getStorageKey(this.currentExamId());
       localStorage.removeItem(key);
       if (this.currentMode() == 'Practice') {
@@ -220,6 +256,8 @@ export class FreeExamComponent {
       }
       else {
         const result = this.calculcateExamModeResult();
+        localStorage.removeItem(`exam-time-${this.currentExamId()}`);
+
         this.saveExamResult(result);
         const examResult = `examResult-freeEXam-${this.currentExamId()}`;
         localStorage.setItem(examResult, JSON.stringify(result));
@@ -238,6 +276,7 @@ export class FreeExamComponent {
       const key = this.getStorageKey(this.currentExamId());
       localStorage.removeItem(key);
       if (this.currentMode() == 'Exam') {
+        localStorage.removeItem(`exam-time-${this.currentExamId()}`);
         const result = this.calculcateExamModeResult();
         this.saveExamResult(result);
         const examResult = `examResult-freeEXam-${this.currentExamId()}`;

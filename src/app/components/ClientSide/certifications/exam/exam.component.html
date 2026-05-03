@@ -15,6 +15,9 @@
     (mark)="onMarkQuestion($event)"
     (forceEnd)="onForceEnd()"
     (finishExam)="finishExam($event)"
+      [remainingTime]="remainingTime()"
+  (tick)="onTimerTick($event)"
+  (timeUp)="onExamTimeUp()"
   />
 
 } @else if (viewState() === 'empty') {

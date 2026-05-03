@@ -46,6 +46,7 @@ export class ExamComponent {
   saveForLater: boolean = false;
   currentQuestionIndex = signal<number>(0);
   currentMode = signal<string>('');
+
     isMarked = computed(() => {
     const question = this.currentQuestion();
     if (!question) return false;
@@ -53,9 +54,15 @@ export class ExamComponent {
     return this.markedQuestions().has(question.oid);
   });
 
+  private timerInitialized = false;
 
   hasQuestions = computed(() => this.questions().length > 0);
-  // isAnswerLocked = computed(() => {
+  remainingTime = signal<number>(0);
+  examDuration = computed(() =>
+    (this.shared.currentExam()?.durationMinutes ?? 0) * 60
+  );
+
+    // isAnswerLocked = computed(() => {
   //   const q = this.currentQuestion();
   //   if (!q) return false;
 
@@ -131,7 +138,6 @@ export class ExamComponent {
 
 
 
-
     effect(() => {
       const examId = this.shared.currentExamId();
       this.currentExamId.set(examId);
@@ -148,6 +154,7 @@ export class ExamComponent {
           const saved = localStorage.getItem(key);
           if (!saved) { this.resetExam(); return; }
           const parsed = JSON.parse(saved);
+
           this.saveForLater = parsed.saveForLater;
           if (this.saveForLater) {
             this.currentQuestionIndex.set(parsed.currentQuestionIndex ?? 0);
@@ -156,6 +163,7 @@ export class ExamComponent {
             if (parsed.markedQuestions) {
               this.markedQuestions.set(new Set(parsed.markedQuestions));
             }
+
             // if (parsed.answeredBeforeReveal) {
             //   this.answeredBeforeReveal.set(new Set(parsed.answeredBeforeReveal));
             // }
@@ -190,6 +198,18 @@ export class ExamComponent {
 
       if (!examId) return;
       this.saveExamProgress();
+    });
+
+    effect(() => {
+      const examId = this.currentExamId();
+      if (!examId || !this.isBrowser || this.timerInitialized) return;
+
+      this.timerInitialized = true;
+
+      const key = `exam-time-${examId}`;
+      const saved = localStorage.getItem(key);
+
+      this.remainingTime.set(saved ? +saved : this.examDuration());
     });
   }
 
@@ -247,6 +267,8 @@ export class ExamComponent {
 
   finishExam(end: boolean) {
     this.isExamFinalized = true;
+    localStorage.removeItem(`exam-time-${this.currentExamId()}`);
+
     const payload: submitStudentExam = {
       studentExamOid: this.shared.studentExamId(),
       answers: [],
@@ -285,6 +307,7 @@ export class ExamComponent {
   }
 
   onForceEnd(){
+    localStorage.removeItem(`exam-time-${this.currentExamId()}`);
     const payload: submitStudentExam = {
       studentExamOid: this.shared.studentExamId(),
       answers: [],
@@ -456,8 +479,17 @@ export class ExamComponent {
 
   }
 
+  // onExamTimeUp() {
+  //   console.log('⏰ Exam finished');
+  //   this.finishExam(true);
+  // }
+
   onExamTimeUp() {
-    console.log('⏰ Exam finished');
+    if (!this.isBrowser) return;
+
+    if (this.isExamFinalized) return;
+
+    localStorage.removeItem(`exam-time-${this.currentExamId()}`);
     this.finishExam(true);
   }
 
@@ -712,6 +744,18 @@ export class ExamComponent {
 
     this.saveExamProgress();
   }
+
+
+  onTimerTick(time: number) {
+    if (!this.isBrowser) return;
+
+    this.remainingTime.set(time);
+
+    const key = `exam-time-${this.currentExamId()}`;
+    localStorage.setItem(key, time.toString());
+  }
+
+
 
   ngOnDestroy(): void {
     if (!this.isBrowser) return;

@@ -25,7 +25,10 @@ import { CertificationService } from '../../../Services/certification.service';
   providers: [ExamProtectionService]
 })
 export class ClientExamQuestionComponent {
+  remainingTime = input<number>(0);
 
+  tick = output<number>();
+  timeUp = output<void>();
   // next = output<void>();
   // revealAnswer = output<string>();
   watermarkText = signal<string>('Help Empowerment');
@@ -407,15 +410,15 @@ export class ClientExamQuestionComponent {
     }
   }
 
-  onTimeUp() {
-    if (this.isLastQuestion) {
-      this.submitQuestionAnswer(true);
-      return;
-    }
+  // onTimeUp() {
+  //   if (this.isLastQuestion) {
+  //     this.submitQuestionAnswer(true);
+  //     return;
+  //   }
 
-    // normal flow
-    this.nextQuestion();
-  }
+  //   // normal flow
+  //   this.nextQuestion();
+  // }
 
   get correctAnswersCount(): number {
     return this.question()?.answers?.filter((a: any) => a.isCorrect).length || 0;

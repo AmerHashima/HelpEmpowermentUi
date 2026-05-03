@@ -28,6 +28,9 @@
 
   <app-client-exam-question
     [question]="currentQuestion()"
+     [remainingTime]="remainingTime()"
+  (tick)="onTimerTick($event)"
+  (timeUp)="onExamTimeUp()"
     [mode]="currentMode()"
     (next)="goToNext($event)"
     (previous)="goToPrevious()"
