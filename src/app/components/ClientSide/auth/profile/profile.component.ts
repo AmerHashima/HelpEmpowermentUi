@@ -210,7 +210,16 @@ export class ProfileComponent {
         this.authService.updatedLoggedStudent(updatedStudent)
         // this.toasting.showToast('Account created suffccessfully please login','success');
       },
-      error: () => this.toasting.showToast('profile.update.error', 'error')
+      error: (err) => {
+
+        const apiMessage =
+          err?.error?.message ||
+          err?.error?.errors?.[0] ||
+          'profile.update.error';
+
+        this.toasting.showToast(apiMessage, 'error');
+      }
+      // error: () => this.toasting.showToast('profile.update.error', 'error')
     })
   }
   onChangePassword(form: NgForm) {
@@ -230,7 +239,15 @@ export class ProfileComponent {
         form.resetForm();
 
       },
-      error: () => this.toasting.showToast('profile.password.error', 'error')
+      error: (err) => {
+
+        const apiMessage =
+          err?.error?.message ||
+          err?.error?.errors?.[0] ||
+          'profile.password.error';
+        this.toasting.showToast(apiMessage, 'error');
+      }
+      // error: () => this.toasting.showToast('profile.password.error', 'error')
     })
 
   }

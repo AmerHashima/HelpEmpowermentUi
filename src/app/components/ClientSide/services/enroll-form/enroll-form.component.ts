@@ -185,9 +185,14 @@ export class EnrollFormComponent {
         this.phoneCmps?.forEach(c => c.resetState());
 
       }
-       catch (apiError) {
+      catch (apiError: any) {
 
-              // this.toasting.showToast('enroll.sent.error', 'error');
+        const apiMessage =
+          apiError?.error?.message ||
+          apiError?.error?.errors?.[0] ||
+          'enroll.sent.error';
+
+        this.toasting.showToast(apiMessage, 'error');
       }
 
     } else {

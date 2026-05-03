@@ -80,9 +80,6 @@ export class ResetPasswordComponent {
 
         this.toasting.showToast(apiMessage, 'error');
       },
-      // error: () => {
-      //   this.errorMessage = 'resetPassword.error';
-      // },
       complete: () => {
         this.isLoading = false;
       }

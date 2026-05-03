@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Article, ArticleService } from '../../../../Services/article.service';
 import { EventEmitter, Output } from '@angular/core';
+import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
 
 @Component({
   selector: 'app-article-form',
@@ -16,6 +17,7 @@ export class ArticleFormComponent {
   isOpen=input<boolean>(false);
   private fb = inject(FormBuilder);
   private articleService = inject(ArticleService);
+  private toasting = inject(ToastingMessagesService);
 
 @Output() saved = new EventEmitter<void>();
   form = this.fb.group({
@@ -95,7 +97,16 @@ export class ArticleFormComponent {
         this.sections.clear();
         this.saved.emit();
 
-      }
+      },
+      error: (err) => {
+
+        const apiMessage =
+          err?.error?.message ||
+          err?.error?.errors?.[0] ||
+          'Something went wrong while saving the article';
+
+        this.toasting.showToast(apiMessage, 'error');
+      },
     });
   }
 

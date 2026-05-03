@@ -14,6 +14,7 @@ import { forkJoin } from 'rxjs';
 import { TranslateService } from '../../../../Services/translate.service';
 import { webinarContactLookup } from '../../../../data/lookUPS';
 import { ContactUsService } from '../../../../Services/contact-us.service';
+import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
 
 @Component({
   selector: 'app-webinar',
@@ -31,6 +32,7 @@ export class WebinarComponent {
   private auth=inject(AuthService);
   private translationService=inject(TranslateService);
   private contactService=inject(ContactUsService);
+  private toasting=inject(ToastingMessagesService);
   student=this.auth.loggedStudent;
   isRTL = this.shared.isRtl;
   showConfirm = false;
@@ -119,6 +121,15 @@ export class WebinarComponent {
               this.phoneCmps?.forEach(c => c.resetState());
               this.showConfirm=false;
             },
+            error: (err) => {
+
+              const apiMessage =
+                err?.error?.message ||
+                err?.error?.errors?.[0] ||
+                'Something went wrong while sending your request';
+
+              this.toasting.showToast(apiMessage, 'error');
+            }
           });
 
         });
