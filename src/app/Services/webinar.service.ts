@@ -41,7 +41,8 @@ export class WebinarService {
         date: this.formatDate(w.webinarDate),
         time: this.formatDuration(start, end),
         title: w.webinarName,
-        courseName: w.courseName
+        courseName: w.courseName,
+        whatsAppLink: w.whatsAppLink
       };
     });
   });

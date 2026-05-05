@@ -42,13 +42,18 @@
               <h6 class="m-0 fw-bold">{{ session.title | translate }}</h6>
             </div>
           </div>
-
+          <app-site-button
+            title="Join Whatsapp"
+            [icon]="'bi bi-whatsapp'"
+            type="secondary"
+            (click)="joinWhatsapp(session.whatsAppLink)"
+          ></app-site-button>
           @if (!isWebinar()) {
             <app-site-button
               title="Register"
               [icon]="'bi bi-arrow'"
               type="main"
-              (click)="liveCourseRegister.emit(session) "
+              (click)="liveCourseRegister.emit(session)"
             ></app-site-button>
           }
           @if (isWebinar()) {

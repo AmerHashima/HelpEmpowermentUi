@@ -21,7 +21,8 @@ export class LiveCourseService {
         date: this.formatDate(c.startDate),
         time: this.formatTime(c.startTime),
         title: c.courseName,
-        courseName: c.courseRefName
+        courseName: c.courseRefName,
+        whatsAppLink: c.whatsAppLink
       };
     });
   })

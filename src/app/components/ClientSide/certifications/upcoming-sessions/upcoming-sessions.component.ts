@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, input, output, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, output, PLATFORM_ID, signal } from '@angular/core';
 import { AccordionComponent } from '../../../../shared/accordion/accordion.component';
 import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/site-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -8,6 +8,7 @@ import { StudentService } from '../../../../Services/student-service.service';
 import { WebinarService } from '../../../../Services/webinar.service';
 import { LiveCourseService } from '../../../../Services/live-course.service';
 import { ApiWebinar } from '../../../../models/webinar';
+import { isPlatformBrowser } from '@angular/common';
 
 interface Session {
   date: string;
@@ -23,6 +24,7 @@ title: string;
 })
 export class UpcomingSessionsComponent {
     private shared = inject(Shared);
+  private platformId = inject(PLATFORM_ID);
     private currentCertification=this.shared.currentCertificate;
     private webinarService = inject(WebinarService);
     private liveCourseService=inject(LiveCourseService);
@@ -50,6 +52,11 @@ export class UpcomingSessionsComponent {
   constructor(){
     effect(()=>console.log('sessions',this.sessions()));
   }
-  
+
+  joinWhatsapp(link:string) {
+    if (isPlatformBrowser(this.platformId)) {
+      window.open(link, '_blank');
+    }
+  }
 
 }
