@@ -138,9 +138,13 @@ export class StudentReservedCoursesComponent {
 
     canSaveEdit(): boolean {
         const course = this.editCourse();
-        return !!course && this.hasReservationFlags(course);
+      console.log('Checking if can save edit for course', course);
+        return !!course && (this.hasReservationFlags(course) || this.hasNoFlags(course))
     }
 
+    hasNoFlags(course: Pick<StudentCourse, 'examSimulationReserv' | 'recordedCourseReserv' | 'liveCourseReserv'>): boolean {
+        return !course.examSimulationReserv && !course.recordedCourseReserv && !course.liveCourseReserv;
+    }
     canSubmitManualEnrollment(): boolean {
         const form = this.manualEnroll();
         return !!form.courseId && !!form.paymentMethod.trim() && this.hasReservationFlags(form);
