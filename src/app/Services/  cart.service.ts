@@ -85,7 +85,7 @@ export class CartService {
   subtotal = computed(() => {
     const override = this.subTotalOverride();
     console.log('subtotal override', override);
-    if (!override) return override;
+    if (override) return override;
     const sub = this.expandedCartItems().reduce((total, item) => {
       const price = this.getFeaturePrice(item);
       return total + price;
