@@ -141,7 +141,7 @@ export class StudentFormPopupComponent {
       nameAr: this.formModel.nameAr.trim(),
       mobile: this.formModel.mobile.trim(),
       promoCode: trimmedPromoCode ? trimmedPromoCode : undefined,
-      promoDiscount: this.formModel.promoDiscount ?? undefined
+      promoDiscount: this.formModel.promoDiscount ?? undefined,
     };
   }
 
@@ -183,7 +183,7 @@ export class StudentFormPopupComponent {
       promoCode: '',
       promoDiscount: null,
       password: '',
-      confirmPassword: ''
+      confirmPassword: '',
     };
   }
 }
