@@ -739,6 +739,10 @@
   "Topic:": "الموضوع:",
   "Reviewed:": "تمت المراجعة",
   "reviews": {
+        "noReviewsTitle": "لا توجد مراجعات بعد",
+        "noReviewsDescription": "كن أول من يشارك تجربته ويساعد الآخرين.",
+        "addFirstReview": "اكتب مراجعة",
+
     "topics": {
       "pmp": "PMP",
       "agile": "إدارة Agile",

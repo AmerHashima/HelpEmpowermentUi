@@ -4,6 +4,7 @@ import { APIContact, ContactUs, MarkAsReadRequest, RespondContactUsDto, UpdateSt
 import { map, Observable } from 'rxjs';
 import { ApiResponse, ApiSearchResponse } from '../models/apiResponse';
 import { RequestBody } from '../models/rquest';
+import { CertificationReviewContactLookUp } from '../data/lookUPS';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,43 @@ export class ContactUsService {
 
   constructor(private apiService: ApiService) { }
 
+  getReviewMessages(courseOid: string, page: number, size: number) {
+  const body: RequestBody = {
+    filters:[
+      {
+        propertyName: "contactTypeLookupId",
+        value: CertificationReviewContactLookUp,
+        operation: 0
+      },
+      {
+        propertyName: "subject",
+        value: courseOid,
+        operation: 0
+      }
+    ],
+    sort: [
+      {
+        sortBy: "createdAt",
+        sortDirection: "desc"
+      }
+    ],
+    pagination: {
+      getAll: false,
+      pageNumber: page,
+      pageSize: size
+    },
+    columns: [
+    ]
+  }
+    return this.searchReviews(body);
+  }
+
+  searchReviews(body: RequestBody): Observable<ApiSearchResponse<APIContact>> {
+    return this.apiService.query<ApiSearchResponse<APIContact>>(
+      'ServiceContactUs/search',
+      body
+    );
+  }
   // POST /api/ServiceContactUs/search
   search(body: RequestBody): Observable<APIContact[]> {
     return this.apiService

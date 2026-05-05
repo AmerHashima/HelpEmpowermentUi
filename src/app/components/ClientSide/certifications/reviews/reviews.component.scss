@@ -1,4 +1,17 @@
 @use 'variables' as *;
+
+.no-reviews-container {
+  background: #fafafa;
+  border: 1px dashed #e0e0e0;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.icon-wrapper i {
+  font-size: 40px;
+  color: #adb5bd;
+}
+
 .reviewsHeader{
     padding-top:2rem;
 }
@@ -65,3 +78,43 @@ justify-content: space-between;
   } */
 }
 
+.pagination-container {
+  flex-wrap: wrap;
+}
+
+.page-btn {
+  min-width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid #dee2e6;
+  background: #fff;
+  color: #333;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover:not(:disabled) {
+    background: $secondaryColor;
+    color:$lightBgTextColor;
+    border-color: $secondaryColor;
+  }
+
+  &.active {
+    background: $primaryColor;
+    color: #fff;
+    border-color: $primaryColor;
+    box-shadow: 0 4px 10px rgba(13, 110, 253, 0.3);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+/* Navigation arrows */
+.nav-btn {
+  font-size: 18px;
+}

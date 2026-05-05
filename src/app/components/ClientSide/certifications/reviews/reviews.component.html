@@ -43,7 +43,7 @@
 <!-- Reviews list -->
 <div class="row g-4 mt-4">
   @for (review of reviews(); track $index) {
-    <div class="col-md-6 ">
+    <div class="col-md-6">
       <app-review
         class="w-100 h-100"
         [sectionImage]="review.reviewerImage"
@@ -55,15 +55,83 @@
       ></app-review>
     </div>
   } @empty {
-    <!-- <div class="text-center text-muted py-5">
-      {{ "reviews.noReviews" | translate }}
-    </div> -->
-    <div class="shadow noReveiws rounded text-center text-muted py-5">
+    <!-- <div class="shadow noReveiws rounded text-center text-muted py-5">
       <i class="bi bi-chat-square-dots fs-1 mb-3 d-block text-secondary"></i>
       {{ "reviews.noReviews" | translate }}
+    </div> -->
+    <div class="no-reviews-container text-center py-5 px-3 rounded shadow-sm">
+      <div class="icon-wrapper mb-3">
+        <i class="bi bi-chat-left-text"></i>
+      </div>
+
+      <h5 class="mb-2 fw-semibold">
+        {{ "reviews.noReviewsTitle" | translate }}
+      </h5>
+
+      <p class="text-muted mb-4 w-100">
+        {{ "reviews.noReviewsDescription" | translate }}
+      </p>
+
+      <app-site-button
+        title="reviews.addFirstReview"
+        type="main"
+        icon="bi bi-pencil-square"
+        (click)="showAddReview()"
+      ></app-site-button>
     </div>
   }
 </div>
+
+@if(reviews().length >0){
+<div
+  class="pagination-container d-flex justify-content-center align-items-center gap-2 mt-4"
+  *ngIf="totalCount() > pageSize()"
+>
+  <!-- Previous -->
+  <button
+    class="page-btn nav-btn"
+    (click)="prevPage()"
+    [disabled]="page() === 1"
+  >
+    <i class="bi bi-chevron-left"></i>
+  </button>
+
+  <!-- Pages -->
+  @for (p of [].constructor(totalPages()); let i = $index; track i) {
+    <button
+      class="page-btn"
+      [ngClass]="{ active: page() === i + 1 }"
+      (click)="page.set(i + 1)"
+    >
+      {{ i + 1 }}
+    </button>
+  }
+
+  <!-- Next -->
+  <button
+    class="page-btn nav-btn"
+    (click)="nextPage()"
+    [disabled]="page() === totalPages()"
+  >
+    <i class="bi bi-chevron-right"></i>
+  </button>
+</div>
+}
+
+<app-generic-modal [(isOpen)]="mustLogged" title="Alert Message">
+  <section
+    class="w-100 d-flex flex-column align-items-stretch gap-3 p-3 rounded"
+  >
+    <div
+      class="d-flex flex-column align-items-center justify-content-center gap-2 w-100"
+    >
+      <i class="bi bi-info-circle-fill infoColor"></i>
+      <p class="text-center darkText w-75 mx-auto">
+        {{ "You Must be logged to be able to add review." | translate }}
+      </p>
+    </div>
+  </section>
+</app-generic-modal>
 
 <app-generic-modal [(isOpen)]="showConfirm" title="">
   <section
@@ -122,6 +190,31 @@
             required: 'Message is required' | translate,
           }"
         ></app-textarea>
+        <div class="d-flex flex-column gap-1">
+          <label class="darkText">{{ "addReview.rating" | translate }}</label>
+
+          <div class="stars d-flex gap-1">
+            @for (star of [1, 2, 3, 4, 5]; track star) {
+              <i
+                class="bi"
+                [ngClass]="
+                  star <= review.reviewRate
+                    ? 'bi-star-fill text-warning'
+                    : 'bi-star'
+                "
+                (click)="setRate(star)"
+                style="cursor: pointer; font-size: 20px"
+              ></i>
+            }
+          </div>
+
+          <small
+            class="text-danger"
+            *ngIf="newReviewForm.submitted && review.reviewRate === 0"
+          >
+            {{ "Rating is required" | translate }}
+          </small>
+        </div>
         <app-site-button
           title="addReview.reviewButton"
           type="main"

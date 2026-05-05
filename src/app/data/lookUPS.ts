@@ -12,6 +12,7 @@ export const webinarPresentationFormat ="b7d45c8f-ea9b-4619-becf-e6031e9e86c1";
 export const PostVacancyContactLookUp ="f92fa366-b9a6-4f9b-9ee3-e93b62f17a51";
 export const JobSeekerContactLookUp = "6ab0ede2-c551-4bcd-b673-282e8be9c9e1";
 export const LiveCourseContactLookUp ="65f5b5df-e31e-4cf7-b696-dc89d2790277";
+export const CertificationReviewContactLookUp = "6437e080-8587-402f-8af5-361af3e2f33d";
 
 export const ActiveStatus = [
   { label: 'Active', value: true },

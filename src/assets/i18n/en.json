@@ -725,6 +725,9 @@
     "description": "Go beyond the exam with real-world PMP wisdom. Access our curated library of articles where PMI standards meet practical execution. Discover how certified professionals apply methodologies in real environments, adapt to industry trends, and solve complex project challenges. Stay ahead with updates on evolving frameworks, practical case studies, and strategies you can implement immediately. This is where certification knowledge transforms into career authority."
   },
   "reviews": {
+        "noReviewsTitle": "No reviews yet",
+        "noReviewsDescription": "Be the first to share your experience and help others.",
+        "addFirstReview": "Write a Review",
     "topics": {
       "pmp": "PMP",
       "agile": "Agile Management",
