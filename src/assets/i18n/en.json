@@ -728,6 +728,7 @@
         "noReviewsTitle": "No reviews yet",
         "noReviewsDescription": "Be the first to share your experience and help others.",
         "addFirstReview": "Write a Review",
+          "mustLoginToReview": "You must be logged in to add a review.",
     "topics": {
       "pmp": "PMP",
       "agile": "Agile Management",
@@ -774,7 +775,8 @@
   },
   "addReview": {
     "title": "Share your experience with us",
-    "reviewButton": "Add Review"
+    "reviewButton": "Add Review",
+      "rating": "Rating"
   },
   "webinarForm": {
     "title": "Register for the Webinar",

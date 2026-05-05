@@ -742,6 +742,8 @@
         "noReviewsTitle": "لا توجد مراجعات بعد",
         "noReviewsDescription": "كن أول من يشارك تجربته ويساعد الآخرين.",
         "addFirstReview": "اكتب مراجعة",
+          "mustLoginToReview": "يجب تسجيل الدخول لإضافة مراجعة.",g
+
 
     "topics": {
       "pmp": "PMP",
@@ -897,7 +899,8 @@
   },
   "addReview": {
     "title": "شاركنا تجربتك",
-    "reviewButton": "إضافة تقييم"
+    "reviewButton": "إضافة تقييم",
+      "rating": "التقييم"
   },
   "webinarForm": {
     "title": "التسجيل في الندوة",
