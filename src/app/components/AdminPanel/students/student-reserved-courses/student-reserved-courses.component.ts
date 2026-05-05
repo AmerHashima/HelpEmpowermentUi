@@ -90,7 +90,7 @@ export class StudentReservedCoursesComponent {
 
         this.certificationService.search(this.buildCertificationSearchRequest()).subscribe({
             next: ({ certifications }) => {
-                this.certifications.set(certifications);
+                this.certifications.set(certifications.filter(c => c.isActive));
                 this.loadingCertifications.set(false);
             },
             error: (error: unknown) => {

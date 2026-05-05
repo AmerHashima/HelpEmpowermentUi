@@ -97,7 +97,7 @@ export class LiveCourseFormComponent implements OnInit {
     };
 
     this.certificationService.search(body).subscribe({
-      next: ({ certifications }) => this.certifications.set(certifications),
+      next: ({ certifications }) => this.certifications.set(certifications.filter(c => c.isActive)),
       error: (err) => {
         console.error('Error loading certifications:', err);
         this.certifications.set([]);
