@@ -16,7 +16,7 @@ export class LiveCourseService {
   pageSize = signal<number>(10);
   filters = signal<Filter[]>([]);
   mapCoursesToSessions = computed(() => {
-    return this.liveCourses().map((c: APILiveCourse) => {
+    return this.liveCourses().filter(c=> c.isActive).map((c: APILiveCourse) => {
       return {
         date: this.formatDate(c.startDate),
         time: this.formatTime(c.startTime),

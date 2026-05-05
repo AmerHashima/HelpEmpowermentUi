@@ -150,6 +150,7 @@ export const CertificationsStore = signalStore(
             certifcationService.updateCertification(id, body).pipe(
               // tap((certification: APICertification) => patchState(store, updateCertification(certification))),
               tap((certifcation: APICertification) => {
+                console.log('after update certifcation',certifcation)
                 patchState(store, updateCertification(certifcation));
                 toasting.showToast('certification.update.success', 'success')
                 patchState(store, setSuccess(true));

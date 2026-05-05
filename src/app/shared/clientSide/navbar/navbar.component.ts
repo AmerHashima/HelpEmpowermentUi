@@ -68,15 +68,6 @@ export class ClientNavbarComponent {
       }
     });
 
-    // this.currentTheme.set(this.getTheme());
-
-    // Keep track of current path for active link highlighting
-    // effect(() => {
-    //   this.router.events.subscribe(() => {
-    //     this.currentPath.set(this.router.url);
-    //     this.openDropdown.set(null);
-    //   });
-    // });
 
     this.router.events.subscribe(() => {
       this.currentPath.set(this.router.url);
@@ -202,7 +193,7 @@ export class ClientNavbarComponent {
       key: 'certifications',
       translateKey: 'menu.certifications',
       icon: 'bi bi-patch-check',
-      children: this.certifications().map(cert => ({
+      children: this.certifications().filter(cert => cert.isActive).map(cert => ({
         translateKey: cert.courseName,
         icon: 'bi bi-clipboard',
         path: `/${this.lang()}/certifications/${cert.courseName.toLowerCase()}`,

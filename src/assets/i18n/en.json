@@ -1621,5 +1621,10 @@
             "save": "Save",
             "cancel": "Cancel"
           }
-        }
+        },
+
+          "upcomingLive": {
+            "noSessions": "No upcoming live sessions available."
+          }
+        
 }

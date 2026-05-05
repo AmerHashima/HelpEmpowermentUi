@@ -31,7 +31,7 @@ export class WebinarService {
   // })
 
   mapWebinarsToSessions = computed(() => {
-    return this.webinars().map(w => {
+    return this.webinars().filter(w=>w.isActive).map(w => {
       const date = w.webinarDate.split('T')[0];
 
       const start = new Date(`${date}T${w.webinarStartTime}`);

@@ -187,14 +187,14 @@ export class ExamSimulatorComponent {
     const exams = this.examsStore.exams();
     if (!exams?.length) return [];
     console.log('exams', exams);
-    const filterredExams = exams.filter((exam: APIExam) => exam.freeExam && exam.questionCount > 0);
+    const filterredExams = exams.filter((exam: APIExam) => exam.freeExam && exam.questionCount > 0 && exam.isActive);
     console.log('filterredExams', filterredExams);
     return filterredExams;
   });
   exams = computed(() => {
     const exams = this.examsStore.exams();
     if (!exams?.length) return [];
-    const filterredExams = exams.filter((exam: APIExam) => !exam.freeExam);
+    const filterredExams = exams.filter((exam: APIExam) => !exam.freeExam && exam.isActive && exam.questionCount > 0);
     // const filterredExams = exams.filter((exam: APIExam) => !exam.freeExam && exam.questionCount > 0);
     return filterredExams;
   });
