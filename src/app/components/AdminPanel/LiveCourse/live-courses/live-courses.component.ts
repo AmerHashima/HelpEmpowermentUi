@@ -61,7 +61,6 @@ export class LiveCoursesComponent {
     this.breadcrumb.resetToRoute();
 
     this.route.queryParams.subscribe((params: any) => {
-      console.log('QUERY PARAMS:', params);
 
       const mode = params['mode'];
       const id = params['id'];

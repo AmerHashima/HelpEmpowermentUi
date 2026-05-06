@@ -179,6 +179,5 @@ export class Question1Component {
 
     this.isCorrect.emit(allCorrect);
 
-    console.log('Question checked → correct?', allCorrect);
   }
 }

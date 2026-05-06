@@ -39,11 +39,7 @@ export class CartComponent {
   cartItems = this.cartService.cartItems;
   expandedCartItems = this.cartService.expandedCartItems;
 
-  constructor() {
-    effect(() => console.log('cartItems', this.cartItems()));
-    effect(() => console.log('expandedCartItems', this.expandedCartItems()));
 
-  }
 
   removeItem(item: CartViewItem) {
     const course = this.cartService.getCourse(item.courseId);

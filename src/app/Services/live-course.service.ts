@@ -87,7 +87,6 @@ export class LiveCourseService {
       next: (res) => {
         this.liveCourses.set(res.courses);
         this.total.set(res.total);
-        console.log('finish service');
       },
         error: (err) => {
         console.error('SUBSCRIPTION ERROR:', err);

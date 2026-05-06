@@ -23,7 +23,6 @@ export class Shared {
   currentCertificationObject = computed(() => {
     const certName = this.currentCertificate();
     const certs = this.certifications();
-    console.log('certifications',this.certifications());
     if (!certName || !certs?.length) return null;
     const certification = certs.find((c: any) => c.courseName.toLowerCase() === certName) ?? null;
     return certification;
@@ -62,9 +61,7 @@ export class Shared {
       this.restoreExamIdFromStorage();
     }
 
-    effect(()=>{
-      console.log('currentCertificationObject', this.currentCertificationObject());
-    })
+
   }
 
   private restoreExamIdFromStorage() {
@@ -74,7 +71,6 @@ export class Shared {
     const savedExamId = localStorage.getItem('currentExamId');
     const savedExam = localStorage.getItem('currentExam');
     const savedstudettExamId = localStorage.getItem('studentExamId');
-    console.log('savedstudettExamId', savedstudettExamId);
     if (savedstudettExamId) {
       this.studentExamId.set(savedstudettExamId);
     }
@@ -217,7 +213,6 @@ export class Shared {
 
       const last = attempts[0];
       if (!last) return null;
-      console.log('last',last);
       return {
         totalQuestions: last.totalScore,
         totalScore: last.totalScore,
@@ -290,7 +285,6 @@ export class Shared {
           };
         }
 
-        console.log('r',r);
         return r;
       });
 

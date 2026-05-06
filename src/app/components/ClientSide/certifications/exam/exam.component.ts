@@ -479,10 +479,7 @@ export class ExamComponent {
 
   }
 
-  // onExamTimeUp() {
-  //   console.log('⏰ Exam finished');
-  //   this.finishExam(true);
-  // }
+ 
 
   onExamTimeUp() {
     if (!this.isBrowser) return;

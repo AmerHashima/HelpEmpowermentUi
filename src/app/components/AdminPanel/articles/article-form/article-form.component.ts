@@ -88,7 +88,6 @@ export class ArticleFormComponent {
 
   // ================= SUBMIT =================
   submit() {
-    console.log(this.form.value);
     const article = this.form.getRawValue() as Article;
 
     this.articleService.createArticle(article).subscribe({

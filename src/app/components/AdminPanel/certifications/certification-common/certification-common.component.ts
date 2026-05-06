@@ -74,9 +74,7 @@ export class CertificationCommonComponent<T extends { oid?: string }> {
   }
 
   submit() {
-    //console.log('in submit');
-    //console.log(this.form.value);
-    //console.log(this.form.invalid);
+  
     if (this.form.invalid) return;
 
     const entities = this.formArray.value as T[];

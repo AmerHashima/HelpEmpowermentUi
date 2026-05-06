@@ -17,11 +17,7 @@ import { mapApiQuestionsToCourseQuestions, mapApiQuestionToCourseQuestion } from
 // });
 
 export const activateLoading: PartialStateUpdater<QuestionState> = (state) => {
-  console.log('🟢 [QuestionsStore] Loading START', {
-    prev: state.loading,
-    next: true,
-    time: new Date().toISOString()
-  });
+
 
   return {
     loading: true,
@@ -29,11 +25,6 @@ export const activateLoading: PartialStateUpdater<QuestionState> = (state) => {
 };
 
 export const deactivateLoading: PartialStateUpdater<QuestionState> = (state) => {
-  console.log('🔴 [QuestionsStore] Loading STOP', {
-    prev: state.loading,
-    next: false,
-    time: new Date().toISOString()
-  });
 
   return {
     loading: false,
@@ -106,32 +97,11 @@ export const updateQuestion =
       };
     };
 
-// export const updateQuestion = (
-//   answers: any,
-//   updateQuestion:string
-// ): PartialStateUpdater<QuestionState> => {
-//   // //console.log('mapperqUESTION', question);
-//   // const mappedQuestion: courseQuestion = mapApiQuestionToCourseQuestion(question);
-//   // //console.log('aftermapperqUESTION', mappedQuestion);
-//   //console.log('updateQuestionId', updateQuestion);
-//   return (state) => ({
-//     questions: [
-//       ...state.questions.filter(q => q.oid !== updateQuestion),
-//       // ...state.questions.filter(q => q.oid !== question.oid),
-
-//       ...state.questions.filter(q => q.oid == updateQuestion).map((x) => ({ ...x, answers: answers })),
-//       // question
-//     ],
-//   });
-// };
-
-/* ===================== Get / Select Question ===================== */
 
 export const getQuestion = (
   question: APICourseQuestion
 ): PartialStateUpdater<QuestionState> => {
   const mappedQuestion: courseQuestion = mapApiQuestionToCourseQuestion(question);
-  //console.log('mappedQuestion', mappedQuestion);
   return () => ({
     selectedQuestion: mappedQuestion,
   });

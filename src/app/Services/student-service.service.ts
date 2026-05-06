@@ -55,7 +55,7 @@ export class StudentService {
         return;
       }
       this.getAllStudentEnrolledCourses(studentId).subscribe({
-        next: (courses) => { console.log('this.enrollCourse', courses); this.enrolledCourses.set(courses) }
+        next: (courses) => { this.enrolledCourses.set(courses) }
       });
 
       this.getStudent(studentId).subscribe({
@@ -63,7 +63,6 @@ export class StudentService {
       })
     })
 
-    effect(() => console.log(this.currentCourse()));
 
 
   }
@@ -320,8 +319,7 @@ export class StudentService {
       completedLessons: completedLessons,
       totalLessons: this.totalLessonsInCourse()
     }
-    console.log('currentCourse', this.currentCourse());
-    console.log('totalLessosn(', this.totalLessonsInCourse());
+
     const studentCourseId = this.currentCourse()?.oid;
     // const studentId = this.auth.loggedStudent()?.userId!
     return this.apiService

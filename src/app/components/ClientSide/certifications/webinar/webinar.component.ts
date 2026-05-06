@@ -76,10 +76,6 @@ export class WebinarComponent {
     });
    }
 
-  // onWebinarRegister(){
-  //   //send call to api
-  //   console.log('webinarData');
-  // }
 
 
   onWebinarRegister(form: NgForm) {

@@ -118,23 +118,7 @@ export class CreateNewCertificationComponent {
   }
 
 
-  // logFormErrors(form: FormGroup | FormArray, parentKey: string = ''): void {
-  //   Object.keys(form.controls).forEach(key => {
-  //     const control = form.get(key);
-  //     const controlPath = parentKey ? `${parentKey}.${key}` : key;
 
-  //     if (control instanceof FormGroup || control instanceof FormArray) {
-  //       this.logFormErrors(control, controlPath);
-  //     } else if (control && control.invalid) {
-  //       console.group(`❌ Invalid Field: ${controlPath}`);
-  //       console.log('Value:', control.value);
-  //       console.log('Errors:', control.errors);
-  //       console.log('Touched:', control.touched);
-  //       console.log('Dirty:', control.dirty);
-  //       console.groupEnd();
-  //     }
-  //   });
-  // }
 
   onSubmit() {
     if (this.form.invalid) {

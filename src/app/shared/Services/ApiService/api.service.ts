@@ -214,7 +214,6 @@ export default class ApiService {
 
   private shouldBlockRequest(url: string): boolean {
     if (this.apiStatus.isServerDown()) {
-      console.log('🚫 Blocked request (server down):', url);
       return true;
     }
     return false;
@@ -228,7 +227,6 @@ export default class ApiService {
       return EMPTY;
     }
 
-    console.log('in get url', url);
 
     this.loader.start();
 
@@ -247,7 +245,6 @@ export default class ApiService {
     if (this.shouldBlockRequest(url)) {
       return EMPTY;
     }
-    console.log('in get singke url', url);
 
     let fullUrl = '';
 
@@ -415,7 +412,6 @@ export default class ApiService {
     if (this.shouldBlockRequest(url)) {
       return EMPTY;
     }
-    console.log('in query url',url);
 
     this.loader.start();
 
@@ -424,7 +420,6 @@ export default class ApiService {
     }).pipe(
       catchError(err => this.handleError(err, url)),
       finalize(() => {
-        console.log('in finalize');
         this.loader.stop()
       })
     );

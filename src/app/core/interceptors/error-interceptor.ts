@@ -15,7 +15,6 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
       next: () => {
         // ✅ Recover only if server was down
         if (isApiCall && apiStatus.isServerDown()) {
-          console.log('✅ Server back');
           apiStatus.setUp();
         }
       }

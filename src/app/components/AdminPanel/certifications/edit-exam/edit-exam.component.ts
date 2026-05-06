@@ -132,7 +132,6 @@ export class EditExamComponent {
   }
   editExam() {
     const payload = this.getEditPayload();
-    console.log('editPayload',payload);
     this.examStore.updateExam({id:payload.oid!,body:payload});
   }
 

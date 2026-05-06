@@ -161,7 +161,6 @@ export class CoureseFeaturesComponent {
 //     else return [];
 //   });
   buyNow() {
-    console.log('buy now');
   }
 
 

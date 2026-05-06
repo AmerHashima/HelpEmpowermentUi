@@ -36,7 +36,6 @@ export class ExamSimulatorComponent {
   private auth = inject(AuthService);
   private studentService = inject(StudentService);
   isEnrolled = computed(() => {
-    console.log('is entolled', this.studentService.isExamSimulatorEnrolled())
     return this.studentService.isExamSimulatorEnrolled();
   })
   showExamSimulator = computed(() => this.isEnrolled() && this.studentService.showExamSimulator === true);
@@ -186,9 +185,7 @@ export class ExamSimulatorComponent {
   freeExams = computed(() => {
     const exams = this.examsStore.exams();
     if (!exams?.length) return [];
-    console.log('exams', exams);
     const filterredExams = exams.filter((exam: APIExam) => exam.freeExam && exam.questionCount > 0 && exam.isActive);
-    console.log('filterredExams', filterredExams);
     return filterredExams;
   });
   exams = computed(() => {
@@ -256,7 +253,6 @@ export class ExamSimulatorComponent {
 
   buyNow() {
     // Implement buy logic (e.g. open checkout, call service, etc.)
-    console.log('Buy Now clicked');
   }
 
   addToCart(): void {
@@ -298,7 +294,7 @@ export class ExamSimulatorComponent {
     };
 
     this.cartService.updateCartItem(payload.oid, payload).subscribe({
-      next: (cartItem) => { console.log('cartItem', cartItem);this.cartService.updateBasket(cartItem);}
+      next: (cartItem) => { this.cartService.updateBasket(cartItem);}
     });
   }
   private addNewCourse(courseId: string): void {
@@ -313,7 +309,7 @@ export class ExamSimulatorComponent {
     };
 
     this.cartService.addCartItem(cartPayload).subscribe({
-      next: (cartItem) => { console.log('addCartItem', cartItem); this.cartService.updateBasket(cartItem);}
+      next: (cartItem) => {  this.cartService.updateBasket(cartItem);}
     });
   }
 }

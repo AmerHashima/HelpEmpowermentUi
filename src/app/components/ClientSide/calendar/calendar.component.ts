@@ -47,6 +47,5 @@ export class CalendarComponent {
   ];
 
   onCardClick(item:any){
-    //console.log('cardClicked');
   }
 }

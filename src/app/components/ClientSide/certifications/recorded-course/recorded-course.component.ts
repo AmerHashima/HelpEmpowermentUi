@@ -120,7 +120,6 @@ count=signal<number>(0);
 
   buyNow() {
     // Implement buy logic (e.g. open checkout, call service, etc.)
-    console.log('Buy Now clicked');
   }
 
   addToCart(): void {
@@ -148,7 +147,6 @@ count=signal<number>(0);
 
 
   private updateExistingCourse(courseId: string): void {
-       console.log('on update existing course');
     const course = this.cartService.getCourse(courseId);
     if (!course) return;
 
@@ -166,7 +164,6 @@ count=signal<number>(0);
     });
   }
   private addNewCourse(courseId: string): void {
-    console.log('on add new course');
 
     const cartPayload = {
       studentId: this.auth.loggedStudent()?.userId!,

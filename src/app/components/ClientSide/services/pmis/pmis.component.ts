@@ -19,7 +19,6 @@ import { CommonModule, NgFor } from '@angular/common';
 export class PMISComponent {
 
 constructor(private translate: TranslateService) {
-  console.log('PMIS:', this.translate.instant('pmis.MAIN_TITLE'));
 }
   servicePmisCardsInfo = [
     {

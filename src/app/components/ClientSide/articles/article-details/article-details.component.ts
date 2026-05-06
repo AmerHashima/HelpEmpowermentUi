@@ -800,12 +800,10 @@ export class ArticleDetailsComponent {
   loadArticle() {
     const category = this.route.snapshot.paramMap.get('category');
     const slug = this.route.snapshot.paramMap.get('slug');
-    console.log('category', category);
-    console.log('slug',slug);
+
     this.article = this.articles.find(a =>
       a.category === category && a.slug === slug
     );
-    console.log('article',this.article);
     if (!this.article) {
       this.router.navigate(['/not-found']);
     }

@@ -105,27 +105,11 @@ export class LiveCourseFormComponent implements OnInit {
     });
   }
 
-  getInvalidControls(): string[] {
-    const controls = this.form.controls;
 
-    return Object.keys(controls).filter(key => {
-      const control = controls[key as keyof typeof controls];
-
-      if (control.invalid) {
-        console.log('❌ Field:', key);
-        console.log('Errors:', control.errors);
-        console.log('Value:', control.value);
-      }
-
-      return control.invalid;
-    });
-  }
 
   onSubmit() {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
-      this.getInvalidControls();
-      console.log('invalid');
       return;
     }
     if (this.form.valid && !this.oid()) {

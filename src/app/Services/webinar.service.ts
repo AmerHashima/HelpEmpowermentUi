@@ -97,7 +97,6 @@ export class WebinarService {
     }
     this.searchWebinars(requestBody).subscribe({
       next: (res) => {
-        console.log('Webinars loaded:', res.webinars);
         this.webinars.set(res.webinars);
         this.total.set(res.total);
       }

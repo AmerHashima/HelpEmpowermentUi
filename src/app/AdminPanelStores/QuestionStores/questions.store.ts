@@ -149,7 +149,6 @@ export const QuestionsStore = signalStore(
         switchMap((request) =>
           service.searchQuestion(request).pipe(
             tap((res: { questions: APICourseQuestion[]; total: number }) => {
-              console.log('res',res);
               patchState(store, (s) => ({
                 ...s,
                 questions: mapApiQuestionsToCourseQuestions(res.questions),
@@ -174,7 +173,6 @@ export const QuestionsStore = signalStore(
         switchMap((request) =>
           service.searchStudentExamQuestions(request).pipe(
             tap((res: { questions: APICourseQuestion[]; total: number }) => {
-              console.log('res', res);
               patchState(store, (s) => ({
                 ...s,
                 questions: mapApiQuestionsToCourseQuestions(res.questions,true),
@@ -286,14 +284,7 @@ export const QuestionsStore = signalStore(
           tap(() => patchState(store, activateLoading)),
           concatMap((body) =>
             service.createAnswer(body).pipe(
-              tap(() => {
-                //console.log('createSyccessfully');
-              }),
-              // tap(() => {
-              //   const question = store.selectedQuestion();
-              //   if (!question?.oid) return;
-              //   store.getQuestion(question.oid);
-              // }),
+
               catchError((err) => {
                 patchState(store, setError(err?.msg ?? 'Failed to add answer'));
                 return EMPTY;
@@ -338,9 +329,7 @@ export const QuestionsStore = signalStore(
 
       addAnswer$(answer: any) {
         return service.createAnswer(answer).pipe(
-          tap(() => {
-            // //console.log('created');
-          }),
+       
           catchError(err => {
             patchState(store, setError(err?.message ?? 'failed to add failed'));
             return of(null);

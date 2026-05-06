@@ -76,7 +76,6 @@ export class LiveCourseComponent {
       });
   }
   buyNow() {
-    console.log('Buy Now clicked');
   }
 
 
@@ -226,7 +225,6 @@ export class LiveCourseComponent {
     this.showRegisterConfirm=true;
     this.RegisterSession=session;
     this.patchUserData();
-    console.log('session', this.RegisterSession);
 
   }
 

@@ -84,13 +84,11 @@ export class CartService {
   // );
   subtotal = computed(() => {
     const override = this.subTotalOverride();
-    console.log('subtotal override', override);
     if (override) return override;
     const sub = this.expandedCartItems().reduce((total, item) => {
       const price = this.getFeaturePrice(item);
       return total + price;
     }, 0);
-    console.log('Calculated subtotal', sub);
     return sub;
   });
   // subtotal = computed(() =>
@@ -270,7 +268,6 @@ export class CartService {
   }
 
   applyCouponData(data: APICouponData, couponCode: string): void {
-    console.log('Applying coupon data', { data, couponCode });
     this.cartItems.set(data.items ?? []);
     this.subTotalOverride.set(data.subTotal ?? null);
     this.totalOverride.set(data.total ?? null);

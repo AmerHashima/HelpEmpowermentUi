@@ -138,7 +138,6 @@ export class StudentReservedCoursesComponent {
 
     canSaveEdit(): boolean {
         const course = this.editCourse();
-      console.log('Checking if can save edit for course', course);
         return !!course && (this.hasReservationFlags(course) || this.hasNoFlags(course))
     }
 

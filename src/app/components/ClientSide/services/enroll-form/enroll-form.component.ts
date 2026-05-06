@@ -75,44 +75,6 @@ export class EnrollFormComponent {
     });
   }
 
-  // Replace your current onEnroll with this version
-  // async onEnroll(form: NgForm) {
-  //   if (form.invalid) {
-  //     Object.values(form.controls).forEach(control => {
-  //       control.markAsTouched();
-  //     });
-  //     return;
-  //   }
-
-  //   const enrollMessageData = {
-  //     ...this.enroll,
-  //     service: this.page() || 'unknown',
-  //   };
-
-  //   console.log('Sending enroll data:', enrollMessageData);
-
-  //   try {
-  //     const response: EmailJSResponseStatus = await emailjs.send(
-  //       environment.mailServiceId,
-  //       environment.mailTemolateId,
-  //       enrollMessageData,
-  //       {
-  //         publicKey: environment.mailPublicKey
-  //       }
-  //     );
-
-  //     console.log('SUCCESS!', response.status, response.text);
-  //      this.toasting.showToast('enroll.sent.success','success');
-  //     form.resetForm();
-
-  //   } catch (err: any) {
-  //     this.toasting.showToast("enroll.sent.error", 'error');
-  //   }
-  //   //  finally {
-  //   //   this.isSending = false;
-  //   // }
-  // }
-
   async onEnroll(form: NgForm) {
     if (this.student() && this.student()?.userId) {
 
