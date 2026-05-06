@@ -627,6 +627,12 @@
     }
   },
   "liveCourse": {
+      "register": {
+        "success": "Live Course created successfully"
+      },
+      "update": {
+        "success": "Live Course updated successfully"
+      },
     "pmp": {
       "price": "579 AED",
       "master": "Transform your career with live PMP guidance,",

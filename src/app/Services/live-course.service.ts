@@ -38,7 +38,8 @@ export class LiveCourseService {
         time: this.formatTime(c.startTime),
         title: c.courseName,
         courseName: c.courseRefName,
-        whatsAppLink: c.whatsAppLink,
+        // whatsAppLink: c.whatsAppLink,
+        whatsAppLink: "https://wa.me/966564943997",
         numberOfSessions: c.numberOfSessions,
         totalHours: c.totalHours,
         notes: c.scheduleNotes

@@ -48,7 +48,8 @@ export class WebinarService {
           time: this.formatTime(start),
           title: w.webinarName,
           courseName: w.courseName,
-          whatsAppLink: w.whatsAppLink,
+          // whatsAppLink: w.whatsAppLink,
+          whatsAppLink: "https://wa.me/966564943997",
 
           numberOfSessions: undefined,
           totalHours: this.calculateDurationHours(start, end),
