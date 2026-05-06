@@ -5,6 +5,7 @@ import { Filter, RequestBody } from '../models/rquest';
 import { map, Observable } from 'rxjs';
 import { ApiWebinar } from '../models/webinar';
 import { ApiResponse, ApiSearchResponse } from '../models/apiResponse';
+import { SessionModel } from '../components/ClientSide/certifications/upcoming-sessions/upcoming-sessions.component';
 
 @Injectable({
   providedIn: 'root'
@@ -15,17 +16,34 @@ export class LiveCourseService {
   pageNumber = signal<number>(0);
   pageSize = signal<number>(10);
   filters = signal<Filter[]>([]);
-  mapCoursesToSessions = computed(() => {
-    return this.liveCourses().filter(c=> c.isActive).map((c: APILiveCourse) => {
-      return {
+  // mapCoursesToSessions = computed(() => {
+  //   return this.liveCourses().filter(c=> c.isActive).map((c: APILiveCourse) => {
+  //     return {
+  //       date: this.formatDate(c.startDate),
+  //       time: this.formatTime(c.startTime),
+  //       title: c.courseName,
+  //       courseName: c.courseRefName,
+  //       whatsAppLink: c.whatsAppLink,
+  //       numberOfSessions: c.numberOfSessions,
+  //       totalHours: c.totalHours,
+  //       notes: c.scheduleNotes,
+  //     };
+  //   });
+  // })
+  mapCoursesToSessions = computed<SessionModel[]>(() => {
+    return this.liveCourses()
+      .filter(c => c.isActive)
+      .map(c => ({
         date: this.formatDate(c.startDate),
         time: this.formatTime(c.startTime),
         title: c.courseName,
         courseName: c.courseRefName,
-        whatsAppLink: c.whatsAppLink
-      };
-    });
-  })
+        whatsAppLink: c.whatsAppLink,
+        numberOfSessions: c.numberOfSessions,
+        totalHours: c.totalHours,
+        notes: c.scheduleNotes
+      }));
+  });
 
   formatTime(time: string): string {
     if (!time) return '-';

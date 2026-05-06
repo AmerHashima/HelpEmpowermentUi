@@ -5,6 +5,7 @@ import { Filter, RequestBody } from '../models/rquest';
 import { map, Observable } from 'rxjs';
 import { ApiResponse, ApiSearchResponse } from '../models/apiResponse';
 import { re } from 'mathjs';
+import { SessionModel } from '../components/ClientSide/certifications/upcoming-sessions/upcoming-sessions.component';
 
 @Injectable({
   providedIn: 'root'
@@ -15,38 +16,60 @@ export class WebinarService {
   pageNumber = signal<number>(0);
   pageSize = signal<number>(10);
   filters=signal<Filter[]>([])
-  // mapWebinarsToSessions =computed(()=> {
-  //   return this.webinars().map(w => {
-  //     console.log('w',w);
-  //     const start = new Date(w.webinarStartTime);
-  //     const end = new Date(w.webinarEndTime);
+
+
+  // mapWebinarsToSessions = computed(() => {
+  //   return this.webinars().filter(w=>w.isActive).map(w => {
+  //     const date = w.webinarDate.split('T')[0];
+
+  //     const start = new Date(`${date}T${w.webinarStartTime}`);
+  //     const end = new Date(`${date}T${w.webinarEndTime}`);
 
   //     return {
   //       date: this.formatDate(w.webinarDate),
   //       time: this.formatDuration(start, end),
   //       title: w.webinarName,
-  //       courseName:w.courseName
+  //       courseName: w.courseName,
+  //       whatsAppLink: w.whatsAppLink,
   //     };
   //   });
-  // })
+  // });
+  mapWebinarsToSessions = computed<SessionModel[]>(() => {
+    return this.webinars()
+      .filter(w => w.isActive)
+      .map(w => {
+        const date = w.webinarDate.split('T')[0];
 
-  mapWebinarsToSessions = computed(() => {
-    return this.webinars().filter(w=>w.isActive).map(w => {
-      const date = w.webinarDate.split('T')[0];
+        const start = new Date(`${date}T${w.webinarStartTime}`);
+        const end = new Date(`${date}T${w.webinarEndTime}`);
 
-      const start = new Date(`${date}T${w.webinarStartTime}`);
-      const end = new Date(`${date}T${w.webinarEndTime}`);
+        return {
+          date: this.formatDate(w.webinarDate),
+          time: this.formatTime(start),
+          title: w.webinarName,
+          courseName: w.courseName,
+          whatsAppLink: w.whatsAppLink,
 
-      return {
-        date: this.formatDate(w.webinarDate),
-        time: this.formatDuration(start, end),
-        title: w.webinarName,
-        courseName: w.courseName,
-        whatsAppLink: w.whatsAppLink
-      };
-    });
+          numberOfSessions: undefined,
+          totalHours: this.calculateDurationHours(start, end),
+          notes: w.notes
+        };
+      });
   });
+  formatTime(date: Date): string {
+    return date.toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    });
+  }
+  calculateDurationHours(start: Date, end: Date): number {
+    const diffMs = end.getTime() - start.getTime();
 
+    const hours = diffMs / (1000 * 60 * 60);
+
+    return Number(hours.toFixed(1));
+  }
   constructor(private apiService: ApiService) {
     effect(() => {
       const page = this.pageNumber();
