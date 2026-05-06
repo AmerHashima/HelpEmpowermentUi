@@ -1,5 +1,5 @@
 import { certifications } from './../../../../shared/clientSide/certification-cards/certification-cards.component';
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { Shared } from '../../../../shared/Services/shared/shared';
 import { AuthService } from '../../../../Services/auth.service';
 import { PageBannerComponent } from '../../../../shared/clientSide/page-banner/page-banner.component';
@@ -109,6 +109,14 @@ export class RecordedCourseComponent {
   );
 
   videos = computed(() => this.videosState().data);
+count=signal<number>(0);
+  ngOnInit() {
+    this.studentService
+      .getEnrollmentCount(this.shared.currentCertificate(), 'recorded')
+      .subscribe(count => {
+        this.count.set(count);
+      });
+  }
 
   buyNow() {
     // Implement buy logic (e.g. open checkout, call service, etc.)

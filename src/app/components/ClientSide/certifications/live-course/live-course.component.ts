@@ -1,5 +1,5 @@
 // src\app\components\ClientSide\certifications\live-course\live-course.component.ts
-import { Component, computed, inject, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, computed, inject, QueryList, signal, ViewChild, ViewChildren } from '@angular/core';
 import { PageBannerComponent } from '../../../../shared/clientSide/page-banner/page-banner.component';
 import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/site-button.component';
 import { CoureseAudienceComponent } from '../courese-audience/courese-audience.component';
@@ -66,7 +66,15 @@ export class LiveCourseComponent {
       price: `liveCourse.${key}.price`
     };
   });
+  count = signal<number>(0);
 
+  ngOnInit() {
+    this.studentService
+      .getEnrollmentCount(this.shared.currentCertificate(), 'live')
+      .subscribe(count => {
+        this.count.set(count);
+      });
+  }
   buyNow() {
     console.log('Buy Now clicked');
   }

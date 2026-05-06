@@ -216,6 +216,8 @@ export class ExamSimulatorComponent {
     () => this.hasPaidExams() && this.isEnrolled()
   );
 
+  count = signal(0);
+
 
   constructor(private router: Router, private route: ActivatedRoute) {
     effect(() => {
@@ -223,12 +225,19 @@ export class ExamSimulatorComponent {
       // this.chooseExam=true;
     })
 
+
   }
 
   ngOnInit() {
     if (isPlatformBrowser(this.platformId)) {
       this.hydrated.set(true);
     }
+
+    this.studentService
+      .getEnrollmentCount(this.shared.currentCertificate(), 'exam')
+      .subscribe(count => {
+        this.count.set(count);
+      });
   }
 
   navigateToFreeExam(exam: APIExam) {
