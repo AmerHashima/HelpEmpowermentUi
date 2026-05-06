@@ -1624,7 +1624,8 @@
         },
 
           "upcomingLive": {
-            "noSessions": "No upcoming live sessions available."
+            "noSessions": "While there are no live courses scheduled at the moment, stay tuned our next event will be announced soon, and it’s worth the wait",
+            "noWebinars": "While there are no Webinar scheduled at the moment, stay tuned our next event will be announced soon, and it’s worth the wait"
           }
-        
+
 }
