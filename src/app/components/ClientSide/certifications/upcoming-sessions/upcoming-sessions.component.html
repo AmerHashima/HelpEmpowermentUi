@@ -3,7 +3,7 @@
     <div class="sessions-list d-flex flex-column gap-3 p-2">
       @for (session of sessions(); track $index) {
         <div
-          class="session-card d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 p-3 border rounded"
+          class="session-card d-flex flex-column flex-xl-row align-items-xl-center justify-content-between gap-3 p-3 border rounded"
         >
           <!-- Date & Time -->
           <div class="d-flex flex-column gap-2 flex-grow-1">
@@ -11,7 +11,7 @@
             <div class="session-title flex-grow-1 text-center text-md-start">
               <h6 class="m-0 fw-bold">{{ session.title | translate }}</h6>
             </div>
-            <div class="session-datetime d-flex gap-2 align-items-center">
+            <div class="session-datetime d-flex flex-column flex-md-row gap-2 align-items-center">
               <div
                 class="badge bg-white border text-dark px-3 py-2 rounded-pill d-flex align-items-center gap-3"
               >
@@ -94,28 +94,32 @@
               </div>
             }
           </div>
-          <app-site-button
-            title="Join Whatsapp"
-            [icon]="'bi bi-whatsapp'"
-            type="secondary"
-            (click)="joinWhatsapp(session.whatsAppLink)"
-          ></app-site-button>
-          @if (!isWebinar()) {
+          <div class="d-flex flex-column gap-1">
+            @if (!isWebinar()) {
+              <app-site-button
+                title="Register"
+                [icon]="'bi bi-arrow'"
+                type="main"
+                class="flex-grow-1"
+                (click)="liveCourseRegister.emit(session)"
+              ></app-site-button>
+            } @else {
+              <app-site-button
+                title="Register Now"
+                [icon]="'bi bi-arrow'"
+                type="main"
+                class="flex-grow-1"
+                (click)="register.emit()"
+              ></app-site-button>
+            }
             <app-site-button
-              title="Register"
-              [icon]="'bi bi-arrow'"
-              type="main"
-              (click)="liveCourseRegister.emit(session)"
+              title="Join Whatsapp"
+              [icon]="'bi bi-whatsapp'"
+              type="secondary"
+              class="flex-grow-1"
+              (click)="joinWhatsapp(session.whatsAppLink)"
             ></app-site-button>
-          }
-          @if (isWebinar()) {
-            <app-site-button
-              title="Register Now"
-              [icon]="'bi bi-arrow'"
-              type="main"
-              (click)="register.emit()"
-            ></app-site-button>
-          }
+          </div>
         </div>
       } @empty {
         <div class="noReveiws rounded text-center text-muted py-5">
