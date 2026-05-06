@@ -334,45 +334,45 @@ export class ChooseExamComponent {
   showClearLessonLearned = false;
   showMustLogin = false;
   examName = computed(() => this.shared.currentExam()?.examName);
-  previousExamMode = computed(() => {
-    const examId = this.shared.currentExamId();
-    const isFree = this.shared.currentExam()?.freeExam ?? false;
+  // previousExamMode = computed(() => {
+  //   const examId = this.shared.currentExamId();
+  //   const isFree = this.shared.currentExam()?.freeExam ?? false;
 
-    // ✅ FREE EXAM
-    if (isFree) {
-      const userId = this.auth.loggedStudent()?.userId;
-      if (!userId) return false;
+  //   // ✅ FREE EXAM
+  //   if (isFree) {
+  //     const userId = this.auth.loggedStudent()?.userId;
+  //     if (!userId) return false;
 
-      const key = this.shared.getExamResultsKey(userId);
-      if (!key) return false;
+  //     const key = this.shared.getExamResultsKey(userId);
+  //     if (!key) return false;
 
-      const data = localStorage.getItem(key);
-      if (!data) return false;
+  //     const data = localStorage.getItem(key);
+  //     if (!data) return false;
 
-      try {
-        const results = JSON.parse(data);
+  //     try {
+  //       const results = JSON.parse(data);
 
-        return results.some(
-          (r: any) =>
-            r.coursesMasterExamOid === examId &&
-            r.attemptNo != null // means attempt exists
-        );
-      } catch {
-        return false;
-      }
-    }
+  //       return results.some(
+  //         (r: any) =>
+  //           r.coursesMasterExamOid === examId &&
+  //           r.attemptNo != null // means attempt exists
+  //       );
+  //     } catch {
+  //       return false;
+  //     }
+  //   }
 
-    // ✅ API EXAM (existing logic)
-    const allReports = this.studentExamService.reports();
+  //   // ✅ API EXAM (existing logic)
+  //   const allReports = this.studentExamService.reports();
 
-    return allReports.some(
-      r =>
-        r.coursesMasterExamOid === examId &&
-        r.startedAt &&
-        r.finishedAt &&
-        r.examModeLookupId == examModeOid
-    );
-  });
+  //   return allReports.some(
+  //     r =>
+  //       r.coursesMasterExamOid === examId &&
+  //       r.startedAt &&
+  //       r.finishedAt &&
+  //       r.examModeLookupId == examModeOid
+  //   );
+  // });
 
   // previousExamMode = computed(() => {
   //   const examId = this.shared.currentExamId();
@@ -389,10 +389,55 @@ export class ChooseExamComponent {
   //       && r.examModeLookupId == examModeOid)
   // });
   // latestReport = this.studentExamService.latestReport;
-  latestReport = computed(() => {
+  previousExamMode = computed(() => {
+
+    const examId = this.shared.currentExamId();
     const isFree = this.shared.currentExam()?.freeExam ?? false;
 
     if (isFree) {
+
+      // ✅ only needed for free exam localStorage refresh
+      this.shared.freeExamRefresh$();
+
+      const userId = this.auth.loggedStudent()?.userId;
+      if (!userId) return false;
+
+      const key = this.shared.getExamResultsKey(userId);
+      if (!key) return false;
+
+      const data = localStorage.getItem(key);
+      if (!data) return false;
+
+      try {
+        const results = JSON.parse(data);
+
+        return results.some(
+          (r: any) =>
+            r.coursesMasterExamOid === examId &&
+            r.attemptNo != null
+        );
+      } catch {
+        return false;
+      }
+    }
+
+    const allReports = this.studentExamService.reports();
+
+    return allReports.some(
+      r =>
+        r.coursesMasterExamOid === examId &&
+        r.startedAt &&
+        r.finishedAt &&
+        r.examModeLookupId == examModeOid
+    );
+  });
+  latestReport = computed(() => {
+
+    const isFree = this.shared.currentExam()?.freeExam ?? false;
+
+    if (isFree) {
+      this.shared.freeExamRefresh$();
+
       return this.shared.getLatestFreeExamReport(
         this.auth.loggedStudent()?.userId ?? null,
       );
@@ -400,6 +445,17 @@ export class ChooseExamComponent {
 
     return this.studentExamService.latestReport();
   });
+  // latestReport = computed(() => {
+  //   const isFree = this.shared.currentExam()?.freeExam ?? false;
+
+  //   if (isFree) {
+  //     return this.shared.getLatestFreeExamReport(
+  //       this.auth.loggedStudent()?.userId ?? null,
+  //     );
+  //   }
+
+  //   return this.studentExamService.latestReport();
+  // });
 
   // private getStorageKey(examId: string, mode: string) {
   //   return `exam-progress-student_${this.auth.loggedStudent()?.userId}-${mode}-${examId}`;
