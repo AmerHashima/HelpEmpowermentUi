@@ -4,3 +4,27 @@ h6{
   color:$headerColor;
 }
 
+.empty-calendar-state {
+  width:100%;
+  min-height: 320px;
+  border-style: dashed !important;
+  transition: 0.3s ease;
+}
+
+.empty-calendar-state:hover {
+  transform: translateY(-2px);
+}
+
+.empty-icon {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba($primaryColor, 0.08);
+
+  i {
+    color: $primaryColor
+  }
+}

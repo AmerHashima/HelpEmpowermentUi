@@ -23,6 +23,10 @@ import { PhoneInputComponent } from '../../../../shared/phone/phone.component';
 import { LiveCourseContactLookUp } from '../../../../data/lookUPS';
 import { ContactUsService } from '../../../../Services/contact-us.service';
 import { InputComponent } from '../../../../shared/input/input.component';
+import { CourseVideo } from '../../../../models/course-video';
+import { catchError, distinctUntilChanged, map, of, startWith, switchMap } from 'rxjs';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { CourseVideosService } from '../../../../Services/course-videos.service';
 
 @Component({
   selector: 'app-live-course',
@@ -43,6 +47,8 @@ export class LiveCourseComponent {
   private cartService = inject(CartService);
   private toasting = inject(ToastingMessagesService);
   private contactService=inject(ContactUsService);
+    private courseVideosService = inject(CourseVideosService);
+  
   isRTL = this.shared.isRtl;
   student= this.auth.loggedStudent;
   RegisterSession:any=null;
@@ -67,6 +73,51 @@ export class LiveCourseComponent {
     };
   });
   count = signal<number>(0);
+  certification = this.shared.currentCertificationObject;
+  videosState = toSignal(
+    toObservable(this.certification).pipe(
+      distinctUntilChanged((a, b) => a?.oid === b?.oid),
+      switchMap(cert => {
+        if (!cert?.oid) {
+          return of({
+            data: [] as CourseVideo[],
+            loading: false,
+            error: 'No certification selected'
+          });
+        }
+
+        return this.courseVideosService.getAllVideos(cert.oid).pipe(
+          map(data => ({
+            data,
+            loading: false,
+            error: null as string | null
+          })),
+          startWith({
+            data: [] as CourseVideo[],
+            loading: true,
+            error: null
+          }),
+          catchError(() =>
+            of({
+              data: [],
+              loading: false,
+              error: 'Failed to load videos'
+            })
+          )
+        );
+      })
+    ),
+    {
+      initialValue: {
+        data: [] as CourseVideo[],
+        loading: true,
+        error: null as string | null
+      }
+    }
+  );
+
+  videos = computed(() => this.videosState().data);
+
 
   ngOnInit() {
     this.studentService

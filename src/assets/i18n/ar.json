@@ -96,6 +96,7 @@
     },
     "services": {
       "subtitle": "خبراتنا",
+      "professionalCertifications": "الشهادات الاحترافية",
       "title": "نقدم حلولًا مخصصة تلبي توقعات عملائنا",
       "items": {
         "pmo": {
@@ -478,6 +479,8 @@
     "error": "تعذر إرسال طلب التوظيف."
   },
   "calendar": {
+      "noEventsTitle": "لا توجد فعاليات قادمة حالياً",
+      "noEventsDescription": "لا توجد حالياً دورات مباشرة أو ندوات مجدولة. ترقبوا الإعلان عن فعاليات جديدة قريباً.",
     "startDate": "تاريخ البداية",
     "endDate": "تاريخ النهاية",
     "moreDetails": "المزيد من التفاصيل",
@@ -1568,6 +1571,7 @@
     }
   },
   "liveCourseDashboardForm": {
+    "certfication": "شهادة الدورة المباشرة",
     "courseName": "اسم الكورس",
     "courseFormat": "نوع الكورس",
     "timeZone": "المنطقة الزمنية",

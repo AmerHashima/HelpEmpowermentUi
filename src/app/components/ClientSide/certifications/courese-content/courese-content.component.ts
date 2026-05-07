@@ -95,6 +95,8 @@ export class CoureseContentComponent {
 
       this.checkedState.set(initialState);
     });
+
+    // effect(()=> console.log('courseCon', this.courseCon())); // Debugging effect to log course content
   }
 
   getSafeName(title: string): string {
