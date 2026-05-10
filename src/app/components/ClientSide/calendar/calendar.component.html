@@ -12,10 +12,10 @@
         @for (item of calendarData(); let i = $index; track item) {
           <div class="col-6">
             <app-calendar-card
+            [type]="item.type"
               [title]="item.title"
               [icon]="item.icon"
               [startDate]="item.startDate"
-              [endDate]="item.endDate"
               (cardClick)="onCardClick(item)"
             ></app-calendar-card>
           </div>

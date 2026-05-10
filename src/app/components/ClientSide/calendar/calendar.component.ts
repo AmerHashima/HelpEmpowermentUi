@@ -56,13 +56,12 @@ export class CalendarComponent {
       .map(c => ({
         title: c.courseName,
         courseName: c.courseName,
-
         icon: 'bi bi-mortarboard',
         startDate: this.formatDate(new Date(c.startDate)),
-        endDate: this.calculateEndDate(
-          c.startDate,
-          c.numberOfSessions
-        ),
+        // endDate: this.calculateEndDate(
+        //   c.startDate,
+        //   c.numberOfSessions
+        // ),
         type: 'liveCourse',
         route: ''
       }));

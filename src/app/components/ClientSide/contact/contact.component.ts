@@ -58,7 +58,7 @@ export class ContactComponent {
     {
       icon: 'bi bi-geo-alt',
       header: 'Visit Us',
-      value: 'Sharjah, UAE'    },
+      value: 'Media City, UAE'    },
     {
       icon: '',
       header: '',

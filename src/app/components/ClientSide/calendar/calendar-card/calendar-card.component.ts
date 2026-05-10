@@ -11,6 +11,7 @@ import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 export class CalendarCardComponent {
   private shared=inject(Shared);
   isRTL=this.shared.isRtl
+  @Input() type: string = '';
   @Input() title: string = '';
   @Input() icon: string = '';
   @Input() startDate: string = '';
