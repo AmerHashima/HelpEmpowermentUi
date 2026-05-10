@@ -930,7 +930,14 @@
       "Consultants",
       "Department Heads",
       "Team Leads"
-    ]
+    ],
+      "capm": [
+         "Project Coordinator",
+         "PMO Officer",
+         "Junior Project Manager",
+         "Project Team Member",
+         "Career Switcher"
+      ]
   },
   "Upcoming Live Sessions": "Upcoming Live Sessions",
   "instructor": {
@@ -1088,6 +1095,28 @@
           "title": "Career Empowerment Circle",
           "description": "Your certification journey includes lifelong access to mentorship, networking, and exclusive job openings."
         }
+      },
+      "webinar": {
+        "hour1": {
+          "title": "Hour 1: The Essential Knowledge of CAPM",
+          "description": "Decode the Exam: Learn the structure of the CAPM exam, including the key project management principles, process groups, and Agile fundamentals.\nBuild Your Action Plan: Get a clear, step-by-step roadmap, from understanding eligibility requirements to building an effective CAPM study strategy you can start immediately.\nMaster the PMI Mindset: Discover the critical thinking approach used by PMI that helps you confidently choose the best answers on the exam."
+        },
+        "hour2": {
+          "title": "Hour 2: Interactive Q&A",
+          "description": "Get Expert Answers: Have your specific questions about the CAPM application process, study resources, and exam topics answered live by a PMI-certified professional.\nSolve Real Challenges: Discuss common study difficulties and beginner project management scenarios to better understand CAPM concepts in practice.\nPlan Your Path Forward: Receive practical guidance on your next steps and discover resources to make your CAPM preparation organized, focused, and confidence-driven."
+        },
+        "takeAway": {
+          "title": "What You Will Leave With:",
+          "description": "A clear, stress-free understanding of the entire CAPM journey.\nA practical action plan you can start immediately.\nAnswers to your most important questions from an expert."
+        }
+      },
+      "audience": {
+        "title": "Who Should Attend:",
+        "description": "Project Coordinators, recent graduates, and aspiring Project Managers.\nProfessionals looking to start a career in project management with a globally recognized certification.\nAnyone interested in understanding project management fundamentals and CAPM exam requirements.\nIndividuals seeking a structured and confidence-building approach to pass the CAPM exam."
+      },
+      "takeAway": {
+        "title": "What You Will Leave With:",
+        "description": "A clear, stress-free understanding of the entire CAPM journey.\nA practical action plan you can start immediately.\nAnswers to your most important questions from an expert."
       }
     }
   },

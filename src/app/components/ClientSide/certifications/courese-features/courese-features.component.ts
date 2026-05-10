@@ -222,6 +222,22 @@ export class CoureseFeaturesComponent {
         }
       ];
 
+    else if (this.certification() === 'capm' && this.type() === 'webinar')
+      return [
+        {
+          title: 'courseFeatures.capm.webinar.hour1.title',
+          description: 'courseFeatures.capm.webinar.hour1.description',
+        },
+        {
+          title: 'courseFeatures.capm.webinar.hour2.title',
+          description: 'courseFeatures.capm.webinar.hour2.description',
+        },
+        {
+          title: 'courseFeatures.capm.webinar.takeAway.title',
+          description: 'courseFeatures.capm.webinar.takeAway.description',
+        }
+      ];
+
     else if (this.certification() === 'pmp' && this.type() === 'audience')
       return [
         {
@@ -229,6 +245,14 @@ export class CoureseFeaturesComponent {
           description: 'courseFeatures.pmp.audience.description',
         },
       ];
+    else if (this.certification() === 'capm' && this.type() === 'audience')
+      return [
+        {
+          title: 'courseFeatures.capm.audience.title',
+          description: 'courseFeatures.capm.audience.description',
+        },
+      ];
+
 
     else if (this.certification() === 'pmp' && this.type() === 'takeAway')
       return [
@@ -237,6 +261,15 @@ export class CoureseFeaturesComponent {
           description: 'courseFeatures.pmp.takeAway.description',
         },
       ];
+
+    else if (this.certification() === 'capm' && this.type() === 'takeAway')
+      return [
+        {
+          title: 'courseFeatures.capm.takeAway.title',
+          description: 'courseFeatures.capm.takeAway.description',
+        },
+      ];
+
 
     else if (this.certification() === 'capm' && this.type() === 'features')
       return [

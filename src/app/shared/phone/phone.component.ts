@@ -211,26 +211,28 @@ private cdr = inject(ChangeDetectorRef);
 
 
   writeValue(value: string): void {
-    console.log('API value:', this.value);
-    console.log('Formatted:', this.iti.getNumber());
-    console.log('Is valid:', this.iti.isValidNumber());
-    console.log('Country:', this.iti.getSelectedCountryData());
     this.value = value || '';
+
+    console.log('API value:', this.value);
+
+    if (!this.iti) {
+      this.pendingValue = this.value;
+      return;
+    }
 
     if (!this.value) return;
 
-    if (this.iti) {
-      this.iti.setNumber(this.value);
+    this.iti.setNumber(this.value);
 
-      this.isValid = this.iti.isValidNumber();
+    console.log('Formatted:', this.iti.getNumber());
+    console.log('Is valid:', this.iti.isValidNumber());
+    console.log('Country:', this.iti.getSelectedCountryData());
 
-      this.onChange(this.iti.getNumber());
+    this.isValid = this.iti.isValidNumber();
 
-      // 🔥 THIS LINE FIXES YOUR ISSUE
-      this.onValidatorChange();
-    } else {
-      this.pendingValue = this.value;
-    }
+    this.onChange(this.iti.getNumber());
+
+    this.onValidatorChange();
   }
 
   registerOnChange(fn: any): void {
