@@ -70,7 +70,7 @@ export class ForgetPasswordComponent {
       // 2️⃣ Send Email via EmailJS
       const emailData = {
         email: this.credentials.email,
-        otp: 'otp',
+        otp: '1234',
         reset_link: 'http://144.91.127.150:8082/en/auth/verify-otp?email=' + this.credentials.email
       };
 

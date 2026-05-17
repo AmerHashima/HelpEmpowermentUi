@@ -5,11 +5,10 @@
 export const environment = {
   production: false,
   baseUrl: 'http://144.91.127.150:8080/api',
-  mailServiceId: "service_qa9ozck",
-  mailTemolateId: "template_1sqbwoa",
-  resetTemolateId: "template_ye2kx3n",
-
-  mailPublicKey: "o3-i7ksFLJZT2C6GV",
+  mailTemolateId: "template_dhwmgqo",
+  mailServiceId: "service_lc3tdtq",
+  resetTemolateId: "template_awvrr8h",
+  mailPublicKey: "IVOL978dKzuZedgfY",
   // baseUrl:"http://localhost:5075/api",
   firebase: {
     apiKey: '********************************',

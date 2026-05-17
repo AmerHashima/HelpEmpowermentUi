@@ -1576,7 +1576,8 @@
     "emailSent": " Password reset link has been sent",
     "resendIn": "Resend in {{seconds}} seconds",
     "resend": "Resend email",
-    "sendEmail": "Send Reset Link"
+    "sendEmail": "Send Reset Link",
+    "error": "Failed to send reset link. Please try again."
   },
   "otp": {
     "title": "Verify Code",
