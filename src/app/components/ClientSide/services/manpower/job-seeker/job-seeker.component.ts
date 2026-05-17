@@ -90,15 +90,57 @@ export class JobSeekerComponent {
         contactTypeLookupId: JobSeekerContactLookUp,
         studentId: this.student()?.userId!
       };
+      const hasAttachment=this.job.attachments?.[0]?true:false;
+      this.contactService.createContactMessage(payload, 'jobSeeker',hasAttachment).subscribe({
+        // next: () => {
+        //   form.resetForm({
+        //     fullname: this.student()?.nameEn || '',
+        //     email: this.student()?.email || '',
+        //     message: ''
+        //   });
+        //   this.phoneCmps?.forEach(c => c.resetState());
+        // },
+        next: (res: any) => {
 
-      this.contactService.createContactMessage(payload).subscribe({
-        next: () => {
-          form.resetForm({
-            fullname: this.student()?.nameEn || '',
-            email: this.student()?.email || '',
-            message: ''
-          });
-          this.phoneCmps?.forEach(c => c.resetState());
+          const contactId = res?.data?.oid || res?.oid || res?.id;
+
+          const attachment = this.job.attachments?.[0];
+
+          // NO FILE
+
+          if (!attachment) {
+
+            this.handleSuccess(form);
+
+            return;
+
+          }
+
+          // UPLOAD FILE
+
+          this.contactService.uploadAttachment(contactId, attachment).subscribe({
+
+              next: () => {
+
+                this.handleSuccess(form);
+
+              },
+
+              error: (err:any) => {
+
+
+                this.toasting.showToast(
+
+                  'Attachment upload failed',
+
+                  'error'
+
+                );
+
+              }
+
+            });
+
         },
         error: (err) => {
 
@@ -118,7 +160,31 @@ export class JobSeekerComponent {
 
   }
 
+  private handleSuccess(form: NgForm) {
 
+    this.toasting.showToast(
+
+      'Application submitted successfully',
+
+      'success'
+
+    );
+
+    form.resetForm({
+
+      fullname: this.student()?.nameEn || '',
+
+      email: this.student()?.email || '',
+
+      phone: this.student()?.mobile || ''
+
+    });
+
+    this.job.attachments = [];
+
+    this.phoneCmps?.forEach(c => c.resetState());
+
+  }
 
   getJobSeekerMessage() {
     const j = this.job;

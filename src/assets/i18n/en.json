@@ -403,6 +403,7 @@
     "ExamplesTitle": "Training Examples:"
   },
   "vacancy": {
+    "success": "Your vacancy has been posted successfully",
     "mainTitle": "Post a Vacancy",
     "title": "Looking to Hire the Right Talent?",
     "subTitle": "Fill out the form below and our team will help you find the best candidates for your organization.",
@@ -1663,4 +1664,7 @@
     "noSessions": "While there are no live courses scheduled at the moment, stay tuned our next event will be announced soon, and it’s worth the wait",
     "noWebinars": "While there are no Webinar scheduled at the moment, stay tuned our next event will be announced soon, and it’s worth the wait"
   }
+  ,
+  "Attachment deleted successfully":"Attachment deleted successfully",
+  "Your application has been submitted successfully. Uploading attachment...":"Your application has been submitted successfully. Uploading attachment..."
 }

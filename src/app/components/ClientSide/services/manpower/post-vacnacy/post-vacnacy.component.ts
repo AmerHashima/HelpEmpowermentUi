@@ -68,56 +68,186 @@ export class PostVacnacyComponent {
       this.vacancy.phone = user.mobile || '';
     }
   }
+  // onPostVacancy(form: NgForm) {
+  //   if (this.student() && this.student()?.userId) {
+  //     if (form.invalid) {
+  //       Object.values(form.controls).forEach(control => {
+  //         control.markAsTouched();
+  //       });
+  //       this.phoneCmps?.forEach(c => c.validateOnSubmit());
+  //       return;
+  //     }
+
+  //     const payload = {
+  //       fullName: this.vacancy.fullname,
+  //       fullNameAr: this.vacancy.fullname,
+  //       email: this.vacancy.email,
+  //       phone: '',
+  //       mobile: this.vacancy.phone,
+  //       subject: '',
+  //       subjectAr: '',
+  //       message: this.getPostVacancyMessage(),
+  //       messageAr: this.getPostVacancyMessage(),
+  //       contactTypeLookupId: PostVacancyContactLookUp,
+  //       studentId: this.student()?.userId!
+  //     };
+
+  //     this.contactService.createContactMessage(payload).subscribe({
+  //       next: () => {
+  //         form.resetForm({
+  //           fullname: this.student()?.nameEn || '',
+  //           email: this.student()?.email || '',
+  //           // phone: this.student()?.mobile || '',
+  //           message: ''
+  //         });
+  //         this.phoneCmps?.forEach(c => c.resetState());
+  //       },
+  //       error: (err) => {
+
+  //         const apiMessage =
+  //           err?.error?.message ||
+  //           err?.error?.errors?.[0] ||
+  //           'vacancy.error';
+
+  //         this.toasting.showToast(apiMessage, 'error');
+  //       },
+
+  //     });
+  //   } else {
+  //     this.showConfirm = true;
+  //   }
+  // }
+
   onPostVacancy(form: NgForm) {
+
     if (this.student() && this.student()?.userId) {
+
       if (form.invalid) {
+
         Object.values(form.controls).forEach(control => {
           control.markAsTouched();
         });
+
         this.phoneCmps?.forEach(c => c.validateOnSubmit());
+
         return;
       }
 
       const payload = {
+
         fullName: this.vacancy.fullname,
+
         fullNameAr: this.vacancy.fullname,
+
         email: this.vacancy.email,
+
         phone: '',
+
         mobile: this.vacancy.phone,
+
         subject: '',
+
         subjectAr: '',
+
         message: this.getPostVacancyMessage(),
+
         messageAr: this.getPostVacancyMessage(),
+
         contactTypeLookupId: PostVacancyContactLookUp,
+
         studentId: this.student()?.userId!
       };
 
-      this.contactService.createContactMessage(payload).subscribe({
-        next: () => {
-          form.resetForm({
-            fullname: this.student()?.nameEn || '',
-            email: this.student()?.email || '',
-            // phone: this.student()?.mobile || '',
-            message: ''
-          });
-          this.phoneCmps?.forEach(c => c.resetState());
-        },
-        error: (err) => {
+      // OPTIONAL ATTACHMENT
+      const hasAttachment = !!this.vacancy.attachments?.[0];
 
-          const apiMessage =
-            err?.error?.message ||
-            err?.error?.errors?.[0] ||
-            'vacancy.error';
+      this.contactService
+        .createContactMessage(
+          payload,
+          'postVacancy',
+          hasAttachment
+        )
+        .subscribe({
 
-          this.toasting.showToast(apiMessage, 'error');
-        },
+          next: (res) => {
 
-      });
+            const contactId = res?.oid;
+
+            const attachment = this.vacancy.attachments?.[0];
+
+            // NO ATTACHMENT
+            if (!attachment) {
+
+              this.handleVacancySuccess(form);
+
+              return;
+            }
+
+            // UPLOAD ATTACHMENT
+            this.contactService
+              .uploadAttachment(contactId, attachment)
+              .subscribe({
+
+                next: () => {
+
+                  this.handleVacancySuccess(form);
+
+                },
+
+                error: () => {
+
+                  this.toasting.showToast(
+                    'Attachment upload failed',
+                    'error'
+                  );
+                }
+              });
+          },
+
+          error: (err) => {
+
+            const apiMessage =
+              err?.error?.message ||
+              err?.error?.errors?.[0] ||
+              'vacancy.error';
+
+            this.toasting.showToast(apiMessage, 'error');
+          }
+        });
+
     } else {
+
       this.showConfirm = true;
     }
   }
 
+  private handleVacancySuccess(form: NgForm) {
+
+    this.toasting.showToast(
+
+      'vacancy.success',
+
+      'success'
+
+    );
+
+    form.resetForm({
+
+      fullname: this.student()?.nameEn || '',
+
+      email: this.student()?.email || '',
+
+      phone: this.student()?.mobile || '',
+
+      message: ''
+
+    });
+
+    this.vacancy.attachments = [];
+
+    this.phoneCmps?.forEach(c => c.resetState());
+
+  }
   getPostVacancyMessage() {
     const v = this.vacancy;
 

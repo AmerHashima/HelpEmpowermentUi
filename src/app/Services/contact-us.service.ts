@@ -11,6 +11,8 @@ import { CertificationReviewContactLookUp } from '../data/lookUPS';
 })
 export class ContactUsService {
 
+
+
   constructor(private apiService: ApiService) { }
 
   getReviewMessages(courseOid: string, page: number, size: number) {
@@ -100,9 +102,23 @@ export class ContactUsService {
   }
 
   // POST /api/ServiceContactUs
-  createContactMessage(body: ContactUs,page:string=''): Observable<APIContact> {
+  createContactMessage(body: ContactUs,page:string='',hasAttachment:boolean=false): Observable<APIContact> {
+    let message = 'Message has been sent Successfully';
+
+    if (page && hasAttachment) {
+
+      message =
+
+        'Your application has been submitted successfully. Uploading attachment...';
+
+    }
+
+    else if (page && !hasAttachment) {
+
+      message = '';
+    }
     return this.apiService
-      .post<ApiResponse<APIContact>>('ServiceContactUs', body, 'Message has been sent Successfully',page)
+      .post<ApiResponse<APIContact>>('ServiceContactUs', body, message, page)
       .pipe(map(res => res.data));
   }
 
@@ -125,6 +141,44 @@ export class ContactUsService {
     return this.apiService
       .put<ApiResponse<boolean>>(`ServiceContactUs/${id}/status`, '', body, '')
       .pipe(map(res => res.data));
+  }
+
+  uploadAttachment(id: string, file: File) {
+
+    return this.apiService.uploadFile(   `ServiceContactUs/${id}/attachment`, file,  'file'
+
+    );
+
+  }
+
+  getAttachment(id: string) {
+
+    return this.apiService.getFile(
+
+      `ServiceContactUs/${id}/attachment`
+
+    );
+
+  }
+
+  getAttachmentUrl(id: string) {
+
+    return this.apiService.getFileUrl(
+
+      `ServiceContactUs/${id}/attachment`
+
+    );
+
+  }
+
+  deleteAttachment(id: string) {
+
+    return this.apiService.deleteFile(
+
+      `ServiceContactUs/${id}/attachment`
+
+    );
+
   }
 }
 

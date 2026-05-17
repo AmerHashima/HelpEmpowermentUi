@@ -270,7 +270,7 @@ export default class ApiService {
     url: string,
     body: any,
     successMessage: string = 'Success',
-    page:string=''
+    page:string='',
   ): Observable<T> {
     // if (this.shouldBlockRequest(url)) {
     //   return new Observable<T>((observer) => observer.complete());
@@ -294,10 +294,11 @@ export default class ApiService {
           !url.includes('refresh-token') &&
           !url.includes('summary') &&
           !url.includes('forgot-password') &&
-          !page
+          (!page || page !== 'enroll')
         ) {
           this.toasting.showToast(successMessage, 'success');
         }
+
       }),
       catchError(err => this.handleError(err, url)),
       finalize(() => this.loader.stop())
@@ -475,5 +476,112 @@ export default class ApiService {
       catchError(err => this.handleError(err, endpoint)),
       finalize(() => this.loader.stop())
     );
+  }
+
+  uploadFile<T>( url: string, file: File, fieldName: string = 'file',successMessage: string = 'Success'
+
+  ): Observable<T> {
+
+    if (this.shouldBlockRequest(url)) {
+
+      return EMPTY;
+
+    }
+
+    const formData = new FormData();
+
+    formData.append(fieldName, file);
+
+    this.loader.start();
+
+    return this.http.post<T>(
+
+      `${this.baseUrl}/${url}`,
+
+      formData
+
+    ).pipe(
+
+      tap(() => {
+
+        if (successMessage) {
+
+          this.toasting.showToast(successMessage, 'success');
+
+        }
+
+      }),
+
+      catchError(err => this.handleError(err, url)),
+
+      finalize(() => this.loader.stop())
+
+    );
+
+  }
+
+  getFile(url: string): Observable<Blob> {
+
+    if (this.shouldBlockRequest(url)) {
+
+      return EMPTY;
+
+    }
+
+    this.loader.start();
+
+    return this.http.get(
+
+      `${this.baseUrl}/${url}`,
+
+      {
+
+        responseType: 'blob'
+
+      }
+
+    ).pipe(
+
+      catchError(err => this.handleError(err, url)),
+
+      finalize(() => this.loader.stop())
+
+    );
+  }
+
+  getFileUrl(url: string): string {
+
+    return `${this.baseUrl}/${url}`;
+
+  }
+
+  deleteFile(url: string): Observable<string> {
+
+    if (this.shouldBlockRequest(url)) {
+
+      return EMPTY;
+
+    }
+
+    this.loader.start();
+
+    return this.http.delete(
+
+      `${this.baseUrl}/${url}`,
+
+      {
+
+        responseType: 'text'
+
+      }
+
+    ).pipe(
+
+      catchError(err => this.handleError(err, url)),
+
+      finalize(() => this.loader.stop())
+
+    );
+
   }
 }
