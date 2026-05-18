@@ -10,7 +10,7 @@ export interface Student {
   promoDiscount?: number,
   courses?: string[],
   password?: string,
-  // isActive: boolean,
+  isActive: boolean,
   createdBy?: string,
   updatedBy?: string
 
