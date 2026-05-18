@@ -30,7 +30,7 @@ import { ToastingMessagesService } from '../../Services/ToastingMessages/toastin
 })
 export class ClientNavbarComponent {
   private certificationStore = inject(CertificationsStore);
-  private toasting=inject(ToastingMessagesService);
+  private toasting = inject(ToastingMessagesService);
   certifications = computed(() => this.certificationStore.certifications());
   private shared = inject(Shared);
   private auth = inject(AuthService);
@@ -168,7 +168,7 @@ export class ClientNavbarComponent {
     this.studentService.showExamSimulator = false;
     this.auth.logout().subscribe({
       next: () => this.router.navigateByUrl(`${this.lang()}/auth/login`),
-      error: () => this.toasting.showToast('Logout API failed(user already logged out locally)','warning')
+      error: () => this.toasting.showToast('Logout API failed(user already logged out locally)', 'warning')
     })
   }
   addToCart() {
@@ -289,5 +289,49 @@ export class ClientNavbarComponent {
       return;
     }
     this.router.navigateByUrl(homePath);
+  }
+
+  onSearch(event: Event) {
+
+    const value = (event.target as HTMLInputElement)
+
+      .value
+
+      .toLowerCase()
+
+      .trim();
+
+    const lang = this.lang();
+
+    if (!value) return;
+
+    if (value.includes('pmp')) {
+
+      this.router.navigate([`/${lang}/certifications/pmp`]);
+
+    }
+
+    else if (value.includes('capm')) {
+
+      this.router.navigate([`/${lang}/certifications/capm`]);
+
+    }
+
+    else {
+
+
+      this.router.navigate(
+
+        [`/${lang}/search`],
+
+        {
+
+          queryParams: { q: value }
+        }
+
+      );
+
+    }
+
   }
 }

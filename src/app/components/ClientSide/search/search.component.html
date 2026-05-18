@@ -1,0 +1,52 @@
+<div class="search-page container py-5">
+
+  <div class="search-wrapper">
+
+    <!-- ICON -->
+    <div class="search-icon">
+      <i class="bi bi-search"></i>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="search-content">
+
+      <span class="search-label">
+        {{ 'pages.search.label' | translate }}
+      </span>
+
+      <h1>
+        {{ 'pages.search.title' | translate }}
+      </h1>
+
+      <p>
+        {{
+          'pages.search.description'
+            | translate : { value: query() }
+        }}
+      </p>
+
+      <div class="search-suggestions">
+
+        <span>
+          {{ 'pages.search.suggestions' | translate }}
+        </span>
+
+        <div class="d-flex flex-wrap justify-content-center gap-2">
+
+          <span class="suggestion-chip">
+            PMP
+          </span>
+
+          <span class="suggestion-chip">
+            CAPM
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

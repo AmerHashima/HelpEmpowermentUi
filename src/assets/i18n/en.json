@@ -891,6 +891,13 @@
     }
   },
   "pages": {
+    "search": {
+      "label": "SEARCH RESULT",
+            "search": "Search",
+      "title":"No Results Found",
+      "description": "We couldn’t find any matches for \"{{value}}\"",
+      "suggestions": "Try searching for:"
+    },
     "technical-support-policy": "Technical Support Policy",
     "privacy-notice": "Privacy Notice",
     "refund-policy": "Refund Policy",
@@ -1665,6 +1672,7 @@
     "noWebinars": "While there are no Webinar scheduled at the moment, stay tuned our next event will be announced soon, and it’s worth the wait"
   }
   ,
+
   "Attachment deleted successfully":"Attachment deleted successfully",
   "Your application has been submitted successfully. Uploading attachment...":"Your application has been submitted successfully. Uploading attachment..."
 }

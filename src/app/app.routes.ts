@@ -148,6 +148,13 @@ export const routes: Routes = [
         path: "user-account-policy",
         component: UserAccountPolicyComponent
       },
+
+{
+  path: ':search',
+  loadComponent: () =>
+    import('./components/ClientSide/search/search.component')
+      .then(m => m.SearchComponent)
+},
       {
         path: "technical-support-policy",
         component: TechnicalSupportPolicyComponent
