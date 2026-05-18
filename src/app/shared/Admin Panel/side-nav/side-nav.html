@@ -1,10 +1,11 @@
 <!-- src\app\shared\Admin Panel\side-nav\side-nav.html -->
-<div class="sidebar p-3 d-flex flex-column gap-3 h-100"  #sideNav>
+<div class="sidebar p-3 d-flex flex-column gap-3 h-100" #sideNav>
   <!-- Logo Section -->
-  <div class="logo d-flex align-items-center justify-content-center logoBorder bg-white rounded-3 p-2">
-        <img src="assets/images/sideNav/logo.png" alt="Logo Image" class="w-100" />
+  <div
+    class="logo d-flex align-items-center justify-content-center logoBorder bg-white rounded-3 p-2"
+  >
+    <img src="assets/images/sideNav/logo.png" alt="Logo Image" class="w-100" />
   </div>
-
 
   <!-- @if (!isCollapse()) {
   <app-search-field />
@@ -27,34 +28,56 @@
       } -->
       @if(lang() == 'ar' ){
       <span>الرئيسية</span>
-      }
-      @if(lang() == 'en'){
-      <span>{{'menu'  | titlecase}}</span>
+      } @if(lang() == 'en'){
+      <span>{{'menu' | titlecase}}</span>
       }
     </div>
     <div class="sidenav-section-one pb-3">
       <ul>
-        @for (navItem of sectionOneNavItems; track navItem; let index = $index) {
-        @if(navItem.name == 'settings'){
+        @for (navItem of sectionOneNavItems; track navItem; let index = $index)
+        { @if(navItem.name == 'settings'){
         <div class="text-site fs-regular-xs fw-bold pb-1 pt-3">
-          <span>{{lang() == 'ar' ? navItem.nameAr : navItem.name | titlecase}}</span>
+          <span
+            >{{lang() == 'ar' ? navItem.nameAr : navItem.name |
+            titlecase}}</span
+          >
         </div>
         }
         <li>
-          <app-side-nav-item [NavitemComponentData]="{
+          <app-side-nav-item
+            [NavitemComponentData]="{
                 isCollapsed: false,
                 navItemName: lang()== 'ar' ? navItem.nameAr:navItem.name,
                 classes: 'py-2',
                 subItems: navItem.subItems,
                 route:navItem.route
-              }" (mouseenter)="showHoverSubMenu(index, $event)">
-                <!-- <img alt="dropdown icon" [src]="'assets/images/sideNav/'+navItem.icon"> -->
-                <i [ngClass]="navItem.icon"></i>
+              }"
+            (mouseenter)="showHoverSubMenu(index, $event)"
+          >
+            <!-- <img alt="dropdown icon" [src]="'assets/images/sideNav/'+navItem.icon"> -->
+            <i [ngClass]="navItem.icon"></i>
             <!-- <i [ngClass]="navItem.icon"></i> -->
           </app-side-nav-item>
-       
         </li>
         }
+        <!-- <li (click)="logout()" class="cursor-pointer">
+          <app-side-nav-item
+            [NavitemComponentData]="{
+
+      isCollapsed: false,
+
+      navItemName: lang() == 'ar' ? 'تسجيل الخروج' : 'Logout',
+
+      classes: 'py-2',
+
+      subItems: [],
+
+      route: 'logout'
+    }"
+          >
+            <i class="bi bi-box-arrow-right"></i>
+          </app-side-nav-item>
+        </li> -->
       </ul>
     </div>
   </div>
