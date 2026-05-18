@@ -46,6 +46,15 @@ export class AdminLoginComponent {
       next: () => {
         this.router.navigateByUrl(`/admin`);
       },
+      error: (err) => {
+
+        const apiMessage =
+          err?.error?.message ||
+          err?.error?.errors?.[0] ||
+          'auth.loginToast.error';
+
+        this.toasting.showToast(apiMessage, 'error');
+      }
       })
   }
 

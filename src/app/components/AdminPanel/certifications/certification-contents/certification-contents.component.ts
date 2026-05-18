@@ -91,7 +91,6 @@ export class CertificationContentsComponent {
   }
 
   AddContents() {
-    //console.log('in add contents');
     this.contentArrays.push(this.createContentGroup());
     this.openModal();
   }

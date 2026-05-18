@@ -11,7 +11,6 @@ export class LoadingService {
   );
   start(): void {
     this.activeRequests += 1;
-    console.log('START →', this.activeRequests);
 
     if (this.activeRequests === 1) {
       this.loadingSubject.next(true);
@@ -22,7 +21,6 @@ export class LoadingService {
     if (this.activeRequests > 0) {
       this.activeRequests -= 1;
     }
-    console.log('STOP →', this.activeRequests);
     if (this.activeRequests === 0) {
       this.loadingSubject.next(false);
     }

@@ -47,16 +47,6 @@ export class ForgetPasswordComponent {
     }, 1000);
   }
 
-  // onSubmit() {
-  //   this.auth.forgetStudentPassword(this.credentials).subscribe({
-  //     next: (isSent:boolean) => {
-  //       this.toasting.showToast('forgetPassword.emailSent', 'success');
-  //       if(isSent) this.startCountdown();
-  //         },
-  //     error: () => this.toasting.showToast('auth.loginToast.error', 'error')
-  //   })
-  // }
-
 
   async onSubmit(form: NgForm) {
     if (form.invalid) {
@@ -80,7 +70,7 @@ export class ForgetPasswordComponent {
       // 2️⃣ Send Email via EmailJS
       const emailData = {
         email: this.credentials.email,
-        otp: 'otp',
+        otp: '1234',
         reset_link: 'http://144.91.127.150:8082/en/auth/verify-otp?email=' + this.credentials.email
       };
 
@@ -98,11 +88,20 @@ export class ForgetPasswordComponent {
 
       this.startCountdown();
 
+    }catch (apiError: any) {
 
-    } catch (err) {
-      console.error(err);
-      this.toasting.showToast('forgetPassword.error', 'error');
-    }
+        const apiMessage =
+          apiError?.error?.message ||
+          apiError?.error?.errors?.[0] ||
+          'forgetPassword.error';
+
+        this.toasting.showToast(apiMessage, 'error');
+      }
+    // } catch (err) {
+    //   console.error(err);
+
+    //   this.toasting.showToast('forgetPassword.error', 'error');
+    // }
   }
 
 

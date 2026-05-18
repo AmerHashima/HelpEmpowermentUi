@@ -71,13 +71,13 @@ export class WhiteboardComponent implements AfterViewInit, OnDestroy {
     this.forceResizeAndRefresh();
     this.enableDrawingMode();
 
-    this.canvas.on('mouse:down', (e) => {
-      console.log('mouse:down event:', e);
-    });
+    // this.canvas.on('mouse:down', (e) => {
+    //   console.log('mouse:down event:', e);
+    // });
 
-    this.canvas.on('path:created', (e) => {
-      console.log('path:created → stroke finished', e.path);
-    });
+    // this.canvas.on('path:created', (e) => {
+    //   console.log('path:created → stroke finished', e.path);
+    // });
 
     this.canvas.requestRenderAll();
   }

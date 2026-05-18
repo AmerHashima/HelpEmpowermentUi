@@ -672,32 +672,7 @@ export class QuizGameQuestionComponent {
   // maxAttempts = 2;
 
   currentLevel = computed(() => this.levels[this.currentLevelIndex()]);
-  // onGetQuestionResult(isCorrect: boolean) {
-  //   this.next.set(false);
-  //   if (!isCorrect) {
-  //     this.showMessage = true;
-  //     this.levelMessage.set({
-  //       message: 'OOPS, Your Answer is not correct\nTry Again Later....',
-  //       isCorrect: false
-  //     })
-  //     return;
-  //   }
 
-
-  //   this.score.update(s => s + 1);
-  //   console.log(this.currentLevelIndex());
-  //   console.log(this.currentLevelIndex() < this.levels.length - 1)
-  //   if (this.currentLevelIndex() < this.levels.length - 1) {
-  //     this.currentLevelIndex.update(i => i + 1);
-  //   }else{
-  //     this.showMessage=true;
-  //     this.levelMessage.set({
-  //       message: 'Well Done,You have rock it',
-  //       isCorrect: true
-  //     })
-  //   }
-
-  // }
 
   constructor() {
     effect(() => {

@@ -90,7 +90,7 @@ export class StudentReservedCoursesComponent {
 
         this.certificationService.search(this.buildCertificationSearchRequest()).subscribe({
             next: ({ certifications }) => {
-                this.certifications.set(certifications);
+                this.certifications.set(certifications.filter(c => c.isActive));
                 this.loadingCertifications.set(false);
             },
             error: (error: unknown) => {
@@ -138,9 +138,12 @@ export class StudentReservedCoursesComponent {
 
     canSaveEdit(): boolean {
         const course = this.editCourse();
-        return !!course && this.hasReservationFlags(course);
+        return !!course && (this.hasReservationFlags(course) || this.hasNoFlags(course))
     }
 
+    hasNoFlags(course: Pick<StudentCourse, 'examSimulationReserv' | 'recordedCourseReserv' | 'liveCourseReserv'>): boolean {
+        return !course.examSimulationReserv && !course.recordedCourseReserv && !course.liveCourseReserv;
+    }
     canSubmitManualEnrollment(): boolean {
         const form = this.manualEnroll();
         return !!form.courseId && !!form.paymentMethod.trim() && this.hasReservationFlags(form);

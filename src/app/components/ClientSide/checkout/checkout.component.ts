@@ -49,10 +49,7 @@ export class CheckoutComponent {
     } else if (paymentMethod == 'paypal'){
        this.continueWithPaypal();
     }
-    // setTimeout(() => {
-    //   this.loading.set(false);
-    //   console.log(this.checkoutForm.value);
-    // }, 1500);
+ 
   }
 
   continueWithPaypal(){}

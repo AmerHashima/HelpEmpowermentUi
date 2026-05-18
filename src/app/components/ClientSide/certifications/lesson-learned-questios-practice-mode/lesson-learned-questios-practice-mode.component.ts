@@ -1051,7 +1051,6 @@ export class LessonLearnedQUestiosPracticeModeComponent {
     if (this.isBrowser) {
       // const key = this.getStorageKey(this.studentExamId());
       const key = this.getStorageKeySafe();
-      console.log('key',key);
       localStorage.removeItem(key);
       this.toasting.showToast('examToast.finish.success', 'success');
     }
@@ -1228,7 +1227,6 @@ export class LessonLearnedQUestiosPracticeModeComponent {
     if (!this.isBrowser || this.isFinished) return;
     // const key = this.getStorageKey(this.studentExamId());
     const key = this.getStorageKeySafe();
-    console.log('SAVING AGAIN', key);
 
     localStorage.setItem(
       key,

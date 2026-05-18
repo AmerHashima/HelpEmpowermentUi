@@ -19,7 +19,7 @@ export class ResetPasswordOTPComponent {
   private router = inject(Router);
   private auth = inject(AuthService);
   private toasting = inject(ToastingMessagesService);
-  otp = '';
+  otp = '1234';
   email = '';
   errorMessage = '';
 

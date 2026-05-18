@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, input, output, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, output, PLATFORM_ID, signal } from '@angular/core';
 import { AccordionComponent } from '../../../../shared/accordion/accordion.component';
 import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/site-button.component';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -7,12 +7,18 @@ import { AuthService } from '../../../../Services/auth.service';
 import { StudentService } from '../../../../Services/student-service.service';
 import { WebinarService } from '../../../../Services/webinar.service';
 import { LiveCourseService } from '../../../../Services/live-course.service';
-import { ApiWebinar } from '../../../../models/webinar';
+import { isPlatformBrowser } from '@angular/common';
 
-interface Session {
+export interface SessionModel {
   date: string;
   time: string;
-title: string;
+  title: string;
+  courseName: string;
+  whatsAppLink: string;
+
+  numberOfSessions?: number;
+  totalHours?: number;
+  notes?: string;
 }
 
 @Component({
@@ -23,6 +29,7 @@ title: string;
 })
 export class UpcomingSessionsComponent {
     private shared = inject(Shared);
+  private platformId = inject(PLATFORM_ID);
     private currentCertification=this.shared.currentCertificate;
     private webinarService = inject(WebinarService);
     private liveCourseService=inject(LiveCourseService);
@@ -31,46 +38,42 @@ export class UpcomingSessionsComponent {
     // hasBought = this.auth.hasBought;
   private studentService = inject(StudentService);
   isEnrolled = this.studentService.isLiveCourseEnrolled;
-  sessions = computed(() => {
+  isWebinar=computed(()=> this.type() === 'webinar');
+  sessions = computed<SessionModel[]>(() => {
     if (this.type() === 'webinar') {
-      // return this.webinarService.mapWebinarsToSessions().filter(session => session.courseName?.toLowerCase() === this.currentCertification().toLowerCase());
-      return  [{
-          date: 'sessions.date.jan15',
-          time: 'sessions.time.morningSlot',
-          title: 'sessions.webinar.session1'
-        }]
-
+      return this.webinarService
+        .mapWebinarsToSessions()
+        .filter(session =>
+          session.courseName?.toLowerCase() === this.currentCertification().toLowerCase()
+        );
     } else {
-      return this.liveCourseService.mapCoursesToSessions().filter(session => session.courseName?.toLowerCase() === this.currentCertification().toLowerCase());
-        // {
-        //   date: 'sessions.date.jan15',
-        //   time: 'sessions.time.morningSlot',
-        //   title: 'sessions.course.integration'
-        // },
-        // {
-        //   date: 'sessions.date.jan16',
-        //   time: 'sessions.time.morningSlot',
-        //   title: 'sessions.course.integration'
-        // },
-        // {
-        //   date: 'sessions.date.jan17',
-        //   time: 'sessions.time.morningSlot',
-        //   title: 'sessions.course.integration'
-        // }
-
+      return this.liveCourseService
+        .mapCoursesToSessions()
+        .filter(session =>
+          session.courseName?.toLowerCase() === this.currentCertification().toLowerCase()
+        );
     }
   });
+  // sessions = computed(() => {
+  //   if (this.type() === 'webinar') {
+  //     return this.webinarService.mapWebinarsToSessions().filter(session => session.courseName?.toLowerCase() === this.currentCertification().toLowerCase());
+
+  //   } else {
+  //     return this.liveCourseService.mapCoursesToSessions().filter(session => session.courseName?.toLowerCase() === this.currentCertification().toLowerCase());
+
+  //   }
+  // });
 
   title = input<string>('Upcoming Live Sessions');
   type = input<string>('Live Sessions');
   register = output<void>();
+  liveCourseRegister = output<any>();
 
-  constructor(){
-    effect(()=>console.log('sessions',this.sessions()));
+
+  joinWhatsapp(link:string) {
+    if (isPlatformBrowser(this.platformId)) {
+      window.open(link, '_blank');
+    }
   }
-  //   bookNow(session:any){
-
-  // }
-
 
 }

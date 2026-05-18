@@ -4,7 +4,6 @@ import ApiService from '../shared/Services/ApiService/api.service';
 import { map, Observable } from 'rxjs';
 import { APIStudent, Student } from '../models/student';
 import { ApiResponse, ApiSearchResponse } from '../models/apiResponse';
-import { APIStudentExamResponse, startStudentExam } from '../models/certification';
 import { RequestBody } from '../models/rquest';
 import { APIStudentCourse, StudentCourse, updateStudentCourse } from '../models/student-course';
 import { AuthService } from './auth.service';
@@ -56,7 +55,7 @@ export class StudentService {
         return;
       }
       this.getAllStudentEnrolledCourses(studentId).subscribe({
-        next: (courses) => { console.log('this.enrollCourse', courses); this.enrolledCourses.set(courses) }
+        next: (courses) => { this.enrolledCourses.set(courses) }
       });
 
       this.getStudent(studentId).subscribe({
@@ -64,7 +63,6 @@ export class StudentService {
       })
     })
 
-    effect(() => console.log(this.currentCourse()));
 
 
   }
@@ -321,8 +319,7 @@ export class StudentService {
       completedLessons: completedLessons,
       totalLessons: this.totalLessonsInCourse()
     }
-    console.log('currentCourse', this.currentCourse());
-    console.log('totalLessosn(', this.totalLessonsInCourse());
+
     const studentCourseId = this.currentCourse()?.oid;
     // const studentId = this.auth.loggedStudent()?.userId!
     return this.apiService
@@ -346,6 +343,50 @@ export class StudentService {
           // return response.data;
         })
       );
+  }
+
+  getEnrollmentCount(
+    courseName: string,
+    type: 'exam' | 'recorded' | 'live'
+  ): Observable<number> {
+
+    const body = {
+      filters: [],
+      sort: [],
+      pagination: {
+        getAll: true,
+        pageNumber: 0,
+        pageSize: 0
+      },
+      columns: []
+    };
+
+    return this.searchStudentCourses(body).pipe(
+      map(res => {
+        const courses = res.courses ?? [];
+
+        return courses.filter(c => {
+          const matchesCourse =
+            c.courseName?.toLowerCase() === courseName.toLowerCase();
+
+          if (!matchesCourse) return false;
+
+          switch (type) {
+            case 'exam':
+              return !!c.examSimulationReserv;
+
+            case 'recorded':
+              return !!c.recordedCourseReserv;
+
+            case 'live':
+              return !!c.liveCourseReserv;
+
+            default:
+              return false;
+          }
+        }).length;
+      })
+    );
   }
 
 }

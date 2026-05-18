@@ -1,4 +1,4 @@
-import { DatePipe, NgClass } from '@angular/common';
+import { DatePipe, NgClass, TitleCasePipe } from '@angular/common';
 import { Component, computed, input, signal } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { StarRatingComponent } from '../../../../../shared/star-rating/star-rating.component';

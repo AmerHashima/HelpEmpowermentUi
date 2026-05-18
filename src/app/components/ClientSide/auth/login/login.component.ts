@@ -63,7 +63,6 @@ export class LoginComponent {
 
         this.toasting.showToast(apiMessage, 'error');
       }
-      // error: () => this.toasting.showToast('auth.loginToast.error', 'error')
     })
   }
 

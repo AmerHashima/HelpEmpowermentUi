@@ -564,7 +564,6 @@ export class CertificationQuestionComponent {
       const answerControls = question.answers?.map((a: any) => this.createAnswerGroup(false, a)) ?? [];
       this.form.setControl('answers', this.fb.array(answerControls));
     } else {
-      //console.log('question', question);
       const sortByOrder = (items: any[]) =>
         items.slice().sort((a, b) => (a?.orderNo ?? 0) - (b?.orderNo ?? 0));
 
@@ -589,7 +588,6 @@ export class CertificationQuestionComponent {
       this.addDragAnswersFlag.set(true);
       this.apiQuestions = questions;
       this.apiAnswers.set(answers);
-      //console.log('questions', questions);
       this.syncCorrectAnswerSelections(questions, answers);
       this.linkDragAnswerAndQuestionFlag.set(true);
     }
@@ -604,7 +602,6 @@ export class CertificationQuestionComponent {
         const hasMatch = answers.some(a => String(a?.oid) === desiredValue);
         const value = hasMatch ? desiredValue : String(answers[index]?.oid ?? '');
         if (!value) return;
-        console.log('value', value);
         ctrl.get('correctAnswerOid')?.setValue(value, { emitEvent: false });
       });
     }, 0);
@@ -630,8 +627,7 @@ export class CertificationQuestionComponent {
       }
     }
 
-    //console.log('Form invalid?', this.form.invalid);
-    //console.log('Form value:', this.form.value);
+
 
     if (this.form.invalid) {
       // this.logAllInvalidControls();
@@ -640,14 +636,11 @@ export class CertificationQuestionComponent {
     }
 
     const payload = this.buildPayload();
-    //console.log('payload', payload);
-    //console.log('edit mode', this.editMode);
+
     if (!this.editMode) {
-      //console.log('selectedType', this.selectedType())
       if (this.selectedType() !== 'MATCHING') {
         this.createNewQuestion(payload);
       } else {
-        //console.log('subit deag questions');
         this.updateMatchingQuestions();
       }
     } else {
@@ -796,7 +789,6 @@ export class CertificationQuestionComponent {
       oid: a.oid ?? apiAnswers[index]?.oid ?? null
     }));
 
-    console.log('draganSWERS', dragAnswers);
     const questionsWithLinks = questionAnswers.map((q: any, index: number) => {
       // Use the correctAnswerOid selected in the form dropdown; fall back to positional match
       const selectedOid = (raw.dragQuestions?.[index] as any)?.correctAnswerOid ?? null;
@@ -806,7 +798,6 @@ export class CertificationQuestionComponent {
       return { ...q, correctAnswerOid: resolvedOid };
     });
 
-    console.log('questionsWithLinks', questionsWithLinks);
 
 
     return {
@@ -987,35 +978,5 @@ export class CertificationQuestionComponent {
     });
   }
 
-  // private logAllInvalidControls() {
-  //   const invalid: { path: string; errors: any; value: any }[] = [];
 
-  //   const traverse = (control: AbstractControl, path: string = '') => {
-  //     if (control.invalid) {
-  //       invalid.push({
-  //         path: path || '(root)',
-  //         errors: control.errors,
-  //         value: control.value
-  //       });
-  //     }
-
-  //     if (control instanceof FormGroup) {
-  //       Object.entries(control.controls).forEach(([key, child]) => {
-  //         traverse(child, path ? `${path}.${key}` : key);
-  //       });
-  //     } else if (control instanceof FormArray) {
-  //       control.controls.forEach((child, idx) => {
-  //         traverse(child, path ? `${path}[${idx}]` : `${idx}`);
-  //       });
-  //     }
-  //   };
-
-  //   traverse(this.form);
-
-  //   if (invalid.length === 0) {
-  //     //console.log('No invalid controls found');
-  //   } else {
-  //     console.table(invalid);
-  //   }
-  // }
 }

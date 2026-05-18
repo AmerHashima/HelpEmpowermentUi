@@ -1,6 +1,6 @@
 // src\app\components\AdminPanel\certifications\create-new-certification\create-new-certification.component.ts
 import { Component, computed, effect, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SpkNgSelectComponent } from '../../../../shared/spk-ng-select/spk-ng-select.component';
 import { ButtonComponent } from '../../../../shared/button/button.component';
 import { InputComponent } from '../../../../shared/input/input.component';
@@ -53,7 +53,7 @@ export class CreateNewCertificationComponent {
     // courseCategoryLookupId: ['', [Validators.required]],
     courseLevelLookupId: [null as string | null],
     courseCategoryLookupId: [null as string | null],
-    createdBy: [createdUpdatedOID, [Validators.required]],
+    userId: [createdUpdatedOID, [Validators.required]],
     // createdBy: ['3fa85f64-5717-4562-b3fc-2c963f66afa6', [Validators.required]],
     isActive: [true, [Validators.required]],
     files: [[] as File[]]
@@ -104,7 +104,7 @@ export class CreateNewCertificationComponent {
         durationMinutes: certification.durationMinutes,
         courseLevelLookupId: certification.courseLevelLookupId ?? null,
         courseCategoryLookupId: certification.courseCategoryLookupId ?? null,
-        createdBy: certification.createdBy,
+        userId: certification.createdBy? certification.createdBy : createdUpdatedOID,
         questionCount: certification.questionCount,
         isActive: certification.isActive,
       });
@@ -142,22 +142,6 @@ export class CreateNewCertificationComponent {
     this.store.updateCertification({ id: this.certification()?.oid!, body: this.getPayload() });
   }
 
-  // getPayload() {
-  //   const v = this.form.getRawValue();
-  //   const payload: Certification = {
-  //     ...(this.certification()?.oid ? { oid: this.certification()?.oid } : {}),
-  //     courseCode: v.courseCode!,
-  //     courseName: v.courseName!,
-  //     courseDescription: v.courseDescription!,
-  //     durationMinutes: v.durationMinutes!,
-  //     courseLevelLookupId: v.courseLevelLookupId ?? null,
-  //     courseCategoryLookupId: v.courseCategoryLookupId ?? null,
-  //     createdBy: v.createdBy!,
-  //     questionCount: v.questionCount!,
-  //     isActive: v.isActive!,
-  //   };
-  //   return payload;
-  // }
   getPayload() {
     const v = this.form.getRawValue();
     const isEdit = !!this.certification()?.oid;
@@ -174,8 +158,8 @@ export class CreateNewCertificationComponent {
       courseCategoryLookupId: v.courseCategoryLookupId ?? null,
 
       ...(isEdit
-        ? { updatedBy: v.createdBy! }
-        : { createdBy: v.createdBy! }),
+        ? { updatedBy: v.userId! }
+        : { createdBy: v.userId! }),
 
       questionCount: v.questionCount!,
       isActive: v.isActive!,

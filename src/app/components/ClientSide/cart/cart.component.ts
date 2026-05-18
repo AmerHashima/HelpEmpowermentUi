@@ -4,6 +4,8 @@ import { SiteButtonComponent } from '../../../shared/clientSide/site-button/site
 import { CartService, CartViewItem, ReservationType } from '../../../Services/  cart.service';
 import { APICartItem } from '../../../models/cart';
 import { Router } from '@angular/router';
+import { StudentService } from '../../../Services/student-service.service';
+import { ToastingMessagesService } from '../../../shared/Services/ToastingMessages/toasting-messages.service';
 
 // type ReservationType =
 //   | 'examSimulationReserv'
@@ -23,9 +25,12 @@ import { Router } from '@angular/router';
 export class CartComponent {
   private shared = inject(Shared);
   private cartService = inject(CartService);
-
+  private studentService=inject(StudentService);
+  private toasting=inject(ToastingMessagesService);
+  student = this.studentService.innerStudent;
   private router = inject(Router);
   appliedCoupon = this.cartService.appliedCoupon;
+
   discountAmount = this.cartService.discountAmount;
   subtotal = this.cartService.subtotal;
   total = this.cartService.total;
@@ -34,11 +39,7 @@ export class CartComponent {
   cartItems = this.cartService.cartItems;
   expandedCartItems = this.cartService.expandedCartItems;
 
-  constructor() {
-    effect(() => console.log('cartItems', this.cartItems()));
-    effect(() => console.log('expandedCartItems', this.expandedCartItems()));
 
-  }
 
   removeItem(item: CartViewItem) {
     const course = this.cartService.getCourse(item.courseId);
@@ -132,8 +133,10 @@ export class CartComponent {
 
   applyCoupon(value: string) {
     const couponCode = value?.trim();
-    if (!couponCode) return;
-
+    // if (!couponCode) return;
+    // if (couponCode !== this.student()?.promoCode) {
+    //   this.toasting.showToast('This coupon is invalid','error');
+    //   return;}
     this.cartService.addCoupon({ couponCode }).subscribe({
       next: (data) => {
         this.cartService.applyCouponData(data, couponCode);

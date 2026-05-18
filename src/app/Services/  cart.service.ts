@@ -84,12 +84,12 @@ export class CartService {
   // );
   subtotal = computed(() => {
     const override = this.subTotalOverride();
-    if (override != null) return override;
-
-    return this.expandedCartItems().reduce((total, item) => {
+    if (override) return override;
+    const sub = this.expandedCartItems().reduce((total, item) => {
       const price = this.getFeaturePrice(item);
       return total + price;
     }, 0);
+    return sub;
   });
   // subtotal = computed(() =>
   //   this.expandedCartItems().reduce((total, item) => {

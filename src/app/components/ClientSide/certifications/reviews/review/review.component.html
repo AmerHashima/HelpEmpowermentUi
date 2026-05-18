@@ -2,25 +2,32 @@
   <div class="reviewContent d-flex flex-column gap-2">
     <!-- Reviewer info + image -->
     <div class="d-flex align-items-center gap-2">
-      <img
+      <!-- <img
         [src]="sectionImage()"
         alt="Reviewer image"
         class="reviewer-image rounded-circle"
-      />
+      /> -->
 
-      <div class="innerContent  flex-grow-1 d-flex flex-md-column flex-xl-row justify-content-between">
-        <div class="d-flex flex-column gap-1 ">
-          <span class="reviewerName  fw-bold">{{ reviewerName() }}</span>
+      <div
+        class="reviewer-image rounded-circle d-flex align-items-center justify-content-center"
+      >
+        <i class="bi bi-person-fill"></i>
+      </div>
+      <div
+        class="innerContent flex-grow-1 d-flex flex-md-column flex-xl-row justify-content-between"
+      >
+        <div class="d-flex flex-column gap-1">
+          <span class="reviewerName fw-bold">{{ reviewerName() }}</span>
 
           <div class="reviewTag text-muted small">
             <div class="d-flex align-items-center gap-2">
-              <span>{{'Reviewed:' | translate}}</span>
-              <span>{{ reviewDate() | date:'mediumDate'}}</span>
+              <span>{{ "Reviewed:" | translate }}</span>
+              <span>{{ reviewDate() | date: "mediumDate" }}</span>
             </div>
 
             <div class="d-flex align-items-center gap-2">
-              <span>{{'Topic:' | translate}}</span>
-              <span>{{ reviewTopic() | translate}}</span>
+              <span>{{ "Topic:" | translate }}</span>
+              <span>{{ reviewTopic() | translate }}</span>
             </div>
           </div>
         </div>
@@ -33,7 +40,7 @@
 
     <!-- Review text with read more/less -->
     <p class="reviewText">
-      {{ displayedText() | translate}}
+      {{ displayedText() | translate }}
 
       @if (isLongText()) {
         <span
@@ -44,10 +51,13 @@
           (keydown.enter)="toggleExpanded()"
           (keydown.space)="toggleExpanded()"
         >
-          {{ expanded() ? ('common.readLess' | translate) : ('common.readMore' | translate) }}
+          {{
+            expanded()
+              ? ("common.readLess" | translate)
+              : ("common.readMore" | translate)
+          }}
         </span>
       }
     </p>
   </div>
 </div>
-

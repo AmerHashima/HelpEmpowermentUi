@@ -75,126 +75,6 @@ export class EnrollFormComponent {
     });
   }
 
-  // Replace your current onEnroll with this version
-  // async onEnroll(form: NgForm) {
-  //   if (form.invalid) {
-  //     Object.values(form.controls).forEach(control => {
-  //       control.markAsTouched();
-  //     });
-  //     return;
-  //   }
-
-  //   const enrollMessageData = {
-  //     ...this.enroll,
-  //     service: this.page() || 'unknown',
-  //   };
-
-  //   console.log('Sending enroll data:', enrollMessageData);
-
-  //   try {
-  //     const response: EmailJSResponseStatus = await emailjs.send(
-  //       environment.mailServiceId,
-  //       environment.mailTemolateId,
-  //       enrollMessageData,
-  //       {
-  //         publicKey: environment.mailPublicKey
-  //       }
-  //     );
-
-  //     console.log('SUCCESS!', response.status, response.text);
-  //      this.toasting.showToast('enroll.sent.success','success');
-  //     form.resetForm();
-
-  //   } catch (err: any) {
-  //     this.toasting.showToast("enroll.sent.error", 'error');
-  //   }
-  //   //  finally {
-  //   //   this.isSending = false;
-  //   // }
-  // }
-
-  async onEnroll(form: NgForm) {
-    if (this.student() && this.student()?.userId) {
-
-      if (form.invalid) {
-        Object.values(form.controls).forEach(control => {
-          control.markAsTouched();
-        });
-        this.phoneCmps?.forEach(c => c.validateOnSubmit());
-        return;
-      }
-
-      try {
-        // 🔹 1. Translations
-        const translations = await firstValueFrom(
-          forkJoin({
-            fullNameAr: this.translationService.translateEnToAr(this.enroll.fullname),
-            messageAr: this.translationService.translateEnToAr(
-              `Enroll request for ${this.page()}`
-            )
-          })
-        );
-
-        const payload = {
-          fullName: this.enroll.fullname,
-          fullNameAr: translations.fullNameAr,
-          email: this.enroll.email,
-          phone: '',
-          mobile: this.enroll.phone,
-          subject: '',
-          subjectAr: '',
-          message: `Enroll request for ${this.page()} ,\n Working at :${this.enroll.organizationname} \n Notes: ${this.enroll.notes}`,
-          messageAr: translations.messageAr,
-          contactTypeLookupId: serviceEnrollMessageingLookup,
-          studentId: this.student()?.userId!
-        };
-
-        const enrollMessageData = {
-          ...this.enroll,
-          service: this.page() || 'unknown',
-        };
-
-
-        await firstValueFrom(
-          this.contactService.createContactMessage(payload, 'enroll')
-        );
-
-        try {
-          this.loader.start();
-          await emailjs.send(
-            environment.mailServiceId,
-            environment.mailTemolateId,
-            enrollMessageData,
-            { publicKey: environment.mailPublicKey }
-          );
-        } catch (emailError) {
-          this.toasting.showToast('enroll.email.failed', 'warning');
-        }
-        finally {
-          this.loader.stop();
-        }
-
-        this.toasting.showToast('enroll.sent.success', 'success');
-        form.resetForm({
-          fullname: this.student()?.nameEn || '',
-          email: this.student()?.email || '',
-          phone: this.student()?.mobile || '',
-          message: ''
-        });
-
-        this.phoneCmps?.forEach(c => c.resetState());
-
-      }
-       catch (apiError) {
-
-              // this.toasting.showToast('enroll.sent.error', 'error');
-      }
-
-    } else {
-      this.showConfirm = true;
-    }
-  }
-
   // async onEnroll(form: NgForm) {
   //   if (this.student() && this.student()?.userId) {
 
@@ -207,6 +87,7 @@ export class EnrollFormComponent {
   //     }
 
   //     try {
+  //       // 🔹 1. Translations
   //       const translations = await firstValueFrom(
   //         forkJoin({
   //           fullNameAr: this.translationService.translateEnToAr(this.enroll.fullname),
@@ -224,7 +105,7 @@ export class EnrollFormComponent {
   //         mobile: this.enroll.phone,
   //         subject: '',
   //         subjectAr: '',
-  //         message: `Enroll request for ${this.page()}`,
+  //         message: `Enroll request for ${this.page()} ,\n Working at :${this.enroll.organizationname} \n Notes: ${this.enroll.notes}`,
   //         messageAr: translations.messageAr,
   //         contactTypeLookupId: serviceEnrollMessageingLookup,
   //         studentId: this.student()?.userId!
@@ -235,20 +116,29 @@ export class EnrollFormComponent {
   //         service: this.page() || 'unknown',
   //       };
 
-  //       await Promise.all([
-  //         emailjs.send(
+
+  //       await firstValueFrom(
+  //         this.contactService.createContactMessage(payload, 'enroll')
+  //       );
+
+  //       try {
+  //         this.loader.start();
+  //         await emailjs.send(
   //           environment.mailServiceId,
   //           environment.mailTemolateId,
   //           enrollMessageData,
   //           { publicKey: environment.mailPublicKey }
-  //         ),
-  //         firstValueFrom(this.contactService.createContactMessage(payload))
-  //       ]);
+  //         );
+  //       } catch (emailError) {
+  //         this.toasting.showToast('enroll.email.failed', 'warning');
+  //       }
+  //       finally {
+  //         this.loader.stop();
+  //       }
 
   //       this.toasting.showToast('enroll.sent.success', 'success');
-
   //       form.resetForm({
-  //         fullName: this.student()?.nameEn || '',
+  //         fullname: this.student()?.nameEn || '',
   //         email: this.student()?.email || '',
   //         phone: this.student()?.mobile || '',
   //         message: ''
@@ -256,13 +146,120 @@ export class EnrollFormComponent {
 
   //       this.phoneCmps?.forEach(c => c.resetState());
 
-  //     } catch (err) {
-  //       console.error('Enroll error:', err);
-  //       this.toasting.showToast('enroll.sent.error', 'error');
+  //     }
+  //     catch (apiError: any) {
+
+  //       const apiMessage =
+  //         apiError?.error?.message ||
+  //         apiError?.error?.errors?.[0] ||
+  //         'enroll.sent.error';
+
+  //       this.toasting.showToast(apiMessage, 'error');
   //     }
 
   //   } else {
   //     this.showConfirm = true;
   //   }
   // }
+
+  async onEnroll(form: NgForm) {
+
+    if (this.student() && this.student()?.userId) {
+
+      if (form.invalid) {
+
+        Object.values(form.controls).forEach(control => {
+          control.markAsTouched();
+        });
+
+        this.phoneCmps?.forEach(c => c.validateOnSubmit());
+
+        return;
+      }
+
+      try {
+
+        // 🔹 Translations
+        const translations = await firstValueFrom(
+          forkJoin({
+            fullNameAr: this.translationService.translateEnToAr(
+              this.enroll.fullname
+            ),
+
+            messageAr: this.translationService.translateEnToAr(
+              `Enroll request for ${this.page()}`
+            )
+          })
+        );
+
+        const payload = {
+
+          fullName: this.enroll.fullname,
+
+          fullNameAr: translations.fullNameAr,
+
+          email: this.enroll.email,
+
+          phone: '',
+
+          mobile: this.enroll.phone,
+
+          subject: '',
+
+          subjectAr: '',
+
+          message:
+            `Enroll request for ${this.page()} ,\n` +
+            `Working at : ${this.enroll.organizationname}\n` +
+            `Notes: ${this.enroll.notes}`,
+
+          messageAr: translations.messageAr,
+
+          contactTypeLookupId: serviceEnrollMessageingLookup,
+
+          studentId: this.student()?.userId!
+        };
+
+        // 🔹 API ONLY
+        await firstValueFrom(
+          this.contactService.createContactMessage(
+            payload,
+            'enroll'
+          )
+        );
+
+        this.toasting.showToast(
+          'enroll.sent.success',
+          'success'
+        );
+
+        form.resetForm({
+
+          fullname: this.student()?.nameEn || '',
+
+          email: this.student()?.email || '',
+
+          phone: this.student()?.mobile || '',
+
+          message: ''
+        });
+
+        this.phoneCmps?.forEach(c => c.resetState());
+
+      }
+      catch (apiError: any) {
+
+        const apiMessage =
+          apiError?.error?.message ||
+          apiError?.error?.errors?.[0] ||
+          'enroll.sent.error';
+
+        this.toasting.showToast(apiMessage, 'error');
+      }
+
+    } else {
+
+      this.showConfirm = true;
+    }
+  }
 }

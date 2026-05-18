@@ -48,7 +48,6 @@ export class WebinarFormComponent implements OnInit {
 
 
   constructor() {
-     effect(()=>console.log('certific',this.certifications()));
      effect(() => {
       const oid = this.oid();
       if (!oid) {
@@ -99,34 +98,18 @@ export class WebinarFormComponent implements OnInit {
     };
 
     this.certificationService.search(body).subscribe({
-      next: ({ certifications }) => this.certifications.set(certifications),
+      next: ({ certifications }) => this.certifications.set(certifications.filter(c => c.isActive)),
       error: (err) => {
         console.error('Error loading certifications:', err);
         this.certifications.set([]);
       }
     });
   }
-  getInvalidControls(): string[] {
-    const controls = this.form.controls;
 
-    return Object.keys(controls).filter(key => {
-      const control = controls[key as keyof typeof controls];
-
-      if (control.invalid) {
-        console.log('❌ Field:', key);
-        console.log('Errors:', control.errors);
-        console.log('Value:', control.value);
-      }
-
-      return control.invalid;
-    });
-  }
 
   onSubmit() {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
-      this.getInvalidControls();
-      console.log('invalid');
       return;
     }
     if (this.form.valid && !this.oid()) {
@@ -138,12 +121,18 @@ export class WebinarFormComponent implements OnInit {
   }
   createWebinar() {
     this.webinarService.createWebinar(this.getPayload()).subscribe({
-      next: () => this.cancel()
+      next: () =>{
+        this.cancel();
+        this.webinarService.reloadWebiinars();
+      }
     })
   }
   editWebinar() {
     this.webinarService.updateWebinar(this.oid(), this.getPayload()).subscribe({
-      next: () => this.cancel()
+      next: () => {
+        this.cancel();
+        this.webinarService.reloadWebiinars(this.webinarService.pageNumber());
+      }
     })
   }
 

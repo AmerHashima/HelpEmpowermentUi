@@ -10,6 +10,7 @@ import { GenericModelComponent } from '../../../../shared/generic-model/generic-
 type StudentFormModel = Omit<Student, 'promoDiscount'> & {
   promoDiscount?: number | null;
   confirmPassword?: string;
+  isActive:boolean
 };
 
 @Component({
@@ -117,7 +118,8 @@ export class StudentFormPopupComponent {
           promoCode: student.promoCode ?? '',
           promoDiscount: student.promoDiscount ?? null,
           password: '',
-          confirmPassword: ''
+          confirmPassword: '',
+          isActive: student.isActive
         };
         this.loading.set(false);
       },
@@ -141,7 +143,7 @@ export class StudentFormPopupComponent {
       nameAr: this.formModel.nameAr.trim(),
       mobile: this.formModel.mobile.trim(),
       promoCode: trimmedPromoCode ? trimmedPromoCode : undefined,
-      promoDiscount: this.formModel.promoDiscount ?? undefined
+      promoDiscount: this.formModel.promoDiscount ?? undefined,
     };
   }
 
@@ -157,7 +159,8 @@ export class StudentFormPopupComponent {
       username: this.formModel.username.trim(),
       promoCode: trimmedPromoCode ? trimmedPromoCode : undefined,
       promoDiscount: this.formModel.promoDiscount ?? undefined,
-      password: this.formModel.password?.trim() ? this.formModel.password.trim() : undefined
+      password: this.formModel.password?.trim() ? this.formModel.password.trim() : undefined,
+      isActive: this.formModel.isActive
     };
   }
 
@@ -183,7 +186,8 @@ export class StudentFormPopupComponent {
       promoCode: '',
       promoDiscount: null,
       password: '',
-      confirmPassword: ''
+      confirmPassword: '',
+      isActive:false
     };
   }
 }

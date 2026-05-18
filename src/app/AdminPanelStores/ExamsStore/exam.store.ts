@@ -41,7 +41,6 @@ export const ExamsStore = signalStore(
 
         return service.getCertificationExams(certificationOid).pipe(
           tap((exams: APIExam[]) => {
-            console.log('exams',exams);
             patchState(store, setExams(exams));
           }),
           catchError((err) => {

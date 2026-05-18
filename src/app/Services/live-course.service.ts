@@ -5,6 +5,7 @@ import { Filter, RequestBody } from '../models/rquest';
 import { map, Observable } from 'rxjs';
 import { ApiWebinar } from '../models/webinar';
 import { ApiResponse, ApiSearchResponse } from '../models/apiResponse';
+import { SessionModel } from '../components/ClientSide/certifications/upcoming-sessions/upcoming-sessions.component';
 
 @Injectable({
   providedIn: 'root'
@@ -15,16 +16,49 @@ export class LiveCourseService {
   pageNumber = signal<number>(0);
   pageSize = signal<number>(10);
   filters = signal<Filter[]>([]);
-  mapCoursesToSessions = computed(() => {
-    return this.liveCourses().map((c: APILiveCourse) => {
-      return {
+  // mapCoursesToSessions = computed(() => {
+  //   return this.liveCourses().filter(c=> c.isActive).map((c: APILiveCourse) => {
+  //     return {
+  //       date: this.formatDate(c.startDate),
+  //       time: this.formatTime(c.startTime),
+  //       title: c.courseName,
+  //       courseName: c.courseRefName,
+  //       whatsAppLink: c.whatsAppLink,
+  //       numberOfSessions: c.numberOfSessions,
+  //       totalHours: c.totalHours,
+  //       notes: c.scheduleNotes,
+  //     };
+  //   });
+  // })
+  mapCoursesToSessions = computed<SessionModel[]>(() => {
+    return this.liveCourses()
+      .filter(c => c.isActive)
+      .map(c => ({
         date: this.formatDate(c.startDate),
-        time: c.startTime,
+        time: this.formatTime(c.startTime),
         title: c.courseName,
-        courseName: c.courseRefName
-      };
+        courseName: c.courseRefName,
+        // whatsAppLink: c.whatsAppLink,
+        whatsAppLink: "https://wa.me/966564943997",
+        numberOfSessions: c.numberOfSessions,
+        totalHours: c.totalHours,
+        notes: c.scheduleNotes
+      }));
+  });
+
+  formatTime(time: string): string {
+    if (!time) return '-';
+
+    const date = new Date(`1970-01-01T${time}`);
+
+    if (isNaN(date.getTime())) return '-';
+
+    return date.toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
     });
-  })
+  }
   constructor(private apiService: ApiService) {
     effect(() => {
       const page = this.pageNumber();
@@ -53,7 +87,6 @@ export class LiveCourseService {
       next: (res) => {
         this.liveCourses.set(res.courses);
         this.total.set(res.total);
-        console.log('finish service');
       },
         error: (err) => {
         console.error('SUBSCRIPTION ERROR:', err);
@@ -145,5 +178,9 @@ export class LiveCourseService {
       day: 'numeric',
       month: 'short'
     });
+  }
+
+  reloadLiveCourses(page: number = 0) {
+    this.loadLiveServices(page, this.pageSize(), []);
   }
 }

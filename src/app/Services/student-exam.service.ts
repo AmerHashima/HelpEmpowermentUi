@@ -146,24 +146,7 @@ export class StudentExamService {
           this.loadedExamId.set(examId);
         });
     }
-    // loadReports(studentId: string) {
-    //   this.getStudentExamsByStudentId(studentId)
-    //     .subscribe(r => {
 
-    //       const mapped = r.map((report: any) => ({
-    //         ...report,
-    //         summary: this.mapStatusSummary(report.statusSummary)
-    //       }));
-
-    //       console.log('reports', mapped);
-    //       this.reports.set(mapped);
-    //     });
-    // }
-
-    // loadReports(studentId: string) {
-    //   this.getStudentExamsByStudentId(studentId)
-    //     .subscribe(r => {console.log('reports',r);this.reports.set(r);});
-    // }
 
     startExam(body: startStudentExam): Observable < APIStudentExamResponse > {
       return this.apiService
@@ -179,22 +162,7 @@ export class StudentExamService {
         );
     }
 
-    // submitExam(body: submitStudentExam, message: string ='examToast.submitted')
-    // : Observable<APIStudentExamResponse> {
-    //   return this.apiService
-    //     .post<ApiResponse<APIStudentExamResponse>>('StudentExams/submit', body, message)
-    //     .pipe(
-    //       map((response: ApiResponse<APIStudentExamResponse>) => {
-    //         if (!response.success) {
-    //           const msg = response.errors?.join(', ') || response.message || 'API failed to submit exam';
-    //           throw new Error(msg);
-    //         }
-    //         console.log('response',response);
-    //         this.loadReports(this.auth.loggedStudent()?.userId!)
-    //         return response.data;
-    //       })
-    //     );
-    // }
+
 
     submitExam(
       body: submitStudentExam,
@@ -418,7 +386,7 @@ export class StudentExamService {
       };
 
       this.getExamSummary(payload).subscribe({
-        next: (report) => { console.log('latest report', report); this.latestReport.set(report); },
+        next: (report) => {  this.latestReport.set(report); },
         error: (err) => console.log(err)
       });
     }

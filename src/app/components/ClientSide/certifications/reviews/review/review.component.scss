@@ -12,12 +12,25 @@
   }
 }
 
-.reviewer-image {
-  width: 60px;
-  height: 60px;
-  object-fit: cover;
-}
+// .reviewer-image {
+//   width: 60px;
+//   height: 60px;
+//   object-fit: cover;
+// }
 
+.reviewer-image {
+
+  width: 60px;
+
+  height: 60px;
+
+  background-color: #f1f1f1;
+
+  color: #6c757d;
+
+  font-size: 28px;
+
+}
 .reviewerName {
   font-size: 1.1rem;
   color: $headerColor;

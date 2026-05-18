@@ -133,17 +133,14 @@ export class ExamDetailsComponent {
 
   // onPageChange(event: PageEvent) {
   onPageChange(event: any) {
-    //console.log('pagination', event);
-    // this.store.setPage(event.pageIndex + 1, event.pageSize);
+
   }
 
   onFilterChange(value: string) {
-    //console.log('filter', value);
     this.questionStore.setSearch(value);
   }
 
   onSortChange(sort: any) {
-    //console.log('sort', sort);
     this.questionStore.setSort(sort);
   }
 

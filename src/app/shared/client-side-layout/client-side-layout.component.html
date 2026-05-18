@@ -27,7 +27,10 @@
         <!-- Optional banner (skip on no-layout routes) -->
         @if (!isNoLayout) {
           <div class="pagesBanner">
-            <span>{{ "pages." + pageKey | translate }}</span>
+            <span>
+             {{ ("pages." + translatedPageKey) | translate }}
+            </span>
+            <!-- <span>{{ "pages." + pageKey | translate }}</span> -->
           </div>
         }
 

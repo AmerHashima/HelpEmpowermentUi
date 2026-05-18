@@ -15,6 +15,9 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { Navitem } from '../../../models/navitem';
 import { Shared } from '../../Services/shared/shared';
+import { AuthService } from '../../../Services/auth.service';
+import { Router } from '@angular/router';
+import { ToastingMessagesService } from '../../Services/ToastingMessages/toasting-messages.service';
 
 
 @Component({
@@ -32,7 +35,9 @@ export class SideNav {
 
   private shared = inject(Shared);
   private platformId = inject(PLATFORM_ID);
-
+  private auth = inject(AuthService);
+  private router=inject(Router);
+  private toasting=inject(ToastingMessagesService);
   lang = this.shared.lang;
   // isCollapse = this.shared.isCollapse;
   previousIndex: number = -1;
@@ -153,5 +158,12 @@ export class SideNav {
     if (this.searchPopup?.nativeElement) {
       this.searchPopup.nativeElement.style.display = 'none';
     }
+  }
+
+  logout() {
+    this.auth.logout('admin').subscribe({
+      next: () => this.router.navigateByUrl(`/admin/login`),
+      error: () => this.toasting.showToast('Logout API failed(user already logged out locally)', 'warning')
+    })
   }
 }

@@ -34,7 +34,7 @@
     },
     "register": {
       "success": "Account created successfully",
-      "phoneLabel":"Phone Number",
+      "phoneLabel": "Phone Number",
       "error": "Failed to create account"
     },
     "logoutToast": {
@@ -97,6 +97,7 @@
     },
     "services": {
       "subtitle": "OUR EXPERTISE",
+      "professionalCertifications": "Professional Certifications",
       "title": "Delivering tailored solutions that meet client's expectations",
       "items": {
         "pmo": {
@@ -291,10 +292,8 @@
     "messageLabel": "Message",
     "messagePlaceholder": "Write your message here...",
     "contactBtn": "Send Message",
-
-      "error": {
-        "sendMessage": "Can't send message"
-
+    "error": {
+      "sendMessage": "Can't send message"
     }
   },
   "pmo": {
@@ -404,6 +403,7 @@
     "ExamplesTitle": "Training Examples:"
   },
   "vacancy": {
+    "success": "Your vacancy has been posted successfully",
     "mainTitle": "Post a Vacancy",
     "title": "Looking to Hire the Right Talent?",
     "subTitle": "Fill out the form below and our team will help you find the best candidates for your organization.",
@@ -418,10 +418,12 @@
     "jobDescriptionPlaceholder": "Describe the job responsibilities and requirements",
     "notesLabel": "Additional Notes",
     "notesPlaceholder": "Add any additional information here",
-    "vacancyBtn": "Post Vacancy"
+    "vacancyBtn": "Post Vacancy",
+    "mustLogged": "You must be logged in to post a vacancy.",
+    "error": "Can't post vacancy"
   },
   "job": {
-    "field":"Job Field",
+    "field": "Job Field",
     "title": "Post Your Job Application",
     "subTitle": "Let employers find your talent – upload your details and CV now.",
     "fullnameLabel": "Full Name",
@@ -435,9 +437,13 @@
     "expectedSalaryLabel": "Expected Salary",
     "expectedSalaryPlaceholder": "Enter your desired salary",
     "uploadCVLabel": "Upload CV",
-    "jobBtn": "Submit Application"
+    "jobBtn": "Submit Application",
+    "mustLogged": "You must be logged in to seek a job.",
+    "error": "Can't submit job application"
   },
   "calendar": {
+    "noEventsTitle": "No Upcoming Events Yet",
+    "noEventsDescription": "There are currently no live courses or webinars scheduled. Stay tuned — exciting new sessions will be announced soon.",
     "startDate": "Start Date",
     "endDate": "End Date",
     "moreDetails": "More Details",
@@ -623,6 +629,12 @@
     }
   },
   "liveCourse": {
+    "register": {
+      "success": "Live Course created successfully"
+    },
+    "update": {
+      "success": "Live Course updated successfully"
+    },
     "pmp": {
       "price": "579 AED",
       "master": "Transform your career with live PMP guidance,",
@@ -634,8 +646,26 @@
       "master": "Transform your career with live CAPM guidance,",
       "title": "Your interactive path to certification begins now.",
       "description": "Real-time instruction that brings the PMBOK®️ Guide to life in your own projects. Get direct, personalized answers from expert instructors who guide you through every complex topic. Connect your CAPM study directly to your current role—learn strategies you can apply immediately to enhance your real-world project management practice. Collaborate with peers facing similar challenges in a dynamic, supportive cohort. A structured yet adaptive live journey designed to certify you and elevate your professional impact from day one."
-
-    }  },
+    },
+    "fullnameLabel": "Full Name",
+    "fullnamePlaceholder": "Enter your full name",
+    "emailLabel": "Email",
+    "emailPlaceholder": "Enter your email",
+    "phoneLabel": "Phone Number",
+    "positionLabel": "Your Position",
+    "positionPlaceholder": "Enter your current position",
+    "submitButton": "Enroll Now",
+    "errors": {
+      "fullnameRequired": "Full name is required",
+      "emailRequired": "Email is required",
+      "invalidEmail": "Invalid email format",
+      "positionRequired": "Position is required"
+    }
+  },
+  "liveCourseForm": {
+    "title": "Register for Live Course",
+    "subTitle": "Fill the form to enroll in this course"
+  },
   "courseOutlines": {
     "pmp": [
       "Leadership Level",
@@ -662,7 +692,7 @@
     ]
   },
   "quizGame": {
-        "mustLogin": "You must have an account to access and play.",
+    "mustLogin": "You must have an account to access and play.",
     "pmp": {
       "master": "Level Up Your PMP Knowledge",
       "title": "Master the Essentials Through Play",
@@ -682,6 +712,9 @@
       "title": " Your 2-Hour Path to Certification Clarity.",
       "description": "Join a live, interactive session to demystify the PMP certification. In just 2 hours, get a complete breakdown of PMP eligibility requirements and the current exam format. Master key terminology and get your personal questions answered live by a PMP expert. Walk away with actionable next steps and a special opportunity to explore our full suite of tools—including a hands-on look at our exam simulator and a preview of our recorded and live courses—so you can choose the right path for your success."
     },
+    "update": {
+      "success": "Webinar updated successfully!"
+    },
     "capm": {
       "master": "Join our CAPM webinar,",
       "title": "start your journey with confidence",
@@ -699,6 +732,10 @@
     "description": "Go beyond the exam with real-world PMP wisdom. Access our curated library of articles where PMI standards meet practical execution. Discover how certified professionals apply methodologies in real environments, adapt to industry trends, and solve complex project challenges. Stay ahead with updates on evolving frameworks, practical case studies, and strategies you can implement immediately. This is where certification knowledge transforms into career authority."
   },
   "reviews": {
+    "noReviewsTitle": "No reviews yet",
+    "noReviewsDescription": "Be the first to share your experience and help others.",
+    "addFirstReview": "Write a Review",
+    "mustLoginToReview": "You must be logged in to add a review.",
     "topics": {
       "pmp": "PMP",
       "agile": "Agile Management",
@@ -745,7 +782,8 @@
   },
   "addReview": {
     "title": "Share your experience with us",
-    "reviewButton": "Add Review"
+    "reviewButton": "Add Review",
+    "rating": "Rating"
   },
   "webinarForm": {
     "title": "Register for the Webinar",
@@ -853,6 +891,13 @@
     }
   },
   "pages": {
+    "search": {
+      "label": "SEARCH RESULT",
+            "search": "Search",
+      "title":"No Results Found",
+      "description": "We couldn’t find any matches for \"{{value}}\"",
+      "suggestions": "Try searching for:"
+    },
     "technical-support-policy": "Technical Support Policy",
     "privacy-notice": "Privacy Notice",
     "refund-policy": "Refund Policy",
@@ -893,7 +938,14 @@
       "Consultants",
       "Department Heads",
       "Team Leads"
-    ]
+    ],
+      "capm": [
+         "Project Coordinator",
+         "PMO Officer",
+         "Junior Project Manager",
+         "Project Team Member",
+         "Career Switcher"
+      ]
   },
   "Upcoming Live Sessions": "Upcoming Live Sessions",
   "instructor": {
@@ -1051,6 +1103,28 @@
           "title": "Career Empowerment Circle",
           "description": "Your certification journey includes lifelong access to mentorship, networking, and exclusive job openings."
         }
+      },
+      "webinar": {
+        "hour1": {
+          "title": "Hour 1: The Essential Knowledge of CAPM",
+          "description": "Decode the Exam: Learn the structure of the CAPM exam, including the key project management principles, process groups, and Agile fundamentals.\nBuild Your Action Plan: Get a clear, step-by-step roadmap, from understanding eligibility requirements to building an effective CAPM study strategy you can start immediately.\nMaster the PMI Mindset: Discover the critical thinking approach used by PMI that helps you confidently choose the best answers on the exam."
+        },
+        "hour2": {
+          "title": "Hour 2: Interactive Q&A",
+          "description": "Get Expert Answers: Have your specific questions about the CAPM application process, study resources, and exam topics answered live by a PMI-certified professional.\nSolve Real Challenges: Discuss common study difficulties and beginner project management scenarios to better understand CAPM concepts in practice.\nPlan Your Path Forward: Receive practical guidance on your next steps and discover resources to make your CAPM preparation organized, focused, and confidence-driven."
+        },
+        "takeAway": {
+          "title": "What You Will Leave With:",
+          "description": "A clear, stress-free understanding of the entire CAPM journey.\nA practical action plan you can start immediately.\nAnswers to your most important questions from an expert."
+        }
+      },
+      "audience": {
+        "title": "Who Should Attend:",
+        "description": "Project Coordinators, recent graduates, and aspiring Project Managers.\nProfessionals looking to start a career in project management with a globally recognized certification.\nAnyone interested in understanding project management fundamentals and CAPM exam requirements.\nIndividuals seeking a structured and confidence-building approach to pass the CAPM exam."
+      },
+      "takeAway": {
+        "title": "What You Will Leave With:",
+        "description": "A clear, stress-free understanding of the entire CAPM journey.\nA practical action plan you can start immediately.\nAnswers to your most important questions from an expert."
       }
     }
   },
@@ -1137,8 +1211,8 @@
       "error": "Failed to change password"
     },
     "enrolledCertifications": "Enrolled Certifications",
-    "copuons":"Coupons",
-    "noCoupons":"You haven’t enrolled in any Coupons yet.",
+    "copuons": "Coupons",
+    "noCoupons": "You haven’t enrolled in any Coupons yet.",
     "exams": "Exams",
     "settings": "Settings",
     "changePassword": "Change Password",
@@ -1203,7 +1277,7 @@
       "success": "Your Exam has been resumed"
     },
     "start": "Exam has been started!",
-    "startFailed":"Invalid Student",
+    "startFailed": "Invalid Student",
     "submitted": "Exam has been submitted successfully!",
     "clear": "Exam has been cleared successfully",
     "finish": {
@@ -1503,92 +1577,102 @@
       }
     ]
   },
-  "Sharjah, UAE": "Sharjah, UAE",
+  "Media City, UAE": "Media City, UAE",
   "forgetPassword": {
     "title": "Forgot Password?",
     "description": "Enter your email to receive a password reset link",
     "emailSent": " Password reset link has been sent",
     "resendIn": "Resend in {{seconds}} seconds",
     "resend": "Resend email",
-    "sendEmail": "Send Reset Link"
+    "sendEmail": "Send Reset Link",
+    "error": "Failed to send reset link. Please try again."
   },
-    "otp": {
-      "title": "Verify Code",
-      "description": "Enter the code sent to your email",
-      "label": "OTP Code",
-      "verify": "Verify",
-      "invalid": "Invalid or expired code"
+  "otp": {
+    "title": "Verify Code",
+    "description": "Enter the code sent to your email",
+    "label": "OTP Code",
+    "verify": "Verify",
+    "invalid": "Invalid or expired code"
+  },
+  "resetPassword": {
+    "title": "Reset Password",
+    "description": "Enter your new password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm Password",
+    "submit": "Reset Password",
+    "success": "Password updated successfully. Redirecting to login...",
+    "error": "Something went wrong. Try again.",
+    "passwordMismatch": "Passwords do not match"
+  },
+  "webinarDashboardForm": {
+    "webinarName": "Webinar Name",
+    "certfication": "Webinar Certification",
+    "timeZone": "Time Zone",
+    "webinarDate": "Webinar Date",
+    "webinarStartTime": "Webinar Start Time",
+    "webinarEndTime": "Webinar End Time",
+    "whatsAppLink": "WhatsApp Link",
+    "status": "Status",
+    "notes": "Notes",
+    "placeholders": {
+      "certfication": "Choose Certification",
+      "timeZone": "Choose Time Zone",
+      "status": "Choose Status"
     },
-      "resetPassword": {
-        "title": "Reset Password",
-        "description": "Enter your new password",
-        "newPassword": "New Password",
-        "confirmPassword": "Confirm Password",
-        "submit": "Reset Password",
-        "success": "Password updated successfully. Redirecting to login...",
-        "error": "Something went wrong. Try again.",
-        "passwordMismatch": "Passwords do not match"
-      },
-      "webinarDashboardForm": {
-        "webinarName": "Webinar Name",
-        "certfication": "Webinar Certification",
-        "timeZone": "Time Zone",
-        "webinarDate": "Webinar Date",
-        "webinarStartTime": "Webinar Start Time",
-        "webinarEndTime": "Webinar End Time",
-        "whatsAppLink": "WhatsApp Link",
-        "status": "Status",
-        "notes": "Notes",
-        "placeholders": {
-          "certfication": "Choose Certification",
-          "timeZone": "Choose Time Zone",
-          "status": "Choose Status"
-        },
-        "errors": {
-          "nameRequired": "Name is required",
-          "formatRequired": "Webinar format is required",
-          "timeZoneRequired": "Time zone is required",
-          "dateRequired": "Date is required",
-          "startTimeRequired": "Start time is required",
-          "endTimeRequired": "End time is required",
-          "whatsappRequired": "WhatsApp link is required",
-          "notesRequired": "Notes are required"
-        },
-        "actions": {
-          "save": "Save",
-          "cancel": "Cancel"
-        }
-      },
-        "liveCourseDashboardForm": {
-          "courseName": "Course Name",
-          "courseFormat": "Course Format",
-          "timeZone": "Time Zone",
-          "startDate": "Start Date",
-          "startTime": "Start Time",
-          "numberOfSessions": "Number of Sessions",
-          "totalHours": "Total Hours",
-          "whatsAppLink": "WhatsApp Link",
-          "status": "Status",
-          "scheduleNotes": "Schedule Notes",
-          "notes": "Notes",
-          "placeholders": {
-            "courseFormat": "Choose Course Format",
-            "timeZone": "Choose Time Zone",
-            "status": "Choose Status"
-          },
-          "errors": {
-            "nameRequired": "Name is required",
-            "dateRequired": "Date is required",
-            "startTimeRequired": "Start time is required",
-            "sessionsRequired": "Number of sessions is required",
-            "totalHoursRequired": "Total hours are required",
-            "whatsappRequired": "WhatsApp link is required",
-            "scheduleNotesRequired": "Schedule notes are required",
-            "notesRequired": "Notes are required"
-          },
-          "actions": {
-            "save": "Save",
-            "cancel": "Cancel"
-          }
-        }
+    "errors": {
+      "nameRequired": "Name is required",
+      "formatRequired": "Webinar format is required",
+      "timeZoneRequired": "Time zone is required",
+      "dateRequired": "Date is required",
+      "startTimeRequired": "Start time is required",
+      "endTimeRequired": "End time is required",
+      "whatsappRequired": "WhatsApp link is required",
+      "notesRequired": "Notes are required"
+    },
+    "actions": {
+      "save": "Save",
+      "cancel": "Cancel"
+    }
+  },
+  "liveCourseDashboardForm": {
+    "certfication": "Live Course Certification",
+    "courseName": "Course Name",
+    "courseFormat": "Course Format",
+    "timeZone": "Time Zone",
+    "startDate": "Start Date",
+    "startTime": "Start Time",
+    "numberOfSessions": "Number of Sessions",
+    "totalHours": "Total Hours",
+    "whatsAppLink": "WhatsApp Link",
+    "status": "Status",
+    "scheduleNotes": "Schedule Notes",
+    "notes": "Notes",
+    "placeholders": {
+      "courseFormat": "Choose Course Format",
+      "timeZone": "Choose Time Zone",
+      "status": "Choose Status"
+    },
+    "errors": {
+      "nameRequired": "Name is required",
+      "dateRequired": "Date is required",
+      "startTimeRequired": "Start time is required",
+      "sessionsRequired": "Number of sessions is required",
+      "totalHoursRequired": "Total hours are required",
+      "whatsappRequired": "WhatsApp link is required",
+      "scheduleNotesRequired": "Schedule notes are required",
+      "notesRequired": "Notes are required"
+    },
+    "actions": {
+      "save": "Save",
+      "cancel": "Cancel"
+    }
+  },
+  "upcomingLive": {
+    "noSessions": "While there are no live courses scheduled at the moment, stay tuned our next event will be announced soon, and it’s worth the wait",
+    "noWebinars": "While there are no Webinar scheduled at the moment, stay tuned our next event will be announced soon, and it’s worth the wait"
+  }
+  ,
+
+  "Attachment deleted successfully":"Attachment deleted successfully",
+  "Your application has been submitted successfully. Uploading attachment...":"Your application has been submitted successfully. Uploading attachment..."
 }

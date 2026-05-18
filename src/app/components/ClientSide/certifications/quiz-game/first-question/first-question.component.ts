@@ -55,7 +55,7 @@ export class FirstQuestionComponent {
     effect(() => {
     this.reset()
         this.resetState();
-      
+
     });
     effect(() => {
       if (this.next()) {
@@ -144,7 +144,6 @@ export class FirstQuestionComponent {
   }
 
   private checkAnswers(): void {
-    console.log('checkAnswers');
     const correctOrder = [
       'Initiation',
       'Planning',

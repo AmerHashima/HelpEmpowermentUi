@@ -535,6 +535,7 @@ export class AuthService {
       "auth.logoutToast.success"
     ).pipe(
       map(res => {
+        console.log('Logout response:', res);
         if (!res.success) throw new Error(res.message);
 
         if (role === 'student') this.clearStudentSession();

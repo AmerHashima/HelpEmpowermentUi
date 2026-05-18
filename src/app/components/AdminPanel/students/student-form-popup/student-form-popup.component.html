@@ -34,28 +34,61 @@
 
     <div class="mb-2">
       <label class="form-label mb-1">Username *</label>
-      <input class="form-control" type="text" [(ngModel)]="formModel.username" />
+      <input
+        class="form-control"
+        type="text"
+        [(ngModel)]="formModel.username"
+      />
     </div>
 
     <div class="mb-2">
       <label class="form-label mb-1">Promo Code</label>
-      <input class="form-control" type="text" maxlength="50" [(ngModel)]="formModel.promoCode" />
+      <input
+        class="form-control"
+        type="text"
+        maxlength="50"
+        [(ngModel)]="formModel.promoCode"
+      />
     </div>
 
     <div class="mb-2">
       <label class="form-label mb-1">Promo Discount</label>
-      <input class="form-control" type="number" step="0.01" min="0" [(ngModel)]="formModel.promoDiscount" />
+      <input
+        class="form-control"
+        type="number"
+        step="0.01"
+        min="0"
+        [(ngModel)]="formModel.promoDiscount"
+      />
     </div>
 
     <div class="mb-3">
-      <label class="form-label mb-1">Password {{ isEditMode() ? '(optional)' : '*' }}</label>
-      <input class="form-control" type="password" [(ngModel)]="formModel.password" />
+      <label class="form-label mb-1"
+        >Password {{ isEditMode() ? "(optional)" : "*" }}</label
+      >
+      <input
+        class="form-control"
+        type="password"
+        [(ngModel)]="formModel.password"
+      />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label mb-1">Status</label>
+      <select class="form-control" [(ngModel)]="formModel.isActive">
+        <option [ngValue]="true">Active</option>
+        <option [ngValue]="false">Inactive</option>
+      </select>
     </div>
 
     @if (!isEditMode()) {
       <div class="mb-3">
         <label class="form-label mb-1">Confirm Password *</label>
-        <input class="form-control" type="password" [(ngModel)]="formModel.confirmPassword" />
+        <input
+          class="form-control"
+          type="password"
+          [(ngModel)]="formModel.confirmPassword"
+        />
       </div>
     }
 
@@ -66,9 +99,20 @@
     }
 
     <div class="d-flex justify-content-end gap-2">
-      <button class="btn btn-outline-secondary" type="button" (click)="onClose()">Cancel</button>
-      <button class="btn btn-primary" type="button" [disabled]="submitting()" (click)="saveStudent()">
-        {{ submitting() ? 'Saving...' : (isEditMode() ? 'Update' : 'Create') }}
+      <button
+        class="btn btn-outline-secondary"
+        type="button"
+        (click)="onClose()"
+      >
+        Cancel
+      </button>
+      <button
+        class="btn btn-primary"
+        type="button"
+        [disabled]="submitting()"
+        (click)="saveStudent()"
+      >
+        {{ submitting() ? "Saving..." : isEditMode() ? "Update" : "Create" }}
       </button>
     </div>
   }

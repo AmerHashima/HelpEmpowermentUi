@@ -83,7 +83,6 @@ export class ProfileComponent {
 
         };
 
-        console.log('user',this.user());
       }
     })
   }
@@ -149,7 +148,6 @@ export class ProfileComponent {
   // }
 
   getCourseImage(course: APIStudentCourse) {
-    console.log(course.courseName.toLowerCase());
     if (course.courseName.toLowerCase() == 'pmp')
       return 'assets/images/certifications/certfication_1.jpeg';
     else return 'assets/images/certifications/certfication_2.jpeg';
@@ -160,9 +158,7 @@ export class ProfileComponent {
     this.course.set(course);
   }
   onUpdateInfo(form:NgForm) {
-    console.log(this.user());
     if (this.form.invalid) {
-      console.log('invalid');
       Object.values(form.controls).forEach(control => {
         control.markAsTouched();
       });
@@ -171,7 +167,6 @@ export class ProfileComponent {
       const invalidFields = Object.keys(form.controls)
         .filter(key => form.controls[key].invalid);
 
-      console.log('Invalid fields:', invalidFields);
       return;
     }
     const payload = {
@@ -188,8 +183,7 @@ export class ProfileComponent {
       // updatedBy: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
     };
 
-    console.log('payload', payload);
-    console.log('mobile', this.credentials.mobile);
+   
     this.studentService.updateStudent(payload.oid, payload).subscribe({
       next: (newStudent: APIStudent) => {
 
@@ -210,7 +204,16 @@ export class ProfileComponent {
         this.authService.updatedLoggedStudent(updatedStudent)
         // this.toasting.showToast('Account created suffccessfully please login','success');
       },
-      error: () => this.toasting.showToast('profile.update.error', 'error')
+      error: (err) => {
+
+        const apiMessage =
+          err?.error?.message ||
+          err?.error?.errors?.[0] ||
+          'profile.update.error';
+
+        this.toasting.showToast(apiMessage, 'error');
+      }
+      // error: () => this.toasting.showToast('profile.update.error', 'error')
     })
   }
   onChangePassword(form: NgForm) {
@@ -230,7 +233,15 @@ export class ProfileComponent {
         form.resetForm();
 
       },
-      error: () => this.toasting.showToast('profile.password.error', 'error')
+      error: (err) => {
+
+        const apiMessage =
+          err?.error?.message ||
+          err?.error?.errors?.[0] ||
+          'profile.password.error';
+        this.toasting.showToast(apiMessage, 'error');
+      }
+      // error: () => this.toasting.showToast('profile.password.error', 'error')
     })
 
   }

@@ -97,7 +97,7 @@ export class LiveCourseFormComponent implements OnInit {
     };
 
     this.certificationService.search(body).subscribe({
-      next: ({ certifications }) => this.certifications.set(certifications),
+      next: ({ certifications }) => this.certifications.set(certifications.filter(c => c.isActive)),
       error: (err) => {
         console.error('Error loading certifications:', err);
         this.certifications.set([]);
@@ -105,27 +105,11 @@ export class LiveCourseFormComponent implements OnInit {
     });
   }
 
-  getInvalidControls(): string[] {
-    const controls = this.form.controls;
 
-    return Object.keys(controls).filter(key => {
-      const control = controls[key as keyof typeof controls];
-
-      if (control.invalid) {
-        console.log('❌ Field:', key);
-        console.log('Errors:', control.errors);
-        console.log('Value:', control.value);
-      }
-
-      return control.invalid;
-    });
-  }
 
   onSubmit() {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
-      this.getInvalidControls();
-      console.log('invalid');
       return;
     }
     if (this.form.valid && !this.oid()) {
@@ -137,12 +121,18 @@ export class LiveCourseFormComponent implements OnInit {
   }
   createLiveCourse() {
     this.liveCourseService.createLiveCourse(this.getPayload()).subscribe({
-      next: () => this.cancel()
+      next: () => {
+        this.cancel();
+        this.liveCourseService.reloadLiveCourses();
+      }
     })
   }
   editLiveCourse() {
     this.liveCourseService.updateLiveCourse(this.oid(), this.getPayload()).subscribe({
-      next: () => this.cancel()
+      next: () => {
+        this.cancel();
+        this.liveCourseService.reloadLiveCourses(this.liveCourseService.pageNumber());
+      }
     })
   }
 

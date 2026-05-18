@@ -1,3 +1,4 @@
+@use 'variables' as *;
 .small-field {
   width: 180px;
 
@@ -13,4 +14,55 @@
   input {
     font-size: 13px;
   }
+}
+
+
+.attachment-card {
+  border-color: #dee2e6 !important;
+}
+
+.attachment-icon {
+
+  width: 48px;
+
+  height: 48px;
+
+  border-radius: 50%;
+
+  background-color: $primaryColor;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  color: $lightBgTextColor;
+
+}
+
+.btn-outline-primary {
+
+  color: $primaryColor;
+
+  border-color: $primaryColor;
+
+  &:hover {
+
+    background-color: $primaryColor;
+
+    color: $lightBgTextColor;
+
+  }
+
+}
+
+.btn-outline-danger {
+
+  &:hover {
+
+    color: $lightBgTextColor;
+
+  }
+
 }

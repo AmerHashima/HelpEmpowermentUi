@@ -39,7 +39,7 @@ export class ContactComponent {
   private auth = inject(AuthService);
   private contactService = inject(ContactUsService);
   private translationService = inject(TranslateService);
-  // private toasting=inject(ToastingMessagesService);
+  private toasting = inject(ToastingMessagesService);
   formSubmitted = false;
   student = this.auth.loggedStudent;
   isRTL = this.shared.isRtl;
@@ -58,7 +58,7 @@ export class ContactComponent {
     {
       icon: 'bi bi-geo-alt',
       header: 'Visit Us',
-      value: 'Sharjah, UAE'    },
+      value: 'Media City, UAE'    },
     {
       icon: '',
       header: '',
@@ -137,15 +137,15 @@ export class ContactComponent {
             });
             this.phoneCmps?.forEach(c => c.resetState());
           },
-          // error: (err) => {
+          error: (err) => {
 
-          //   const apiMessage =
-          //     err?.error?.message ||
-          //     err?.error?.errors?.[0] ||
-          //     'contact.error.sendMessage';
+            const apiMessage =
+              err?.error?.message ||
+              err?.error?.errors?.[0] ||
+              'contact.error.sendMessage';
 
-          //   this.toasting.showToast(apiMessage, 'error');
-          // },
+            this.toasting.showToast(apiMessage, 'error');
+          },
           // error: () => {
           //   console.error('Error sending message');
           // }

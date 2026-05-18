@@ -55,14 +55,5 @@ export class HomeComponent {
     this.scrollToElement(this.serviceCards);
   }
 
-  // onEnrollToCourse(course:any){
-  //   this.showEnrollForm=true;
-  //   this.enrolledCertification=course;
-  //   console.log('enrolledCertification',this.enrolledCertification);
-  // }
 
-  // onEnrollSubmittion(enrollData:any){
-  //   //get course name or id form   this.enrolledCertification and rest on info from enrollData
-  //   console.log('send to enrroll api')
-  // }
 }

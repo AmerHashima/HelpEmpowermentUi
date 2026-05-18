@@ -128,7 +128,6 @@ export class CertificationService {
 
   //content
   getCertificationContents(id: string): Observable<any[]> {
-    //console.log('writie api cal')
     return of([null]);
   }
 

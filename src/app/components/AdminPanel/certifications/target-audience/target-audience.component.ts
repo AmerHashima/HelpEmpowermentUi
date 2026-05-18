@@ -24,7 +24,13 @@ export class TargetAudienceComponent {
         'targetAudiences.pmp.4',
       ];
     else
-      return [];
+      return     [
+        'targetAudiences.capm.0',
+        'targetAudiences.capm.1',
+        'targetAudiences.capm.2',
+        'targetAudiences.capm.3',
+        'targetAudiences.capm.4',
+      ];;
   });
   readonly accordionTitle = 'Target Audience';
 }

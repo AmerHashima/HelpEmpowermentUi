@@ -1,5 +1,5 @@
 // src\app\components\ClientSide\services\manpower\post-vacnacy\post-vacnacy.component.ts
-import { Component, inject, QueryList, ViewChildren } from '@angular/core';
+import { Component, effect, inject, QueryList, ViewChildren } from '@angular/core';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { InputComponent } from '../../../../../shared/input/input.component';
 import { TextareaComponent } from '../../../../../shared/text-area/text-area.component';
@@ -9,12 +9,17 @@ import { SiteButtonComponent } from '../../../../../shared/clientSide/site-butto
 import { FormsModule, NgForm } from '@angular/forms';
 import { SpkNgSelectComponent } from '../../../../../shared/spk-ng-select/spk-ng-select.component';
 import { PhoneInputComponent } from '../../../../../shared/phone/phone.component';
+import { ToastingMessagesService } from '../../../../../shared/Services/ToastingMessages/toasting-messages.service';
+import { ContactUsService } from '../../../../../Services/contact-us.service';
+import { AuthService } from '../../../../../Services/auth.service';
+import { GenericModelComponent } from '../../../../../shared/generic-model/generic-model.component';
+import { PostVacancyContactLookUp } from '../../../../../data/lookUPS';
 
 @Component({
   selector: 'app-post-vacnacy',
-  standalone:true,
-  imports: [TranslateModule,TranslatePipe,InputComponent,TextareaComponent,
-    FileUploadComponent, SiteButtonComponent, FormsModule,PhoneInputComponent, SpkNgSelectComponent
+  standalone: true,
+  imports: [TranslateModule, TranslatePipe, InputComponent, TextareaComponent,
+    FileUploadComponent, SiteButtonComponent, FormsModule, PhoneInputComponent, SpkNgSelectComponent, GenericModelComponent
   ],
   templateUrl: './post-vacnacy.component.html',
   styleUrl: './post-vacnacy.component.scss'
@@ -22,8 +27,13 @@ import { PhoneInputComponent } from '../../../../../shared/phone/phone.component
 export class PostVacnacyComponent {
   @ViewChildren(PhoneInputComponent)
   phoneCmps!: QueryList<PhoneInputComponent>;
-private shared=inject(Shared);
-isRTL=this.shared.isRtl;
+  private shared = inject(Shared);
+  private toasting = inject(ToastingMessagesService);
+  private contactService = inject(ContactUsService);
+  private auth = inject(AuthService);
+  student = this.auth.loggedStudent;
+  showConfirm = false;
+  isRTL = this.shared.isRtl;
 
   experiences = [
     { oid: 'exp-001', name: 'Internship' },
@@ -42,18 +52,226 @@ isRTL=this.shared.isRtl;
     role: '',
     experience: '',
     jobDescription: '',
-    attachments:[],
-    notes:""
+    attachments: [],
+    notes: ""
   };
 
-  onPostVacancy(form:NgForm){
-    if (form.invalid) {
-      Object.values(form.controls).forEach(control => {
-        control.markAsTouched();
-      });
-      this.phoneCmps?.forEach(c => c.validateOnSubmit());
-      return;
-    }
-    //console.log(this.vacancy);
+  constructor() {
+    effect(() => this.patchUserData());
   }
+  private patchUserData() {
+    const user = this.student();
+
+    if (user) {
+      this.vacancy.fullname = user.nameEn;
+      this.vacancy.email = user.email || '';
+      this.vacancy.phone = user.mobile || '';
+    }
+  }
+  // onPostVacancy(form: NgForm) {
+  //   if (this.student() && this.student()?.userId) {
+  //     if (form.invalid) {
+  //       Object.values(form.controls).forEach(control => {
+  //         control.markAsTouched();
+  //       });
+  //       this.phoneCmps?.forEach(c => c.validateOnSubmit());
+  //       return;
+  //     }
+
+  //     const payload = {
+  //       fullName: this.vacancy.fullname,
+  //       fullNameAr: this.vacancy.fullname,
+  //       email: this.vacancy.email,
+  //       phone: '',
+  //       mobile: this.vacancy.phone,
+  //       subject: '',
+  //       subjectAr: '',
+  //       message: this.getPostVacancyMessage(),
+  //       messageAr: this.getPostVacancyMessage(),
+  //       contactTypeLookupId: PostVacancyContactLookUp,
+  //       studentId: this.student()?.userId!
+  //     };
+
+  //     this.contactService.createContactMessage(payload).subscribe({
+  //       next: () => {
+  //         form.resetForm({
+  //           fullname: this.student()?.nameEn || '',
+  //           email: this.student()?.email || '',
+  //           // phone: this.student()?.mobile || '',
+  //           message: ''
+  //         });
+  //         this.phoneCmps?.forEach(c => c.resetState());
+  //       },
+  //       error: (err) => {
+
+  //         const apiMessage =
+  //           err?.error?.message ||
+  //           err?.error?.errors?.[0] ||
+  //           'vacancy.error';
+
+  //         this.toasting.showToast(apiMessage, 'error');
+  //       },
+
+  //     });
+  //   } else {
+  //     this.showConfirm = true;
+  //   }
+  // }
+
+  onPostVacancy(form: NgForm) {
+
+    if (this.student() && this.student()?.userId) {
+
+      if (form.invalid) {
+
+        Object.values(form.controls).forEach(control => {
+          control.markAsTouched();
+        });
+
+        this.phoneCmps?.forEach(c => c.validateOnSubmit());
+
+        return;
+      }
+
+      const payload = {
+
+        fullName: this.vacancy.fullname,
+
+        fullNameAr: this.vacancy.fullname,
+
+        email: this.vacancy.email,
+
+        phone: '',
+
+        mobile: this.vacancy.phone,
+
+        subject: '',
+
+        subjectAr: '',
+
+        message: this.getPostVacancyMessage(),
+
+        messageAr: this.getPostVacancyMessage(),
+
+        contactTypeLookupId: PostVacancyContactLookUp,
+
+        studentId: this.student()?.userId!
+      };
+
+      // OPTIONAL ATTACHMENT
+      const hasAttachment = !!this.vacancy.attachments?.[0];
+
+      this.contactService
+        .createContactMessage(
+          payload,
+          'postVacancy',
+          hasAttachment
+        )
+        .subscribe({
+
+          next: (res) => {
+
+            const contactId = res?.oid;
+
+            const attachment = this.vacancy.attachments?.[0];
+
+            // NO ATTACHMENT
+            if (!attachment) {
+
+              this.handleVacancySuccess(form);
+
+              return;
+            }
+
+            // UPLOAD ATTACHMENT
+            this.contactService
+              .uploadAttachment(contactId, attachment)
+              .subscribe({
+
+                next: () => {
+
+                  this.handleVacancySuccess(form);
+
+                },
+
+                error: () => {
+
+                  this.toasting.showToast(
+                    'Attachment upload failed',
+                    'error'
+                  );
+                }
+              });
+          },
+
+          error: (err) => {
+
+            const apiMessage =
+              err?.error?.message ||
+              err?.error?.errors?.[0] ||
+              'vacancy.error';
+
+            this.toasting.showToast(apiMessage, 'error');
+          }
+        });
+
+    } else {
+
+      this.showConfirm = true;
+    }
+  }
+
+  private handleVacancySuccess(form: NgForm) {
+
+    this.toasting.showToast(
+
+      'vacancy.success',
+
+      'success'
+
+    );
+
+    form.resetForm({
+
+      fullname: this.student()?.nameEn || '',
+
+      email: this.student()?.email || '',
+
+      phone: this.student()?.mobile || '',
+
+      message: ''
+
+    });
+
+    this.vacancy.attachments = [];
+
+    this.phoneCmps?.forEach(c => c.resetState());
+
+  }
+  getPostVacancyMessage() {
+    const v = this.vacancy;
+
+    const val = (x: any) => x ? x : '-';
+
+    return `Post vacancy request
+
+Company: ${val(v.companyName)}
+Email: ${val(v.email)}
+Phone: ${val(v.phone)}
+
+Role: ${val(v.role)}
+Experience: ${val(v.experience)}
+
+Job Description:
+${val(v.jobDescription)}
+
+Notes:
+${val(v.notes)}`;
+  }
+
+
+
 }
+
+
+
