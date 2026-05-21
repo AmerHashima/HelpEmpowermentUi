@@ -213,7 +213,6 @@ private cdr = inject(ChangeDetectorRef);
   writeValue(value: string): void {
     this.value = value || '';
 
-    console.log('API value:', this.value);
 
     if (!this.iti) {
       this.pendingValue = this.value;
@@ -224,9 +223,7 @@ private cdr = inject(ChangeDetectorRef);
 
     this.iti.setNumber(this.value);
 
-    console.log('Formatted:', this.iti.getNumber());
-    console.log('Is valid:', this.iti.isValidNumber());
-    console.log('Country:', this.iti.getSelectedCountryData());
+
 
     this.isValid = this.iti.isValidNumber();
 
@@ -311,11 +308,9 @@ private cdr = inject(ChangeDetectorRef);
   }
 
   validateOnSubmit() {
-    console.log('validateOnSubmit');
     const raw = this.input.nativeElement.value.trim();
 
     this.value = raw;
-     console.log('value',raw);
     if (!raw) {
       this.isValid = false;
     } else {

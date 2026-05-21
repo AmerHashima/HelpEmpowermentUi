@@ -78,9 +78,7 @@ export class ClientSideLayoutComponent {
   }
 
   get translatedPageKey(): string {
-  console.log('Calculating translatedPageKey for URL:', this.pageKey);
     if (this.pageKey?.includes('search')) {
-       console.log('inlog')
       return 'search.search';
 
     }
