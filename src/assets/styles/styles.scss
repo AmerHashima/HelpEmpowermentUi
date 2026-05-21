@@ -401,6 +401,21 @@ p {
   color: $paragraphColor;
   font-weight: $bold;
 }
+
+.recorded .Homebanner {
+  padding-top:100px !important;
+    padding-bottom:150px;
+
+  min-height:unset !important;
+}
+
+.quiz .Homebanner {
+  padding-top:150px !important;
+    padding-bottom:150px;
+
+  min-height:unset !important;
+}
+
 .certification .rating {
   padding-inline-end: 2rem;
   flex-direction: column;

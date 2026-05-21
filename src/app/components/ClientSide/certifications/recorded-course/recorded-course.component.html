@@ -1,7 +1,7 @@
 <div class="certification d-flex gap-5 flex-column py-5">
   <!-- Banner - shown only if not purchased -->
   <ng-container *ngIf="!hasRecordedCourseAccess()">
-    <app-page-banner [isRTL]="isRTL()" [media]="true">
+    <app-page-banner [isRTL]="isRTL()" [media]="true" class="recorded">
       <!-- Content projection -->
       <div content class="d-flex flex-column gap-3 pe-xl-5">
         <div class="d-flex flex-column gap-3">
