@@ -14,6 +14,7 @@ import { ContactUsService } from '../../../../../Services/contact-us.service';
 import { AuthService } from '../../../../../Services/auth.service';
 import { GenericModelComponent } from '../../../../../shared/generic-model/generic-model.component';
 import { PostVacancyContactLookUp } from '../../../../../data/lookUPS';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-post-vacnacy',
@@ -169,41 +170,89 @@ export class PostVacnacyComponent {
         )
         .subscribe({
 
+          // next: (res) => {
+
+          //   const contactId = res?.oid;
+
+          //   const attachment = this.vacancy.attachments?.[0];
+
+          //   // NO ATTACHMENT
+          //   if (!attachment) {
+
+          //     this.handleVacancySuccess(form);
+
+          //     return;
+          //   }
+
+          //   // UPLOAD ATTACHMENT
+          //   this.contactService
+          //     .uploadAttachment(contactId, attachment)
+          //     .subscribe({
+
+          //       next: () => {
+
+          //         this.handleVacancySuccess(form);
+
+          //       },
+
+          //       error: () => {
+
+          //         this.toasting.showToast(
+          //           'Attachment upload failed',
+          //           'error'
+          //         );
+          //       }
+          //     });
+          // },
           next: (res) => {
 
             const contactId = res?.oid;
 
-            const attachment = this.vacancy.attachments?.[0];
+            const attachments = this.vacancy.attachments || [];
 
-            // NO ATTACHMENT
-            if (!attachment) {
+            // NO ATTACHMENTS
+
+            if (!attachments.length) {
 
               this.handleVacancySuccess(form);
 
               return;
+
             }
 
-            // UPLOAD ATTACHMENT
-            this.contactService
-              .uploadAttachment(contactId, attachment)
-              .subscribe({
+            // CREATE ALL REQUESTS
 
-                next: () => {
+            const uploadRequests = attachments.map(file =>
 
-                  this.handleVacancySuccess(form);
+              this.contactService.uploadAttachment(contactId, file)
 
-                },
+            );
 
-                error: () => {
+            // UPLOAD ALL FILES
 
-                  this.toasting.showToast(
-                    'Attachment upload failed',
-                    'error'
-                  );
-                }
-              });
+            forkJoin(uploadRequests).subscribe({
+
+              next: () => {
+
+                this.handleVacancySuccess(form);
+
+              },
+
+              error: () => {
+
+                this.toasting.showToast(
+
+                  'Attachment upload failed',
+
+                  'error'
+
+                );
+
+              }
+
+            });
+
           },
-
           error: (err) => {
 
             const apiMessage =

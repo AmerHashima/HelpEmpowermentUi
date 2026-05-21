@@ -96,6 +96,36 @@
                 </spk-ng-select>
               </div>
               <div class="col-12">
+                <div class="h-100">
+                  <app-textarea
+                    name="jobDescription"
+                    [(ngModel)]="vacancy.jobDescription"
+                    [label]="'vacancy.jobDescriptionLabel' | translate"
+                    [placeholder]="
+                      'vacancy.jobDescriptionPlaceholder' | translate
+                    "
+                    [icon]="'bi bi-person-workspace'"
+                    class="h-100"
+                  ></app-textarea>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class=" ">
+                  <div class=" d-flex flex-column gap-2">
+                    <label for="">or Upload files</label>
+                    <app-file-upload
+                      name="attachments"
+                      [(ngModel)]="vacancy.attachments"
+                      [multiple]="true"
+                      [label]="
+                        'Drop your CV here or click to upload' | translate
+                      "
+                      class="flex-grow-1"
+                    ></app-file-upload>
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="col-12">
                 <div class="row align-items-stretch">
                   <div class="col-12 col-lg-6">
                     <div class=" h-100">
@@ -127,7 +157,7 @@
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> -->
               <div class="col-12">
                 <app-textarea
                   name="notes"
@@ -143,8 +173,7 @@
               title="vacancy.vacancyBtn"
               type="main"
               htmlType="submit"
-                            [icon]="'bi bi-arrow'"
-
+              [icon]="'bi bi-arrow'"
             ></app-site-button>
           </div>
         </form>
@@ -152,19 +181,17 @@
     </div>
   </div>
 </div>
-  <app-generic-modal [(isOpen)]="showConfirm" title="Alert Message">
-    <section
-      class="w-100 d-flex flex-column align-items-stretch gap-3 p-3 rounded"
+<app-generic-modal [(isOpen)]="showConfirm" title="Alert Message">
+  <section
+    class="w-100 d-flex flex-column align-items-stretch gap-3 p-3 rounded"
+  >
+    <div
+      class="d-flex flex-column align-items-center justify-content-center gap-2 w-100"
     >
-      <div
-        class="d-flex flex-column align-items-center justify-content-center gap-2 w-100"
-      >
-        <i class="bi bi-info-circle-fill infoColor"></i>
-        <p class="text-center darkText w-75 mx-auto">
-          {{
-            "vacancy.mustLogged" | translate
-          }}
-        </p>
-      </div>
-    </section>
-  </app-generic-modal>
+      <i class="bi bi-info-circle-fill infoColor"></i>
+      <p class="text-center darkText w-75 mx-auto">
+        {{ "vacancy.mustLogged" | translate }}
+      </p>
+    </div>
+  </section>
+</app-generic-modal>

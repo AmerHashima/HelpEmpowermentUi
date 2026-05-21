@@ -18,6 +18,7 @@ import { ToastingMessagesService } from '../../../shared/Services/ToastingMessag
 })
 export class AdminContactUsComponent {
   attachmentUrl = signal<string | null>(null);
+  // attachmentUrls = signal<string[]>([]);
   toasting=inject(ToastingMessagesService);
   hasAttachment = signal(false);
   private service = inject(ContactUsService);
