@@ -14,9 +14,9 @@ import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/s
 import { TranslatePipe } from '@ngx-translate/core';
 import { APIExam } from '../../../../models/certification';
 import { APICourseService, CourseService } from '../../../../models/course-service';
-import { LookupService } from '../../../../Services/lookup.service';
+import { LookupService, LOOKUP_CODES } from '../../../../Services/lookup.service';
 import { LookupDetail } from '../../../../models/lookup';
-import { createdUpdatedOID, courseServiceTypeParentLookup } from '../../../../data/lookUPS';
+import { createdUpdatedOID } from '../../../../data/lookUPS';
 import { signal } from '@angular/core';
 
 @Component({
@@ -149,7 +149,7 @@ export class CertificationComponent {
   }
 
   private loadServiceTypes() {
-    this.lookupService.getLookupDetailsByParent(courseServiceTypeParentLookup).subscribe({
+    this.lookupService.getLookUpByCode(LOOKUP_CODES.SERVICE_TYPE).subscribe({
       next: (types) => this.serviceTypes.set(types ?? []),
       error: () => this.serviceTypes.set([]),
     });
