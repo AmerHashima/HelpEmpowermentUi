@@ -137,7 +137,7 @@ export class CertificationComponent {
   }
 
 
-  onConfirmDeleteExam(){
+  onConfirmDeleteExam() {
     if (this.deleteExam) {
       this.showConfirm = false;
       this.examsStore.deleteExam(this.deleteExam.oid);

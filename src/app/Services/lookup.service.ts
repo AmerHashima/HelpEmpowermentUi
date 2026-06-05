@@ -11,7 +11,7 @@ export const LOOKUP_CODES = {
   COURSE_CATEGORY: 'COURSE_CATEGORY',
   QUESTION_TYPE: 'QUESTION_TYPE',
   WEBINAR_FORMAT: 'WebinarFormat',
-  TIME_ZONE:"TimeZone"
+  TIME_ZONE: "TimeZone"
 } as const;
 
 @Injectable({
@@ -22,7 +22,7 @@ export class LookupService {
   constructor(private apiService: ApiService) { }
 
   // getLookUpByCode(code: string): Observable<ApiLookup> {
-  getLookUpByCode(code: string): Observable<LookupDetail[] > {
+  getLookUpByCode(code: string): Observable<LookupDetail[]> {
 
 
     return this.apiService
