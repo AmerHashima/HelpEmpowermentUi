@@ -115,29 +115,18 @@
 
                   <form [formGroup]="serviceForm" (ngSubmit)="saveService()" class="d-flex flex-column gap-2">
                     <label class="small fw-semibold">Service Type</label>
-                    <select class="form-select" formControlName="serviceTypeLookupId">
+                    <select class="form-select" formControlName="serviceId">
                       <option value="">Select type</option>
                       @for (type of serviceTypes(); track type.oid) {
                       <option [value]="type.oid">{{ type.lookupNameEn }}</option>
                       }
                     </select>
 
-                    <label class="small fw-semibold mt-2">Title (EN)</label>
-                    <input class="form-control" type="text" formControlName="titleEn" />
+                    <label class="small fw-semibold mt-2">Price</label>
+                    <input class="form-control" type="number" min="0" formControlName="price" />
 
-                    <label class="small fw-semibold mt-2">Title (AR)</label>
-                    <input class="form-control" type="text" formControlName="titleAr" />
-
-                    <label class="small fw-semibold mt-2">Description (EN)</label>
-                    <textarea class="form-control" rows="3" formControlName="descriptionEn"></textarea>
-
-                    <label class="small fw-semibold mt-2">Description (AR)</label>
-                    <textarea class="form-control" rows="3" formControlName="descriptionAr"></textarea>
-
-                    <div class="form-check mt-2">
-                      <input class="form-check-input" type="checkbox" id="serviceActive" formControlName="isActive" />
-                      <label class="form-check-label" for="serviceActive">Active</label>
-                    </div>
+                    <label class="small fw-semibold mt-2">Active Time</label>
+                    <input class="form-control" type="number" min="0" formControlName="activeTime" />
 
                     <div class="d-flex gap-2 mt-3">
                       <button class="btn btn-primary" type="submit" [disabled]="serviceFormLoading()">
@@ -169,14 +158,10 @@
                     @for (service of courseServices(); track service.oid) {
                     <div class="border rounded p-3 d-flex flex-column gap-2">
                       <div class="d-flex justify-content-between align-items-center">
-                        <h6 class="mb-0">{{ service.titleEn || service.nameEn || service.serviceNameEn }}</h6>
-                        <span class="badge" [class.text-bg-success]="service.isActive"
-                          [class.text-bg-secondary]="!service.isActive">
-                          {{ service.isActive ? 'Active' : 'Inactive' }}
-                        </span>
+                        <h6 class="mb-0">{{ getServiceTypeName(service) }}</h6>
                       </div>
-                      <small class="text-muted">{{ getServiceTypeName(service) }}</small>
-                      <p class="mb-0 text-muted">{{ service.descriptionEn || service.detailsEn }}</p>
+                      <small class="text-muted">Price: {{ service.price ?? 0 }}</small>
+                      <small class="text-muted">Active Time: {{ service.activeTime ?? 0 }}</small>
                       <div class="d-flex gap-2">
                         <button class="btn btn-sm btn-outline-primary" (click)="startEditService(service)">Edit</button>
                         <button class="btn btn-sm btn-outline-danger" (click)="onDeleteService(service)">Delete</button>

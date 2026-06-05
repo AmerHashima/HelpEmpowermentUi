@@ -53,12 +53,9 @@ export class CertificationComponent {
   deleteService: APICourseService | null = null;
 
   serviceForm = this.fb.nonNullable.group({
-    serviceTypeLookupId: ['', Validators.required],
-    titleEn: ['', Validators.required],
-    titleAr: ['', Validators.required],
-    descriptionEn: [''],
-    descriptionAr: [''],
-    isActive: [true],
+    serviceId: ['', Validators.required],
+    price: [0, [Validators.required, Validators.min(0)]],
+    activeTime: [0, [Validators.required, Validators.min(0)]],
   });
 
   constructor() {
@@ -172,24 +169,18 @@ export class CertificationComponent {
   startCreateService() {
     this.editingServiceId.set(null);
     this.serviceForm.reset({
-      serviceTypeLookupId: '',
-      titleEn: '',
-      titleAr: '',
-      descriptionEn: '',
-      descriptionAr: '',
-      isActive: true,
+      serviceId: '',
+      price: 0,
+      activeTime: 0,
     });
   }
 
   startEditService(service: APICourseService) {
     this.editingServiceId.set(service.oid);
     this.serviceForm.patchValue({
-      serviceTypeLookupId: service.serviceTypeLookupId,
-      titleEn: service.titleEn ?? service.nameEn ?? service.serviceNameEn ?? '',
-      titleAr: service.titleAr ?? service.nameAr ?? service.serviceNameAr ?? '',
-      descriptionEn: service.descriptionEn ?? service.detailsEn ?? '',
-      descriptionAr: service.descriptionAr ?? service.detailsAr ?? '',
-      isActive: service.isActive,
+      serviceId: service.serviceId ?? service.serviceTypeLookupId ?? '',
+      price: service.price ?? 0,
+      activeTime: service.activeTime ?? 0,
     });
   }
 
@@ -209,21 +200,12 @@ export class CertificationComponent {
     }
 
     const value = this.serviceForm.getRawValue();
-    const payload: CourseService & Record<string, unknown> = {
-      courseOid: certId,
-      serviceTypeLookupId: value.serviceTypeLookupId,
-      titleEn: value.titleEn,
-      titleAr: value.titleAr,
-      descriptionEn: value.descriptionEn ?? '',
-      descriptionAr: value.descriptionAr ?? '',
-      isActive: value.isActive ?? true,
+    const payload: CourseService = {
+      courseId: certId,
+      serviceId: value.serviceId,
+      price: Number(value.price ?? 0),
+      activeTime: Number(value.activeTime ?? 0),
       createdBy: createdUpdatedOID,
-      nameEn: value.titleEn,
-      nameAr: value.titleAr,
-      serviceNameEn: value.titleEn,
-      serviceNameAr: value.titleAr,
-      detailsEn: value.descriptionEn ?? '',
-      detailsAr: value.descriptionAr ?? '',
     };
 
     this.serviceFormLoading.set(true);
@@ -275,7 +257,8 @@ export class CertificationComponent {
   }
 
   getServiceTypeName(service: APICourseService): string {
-    const match = this.serviceTypes().find((type) => type.oid === service.serviceTypeLookupId);
+    const serviceLookupId = service.serviceId ?? service.serviceTypeLookupId;
+    const match = this.serviceTypes().find((type) => type.oid === serviceLookupId);
     return match?.lookupNameEn ?? service.serviceTypeNameEn ?? service.serviceTypeNameAr ?? '-';
   }
 }

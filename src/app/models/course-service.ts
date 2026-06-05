@@ -1,33 +1,34 @@
 export interface CourseService {
     oid?: string;
-    courseOid: string;
-    serviceTypeLookupId: string;
-    titleEn: string;
-    titleAr: string;
-    descriptionEn: string;
-    descriptionAr: string;
-    isActive: boolean;
+    courseId: string;
+    serviceId: string;
+    price: number;
+    activeTime: number;
     createdBy: string;
 }
 
 export interface APICourseService {
     oid: string;
-    courseOid: string;
+    courseId?: string;
+    courseOid?: string;
     courseName?: string;
-    serviceTypeLookupId: string;
+    serviceId?: string;
+    serviceTypeLookupId?: string;
     serviceTypeNameEn?: string;
     serviceTypeNameAr?: string;
-    titleEn: string;
-    titleAr: string;
+    titleEn?: string;
+    titleAr?: string;
     nameEn?: string;
     nameAr?: string;
     serviceNameEn?: string;
     serviceNameAr?: string;
-    descriptionEn: string;
-    descriptionAr: string;
+    descriptionEn?: string;
+    descriptionAr?: string;
     detailsEn?: string;
     detailsAr?: string;
-    isActive: boolean;
+    price?: number;
+    activeTime?: number;
+    isActive?: boolean;
     createdAt?: string;
     createdBy?: string;
     updatedAt?: string | null;
