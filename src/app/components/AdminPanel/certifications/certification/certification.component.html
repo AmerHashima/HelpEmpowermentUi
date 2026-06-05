@@ -122,10 +122,10 @@
                       }
                     </select>
 
-                    <label class="small fw-semibold mt-2">Price</label>
+                    <label class="small fw-semibold mt-2">Price (Per Day)</label>
                     <input class="form-control" type="number" min="0" formControlName="price" />
 
-                    <label class="small fw-semibold mt-2">Active Time</label>
+                    <label class="small fw-semibold mt-2">Active Time (Days)</label>
                     <input class="form-control" type="number" min="0" formControlName="activeTime" />
 
                     <div class="d-flex gap-2 mt-3">
@@ -160,8 +160,8 @@
                       <div class="d-flex justify-content-between align-items-center">
                         <h6 class="mb-0">{{ getServiceTypeName(service) }}</h6>
                       </div>
-                      <small class="text-muted">Price: {{ service.price ?? 0 }}</small>
-                      <small class="text-muted">Active Time: {{ service.activeTime ?? 0 }}</small>
+                      <small class="text-muted">Price Per Day: {{ service.price ?? 0 }}</small>
+                      <small class="text-muted">Active Time: {{ service.activeTime ?? 0 }} day(s)</small>
                       <div class="d-flex gap-2">
                         <button class="btn btn-sm btn-outline-primary" (click)="startEditService(service)">Edit</button>
                         <button class="btn btn-sm btn-outline-danger" (click)="onDeleteService(service)">Delete</button>
