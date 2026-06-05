@@ -26,11 +26,19 @@
               [secondaryBtn]="false"
               (click)="onEditCertification()"
             />
-            <app-button
-              btnLabel="Add New Exam"
-              [mainBtn]="true"
-              (click)="onAddNewExam()"
-            />
+            @if (activeTab() === 'exams') {
+              <app-button
+                btnLabel="Add New Exam"
+                [mainBtn]="true"
+                (click)="onAddNewExam()"
+              />
+            } @else {
+              <app-button
+                btnLabel="Add New Service"
+                [mainBtn]="true"
+                (click)="startCreateService()"
+              />
+            }
           </div>
         </div>
       </div>
@@ -42,159 +50,202 @@
           {{ certification()?.courseDescription }}
         </p> -->
         <div class="row g-3 fleex-wrap">
-          <div class="accordion accordion-flush" id="certificationAccordion">
-            <div class="accordion-item mb-3 shadow">
-              <h2 class="accordion-header">
-                <button
-                  class="accordion-button"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#flush-collapseOne"
-                  aria-expanded="true"
-                  aria-controls="flush-collapseOne"
-                >
-                  Certification Exams
-                </button>
-              </h2>
-              <div
-                id="flush-collapseOne"
-                class="accordion-collapse collapse show"
-                data-bs-parent="#certificationAccordion"
+          <div class="col-12">
+            <div class="d-flex gap-2 mb-3">
+              <button
+                type="button"
+                class="tabBtn"
+                [class.active]="activeTab() === 'exams'"
+                (click)="setActiveTab('exams')"
               >
-                <div class="accordion-body">
-                  @if (exams(); as exams) {
-                    @if (exams.length === 0) {
-                      <div class="d-flex justify-content-center">
-                        <div
-                          class="card text-center p-4 border-0"
-                          style="max-width: 420px"
-                        >
-                          <i class="bi bi-journal-x fs-1 text-muted mb-3"></i>
-                          <h6 class="fw-semibold mb-1">No exams yet</h6>
-                          <p class="text-muted small mb-3">
-                            This certification doesn’t have any exams added yet.
-                          </p>
-                        </div>
+                Exams
+              </button>
+              <button
+                type="button"
+                class="tabBtn"
+                [class.active]="activeTab() === 'services'"
+                (click)="setActiveTab('services')"
+              >
+                Services
+              </button>
+            </div>
+
+            @if (activeTab() === 'exams') {
+              <div class="card border-0 shadow-sm p-3">
+                @if (exams(); as exams) {
+                  @if (exams.length === 0) {
+                    <div class="d-flex justify-content-center">
+                      <div class="card text-center p-4 border-0" style="max-width: 420px">
+                        <i class="bi bi-journal-x fs-1 text-muted mb-3"></i>
+                        <h6 class="fw-semibold mb-1">No exams yet</h6>
+                        <p class="text-muted small mb-3">
+                          This certification doesn’t have any exams added yet.
+                        </p>
                       </div>
-                    } @else {
-                      <div class="row g-3">
-                        @for (
-                          exam of exams;
-                          let index = $index;
-                          track exam.oid ?? index
-                        ) {
-                          <div class="col-md-6 col-xl-4 col-xxl-3">
+                    </div>
+                  } @else {
+                    <div class="row g-3">
+                      @for (exam of exams; let index = $index; track exam.oid ?? index) {
+                        <div class="col-md-6 col-xl-4 col-xxl-3">
+                          <div
+                            class="certificationExamCard d-flex flex-column shadow-sm rounded-2 p-3 gap-3"
+                          >
                             <div
-                              class="certificationExamCard d-flex flex-column shadow-sm rounded-2 p-3 gap-3"
+                              class="d-flex align-items-center gap-1"
+                              (click)="openExamDetails(exam)"
+                            >
+                              <span class="iconCircle">
+                                <i class="bi bi-pencil-square"></i>
+                              </span>
+                              <span class="examName fw-bold">
+                                {{ exam.examName }}
+                              </span>
+                            </div>
+
+                            <div
+                              class="d-flex gap-3 justify-content-center examDetails py-2"
                             >
                               <div
-                                class="d-flex align-items-center gap-1"
-                                (click)="openExamDetails(exam)"
+                                class="d-flex flex-column align-items-center justify-content-center"
                               >
-                                <span class="iconCircle">
-                                  <i class="bi bi-pencil-square"></i>
-                                </span>
-                                <span class="examName fw-bold">
-                                  {{ exam.examName }}
-                                </span>
+                                <div class="d-flex align-items-center gap-1">
+                                  <i class="bi bi-question-circle"></i>
+                                  <span class="fw-bold">Questions</span>
+                                </div>
+                                <span>{{ exam.questionCount }}</span>
                               </div>
+
+                              <div class="line"></div>
 
                               <div
-                                class="d-flex gap-3 justify-content-center examDetails py-2"
+                                class="d-flex flex-column align-items-center justify-content-center"
                               >
-                                <div
-                                  class="d-flex flex-column align-items-center justify-content-center"
-                                >
-                                  <div class="d-flex align-items-center gap-1">
-                                    <i class="bi bi-question-circle"></i>
-                                    <span class="fw-bold">Questions</span>
-                                  </div>
-                                  <span>{{ exam.questionCount }}</span>
+                                <div class="d-flex align-items-center gap-1">
+                                  <i class="bi bi-clock"></i>
+                                  <span class="fw-bold">Duration</span>
                                 </div>
-
-                                <div class="line"></div>
-
-                                <div
-                                  class="d-flex flex-column align-items-center justify-content-center"
-                                >
-                                  <div class="d-flex align-items-center gap-1">
-                                    <i class="bi bi-clock"></i>
-                                    <span class="fw-bold">Duration</span>
-                                  </div>
-                                  <span>{{ exam.durationMinutes }}</span>
-                                </div>
+                                <span>{{ exam.durationMinutes }}</span>
                               </div>
+                            </div>
 
-                              <div
-                                class="d-flex align-items-center justify-content-center gap-2"
-                              >
-                                <app-button
-                                  btnLabel="Add New Question"
-                                  [mainBtn]="true"
-                                  (click)="onAddNewQuestion(exam)"
-                                />
-                                <app-button
-                                  btnLabel="Delete Exam"
-                                  [secondaryBtn]="true"
-                                  [mainBtn]="false"
-                                  (click)="onDeleteExam(exam)"
-                                />
-                              </div>
+                            <div
+                              class="d-flex align-items-center justify-content-center gap-2"
+                            >
+                              <app-button
+                                btnLabel="Add New Question"
+                                [mainBtn]="true"
+                                (click)="onAddNewQuestion(exam)"
+                              />
+                              <app-button
+                                btnLabel="Delete Exam"
+                                [secondaryBtn]="true"
+                                [mainBtn]="false"
+                                (click)="onDeleteExam(exam)"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      }
+                    </div>
+                  }
+                }
+              </div>
+            } @else {
+              <div class="row g-3">
+                <div class="col-lg-5">
+                  <div class="card border-0 shadow-sm p-3 h-100">
+                    <h6 class="fw-bold mb-3">
+                      {{ editingServiceId() ? 'Edit Service' : 'Add Service' }}
+                    </h6>
+
+                    <form [formGroup]="serviceForm" (ngSubmit)="saveService()" class="d-flex flex-column gap-2">
+                      <label class="small fw-semibold">Service Type</label>
+                      <select class="form-select" formControlName="serviceTypeLookupId">
+                        <option value="">Select type</option>
+                        @for (type of serviceTypes(); track type.oid) {
+                          <option [value]="type.oid">{{ type.lookupNameEn }}</option>
+                        }
+                      </select>
+
+                      <label class="small fw-semibold mt-2">Title (EN)</label>
+                      <input class="form-control" type="text" formControlName="titleEn" />
+
+                      <label class="small fw-semibold mt-2">Title (AR)</label>
+                      <input class="form-control" type="text" formControlName="titleAr" />
+
+                      <label class="small fw-semibold mt-2">Description (EN)</label>
+                      <textarea class="form-control" rows="3" formControlName="descriptionEn"></textarea>
+
+                      <label class="small fw-semibold mt-2">Description (AR)</label>
+                      <textarea class="form-control" rows="3" formControlName="descriptionAr"></textarea>
+
+                      <div class="form-check mt-2">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          id="serviceActive"
+                          formControlName="isActive"
+                        />
+                        <label class="form-check-label" for="serviceActive">Active</label>
+                      </div>
+
+                      <div class="d-flex gap-2 mt-3">
+                        <button
+                          class="btn btn-primary"
+                          type="submit"
+                          [disabled]="serviceFormLoading()"
+                        >
+                          {{ editingServiceId() ? 'Update Service' : 'Create Service' }}
+                        </button>
+                        @if (editingServiceId()) {
+                          <button
+                            class="btn btn-outline-secondary"
+                            type="button"
+                            (click)="cancelServiceEdit()"
+                          >
+                            Cancel
+                          </button>
+                        }
+                      </div>
+                    </form>
+                  </div>
+                </div>
+
+                <div class="col-lg-7">
+                  <div class="card border-0 shadow-sm p-3 h-100">
+                    <h6 class="fw-bold mb-3">Course Services</h6>
+
+                    @if (servicesLoading()) {
+                      <p class="text-muted mb-0">Loading services...</p>
+                    } @else if (courseServices().length === 0) {
+                      <div class="text-center p-4">
+                        <i class="bi bi-tools fs-1 text-muted"></i>
+                        <p class="text-muted mb-0 mt-2">No services added yet.</p>
+                      </div>
+                    } @else {
+                      <div class="d-flex flex-column gap-2">
+                        @for (service of courseServices(); track service.oid) {
+                          <div class="border rounded p-3 d-flex flex-column gap-2">
+                            <div class="d-flex justify-content-between align-items-center">
+                              <h6 class="mb-0">{{ service.titleEn || service.nameEn || service.serviceNameEn }}</h6>
+                              <span class="badge" [class.text-bg-success]="service.isActive" [class.text-bg-secondary]="!service.isActive">
+                                {{ service.isActive ? 'Active' : 'Inactive' }}
+                              </span>
+                            </div>
+                            <small class="text-muted">{{ getServiceTypeName(service) }}</small>
+                            <p class="mb-0 text-muted">{{ service.descriptionEn || service.detailsEn }}</p>
+                            <div class="d-flex gap-2">
+                              <button class="btn btn-sm btn-outline-primary" (click)="startEditService(service)">Edit</button>
+                              <button class="btn btn-sm btn-outline-danger" (click)="onDeleteService(service)">Delete</button>
                             </div>
                           </div>
                         }
                       </div>
                     }
-                  }
+                  </div>
                 </div>
               </div>
-            </div>
-            <!-- <div class="accordion-item mb-3 shadow">
-              <h2 class="accordion-header">
-                <button
-                  class="accordion-button collapsed"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#flush-collapseTwo"
-                  aria-expanded="false"
-                  aria-controls="flush-collapseTwo"
-                >
-                  Course Features
-                </button>
-              </h2>
-              <div
-                id="flush-collapseTwo"
-                class="accordion-collapse collapse"
-                data-bs-parent="#certificationAccordion"
-              >
-                <div class="accordion-body">
-                  <app-certifications-features />
-                </div>
-              </div>
-            </div>
-            <div class="accordion-item mb-3 shadow">
-              <h2 class="accordion-header">
-                <button
-                  class="accordion-button collapsed"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#flush-collapseThree"
-                  aria-expanded="false"
-                  aria-controls="flush-collapseThree"
-                >
-                  Course Contents
-                </button>
-              </h2>
-              <div
-                id="flush-collapseThree"
-                class="accordion-collapse collapse"
-                data-bs-parent="#certificationAccordion"
-              >
-                <div class="accordion-body">
-                   <app-certification-contents/>
-                </div>
-              </div>
-            </div> -->
+            }
           </div>
         </div>
       </div>
@@ -226,6 +277,35 @@
           title="Delete"
           type="main"
           (click)="onConfirmDeleteExam()"
+        />
+      </div>
+    </div>
+  </section>
+</app-generic-modal>
+
+<app-generic-modal [(isOpen)]="showServiceConfirm" title="">
+  <section
+    class="form w-100 d-flex flex-column align-items-stretch gap-3 p-3 rounded"
+  >
+    <div
+      class="d-flex flex-column align-items-center justify-content-center gap-2 w-100"
+    >
+      <i class="bi bi-info-circle-fill infoColor"></i>
+      <p class="text-center darkText w-75 mx-auto">
+        {{ "Are you sure you want to delete service?" | translate }}
+      </p>
+      <div class="d-flex gap-2 align-items-center">
+        <app-site-button
+          class="flex-grow-1"
+          title="Cancal"
+          type="secondary"
+          (click)="onCancelDeleteService()"
+        />
+        <app-site-button
+          class="flex-grow-1"
+          title="Delete"
+          type="main"
+          (click)="onConfirmDeleteService()"
         />
       </div>
     </div>

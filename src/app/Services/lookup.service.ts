@@ -40,6 +40,20 @@ export class LookupService {
       );
   }
 
+  getLookupDetailsByParent(parentId: string): Observable<LookupDetail[]> {
+    return this.apiService
+      .getSingle<ApiResponse<LookupDetail[]>>('AppLookups/details/parent', parentId)
+      .pipe(
+        map((response: ApiResponse<LookupDetail[]>) => {
+          if (!response.success) {
+            const msg = response.errors?.join(', ') || response.message || 'API failed to load lookup details';
+            throw new Error(msg);
+          }
+          return response.data ?? [];
+        })
+      );
+  }
+
   // getCourseLevel() {
   //   return this.getLookUpByCode(LOOKUP_CODES.COURSE_LEVEL);
   // }

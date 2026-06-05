@@ -28,3 +28,17 @@
   border-bottom: 1px solid $borderColor;
 }
 
+.tabBtn {
+  border: 1px solid $borderColor;
+  background: #fff;
+  color: $textColor;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+}
+
+.tabBtn.active {
+  border-color: $primaryColor;
+  color: $primaryColor;
+}
+

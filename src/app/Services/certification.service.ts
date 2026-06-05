@@ -7,6 +7,7 @@ import { ApiResponse, ApiSearchResponse } from '../models/apiResponse';
 import { APICertification, APICourseQuestion, APIExam, Certification, courseExam } from '../models/certification';
 import { RequestBody } from '../models/rquest';
 import { AnyAaaaRecord } from 'dns';
+import { APICourseService, CourseService } from '../models/course-service';
 
 @Injectable({
   providedIn: 'root'
@@ -77,6 +78,98 @@ export class CertificationService {
   // For features
   getCertificationFeatures(id: string): Observable<any[]> {
     return this.getByCourse<any>('CourseFeatures', id);
+  }
+
+  getCourseServicesByCourse(courseId: string): Observable<APICourseService[]> {
+    return this.apiService
+      .getSingle<ApiResponse<APICourseService[]>>('CourseServices/course', courseId)
+      .pipe(
+        map((response: ApiResponse<APICourseService[]>) => {
+          if (!response.success) {
+            const msg = response.errors?.join(', ') || response.message || 'API failed to load course services';
+            throw new Error(msg);
+          }
+          return response.data ?? [];
+        })
+      );
+  }
+
+  searchCourseServices(body: RequestBody): Observable<{ services: APICourseService[]; total: number }> {
+    return this.apiService
+      .query<ApiSearchResponse<APICourseService>>('CourseServices/search', body)
+      .pipe(
+        map((response: ApiSearchResponse<APICourseService>) => {
+          if (!response.success) {
+            const msg = response.message || 'API failed to query course services';
+            throw new Error(msg);
+          }
+          return {
+            services: response.data ?? [],
+            total: response.totalCount ?? 0,
+          };
+        })
+      );
+  }
+
+  getCourseService(id: string): Observable<APICourseService> {
+    return this.apiService
+      .getSingle<ApiResponse<APICourseService>>('CourseServices', id)
+      .pipe(
+        map((response: ApiResponse<APICourseService>) => {
+          if (!response.success) {
+            const msg = response.errors?.join(', ') || response.message || 'API failed to load course service';
+            throw new Error(msg);
+          }
+          return response.data;
+        })
+      );
+  }
+
+  createCourseService(body: CourseService): Observable<APICourseService> {
+    return this.apiService
+      .post<ApiResponse<APICourseService>>('CourseServices', body)
+      .pipe(
+        map((response: ApiResponse<APICourseService>) => {
+          if (!response.success) {
+            const msg = response.errors?.join(', ') || response.message || 'API failed to create course service';
+            throw new Error(msg);
+          }
+          return response.data;
+        })
+      );
+  }
+
+  updateCourseService(id: string, body: CourseService): Observable<APICourseService> {
+    const updateBody: CourseService = {
+      ...body,
+      oid: id,
+    };
+
+    return this.apiService
+      .put<ApiResponse<APICourseService>>('CourseServices', id, updateBody)
+      .pipe(
+        map((response: ApiResponse<APICourseService>) => {
+          if (!response.success) {
+            const msg = response.errors?.join(', ') || response.message || 'API failed to update course service';
+            throw new Error(msg);
+          }
+          return response.data;
+        })
+      );
+  }
+
+  deleteCourseService(id: string): Observable<boolean> {
+    return this.apiService
+      .delete<ApiResponse<boolean>>('CourseServices', id)
+      .pipe(
+        map((response: ApiResponse<boolean>) => {
+          if (!response.success) {
+            const msg = response.errors?.join(', ') || response.message || 'API failed to delete course service';
+            throw new Error(msg);
+          }
+          return response.data;
+        })
+      );
   }
 
 
