@@ -35,12 +35,14 @@
         </p> -->
         <div class="row g-3 fleex-wrap">
           <div class="col-12">
-            <div class="d-flex gap-2 mb-3">
-              <button type="button" class="tabBtn" [class.active]="activeTab() === 'exams'"
+            <div class="tabsHeader mb-3" role="tablist" aria-label="Certification sections">
+              <button type="button" class="tabBtn" [class.active]="activeTab() === 'exams'" role="tab"
+                [attr.aria-selected]="activeTab() === 'exams'"
                 (click)="setActiveTab('exams')">
                 Exams
               </button>
-              <button type="button" class="tabBtn" [class.active]="activeTab() === 'services'"
+              <button type="button" class="tabBtn" [class.active]="activeTab() === 'services'" role="tab"
+                [attr.aria-selected]="activeTab() === 'services'"
                 (click)="setActiveTab('services')">
                 Services
               </button>
