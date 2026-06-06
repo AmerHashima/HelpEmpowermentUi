@@ -11,7 +11,7 @@ import { FormsModule, NgControl, NgForm } from '@angular/forms';
 import { CheckboxComponent } from '../../../../shared/checkbox/checkbox.component';
 import { AuthService } from '../../../../Services/auth.service';
 import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
-
+import FingerprintJS from '@fingerprintjs/fingerprintjs';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -28,6 +28,7 @@ import { ToastingMessagesService } from '../../../../shared/Services/ToastingMes
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
+
 export class LoginComponent {
   private shared = inject(Shared);
   private auth=inject(AuthService);
@@ -43,13 +44,20 @@ export class LoginComponent {
     // rememberMe: false
   };
 
-  onLoginSubmit(form:NgForm) {
+  async onLoginSubmit(form:NgForm) {
     if (form.invalid) {
       form.control.markAllAsTouched();
       return;
     }
 
-    this.auth.loginStudent(this.credentials).subscribe({
+    const payload = {
+      username: this.credentials.username,
+      password: this.credentials.password,
+      deviceId: await this.getDeviceId()
+
+    };
+    // this.auth.loginStudent(this.credentials).subscribe({
+    this.auth.loginStudent(payload).subscribe({
       next: () => {
         // this.toasting.showToast('User has logged suffccessfully', 'success');
         this.router.navigateByUrl(`/${this.lang()}/home`);
@@ -68,5 +76,14 @@ export class LoginComponent {
 
   goToForgetPassword() {
     this.router.navigate([`/${this.lang()}/auth/forget-password`]);
+  }
+
+  //helper method
+
+
+  private async getDeviceId(): Promise<string> {
+    const fp = await FingerprintJS.load();
+    const result = await fp.get();
+    return result.visitorId;
   }
 }

@@ -24,6 +24,7 @@
     "@angular/router": "^19.0.0",
     "@angular/ssr": "^19.0.6",
     "@emailjs/browser": "^4.4.1",
+    "@fingerprintjs/fingerprintjs": "^5.2.0",
     "@ng-bootstrap/ng-bootstrap": "^18.0.0",
     "@ng-select/ng-select": "^14.2.4",
     "@ngrx/signals": "^19.2.1",
