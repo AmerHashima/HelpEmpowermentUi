@@ -20,8 +20,10 @@
               (click)="onEditCertification()" />
             @if (activeTab() === 'exams') {
             <app-button btnLabel="Add New Exam" [mainBtn]="true" (click)="onAddNewExam()" />
-            } @else {
+            } @else if (activeTab() === 'services') {
             <app-button btnLabel="Add New Service" [mainBtn]="true" (click)="startCreateService()" />
+            } @else {
+            <app-button btnLabel="Add New Video" [mainBtn]="true" (click)="onAddNewVideo()" />
             }
           </div>
         </div>
@@ -43,6 +45,10 @@
               <button type="button" class="tabBtn" [class.active]="activeTab() === 'services'" role="tab"
                 [attr.aria-selected]="activeTab() === 'services'" (click)="setActiveTab('services')">
                 Services
+              </button>
+              <button type="button" class="tabBtn" [class.active]="activeTab() === 'videos'" role="tab"
+                [attr.aria-selected]="activeTab() === 'videos'" (click)="setActiveTab('videos')">
+                Course Videos
               </button>
             </div>
 
@@ -105,7 +111,7 @@
               }
               }
             </div>
-            } @else {
+            } @else if (activeTab() === 'services') {
             <div class="row g-3">
               <div class="col-lg-5">
                 <div class="card border-0 shadow-sm p-3 h-100">
@@ -173,6 +179,8 @@
                 </div>
               </div>
             </div>
+            } @else {
+            <app-certification-course-videos-tab [courseId]="certification()?.oid ?? ''" />
             }
           </div>
         </div>

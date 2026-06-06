@@ -18,10 +18,18 @@ import { LookupService, LOOKUP_CODES } from '../../../../Services/lookup.service
 import { LookupDetail } from '../../../../models/lookup';
 import { createdUpdatedOID } from '../../../../data/lookUPS';
 import { signal } from '@angular/core';
+import { CertificationCourseVideosTabComponent } from '../certification-course-videos-tab/certification-course-videos-tab.component';
 
 @Component({
   selector: 'app-certification',
-  imports: [ButtonComponent, GenericModelComponent, SiteButtonComponent, TranslatePipe, ReactiveFormsModule],
+  imports: [
+    ButtonComponent,
+    GenericModelComponent,
+    SiteButtonComponent,
+    TranslatePipe,
+    ReactiveFormsModule,
+    CertificationCourseVideosTabComponent,
+  ],
   templateUrl: './certification.component.html',
   styleUrl: './certification.component.scss'
 })
@@ -39,7 +47,7 @@ export class CertificationComponent {
   certification = this.certificationStore.selectedCertification;
   courseContents = [];
   exams = computed(() => this.examsStore.exams());
-  activeTab = signal<'exams' | 'services'>('exams');
+  activeTab = signal<'exams' | 'services' | 'videos'>('exams');
   showConfirm: boolean = false;
   deleteExam: APIExam | null = null;
 
@@ -87,7 +95,7 @@ export class CertificationComponent {
     this.loadServiceTypes();
   }
 
-  setActiveTab(tab: 'exams' | 'services') {
+  setActiveTab(tab: 'exams' | 'services' | 'videos') {
     this.activeTab.set(tab);
   }
 
@@ -95,6 +103,13 @@ export class CertificationComponent {
     const certId = this.certification()?.oid;
     if (certId)
       this.router.navigate(['/admin/certifications', certId, 'exams', 'create']);
+  }
+
+  onAddNewVideo() {
+    const certId = this.certification()?.oid;
+    if (certId) {
+      this.router.navigate(['/admin/certifications', certId, 'videos', 'create']);
+    }
   }
   openExamDetails(exam: any) {
     const certId = this.certification()?.oid;

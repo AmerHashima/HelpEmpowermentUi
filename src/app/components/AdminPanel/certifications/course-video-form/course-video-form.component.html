@@ -1,0 +1,147 @@
+<div class="p-3 d-flex flex-column gap-3">
+    <div class="d-flex justify-content-between align-items-center">
+        <h4 class="mb-0">{{ isEdit() ? 'Edit Course Video' : 'Create Course Video' }}</h4>
+        <button type="button" class="btn btn-outline-secondary" (click)="backToCourse()">Back</button>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="card border-0 shadow-sm p-3 d-flex flex-column gap-2">
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label class="form-label">Name (EN)</label>
+                <input class="form-control" formControlName="nameEn" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Name (AR)</label>
+                <input class="form-control" formControlName="nameAr" />
+            </div>
+            <!-- <div class="col-md-6">
+                <label class="form-label">Video URL</label>
+                <input class="form-control" formControlName="videoUrl" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Video Type Lookup Id</label>
+                <input class="form-control" formControlName="videoTypeLookupId" />
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Description (EN)</label>
+                <textarea class="form-control" rows="2" formControlName="descriptionEn"></textarea>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Description (AR)</label>
+                <textarea class="form-control" rows="2" formControlName="descriptionAr"></textarea>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Duration Seconds</label>
+                <input type="number" min="0" class="form-control" formControlName="durationSeconds" />
+            </div> -->
+            <div class="col-md-3">
+                <label class="form-label">Order</label>
+                <input type="number" min="0" class="form-control" formControlName="orderNo" />
+            </div>
+            <!-- <div class="col-md-3 d-flex align-items-end">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" formControlName="isPreview" id="isPreview" />
+                    <label class="form-check-label" for="isPreview">Is Preview</label>
+                </div>
+            </div> -->
+            <div class="col-md-3 d-flex align-items-end">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" formControlName="isActive" id="isActiveVideo" />
+                    <label class="form-check-label" for="isActiveVideo">Is Active</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-end mt-2">
+            <button class="btn btn-primary" type="submit" [disabled]="loading()">
+                {{ isEdit() ? 'Update Video' : 'Create Video' }}
+            </button>
+        </div>
+    </form>
+
+    @if (isEdit()) {
+    <div class="card border-0 shadow-sm p-3 d-flex flex-column gap-3">
+        <div class="d-flex align-items-center justify-content-between">
+            <h6 class="mb-0 fw-bold">Upload Video File</h6>
+            @if (hasExistingVideo()) {
+            <a class="text-success d-flex align-items-center gap-1 fw-semibold" [href]="getExistingVideoStreamUrl()"
+                target="_blank" rel="noopener noreferrer" title="Open video">
+                <i class="bi bi-play-circle-fill fs-5"></i>
+            </a>
+            } @else {
+            <span class="text-muted d-flex align-items-center gap-1 fw-semibold">
+                <i class="bi bi-exclamation-circle"></i>
+                No Video Yet
+            </span>
+            }
+        </div>
+
+        <div class="row g-2 align-items-end">
+            <div class="col-md-8">
+                <input class="form-control" type="file" accept="video/*" (change)="onVideoFileSelected($event)" />
+            </div>
+            <div class="col-md-4">
+                <button class="btn btn-outline-primary w-100" type="button" (click)="uploadVideoFile()">
+                    Upload Video
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm p-3 d-flex flex-column gap-3">
+        <h6 class="mb-0 fw-bold">Video Attachments</h6>
+
+        <form [formGroup]="attachmentForm" class="row g-2 align-items-end">
+            <div class="col-md-5">
+                <label class="form-label">Attachment File</label>
+                <input class="form-control" type="file" (change)="onAttachmentFileSelected($event)" />
+            </div>
+            <!-- <div class="col-md-3">
+                <label class="form-label">File Type Lookup Id</label>
+                <input class="form-control" formControlName="fileTypeLookupId" />
+            </div> -->
+            <!-- <div class="col-md-2">
+                <label class="form-label">Save Path</label>
+                <input class="form-control" formControlName="savePath" />
+            </div> -->
+            <div class="col-md-2">
+                <button class="btn btn-outline-primary w-100" type="button" (click)="uploadAttachment()">Upload</button>
+            </div>
+        </form>
+
+        @if (attachmentsLoading()) {
+        <p class="text-muted mb-0">Loading attachments...</p>
+        } @else if (attachments().length === 0) {
+        <p class="text-muted mb-0">No attachments yet.</p>
+        } @else {
+        <div class="table-responsive">
+            <table class="table table-sm align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>File Name</th>
+                        <th>File Type</th>
+                        <th>Created At</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (attachment of attachments(); track attachment.oid) {
+                    <tr>
+                        <td>{{ attachment.fileName || '-' }}</td>
+                        <td>{{ attachment.fileTypeName || '-' }}</td>
+                        <td>{{ attachment.createdAt || '-' }}</td>
+                        <td class="text-end">
+                            <a class="btn btn-sm btn-outline-secondary me-2"
+                                [href]="getAttachmentDownloadUrl(attachment)">Download</a>
+                            <button class="btn btn-sm btn-outline-danger" type="button"
+                                (click)="onDeleteAttachment(attachment)">Delete</button>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        }
+    </div>
+    }
+</div>

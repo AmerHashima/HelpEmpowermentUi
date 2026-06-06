@@ -1,0 +1,64 @@
+<div class="card border-0 shadow-sm p-3">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h6 class="mb-0 fw-bold">Course Videos</h6>
+        <button class="btn btn-sm btn-primary" type="button" (click)="onAddVideo()">Add Video</button>
+    </div>
+
+    @if (loading()) {
+    <p class="text-muted mb-0">Loading videos...</p>
+    } @else if (videos().length === 0) {
+    <div class="text-center p-4 border rounded-2">
+        <i class="bi bi-camera-video fs-2 text-muted"></i>
+        <p class="text-muted mb-0 mt-2">No videos added for this course.</p>
+    </div>
+    } @else {
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead>
+                <tr>
+                    <th>Name (EN)</th>
+                    <th>Name (AR)</th>
+                    <th>Video</th>
+                    <th>Duration</th>
+                    <th>Order</th>
+                    <th>Status</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (video of videos(); track video.oid) {
+                <tr>
+                    <td>{{ video.nameEn || '-' }}</td>
+                    <td>{{ video.nameAr || '-' }}</td>
+                    <td>
+                        @if (video.videoUrl) {
+                        <span class="text-success" title="Video exists">
+                            <i class="bi bi-play-circle-fill"></i>
+                        </span>
+                        } @else {
+                        <span class="text-muted" title="No video file">
+                            <i class="bi bi-dash-circle"></i>
+                        </span>
+                        }
+                    </td>
+                    <td>{{ video.durationSeconds ?? 0 }} sec</td>
+                    <td>{{ video.orderNo ?? 0 }}</td>
+                    <td>
+                        <span class="badge" [class.text-bg-success]="video.isActive"
+                            [class.text-bg-secondary]="!video.isActive">
+                            {{ video.isActive ? 'Active' : 'Inactive' }}
+                        </span>
+                    </td>
+                    <td class="text-end">
+                        <button class="btn btn-sm btn-outline-primary me-2" type="button"
+                            (click)="onEditVideo(video)">Edit</button>
+                        <button class="btn btn-sm btn-outline-danger" type="button"
+                            (click)="onDeleteVideo(video)">Delete</button>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    }
+</div>
