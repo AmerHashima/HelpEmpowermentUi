@@ -18,6 +18,7 @@ import { LookupService, LOOKUP_CODES } from '../../../../Services/lookup.service
 import { LookupDetail } from '../../../../models/lookup';
 import { createdUpdatedOID } from '../../../../data/lookUPS';
 import { signal } from '@angular/core';
+import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
 
 @Component({
   selector: 'app-certification',
@@ -26,6 +27,7 @@ import { signal } from '@angular/core';
   styleUrl: './certification.component.scss'
 })
 export class CertificationComponent {
+  private toasting= inject(ToastingMessagesService);
   certificationStore = inject(CertificationsStore);
   questionStore = inject(QuestionsStore);
   examsStore = inject(ExamsStore);
@@ -191,6 +193,7 @@ export class CertificationComponent {
   saveService() {
     if (this.serviceForm.invalid) {
       this.serviceForm.markAllAsTouched();
+      this.toasting.showToast('All fields are required', 'error');
       return;
     }
 
@@ -222,6 +225,7 @@ export class CertificationComponent {
       },
       error: () => {
         this.serviceFormLoading.set(false);
+        this.toasting.showToast('An error occurred while saving the service. Please try again.','error');
       },
     });
   }

@@ -133,7 +133,7 @@
                         {{ editingServiceId() ? 'Update Service' : 'Create Service' }}
                       </button>
                       @if (editingServiceId()) {
-                      <button class="btn btn-outline-secondary" type="button" (click)="cancelServiceEdit()">
+                      <button class="btn btn-outline-secondary" type="button"  (click)="cancelServiceEdit()">
                         Cancel
                       </button>
                       }
@@ -151,7 +151,7 @@
                   } @else if (courseServices().length === 0) {
                   <div class="text-center p-4">
                     <i class="bi bi-tools fs-1 text-muted"></i>
-                    <p class="text-muted mb-0 mt-2">No services added yet.</p>
+                    <p class="text-muted mb-0 mt-2 w-100">No services added yet.</p>
                   </div>
                   } @else {
                   <div class="d-flex flex-column gap-2">

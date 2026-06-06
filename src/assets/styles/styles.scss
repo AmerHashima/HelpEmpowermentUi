@@ -639,6 +639,34 @@ p {
   position: relative;
 }
 
+.btn-primary{
+border-color: transparent !important;
+background-color: $primaryColor;
+color:$lightBgTextColor;
+&:hover{
+  background-color: $secondaryColor;
+}
+}
+
+.btn-outline-primary{
+  border-color: $headerColor;
+  background-color:$headerColor ;
+  color:$lightBgTextColor !important;
+  &:hover{
+    border-color: $secondaryColor;
+  background-color: $secondaryColor;
+  color:$lightBgTextColor !important
+}
+}
+
+.bg-primary{
+  background-color: $primaryColor !important;
+  color:$lightBgTextColor !important;
+}
+.text-primary{
+  color:$primaryColor !important;
+}
+
 /* Arrows */
 .arrow {
   position: absolute;
