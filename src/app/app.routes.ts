@@ -66,6 +66,7 @@ import { WebinarsComponent } from './components/AdminPanel/Webinar/webinars/webi
 import { LiveCoursesComponent } from './components/AdminPanel/LiveCourse/live-courses/live-courses.component';
 import { AdminLoginComponent } from './components/AdminPanel/admin-login/admin-login.component';
 import { adminAuthGuard, adminGuestGuard } from './Guards/AdminSideGuards/Admin.guard';
+import { CourseVideoFormComponent } from './components/AdminPanel/certifications/course-video-form/course-video-form.component';
 
 export const validLangGuard: CanMatchFn = (route, segments) => {
   const lang = segments[0]?.path;
@@ -149,12 +150,12 @@ export const routes: Routes = [
         component: UserAccountPolicyComponent
       },
 
-{
-  path: ':search',
-  loadComponent: () =>
-    import('./components/ClientSide/search/search.component')
-      .then(m => m.SearchComponent)
-},
+      {
+        path: ':search',
+        loadComponent: () =>
+          import('./components/ClientSide/search/search.component')
+            .then(m => m.SearchComponent)
+      },
       {
         path: "technical-support-policy",
         component: TechnicalSupportPolicyComponent
@@ -298,7 +299,7 @@ export const routes: Routes = [
   },
   {
     path: 'admin/login',
-    canActivate : [adminGuestGuard],
+    canActivate: [adminGuestGuard],
     component: AdminLoginComponent
   },
   {
@@ -361,6 +362,16 @@ export const routes: Routes = [
             path: ':id/edit',
             component: CreateNewCertificationComponent,
             data: { breadcrumb: 'Edit' },
+          },
+          {
+            path: ':id/videos/create',
+            component: CourseVideoFormComponent,
+            data: { breadcrumb: 'Create Course Video' },
+          },
+          {
+            path: ':id/videos/:videoId/edit',
+            component: CourseVideoFormComponent,
+            data: { breadcrumb: 'Edit Course Video' },
           },
           {
             path: ':id',
