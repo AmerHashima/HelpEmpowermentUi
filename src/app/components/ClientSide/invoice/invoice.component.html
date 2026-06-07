@@ -1,0 +1,97 @@
+
+<div class="invoice" [attr.dir]="isRTL() ? 'rtl' : 'ltr'">
+
+  <div class="header">
+
+    <div class="logo">
+      {{'HELP EMPOWERMENT' | translate}}
+    </div>
+
+    <div class="invoice-info">
+
+      <div>
+        {{ 'invoice.invoiceNumber' | translate }}:
+        {{ invoice()?.invoiceNumber }}
+      </div>
+
+      <div>
+        {{ 'invoice.date' | translate }}:
+        {{ invoice()?.date | date }}
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="content">
+
+    <div class="customer">
+
+      <h5>
+        {{ 'invoice.billTo' | translate }}
+      </h5>
+
+      <div>{{ invoice()?.studentName }}</div>
+
+      <div>{{ invoice()?.studentEmail }}</div>
+
+    </div>
+
+    <table>
+
+      <thead>
+
+        <tr>
+
+          <th>
+            {{ 'invoice.description' | translate }}
+          </th>
+
+          <th>
+            {{ 'invoice.quantity' | translate }}
+          </th>
+
+          <th>
+            {{ 'invoice.price' | translate }}
+          </th>
+
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+        @for(item of invoice()?.items; track $index){
+
+          <tr>
+
+            <td>{{ item.description }}</td>
+
+            <td>{{ item.quantity }}</td>
+
+            <td>${{ item.price }}</td>
+
+          </tr>
+
+        }
+
+      </tbody>
+
+    </table>
+
+    <div class="total">
+
+      {{ 'invoice.total' | translate }}:
+      ${{ invoice()?.total }}
+
+    </div>
+
+    <div class="paid">
+
+      {{ 'invoice.paid' | translate }} ✓
+
+    </div>
+
+  </div>
+
+</div>

@@ -752,3 +752,12 @@ color:$lightBgTextColor;
 
 
 
+@media print {
+
+  .no-print {
+
+    display: none !important;
+
+  }
+
+}

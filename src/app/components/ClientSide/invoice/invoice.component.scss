@@ -1,0 +1,184 @@
+
+@use 'variables' as *;
+
+.invoice {
+  max-width: 100%;
+  margin: auto;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #eee;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.header {
+  padding: 24px;
+  background: $primaryColor;
+  color: $lightBgTextColor;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.invoice-info {
+  text-align: end;
+
+  div {
+    margin-bottom: 0.35rem;
+    font-size: 0.95rem;
+  }
+}
+
+.content {
+  padding: 24px;
+}
+
+.customer {
+  margin-bottom: 24px;
+
+  h5 {
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+
+  div {
+    margin-bottom: 4px;
+  }
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  background: #f8f9fa;
+  padding: 12px;
+  font-weight: 600;
+  text-align: left;
+  border-bottom: 2px solid #e9ecef;
+}
+
+td {
+  padding: 14px 12px;
+  border-bottom: 1px solid #eee;
+}
+
+tbody tr:hover {
+  background: #fafafa;
+}
+
+.total {
+  text-align: right;
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-top: 24px;
+  color: $primaryColor;
+}
+
+.paid {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  margin-top: 20px;
+  padding: 12px 20px;
+
+  background: #d1fae5;
+  color: #065f46;
+
+  border-radius: 10px;
+  font-weight: 700;
+}
+
+.invoice[dir='rtl'] {
+  text-align: right;
+
+  .header {
+    flex-direction: row;
+  }
+
+  .invoice-info {
+    text-align: start;
+  }
+
+  th,
+  td {
+    text-align: right;
+  }
+
+  .total {
+    text-align: left;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+  }
+
+  .invoice-info {
+    text-align: start;
+    width: 100%;
+  }
+
+  .logo {
+    font-size: 20px;
+  }
+
+  .content {
+    padding: 18px;
+  }
+
+  .total {
+    font-size: 1.4rem;
+  }
+
+  th,
+  td {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+}
+
+@media print {
+  .invoice {
+    border: none;
+    box-shadow: none;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  body {
+    background: white !important;
+  }
+
+  .header {
+    background: $primaryColor !important;
+    color: $lightBgTextColor !important;
+  }
+
+  .paid {
+    background: #d1fae5 !important;
+    color: #065f46 !important;
+  }
+
+  th {
+    background: #f8f9fa !important;
+  }
+
+  tbody tr:hover {
+    background: transparent !important;
+  }
+}

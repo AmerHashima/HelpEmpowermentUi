@@ -22,7 +22,7 @@ export class SiteButtonComponent {
 
     if (!icon) return '';
 
-    if (icon.includes('arrow')) {
+    if (icon.includes('bi-arrow')) {
       return this.isRTL() ? 'bi bi-arrow-left' : 'bi bi-arrow-right';
     }
 
@@ -46,7 +46,7 @@ export class SiteButtonComponent {
 
     const icon = this.icon();
 
-    if (icon?.includes('arrow')) {
+    if (icon?.includes('bi-arrow')) {
       return 'end'
     }
 

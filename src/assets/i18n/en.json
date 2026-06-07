@@ -898,6 +898,7 @@
       "description": "We couldn’t find any matches for \"{{value}}\"",
       "suggestions": "Try searching for:"
     },
+    "invoice": "Invoice",
     "technical-support-policy": "Technical Support Policy",
     "privacy-notice": "Privacy Notice",
     "refund-policy": "Refund Policy",
@@ -1672,6 +1673,32 @@
     "noWebinars": "While there are no Webinar scheduled at the moment, stay tuned our next event will be announced soon, and it’s worth the wait"
   }
   ,
+    "invoicePage": {
+      "paymentSuccessful": "Payment Successful",
+      "thankYou": "Thank you for your purchase. A copy of your invoice has been sent to",
+      "downloadInvoice": "Download Invoice",
+      "printInvoice": "Print Invoice",
+      "printTip": "Disable browser headers and footers for the best print result.",
+      "purchaseInformation": "Purchase Information",
+      "accessActivated": "Access has been activated successfully.",
+      "receiptSent": "A receipt has been sent to your email.",
+      "keepInvoice": "Keep this invoice for your records.",
+      "needHelp": "Need help?",
+      "whatsNext": "What's Next?",
+      "profileMessage": "You can now access your purchased courses from your profile.",
+      "goToProfile": "Go To Profile"
+    },
+      "invoice": {
+        "invoiceNumber": "Invoice #",
+        "date": "Date",
+        "billTo": "Bill To",
+        "description": "Description",
+        "quantity": "Qty",
+        "price": "Price",
+        "total": "Total",
+        "paid": "PAID"
+      },
+      "HELP EMPOWERMENT":"HELP EMPOWERMENT",
   "AED":"AED",
   "Maximum number of devices (2) reached. Please logout from another device.":"Maximum number of devices (2) reached. Please logout from another device.",
 "Attachment upload failed":"Attachment upload failed",
