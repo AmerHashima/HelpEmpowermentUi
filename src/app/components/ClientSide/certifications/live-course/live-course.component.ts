@@ -27,6 +27,7 @@ import { CourseVideo } from '../../../../models/course-video';
 import { catchError, distinctUntilChanged, map, of, startWith, switchMap } from 'rxjs';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { CourseVideosService } from '../../../../Services/course-videos.service';
+import { CertificationService } from '../../../../Services/certification.service';
 
 @Component({
   selector: 'app-live-course',
@@ -48,7 +49,7 @@ export class LiveCourseComponent {
   private toasting = inject(ToastingMessagesService);
   private contactService=inject(ContactUsService);
     private courseVideosService = inject(CourseVideosService);
-  
+
   isRTL = this.shared.isRtl;
   student= this.auth.loggedStudent;
   RegisterSession:any=null;
@@ -72,6 +73,8 @@ export class LiveCourseComponent {
       price: `liveCourse.${key}.price`
     };
   });
+  private certificationService=inject(CertificationService);
+  price = this.certificationService.liveCoursePrice;
   count = signal<number>(0);
   certification = this.shared.currentCertificationObject;
   videosState = toSignal(
@@ -125,6 +128,7 @@ export class LiveCourseComponent {
       .subscribe(count => {
         this.count.set(count);
       });
+  
   }
   buyNow() {
   }

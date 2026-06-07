@@ -24,6 +24,7 @@ import { catchError, distinctUntilChanged, map, of, startWith, switchMap } from 
 import { CourseVideo } from '../../../../models/course-video';
 import { FinishCertificationComponent } from '../../finish-certification/finish-certification.component';
 import { DownloadCertificateComponent } from '../download-certificate/download-certificate.component';
+import { CertificationService } from '../../../../Services/certification.service';
 
 @Component({
   selector: 'app-recorded-course',
@@ -43,6 +44,7 @@ export class RecordedCourseComponent {
   isRTL = this.shared.isRtl;
   showConfirm: boolean = false;
   private studentService = inject(StudentService);
+  private certificationService=inject(CertificationService);
   isEnrolled = this.studentService.isRecordedCoursesEnrolled;
   hasRecordedCourseAccess = computed(
     () => this.isEnrolled() && this.studentService.showExamSimulator === true
@@ -50,6 +52,7 @@ export class RecordedCourseComponent {
   isCourseFinished=this.studentService.isCourseFinished;
   enrollImage = 'assets/images/enroll.png';
   recoedImage = "assets/images/recordedCourse.jpeg";
+  price = this.certificationService.recordedCoursePrice;
 
   recordedCourseContent = computed(() => {
     const cert = this.shared.currentCertificate();
@@ -109,6 +112,7 @@ export class RecordedCourseComponent {
   );
 
   videos = computed(() => this.videosState().data);
+
 count=signal<number>(0);
   ngOnInit() {
     this.studentService
@@ -116,6 +120,8 @@ count=signal<number>(0);
       .subscribe(count => {
         this.count.set(count);
       });
+
+ 
   }
 
   buyNow() {

@@ -158,10 +158,21 @@ export class CertificationComponent {
     this.servicesLoading.set(true);
     this.certificationService.getCourseServicesByCourse(courseId).subscribe({
       next: (services) => {
+        const channel = new BroadcastChannel('course-services');
+
+        channel.postMessage({
+
+          type: 'SERVICE_UPDATED',
+
+          courseId: courseId
+
+        });
+        // this.certificationService.courseServices.set(services ?? []);
         this.courseServices.set(services ?? []);
         this.servicesLoading.set(false);
       },
       error: () => {
+        // this.certificationService.courseServices.set([]);
         this.courseServices.set([]);
         this.servicesLoading.set(false);
       },

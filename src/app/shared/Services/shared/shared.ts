@@ -2,7 +2,6 @@
 import { Injectable, RendererFactory2, Renderer2, signal, computed, inject, PLATFORM_ID, effect } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { isPlatformBrowser } from '@angular/common';
-import { certifications } from '../../clientSide/certification-cards/certification-cards.component';
 import { Router } from '@angular/router';
 import { courseExam } from '../../../models/certification';
 import { LessonReportVM } from '../../../components/ClientSide/exam-lesson-learned-questions/exam-lesson-learned-questions.component';

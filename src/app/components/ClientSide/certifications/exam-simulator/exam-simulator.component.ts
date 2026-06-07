@@ -17,6 +17,7 @@ import { ToastingMessagesService } from '../../../../shared/Services/ToastingMes
 import { StudentService } from '../../../../Services/student-service.service';
 import { ExamsStore } from '../../../../AdminPanelStores/ExamsStore/exam.store';
 import { APIExam } from '../../../../models/certification';
+import { CertificationService } from '../../../../Services/certification.service';
 
 @Component({
   selector: 'app-exam-simulator',
@@ -39,12 +40,13 @@ export class ExamSimulatorComponent {
     return this.studentService.isExamSimulatorEnrolled();
   })
   showExamSimulator = computed(() => this.isEnrolled() && this.studentService.showExamSimulator === true);
-
   private toasting = inject(ToastingMessagesService);
+  private certificationService=inject(CertificationService);
   isRTL = this.shared.isRtl;
   // studentToken = this.auth.studentToken;
   isLoggedIn = computed(() => !!this.auth.studentToken());
   hydrated = signal(false);
+  price=this.certificationService.examSimulationPrice;
   certification = this.shared.currentCertificationObject;
   examsStore = inject(ExamsStore);
   //  chooseExam:boolean=false;
@@ -216,6 +218,7 @@ export class ExamSimulatorComponent {
   count = signal(0);
 
 
+
   constructor(private router: Router, private route: ActivatedRoute) {
     effect(() => {
       const _ = this.shared.currentExamId();
@@ -235,6 +238,8 @@ export class ExamSimulatorComponent {
       .subscribe(count => {
         this.count.set(count);
       });
+
+  
   }
 
   navigateToFreeExam(exam: APIExam) {

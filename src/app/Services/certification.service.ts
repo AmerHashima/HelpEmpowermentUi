@@ -1,5 +1,5 @@
 // src\app\Services\certification.service.ts
-import { Injectable } from '@angular/core';
+import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import ApiService from '../shared/Services/ApiService/api.service';
 import { map, catchError } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
@@ -8,13 +8,104 @@ import { APICertification, APICourseQuestion, APIExam, Certification, courseExam
 import { RequestBody } from '../models/rquest';
 import { AnyAaaaRecord } from 'dns';
 import { APICourseService, CourseService } from '../models/course-service';
+import { LookupDetail } from '../models/lookup';
+import { LOOKUP_CODES, LookupService } from './lookup.service';
+import { Shared } from '../shared/Services/shared/shared';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CertificationService {
-  constructor(private apiService: ApiService) { }
+  // serviceTypes = signal<LookupDetail[]>([]);
+  private shared=inject(Shared);
+  private channel = new BroadcastChannel('course-services');
+  courseServices = signal<any[]>([]);
 
+  examSimulation = computed(() =>
+
+    this.courseServices().find(
+
+      service => service.serviceName === 'Exam Simulation'
+
+    )
+
+  );
+
+  recordedCourse = computed(() =>
+
+    this.courseServices().find(
+
+      service => service.serviceName === 'Recorded Course'
+
+    )
+
+  );
+
+  liveCourse = computed(() =>
+
+    this.courseServices().find(
+
+      service => service.serviceName === 'Live Course'
+
+    )
+
+  );
+  examSimulationPrice = computed(() =>
+
+    this.examSimulation()?.price ?? 0
+
+  );
+
+  recordedCoursePrice = computed(() =>
+
+    this.recordedCourse()?.price ?? 0
+
+  );
+
+  liveCoursePrice = computed(() =>
+
+    this.liveCourse()?.price ?? 0
+
+  );
+
+  constructor(private apiService: ApiService) {
+
+
+    this.channel.onmessage = (event) => {
+
+      if (event.data.type !== 'SERVICE_UPDATED') {
+
+        return;
+
+      }
+
+      const cert = this.shared.currentCertificationObject();
+
+      if (!cert?.oid || cert.oid !== event.data.courseId) {
+
+        return;
+
+      }
+
+      this.loadCourseServices(cert.oid);
+
+    };
+    
+    effect(()=>{
+      const cert = this.shared.currentCertificationObject();
+      if(cert && cert.oid){
+        this.loadCourseServices(cert.oid);
+      } else this.courseServices.set([]);
+
+    })
+  }
+
+  private loadCourseServices(courseId: string) {
+    this.getCourseServicesByCourse(courseId).subscribe({
+      next: (services) => {this.courseServices.set(services ?? []) },
+      error: () => this.courseServices.set([])
+    })
+  }
   // certification api calls
   getCertifications(): Observable<APICertification[]> {
     return this.apiService.get<ApiResponse<APICertification[]>>('Courses').pipe(
@@ -76,6 +167,14 @@ export class CertificationService {
   }
 
   // For features
+
+
+  // private loadServiceTypes() {
+  //   this.lookupService.getLookUpByCode(LOOKUP_CODES.SERVICE_TYPE).subscribe({
+  //     next: (types) => this.serviceTypes.set(types ?? []),
+  //     error: () => this.serviceTypes.set([]),
+  //   });
+  // }
   getCertificationFeatures(id: string): Observable<any[]> {
     return this.getByCourse<any>('CourseFeatures', id);
   }

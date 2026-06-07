@@ -12,7 +12,7 @@ export const LOOKUP_CODES = {
   QUESTION_TYPE: 'QUESTION_TYPE',
   SERVICE_TYPE: 'SERVICE_TYPE',
   WEBINAR_FORMAT: 'WebinarFormat',
-  TIME_ZONE: "TimeZone"
+  TIME_ZONE: "TimeZone",
 } as const;
 
 @Injectable({
@@ -59,6 +59,11 @@ export class LookupService {
   getTimeZones() {
     return this.getLookUpByCode(LOOKUP_CODES.TIME_ZONE);
   }
+
+  getServiceType() {
+    return this.getLookUpByCode(LOOKUP_CODES.SERVICE_TYPE);
+  }
+
 
 
 }

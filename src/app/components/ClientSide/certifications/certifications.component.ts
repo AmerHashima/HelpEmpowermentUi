@@ -1,11 +1,14 @@
 // src\app\components\ClientSide\certifications\certifications.component.ts
-import { Component, computed, effect, inject, PLATFORM_ID } from '@angular/core';
+import { Component, computed, effect, inject, PLATFORM_ID, signal } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { GenericTabsComponent } from '../../../shared/generic-tabs/generic-tabs.component';
 import { Shared } from '../../../shared/Services/shared/shared';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { filter } from 'rxjs';
 import { CertificationsStore } from '../../../AdminPanelStores/CertificationStore/certification.store';
+import { CertificationService } from '../../../Services/certification.service';
+import { LOOKUP_CODES, LookupService } from '../../../Services/lookup.service';
+import { LookupDetail } from '../../../models/lookup';
 @Component({
   selector: 'app-certifications',
   imports: [RouterOutlet, GenericTabsComponent],
@@ -17,7 +20,7 @@ export class CertificationsComponent {
 
   private shared = inject(Shared);
   private certificationsStore = inject(CertificationsStore);
-
+  private lookupService=inject(LookupService);
   private router = inject(Router);
   lang = this.shared.lang;
   isFullPage = this.shared.fullPage;
@@ -65,7 +68,6 @@ export class CertificationsComponent {
     }
   ]);
 
-  private route = inject(ActivatedRoute);
 
   showTabs: boolean = true;
   lastSegment = '';
