@@ -127,6 +127,7 @@ export class StudentsComponent {
 
         this.studentService.searchStudents(this.buildSearchRequest()).subscribe({
             next: ({ students, total }) => {
+              console.log('Loaded students:', students, 'Total count:', total);
                 this.students.set(students);
                 this.totalCount.set(total);
                 this.loading.set(false);

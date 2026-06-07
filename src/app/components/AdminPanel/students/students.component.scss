@@ -1,2 +1,23 @@
 /* src\app\components\AdminPanel\students\students.component.scss */
 @use 'variables' as *;
+.promo-code-badge {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  padding: 8px 14px;
+
+  border-radius: 8px;
+
+  background: #fff8e1;
+
+  border: 1px dashed #ffc107;
+
+  color: #7a5a00;
+
+  font-weight: 600;
+
+  font-size: 14px;
+
+}
