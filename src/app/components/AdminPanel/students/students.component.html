@@ -24,6 +24,14 @@
             [mainBtn]="true"
             (click)="openCreatePopup()"
           />
+
+      <app-button
+            btnLabel="Export Students"
+            [mainBtn]="false"
+            [secondaryBtn]="false"
+            icon="bi bi-file-earmark-arrow-down"
+            (click)="exportStudents()"
+          />
         </div>
       </div>
 
@@ -86,17 +94,17 @@
                   </div>
                 </div>
 
-                @if(student.promoCode) {
-                <div class="promo-codes-section mb-3">
-                  <strong class="text-primary">Promo Code:</strong>
+                @if (student.promoCode) {
+                  <div class="promo-codes-section mb-3">
+                    <strong class="text-primary">Promo Code:</strong>
 
-                  <div class="d-flex flex-wrap gap-2">
-                    <span class="promo-code-badge">
-                      <i class="bi bi-ticket-perforated-fill me-2"></i>
-                      {{student.promoCode}}
-                    </span>
+                    <div class="d-flex flex-wrap gap-2">
+                      <span class="promo-code-badge">
+                        <i class="bi bi-ticket-perforated-fill me-2"></i>
+                        {{ student.promoCode }}
+                      </span>
+                    </div>
                   </div>
-                </div>
                 }
                 <div class="d-flex gap-2">
                   <button

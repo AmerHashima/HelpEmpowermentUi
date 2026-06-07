@@ -5,5 +5,10 @@
 	[class.btn-outline-main]="!mainBtn() && !secondaryBtn()"
 	[disabled]="disabled()"
 	class="btn rounded-2">
+    @if (icon()) {
+
+    <i [class]="icon()"></i>
+
+  }
 	{{btnLabel()}}
 </button>
