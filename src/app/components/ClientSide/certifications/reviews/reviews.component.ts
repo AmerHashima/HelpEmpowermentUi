@@ -68,6 +68,7 @@ export class ReviewsComponent {
     Math.ceil(this.totalCount() / this.pageSize())
   );
   refreshTrigger = signal(0);
+  private reviewChannel = new BroadcastChannel('reviews');
   constructor() {
     effect(() => {
       this.shared.currentCertificationObject()?.oid;
@@ -90,6 +91,16 @@ export class ReviewsComponent {
 
       onCleanup(() => sub.unsubscribe());
     });
+
+    this.reviewChannel.onmessage = (event) => {
+
+      if (event.data.type === 'REVIEW_DELETED') {
+
+        this.refreshTrigger.update(v => v + 1);
+
+      }
+
+    };
   }
 
   private mapReviews(apiReviews: any[]): ReviewItem[] {
@@ -202,5 +213,9 @@ export class ReviewsComponent {
     if (this.page() < Math.ceil(this.totalCount() / this.pageSize())) {
       this.page.update(p => p + 1);
     }
+  }
+
+  ngOnDestroy() {
+    this.reviewChannel.close();
   }
 }

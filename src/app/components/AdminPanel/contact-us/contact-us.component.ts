@@ -22,7 +22,7 @@ export class AdminContactUsComponent {
   toasting=inject(ToastingMessagesService);
   hasAttachment = signal(false);
   private service = inject(ContactUsService);
-
+  private reviewChannel = new BroadcastChannel('reviews');
   private refresh$ = new Subject<void>();
 
   contacts = signal<APIContact[]>([]);
@@ -164,10 +164,25 @@ export class AdminContactUsComponent {
     this.service.updateStatus(id, body).subscribe(() => this.loadContacts());
   }
 
-  deleteContact(id: string) {
+  deleteContact(id: string,type:string) {
     this.service.deleteContact(id).subscribe(() => {
       this.contacts.update(list => list.filter(c => c.oid !== id));
       if (this.selectedContact()?.oid === id) this.selectedContact.set(null);
+      if (
+
+        (type ?? '').toLowerCase() === 'certification review'
+
+      ) {
+
+        this.reviewChannel.postMessage({
+
+          type: 'REVIEW_DELETED',
+
+          reviewId: id
+
+        });
+
+      }
     });
   }
 
