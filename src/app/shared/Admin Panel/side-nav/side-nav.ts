@@ -79,7 +79,13 @@ export class SideNav {
       nameAr: 'ندوة عبر الإنترنت',
       icon: 'bi bi-camera-video',
       route: 'webinar'
-    }
+    },
+    {
+      name: 'Moderators',
+      nameAr: 'المشرفون',
+      icon: 'bi bi-person-badge',
+      route: 'moderators'
+    },
     // {
     //   name: 'Articles',
     //   nameAr: 'المقالات',

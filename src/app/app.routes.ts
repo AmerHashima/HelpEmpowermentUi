@@ -68,6 +68,7 @@ import { AdminLoginComponent } from './components/AdminPanel/admin-login/admin-l
 import { adminAuthGuard, adminGuestGuard } from './Guards/AdminSideGuards/Admin.guard';
 import { CourseVideoFormComponent } from './components/AdminPanel/certifications/course-video-form/course-video-form.component';
 import { ClientInvoiceComponent } from './components/ClientSide/client-invoice/client-invoice.component';
+import { ModeratorsComponent } from './components/AdminPanel/moderators/moderators.component';
 
 export const validLangGuard: CanMatchFn = (route, segments) => {
   const lang = segments[0]?.path;
@@ -415,6 +416,11 @@ export const routes: Routes = [
         path: 'live-course',
         component: LiveCoursesComponent,
         data: { breadcrumb: 'Live Course' },
+      },
+      {
+        path: 'moderators',
+        component: ModeratorsComponent,
+        data: { breadcrumb: 'Moderators' },
       },
     ],
   },
