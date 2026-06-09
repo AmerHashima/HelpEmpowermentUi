@@ -5,10 +5,11 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { Shared } from '../../../../shared/Services/shared/shared';
 import { PerformanceIndicatorsTableComponent } from '../../../../../components/ClientSide/performance-indicators-table/performance-indicators-table.component';
 import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/site-button.component';
+import { CapmPerformaceTableComponent } from '../../capm-performace-table/capm-performace-table.component';
 
 @Component({
   selector: 'app-exam-result',
-  imports: [TranslatePipe, NgClass, PerformanceIndicatorsTableComponent,SiteButtonComponent],
+  imports: [TranslatePipe, NgClass, PerformanceIndicatorsTableComponent,SiteButtonComponent,CapmPerformaceTableComponent],
   templateUrl: './exam-result.component.html',
   styleUrl: './exam-result.component.scss',
 })
@@ -17,6 +18,7 @@ export class ExamResultComponent {
   private router=inject(Router);
   private route=inject(ActivatedRoute);
   private platformId = inject(PLATFORM_ID);
+  cert=this.shared.currentCertificate;
   isRTL=this.shared.isRtl;
   examResult=signal<any>(null);
 

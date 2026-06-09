@@ -1,0 +1,47 @@
+@use 'variables' as *;
+
+.table{
+  --bs-table-bg: $inputBg !important;
+}
+
+.table>:not(caption)>*>*{
+  color:$inputText ;
+}
+th,td{
+  padding:1rem;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.aboveTarget{
+  background-color: #2D571A;
+  color:white !important
+}
+
+.target{
+  background-color: #00B342;
+  color:white !important
+}
+
+.belowTarget{
+  background-color: #FFBD00;
+  color:#000 !important;
+}
+
+.improvement{
+  background-color: #FF0000;
+  color:#fff !important;
+}
+
+.table .header{
+  background-color: $primaryColor !important;
+  color:$lightBgTextColor !important;
+}
+
+.table thead th:first-child {
+  border-top-left-radius: 10px !important;
+}
+
+.table thead th:last-child {
+  border-top-right-radius: 10px;
+}
