@@ -1,0 +1,118 @@
+@use 'variables' as *;
+.btn-success{
+  background-color: $primaryColor;
+  border-color: $primaryColor;
+  color:$lightBgTextColor;
+  &:hover{
+    background-color: $secondaryColor;
+    border-color: $secondaryColor;
+  }
+}
+.payment-success {
+
+  text-align: center;
+
+  padding: 2rem;
+
+  background: #f8fff8;
+
+  border: 1px solid #d7f5dd;
+
+  border-radius: 16px;
+
+  i {
+
+    font-size: 2rem;
+
+    color: $primaryColor;
+
+  }
+
+  h2 {
+
+    margin-top: 1rem;
+
+    font-weight: 700;
+
+  }
+
+}
+
+.info-card {
+
+  background: white;
+
+  border-radius: 16px;
+
+  padding: 1.5rem;
+
+  box-shadow: 0 2px 12px rgba(0,0,0,.08);
+
+}
+
+.info-card ul {
+
+  padding-left: 1rem;
+
+}
+
+.info-card li {
+
+  margin-bottom: .75rem;
+
+}
+@media print {
+
+  .payment-success,
+
+  .info-card,
+
+  .btn,
+
+  button {
+
+    display: none !important;
+
+  }
+
+  .col-lg-8 {
+
+    width: 100% !important;
+
+    max-width: 100% !important;
+
+    flex: 0 0 100% !important;
+
+  }
+
+  body {
+
+    background: white !important;
+
+  }
+
+  * {
+
+    -webkit-print-color-adjust: exact !important;
+
+    print-color-adjust: exact !important;
+
+  }
+
+  #invoice-section {
+
+    width: 100% !important;
+
+  }
+
+}
+
+.print-note {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  background: #f8f9fa;
+  color: #6c757d;
+  font-size: 0.875rem;
+}

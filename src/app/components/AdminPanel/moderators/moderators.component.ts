@@ -1,29 +1,27 @@
 import { Component, inject, signal } from '@angular/core';
-import { WebinarFormComponent } from '../webinar-form/webinar-form.component';
-import { ReusableMaterialTableComponent } from '../../../../shared/angular-material-reusable-table/angular-material-reusable-table.component';
-import { PageEvent } from '@angular/material/paginator';
+import { BreadcrumbService } from '../../../Services/breadcrumb.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BreadcrumbService } from '../../../../Services/breadcrumb.service';
-import { WebinarService } from '../../../../Services/webinar.service';
+import { ModeratorService } from '../../../Services/moderator-services.service';
+import { PageEvent } from '@angular/material/paginator';
+import { ModeratorFormComponent } from './moderator-form/moderator-form.component';
+import { ReusableMaterialTableComponent } from '../../../shared/angular-material-reusable-table/angular-material-reusable-table.component';
 
 @Component({
-  selector: 'app-webinars',
-  imports: [ReusableMaterialTableComponent, WebinarFormComponent],
-  templateUrl: './webinars.component.html',
-  styleUrl: './webinars.component.scss'
+  selector: 'app-moderators',
+  imports: [ModeratorFormComponent, ReusableMaterialTableComponent],
+  templateUrl: './moderators.component.html',
+  styleUrl: './moderators.component.scss'
 })
-export class WebinarsComponent {
-  // 🔹 inject
+export class ModeratorsComponent {
   private breadcrumb = inject(BreadcrumbService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
-  private webinarService = inject(WebinarService);
-
-  webinars = this.webinarService.webinars
-  total = this.webinarService.total;
-  pageSize = this.webinarService.pageSize;
-  pageNumber = this.webinarService.pageNumber;
-  filters = this.webinarService.filters;
+  private moderatorService = inject(ModeratorService);
+  moderators = this.moderatorService.moderators
+  total = this.moderatorService.total;
+  pageSize = this.moderatorService.pageSize;
+  pageNumber = this.moderatorService.pageNumber;
+  filters = this.moderatorService.filters;
   loading = signal<boolean>(false);
 
   hidden = signal<boolean>(false);
@@ -31,11 +29,11 @@ export class WebinarsComponent {
 
   // 🔹 columns
   columns = [
-    { field: 'webinarName', header: 'Name', type: 'text' },
-    { field: 'courseName', header: 'Course', type: 'text' },
-    { field: 'webinarDate', header: 'Date', type: 'text' },
-    { field: 'webinarStartTime', header: 'Start Time', type: 'text' },
-    { field: 'webinarEndTime', header: 'End Time', type: 'text' },
+    { field: 'username', header: 'Username', type: 'text' },
+    { field: 'nameEn', header: 'Name', type: 'text' },
+    { field: 'nameAr', header: 'Arabic Name', type: 'text' },
+    { field: 'email', header: 'Email', type: 'text' },
+    { field: 'mobile', header: 'Mobile', type: 'text' },
     {
       field: 'isActive',
       header: 'Status',
@@ -89,42 +87,41 @@ export class WebinarsComponent {
   onFilterChange(value: string) {
     const filters = [
       {
-        propertyName: "webinarName",
+        propertyName: "nameEn",
         value: value,
         operation: 0
       }
     ]
-    this.webinarService.filters.set([...filters]);
+    this.moderatorService.filters.set([...filters]);
   }
 
 
 
   handleAddNew() {
-    this.router.navigate(['/admin/webinar'], {
+    this.router.navigate(['/admin/moderators'], {
       queryParams: { mode: 'create' }
     });
   }
 
   handleEdit(row: any) {
-    this.router.navigate(['/admin/webinar'], {
+    this.router.navigate(['/admin/moderators'], {
       queryParams: { mode: 'edit', id: row.oid }
     });
   }
 
-  handleSingleWebinarNavigation(row: any) {
-    this.router.navigate(['/admin/webinar'], {
+  handleSingleModeratorNavigation(row: any) {
+    this.router.navigate(['/admin/moderators'], {
       queryParams: { mode: 'edit', id: row.oid }
     });
   }
 
   handleDelete(row: any) {
-    this.webinarService.deleteWebinar(row.oid).subscribe({
-      next: () => this.webinarService.reloadWebiinars(this.pageNumber())
-
-    })
+    // this.moderatorService.deleteModerator(row.oid).subscribe({
+    //   next: () => this.moderatorService.reloadModerators(this.pageNumber())
+    // })
   }
 
   onCancal() {
-    this.router.navigate(['/admin/webinar']);
+    this.router.navigate(['/admin/moderators']);
   }
 }

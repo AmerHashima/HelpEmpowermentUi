@@ -8,6 +8,11 @@
   </header>
   <!-- Question area -->
   <main class="question-area">
+    @if(cert() == 'capm'){
+   <app-capm-performace-table/>
+    }
+    @else{
     <app-performance-indicators-table />
+    }
   </main>
 </div>

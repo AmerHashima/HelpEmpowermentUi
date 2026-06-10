@@ -498,6 +498,20 @@ export class AuthService {
         );
     }
 
+  registerUser(body: any): Observable<APIAuthStudent> {
+    return this.apiService
+      .post<ApiResponse<APIAuthStudent>>('Auth/user/register', body, "auth.register.success")
+      .pipe(
+        map((response: ApiResponse<APIAuthStudent>) => {
+          if (!response.success) {
+            const msg = response.errors?.join(', ') || response.message || 'API failed to create user';
+            throw new Error(msg);
+          }
+          return response.data;
+        })
+      );
+  }
+
   // ================= SESSION SET =================
   private setStudentSession(data: APIAuthStudent) {
     this.isLoggingOutStudent = false;

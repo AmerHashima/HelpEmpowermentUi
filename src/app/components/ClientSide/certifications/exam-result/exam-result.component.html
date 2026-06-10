@@ -38,7 +38,13 @@
         </div>
       </div>
     </div>
+        @if(cert() == 'capm'){
+   <app-capm-performace-table/>
+    }
+    @else{
     <app-performance-indicators-table />
+    }
+    <!-- <app-performance-indicators-table /> -->
     <div class="d-flex justify-content-end">
         <app-site-button
           title="Done"

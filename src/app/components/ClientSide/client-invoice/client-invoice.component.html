@@ -1,0 +1,110 @@
+<div class="container-fluid py-3">
+  <div class="payment-success mb-4">
+    <i class="bi bi-check-circle-fill"></i>
+    <h5 class="mt-2">
+      {{ "invoicePage.paymentSuccessful" | translate }}
+    </h5>
+
+    <p class="w-100">
+      {{ "invoicePage.thankYou" | translate }}
+
+      <strong>{{ invoiceData.studentEmail }}</strong>
+    </p>
+  </div>
+
+  <div class="row ">
+    <div class="col-lg-8">
+      <div id="invoice-section">
+        <app-invoice [invoice]="invoiceData"></app-invoice>
+      </div>
+
+      <div class="d-flex mt-4 gap-2 no-print">
+        <app-site-button
+          [title]="'invoicePage.downloadInvoice' | translate"
+          type="main"
+          icon="bi bi-file-earmark-arrow-down"
+          (click)="downloadInvoice()"
+        />
+
+        <div class="d-flex">
+          <app-site-button
+            [title]="'invoicePage.printInvoice' | translate"
+            type="secondary"
+            icon="bi bi-printer"
+            (click)="printInvoice()"
+          />
+          <div class="print-note no-print">
+            <i class="bi bi-info-circle-fill me-2"></i>
+            {{ "invoicePage.printTip" | translate }}
+          </div>
+        </div>
+      </div>
+
+      <!-- <div class="d-flex gap-2 mt-4">
+        <button class="btn btn-success" (click)="downloadInvoice()">
+          <i class="bi bi-file-earmark-arrow-down me-2"></i>
+          Download Invoice
+        </button>
+        <div class="d-flex">
+          <button class="btn btn-outline-primary" (click)="printInvoice()">
+            <i class="bi bi-printer me-2"></i>
+            Print Invoice
+          </button>
+          <div class="print-note no-print">
+            <i class="bi bi-info-circle-fill me-2"></i>
+
+            Disable browser headers and footers for the best print result.
+          </div>
+        </div>
+      </div> -->
+    </div>
+
+    <div class="col-lg-4">
+      <div class="info-card">
+        <h5>
+          <i class="bi bi-info-circle me-2"></i>
+
+          {{ "invoicePage.purchaseInformation" | translate }}
+        </h5>
+
+        <ul>
+          <li>{{ "invoicePage.accessActivated" | translate }}</li>
+
+          <li>{{ "invoicePage.receiptSent" | translate }}</li>
+
+          <li>{{ "invoicePage.keepInvoice" | translate }}</li>
+
+          <li>
+            {{ "invoicePage.needHelp" | translate }}
+
+            <a
+              class="mainTextColor"
+              href="mailto:support@helpempowerment.com?subject=Invoice Inquiry"
+            >
+              support&#64;helpempowerment.com
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="info-card mt-3">
+        <h5>
+          <i class="bi bi-mortarboard me-2"></i>
+
+          {{ "invoicePage.whatsNext" | translate }}
+        </h5>
+
+        <p class="mb-2">
+          {{ "invoicePage.profileMessage" | translate }}
+        </p>
+
+        <button
+          class="btn btn-primary w-100"
+          [routerLink]="['/', lang(), 'auth', 'profile']"
+        >
+          {{ "invoicePage.goToProfile" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

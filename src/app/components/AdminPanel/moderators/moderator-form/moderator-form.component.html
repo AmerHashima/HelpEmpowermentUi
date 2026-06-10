@@ -1,0 +1,140 @@
+<div class="container-fluid">
+  <div class="row justify-content-start">
+    <div class="col-12 ">
+       <div class="card shadow-sm">
+    <div class="card-header fw-bold">
+      <h5 class="mb-0">Account Details</h5>
+    </div>
+    <div class="card-body px-3">
+      <section
+        class="form w-100 d-flex flex-column align-items-stretch gap-3 p-3 rounded"
+      >
+        <form
+          #registerForm="ngForm"
+          (ngSubmit)="onRegister(registerForm)"
+          class="register-form mb-0"
+        >
+          <div class="d-flex flex-column gap-3">
+            <div class="row">
+              <div class="col-12">
+                <app-input
+                  name="nameEn"
+                  [(ngModel)]="credentials.nameEn"
+                  required
+                  [label]="'Name' | translate"
+                  [placeholder]="'Enter your name' | translate"
+                  [icon]="'bi bi-person'"
+                  [errorMessages]="{
+                    required: 'First Name is required' | translate,
+                  }"
+                ></app-input>
+              </div>
+            </div>
+
+            <app-input
+              name="username"
+              [(ngModel)]="credentials.username"
+              required
+              [label]="'register.usernameLabel' | translate"
+              [placeholder]="'register.usernamePlaceholder' | translate"
+              [icon]="'bi bi-person'"
+              [errorMessages]="{
+                required: 'User Name is required' | translate,
+              }"
+            ></app-input>
+            <app-input
+              name="email"
+              [(ngModel)]="credentials.email"
+              required
+              email
+              [label]="'log.emailLabel' | translate"
+              [placeholder]="'log.emailPlaceholder' | translate"
+              [icon]="'bi bi-envelope'"
+              [errorMessages]="{
+                required: 'Email is required' | translate,
+                email: 'Invalid email format' | translate,
+              }"
+            ></app-input>
+
+            <app-phone-input
+              name="phone"
+              [(ngModel)]="credentials.mobile"
+              [required]="true"
+              [labelKey]="'register.phoneLabel' | translate"
+            >
+            </app-phone-input>
+
+            <app-input
+              name="password"
+              [(ngModel)]="credentials.password"
+              required
+              minlength="6"
+              [label]="'log.passwordLabel' | translate"
+              [placeholder]="'log.passwordPlaceholder' | translate"
+              [icon]="'bi bi-lock'"
+              [type]="'password'"
+              [errorMessages]="{
+                required: 'Password is required' | translate,
+                minlength: 'At least 6 characters' | translate,
+              }"
+            ></app-input>
+            <app-input
+              name="confirmPassword"
+              [(ngModel)]="credentials.confirmPassword"
+              required
+              minlength="6"
+              [label]="'log.confirmPasswordLabel' | translate"
+              [placeholder]="'log.confirmPasswordPlaceholder' | translate"
+              [icon]="'bi bi-lock'"
+              [type]="'password'"
+              [errorMessages]="{
+                required: 'Password is required' | translate,
+                minlength: 'At least 6 characters' | translate,
+              }"
+            ></app-input>
+            <div class="row">
+              <div class="col-12 col-lg-6">
+   <spk-ng-select
+   name="isActive"
+
+[(ngModel)]="credentials.isActive"
+              [label]="'liveCourseDashboardForm.status' | translate"
+              [options]="status"
+              bindLabel="label"
+              bindValue="value"
+              [multiple]="false"
+              [placeholder]="
+                'liveCourseDashboardForm.placeholders.status' | translate
+              "
+              selectClass="form-control"
+            />
+              </div>
+                <div class="col-12 col-lg-6">
+              <spk-ng-select
+              name="roleLookupId"
+
+[(ngModel)]="credentials.roleLookupId"
+        [label]="'Role' | translate"
+        [options]="$any((userRoles$ | async) ?? [])"
+        [bindLabel]="isRTL()?'lookupNameAr':'lookupNameEn'"
+        bindValue="oid"
+        [multiple]="false"
+        [placeholder]="'Choose Role' | translate"
+        selectClass="form-control"
+      />
+              </div>
+            </div>
+            <app-site-button
+              title="Create Account"
+              type="main"
+              htmlType="submit"
+              [icon]="'bi bi-arrow'"
+            ></app-site-button>
+          </div>
+        </form>
+      </section>
+    </div>
+  </div>
+</div>
+</div>
+</div>

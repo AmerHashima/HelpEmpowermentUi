@@ -9,6 +9,7 @@ import { Component, input } from '@angular/core';
 })
 export class ButtonComponent {
   btnLabel = input<string>('');
+  icon = input<string>('');
   buttonType = input<string>('button');
   disabled = input<boolean>(false);
   mainBtn = input<boolean>(true);

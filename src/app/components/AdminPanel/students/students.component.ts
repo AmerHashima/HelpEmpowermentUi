@@ -9,10 +9,11 @@ import { StudentService } from '../../../Services/student-service.service';
 import { StudentFormPopupComponent } from './student-form-popup/student-form-popup.component';
 import { ButtonComponent } from '../../../shared/button/button.component';
 import { Router } from '@angular/router';
-
+import * as XLSX from 'xlsx';
+import { SiteButtonComponent } from '../../../shared/clientSide/site-button/site-button.component';
 @Component({
     selector: 'app-students',
-    imports: [CommonModule, FormsModule, StudentFormPopupComponent, ButtonComponent],
+    imports: [CommonModule, FormsModule, StudentFormPopupComponent, ButtonComponent,SiteButtonComponent],
     templateUrl: './students.component.html',
     styleUrl: './students.component.scss'
 })
@@ -185,4 +186,53 @@ export class StudentsComponent {
             columns: ['oid', 'nameEn', 'nameAr', 'email', 'mobile', 'username', 'isActive', 'courses']
         };
     }
+
+  exportStudents() {
+
+    const data = this.students().map((student, index) => ({
+      // ID: student.oid,
+      ID: index + 1,
+      Name: student.nameEn,
+
+      'Arabic Name': student.nameAr,
+
+      Email: student.email,
+
+      Mobile: student.mobile,
+
+      Username: student.username,
+
+      Status: student.isActive ? 'Active' : 'Inactive',
+
+      Courses: student.courses?.length
+
+        ? student.courses.map((c: any) => c).join(', ')
+
+        : 'No Courses'
+
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(data);
+
+    const workbook = XLSX.utils.book_new();
+
+    XLSX.utils.book_append_sheet(
+
+      workbook,
+
+      worksheet,
+
+      'Students'
+
+    );
+
+    XLSX.writeFile(
+
+      workbook,
+
+      `Students_${new Date().toISOString().split('T')[0]}.xlsx`
+
+    );
+
+  }
 }

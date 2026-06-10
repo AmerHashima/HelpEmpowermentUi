@@ -13,6 +13,7 @@ export const LOOKUP_CODES = {
   SERVICE_TYPE: 'SERVICE_TYPE',
   WEBINAR_FORMAT: 'WebinarFormat',
   TIME_ZONE: "TimeZone",
+  USER_ROLE:"USER_ROLE"
 } as const;
 
 @Injectable({
@@ -65,5 +66,8 @@ export class LookupService {
   }
 
 
+  getUserRoles() {
+    return this.getLookUpByCode(LOOKUP_CODES.USER_ROLE);
+  }
 
 }
