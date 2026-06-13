@@ -107,7 +107,7 @@ export class ClientSideLayoutComponent {
 
     if (isPlatformBrowser(this.platformId)) {
 
-      this.announcementsSubscription = interval(5000)
+      this.announcementsSubscription = interval(60000)
 
         .subscribe(() => {
 

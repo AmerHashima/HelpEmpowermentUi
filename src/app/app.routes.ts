@@ -157,12 +157,7 @@ export const routes: Routes = [
         component: UserAccountPolicyComponent
       },
 
-      {
-        path: ':search',
-        loadComponent: () =>
-          import('./components/ClientSide/search/search.component')
-            .then(m => m.SearchComponent)
-      },
+
       {
         path: "technical-support-policy",
         component: TechnicalSupportPolicyComponent
@@ -301,6 +296,12 @@ export const routes: Routes = [
       {
         path: 'videos',
         component: VideosComponent,
+      },
+      {
+        path: ':search',
+        loadComponent: () =>
+          import('./components/ClientSide/search/search.component')
+            .then(m => m.SearchComponent)
       },
     ]
   },
