@@ -60,7 +60,7 @@ export class ResetPasswordComponent {
       email: this.email,
       newPassword: this.model.password,
       confirmPassword: this.model.confirmPassword,
-      token: this.tempToken
+      resetToken: this.tempToken
     };
 
     this.auth.resetStudentPassword(payload).subscribe({

@@ -8,6 +8,8 @@ import { InputComponent } from '../../../../shared/input/input.component';
 import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/site-button.component';
 import emailjs, { type EmailJSResponseStatus } from '@emailjs/browser';
 import { environment } from '../../../../../environments/environment';
+import { tap } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-forget-password',
@@ -19,6 +21,7 @@ export class ForgetPasswordComponent {
   private shared = inject(Shared);
   private auth = inject(AuthService);
   private toasting = inject(ToastingMessagesService);
+  private router=inject(Router);
   isRTL = this.shared.isRtl;
   lang = this.shared.lang;
 
@@ -48,61 +51,122 @@ export class ForgetPasswordComponent {
   }
 
 
-  async onSubmit(form: NgForm) {
+  // async onSubmit(form: NgForm) {
+  //   if (form.invalid) {
+  //     Object.values(form.controls).forEach(control => {
+  //       control.markAsTouched();
+  //     });
+  //     return;
+  //   }
+
+
+  //   try {
+  //     const isSent = await this.auth
+  //       .forgetStudentPassword(this.credentials)
+  //       .toPromise();
+
+  //     if (!isSent) {
+  //       this.toasting.showToast('forgetPassword.error', 'error');
+  //       return;
+  //     }
+
+  //     // 2️⃣ Send Email via EmailJS
+  //     const emailData = {
+  //       email: this.credentials.email,
+  //       otp: '1234',
+  //       reset_link: 'http://144.91.127.150:8082/en/auth/verify-otp?email=' + this.credentials.email
+  //     };
+
+  //     await emailjs.send(
+  //       environment.mailServiceId,
+  //       environment.resetTemolateId,
+  //       emailData,
+  //       {
+  //         publicKey: environment.mailPublicKey
+  //       }
+  //     );
+
+
+  //     this.toasting.showToast('forgetPassword.emailSent', 'success');
+
+  //     this.startCountdown();
+
+  //   }catch (apiError: any) {
+
+  //       const apiMessage =
+  //         apiError?.error?.message ||
+  //         apiError?.error?.errors?.[0] ||
+  //         'forgetPassword.error';
+
+  //       this.toasting.showToast(apiMessage, 'error');
+  //     }
+  //   // } catch (err) {
+  //   //   console.error(err);
+
+  //   //   this.toasting.showToast('forgetPassword.error', 'error');
+  //   // }
+  // }
+
+  onSubmit(form: NgForm) {
+
     if (form.invalid) {
+
       Object.values(form.controls).forEach(control => {
+
         control.markAsTouched();
+
       });
+
       return;
+
     }
 
+    this.auth.sendOtp(this.credentials)
 
-    try {
-      const isSent = await this.auth
-        .forgetStudentPassword(this.credentials)
-        .toPromise();
+      .pipe(
 
-      if (!isSent) {
-        this.toasting.showToast('forgetPassword.error', 'error');
-        return;
-      }
+        tap(() => {
 
-      // 2️⃣ Send Email via EmailJS
-      const emailData = {
-        email: this.credentials.email,
-        otp: '1234',
-        reset_link: 'http://144.91.127.150:8082/en/auth/verify-otp?email=' + this.credentials.email
-      };
+          this.toasting.showToast(
 
-      await emailjs.send(
-        environment.mailServiceId,
-        environment.resetTemolateId,
-        emailData,
-        {
-          publicKey: environment.mailPublicKey
+            'otp.sentSuccessfully',
+
+            'success'
+
+          );
+
+          this.startCountdown();
+
+          this.router.navigate([`/${this.lang()}/auth/verify-otp`], {
+
+            queryParams: {
+
+              email: this.credentials.email
+
+            }
+
+          });
+
+        })
+
+      )
+
+      .subscribe({
+
+        error: (error) => {
+
+          this.toasting.showToast(
+
+            error?.message || 'otp.sendFailed',
+
+            'error'
+
+          );
+
         }
-      );
 
+      });
 
-      this.toasting.showToast('forgetPassword.emailSent', 'success');
-
-      this.startCountdown();
-
-    }catch (apiError: any) {
-
-        const apiMessage =
-          apiError?.error?.message ||
-          apiError?.error?.errors?.[0] ||
-          'forgetPassword.error';
-
-        this.toasting.showToast(apiMessage, 'error');
-      }
-    // } catch (err) {
-    //   console.error(err);
-
-    //   this.toasting.showToast('forgetPassword.error', 'error');
-    // }
   }
-
 
 }

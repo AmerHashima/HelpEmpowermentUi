@@ -82,7 +82,6 @@ export class ClientSideLayoutComponent {
       return 'search.search';
 
     }
-
     return this.pageKey;
 
   }
@@ -106,8 +105,8 @@ export class ClientSideLayoutComponent {
   //     .pop() || 'home';
   // }
   get pageKey(): string {
-    const url = this.router.url;
-
+    // const url = this.router.url;
+    const url = this.router.url.split('?')[0];
     // Remove language prefix
     const withoutLang = url.replace(/^\/(en|ar)/, '').replace(/^\//, '');
 

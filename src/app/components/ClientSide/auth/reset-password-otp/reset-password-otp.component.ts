@@ -19,7 +19,7 @@ export class ResetPasswordOTPComponent {
   private router = inject(Router);
   private auth = inject(AuthService);
   private toasting = inject(ToastingMessagesService);
-  otp = '1234';
+  otp = '';
   email = '';
   errorMessage = '';
 
@@ -39,15 +39,16 @@ export class ResetPasswordOTPComponent {
 
     const payload = {
       email: this.email,
-      otp: this.otp,
+      otpCode: this.otp,
+      userType: 'e4ff8622-ce5c-4844-81d0-d3017a1ba7c6'
     };
 
     this.auth.verifyOtp(payload).subscribe({
-      next: () => {
+      next: (data) => {
         this.router.navigate(['/en/auth/reset-password'], {
           queryParams: {
             email: this.email,
-            tempToken:'tempToken'
+            tempToken: data.resetToken
           }
         });
       },

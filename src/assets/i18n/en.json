@@ -55,6 +55,11 @@
         "error": "Failed to send request"
       }
     },
+      "otp": {
+        "verify": {
+          "success": "OTP has been verified successfully."
+        }
+      },
     "token": {
       "refresh": {
         "error": "Session expired, please login again"
@@ -898,6 +903,9 @@
       "description": "We couldn’t find any matches for \"{{value}}\"",
       "suggestions": "Try searching for:"
     },
+    "reset-password":"Reset Password",
+    "verify-otp":"Verify Otp",
+    "forget-password":"Forget Password",
     "invoice": "Invoice",
     "technical-support-policy": "Technical Support Policy",
     "privacy-notice": "Privacy Notice",
@@ -1609,11 +1617,14 @@
     "error": "Failed to send reset link. Please try again."
   },
   "otp": {
+      "required": "This field is required",
     "title": "Verify Code",
     "description": "Enter the code sent to your email",
     "label": "OTP Code",
     "verify": "Verify",
-    "invalid": "Invalid or expired code"
+    "invalid": "Invalid or expired code",
+      "sentSuccessfully": "A verification code has been sent to your email.",
+      "sendFailed": "Failed to send the verification code. Please try again."
   },
   "resetPassword": {
     "title": "Reset Password",
@@ -1726,6 +1737,7 @@
   "Done":"Done",
   "Failed":"Failed",
   "Passed":"Passed",
+  "forget-password":"Forget Password?",
   "Maximum number of devices (2) reached. Please logout from another device.":"Maximum number of devices (2) reached. Please logout from another device.",
 "Attachment upload failed":"Attachment upload failed",
   "Attachment deleted successfully":"Attachment deleted successfully",

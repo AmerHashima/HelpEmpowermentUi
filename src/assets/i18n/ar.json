@@ -54,6 +54,11 @@
         "error": "فشل في إرسال الطلب"
       }
     },
+      "otp": {
+        "verify": {
+          "success": "تم التحقق من رمز التحقق بنجاح."
+        }
+      },
     "token": {
       "refresh": {
         "error": "انتهت الجلسة، يرجى تسجيل الدخول مرة أخرى"
@@ -513,6 +518,9 @@
       "description": "لم نتمكن من العثور على نتائج مطابقة لـ \"{{value}}\"",
       "suggestions": "جرّب البحث عن:"
     },
+      "reset-password": "تعيين كلمة مرور جديدة",
+  "verify-otp": "التحقق من رمز التحقق",
+        "forget-password": "نسيت كلمة المرور؟",
     "invoice": "الفاتورة",
     "about": "من نحن",
     "profile": "الملف الشخصي",
@@ -1583,11 +1591,14 @@
     "error": "فشل في إرسال رابط إعادة تعيين كلمة المرور. يرجى المحاولة مرة أخرى."
   },
   "otp": {
-    "title": "تأكيد الرمز",
+      "required": "هذا الحقل مطلوب",
+      "title": "تأكيد الرمز",
     "description": "أدخل الرمز المرسل إلى بريدك الإلكتروني",
     "label": "رمز التحقق",
     "verify": "تأكيد",
-    "invalid": "رمز غير صالح أو منتهي"
+    "invalid": "رمز غير صالح أو منتهي",
+      "sentSuccessfully": "تم إرسال رمز التحقق إلى بريدك الإلكتروني.",
+      "sendFailed": "فشل إرسال رمز التحقق. يرجى المحاولة مرة أخرى."
   },
   "resetPassword": {
     "title": "إعادة تعيين كلمة المرور",
@@ -1700,6 +1711,7 @@
     "Failed": "راسب",
 
   "Passed": "ناجح",
+    "forget-password": "نسيت كلمة المرور؟",
   "Maximum number of devices (2) reached. Please logout from another device.": "تم الوصول إلى الحد الأقصى لعدد الأجهزة (2). يرجى تسجيل الخروج من جهاز آخر.",
   "Attachment upload failed": "فشل في رفع المرفقات",
   "Your application has been submitted successfully. Uploading attachment...": "تم إرسال طلب التقديم بنجاح. جاري رفع المرفق...",
