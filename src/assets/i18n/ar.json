@@ -1715,5 +1715,5 @@
   "Maximum number of devices (2) reached. Please logout from another device.": "تم الوصول إلى الحد الأقصى لعدد الأجهزة (2). يرجى تسجيل الخروج من جهاز آخر.",
   "Attachment upload failed": "فشل في رفع المرفقات",
   "Your application has been submitted successfully. Uploading attachment...": "تم إرسال طلب التقديم بنجاح. جاري رفع المرفق...",
-  "Attachment deleted successfully": "تم حذف المرفق بنجاح"
-}
+  "Attachment deleted successfully": "تم حذف المرفق بنجاح",
+  "Invalid email format": "يرجى إدخال بريد إلكتروني صالح"}

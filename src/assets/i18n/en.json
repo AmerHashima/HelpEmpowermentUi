@@ -1741,5 +1741,6 @@
   "Maximum number of devices (2) reached. Please logout from another device.":"Maximum number of devices (2) reached. Please logout from another device.",
 "Attachment upload failed":"Attachment upload failed",
   "Attachment deleted successfully":"Attachment deleted successfully",
+  "Invalid email format":"Invalid email format",
   "Your application has been submitted successfully. Uploading attachment...":"Your application has been submitted successfully. Uploading attachment..."
 }

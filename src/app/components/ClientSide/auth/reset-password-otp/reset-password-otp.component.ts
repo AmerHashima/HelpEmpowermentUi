@@ -7,6 +7,7 @@ import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/s
 import { InputComponent } from '../../../../shared/input/input.component';
 import { AuthService } from '../../../../Services/auth.service';
 import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
+import { Shared } from '../../../../shared/Services/shared/shared';
 
 @Component({
   selector: 'app-reset-password-otp',
@@ -15,6 +16,8 @@ import { ToastingMessagesService } from '../../../../shared/Services/ToastingMes
   styleUrl: './reset-password-otp.component.scss'
 })
 export class ResetPasswordOTPComponent {
+  private shared=inject(Shared);
+  lang=this.shared.lang;
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private auth = inject(AuthService);
@@ -45,7 +48,7 @@ export class ResetPasswordOTPComponent {
 
     this.auth.verifyOtp(payload).subscribe({
       next: (data) => {
-        this.router.navigate(['/en/auth/reset-password'], {
+        this.router.navigate([`/${this.lang()}/auth/reset-password`], {
           queryParams: {
             email: this.email,
             tempToken: data.resetToken
