@@ -1,0 +1,82 @@
+<form
+  [formGroup]="form"
+  (ngSubmit)="onSubmit()"
+  class="d-flex flex-column gap-4 p-3"
+>
+  <div class="row flex-wrap gy-2">
+
+
+    <!-- Webinar Name -->
+    <div class="col-12">
+      <app-input
+        formControlName="title"
+        [label]="'Title' | translate"
+        type="text"
+        placeholder=""
+        icon=""
+        [errorMessages]="{
+          required: 'webinarDashboardForm.errors.nameRequired' | translate
+        }"
+      />
+    </div>
+
+<div class="col-12">
+      <app-textarea
+            formControlName="message"
+            label="Message"
+            placeholder="Enter Announcement Message..."
+            [errorMessages]="{
+              required: 'text is required',
+            }"
+          ></app-textarea>
+</div>
+
+
+
+    <div class="col-12">
+      <spk-ng-select
+        formControlName="isActive"
+        [label]="'webinarDashboardForm.status' | translate"
+        [options]="status"
+        bindLabel="label"
+        bindValue="value"
+        [multiple]="false"
+        [placeholder]="'webinarDashboardForm.placeholders.status' | translate"
+        selectClass="form-control"
+      />
+    </div>
+
+    <div class="col-12">
+ <spk-ng-select
+
+  formControlName="icon"
+
+  label="Icon"
+
+  [options]="iconOptions"
+
+  bindLabel="label"
+
+  bindValue="value"
+
+  iconField="icon">
+
+</spk-ng-select>
+    </div>
+
+  </div>
+
+  <!-- Actions -->
+  <div class="d-flex justify-content-end gap-2">
+    <app-site-button
+      [title]="'cancel' | translate"
+      type="secondary"
+      (click)="cancel()"
+    />
+    <app-site-button
+      [title]="'save' | translate"
+      type="main"
+      htmlType="submit"
+    ></app-site-button>
+  </div>
+</form>

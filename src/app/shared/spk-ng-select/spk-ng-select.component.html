@@ -28,6 +28,33 @@
  >
       <!-- [virtualScroll]="options()!.length > 150" -->
 
+        @if(iconField()){
+
+    <ng-template ng-option-tmp let-item="item">
+
+      <div class="d-flex align-items-center gap-2">
+
+        <i [class]="item[iconField()]"></i>
+
+        <span>{{ item[bindLabel()] }}</span>
+
+      </div>
+
+    </ng-template>
+
+    <ng-template ng-label-tmp let-item="item">
+
+      <div class="d-flex align-items-center gap-2">
+
+        <i [class]="item[iconField()]"></i>
+
+        <span>{{ item[bindLabel()] }}</span>
+
+      </div>
+
+    </ng-template>
+
+  }
     <ng-content></ng-content>
   </ng-select>
 

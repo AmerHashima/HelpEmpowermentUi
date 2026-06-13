@@ -81,6 +81,17 @@ export class SideNav {
       route: 'webinar'
     },
     {
+
+      name: 'Announcements',
+
+      nameAr: 'الإعلانات',
+
+      icon: 'bi bi-megaphone',
+
+      route: 'announcements'
+
+    },
+    {
       name: 'Moderators',
       nameAr: 'المشرفون',
       icon: 'bi bi-person-badge',

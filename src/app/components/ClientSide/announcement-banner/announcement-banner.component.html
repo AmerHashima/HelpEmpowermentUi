@@ -1,0 +1,33 @@
+@if (currentAnnouncement; as announcement) {
+
+  <div class="announcement-bar">
+
+    <div class="announcement-content">
+
+      @if (announcement.icon) {
+
+        <div class="announcement-icon">
+
+          <i [class]="announcement.icon"></i>
+
+        </div>
+
+      }
+
+      <div class="announcement-text">
+
+        @if (announcement.title) {
+
+          <strong class="announcement-title">{{ announcement.title }}</strong>
+
+        }
+
+        <span class="ms-2">{{ announcement.message }}</span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+}

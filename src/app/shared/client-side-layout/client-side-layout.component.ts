@@ -8,11 +8,26 @@ import { FooterComponent } from '../footer/footer.component';
 import { ClientMainLayoutComponent } from '../client-main-layout/client-main-layout.component';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { filter, map } from 'rxjs/operators';
+import { filter, map, startWith, switchMap } from 'rxjs/operators';
 import { Shared } from '../Services/shared/shared';
+import { AnnouncementBannerComponent } from '../../components/ClientSide/announcement-banner/announcement-banner.component';
+import { LookupService } from '../../Services/lookup.service';
+import { interval, Subscription } from 'rxjs';
 
 const SUPPORTED_LANGS = ['en', 'ar'];
 
+export interface Announcement {
+
+  id: number;
+
+  title: string;
+
+  message: string;
+
+  isVisible: boolean;
+  icon:string;
+
+}
 @Component({
   selector: 'app-client-side-layout',
   standalone: true,
@@ -21,22 +36,31 @@ const SUPPORTED_LANGS = ['en', 'ar'];
     FooterComponent,
     ClientMainLayoutComponent,
     TranslatePipe,
+    AnnouncementBannerComponent
   ],
   templateUrl: './client-side-layout.component.html',
   styleUrl: './client-side-layout.component.scss'
 })
 export class ClientSideLayoutComponent {
   private route = inject(ActivatedRoute);
+  private lookupService = inject(LookupService);
+
   private router = inject(Router);
   private translate = inject(TranslateService);
   private platformId = inject(PLATFORM_ID);
   private document = inject(DOCUMENT);
- private shared=inject(Shared);
+  private shared = inject(Shared);
   currentLang = 'en';
   isFullPage = false;
   isNoLayout = false;
 
+  announcements:Announcement[]=[];
+
+
+
+  private announcementsSubscription?: Subscription;
   constructor() {
+
     // 1. Handle language from route param
     this.route.paramMap.subscribe(params => {
       let lang = params.get('lang') || 'en';
@@ -77,6 +101,23 @@ export class ClientSideLayoutComponent {
     });
   }
 
+  ngOnInit() {
+
+    this.loadAnnouncements();
+
+    if (isPlatformBrowser(this.platformId)) {
+
+      this.announcementsSubscription = interval(5000)
+
+        .subscribe(() => {
+
+          this.loadAnnouncements();
+
+        });
+
+    }
+
+  }
   get translatedPageKey(): string {
     if (this.pageKey?.includes('search')) {
       return 'search.search';
@@ -123,7 +164,38 @@ export class ClientSideLayoutComponent {
     return segments[segments.length - 1] || 'home';
   }
 
-  navigateHome(){
+  navigateHome() {
     this.router.navigateByUrl(`/${this.shared.lang()}/home`);
+  }
+
+  loadAnnouncements() {
+
+    this.lookupService.getAnnouncements().subscribe({
+
+      next: (data) => {
+        this.announcements = data.map((item, index) => ({
+
+          id: index + 1,
+
+          title: item.lookupValue,
+
+          message: item.lookupNameEn,
+
+          icon: item.lookupNameAr,
+
+          isVisible: item.isActive
+
+        }));
+
+      }
+
+    });
+
+  }
+
+  ngOnDestroy() {
+
+    this.announcementsSubscription?.unsubscribe();
+
   }
 }

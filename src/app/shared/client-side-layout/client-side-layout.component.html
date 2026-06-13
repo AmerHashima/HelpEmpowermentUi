@@ -22,13 +22,16 @@
   } @else {
     <!-- Normal layout -->
     <div class="flex-grow-1 d-flex flex-column">
+        <app-announcement-banner [announcements]="announcements">
+      </app-announcement-banner>
       <app-client-navbar class="no-print" />
+
       <div class="mainContainer">
         <!-- Optional banner (skip on no-layout routes) -->
         @if (!isNoLayout) {
-          <div class="pagesBanner no-print ">
+          <div class="pagesBanner no-print">
             <span>
-             {{ ("pages." + translatedPageKey) | translate }}
+              {{ "pages." + translatedPageKey | translate }}
             </span>
             <!-- <span>{{ "pages." + pageKey | translate }}</span> -->
           </div>

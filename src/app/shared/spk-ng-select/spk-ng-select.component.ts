@@ -22,6 +22,7 @@ export class SpkNgSelectComponent implements ControlValueAccessor {
   // Signal Inputs
   // ────────────────────────────────────────────────
   label = input<string>('');
+  iconField = input<string>('');
   // options = input<Option[]>([]);
   options = input<any[]>([]);
   id = input<string>('');

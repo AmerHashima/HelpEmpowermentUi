@@ -19,6 +19,7 @@ import { certifications } from '../certification-cards/certification-cards.compo
 import { CartService } from '../../../Services/  cart.service';
 import { ToastingMessagesService } from '../../Services/ToastingMessages/toasting-messages.service';
 
+
 @Component({
   selector: 'app-client-navbar',
   standalone: true,
