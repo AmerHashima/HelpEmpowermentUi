@@ -22,9 +22,12 @@
   } @else {
     <!-- Normal layout -->
     <div class="flex-grow-1 d-flex flex-column">
+      @if (announcements.length > 0) {
         <app-announcement-banner [announcements]="announcements">
-      </app-announcement-banner>
-      <app-client-navbar class="no-print" />
+        </app-announcement-banner>
+      }
+
+      <app-client-navbar class="no-print"  [navbarTop]="announcements.length > 0 ? 50 : 0"/>
 
       <div class="mainContainer">
         <!-- Optional banner (skip on no-layout routes) -->

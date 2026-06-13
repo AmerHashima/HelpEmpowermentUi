@@ -5,6 +5,7 @@ import {
   inject,
   signal,
   PLATFORM_ID,
+  input,
 } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
@@ -49,7 +50,7 @@ export class ClientNavbarComponent {
   lang = this.shared.lang;
   currentTheme = signal<string | null>(null);
   isRTL = this.shared.isRtl;
-
+  navbarTop = input<number>(0);
   // Local component state
   currentPath = signal('');
   openDropdown = signal<string | null>(null);
