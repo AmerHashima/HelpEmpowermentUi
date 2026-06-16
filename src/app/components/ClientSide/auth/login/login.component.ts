@@ -1,6 +1,6 @@
 // src\app\components\ClientSide\auth\login\login.component.ts
-import { Component, inject, ViewChild, signal } from '@angular/core';
-import { CommonModule, NgClass, NgIf } from '@angular/common';
+import { Component, inject, ViewChild, signal, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser, NgClass, NgIf } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { FormItemComponent } from '../../../../shared/form-item/form-item.component';
 import { InputComponent } from '../../../../shared/input/input.component';
@@ -31,6 +31,7 @@ import FingerprintJS from '@fingerprintjs/fingerprintjs';
 
 export class LoginComponent {
   private shared = inject(Shared);
+  private platformId = inject(PLATFORM_ID);
   private auth=inject(AuthService);
   private router = inject(Router);
   private toasting=inject(ToastingMessagesService);
@@ -82,8 +83,32 @@ export class LoginComponent {
 
 
   private async getDeviceId(): Promise<string> {
+
+    if (!isPlatformBrowser(this.platformId)) {
+
+      return '';
+
+    }
+
+    const storageKey = 'deviceId';
+
+    const existingDeviceId = localStorage.getItem(storageKey);
+
+    if (existingDeviceId) {
+
+      return existingDeviceId;
+
+    }
+
     const fp = await FingerprintJS.load();
+
     const result = await fp.get();
-    return result.visitorId;
+
+    const deviceId = result.visitorId;
+
+    localStorage.setItem(storageKey, deviceId);
+
+    return deviceId;
+
   }
 }
