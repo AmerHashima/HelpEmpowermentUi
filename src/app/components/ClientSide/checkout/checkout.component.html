@@ -74,24 +74,54 @@
         Payment Method
       </h2>
 
-      <div class="payment-method">
+      <!-- <div class="payment-method">
         <label>
-          <input type="radio" value="card" formControlName="paymentMethod" />
+          <input type="radio" value="Card" formControlName="paymentMethod" />
           Credit / Debit Card
         </label>
          <label>
-          <input type="radio" value="paypal" formControlName="paymentMethod" />
+          <input type="radio" value="Paypal" formControlName="paymentMethod" />
          Paypal
         </label>
-      </div>
+      </div> -->
+
+   <div class="payment-method">
+
+  @for (
+
+    method of paymentMethods ;
+
+    track method.oid
+
+  ) {
+
+    <label>
+
+      <input
+
+        type="radio"
+
+        [value]="method.oid"
+
+        formControlName="paymentMethod"
+
+      />
+
+      {{ method.lookupNameEn }}
+
+    </label>
+
+  }
+
+</div>
 
       <!-- Terms -->
-      <div class="terms">
+      <!-- <div class="terms">
         <label>
           <input type="checkbox" formControlName="acceptTerms" />
           I agree to the Terms & Conditions
         </label>
-      </div>
+      </div> -->
 
       <!-- Button -->
       <button
