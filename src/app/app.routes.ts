@@ -70,6 +70,7 @@ import { CourseVideoFormComponent } from './components/AdminPanel/certifications
 import { ClientInvoiceComponent } from './components/ClientSide/client-invoice/client-invoice.component';
 import { ModeratorsComponent } from './components/AdminPanel/moderators/moderators.component';
 import { AnnouncementComponent } from './components/AdminSide/announcement/announcement.component';
+import { StudentExportTableComponent } from './components/AdminPanel/students/student-export-table/student-export-table.component';
 
 export const validLangGuard: CanMatchFn = (route, segments) => {
   const lang = segments[0]?.path;
@@ -397,6 +398,11 @@ export const routes: Routes = [
       {
         path: 'students',
         component: StudentsComponent,
+        data: { breadcrumb: 'Users' },
+      },
+      {
+        path: 'students-table',
+        component: StudentExportTableComponent,
         data: { breadcrumb: 'Users' },
       },
       {

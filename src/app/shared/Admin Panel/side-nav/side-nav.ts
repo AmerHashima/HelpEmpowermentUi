@@ -63,6 +63,12 @@ export class SideNav {
       route: 'students'
     },
     {
+      name: 'Users Tables',
+      nameAr: 'المستخدمون',
+      icon: 'bi bi-people-fill',
+      route: 'students-table'
+    },
+    {
       name: 'Messages',
       nameAr: 'الرسائل',
       icon: 'bi bi-envelope-fill',
