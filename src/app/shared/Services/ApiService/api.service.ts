@@ -150,6 +150,8 @@ export default class ApiService {
           !url.includes('summary') &&
           !url.includes('otp/send') &&
           !url.includes('otp/reset-password')&&
+          !url.includes('enroll') &&
+          !url.includes('StudentCourseReservations') &&
           (!page || page !== 'enroll')
         ) {
           this.toasting.showToast(successMessage, 'success');

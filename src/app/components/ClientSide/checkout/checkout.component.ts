@@ -8,6 +8,7 @@ import { StudentService } from '../../../Services/student-service.service';
 import { CheckoutService } from '../../../Services/checkout-service.service';
 import { LookupService } from '../../../Services/lookup.service';
 import { LookupDetail } from '../../../models/lookup';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-checkout',
@@ -17,6 +18,8 @@ import { LookupDetail } from '../../../models/lookup';
 })
 export class CheckoutComponent {
  private cartService=inject(CartService);
+ private router =inject(Router);
+ private route=inject(ActivatedRoute);
  private studentService=inject(StudentService);
  private checkoutService = inject(CheckoutService);
  private lookUpService=inject(LookupService);
@@ -146,8 +149,13 @@ export class CheckoutComponent {
         next: () => {
 
           this.loading.set(false);
+          this.cartService.cartCheckedItems.set([...this.cartService.cartItems()]);
+          this.cartItems.set([]);
+          this.router.navigate(['../invoice/' ], {
 
-          console.log('Checkout completed');
+            relativeTo: this.route,
+
+          });
 
         },
 

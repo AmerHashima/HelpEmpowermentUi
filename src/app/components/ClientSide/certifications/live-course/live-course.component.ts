@@ -128,32 +128,76 @@ export class LiveCourseComponent {
       .subscribe(count => {
         this.count.set(count);
       });
-  
+
   }
   buyNow() {
   }
 
 
+  // addToCart(): void {
+  //   if (!this.auth.studentToken()) {
+  //     this.showConfirm = true;
+  //     return;
+  //   }
+
+  //   const courseId = this.shared.currentCertificationObject().oid;
+
+  //   if (this.cartService.courseExists(courseId)) {
+
+  //     if (this.cartService.isInCart(courseId, 'liveCourseReserv')) {
+  //       this.toasting.showToast('cart.exist', 'warning');
+  //       return;
+  //     }
+
+  //     this.updateExistingCourse(courseId);
+  //     return;
+  //   }
+
+  //   this.addNewCourse(courseId);
+  // }
+
   addToCart(): void {
+
     if (!this.auth.studentToken()) {
+
       this.showConfirm = true;
+
       return;
+
     }
 
     const courseId = this.shared.currentCertificationObject().oid;
 
+    const enrolledCourse = this.studentService.enrolledCourses()
+
+      .find(c => c.courseId === courseId);
+
+    if (enrolledCourse?.liveCourseReserv) {
+
+      this.toasting.showToast('course.already.enrolled', 'warning');
+
+      return;
+
+    }
+
     if (this.cartService.courseExists(courseId)) {
 
       if (this.cartService.isInCart(courseId, 'liveCourseReserv')) {
+
         this.toasting.showToast('cart.exist', 'warning');
+
         return;
+
       }
 
       this.updateExistingCourse(courseId);
+
       return;
+
     }
 
     this.addNewCourse(courseId);
+
   }
 
   private updateExistingCourse(courseId: string): void {

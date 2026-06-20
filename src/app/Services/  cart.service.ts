@@ -1,7 +1,7 @@
 import { computed, effect, inject, Injectable, signal, } from '@angular/core';
 import { APICartItem, APICartResponse, APICheckout, APICouponData, CartItem, UpdateCartItem } from '../models/cart';
 import ApiService from '../shared/Services/ApiService/api.service';
-import { filter, map, Observable, switchMap } from 'rxjs';
+import { filter, map, Observable, of, switchMap } from 'rxjs';
 import { ApiResponse } from '../models/apiResponse';
 import { AuthService } from './auth.service';
 import { toObservable } from '@angular/core/rxjs-interop';
@@ -28,6 +28,7 @@ export class CartService {
 
   studentId = computed(() => this.auth.loggedStudent()?.userId);
   cartItems = signal<APICartItem[]>([]);
+  cartCheckedItems = signal<APICartItem[]>([]);
   currentBasketId = signal<string>('');
   // cartCount = computed(() =>
   //   this.cartItems().reduce((total, item) => total + item.quantity, 0)
@@ -374,5 +375,21 @@ export class CartService {
       );
     });
   }
-}
 
+  courseExistsServer(courseId: string): Observable<boolean> {
+
+    return this.getStudentBasketItems().pipe(
+
+      map(basket =>
+
+        basket.items?.some(item => item.courseId === courseId) ?? false
+
+      )
+
+    );
+
+  }
+
+
+
+}

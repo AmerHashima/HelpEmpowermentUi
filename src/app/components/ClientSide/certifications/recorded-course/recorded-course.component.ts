@@ -121,35 +121,98 @@ count=signal<number>(0);
         this.count.set(count);
       });
 
- 
+
   }
 
   buyNow() {
     // Implement buy logic (e.g. open checkout, call service, etc.)
   }
 
+  // addToCart(): void {
+  //   if (!this.auth.studentToken()) {
+  //     this.showConfirm = true;
+  //     return;
+  //   }
+
+  //   const courseId = this.shared.currentCertificationObject().oid;
+
+  //   if (this.cartService.courseExists(courseId)) {
+
+  //     if (this.cartService.isInCart(courseId, 'recordedCourseReserv')) {
+  //       this.toasting.showToast('cart.exist', 'warning');
+  //       return;
+  //     }
+
+  //     this.updateExistingCourse(courseId);
+  //     return;
+  //   }
+
+  //   this.addNewCourse(courseId);
+  // }
+
+
   addToCart(): void {
+
     if (!this.auth.studentToken()) {
+
       this.showConfirm = true;
+
       return;
+
     }
 
     const courseId = this.shared.currentCertificationObject().oid;
 
+    // Already enrolled
+
+    if (
+
+      this.studentService.hasReservation(
+
+        courseId,
+
+        'recordedCourseReserv'
+
+      )
+
+    ) {
+
+      this.toasting.showToast('course.already.enrolled', 'warning');
+
+      return;
+
+    }
+
+    // Already in cart
+
     if (this.cartService.courseExists(courseId)) {
 
-      if (this.cartService.isInCart(courseId, 'recordedCourseReserv')) {
+      if (
+
+        this.cartService.isInCart(
+
+          courseId,
+
+          'recordedCourseReserv'
+        )
+
+      ) {
+
         this.toasting.showToast('cart.exist', 'warning');
+
         return;
+
       }
 
       this.updateExistingCourse(courseId);
+
       return;
+
     }
 
     this.addNewCourse(courseId);
-  }
 
+  }
 
 
   private updateExistingCourse(courseId: string): void {

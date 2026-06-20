@@ -389,4 +389,21 @@ export class StudentService {
     );
   }
 
+
+  hasReservation(
+
+    courseId: string,
+
+    type: 'examSimulationReserv' | 'recordedCourseReserv' | 'liveCourseReserv'
+
+  ): boolean {
+
+    const course = this.enrolledCourses()
+
+      .find(c => c.courseId === courseId);
+
+    return !!course?.[type];
+
+  }
+
 }

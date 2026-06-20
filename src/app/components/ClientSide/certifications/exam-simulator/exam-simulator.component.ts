@@ -239,7 +239,7 @@ export class ExamSimulatorComponent {
         this.count.set(count);
       });
 
-  
+
   }
 
   navigateToFreeExam(exam: APIExam) {
@@ -260,28 +260,92 @@ export class ExamSimulatorComponent {
     // Implement buy logic (e.g. open checkout, call service, etc.)
   }
 
+  // addToCart(): void {
+  //   // if (!this.auth.studentToken()) {
+  //   if (!this.isLoggedIn()) {
+
+  //     this.showConfirm = true;
+  //     return;
+  //   }
+
+  //   const courseId = this.shared.currentCertificationObject().oid;
+
+  //   if (this.cartService.courseExists(courseId)) {
+
+  //     if (this.cartService.isInCart(courseId, 'examSimulationReserv')) {
+  //       this.toasting.showToast('cart.exist', 'warning');
+  //       return;
+  //     }
+
+  //     this.updateExistingCourse(courseId);
+  //     return;
+  //   }
+
+  //   this.addNewCourse(courseId);
+  // }
+
   addToCart(): void {
-    // if (!this.auth.studentToken()) {
-    if (!this.isLoggedIn()) {
+
+    if (!this.auth.studentToken()) {
 
       this.showConfirm = true;
+
       return;
+
     }
 
     const courseId = this.shared.currentCertificationObject().oid;
 
+    // Already enrolled
+
+    if (
+
+      this.studentService.hasReservation(
+
+        courseId,
+
+        'examSimulationReserv'
+
+      )
+
+    ) {
+
+      this.toasting.showToast('course.already.enrolled', 'warning');
+
+      return;
+
+    }
+
+    // Already in cart
+
     if (this.cartService.courseExists(courseId)) {
 
-      if (this.cartService.isInCart(courseId, 'examSimulationReserv')) {
+      if (
+
+        this.cartService.isInCart(
+
+          courseId,
+
+          'examSimulationReserv'
+
+        )
+
+      ) {
+
         this.toasting.showToast('cart.exist', 'warning');
+
         return;
+
       }
 
       this.updateExistingCourse(courseId);
+
       return;
+
     }
 
     this.addNewCourse(courseId);
+
   }
 
   private updateExistingCourse(courseId: string): void {

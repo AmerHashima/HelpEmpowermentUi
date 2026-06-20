@@ -26,3 +26,12 @@ export interface APICourseReservation {
   updatedBy: string
 }
 
+export interface UpdateCourseReservation {
+  oid: string,
+  courseServiceId: string,
+  reservationDate: string,
+  isReserved: boolean,
+  notes: string,
+  updatedBy: string
+}
+
