@@ -46,7 +46,7 @@ export class QuizGameQuestionComponent {
   showConfirm: boolean = false;
   showMessage: boolean = false;
   showResetConfirm: boolean = false;
-  currentLevelIndex = signal(0);
+  currentLevelIndex = signal(6);
   score = signal(0);
   gameFinished = signal(false);
   resetTrigger = signal(0);
@@ -55,7 +55,7 @@ export class QuizGameQuestionComponent {
   levels: QuizLevel[] = [
     {
       level: 'level 1',
-      title: '5 Process Group',
+      title: '5 Focus Areas',
       header1: '',
       header2: '',
       questions: [],
@@ -63,204 +63,457 @@ export class QuizGameQuestionComponent {
     },
     {
       level: 'level 1',
-      title: 'Process Group & Knowledge Area ',
-      header1: '5 Process Group',
-      header2: '10 Knowledge Area',
+      title: 'Focus Areas & Performance Domains',
+      header1: '5 Focus Areas',
+      header2: '7 Performance Domains',
       options: [
-        'Project Stakeholder Management',
-        'Project Risk Management',
-        'Project Cost Management',
-        'Project Integration Management',
-        'Monitoring & Controlling',
-        'Project Time Management',
+
+        'Stakeholder',
+
+        'Risk',
+
+        'Finance',
+
         'Executing',
-        'Project Resource Management',
+
+        'Governance',
+
+        'Monitoring & Controlling',
+
+        'Schedule',
+
+        'Resource',
+
         'Initiating',
-        'Project Quality Management',
-        'Project Procurement Management',
+
         'Closing',
-        'Project Scope Management',
-        'Project Communication Management',
+
+        'Scope',
+
         'Planning'
+
       ],
+      // options: [
+      //   'Project Stakeholder Management',
+      //   'Project Risk Management',
+      //   'Project Cost Management',
+      //   'Project Integration Management',
+      //   'Monitoring & Controlling',
+      //   'Project Time Management',
+      //   'Executing',
+      //   'Project Resource Management',
+      //   'Initiating',
+      //   'Project Quality Management',
+      //   'Project Procurement Management',
+      //   'Closing',
+      //   'Project Scope Management',
+      //   'Project Communication Management',
+      //   'Planning'
+      // ],
       questions: [],
       correctAnswers: {
+
+        // 5 Focus Areas
+
         'Table1-0': ['Initiating'],
+
         'Table1-1': ['Planning'],
+
         'Table1-2': ['Executing'],
+
         'Table1-3': ['Monitoring & Controlling'],
+
         'Table1-4': ['Closing'],
-        'Table2-0': ['Project Integration Management'],
-        'Table2-1': ['Project Scope Management'],
-        'Table2-2': ['Project Time Management'],
-        'Table2-3': ['Project Cost Management'],
-        'Table2-4': ['Project Quality Management'],
-        'Table2-5': ['Project Resource Management'],
-        'Table2-6': ['Project Communication Management'],
-        'Table2-7': ['Project Risk Management'],
-        'Table2-8': ['Project Procurement Management'],
-        'Table2-9': ['Project Stakeholder Management'],
-      },
+
+        // 7 Performance Domains
+
+        'Table2-0': ['Governance'],
+
+        'Table2-1': ['Scope'],
+
+        'Table2-2': ['Schedule'],
+
+        'Table2-3': ['Finance'],
+
+        'Table2-4': ['Resource'],
+
+        'Table2-5': ['Risk'],
+
+        'Table2-6': ['Stakeholder']
+
+      }
+      // correctAnswers: {
+      //   'Table1-0': ['Initiating'],
+      //   'Table1-1': ['Planning'],
+      //   'Table1-2': ['Executing'],
+      //   'Table1-3': ['Monitoring & Controlling'],
+      //   'Table1-4': ['Closing'],
+      //   'Table2-0': ['Project Integration Management'],
+      //   'Table2-1': ['Project Scope Management'],
+      //   'Table2-2': ['Project Time Management'],
+      //   'Table2-3': ['Project Cost Management'],
+      //   'Table2-4': ['Project Quality Management'],
+      //   'Table2-5': ['Project Resource Management'],
+      //   'Table2-6': ['Project Communication Management'],
+      //   'Table2-7': ['Project Risk Management'],
+      //   'Table2-8': ['Project Procurement Management'],
+      //   'Table2-9': ['Project Stakeholder Management'],
+      // },
     },
     {
       level: 'level 2',
-      title: 'Process Group & Knowledge Area',
-      header1: 'Process Group/Knowledge Area',
+      title: 'Performance Domains & Initiation',
+      header1: 'Performance Domains/Focus Area',
       header2: 'Initiation',
 
+      // questions: [
+      //   'Project Integration Management',
+      //   'Project Scope Management',
+      //   'Project Schedule Management',
+      //   'Project Cost Management',
+      //   'Project Quality Management',
+      //   'Project Resource Management',
+      //   'Project Communications Management',
+      //   'Project Risk Management',
+      //   'Project Procurement Management',
+      //   'Project Stakeholder Management'
+      // ],
       questions: [
-        'Project Integration Management',
-        'Project Scope Management',
-        'Project Schedule Management',
-        'Project Cost Management',
-        'Project Quality Management',
-        'Project Resource Management',
-        'Project Communications Management',
-        'Project Risk Management',
-        'Project Procurement Management',
-        'Project Stakeholder Management'
+
+        'Governance',
+
+        'Scope',
+
+        'Schedule',
+
+        'Finance',
+
+        'Stakeholder',
+
+        'Resource',
+
+        'Risk'
+
       ],
       correctAnswers: {
-        'Project Integration Management': ['Develop project charter'],
-        'Project Scope Management': [],
-        'Project Schedule Management': [],
-        'Project Cost Management': [],
-        'Project Quality Management': [],
-        'Project Resource Management': [],
-        'Project Communications Management': [],
-        'Project Risk Management': [],
-        'Project Procurement Management': [],
-        'Project Stakeholder Management': ['Identify Stakeholders']
+
+        'Governance': ['Initiate Project or Phase'],
+
+        'Scope': [],
+
+        'Schedule': [],
+
+        'Finance': [],
+
+        'Stakeholder': ['Identify Stakeholders'],
+
+        'Resource': [],
+
+        'Risk': []
+
       }
+      // correctAnswers: {
+      //   'Project Integration Management': ['Develop project charter'],
+      //   'Project Scope Management': [],
+      //   'Project Schedule Management': [],
+      //   'Project Cost Management': [],
+      //   'Project Quality Management': [],
+      //   'Project Resource Management': [],
+      //   'Project Communications Management': [],
+      //   'Project Risk Management': [],
+      //   'Project Procurement Management': [],
+      //   'Project Stakeholder Management': ['Identify Stakeholders']
+      // }
     },
     {
       level: 'level 3',
-      title: 'Knowledge Area & Planning',
-      header1: 'Process Group/Knowledge Area',
+      title: 'Performance Domains & Planning',
+      header1: 'Performance Domains/Focus Area',
       header2: 'Planning',
 
+      // questions: [
+      //   'Project Integration Management',
+      //   'Project Scope Management',
+      //   'Project Schedule Management',
+      //   'Project Cost Management',
+      //   'Project Quality Management',
+      //   'Project Resource Management',
+      //   'Project Communications Management',
+      //   'Project Risk Management',
+      //   'Project Procurement Management',
+      //   'Project Stakeholder Management'
+      // ],
+
       questions: [
-        'Project Integration Management',
-        'Project Scope Management',
-        'Project Schedule Management',
-        'Project Cost Management',
-        'Project Quality Management',
-        'Project Resource Management',
-        'Project Communications Management',
-        'Project Risk Management',
-        'Project Procurement Management',
-        'Project Stakeholder Management'
+
+        'Governance',
+
+        'Scope',
+
+        'Schedule',
+
+        'Finance',
+
+        'Stakeholder',
+
+        'Resource',
+
+        'Risk'
+
       ],
 
       correctAnswers: {
-        'Project Integration Management': ['Develop project management plan'],
-        'Project Scope Management': [`-Plan Scope Management\n-Collect Requirements\n-Define Scope\n-Create WBS`],
-        'Project Schedule Management': [`-Plan Schedule Management\n-Define Activities\n-Sequence Activities\n-Estimate Activity Durations\n-Develop Schedule`],
-        'Project Cost Management': [`-Plan Cost Management\n-Estimate Costs\n-Determine Budget\n`],
-        'Project Quality Management': ['Plan Quality Management'],
-        'Project Resource Management': [`-Plan Resource Management\n-Estimate Activity Resource`],
-        'Project Communications Management': ['-Plan Communications Management'],
-        'Project Risk Management': [`-Plan Risk Management\n-Identify Risks\n-Perform Qualitative Risk Analysis\n-Perform Quantitative Risk Analysis\n-Plan Risk Responses\n`],
-        'Project Procurement Management': ['-Plan Procurement Management'],
-        'Project Stakeholder Management': ['Plan Stakeholder Engagement']
+        'Governance': [
+
+          '-Integrate and Align Project Plans\n-Plan Sourcing Strategy'
+
+        ],
+
+        'Scope': [
+
+          '-Plan Scope Management\n-Elicit and Analyze Requirements\n-Define Scope\n-Develop Scope Structure'
+
+        ],
+
+        'Schedule': [
+
+          '-Plan Schedule Management\n-Develop Schedule'
+
+        ],
+
+        'Finance': [
+
+          '-Plan Financial Management\n-Estimate Costs\n-Develop Budget'
+
+        ],
+
+        'Stakeholder': [
+
+          '-Plan Stakeholder Engagement\n-Plan Communication Management'
+
+        ],
+
+        'Resource': [
+
+          '-Plan Resource Management\n-Estimate Resources'
+
+        ],
+
+        'Risk': [
+
+          '-Plan Risk Management\n-Identify Risks\n-Perform Risk Analysis\n-Plan Risk Responses'
+
+        ]
+        // 'Project Integration Management': ['Develop project management plan'],
+        // 'Project Scope Management': [`-Plan Scope Management\n-Collect Requirements\n-Define Scope\n-Create WBS`],
+        // 'Project Schedule Management': [`-Plan Schedule Management\n-Define Activities\n-Sequence Activities\n-Estimate Activity Durations\n-Develop Schedule`],
+        // 'Project Cost Management': [`-Plan Cost Management\n-Estimate Costs\n-Determine Budget\n`],
+        // 'Project Quality Management': ['Plan Quality Management'],
+        // 'Project Resource Management': [`-Plan Resource Management\n-Estimate Activity Resource`],
+        // 'Project Communications Management': ['-Plan Communications Management'],
+        // 'Project Risk Management': [`-Plan Risk Management\n-Identify Risks\n-Perform Qualitative Risk Analysis\n-Perform Quantitative Risk Analysis\n-Plan Risk Responses\n`],
+        // 'Project Procurement Management': ['-Plan Procurement Management'],
+        // 'Project Stakeholder Management': ['Plan Stakeholder Engagement']
       }
     },
     {
       level: 'level 4',
-      title: 'Knowledge Area & Executing',
-      header1: 'Process Group/Knowledge Area',
+      title: 'Performance Domains & Executing',
+      header1: 'Performance Domains/Focus Area',
       header2: 'Executing',
 
-
       questions: [
-        'Project Integration Management',
-        'Project Scope Management',
-        'Project Schedule Management',
-        'Project Cost Management',
-        'Project Quality Management',
-        'Project Resource Management',
-        'Project Communications Management',
-        'Project Risk Management',
-        'Project Procurement Management',
-        'Project Stakeholder Management'
+
+        'Governance',
+
+        'Scope',
+
+        'Schedule',
+
+        'Finance',
+
+        'Stakeholder',
+
+        'Resource',
+
+        'Risk'
+
       ],
+      // questions: [
+      //   'Project Integration Management',
+      //   'Project Scope Management',
+      //   'Project Schedule Management',
+      //   'Project Cost Management',
+      //   'Project Quality Management',
+      //   'Project Resource Management',
+      //   'Project Communications Management',
+      //   'Project Risk Management',
+      //   'Project Procurement Management',
+      //   'Project Stakeholder Management'
+      // ],
+      // correctAnswers: {
+      //   'Project Integration Management': [`-Direct and manage project\n-Manage Project Knowledge work`],
+      //   'Project Scope Management': [],
+      //   'Project Schedule Management': [],
+      //   'Project Cost Management': [],
+      //   'Project Quality Management': ['Manage Quality'],
+      //   'Project Resource Management': [`-Acquire Resources\n-Develop Team\n-Manage Team`],
+      //   'Project Communications Management': ['Manage Communications'],
+      //   'Project Risk Management': ['Implement Risk Responses'],
+      //   'Project Procurement Management': ['Conduct Procurements '],
+      //   'Project Stakeholder Management': ['Manage Stakeholder Engagement']
+      // }
       correctAnswers: {
-        'Project Integration Management': [`-Direct and manage project\n-Manage Project Knowledge work`],
-        'Project Scope Management': [],
-        'Project Schedule Management': [],
-        'Project Cost Management': [],
-        'Project Quality Management': ['Manage Quality'],
-        'Project Resource Management': [`-Acquire Resources\n-Develop Team\n-Manage Team`],
-        'Project Communications Management': ['Manage Communications'],
-        'Project Risk Management': ['Implement Risk Responses'],
-        'Project Procurement Management': ['Conduct Procurements '],
-        'Project Stakeholder Management': ['Manage Stakeholder Engagement']
+
+        'Governance': [
+
+          '-Manage Project Execution\n-Manage Quality Assurance\n-Manage Project Knowledge'
+
+        ],
+
+        'Scope': [],
+
+        'Schedule': [],
+
+        'Finance': [],
+
+        'Stakeholder': [
+
+          '-Manage Stakeholder Engagement\n-Manage Communication'
+
+        ],
+
+        'Resource': [
+
+          '-Acquire Resources\n-Lead the team'
+
+        ],
+
+        'Risk': [
+
+          '-Implement Risk Responses'
+
+        ]
+
       }
     },
     {
       level: 'level 5',
-      title: 'Knowledge Area & (Monitoring & Controlling)',
-      header1: 'Process Group/Knowledge Area',
+      title: 'Performance Domains & (Monitoring & Controlling)',
+      header1: 'Performance Domains/Focus Area',
       header2: 'Monitoring & Controlling  ',
+
       questions: [
-        'Project Integration Management',
-        'Project Scope Management',
-        'Project Schedule Management',
-        'Project Cost Management',
-        'Project Quality Management',
-        'Project Resource Management',
-        'Project Communications Management',
-        'Project Risk Management',
-        'Project Procurement Management',
-        'Project Stakeholder Management'
+
+        'Governance',
+
+        'Scope',
+
+        'Schedule',
+
+        'Finance',
+
+        'Stakeholder',
+
+        'Resource',
+
+        'Risk'
+
       ],
       correctAnswers: {
-        'Project Integration Management': [`-Monitor & control project work.\n-Perform integrated change control`],
-        'Project Scope Management': [`-Validate Scope\n-Control Scope`],
-        'Project Schedule Management': ['Control Schedule'],
-        'Project Cost Management': ['Control Costs'],
-        'Project Quality Management': ['Control Quality'],
-        'Project Resource Management': [`Control Resources`],
-        'Project Communications Management': ['Monitor Communications'],
-        'Project Risk Management': ['Monitor Risks'],
-        'Project Procurement Management': ['Control Procurements'],
-        'Project Stakeholder Management': ['Monitor Stakeholder Engagement']
+
+        'Governance': [
+
+          '-Monitor & control project Performance.\n-Assess and Implement changes'
+
+        ],
+
+        'Scope': [
+
+          '-Monitor and Control Scope\n-Validate Scope'
+
+        ],
+
+        'Schedule': [
+
+          '-Monitor and Control Schedule'
+
+        ],
+
+        'Finance': [
+
+          '-Monitor and Control Finances'
+
+        ],
+
+        'Stakeholder': [
+
+          '-Monitor stakeholder Engagement\n-Monitor Communications'
+
+        ],
+
+        'Resource': [
+
+          '-Monitor and Control Resourcing'
+
+        ],
+
+        'Risk': [
+
+          '-Monitor Risks'
+
+        ]
+
       }
     },
     {
       level: 'level 6',
-      title: 'Knowledge Area & Closing',
-      header1: 'Process Group/Knowledge Area',
+      title: 'Performance Domains & Closing',
+      header1: 'Performance Domains/Focus Area',
       header2: 'Closing',
 
       questions: [
-        'Project Integration Management',
-        'Project Scope Management',
-        'Project Schedule Management',
-        'Project Cost Management',
-        'Project Quality Management',
-        'Project Resource Management',
-        'Project Communications Management',
-        'Project Risk Management',
-        'Project Procurement Management',
-        'Project Stakeholder Management'
+
+        'Governance',
+
+        'Scope',
+
+        'Schedule',
+
+        'Finance',
+
+        'Stakeholder',
+
+        'Resource',
+
+        'Risk'
+
       ],
       correctAnswers: {
-        'Project Integration Management': ['Close project or phase'],
-        'Project Scope Management': [],
-        'Project Schedule Management': [],
-        'Project Cost Management': [],
-        'Project Quality Management': [],
-        'Project Resource Management': [],
-        'Project Communications Management': [],
-        'Project Risk Management': [],
-        'Project Procurement Management': [],
-        'Project Stakeholder Management': []
+
+        'Governance': [
+
+          '-Close project or phase'
+
+        ],
+
+        'Scope': [],
+
+        'Schedule': [],
+
+        'Finance': [],
+
+        'Stakeholder': [],
+
+        'Resource': [],
+
+        'Risk': []
+
       }
     },
     {
       level: 'level 7',
-      title: 'Mapping between Process Group & Knowledge Area (49 Processes) ',
+      title: 'Mapping between Performance domains & Focus Area (40 Processes)',
       header1: '',
       header2: '',
       headers: [
@@ -271,118 +524,255 @@ export class QuizGameQuestionComponent {
         'Closing'
       ],
       questions: [
-        'Project Integration Management',
-        'Project Scope Management',
-        'Project Schedule Management',
-        'Project Cost Management',
-        'Project Quality Management',
-        'Project Resource Management',
-        'Project Communications Management',
-        'Project Risk Management',
-        'Project Procurement Management',
-        'Project Stakeholder Management'
+
+        'Governance',
+
+        'Scope',
+
+        'Schedule',
+
+        'Finance',
+
+        'Stakeholder',
+
+        'Resource',
+
+        'Risk'
+
       ],
       options: [
-        "Develop project charter",
-        "Identify Stakeholders",
-        "Develop project management plan",
-        "-Plan Scope Management\n-Collect Requirements\n-Define Scope\n-Create WBS",
-        "-Plan Schedule Management\n-Define Activities\n-Sequence Activities\n-Estimate Activity Durations\n-Develop Schedule",
-        "-Plan Cost Management\n-Estimate Costs\n-Determine Budget\n",
-        "Plan Quality Management",
-        "-Plan Resource Management\n-Estimate Activity Resource",
-        "-Plan Communications Management",
-        "-Plan Risk Management\n-Identify Risks\n-Perform Qualitative Risk Analysis\n-Perform Quantitative Risk Analysis\n-Plan Risk Responses\n",
-        "-Plan Procurement Management",
-        "Plan Stakeholder Engagement",
-        "-Direct and manage project\n-Manage Project Knowledge work",
-        "Manage Quality",
-        "-Acquire Resources\n-Develop Team\n-Manage Team",
-        "Manage Communications",
-        "Implement Risk Responses",
-        "Conduct Procurements ",
-        "Manage Stakeholder Engagement",
-        "-Monitor & control project work.\n-Perform integrated change control",
-        "-Validate Scope\n-Control Scope",
-        "Control Schedule",
-        "Control Costs",
-        "Control Quality",
-        "Control Resources",
-        "Monitor Communications",
-        "Monitor Risks",
-        "Control Procurements",
-        "Monitor Stakeholder Engagement"
-      ],
-      correctAnswers: {
-        // row 0 = Project Integration Management
-        '0-0': ['Develop project charter'],                     // Initiation (single)
-        '0-1': ['Develop project management plan'],             // Planning (single)
-        '0-2': ['-Direct and manage project\n-Manage Project Knowledge work'],  // Executing (multiline)
-        '0-3': ['-Monitor & control project work.\n-Perform integrated change control'], // Monitoring & Controlling (multiline)
-        '0-4': ['Close project or phase'],                      // Closing (single)
 
-        // row 1 = Project Scope Management
+        '-Initiate Project or Phase',
+
+        '-Identify Stakeholders',
+
+        '-Integrate and Align Project Plans\n-Plan Sourcing Strategy',
+
+        '-Plan Scope Management\n-Elicit and Analyze Requirements\n-Define Scope\n-Develop Scope Structure',
+
+        '-Plan Schedule Management\n-Develop Schedule',
+
+        '-Plan Financial Management\n-Estimate Costs\n-Develop Budget',
+
+        '-Plan Stakeholder Engagement\n-Plan Communication Management',
+
+        '-Plan Resource Management\n-Estimate Resources',
+
+        '-Plan Risk Management\n-Identify Risks\n-Perform Risk Analysis\n-Plan Risk Responses',
+
+        '-Manage Project Execution\n-Manage Quality Assurance\n-Manage Project Knowledge',
+
+        '-Manage Stakeholder Engagement\n-Manage Communication',
+
+        '-Acquire Resources\n-Lead the team',
+
+        '-Implement Risk Responses',
+
+        '-Monitor & control project Performance.\n-Assess and Implement changes',
+
+        '-Monitor and Control Scope\n-Validate Scope',
+
+        '-Monitor and Control Schedule',
+
+        '-Monitor and Control Finances',
+
+        '-Monitor stakeholder Engagement\n-Monitor Communications',
+
+        '-Monitor and Control Resourcing',
+
+        '-Monitor Risks',
+
+        '-Close project or phase'
+
+      ],
+      // options: [
+      //   "Develop project charter",
+      //   "Identify Stakeholders",
+      //   "Develop project management plan",
+      //   "-Plan Scope Management\n-Collect Requirements\n-Define Scope\n-Create WBS",
+      //   "-Plan Schedule Management\n-Define Activities\n-Sequence Activities\n-Estimate Activity Durations\n-Develop Schedule",
+      //   "-Plan Cost Management\n-Estimate Costs\n-Determine Budget\n",
+      //   "Plan Quality Management",
+      //   "-Plan Resource Management\n-Estimate Activity Resource",
+      //   "-Plan Communications Management",
+      //   "-Plan Risk Management\n-Identify Risks\n-Perform Qualitative Risk Analysis\n-Perform Quantitative Risk Analysis\n-Plan Risk Responses\n",
+      //   "-Plan Procurement Management",
+      //   "Plan Stakeholder Engagement",
+      //   "-Direct and manage project\n-Manage Project Knowledge work",
+      //   "Manage Quality",
+      //   "-Acquire Resources\n-Develop Team\n-Manage Team",
+      //   "Manage Communications",
+      //   "Implement Risk Responses",
+      //   "Conduct Procurements ",
+      //   "Manage Stakeholder Engagement",
+      //   "-Monitor & control project work.\n-Perform integrated change control",
+      //   "-Validate Scope\n-Control Scope",
+      //   "Control Schedule",
+      //   "Control Costs",
+      //   "Control Quality",
+      //   "Control Resources",
+      //   "Monitor Communications",
+      //   "Monitor Risks",
+      //   "Control Procurements",
+      //   "Monitor Stakeholder Engagement"
+      // ],
+      // correctAnswers: {
+      //   // row 0 = Project Integration Management
+      //   '0-0': ['Develop project charter'],                     // Initiation (single)
+      //   '0-1': ['Develop project management plan'],             // Planning (single)
+      //   '0-2': ['-Direct and manage project\n-Manage Project Knowledge work'],  // Executing (multiline)
+      //   '0-3': ['-Monitor & control project work.\n-Perform integrated change control'], // Monitoring & Controlling (multiline)
+      //   '0-4': ['Close project or phase'],                      // Closing (single)
+
+      //   // row 1 = Project Scope Management
+      //   '1-0': [],
+      //   '1-1': ['-Plan Scope Management\n-Collect Requirements\n-Define Scope\n-Create WBS'],
+      //   '1-2': [],
+      //   '1-3': ['-Validate Scope\n-Control Scope'],
+      //   '1-4': [],
+
+      //   // row 2 = Project Schedule Management
+      //   '2-0': [],
+      //   '2-1': ['-Plan Schedule Management\n-Define Activities\n-Sequence Activities\n-Estimate Activity Durations\n-Develop Schedule'],
+      //   '2-2': [],
+      //   '2-3': ['Control Schedule'],
+      //   '2-4': [],
+
+      //   // row 3 = Project Cost Management
+      //   '3-0': [],
+      //   '3-1': ['-Plan Cost Management\n-Estimate Costs\n-Determine Budget'],
+      //   '3-2': [],
+      //   '3-3': ['Control Costs'],
+      //   '3-4': [],
+
+      //   // row 4 = Project Quality Management
+      //   '4-0': [],
+      //   '4-1': ['Plan Quality Management'],
+      //   '4-2': ['Manage Quality'],
+      //   '4-3': ['Control Quality'],
+      //   '4-4': [],
+
+      //   // row 5 = Project Resource Management
+      //   '5-0': [],
+      //   '5-1': ['-Plan Resource Management\n-Estimate Activity Resource'],
+      //   '5-2': ['-Acquire Resources\n-Develop Team\n-Manage Team'],
+      //   '5-3': ['Control Resources'],
+      //   '5-4': [],
+
+      //   // row 6 = Project Communications Management
+      //   '6-0': [],
+      //   '6-1': ['-Plan Communications Management'],
+      //   '6-2': ['Manage Communications'],
+      //   '6-3': ['Monitor Communications'],
+      //   '6-4': [],
+
+      //   // row 7 = Project Risk Management
+      //   '7-0': [],
+      //   '7-1': ['-Plan Risk Management\n-Identify Risks\n-Perform Qualitative Risk Analysis\n-Perform Quantitative Risk Analysis\n-Plan Risk Responses'],
+      //   '7-2': ['Implement Risk Responses'],
+      //   '7-3': ['Monitor Risks'],
+      //   '7-4': [],
+
+      //   // row 8 = Project Procurement Management
+      //   '8-0': [],
+      //   '8-1': ['-Plan Procurement Management'],
+      //   '8-2': ['Conduct Procurements'],
+      //   '8-3': ['Control Procurements'],
+      //   '8-4': [],
+
+      //   // row 9 = Project Stakeholder Management
+      //   '9-0': ['Identify Stakeholders'],
+      //   '9-1': ['Plan Stakeholder Engagement'],
+      //   '9-2': ['Manage Stakeholder Engagement'],
+      //   '9-3': ['Monitor Stakeholder Engagement'],
+      //   '9-4': []
+      // }
+      correctAnswers: {
+
+        // Governance
+
+        '0-0': ['-Initiate Project or Phase'],
+
+        '0-1': ['-Integrate and Align Project Plans\n-Plan Sourcing Strategy'],
+
+        '0-2': ['-Manage Project Execution\n-Manage Quality Assurance\n-Manage Project Knowledge'],
+
+        '0-3': ['-Monitor & control project Performance.\n-Assess and Implement changes'],
+
+        '0-4': ['-Close project or phase'],
+
+        // Scope
+
         '1-0': [],
-        '1-1': ['-Plan Scope Management\n-Collect Requirements\n-Define Scope\n-Create WBS'],
+
+        '1-1': ['-Plan Scope Management\n-Elicit and Analyze Requirements\n-Define Scope\n-Develop Scope Structure'],
+
         '1-2': [],
-        '1-3': ['-Validate Scope\n-Control Scope'],
+
+        '1-3': ['-Monitor and Control Scope\n-Validate Scope'],
+
         '1-4': [],
 
-        // row 2 = Project Schedule Management
+        // Schedule
+
         '2-0': [],
-        '2-1': ['-Plan Schedule Management\n-Define Activities\n-Sequence Activities\n-Estimate Activity Durations\n-Develop Schedule'],
+
+        '2-1': ['-Plan Schedule Management\n-Develop Schedule'],
+
         '2-2': [],
-        '2-3': ['Control Schedule'],
+
+        '2-3': ['-Monitor and Control Schedule'],
+
         '2-4': [],
 
-        // row 3 = Project Cost Management
+        // Finance
+
         '3-0': [],
-        '3-1': ['-Plan Cost Management\n-Estimate Costs\n-Determine Budget'],
+
+        '3-1': ['-Plan Financial Management\n-Estimate Costs\n-Develop Budget'],
+
         '3-2': [],
-        '3-3': ['Control Costs'],
+
+        '3-3': ['-Monitor and Control Finances'],
+
         '3-4': [],
 
-        // row 4 = Project Quality Management
-        '4-0': [],
-        '4-1': ['Plan Quality Management'],
-        '4-2': ['Manage Quality'],
-        '4-3': ['Control Quality'],
+        // Stakeholder
+
+        '4-0': ['-Identify Stakeholders'],
+
+        '4-1': ['-Plan Stakeholder Engagement\n-Plan Communication Management'],
+
+        '4-2': ['-Manage Stakeholder Engagement\n-Manage Communication'],
+
+        '4-3': ['-Monitor stakeholder Engagement\n-Monitor Communications'],
+
         '4-4': [],
 
-        // row 5 = Project Resource Management
+        // Resource
+
         '5-0': [],
-        '5-1': ['-Plan Resource Management\n-Estimate Activity Resource'],
-        '5-2': ['-Acquire Resources\n-Develop Team\n-Manage Team'],
-        '5-3': ['Control Resources'],
+
+        '5-1': ['-Plan Resource Management\n-Estimate Resources'],
+
+        '5-2': ['-Acquire Resources\n-Lead the team'],
+
+        '5-3': ['-Monitor and Control Resourcing'],
+
         '5-4': [],
 
-        // row 6 = Project Communications Management
+        // Risk
+
         '6-0': [],
-        '6-1': ['-Plan Communications Management'],
-        '6-2': ['Manage Communications'],
-        '6-3': ['Monitor Communications'],
-        '6-4': [],
 
-        // row 7 = Project Risk Management
-        '7-0': [],
-        '7-1': ['-Plan Risk Management\n-Identify Risks\n-Perform Qualitative Risk Analysis\n-Perform Quantitative Risk Analysis\n-Plan Risk Responses'],
-        '7-2': ['Implement Risk Responses'],
-        '7-3': ['Monitor Risks'],
-        '7-4': [],
+        '6-1': ['-Plan Risk Management\n-Identify Risks\n-Perform Risk Analysis\n-Plan Risk Responses'],
 
-        // row 8 = Project Procurement Management
-        '8-0': [],
-        '8-1': ['-Plan Procurement Management'],
-        '8-2': ['Conduct Procurements'],
-        '8-3': ['Control Procurements'],
-        '8-4': [],
+        '6-2': ['-Implement Risk Responses'],
 
-        // row 9 = Project Stakeholder Management
-        '9-0': ['Identify Stakeholders'],
-        '9-1': ['Plan Stakeholder Engagement'],
-        '9-2': ['Manage Stakeholder Engagement'],
-        '9-3': ['Monitor Stakeholder Engagement'],
-        '9-4': []
+        '6-3': ['-Monitor Risks'],
+
+        '6-4': []
+
       }
     },
     {
