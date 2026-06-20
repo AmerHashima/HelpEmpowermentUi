@@ -17,10 +17,11 @@ import { ReservationService } from '../../../../Services/reservation.service';
 import { APICourseReservation } from '../../../../Interface/course-reservation';
 import { LookupService } from '../../../../Services/lookup.service';
 import { LookupDetail } from '../../../../models/lookup';
+import { SpkNgSelectComponent } from '../../../../shared/spk-ng-select/spk-ng-select.component';
 
 @Component({
   selector: 'app-student-reserved-courses',
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink,SpkNgSelectComponent],
   templateUrl: './student-reserved-courses.component.html',
   styleUrl: './student-reserved-courses.component.scss'
 })
@@ -247,7 +248,16 @@ export class StudentReservedCoursesComponent {
       paymentMethod: form.paymentMethod.trim(),
       createdBy: createdUpdatedOID
     }).subscribe({
-      next: () => {
+      next: (createdCourse: APIStudentCourse) => {
+        this.createReservationsForCourse(
+
+          createdCourse.oid,
+
+          form.courseId,
+
+          form
+
+        );
         this.submittingCourseId.set(null);
         this.successMessage.set('Student enrolled successfully.');
         this.showAddForm.set(false);
@@ -555,5 +565,129 @@ export class StudentReservedCoursesComponent {
           });
       }
     }
+  }
+
+  private createReservationsForCourse(
+
+    studentCourseId: string,
+
+    courseId: string,
+
+    form: Pick<
+
+      StudentCourse,
+
+      'examSimulationReserv' |
+
+      'recordedCourseReserv' |
+
+      'liveCourseReserv'
+
+    >
+
+  ): void {
+
+    this.certificationService
+
+      .getCourseServicesByCourse(courseId)
+
+      .subscribe(courseServices => {
+
+        this.createReservationIfNeeded(
+
+          studentCourseId,
+
+          courseServices,
+
+          form.examSimulationReserv,
+
+          'Exam Simulation'
+
+        );
+
+        this.createReservationIfNeeded(
+
+          studentCourseId,
+
+          courseServices,
+
+          form.recordedCourseReserv,
+
+          'Recorded Course'
+
+        );
+
+        this.createReservationIfNeeded(
+
+          studentCourseId,
+
+          courseServices,
+
+          form.liveCourseReserv,
+
+          'Live Course'
+
+        );
+
+      });
+
+  }
+
+  private createReservationIfNeeded(
+
+    studentCourseId: string,
+
+    courseServices: any[],
+
+    enabled: boolean,
+
+    serviceName: string
+
+  ): void {
+
+    if (!enabled) {
+
+      return;
+
+    }
+
+    const courseService = courseServices.find(
+
+      x => x.serviceName === serviceName
+
+    );
+
+    if (!courseService) {
+
+      return;
+
+    }
+
+    this.reservationService.CreateReservation({
+
+      studentCourseId,
+
+      courseServiceId: courseService.oid,
+
+      reservationDate: new Date().toISOString(),
+
+      servicePrice: courseService.price ?? 0,
+
+      isReserved: true,
+
+      notes: '',
+
+      createdBy: createdUpdatedOID
+
+    }).subscribe(
+      {
+        next: () => {
+
+          this.loadReservedCourses(this.studentId());
+
+        }
+      }
+    );
+
   }
 }

@@ -65,7 +65,7 @@
           />
         </div>
 
-        <div class="col-12">
+        <!-- <div class="col-12">
           <label class="form-label small fw-semibold">Payment Method</label>
           <input
             type="text"
@@ -74,7 +74,28 @@
             [ngModel]="manualEnroll().paymentMethod"
             (ngModelChange)="updateManualEnroll('paymentMethod', $event)"
           />
-        </div>
+        </div> -->
+        <!--
+        <select
+          [ngModel]="manualEnroll().paymentMethod"
+          (ngModelChange)="updateManualEnroll('paymentMethod', $event)"
+        >
+          <option value="">Select Payment Method</option>
+
+          <option *ngFor="let method of paymentMethods()" [value]="method.oid">
+            {{ method.lookupNameEn }}
+          </option>
+        </select> -->
+
+        <spk-ng-select
+          label="Payment Method"
+          [options]="paymentMethods()"
+          bindLabel="lookupNameEn"
+          bindValue="oid"
+          [ngModel]="manualEnroll().paymentMethod"
+          (ngModelChange)="updateManualEnroll('paymentMethod', $event)"
+        >
+        </spk-ng-select>
 
         <div class="col-12">
           <div class="d-flex flex-wrap gap-3">
@@ -185,7 +206,8 @@
               <strong>Paid:</strong> {{ item.paidAmount ?? "-" }}
             </div>
             <div class="small mb-1">
-              <strong>Payment Method:</strong>   {{ getPaymentMethodName(item.paymentMethod) }}
+              <strong>Payment Method:</strong>
+              {{ getPaymentMethodName(item.paymentMethod) }}
             </div>
             <!-- <div class="small mb-1">
               <strong>Enrollment Date:</strong> {{ item.enrollmentDate || "-" }}
@@ -225,7 +247,11 @@
                     <div>
                       <strong>{{ reservation.serviceName }}</strong>
                     </div>
+                    <div class="small text-muted">
+                      Price:
 
+                      {{ reservation.servicePrice }} AED
+                    </div>
                     <div class="small text-muted">
                       Reserved:
 
