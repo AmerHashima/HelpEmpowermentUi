@@ -27,8 +27,14 @@
           class="d-flex align-items-center justify-content-between gap-1 course-item"
         >
           <div class="d-flex align-items-center gap-1">
-            <app-simple-checkbox
+            <!-- <app-simple-checkbox
               [id]="getSafeName(item.title)"
+              [label]="item.title"
+              [checked]="isChecked(item.order)"
+              [disabled]="true"
+            /> -->
+              <app-simple-checkbox
+              [id]="item.title"
               [label]="item.title"
               [checked]="isChecked(item.order)"
               [disabled]="true"

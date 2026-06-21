@@ -177,10 +177,10 @@ export class CoureseContentComponent {
 
 
 
-  // isChecked(order: number): boolean {
-  //   // const completed = this.lessonsWatched() ?? 0;
-  //   // return order <= completed;
-  //   return false;
-  // }
+  isChecked(order: number): boolean {
+    // const completed = this.lessonsWatched() ?? 0;
+    // return order <= completed;
+    return false;
+  }
   readonly accordionTitle = 'Course Content';
 }
