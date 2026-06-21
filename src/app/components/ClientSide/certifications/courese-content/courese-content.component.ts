@@ -54,61 +54,133 @@ export class CoureseContentComponent {
   //   ];
   // });
 
+
+  private readonly certificationSessions: Record<string, string[]> = {
+
+    pmp: [
+      'Session 1 - PMI & PMP Introduction',
+      'Session 2 - Framework',
+      'Session 3 - Framework 2',
+      'Session 4 - Agile',
+      'Session 5 - Questions',
+      'Session 6 - 40 Processes',
+      'Session 7 - Governance',
+      'Session 8 - Scope',
+      'Session 9 - Questions',
+      'Session 10 - Schedule',
+      'Session 11 - Finance',
+      'Session 12 - Quality',
+      'Session 13 - Resources',
+      'Session 14 - Questions',
+      'Session 15 - Stakeholders',
+      'Session 16 - Risk',
+      'Session 17 - Procurement',
+      'Session 18 - Questions',
+      'Session 19 - Revision',
+      'Session 20 - Scheduling by MS Project'
+    ],
+
+    capm: [
+      'Session 1 - PMI & CAPM Introduction',
+      'Session 2 - Framework',
+      'Session 3 - Framework 2',
+      'Session 4 - Agile',
+      'Session 5 - Questions',
+      'Session 6 - 40 Processes',
+      'Session 7 - Governance',
+      'Session 8 - Scope',
+      'Session 9 - Questions',
+      'Session 10 - Schedule',
+      'Session 11 - Finance',
+      'Session 12 - Quality',
+      'Session 13 - Resources',
+      'Session 14 - Questions',
+      'Session 15 - Stakeholders',
+      'Session 16 - Risk',
+      'Session 17 - Procurement',
+      'Session 18 - Questions',
+      'Session 19 - Revision',
+      'Session 20 - Questions'
+    ]
+
+  };
+
   courseCon = computed(() => {
-    return (this.videos() ?? [])
-      .sort((a, b) => (a.orderNo ?? 0) - (b.orderNo ?? 0))
-      .map(video => ({
-        title: this.getDisplayName(video),
-        duration: this.formatDuration(video.durationSeconds),
-        order: video.orderNo ?? 0,
-      }));
+
+    const certName =
+
+      this.certification() ??'';
+
+    const sessions =
+
+      this.certificationSessions[certName] ?? [];
+
+    return sessions.map((title, index) => ({
+
+      title,
+
+      duration: '',
+
+      order: index + 1
+
+    }));
+
   });
+  // courseCon = computed(() => {
+  //   return (this.videos() ?? [])
+  //     .sort((a, b) => (a.orderNo ?? 0) - (b.orderNo ?? 0))
+  //     .map(video => ({
+  //       title: this.getDisplayName(video),
+  //       duration: this.formatDuration(video.durationSeconds),
+  //       order: video.orderNo ?? 0,
+  //     }));
+  // });
 
-  getDisplayName(video: any): string {
-    return this.isRTL()
-      ? (video.nameAr || video.nameEn)
-      : (video.nameEn || video.nameAr);
-  }
+  // getDisplayName(video: any): string {
+  //   return this.isRTL()
+  //     ? (video.nameAr || video.nameEn)
+  //     : (video.nameEn || video.nameAr);
+  // }
 
-  formatDuration(seconds: number | null): string {
-    if (!seconds) return '';
+  // formatDuration(seconds: number | null): string {
+  //   if (!seconds) return '';
 
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
+  //   const mins = Math.floor(seconds / 60);
+  //   const secs = seconds % 60;
 
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
-  }
+  //   return `${mins}:${secs.toString().padStart(2, '0')}`;
+  // }
   // signal to store checkbox states
-  checkedState = signal<Record<string, boolean>>({});
+  // checkedState = signal<Record<string, boolean>>({});
 
-  constructor() {
-    // initialize checkbox states
-    effect(() => {
-      const items = this.courseCon();
-      if (!items?.length) return;
+  // constructor() {
+  //   // initialize checkbox states
+  //   effect(() => {
+  //     const items = this.courseCon();
+  //     if (!items?.length) return;
 
-      const initialState = items.reduce((acc, item) => {
-        const safeName = this.getSafeName(item.title);
-        acc[safeName] = false;
-        return acc;
-      }, {} as Record<string, boolean>);
+  //     const initialState = items.reduce((acc, item) => {
+  //       const safeName = this.getSafeName(item.title);
+  //       acc[safeName] = false;
+  //       return acc;
+  //     }, {} as Record<string, boolean>);
 
-      this.checkedState.set(initialState);
-    });
+  //     this.checkedState.set(initialState);
+  //   });
 
-    // effect(()=> console.log('courseCon', this.courseCon())); // Debugging effect to log course content
-  }
+  //   // effect(()=> console.log('courseCon', this.courseCon())); // Debugging effect to log course content
+  // }
 
-  getSafeName(title: string): string {
-    return title.replace(/[^a-zA-Z0-9_]/g, '_');
-  }
+  // getSafeName(title: string): string {
+  //   return title.replace(/[^a-zA-Z0-9_]/g, '_');
+  // }
 
 
 
-  isChecked(order: number): boolean {
-    // const completed = this.lessonsWatched() ?? 0;
-    // return order <= completed;
-    return false;
-  }
+  // isChecked(order: number): boolean {
+  //   // const completed = this.lessonsWatched() ?? 0;
+  //   // return order <= completed;
+  //   return false;
+  // }
   readonly accordionTitle = 'Course Content';
 }
