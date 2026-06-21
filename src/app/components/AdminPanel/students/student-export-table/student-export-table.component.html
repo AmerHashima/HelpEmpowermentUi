@@ -1,6 +1,6 @@
 <div class="card">
-  <div class="card-header d-flex justify-content-between">
-    <h5 class="mb-0">Users Export</h5>
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <h5 class="mb-0">Users Feature Reservation</h5>
 
     <button
       class="btn btn-success"
@@ -10,79 +10,64 @@
       Export Selected
     </button>
   </div>
-<div class="row p-3">
 
-  <div class="col">
+  <!-- Filters -->
+  <div class="row p-3 g-2">
 
-    <input
+    <div class="col-md-3">
+      <input
+        class="form-control"
+        placeholder="Search student By Name"
+        [(ngModel)]="searchText"
+      />
+    </div>
 
-      class="form-control"
 
-      placeholder="Search student"
+    <div class="col-md-3">
+      <input
+        class="form-control"
+        placeholder="Search student By Mail"
+        [(ngModel)]="mail"
+      />
+    </div>
 
-      [(ngModel)]="searchText"
 
-    />
 
-  </div>
+    <div class="col-md-3">
+      <select
+        class="form-select"
+        [(ngModel)]="selectedStatus"
+      >
+        <option value="">All Statuses</option>
+        <option value="active">Active</option>
+        <option value="inactive">Inactive</option>
+      </select>
+    </div>
 
-  <div class="col">
-
-    <select
-
-      class="form-select"
-
-      [(ngModel)]="selectedStatus">
-
-      <option value="">All Statuses</option>
-
-      <option value="active">Active</option>
-
-      <option value="inactive">Inactive</option>
-
-    </select>
-
-  </div>
-
-  <!-- <div class="col">
-    <select
-
-  class="form-select"
-
-  [(ngModel)]="selectedFeature">
-
-  <option value="">All Features</option>
-
-  <option value="exam">Exam Simulator</option>
-
-  <option value="recorded">Recorded Course</option>
-
-  <option value="live">Live Course</option>
-
-</select>
-  </div> -->
-
-  <div class="col-md-2">
-
-    <button
-
-      class="btn btn-primary w-100"
-
-      (click)="onSearch()">
-
-      Search
-
-    </button>
+    <div class="col-md-3">
+      <button
+        class="btn btn-primary w-100"
+        (click)="onSearch()"
+      >
+        Search
+      </button>
+    </div>
 
   </div>
 
-</div>
-  <div class="table-responsive">
-<table class="table table-bordered table-hover align-middle text-center">
-        <thead>
+  <!-- <div class="table-responsive">
+
+    <table class="table table-bordered table-hover align-middle text-center">
+
+      <thead class="table-light">
+
         <tr>
+
           <th width="50">
-            <input type="checkbox" (change)="toggleAll($event)" />
+            <input
+              type="checkbox"
+              (change)="toggleAll($event)"
+            />
           </th>
 
           <th>Name</th>
@@ -90,168 +75,365 @@
           <th>Mobile</th>
           <th>Username</th>
           <th>Status</th>
-          <th>Promo Code</th>
-          <!-- <th>Promo Valid t0</th> -->
+          <th>Promo</th>
+          <th>Course</th>
+          <th>Service</th>
+          <th>Activated</th>
+          <th>Expires</th>
 
-          <th>Courses</th>
         </tr>
+
       </thead>
 
       <tbody>
+
         @for (student of students(); track student.oid) {
-            <!-- @if (studentHasSelectedFeature(student.oid)) { -->
-          <tr>
-            <td>
-              <input
-                type="checkbox"
-                [checked]="isSelected(student.oid)"
-                (change)="toggleStudent(student.oid)"
-              />
-            </td>
 
-            <td>{{ student.nameEn }}</td>
-            <td>{{ student.email }}</td>
-            <td>{{ student.mobile }}</td>
-            <td>{{ student.username }}</td>
-            <td>
-              <span
-                class="badge"
-                [class.bg-success]="student.isActive"
-                [class.bg-danger]="!student.isActive"
-              >
-                <i
-                  class="bi"
-                  [class.bi-check-circle-fill]="student.isActive"
-                  [class.bi-x-circle-fill]="!student.isActive"
-                ></i>
+          @for (course of studentFeatures()[student.oid]; track course.oid) {
 
-                {{ student.isActive ? "Active" : "Inactive" }}
-              </span>
-            </td>
+            @for (
+              reservation of getReservations(course.oid);
+              track reservation.oid
+            ) {
 
-            <td>
-              @if (student.promoCode) {
-                <span class="badge bg-warning text-dark">
-                  <i class="bi bi-ticket-perforated-fill me-1"></i>
+              <tr>
 
-                  {{ student.promoCode }}
-                </span>
-              } @else {
-                <span class="badge bg-light text-dark border"> No Promo </span>
-              }
-            </td>
-            <!-- <td>{{ student.promoToDateValid | date: "dd/MM/yyyy" }}</td> -->
-             <td>
-            @for (course of studentFeatures()[student.oid]; track course.oid) {
-              <div class="course-card mb-2 p-2 border rounded">
-                <div class="fw-bold text-primary mb-2">
-                  {{ course.courseName }}
-                </div>
+                <td>
+                  <input
+                    type="checkbox"
+                    [checked]="isSelected(student.oid)"
+                    (change)="toggleStudent(student.oid)"
+                  />
+                </td>
 
-                @if (
-                  !course.examSimulationReserv &&
-                  !course.recordedCourseReserv &&
-                  !course.liveCourseReserv
-                ) {
-                  <div class="text-muted small fst-italic">
-                    No reserved features
-                  </div>
-                } @else {
-                  <div class="d-flex flex-wrap gap-1 justify-content-center">
-                    @if (course.examSimulationReserv) {
-                      <span class="badge bg-success"> Exam Simulator </span>
-                    }
+                <td class="fw-semibold">
+                  {{ student.nameEn }}
+                </td>
 
-                    @if (course.recordedCourseReserv) {
-                      <span class="badge bg-primary"> Recorded Course </span>
-                    }
+                <td>
+                  {{ student.email }}
+                </td>
 
-                    @if (course.liveCourseReserv) {
-                      <span class="badge bg-warning text-dark">
-                        Live Course
-                      </span>
-                    }
-                  </div>
-                }
-              </div>
+                <td>
+                  {{ student.mobile }}
+                </td>
+
+                <td>
+                  {{ student.username }}
+                </td>
+
+                <td>
+
+                  <span
+                    class="badge"
+                    [class.bg-success]="student.isActive"
+                    [class.bg-danger]="!student.isActive"
+                  >
+                    {{ student.isActive ? 'Active' : 'Inactive' }}
+                  </span>
+
+                </td>
+
+                <td>
+
+                  @if (student.promoCode) {
+
+                    <span
+                      class="badge bg-warning text-dark"
+                    >
+                      {{ student.promoCode }}
+                    </span>
+
+                  } @else {
+
+                    <span
+                      class="badge bg-light text-dark border"
+                    >
+                      No Promo
+                    </span>
+
+                  }
+
+                </td>
+
+                <td>
+
+                  <span class="fw-bold text-primary">
+                    {{ course.courseName }}
+                  </span>
+
+                </td>
+
+                <td>
+
+                  <span class="badge bg-info text-dark">
+                    {{ reservation.serviceName }}
+                  </span>
+
+                </td>
+
+                <td>
+
+                  {{
+                    reservation.reservationDate
+                      | date:'dd/MM/yyyy'
+                  }}
+
+                </td>
+
+                <td>
+
+                  <span
+                    class="badge bg-light text-dark border"
+                  >
+                    {{
+                      reservation.reservationExpiryDate
+                        | date:'dd/MM/yyyy'
+                    }}
+                  </span>
+
+                </td>
+
+              </tr>
+
             }
-            </td>
-            <!-- <td>
-            @if(student.courses?.length){
-            <div class="d-flex flex-wrap gap-1">
-              @for(course of student.courses; track course){
-              <span class="badge bg-primary">
-                {{ course }}
-              </span>
-              }
-            </div>
-            } @else {
-            <span class="text-muted">
-              No Courses
-            </span>
-            }
-          </td> -->
-          </tr>
-        <!-- } -->
+
+          }
+
         }
+
       </tbody>
+
     </table>
 
-    <div
+  </div> -->
 
-  class="d-flex justify-content-between align-items-center p-3">
+  <div class="table-responsive">
+  <table class="table table-bordered table-hover align-middle text-center">
+    <thead>
+      <tr>
+        <th width="50">
+          <input type="checkbox" (change)="toggleAll($event)" />
+        </th>
 
-  <div>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Mobile</th>
+        <th>Username</th>
+        <th>Status</th>
+        <th>Promo Code</th>
+        <th style="min-width: 500px">
+          Certifications & Features
+        </th>
+      </tr>
+    </thead>
 
-    Showing
+    <tbody>
+      @for (student of students(); track student.oid) {
 
-    {{ pageIndex() * pageSize() + 1 }}
+      <tr>
+        <td>
+          <input
+            type="checkbox"
+            [checked]="isSelected(student.oid)"
+            (change)="toggleStudent(student.oid)"
+          />
+        </td>
 
-    -
+        <td>
+          <strong>{{ student.nameEn }}</strong>
+        </td>
 
- {{ displayEndRow() }}
+        <td>{{ student.email }}</td>
 
-    of
+        <td>{{ student.mobile }}</td>
 
-    {{ totalCount() }}
+        <td>{{ student.username }}</td>
 
-  </div>
+        <td>
+          <span
+            class="badge"
+            [class.bg-success]="student.isActive"
+            [class.bg-danger]="!student.isActive"
+          >
+            <i
+              class="bi"
+              [class.bi-check-circle-fill]="student.isActive"
+              [class.bi-x-circle-fill]="!student.isActive"
+            ></i>
 
-  <div class="d-flex gap-2">
+            {{ student.isActive ? "Active" : "Inactive" }}
+          </span>
+        </td>
 
-    <button
+        <td>
+          @if (student.promoCode) {
+          <span class="badge bg-warning text-dark">
+            <i class="bi bi-ticket-perforated-fill me-1"></i>
+            {{ student.promoCode }}
+          </span>
+          } @else {
+          <span class="badge bg-light text-dark border">
+            No Promo
+          </span>
+          }
+        </td>
 
-      class="btn btn-outline-secondary"
+        <td class="p-0">
 
-      [disabled]="pageIndex() === 0"
+          @if(studentFeatures()[student.oid]?.length){
 
-      (click)="previousPage()">
+          <table class="table table-sm table-bordered mb-0">
 
-      Previous
+            <thead class="table-light">
+              <tr>
+                <th>Certification</th>
+                <th>Feature</th>
+                <th>Active From</th>
+                <th>Expires</th>
+              </tr>
+            </thead>
 
-    </button>
+            <tbody>
 
-    <button
+              @for (
+                course of studentFeatures()[student.oid];
+                track course.oid
+              ) {
 
-      class="btn btn-outline-secondary"
+                @if (getReservations(course.oid).length > 0) {
 
-      [disabled]="
+                  @for (
+                    reservation of getReservations(course.oid);
+                    track reservation.oid
+                  ) {
 
-        (pageIndex() + 1) * pageSize()
+                    <tr>
 
-        >= totalCount()
+                      <td>
+                        <span class="fw-bold text-primary">
+                          {{ course.courseName }}
+                        </span>
+                      </td>
 
-      "
+                      <td>
 
-      (click)="nextPage()">
+                        <span
+                          class="badge"
+                          [class.bg-success]="reservation.serviceName === 'Exam Simulation'"
+                          [class.bg-primary]="reservation.serviceName === 'Recorded Course'"
+                          [class.bg-warning]="reservation.serviceName === 'Live Course'"
+                        >
+                          {{ reservation.serviceName }}
+                        </span>
 
-      Next
+                      </td>
 
-    </button>
+                      <td>
+                        {{
+                          reservation.reservationDate
+                            | date : "dd/MM/yyyy"
+                        }}
+                      </td>
+
+                      <td>
+                        {{
+                          reservation.reservationExpiryDate
+                            | date : "dd/MM/yyyy"
+                        }}
+                      </td>
+
+                    </tr>
+
+                  }
+
+                } @else {
+
+                  <tr>
+
+                    <td>
+                      <span class="fw-bold text-primary">
+                        {{ course.courseName }}
+                      </span>
+                    </td>
+
+                    <td colspan="3">
+                      <span
+                        class="text-muted fst-italic"
+                      >
+                        No reserved features
+                      </span>
+                    </td>
+
+                  </tr>
+
+                }
+
+              }
+
+            </tbody>
+
+          </table>
+
+          } @else {
+
+          <div class="p-3 text-muted">
+            No Certifications
+          </div>
+
+          }
+
+        </td>
+      </tr>
+
+      }
+    </tbody>
+  </table>
+</div>
+  <!-- Pagination -->
+
+  <div
+    class="d-flex justify-content-between align-items-center p-3"
+  >
+
+    <div>
+
+      Showing
+
+      {{ pageIndex() * pageSize() + 1 }}
+
+      -
+
+      {{ displayEndRow() }}
+
+      of
+
+      {{ totalCount() }} Studenets
+
+    </div>
+
+    <div class="d-flex gap-2">
+
+      <button
+        class="btn btn-outline-secondary"
+        [disabled]="pageIndex() === 0"
+        (click)="previousPage()"
+      >
+        Previous
+      </button>
+
+      <button
+        class="btn btn-outline-secondary"
+        [disabled]="
+          (pageIndex() + 1) * pageSize() >= totalCount()
+        "
+        (click)="nextPage()"
+      >
+        Next
+      </button>
+
+    </div>
 
   </div>
 
 </div>
-  </div>
-</div>
-

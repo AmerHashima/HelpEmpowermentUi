@@ -63,7 +63,7 @@ export class SideNav {
       route: 'students'
     },
     {
-      name: 'Users Tables',
+      name: 'Users Features Reservations',
       nameAr: 'المستخدمون',
       icon: 'bi bi-people-fill',
       route: 'students-table'

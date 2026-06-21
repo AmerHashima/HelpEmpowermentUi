@@ -403,7 +403,7 @@ export const routes: Routes = [
       {
         path: 'students-table',
         component: StudentExportTableComponent,
-        data: { breadcrumb: 'Users' },
+        data: { breadcrumb: 'Users Feature Reservations' },
       },
       {
         path: 'articles',
