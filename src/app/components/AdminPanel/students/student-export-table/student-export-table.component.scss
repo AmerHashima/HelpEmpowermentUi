@@ -1,0 +1,14 @@
+@use 'variables' as *;
+.form-check-input:checked {
+
+  background-color: $primaryColor !important;
+
+  border-color: $primaryColor !important;
+
+}
+
+.form-check-input {
+
+  accent-color: $primaryColor;
+
+}
