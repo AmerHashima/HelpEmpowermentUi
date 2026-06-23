@@ -46,7 +46,7 @@ export class QuizGameQuestionComponent {
   showConfirm: boolean = false;
   showMessage: boolean = false;
   showResetConfirm: boolean = false;
-  currentLevelIndex = signal(6);
+  currentLevelIndex = signal(0);
   score = signal(0);
   gameFinished = signal(false);
   resetTrigger = signal(0);
