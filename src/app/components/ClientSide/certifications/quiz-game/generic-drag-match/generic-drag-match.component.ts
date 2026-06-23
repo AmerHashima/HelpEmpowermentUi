@@ -28,7 +28,7 @@ export class GenericDragMatchComponent {
   // droppedItems: string[][] = [];
 droppedItems:string[][][]=[];
   readonly isRowLayout = computed(() =>
-    this.level() === 'level 17' || this.level() === 'level 18'
+    this.level() === 'level 17' || this.level() === 'level 16'
   );
   private originalOptions: string[] = [];
   constructor() {
@@ -88,7 +88,7 @@ droppedItems:string[][][]=[];
     );
   }
 
-  
+
 
   // ngOnInit() {
   //   this.sourceOptions = [...this.options()];
@@ -186,8 +186,8 @@ droppedItems:string[][][]=[];
     'level 12',
     'level 13',
     'level 14',
-    'level 17',
-    'level 18'
+    'level 16',
+    'level 17'
   ];
 
   shouldReorder(): boolean {

@@ -38,15 +38,6 @@
         (isCorrect)="onGetQuestionResult($event)"
       />
     } @else if (this.currentLevelIndex() == 7) {
-      <app-multi-table-questions
-        [headers]="currentLevel().headers ?? []"
-        [questions]="currentLevel().questions"
-        [correctAnswers]="currentLevel().correctAnswers"
-        [next]="next()"
-        [reset]="resetTrigger()"
-        (isCorrect)="onGetQuestionResult($event)"
-      />
-    } @else if (this.currentLevelIndex() == 8) {
       <app-pyramid-drag-drop
         [questions]="currentLevel().questions"
         [options]="currentLevel().options ?? []"
@@ -56,7 +47,7 @@
         (isCorrect)="onGetQuestionResult($event)"
       />
     } @else if (
-      currentLevel().level == "level 15" || currentLevel().level == "level 16"
+      currentLevel().level == "level 14" || currentLevel().level == "level 15"
     ) {
       <app-matching-table
         [rows]="currentLevel().rows"
@@ -68,7 +59,18 @@
         (correct)="onGetQuestionResult($event)"
       >
       </app-matching-table>
-    } @else if (this.currentLevelIndex() > 8) {
+    }
+     @else if (this.currentLevelIndex() == 18) {
+      <app-multi-table-questions
+        [headers]="currentLevel().headers ?? []"
+        [questions]="currentLevel().questions"
+        [correctAnswers]="currentLevel().correctAnswers"
+        [next]="next()"
+        [reset]="resetTrigger()"
+        (isCorrect)="onGetQuestionResult($event)"
+      />
+    }
+    @else if (this.currentLevelIndex() > 7) {
       <app-generic-drag-match
         [reset]="resetTrigger()"
         [level]="currentLevel().level"
