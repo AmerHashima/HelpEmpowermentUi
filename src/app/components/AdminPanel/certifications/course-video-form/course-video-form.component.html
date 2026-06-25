@@ -78,14 +78,39 @@
 
         <div class="row g-2 align-items-end">
             <div class="col-md-8">
-                <input class="form-control" type="file" accept="video/*" (change)="onVideoFileSelected($event)" />
+                <input class="form-control" type="file" accept="video/*" [disabled]="videoUploading()"
+                    (change)="onVideoFileSelected($event)" />
             </div>
             <div class="col-md-4">
-                <button class="btn btn-outline-primary w-100" type="button" (click)="uploadVideoFile()">
-                    Upload Video
+                <button class="btn btn-outline-primary w-100" type="button" (click)="uploadVideoFile()"
+                    [disabled]="!selectedVideoFile || videoUploading()">
+                    {{ videoUploading() ? 'Uploading...' : 'Upload Video' }}
                 </button>
             </div>
         </div>
+
+        @if (selectedVideoFile || videoUploading() || videoUploadProgress() > 0) {
+        <div class="d-flex flex-column gap-2">
+            <div class="d-flex justify-content-between gap-2 small text-muted">
+                <span class="text-truncate">
+                    @if (selectedVideoFile) {
+                    {{ selectedVideoFile.name }} ({{ formatFileSize(selectedVideoFile) }})
+                    } @else {
+                    Upload complete
+                    }
+                </span>
+                <span class="flex-shrink-0">{{ videoUploadProgress() }}%</span>
+            </div>
+            <div class="progress uploadProgress" role="progressbar" [attr.aria-valuenow]="videoUploadProgress()"
+                aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar" [style.width.%]="videoUploadProgress()"></div>
+            </div>
+        </div>
+        }
+
+        @if (videoUploadError()) {
+        <p class="text-danger small mb-0">{{ videoUploadError() }}</p>
+        }
     </div>
 
     <div class="card border-0 shadow-sm p-3 d-flex flex-column gap-3">
@@ -94,7 +119,8 @@
         <form [formGroup]="attachmentForm" class="row g-2 align-items-end">
             <div class="col-md-5">
                 <label class="form-label">Attachment File</label>
-                <input class="form-control" type="file" (change)="onAttachmentFileSelected($event)" />
+                <input class="form-control" type="file" [disabled]="attachmentUploading()"
+                    (change)="onAttachmentFileSelected($event)" />
             </div>
             <!-- <div class="col-md-3">
                 <label class="form-label">File Type Lookup Id</label>
@@ -105,9 +131,35 @@
                 <input class="form-control" formControlName="savePath" />
             </div> -->
             <div class="col-md-2">
-                <button class="btn btn-outline-primary w-100" type="button" (click)="uploadAttachment()">Upload</button>
+                <button class="btn btn-outline-primary w-100" type="button" (click)="uploadAttachment()"
+                    [disabled]="!selectedAttachmentFile || attachmentUploading()">
+                    {{ attachmentUploading() ? 'Uploading...' : 'Upload' }}
+                </button>
             </div>
         </form>
+
+        @if (selectedAttachmentFile || attachmentUploading() || attachmentUploadProgress() > 0) {
+        <div class="d-flex flex-column gap-2">
+            <div class="d-flex justify-content-between gap-2 small text-muted">
+                <span class="text-truncate">
+                    @if (selectedAttachmentFile) {
+                    {{ selectedAttachmentFile.name }} ({{ formatFileSize(selectedAttachmentFile) }})
+                    } @else {
+                    Upload complete
+                    }
+                </span>
+                <span class="flex-shrink-0">{{ attachmentUploadProgress() }}%</span>
+            </div>
+            <div class="progress uploadProgress" role="progressbar" [attr.aria-valuenow]="attachmentUploadProgress()"
+                aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar" [style.width.%]="attachmentUploadProgress()"></div>
+            </div>
+        </div>
+        }
+
+        @if (attachmentUploadError()) {
+        <p class="text-danger small mb-0">{{ attachmentUploadError() }}</p>
+        }
 
         @if (attachmentsLoading()) {
         <p class="text-muted mb-0">Loading attachments...</p>
