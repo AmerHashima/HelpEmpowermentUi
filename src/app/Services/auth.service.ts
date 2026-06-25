@@ -4,6 +4,7 @@ import { Observable, map, Subscription } from 'rxjs';
 import ApiService from '../shared/Services/ApiService/api.service';
 import { APIAuthStudent, AuthStudent } from '../models/student';
 import { ApiResponse } from '../models/apiResponse';
+import FingerprintJS from '@fingerprintjs/fingerprintjs';
 
 interface LoginForm {
   username: string;
@@ -37,6 +38,12 @@ export interface resetPasswordForm {
 export interface forgetPasswordForm {
   email: string,
   userType: string
+}
+
+export interface StudentLogoutPayload {
+
+  deviceId: string;
+
 }
 
 type Role = 'student' | 'admin';
@@ -184,22 +191,85 @@ export class AuthService {
   }
 
   // ================= LOGOUT =================
+  // logout(role: Role = 'student'): Observable<ApiResponse<boolean>> {
+  //   return this.apiService.post<ApiResponse<boolean>>(
+  //     'Auth/logout',
+  //     null,
+  //     "auth.logoutToast.success"
+  //   ).pipe(
+  //     map(res => {
+  //       if (!res.success) throw new Error(res.message);
+
+  //       if (role === 'student') this.clearStudentSession();
+  //       else this.clearAdminSession();
+
+  //       return res;
+  //     })
+  //   );
+  // }
+
   logout(role: Role = 'student'): Observable<ApiResponse<boolean>> {
-    return this.apiService.post<ApiResponse<boolean>>(
-      'Auth/logout',
-      null,
-      "auth.logoutToast.success"
-    ).pipe(
-      map(res => {
-        if (!res.success) throw new Error(res.message);
+    return new Observable(observer => {
+      (async () => {
+        try {
+          const baseUrl =
+            role === 'student'
+              ? 'Auth/student/logout'
+              : 'Auth/user/logout';
 
-        if (role === 'student') this.clearStudentSession();
-        else this.clearAdminSession();
+          const body =
+            role === 'student'
+              ? { deviceId: await this.getDeviceId() }
+              : null;
 
-        return res;
-      })
-    );
+          this.apiService
+            .post<ApiResponse<boolean>>(
+              baseUrl,
+              body,
+              'auth.logoutToast.success'
+            )
+            .subscribe({
+              next: res => {
+                if (!res.success) {
+                  observer.error(new Error(res.message));
+                  return;
+                }
+
+                if (role === 'student') {
+                  this.clearStudentSession();
+                } else {
+                  this.clearAdminSession();
+                }
+
+                observer.next(res);
+                observer.complete();
+              },
+              error: err => observer.error(err)
+            });
+        } catch (err) {
+          observer.error(err);
+        }
+      })();
+    });
   }
+
+  // logout(role: Role = 'student'): Observable<ApiResponse<boolean>> {
+  //   const baseUrl= role =='student' ? 'Auth/student/logout' : 'Auth/user/logout';
+  //   return this.apiService.post<ApiResponse<boolean>>(
+  //     baseUrl,
+  //     null,
+  //     "auth.logoutToast.success"
+  //   ).pipe(
+  //     map(res => {
+  //       if (!res.success) throw new Error(res.message);
+
+  //       if (role === 'student') this.clearStudentSession();
+  //       else this.clearAdminSession();
+
+  //       return res;
+  //     })
+  //   );
+  // }
 
   updatedLoggedStudent(data: APIAuthStudent) {
     this.setStudentSession(data);
@@ -422,5 +492,35 @@ export class AuthService {
       removedKeys: keysToRemove,
       studentExamIds
     };
+  }
+
+   async getDeviceId(): Promise<string> {
+
+    if (!isPlatformBrowser(this.platformId)) {
+
+      return '';
+
+    }
+
+    const storageKey = 'deviceId';
+
+    const existingDeviceId = localStorage.getItem(storageKey);
+
+    if (existingDeviceId) {
+
+      return existingDeviceId;
+
+    }
+
+    const fp = await FingerprintJS.load();
+
+    const result = await fp.get();
+
+    const deviceId = result.visitorId;
+
+    localStorage.setItem(storageKey, deviceId);
+
+    return deviceId;
+
   }
 }

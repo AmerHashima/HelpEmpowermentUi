@@ -11,7 +11,6 @@ import { FormsModule, NgControl, NgForm } from '@angular/forms';
 import { CheckboxComponent } from '../../../../shared/checkbox/checkbox.component';
 import { AuthService } from '../../../../Services/auth.service';
 import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
-import FingerprintJS from '@fingerprintjs/fingerprintjs';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -54,7 +53,7 @@ export class LoginComponent {
     const payload = {
       username: this.credentials.username,
       password: this.credentials.password,
-      deviceId: await this.getDeviceId()
+      deviceId: await this.auth.getDeviceId()
 
     };
     // this.auth.loginStudent(this.credentials).subscribe({
@@ -82,33 +81,5 @@ export class LoginComponent {
   //helper method
 
 
-  private async getDeviceId(): Promise<string> {
 
-    if (!isPlatformBrowser(this.platformId)) {
-
-      return '';
-
-    }
-
-    const storageKey = 'deviceId';
-
-    const existingDeviceId = localStorage.getItem(storageKey);
-
-    if (existingDeviceId) {
-
-      return existingDeviceId;
-
-    }
-
-    const fp = await FingerprintJS.load();
-
-    const result = await fp.get();
-
-    const deviceId = result.visitorId;
-
-    localStorage.setItem(storageKey, deviceId);
-
-    return deviceId;
-
-  }
 }
