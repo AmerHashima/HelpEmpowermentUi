@@ -293,6 +293,7 @@
                 <th>Feature</th>
                 <th>Active From</th>
                 <th>Expires</th>
+                <th>Added By</th>
               </tr>
             </thead>
 
@@ -342,6 +343,13 @@
                         {{
                           reservation.reservationExpiryDate
                             | date : "dd/MM/yyyy"
+                        }}
+                      </td>
+
+                        <td class="text-center">
+                        {{
+                          reservation.notes || '-'
+
                         }}
                       </td>
 

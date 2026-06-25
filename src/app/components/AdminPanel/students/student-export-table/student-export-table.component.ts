@@ -984,8 +984,8 @@ export class StudentExportTableComponent {
 
             ActiveFrom: '-',
 
-            ExpiryDate: '-'
-
+            ExpiryDate: '-' ,
+            AddedBy:'-'
           });
 
           firstStudentRow = false;
@@ -1064,7 +1064,9 @@ export class StudentExportTableComponent {
 
                 reservation.reservationExpiryDate
 
-              )
+              ),
+            AddedBy: reservation.notes || '-',
+
 
           });
 
@@ -1102,7 +1104,10 @@ export class StudentExportTableComponent {
 
       { wch: 15 },  // Active
 
-      { wch: 15 }   // Expiry
+      { wch: 15 },   // Expiry
+
+      { wch: 20 }   // Expiry
+
 
     ];
 

@@ -541,7 +541,7 @@ export class StudentReservedCoursesComponent {
         reservationDate: new Date().toISOString(),
         servicePrice: courseService.price ?? 0,
         isReserved: true,
-        notes: '',
+        notes: 'Admin',
         createdBy: createdUpdatedOID
       }).subscribe({
         next: () => this.loadReservations(original.oid)
@@ -675,7 +675,7 @@ export class StudentReservedCoursesComponent {
 
       isReserved: true,
 
-      notes: '',
+      notes: 'Admin',
 
       createdBy: createdUpdatedOID
 

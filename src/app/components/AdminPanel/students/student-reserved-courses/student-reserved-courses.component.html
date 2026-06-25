@@ -247,6 +247,7 @@
                     <div>
                       <strong>{{ reservation.serviceName }}</strong>
                     </div>
+
                     <div class="small text-muted">
                       Price:
 
@@ -266,6 +267,11 @@
                       }}
                     </div>
 
+                    <div class="small text-muted">
+                      Added By:
+
+                      {{ reservation.notes || "-" }}
+                    </div>
                     <div>
                       <span
                         class="badge"
