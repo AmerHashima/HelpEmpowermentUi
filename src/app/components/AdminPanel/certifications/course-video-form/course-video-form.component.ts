@@ -1,5 +1,6 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseVideosService } from '../../../../Services/course-videos.service';
 import {
@@ -27,6 +28,12 @@ export class CourseVideoFormComponent {
     loading = signal<boolean>(false);
     attachmentsLoading = signal<boolean>(false);
     attachments = signal<CourseVideoAttachment[]>([]);
+    videoUploading = signal<boolean>(false);
+    videoUploadProgress = signal<number>(0);
+    videoUploadError = signal<string>('');
+    attachmentUploading = signal<boolean>(false);
+    attachmentUploadProgress = signal<number>(0);
+    attachmentUploadError = signal<string>('');
 
     selectedVideoFile: File | null = null;
     selectedAttachmentFile: File | null = null;
@@ -160,17 +167,25 @@ export class CourseVideoFormComponent {
     onVideoFileSelected(event: Event): void {
         const input = event.target as HTMLInputElement;
         this.selectedVideoFile = input.files?.[0] ?? null;
+        this.videoUploadProgress.set(0);
+        this.videoUploadError.set('');
     }
 
     uploadVideoFile(): void {
-        if (!this.videoId() || !this.selectedVideoFile) {
+        if (!this.videoId() || !this.selectedVideoFile || this.videoUploading()) {
             return;
         }
 
-        this.courseVideosService.uploadVideoFile(this.videoId(), this.selectedVideoFile).subscribe({
-            next: (video) => {
-                this.patchVideo(video);
-                this.selectedVideoFile = null;
+        const file = this.selectedVideoFile;
+        this.videoUploading.set(true);
+        this.videoUploadProgress.set(0);
+        this.videoUploadError.set('');
+
+        this.courseVideosService.uploadVideoFileWithProgress(this.videoId(), file).subscribe({
+            next: (event) => this.handleVideoUploadEvent(event, file),
+            error: () => {
+                this.videoUploading.set(false);
+                this.videoUploadError.set('Video upload failed. Please try again.');
             },
         });
     }
@@ -191,25 +206,35 @@ export class CourseVideoFormComponent {
     onAttachmentFileSelected(event: Event): void {
         const input = event.target as HTMLInputElement;
         this.selectedAttachmentFile = input.files?.[0] ?? null;
+        this.attachmentUploadProgress.set(0);
+        this.attachmentUploadError.set('');
     }
 
     uploadAttachment(): void {
-        if (!this.videoId() || !this.selectedAttachmentFile) {
+        if (!this.videoId() || !this.selectedAttachmentFile || this.attachmentUploading()) {
             return;
         }
 
         const value = this.attachmentForm.getRawValue();
+        const file = this.selectedAttachmentFile;
+        this.attachmentUploading.set(true);
+        this.attachmentUploadProgress.set(0);
+        this.attachmentUploadError.set('');
+
         this.courseVideosService
-            .uploadAttachmentFile(
+            .uploadAttachmentFileWithProgress(
                 this.videoId(),
-                this.selectedAttachmentFile,
+                file,
                 value.fileTypeLookupId ?? '',
                 value.savePath || 'course-videos/attachments'
             )
             .subscribe({
-                next: () => {
-                    this.selectedAttachmentFile = null;
-                    this.loadAttachments(this.videoId());
+                next: (event) => {
+                    this.handleAttachmentUploadEvent(event, file);
+                },
+                error: () => {
+                    this.attachmentUploading.set(false);
+                    this.attachmentUploadError.set('Attachment upload failed. Please try again.');
                 },
             });
     }
@@ -228,7 +253,72 @@ export class CourseVideoFormComponent {
         return this.courseVideosService.getAttachmentDownloadUrl(attachment.oid);
     }
 
+    formatFileSize(file: File | null): string {
+        if (!file) {
+            return '';
+        }
+
+        const units = ['B', 'KB', 'MB', 'GB', 'TB'];
+        let size = file.size;
+        let unitIndex = 0;
+
+        while (size >= 1024 && unitIndex < units.length - 1) {
+            size /= 1024;
+            unitIndex += 1;
+        }
+
+        return `${size.toFixed(unitIndex === 0 ? 0 : 1)} ${units[unitIndex]}`;
+    }
+
     backToCourse(): void {
         this.router.navigate(['/admin/certifications', this.courseId()]);
+    }
+
+    private handleVideoUploadEvent(event: HttpEvent<unknown>, file: File): void {
+        if (event.type === HttpEventType.UploadProgress) {
+            this.videoUploadProgress.set(this.calculateUploadProgress(event.loaded, event.total, file.size));
+            return;
+        }
+
+        if (event.type === HttpEventType.Response) {
+            const video = this.extractResponseData<CourseVideo>(event.body);
+            if (video) {
+                this.patchVideo(video);
+            }
+            this.videoUploadProgress.set(100);
+            this.videoUploading.set(false);
+            this.selectedVideoFile = null;
+        }
+    }
+
+    private handleAttachmentUploadEvent(event: HttpEvent<unknown>, file: File): void {
+        if (event.type === HttpEventType.UploadProgress) {
+            this.attachmentUploadProgress.set(this.calculateUploadProgress(event.loaded, event.total, file.size));
+            return;
+        }
+
+        if (event.type === HttpEventType.Response) {
+            this.attachmentUploadProgress.set(100);
+            this.attachmentUploading.set(false);
+            this.selectedAttachmentFile = null;
+            this.loadAttachments(this.videoId());
+        }
+    }
+
+    private calculateUploadProgress(loaded: number, total?: number, fallbackTotal?: number): number {
+        const uploadTotal = total && total > 0 ? total : fallbackTotal;
+        if (!uploadTotal) {
+            return 0;
+        }
+
+        return Math.min(99, Math.round((loaded / uploadTotal) * 100));
+    }
+
+    private extractResponseData<T>(body: unknown): T | null {
+        if (body && typeof body === 'object' && 'data' in body) {
+            return (body as { data: T }).data;
+        }
+
+        return null;
     }
 }

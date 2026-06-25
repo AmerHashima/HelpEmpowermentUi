@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Injectable, Injector } from '@angular/core';
+import { HttpClient, HttpEvent, HttpHeaders, HttpXhrBackend } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import ApiService from '../shared/Services/ApiService/api.service';
@@ -18,8 +18,9 @@ import { environment } from '../../environments/environment';
 @Injectable({ providedIn: 'root' })
 export class CourseVideosService {
   private readonly baseUrl = environment.baseUrl;
+  private progressHttp: HttpClient | null = null;
 
-  constructor(private apiService: ApiService, private http: HttpClient) { }
+  constructor(private apiService: ApiService, private http: HttpClient, private injector: Injector) { }
 
   searchVideos(body: RequestBody): Observable<CourseVideo[]> {
     return this.apiService
@@ -88,6 +89,23 @@ export class CourseVideosService {
       .pipe(map((res) => res.data));
   }
 
+  uploadVideoFileWithProgress(
+    courseVideoId: string,
+    video: File,
+    savePath: string = 'course-videos'
+  ): Observable<HttpEvent<ApiResponse<CourseVideo>>> {
+    const formData = new FormData();
+    formData.append('courseVideoId', courseVideoId);
+    formData.append('video', video);
+    formData.append('savePath', savePath);
+
+    return this.getProgressHttp().post<ApiResponse<CourseVideo>>(`${this.baseUrl}/CourseVideos/upload`, formData, {
+      headers: this.getUploadHeaders(),
+      observe: 'events',
+      reportProgress: true,
+    });
+  }
+
   getStreamUrl(videoUrl: string): string {
     return `${this.baseUrl}/CourseVideos/streamVideo/${encodeURIComponent(videoUrl)}`;
   }
@@ -141,7 +159,46 @@ export class CourseVideosService {
       .pipe(map((res) => res.data));
   }
 
+  uploadAttachmentFileWithProgress(
+    courseVideoOid: string,
+    file: File,
+    fileTypeLookupId: string = '',
+    savePath: string = 'course-videos/attachments'
+  ): Observable<HttpEvent<ApiResponse<CourseVideoAttachment>>> {
+    const formData = new FormData();
+    formData.append('courseVideoOid', courseVideoOid);
+    formData.append('file', file);
+    formData.append('savePath', savePath);
+    if (fileTypeLookupId) {
+      formData.append('fileTypeLookupId', fileTypeLookupId);
+    }
+
+    return this.getProgressHttp().post<ApiResponse<CourseVideoAttachment>>(
+      `${this.baseUrl}/CourseVideoAttachments/upload`,
+      formData,
+      {
+        headers: this.getUploadHeaders(),
+        observe: 'events',
+        reportProgress: true,
+      }
+    );
+  }
+
   getAttachmentDownloadUrl(oid: string): string {
     return `${this.baseUrl}/CourseVideoAttachments/${oid}/download`;
+  }
+
+  private getUploadHeaders(): HttpHeaders {
+    if (typeof window === 'undefined') {
+      return new HttpHeaders();
+    }
+
+    const token = localStorage.getItem('studentToken') ?? localStorage.getItem('adminToken');
+    return token ? new HttpHeaders({ Authorization: `Bearer ${token}` }) : new HttpHeaders();
+  }
+
+  private getProgressHttp(): HttpClient {
+    this.progressHttp ??= new HttpClient(this.injector.get(HttpXhrBackend));
+    return this.progressHttp;
   }
 }
