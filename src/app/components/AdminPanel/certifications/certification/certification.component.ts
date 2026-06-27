@@ -133,7 +133,7 @@ export class CertificationComponent {
 
       queryParamsHandling: 'merge',
 
-      replaceUrl: true
+      // replaceUrl: true
 
     });
 

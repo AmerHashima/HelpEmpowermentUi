@@ -16,6 +16,17 @@ import { APIStudentCourse } from '../../../../models/student-course';
 import { StudentExamService } from '../../../../Services/student-exam.service';
 import { APIStudent } from '../../../../models/student';
 import { createdUpdatedOID } from '../../../../data/lookUPS';
+
+type ProfileTab =
+
+  | 'certifications'
+
+  | 'coupons'
+
+  | 'settings'
+
+  | 'password';
+
 @Component({
   selector: 'app-profile',
   standalone: true,
@@ -58,13 +69,52 @@ export class ProfileComponent {
     confirmPassword: '',
   }
   showCourseDetailsFlag: boolean = false;
-  course = signal<APIStudentCourse | null>(null)
+  course = signal<APIStudentCourse | null>(null);
+  activeTab: ProfileTab = 'certifications';
   // user = computed(() => this.authService.loggedStudent());
   hasAnyCourseFeature = computed(() => {
     const c = this.course();
     return !!(c?.examSimulationReserv || c?.recordedCourseReserv || c?.liveCourseReserv);
   });
   constructor() {
+
+    this.route.queryParamMap.subscribe(params => {
+
+    
+      const tab = params.get('tab') as ProfileTab | null;
+
+      if (tab) {
+
+        this.activeTab = tab;
+
+      }
+
+      const courseId = params.get('course');
+
+      if (courseId) {
+
+        const selected = this.enrolledCourses()
+
+          .find(x => x.oid === courseId);
+
+        if (selected) {
+
+          this.course.set(selected);
+
+          this.showCourseDetailsFlag = true;
+
+        }
+
+      } else {
+
+        this.showCourseDetailsFlag = false;
+
+        this.course.set(null);
+
+      }
+
+    });
+
     effect(() => {
       // this.user = this.authService.loggedStudent();
       const user = this.user()
@@ -87,6 +137,27 @@ export class ProfileComponent {
     })
   }
 
+
+
+  onTabChange(tab: ProfileTab) {
+
+    this.activeTab = tab;
+
+    this.router.navigate([], {
+
+      relativeTo: this.route,
+
+      queryParams: {
+
+        tab
+
+      },
+
+      queryParamsHandling: 'merge'
+
+    });
+
+  }
   // ngOnInit(): void {
   //   this.savedExams.set(this.loadSavedExams());
 
@@ -153,10 +224,37 @@ export class ProfileComponent {
     else return 'assets/images/certifications/certfication_2.jpeg';
   }
 
+  // showCourseDetails(course: APIStudentCourse) {
+  //   this.showCourseDetailsFlag = true;
+  //   this.course.set(course);
+  // }
+
   showCourseDetails(course: APIStudentCourse) {
+
     this.showCourseDetailsFlag = true;
+
     this.course.set(course);
+
+    this.router.navigate([], {
+
+      relativeTo: this.route,
+
+      queryParams: {
+
+        tab: this.activeTab,
+
+        course: course.oid
+
+      },
+
+      queryParamsHandling: 'merge',
+
+      // replaceUrl: true
+
+    });
+
   }
+
   onUpdateInfo(form:NgForm) {
     if (this.form.invalid) {
       Object.values(form.controls).forEach(control => {
@@ -183,7 +281,7 @@ export class ProfileComponent {
       // updatedBy: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
     };
 
-   
+
     this.studentService.updateStudent(payload.oid, payload).subscribe({
       next: (newStudent: APIStudent) => {
 

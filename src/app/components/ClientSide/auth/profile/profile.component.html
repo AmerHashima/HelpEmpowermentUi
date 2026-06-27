@@ -81,12 +81,19 @@
       <div class="card-body">
         <div class="tabs-menu">
           <!-- Tabs -->
-          <ul
+          <!-- <ul
             ngbNav
             #nav="ngbNav"
             class="nav nav-tabs profile navtab-custom panel-tabs pb-0 pt-0"
+          > -->
+          <ul
+            ngbNav
+            #nav="ngbNav"
+            [(activeId)]="activeTab"
+            (activeIdChange)="onTabChange($event)"
+            class="nav nav-tabs profile navtab-custom panel-tabs pb-0 pt-0"
           >
-            <li [ngbNavItem]="1" class="">
+            <li [ngbNavItem]="'certifications'" class="">
               <a ngbNavLink data-bs-toggle="tab" class="" aria-expanded="true">
                 <span class="visible-xs"
                   ><i class="bi bi-collection me-1"></i
@@ -314,7 +321,7 @@
               </ng-template>
             </li> -->
 
-            <li [ngbNavItem]="2" class="">
+            <li [ngbNavItem]="'coupons'" class="">
               <a ngbNavLink data-bs-toggle="tab" aria-expanded="false">
                 <span class="visible-xs"
                   ><i class="bi bi-clipboard-check me-1"></i
@@ -376,7 +383,7 @@
                 }
               </ng-template>
             </li>
-            <li [ngbNavItem]="4" class="">
+            <li [ngbNavItem]="'settings'" class="">
               <a ngbNavLink data-bs-toggle="tab" aria-expanded="false">
                 <span class="visible-xs"
                   ><i class="las la-cog fs-16 me-1"></i
@@ -505,7 +512,7 @@
                 </div>
               </ng-template>
             </li>
-            <li [ngbNavItem]="5" class="">
+            <li [ngbNavItem]="'password'" class="">
               <a ngbNavLink data-bs-toggle="tab" aria-expanded="false">
                 <span class="visible-xs"
                   ><i class="las la-cog fs-16 me-1"></i
