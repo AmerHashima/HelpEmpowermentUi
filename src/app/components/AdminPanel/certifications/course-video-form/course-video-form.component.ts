@@ -271,7 +271,22 @@ export class CourseVideoFormComponent {
     }
 
     backToCourse(): void {
-        this.router.navigate(['/admin/certifications', this.courseId()]);
+        // this.router.navigate(['/admin/certifications', this.courseId()]);
+      this.router.navigate(
+
+        ['/admin/certifications', this.courseId()],
+
+        {
+
+          queryParams: {
+
+            tab: 'videos'
+
+          }
+
+        }
+
+      );
     }
 
     private handleVideoUploadEvent(event: HttpEvent<unknown>, file: File): void {
