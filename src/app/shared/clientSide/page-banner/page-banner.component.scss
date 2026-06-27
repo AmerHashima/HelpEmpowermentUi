@@ -72,19 +72,59 @@ h2:hover{
 }
 
 /* Image wrapper uses CSS variables for direction */
-.Homebanner .image-wrapper {
-  position: relative;
-  width: 100%;
-  max-width: 800px;
-  height: 550px;
-  transform: rotateY(var(--rotate-y, -8deg));
-  transition: transform 0.5s ease;
-  border-radius: 20px;
-  overflow: hidden;
-}
+// .Homebanner .image-wrapper {
+//   position: relative;
+//   width: 100%;
+//   max-width: 800px;
+//   height: 550px;
+//   transform: rotateY(var(--rotate-y, -8deg));
+//   transition: transform 0.5s ease;
+//   border-radius: 20px;
+//   overflow: hidden;
+// }
+
+
 
 .Homebanner .image-wrapper:hover {
   transform: rotateY(var(--rotate-y-hover, -5deg));
+}
+
+
+.Homebanner .image-wrapper {
+
+  position: relative;
+
+  width: 100%;
+
+  max-width: 800px;
+
+  height: 550px;
+
+  transform: rotateY(var(--rotate-y, -8deg));
+
+  transition: transform 0.5s ease;
+
+  border-radius: 20px;
+
+  overflow: hidden;
+
+}
+
+/* If the wrapper contains a video */
+
+.Homebanner .image-wrapper:has(video) {
+
+  height: auto;
+
+  aspect-ratio: 18 / 10;
+
+}
+
+.Homebanner .image-wrapper:has(img) {
+
+  height: 500px;
+
+
 }
 
 .Homebanner .Homebanner-video {
