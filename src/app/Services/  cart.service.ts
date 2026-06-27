@@ -222,7 +222,7 @@ export class CartService {
       );
   }
 
-  chekout(body: { "paymentMethod": "string" }): Observable<APICheckout> {
+  chekout(body: { "paymentMethod": string, "couponCode":string}): Observable<APICheckout> {
     const url = `StudentBaskets/${this.studentId()!}/checkout`
     return this.apiService
       .post<ApiResponse<APICheckout>>(url, body, "Checkout has been successfully completed")
