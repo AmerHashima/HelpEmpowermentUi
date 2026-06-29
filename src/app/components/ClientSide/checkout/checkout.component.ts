@@ -135,6 +135,40 @@ export class CheckoutComponent {
     this.reserveCourse();
   }
 
+  // reserveCourse(){
+  //   const checkoutPayload={
+  //     paymentMethod:this.checkoutForm.value.paymentMethod!,
+  //     couponCode: this.cartService.appliedCoupon() ?? ''
+
+  //   }
+  //   this.cartService.chekout(checkoutPayload).subscribe({
+
+  //     next: () => {
+
+  //       this.loading.set(false);
+  //       this.cartService.cartCheckedItems.set([...this.cartService.cartItems()]);
+  //       this.cartItems.set([]);
+  //       this.router.navigate(['../invoice/'], {
+
+  //         relativeTo: this.route,
+
+  //       });
+
+  //     },
+
+  //     error: (err) => {
+
+  //       this.loading.set(false);
+
+  //       console.error(err);
+
+  //     }
+
+  //   });
+  // }
+
+
+
   reserveCourse(){
     this.checkoutService
       .checkout(

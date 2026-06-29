@@ -69,6 +69,26 @@ export class CertificationComponent {
   });
 
   constructor() {
+
+    this.route.queryParamMap.subscribe(params => {
+
+      const tab = params.get('tab');
+
+      if (
+
+        tab === 'exams' ||
+
+        tab === 'services' ||
+
+        tab === 'videos'
+
+      ) {
+
+        this.activeTab.set(tab);
+
+      }
+
+    });
     effect(() => {
       const id = this.route.snapshot.paramMap.get('id');
       if (id && !this.certification()) {
@@ -97,8 +117,26 @@ export class CertificationComponent {
     this.loadServiceTypes();
   }
 
+  // setActiveTab(tab: 'exams' | 'services' | 'videos') {
+  //   this.activeTab.set(tab);
+  // }
+
   setActiveTab(tab: 'exams' | 'services' | 'videos') {
+
     this.activeTab.set(tab);
+
+    this.router.navigate([], {
+
+      relativeTo: this.route,
+
+      queryParams: { tab },
+
+      queryParamsHandling: 'merge',
+
+      // replaceUrl: true
+
+    });
+
   }
 
   onAddNewExam() {

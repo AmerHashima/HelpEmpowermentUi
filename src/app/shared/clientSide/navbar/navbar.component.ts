@@ -336,4 +336,24 @@ export class ClientNavbarComponent {
     }
 
   }
+
+  navigateToProfile(){
+    this.router.navigate(
+
+      ['/', this.lang(), 'auth', 'profile'],
+
+      {
+
+        queryParams: {
+
+          tab: 'certifications',
+
+          course: null
+
+        }
+
+      }
+
+    );
+  }
 }

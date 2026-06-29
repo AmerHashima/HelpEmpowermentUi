@@ -90,7 +90,7 @@
                   (click)="toggleDropdown('auth')"
                 ></i>
                 <ul *ngIf="openDropdown() === 'auth'" class="shadow">
-                  <li (click)="navigate('/' + lang() + '/auth/profile')">
+                  <li (click)="navigateToProfile()">
                     <i class="bi bi-person"></i>
                     {{ "auth.profile" | translate }}
                   </li>

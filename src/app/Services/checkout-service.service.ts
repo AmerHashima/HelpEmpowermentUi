@@ -485,7 +485,7 @@ export class CheckoutService {
 
       isReserved: true,
 
-      notes: '',
+      notes: 'User',
 
       createdBy: createdUpdatedOID
       // createdBy: studentId
