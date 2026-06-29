@@ -449,10 +449,10 @@ export class StudentExportTableComponent {
   loading = signal(false);
   errorMessage = signal('');
 
-  selectedStudents =signal(new Set());
+  selectedStudents = signal(new Set());
 
   searchText = '';
-  mail='';
+  mail = '';
   selectedStatus = '';
 
   pageIndex = signal(0);
@@ -526,7 +526,7 @@ export class StudentExportTableComponent {
 
         value: this.searchText.trim(),
 
-        operation: 0
+        operation: 2
 
       });
 
@@ -544,7 +544,7 @@ export class StudentExportTableComponent {
 
         value: this.mail.trim(),
 
-        operation: 0
+        operation: 2
 
       });
 
@@ -560,7 +560,7 @@ export class StudentExportTableComponent {
             ? 'true'
             : 'false',
 
-        operation: 0
+        operation: 2
 
       });
 
@@ -663,7 +663,7 @@ export class StudentExportTableComponent {
     );
   }
 
-  formatDate( value: string | null | undefined): string {
+  formatDate(value: string | null | undefined): string {
     if (!value) {
       return '-';
     }
@@ -688,7 +688,8 @@ export class StudentExportTableComponent {
 
     this.selectedStudents.set(
       selected
-    );}
+    );
+  }
   toggleAll(event: Event): void {
     const checked =
       (event.target as HTMLInputElement)
@@ -710,10 +711,12 @@ export class StudentExportTableComponent {
         new Set()
       );
 
-    }}
+    }
+  }
   isSelected(studentId: string): boolean {
     return this.selectedStudents()
-      .has(studentId);}
+      .has(studentId);
+  }
 
   // exportSelectedStudents(): void {
   //   const selected =
@@ -984,8 +987,8 @@ export class StudentExportTableComponent {
 
             ActiveFrom: '-',
 
-            ExpiryDate: '-' ,
-            AddedBy:'-'
+            ExpiryDate: '-',
+            AddedBy: '-'
           });
 
           firstStudentRow = false;
@@ -1144,7 +1147,8 @@ export class StudentExportTableComponent {
       value => value + 1
     );
 
-    this.loadStudents();}
+    this.loadStudents();
+  }
 
 
   previousPage(): void {
@@ -1160,14 +1164,14 @@ export class StudentExportTableComponent {
 
     this.loadStudents();
   }
-   displayEndRow(): number {
-     return Math.min(
+  displayEndRow(): number {
+    return Math.min(
 
-       (this.pageIndex() + 1)
-       * this.pageSize(),
+      (this.pageIndex() + 1)
+      * this.pageSize(),
 
-       this.totalCount()
+      this.totalCount()
 
-     );
-   }
+    );
   }
+}
