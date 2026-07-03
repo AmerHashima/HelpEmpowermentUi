@@ -86,17 +86,18 @@ export class CourseVideoFormComponent {
     }
 
     private patchVideo(video: CourseVideo): void {
+        const normalizedVideo = this.courseVideosService.normalizeCourseVideo(video);
         this.form.patchValue({
-            nameEn: video.nameEn ?? '',
-            nameAr: video.nameAr ?? '',
-            videoUrl: video.videoUrl ?? '',
-            descriptionEn: video.descriptionEn ?? '',
-            descriptionAr: video.descriptionAr ?? '',
-            durationSeconds: video.durationSeconds ?? 0,
-            orderNo: video.orderNo ?? 0,
-            videoTypeLookupId: video.videoTypeLookupId ?? '',
-            isPreview: video.isPreview,
-            isActive: video.isActive,
+            nameEn: normalizedVideo.nameEn ?? '',
+            nameAr: normalizedVideo.nameAr ?? '',
+            videoUrl: normalizedVideo.videoUrl ?? '',
+            descriptionEn: normalizedVideo.descriptionEn ?? '',
+            descriptionAr: normalizedVideo.descriptionAr ?? '',
+            durationSeconds: normalizedVideo.durationSeconds ?? 0,
+            orderNo: normalizedVideo.orderNo ?? 0,
+            videoTypeLookupId: normalizedVideo.videoTypeLookupId ?? '',
+            isPreview: normalizedVideo.isPreview,
+            isActive: normalizedVideo.isActive,
         });
     }
 
@@ -225,8 +226,7 @@ export class CourseVideoFormComponent {
             .uploadAttachmentFileWithProgress(
                 this.videoId(),
                 file,
-                value.fileTypeLookupId ?? '',
-                value.savePath || 'course-videos/attachments'
+                value.fileTypeLookupId ?? ''
             )
             .subscribe({
                 next: (event) => {
@@ -250,7 +250,7 @@ export class CourseVideoFormComponent {
     }
 
     getAttachmentDownloadUrl(attachment: CourseVideoAttachment): string {
-        return this.courseVideosService.getAttachmentDownloadUrl(attachment.oid);
+        return this.courseVideosService.getAttachmentAccessUrl(attachment);
     }
 
     formatFileSize(file: File | null): string {
@@ -313,6 +313,18 @@ export class CourseVideoFormComponent {
         }
 
         if (event.type === HttpEventType.Response) {
+            const attachment = this.extractResponseData<CourseVideoAttachment>(event.body);
+            if (attachment) {
+                const normalizedAttachment = this.courseVideosService.normalizeAttachment(attachment);
+                this.attachments.update((attachments) => {
+                    const index = attachments.findIndex((item) => item.oid === normalizedAttachment.oid);
+                    if (index < 0) {
+                        return [normalizedAttachment, ...attachments];
+                    }
+
+                    return attachments.map((item, itemIndex) => itemIndex === index ? normalizedAttachment : item);
+                });
+            }
             this.attachmentUploadProgress.set(100);
             this.attachmentUploading.set(false);
             this.selectedAttachmentFile = null;
@@ -330,10 +342,18 @@ export class CourseVideoFormComponent {
     }
 
     private extractResponseData<T>(body: unknown): T | null {
-        if (body && typeof body === 'object' && 'data' in body) {
+        if (!body || typeof body !== 'object') {
+            return null;
+        }
+
+        if ('data' in body) {
             return (body as { data: T }).data;
         }
 
-        return null;
+        if ('Data' in body) {
+            return (body as { Data: T }).Data;
+        }
+
+        return body as T;
     }
 }

@@ -46,9 +46,9 @@ export class ResourcesComponent {
         return this.courseVideosService.getAttachmentsByVideo(videoOid).pipe(
           map(attachments => ({
             data: attachments.map(a => ({
-              type: fileTypeFromUrl(a.fileUrl),
+              type: fileTypeFromUrl(a.fileUrl || a.fileName),
               name: a.fileName,
-              src: this.courseVideosService.getAttachmentDownloadUrl(a.oid),
+              src: this.courseVideosService.getAttachmentAccessUrl(a),
             })),
             loading: false,
           })),
