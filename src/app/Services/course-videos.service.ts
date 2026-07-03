@@ -157,11 +157,13 @@ export class CourseVideosService {
   uploadAttachmentFile(
     courseVideoOid: string,
     file: File,
-    fileTypeLookupId: string = ''
+    fileTypeLookupId: string = '',
+    savePath: string = 'course-videos/attachments'
   ): Observable<CourseVideoAttachment> {
     const formData = new FormData();
     formData.append('courseVideoOid', courseVideoOid);
     formData.append('file', file);
+    formData.append('savePath', savePath);
     if (fileTypeLookupId) {
       formData.append('fileTypeLookupId', fileTypeLookupId);
     }
@@ -174,11 +176,13 @@ export class CourseVideosService {
   uploadAttachmentFileWithProgress(
     courseVideoOid: string,
     file: File,
-    fileTypeLookupId: string = ''
+    fileTypeLookupId: string = '',
+    savePath: string = 'course-videos/attachments'
   ): Observable<HttpEvent<ApiResponse<CourseVideoAttachment>>> {
     const formData = new FormData();
     formData.append('courseVideoOid', courseVideoOid);
     formData.append('file', file);
+    formData.append('savePath', savePath);
     if (fileTypeLookupId) {
       formData.append('fileTypeLookupId', fileTypeLookupId);
     }

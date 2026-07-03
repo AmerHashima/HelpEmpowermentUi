@@ -226,7 +226,8 @@ export class CourseVideoFormComponent {
             .uploadAttachmentFileWithProgress(
                 this.videoId(),
                 file,
-                value.fileTypeLookupId ?? ''
+                value.fileTypeLookupId ?? '',
+                value.savePath || 'course-videos/attachments'
             )
             .subscribe({
                 next: (event) => {
