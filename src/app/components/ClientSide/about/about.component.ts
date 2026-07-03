@@ -7,12 +7,12 @@ import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-about',
-  imports: [PageBannerComponent,FeatureComponent,TranslatePipe],
+  imports: [PageBannerComponent, FeatureComponent, TranslatePipe],
   templateUrl: './about.component.html',
   styleUrl: './about.component.scss'
 })
 export class AboutComponent {
-private shared=inject(Shared);
-isRTL=this.shared.isRtl;
-  aboutVideo='assets/videos/about.mp4'
+  private shared = inject(Shared);
+  isRTL = this.shared.isRtl;
+  aboutVideo = 'assets/videos/about1.mp4'
 }

@@ -15,8 +15,8 @@ import { HomeServicesComponent } from './home-services/home-services.component';
 
 @Component({
   selector: 'app-home',
-  standalone:true,
-  imports: [PageBannerComponent,FeatureComponent,SocialLinksComponent,
+  standalone: true,
+  imports: [PageBannerComponent, FeatureComponent, SocialLinksComponent,
     SiteButtonComponent, TranslateModule, TranslatePipe, CertificationCardsComponent,
     HomeArticlesComponent, HomeFAQComponent, HomeServicesComponent
     // GenericModelComponent,EnrollFormComponent
@@ -29,9 +29,9 @@ export class HomeComponent {
   @ViewChild('homeServiceCards') serviceCards!: ElementRef;
 
 
-  private shared=inject(Shared);
-  isRTL=this.shared.isRtl;
-  homeVideo='assets/videos/Home.mp4';
+  private shared = inject(Shared);
+  isRTL = this.shared.isRtl;
+  homeVideo = 'assets/videos/Home1.mp4';
   // showEnrollForm:boolean=false;
   // enrolledCertification:CertificationItem| null=null;
   scrollToElement(elRef: ElementRef | null, headerOffset: number = 140) {
