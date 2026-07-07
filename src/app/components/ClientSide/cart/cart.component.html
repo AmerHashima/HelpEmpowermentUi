@@ -45,15 +45,32 @@
 
                 <div class="card-content">
                   <div>
-                    <h3>      {{
+                    <!-- <h3>      {{
                       item.reservationType === "examSimulationReserv"
                         ? "Exam Simulation"
                         : item.reservationType === "recordedCourseReserv"
                           ? "Recorded Course"
                           : "Live Course"
-                    }}</h3>
+                    }}</h3> -->
+                    <h3>
+
+  {{
+
+    item.reservationType === "examSimulationReserv"
+
+      ? ("Exam Simulation" | translate)
+
+      : item.reservationType === "recordedCourseReserv"
+
+        ? ("Recorded Course" | translate)
+
+        : ("Live Course" | translate)
+
+  }}
+
+</h3>
                     <h3 class="mainTextColor">
-                      {{getFeaturePrice(item)}} AED
+                      {{getFeaturePrice(item)}} {{'AED' | translate}}
                     </h3>
                      <p class="reservation-type">
                     <!-- {{
@@ -63,7 +80,7 @@
                           ? "Recorded Course"
                           : "Live Course"
                     }} -->
-                       {{ getCourdeUpperCase(item.courseName) }} Certification
+                       {{ getCourdeUpperCase(item.courseName) }} {{'Certification' | translate}}
 
                   </p>
                   </div>
@@ -169,7 +186,7 @@
           </div>
 
           <app-site-button
-            title="Proceed to Checkout"
+            [title]="'Proceed to Checkout' | translate"
             type="main"
             [icon]="'bi bi-arrow'"
             [disabled]="cartItems().length === 0"

@@ -2,7 +2,7 @@
 <div class="checkout-container">
   <!-- LEFT SECTION -->
   <div class="checkout-form">
-    <h2 class="section-title mainTextColor text-start">Billing Information</h2>
+    <h2 class="section-title mainTextColor text-start">{{'Billing Information' | translate}}</h2>
 
     <form class="form" [formGroup]="checkoutForm">
       <div class="row gy-2">
@@ -10,7 +10,7 @@
           <!-- Full Name -->
           <app-input
             formControlName="fullName"
-            [label]="'Full Name'"
+            [label]="'Full Name' | translate"
             type="text"
             icon="bi bi-person"
             [errorMessages]="{
@@ -24,7 +24,7 @@
             <div class="col-12">
               <app-input
                 formControlName="email"
-                [label]="'Email Address'"
+                [label]="'Email Address' | translate"
                 type="email"
                 icon="bi bi-envelope"
                 [errorMessages]="{
@@ -36,7 +36,7 @@
             <div class="col-12">
               <app-phone-input
                 formControlName="phone"
-                [labelKey]="'Phone Number'"
+                [labelKey]="'Phone Number' | translate"
                 [required]="true"
               ></app-phone-input>
             </div>
@@ -46,7 +46,7 @@
           <!-- Address -->
           <app-input
             formControlName="address"
-            [label]="'Address'"
+            [label]="'Address' | translate"
             type="text"
             icon="bi bi-geo-alt"
             [errorMessages]="{
@@ -59,7 +59,7 @@
           <!-- City -->
           <app-input
             formControlName="city"
-            [label]="'City'"
+            [label]="'City' | translate"
             type="text"
             icon="bi bi-building"
             [errorMessages]="{
@@ -71,7 +71,7 @@
 
       <!-- Payment -->
       <h2 class="section-title mt-4 border-top pt-4 mainTextColor text-start">
-        Payment Method
+        {{'Payment Method' | translate}}
       </h2>
 
       <!-- <div class="payment-method">
@@ -107,7 +107,7 @@
 
       />
 
-      {{ method.lookupNameEn }}
+      {{ isRTL()? method.lookupNameAr :method.lookupNameEn }}
 
     </label>
 
@@ -130,8 +130,8 @@
         (click)="placeOrder()"
         [disabled]="loading()"
       >
-        <span *ngIf="!loading()">Complete Order</span>
-        <span *ngIf="loading()">Processing...</span>
+        <span *ngIf="!loading()">{{'Complete Order' | translate}}</span>
+        <span *ngIf="loading()">{{'Processing...'| translate}}</span>
       </button>
     </form>
   </div>

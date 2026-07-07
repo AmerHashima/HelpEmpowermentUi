@@ -1736,5 +1736,18 @@
   "Enter coupon code": "أدخل رمز القسيمة",
   "Apply": "تطبيق",
     "Coupon Applied:": "تم تطبيق القسيمة:",
-    "Remove": "حذف"
+    "Remove": "حذف",
+      "Billing Information": "بيانات الفاتورة",
+      "Full Name": "الاسم الكامل",
+      "Email Addres": "البريد الإلكتروني",
+      "Phone Number": "رقم الهاتف",
+      "Address": "العنوان",
+      "City": "المدينة",
+      "Payment Method": "طريقة الدفع",
+      "Complete Order": "إتمام الطلب",
+      "Processing...": "جارٍ المعالجة...",
+      "Proceed to Checkout": "المتابعة إلى إتمام الشراء",
+        "Exam Simulation": "محاكاة الاختبار",
+        "Recorded Course": "الدورة المسجلة",
+        "Live Course": "الدورة المباشرة"
 }

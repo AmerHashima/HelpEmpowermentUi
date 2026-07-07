@@ -10,6 +10,7 @@ import { LookupService } from '../../../Services/lookup.service';
 import { LookupDetail } from '../../../models/lookup';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
+import { Shared } from '../../../shared/Services/shared/shared';
 
 @Component({
   selector: 'app-checkout',
@@ -19,12 +20,14 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class CheckoutComponent {
  private cartService=inject(CartService);
+ private shared=inject(Shared);
  private router =inject(Router);
  private route=inject(ActivatedRoute);
  private studentService=inject(StudentService);
  private checkoutService = inject(CheckoutService);
  private lookUpService=inject(LookupService);
  student = this.studentService.innerStudent;
+isRTL = this.shared.isRtl;
   // paymentMethods: LookupDetail[]=[];
  paymentMethods$=this.lookUpService.getPaymentMethods();
  paymentMethods: LookupDetail[] = [];

@@ -1750,5 +1750,18 @@
 "Enter coupon code":"Enter coupon code",
 "Apply":"Apply",
 "Coupon Applied:'":"Coupon Applied:",
-"Remove":"Remove"
+"Remove":"Remove",
+"Billing Information":"Billing Information",
+"Full Name":"Full Name",
+"Email Addres":"Email Addres",
+"Phone Number":"Phone Number",
+"Address":"Address",
+"City":"City",
+"Payment Method":"Payment Method",
+"Complete Order":"Complete Order",
+"Processing...":"Processing...",
+"Proceed to Checkout":"Proceed to Checkout",
+  "Exam Simulation": "Exam Simulation",
+  "Recorded Course": "Recorded Course",
+  "Live Course": "Live Course"
 }
