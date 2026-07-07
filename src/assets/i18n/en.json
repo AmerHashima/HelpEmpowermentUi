@@ -1743,4 +1743,12 @@
   "Attachment deleted successfully":"Attachment deleted successfully",
   "Invalid email format":"Invalid email format",
   "Your application has been submitted successfully. Uploading attachment...":"Your application has been submitted successfully. Uploading attachment..."
+,"Subtotal":"Subtotal",
+"Discount":"Discount",
+"Total":"Total",
+"Order Summary":"Order Summary",
+"Enter coupon code":"Enter coupon code",
+"Apply":"Apply",
+"Coupon Applied:'":"Coupon Applied:",
+"Remove":"Remove"
 }

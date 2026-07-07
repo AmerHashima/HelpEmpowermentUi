@@ -1728,4 +1728,13 @@
   "Attachment upload failed": "فشل في رفع المرفقات",
   "Your application has been submitted successfully. Uploading attachment...": "تم إرسال طلب التقديم بنجاح. جاري رفع المرفق...",
   "Attachment deleted successfully": "تم حذف المرفق بنجاح",
-  "Invalid email format": "يرجى إدخال بريد إلكتروني صالح"}
+  "Invalid email format": "يرجى إدخال بريد إلكتروني صالح",
+  "Subtotal": "المجموع الفرعي",
+  "Discount": "الخصم",
+  "Total": "الإجمالي",
+  "Order Summary": "ملخص الطلب",
+  "Enter coupon code": "أدخل رمز القسيمة",
+  "Apply": "تطبيق",
+    "Coupon Applied:": "تم تطبيق القسيمة:",
+    "Remove": "حذف"
+}

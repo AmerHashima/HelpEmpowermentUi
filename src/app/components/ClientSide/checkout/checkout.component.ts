@@ -9,10 +9,11 @@ import { CheckoutService } from '../../../Services/checkout-service.service';
 import { LookupService } from '../../../Services/lookup.service';
 import { LookupDetail } from '../../../models/lookup';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-checkout',
-  imports: [InputComponent,NgIf,ReactiveFormsModule,PhoneInputComponent],
+  imports: [InputComponent,NgIf,ReactiveFormsModule,PhoneInputComponent,TranslatePipe],
   templateUrl: './checkout.component.html',
   styleUrl: './checkout.component.scss'
 })

@@ -6,6 +6,7 @@ import { APICartItem } from '../../../models/cart';
 import { Router } from '@angular/router';
 import { StudentService } from '../../../Services/student-service.service';
 import { ToastingMessagesService } from '../../../shared/Services/ToastingMessages/toasting-messages.service';
+import { TranslatePipe } from '@ngx-translate/core';
 
 // type ReservationType =
 //   | 'examSimulationReserv'
@@ -18,7 +19,7 @@ import { ToastingMessagesService } from '../../../shared/Services/ToastingMessag
 
 @Component({
   selector: 'app-cart',
-  imports: [SiteButtonComponent],
+  imports: [SiteButtonComponent,TranslatePipe],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss'
 })

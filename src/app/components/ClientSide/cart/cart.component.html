@@ -109,7 +109,7 @@
 
         <!-- RIGHT: Summary -->
         <div class="cart-summary">
-          <h3 class="summary-title">Order Summary</h3>
+          <h3 class="summary-title">{{'Order Summary' | translate}}</h3>
 
           <!-- Coupon Section -->
           <div class="coupon-section">
@@ -125,11 +125,11 @@
                    <input
                   #couponInput
                   type="text"
-                  placeholder="Enter coupon code"
+                  placeholder="{{'Enter coupon code' | translate}}"
                   class="coupon-input form-control"
                 />
                 <app-site-button
-                  title="Apply"
+                  title="{{'Apply' | translate}}"
                   type="main"
                   [icon]="'bi bi-arrow'"
                   [disabled]="!couponInput.value"
@@ -139,12 +139,12 @@
             } @else {
               <div class="coupon-applied">
                 <span>
-                  Coupon Applied:
+                  {{'Coupon Applied:' | translate}}
                   <strong>{{ appliedCoupon() }}</strong>
                 </span>
 
                 <button class="remove-coupon" (click)="removeCoupon()">
-                  Remove
+                  {{'Remove\' | translate}}
                 </button>
               </div>
             }
@@ -152,20 +152,20 @@
 
           <!-- Price Breakdown -->
           <div class="summary-row">
-            <span>Subtotal</span>
-            <span>${{ subtotal().toFixed(2) }}</span>
+            <span>{{'Subtotal' | translate}}</span>
+            <span>{{ subtotal().toFixed(2) }} {{'AED' | translate}}</span>
           </div>
 
           @if (discountAmount() > 0) {
             <div class="summary-row discount">
-              <span>Discount</span>
-              <span>- ${{ discountAmount().toFixed(2) }}</span>
+              <span>{{'Discount' | translate}}</span>
+              <span>- {{ discountAmount().toFixed(2) }} {{'AED' | translate}}</span>
             </div>
           }
 
           <div class="summary-row total">
-            <span>Total</span>
-            <span>${{ total().toFixed(2) }}</span>
+            <span>{{'Total' | translate}}</span>
+            <span>{{ total().toFixed(2) }} {{'AED' | translate}}</span>
           </div>
 
           <app-site-button

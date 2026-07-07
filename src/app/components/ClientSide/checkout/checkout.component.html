@@ -138,26 +138,26 @@
 
   <!-- RIGHT SECTION -->
   <div class="checkout-summary">
-    <h2 class="mainTextColor section-title text-start">Order Summary</h2>
+    <h2 class="mainTextColor section-title text-start">{{'Order Summary' | translate}}</h2>
     @for (item of cartItems(); track item) {
       <div class="summary-item">
         <span class="fw-bold">{{ item.courseName }}</span>
-        <span class="fw-bold">${{ item.finalPrice }}</span>
+        <span class="fw-bold">{{ item.finalPrice }} {{'AED' | translate}}</span>
       </div>
     }
 
     <hr />
     <div class="d-flex align-items-center justify-content-between mb-2">
-      <span>SubTotal</span>
-      <span>${{ subTotal() }}</span>
+      <span>{{'Subtotal' | translate}}</span>
+      <span>{{ subTotal() }} {{'AED' | translate}}</span>
     </div>
     <div class="d-flex align-items-center justify-content-between mb-2">
-      <span>Discount</span>
-      <span>-${{ discontAmount() }}</span>
+      <span>{{'Discount' | translate}}</span>
+      <span>-{{ discontAmount() }} {{'AED' | translate}}</span>
     </div>
     <div class="summary-total">
-      <span class="mainTextColor">Total</span>
-      <span class="mainTextColor">${{ total() }}</span>
+      <span class="mainTextColor">{{'Total' | translate}}</span>
+      <span class="mainTextColor">{{ total() }} {{'AED' | translate}}</span>
     </div>
   </div>
 </div>
