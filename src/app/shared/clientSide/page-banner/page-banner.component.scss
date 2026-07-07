@@ -112,20 +112,21 @@ h2:hover{
 
 /* If the wrapper contains a video */
 
-.Homebanner .image-wrapper:has(video) {
+// .Homebanner .image-wrapper:has(video) {
 
-  height: auto;
+//   height: auto;
 
-  aspect-ratio: 18 / 10;
+//   aspect-ratio: 18 / 10;
 
-}
-
-.Homebanner .image-wrapper:has(img) {
-
-  height: 450px;
+// }
 
 
-}
+
+// .Homebanner .image-wrapper:has(img) {
+
+//   height: 450px;
+
+// }
 
 .Homebanner .Homebanner-video {
   width: 100%;
