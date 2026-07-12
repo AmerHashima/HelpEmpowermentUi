@@ -1,5 +1,6 @@
 // src\app\components\AdminPanel\certifications\certification\certification.component.ts
 import { Component, computed, effect, inject } from '@angular/core';
+import { confirmDelete } from '../../../../shared/utils/confirm-delete';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ButtonComponent } from '../../../../shared/button/button.component';
 import { CertificationService } from '../../../../Services/certification.service';
@@ -180,7 +181,8 @@ export class CertificationComponent {
       this.router.navigate(['/admin/certifications', cert.oid, 'edit']);
     }
   }
-  onDeleteCertification() {
+  async onDeleteCertification() {
+    if (!(await confirmDelete('Are you sure you want to delete this certification?'))) return;
     const cert = this.certification();
     if (cert && cert.oid) {
       this.certificationStore.deleteCertification(cert.oid);

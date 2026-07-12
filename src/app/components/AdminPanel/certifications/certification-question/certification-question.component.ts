@@ -2,6 +2,7 @@
 
 
 import { Component, DestroyRef, computed, effect, inject, signal } from '@angular/core';
+import { confirmDelete } from '../../../../shared/utils/confirm-delete';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Location, NgIf } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -426,21 +427,24 @@ export class CertificationQuestionComponent {
     this.dragAnswersArray.push(this.createDragAnswerGroup());
   }
 
-  removeAnswer(index: number, control: AbstractControl): void {
+  async removeAnswer(index: number, control: AbstractControl): Promise<void> {
+    if (!(await confirmDelete('Are you sure you want to delete this answer?'))) return;
     if (this.editMode && control.get('oid')?.value) {
       this.questionStore.deleteAnswer(control.get('oid')!.value as string);
     }
     this.answersArray.removeAt(index);
   }
 
-  removeDragQuestion(index: number, control: AbstractControl): void {
+  async removeDragQuestion(index: number, control: AbstractControl): Promise<void> {
+    if (!(await confirmDelete('Are you sure you want to delete this drag question?'))) return;
     if (this.editMode && control.get('oid')?.value) {
       this.questionStore.deleteAnswer(control.get('oid')!.value as string);
     }
     this.dragQuestionsArray.removeAt(index);
   }
 
-  removeDragAnswer(index: number, control: AbstractControl): void {
+  async removeDragAnswer(index: number, control: AbstractControl): Promise<void> {
+    if (!(await confirmDelete('Are you sure you want to delete this drag answer?'))) return;
     if (this.editMode && control.get('oid')?.value) {
       const linkedQuestion = this.question()?.answers.find(
         a => a.correctAnswerOid === control.get('oid')!.value
@@ -838,7 +842,8 @@ export class CertificationQuestionComponent {
     reader.readAsDataURL(file);
   }
 
-  onDeleteImage(imageInput: HTMLInputElement): void {
+  async onDeleteImage(imageInput: HTMLInputElement): Promise<void> {
+    if (!(await confirmDelete('Are you sure you want to delete this image?'))) return;
     if (this.editMode && this.questionId) {
       this.imageUploading.set(true);
       this.certificationService.deleteQuestionImage(this.questionId).subscribe({

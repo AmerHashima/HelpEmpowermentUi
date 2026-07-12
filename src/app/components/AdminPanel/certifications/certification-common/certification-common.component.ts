@@ -1,4 +1,5 @@
 // src\app\components\AdminPanel\certifications\certification-common\certification-common.component.ts
+import { confirmDelete } from '../../../../shared/utils/confirm-delete';
 import {
   Component,
   input,
@@ -103,8 +104,9 @@ export class CertificationCommonComponent<T extends { oid?: string }> {
     });
   }
 
-  delete(item: T) {
+  async delete(item: T) {
     if (!item.oid) return;
+    if (!(await confirmDelete('Are you sure you want to delete this item?'))) return;
 
     this.deleteFn()(item.oid).subscribe(() => {
       const signal = this.items();

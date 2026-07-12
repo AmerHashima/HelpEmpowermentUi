@@ -201,7 +201,10 @@
     "image": "Footer image",
     "copyright": "© 2026 Help Empowerment LLC. All rights reserved.",
     "refundPolicy": "Refund Policy",
-    "privacyNotice": "Privacy Notice",
+    "privacyNotice": "Privacy Policy",
+    "termsAndConditions": "Terms & Conditions",
+    "cookiePolicy": "Cookie Policy",
+    "acceptedPayments": "Accepted payment methods",
     "userAccountPolicy": "User Account Policy",
     "technicalSupportPolic": "Technical Support Policy"
   },
@@ -1557,6 +1560,73 @@
       }
     ],
     "lastUpdate": "Last Updated: 01 Feb 2026"
+  },
+  "legalPrivacy": {
+    "title": "Privacy Policy",
+    "sections": [
+      {
+        "content": [
+          "At Help Empowerment, we take your data privacy seriously. We are committed to the highest standards of data protection across all markets where we operate. Your use of our website and services involves providing certain personal data necessary to deliver an exceptional and secure experience. We are dedicated to protecting your privacy and encourage you to read this notice carefully.",
+          "All credit/debit cards’ details and personally identifiable information will NOT be stored, sold, shared, rented or leased to any third parties.",
+          "www.helpempowerment.com will not pass any debit/credit card details to third parties.",
+          "www.helpempowerment.com takes appropriate steps to ensure data privacy and security including through various hardware and software methodologies. However, www.helpempowerment.com cannot guarantee the security of any information that is disclosed online.",
+          "www.helpempowerment.com is not responsible for the privacy policies of websites to which it links. If you provide any information to such third parties different rules regarding the collection and use of your personal information may apply. You should contact these entities directly if you have any questions about their use of the information that they collect.",
+          "Our platform enables you to purchase training courses, access exam resources, and subscribe to our newsletter. This notice outlines our practices to help you make informed decisions about your data."
+        ]
+      },
+      {
+        "title": "Data Protection",
+        "content": ["We implement strict technical and administrative measures to protect your data, including:"],
+        "list": ["Encryption of sensitive data", "Protection against unauthorized access", "Regular data backups", "Staff training on information security"]
+      },
+      {
+        "title": "Your Rights",
+        "content": ["As the data owner, you have the right to:"],
+        "list": ["Access your personal data held by us", "Correct inaccurate data", "Request deletion of your data (where permitted by law)", "Withdraw consent for data processing", "Transfer your data to another entity"]
+      },
+      {
+        "title": "Data Retention",
+        "content": ["We retain your data only for as long as necessary to fulfill the specified purposes, or as required by local laws in the United Arab Emirates and other countries where we operate."]
+      },
+      {
+        "title": "Online Community",
+        "content": ["When participating in our online community:"],
+        "list": ["Use your real name and valid email address", "Adhere to professional dialogue etiquette", "Published information may be visible to the public"]
+      },
+      {
+        "title": "Updates",
+        "content": ["We may update this notice to reflect changes in our practices or legal requirements. Significant changes will be communicated via our website or email."]
+      },
+      {
+        "title": "Contact Us",
+        "content": ["For any inquiries regarding your privacy or data, please contact us at:", "Help Empowerment", "Email: Support@helpempowerment.com", "Website: www.helpempowerment.com"]
+      }
+    ]
+  },
+  "legalRefund": {
+    "title": "Refund Policy",
+    "intro": ["Once the payment is made, the confirmation notice will be sent to you via email within 24 hours of receipt.", "We are committed to fair and transparent service, and we encourage you to review free samples or demos before purchasing."],
+    "sections": [
+      {"title": "Live & Interactive Courses", "content": ["A full refund is available if you contact us before the start of the second session. Once the second session begins, refunds cannot be issued as your seat and instructor resources are reserved.", "Refunds will be made back to the payment solution used initially by you. It needs 45 days for the refund transfer to be completed."]},
+      {"title": "Digital Products (Exam Simulator, Recorded Courses, Bundles)", "content": ["No refunds are available for digital products (including exam simulators, recorded courses, and bundles) once access is granted, as they are available for immediate use."]},
+      {"title": "Non-Refundable Items", "list": ["Activated exam vouchers", "Downloaded materials (e.g., workbooks, templates)", "Custom training programs developed specifically for your organization", "Membership or subscription fees after the billing period has started"]},
+      {"title": "How to Request a Refund", "steps": ["Email support@helpempowerment.com with your full name and order/invoice number, course/product name and purchase date, and a brief reason for your request.", "You will receive an acknowledgment and a case number within 24 business hours.", "In some cases, we may contact you to discuss alternatives or better understand your needs."]},
+      {"title": "Processing Timeline", "list": ["Approved refunds are processed within 10–14 business days.", "Refunds are issued to the original payment method.", "International refunds may take additional time due to banking procedures."]}
+    ],
+    "lastUpdate": ""
+  },
+  "terms": {
+    "title": "Terms and Conditions",
+    "sections": [
+      {"content": ["Welcome to www.helpempowerment.com. These Terms and Conditions govern your use of our Site and the purchase of any services or products offered by Help Empowerment LLC. By using this Site, you agree to be bound by these Terms.", "Help Empowerment LLC maintains the www.helpempowerment.com Website (Site).", "United Arab Emirates is our country of domicile and the governing law is the local law.", "Any purchase, dispute or claim arising out of or in connection with this website shall be governed and construed in accordance with the laws of UAE.", "Visa or MasterCard debit and credit cards in AED will be accepted for payment.", "The displayed price and currency at the checkout page will be the same price and currency printed on the Transaction Receipt, and the amount charged to the card will be shown in your card currency.", "We will not trade with or provide any services to OFAC and sanctioned countries.", "Customers using the website who are minors or under the age of 18 shall not register as users of the website and shall not transact on or use the website.", "The cardholder must retain a copy of transaction records and www.helpempowerment.com policies and rules.", "The user is responsible for maintaining the confidentiality of their account."]}
+    ]
+  },
+  "cookies": {
+    "title": "Cookie Policy",
+    "sections": [
+      {"content": ["Welcome to Help Empowerment LLC. We use cookies on our website, www.helpempowerment.com, to enhance your experience.", "Cookies are small text files that are stored on your device when you visit our website. They help us make the site function efficiently and provide a smooth browsing experience.", "Cookies are used to ensure the proper functioning of the website (e.g., to remember your browsing session), to improve performance by analyzing how visitors use the site, to personalize the experience based on your preferences (e.g., language and settings), and to support security and protect against fraudulent activity.", "By continuing to browse the website, you consent to our use of cookies in accordance with this policy.", "You can control cookies through your browser settings.", "We may update this policy from time to time to reflect changes in law, technology, or our operations.", "Any updates will be posted on this page with a new Last Updated date.", "We encourage you to review this policy periodically."]},
+      {"title": "Contact Us", "content": ["For inquiries or questions about our cookie policy, please contact us:", "Empowerment Support", "Email: support@helpempowerment.com", "Website: www.helpempowerment.com"]}
+    ]
   },
   "support": {
     "title": "Technical Support Policy",

@@ -1,5 +1,6 @@
 // src\app\components\AdminPanel\exam-details\exam-details.component.ts
 import { Component, computed, effect, Inject, inject, PLATFORM_ID, signal } from '@angular/core';
+import { confirmDelete } from '../../../shared/utils/confirm-delete';
 import { ExamsStore } from '../../../AdminPanelStores/ExamsStore/exam.store';
 import { CertificationService } from '../../../Services/certification.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -118,11 +119,13 @@ export class ExamDetailsComponent {
     }
   }
 
-  onDeleteQuestion(question: any) {
+  async onDeleteQuestion(question: any) {
+    if (!(await confirmDelete('Are you sure you want to delete this question?'))) return;
     this.questionStore.deleteQuestion(question.oid);
   }
 
-  onDeleteExam() {
+  async onDeleteExam() {
+    if (!(await confirmDelete('Are you sure you want to delete this exam?'))) return;
     const exam = this.exam();
     if (exam && exam.oid) {
       this.examsStore.deleteExam(exam.oid);

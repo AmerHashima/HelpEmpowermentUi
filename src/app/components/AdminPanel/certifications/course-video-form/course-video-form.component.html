@@ -111,6 +111,55 @@
         @if (videoUploadError()) {
         <p class="text-danger small mb-0">{{ videoUploadError() }}</p>
         }
+
+        <div class="border-top pt-3 d-flex flex-column gap-2">
+            <div>
+                <h6 class="mb-1 fw-bold">Use Video From Another Course</h6>
+                <p class="small text-muted mb-0">Reuse an existing stored video file without uploading or saving it twice.</p>
+            </div>
+
+            <div class="row g-2 align-items-end">
+                <div class="col-md-4">
+                    <label class="form-label">Source Course</label>
+                    <select class="form-select" [value]="selectedCloneCourseId()"
+                        [disabled]="cloneSaving()" (change)="onCloneCourseSelected($event)">
+                        <option value="">Select course</option>
+                        @for (course of cloneCourses(); track course.oid) {
+                        <option [value]="course.oid">{{ course.courseName }}</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="col-md-5">
+                    <label class="form-label">Source Video</label>
+                    <select class="form-select" [value]="selectedCloneVideoId()"
+                        [disabled]="!selectedCloneCourseId() || cloneLoading() || cloneSaving()"
+                        (change)="onCloneVideoSelected($event)">
+                        <option value="">{{ cloneLoading() ? 'Loading videos...' : 'Select video' }}</option>
+                        @for (video of cloneVideos(); track video.oid) {
+                        <option [value]="video.oid">{{ video.nameEn || video.nameAr || video.videoUrl }}</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <button class="btn btn-outline-success w-100" type="button" (click)="useExistingVideo()"
+                        [disabled]="!selectedCloneVideoId() || cloneSaving()">
+                        {{ cloneSaving() ? 'Updating...' : 'Use This Video' }}
+                    </button>
+                </div>
+            </div>
+
+            @if (selectedCloneCourseId() && !cloneLoading() && cloneVideos().length === 0) {
+            <p class="small text-muted mb-0">No uploaded videos were found in this course.</p>
+            }
+            @if (cloneError()) {
+            <p class="small text-danger mb-0">{{ cloneError() }}</p>
+            }
+            @if (cloneSuccess()) {
+            <p class="small text-success mb-0">{{ cloneSuccess() }}</p>
+            }
+        </div>
     </div>
 
     <div class="card border-0 shadow-sm p-3 d-flex flex-column gap-3">

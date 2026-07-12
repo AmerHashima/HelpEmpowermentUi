@@ -1,4 +1,5 @@
 import { Component, effect, inject, signal } from '@angular/core';
+import { confirmDelete } from '../../../shared/utils/confirm-delete';
 import { ArticleCardComponent } from '../../../shared/clientSide/article-card/article-card.component';
 import { ArticleFormComponent } from './article-form/article-form.component';
 import { ApiArticle, ArticleService } from '../../../Services/article.service';
@@ -105,7 +106,8 @@ export class ArticlesComponent {
 
 
 
-  removeArticle(id: string): void {
+  async removeArticle(id: string): Promise<void> {
+    if (!(await confirmDelete('Are you sure you want to delete this article?'))) return;
     this.loading.set(true);
     this.errorMessage.set('');
 

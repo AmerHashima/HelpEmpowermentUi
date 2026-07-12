@@ -1,4 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
+import { confirmDelete } from '../../../shared/utils/confirm-delete';
 import { ReusableMaterialTableComponent } from '../../../shared/angular-material-reusable-table/angular-material-reusable-table.component';
 import { AnnouncementFormComponent } from './announcement-form/announcement-form.component';
 import { BreadcrumbService } from '../../../Services/breadcrumb.service';
@@ -115,7 +116,8 @@ export class AnnouncementComponent {
     });
   }
 
-  handleDelete(row: any) {
+  async handleDelete(row: any) {
+    if (!(await confirmDelete('Are you sure you want to delete this announcement?'))) return;
     this.lookupService.deleteLookUpDetail(row.oid).subscribe({
       next: () => this.announcement$ = this.lookupService.getAnnouncements()
     })

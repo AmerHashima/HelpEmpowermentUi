@@ -1,4 +1,5 @@
 import { Component, inject, input } from '@angular/core';
+import { confirmDelete } from '../../../../shared/utils/confirm-delete';
 import { CommonModule } from '@angular/common';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Article, ArticleService } from '../../../../Services/article.service';
@@ -62,7 +63,8 @@ export class ArticleFormComponent {
   }
 
   // ================= REMOVE =================
-  removeSection(index: number) {
+  async removeSection(index: number) {
+    if (!(await confirmDelete('Are you sure you want to delete this section?'))) return;
     this.sections.removeAt(index);
   }
 
@@ -73,7 +75,8 @@ export class ArticleFormComponent {
     section.get(field).get(lang).setValue(arr);
   }
 
-  removeItem(section: any, field: 'content' | 'list', lang: 'en' | 'ar', index: number) {
+  async removeItem(section: any, field: 'content' | 'list', lang: 'en' | 'ar', index: number) {
+    if (!(await confirmDelete('Are you sure you want to delete this item?'))) return;
     const arr = section.get(field).get(lang).value;
     arr.splice(index, 1);
     section.get(field).get(lang).setValue(arr);

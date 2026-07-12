@@ -1,8 +1,12 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
+import { confirmDelete } from '../../../../shared/utils/confirm-delete';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseVideosService } from '../../../../Services/course-videos.service';
+import { CertificationService } from '../../../../Services/certification.service';
+import { APICertification } from '../../../../models/certification';
+import { RequestBody } from '../../../../models/rquest';
 import {
     CourseVideo,
     CourseVideoAttachment,
@@ -22,6 +26,7 @@ export class CourseVideoFormComponent {
     private route = inject(ActivatedRoute);
     private router = inject(Router);
     private courseVideosService = inject(CourseVideosService);
+    private certificationService = inject(CertificationService);
 
     courseId = signal<string>('');
     videoId = signal<string>('');
@@ -34,6 +39,14 @@ export class CourseVideoFormComponent {
     attachmentUploading = signal<boolean>(false);
     attachmentUploadProgress = signal<number>(0);
     attachmentUploadError = signal<string>('');
+    cloneCourses = signal<APICertification[]>([]);
+    cloneVideos = signal<CourseVideo[]>([]);
+    selectedCloneCourseId = signal<string>('');
+    selectedCloneVideoId = signal<string>('');
+    cloneLoading = signal<boolean>(false);
+    cloneSaving = signal<boolean>(false);
+    cloneError = signal<string>('');
+    cloneSuccess = signal<string>('');
 
     selectedVideoFile: File | null = null;
     selectedAttachmentFile: File | null = null;
@@ -69,6 +82,96 @@ export class CourseVideoFormComponent {
                 this.loadVideo(videoId);
                 this.loadAttachments(videoId);
             }
+
+            this.loadCloneCourses();
+        });
+    }
+
+    private loadCloneCourses(): void {
+        const request: RequestBody = {
+            filters: [],
+            sort: [{ sortBy: 'orderNo', sortDirection: 'DESC' }],
+            pagination: { getAll: true, pageNumber: 0, pageSize: 10 },
+            columns: [],
+        };
+
+        this.certificationService.search(request).subscribe({
+            next: ({ certifications }) => {
+                this.cloneCourses.set(
+                    (certifications ?? []).filter((course) => course.oid !== this.courseId())
+                );
+            },
+            error: () => this.cloneError.set('Unable to load courses.'),
+        });
+    }
+
+    onCloneCourseSelected(event: Event): void {
+        const courseId = (event.target as HTMLSelectElement).value;
+        this.selectedCloneCourseId.set(courseId);
+        this.selectedCloneVideoId.set('');
+        this.cloneVideos.set([]);
+        this.cloneError.set('');
+        this.cloneSuccess.set('');
+
+        if (!courseId) return;
+
+        this.cloneLoading.set(true);
+        this.courseVideosService.getAllVideos(courseId).subscribe({
+            next: (videos) => {
+                this.cloneVideos.set(
+                    (videos ?? []).filter((video) => video.oid !== this.videoId() && !!video.videoUrl)
+                );
+                this.cloneLoading.set(false);
+            },
+            error: () => {
+                this.cloneLoading.set(false);
+                this.cloneError.set('Unable to load videos from the selected course.');
+            },
+        });
+    }
+
+    onCloneVideoSelected(event: Event): void {
+        this.selectedCloneVideoId.set((event.target as HTMLSelectElement).value);
+        this.cloneError.set('');
+        this.cloneSuccess.set('');
+    }
+
+    useExistingVideo(): void {
+        const sourceVideo = this.cloneVideos().find((video) => video.oid === this.selectedCloneVideoId());
+        if (!sourceVideo?.videoUrl || !this.videoId()) {
+            this.cloneError.set('Select a video with an uploaded file.');
+            return;
+        }
+
+        const value = this.form.getRawValue();
+        const payload: UpdateCourseVideoDto = {
+            oid: this.videoId(),
+            courseOid: this.courseId(),
+            nameEn: value.nameEn ?? null,
+            nameAr: value.nameAr ?? null,
+            videoUrl: sourceVideo.videoUrl,
+            descriptionEn: value.descriptionEn ?? null,
+            descriptionAr: value.descriptionAr ?? null,
+            durationSeconds: Number(value.durationSeconds ?? 0),
+            orderNo: Number(value.orderNo ?? 0),
+            videoTypeLookupId: value.videoTypeLookupId || null,
+            isPreview: !!value.isPreview,
+            isActive: !!value.isActive,
+        };
+
+        this.cloneSaving.set(true);
+        this.cloneError.set('');
+        this.cloneSuccess.set('');
+        this.courseVideosService.updateVideo(payload).subscribe({
+            next: (updated) => {
+                this.patchVideo(updated);
+                this.cloneSaving.set(false);
+                this.cloneSuccess.set('The current video now uses the selected stored file.');
+            },
+            error: () => {
+                this.cloneSaving.set(false);
+                this.cloneError.set('Unable to reuse the selected video file.');
+            },
         });
     }
 
@@ -240,7 +343,8 @@ export class CourseVideoFormComponent {
             });
     }
 
-    onDeleteAttachment(attachment: CourseVideoAttachment): void {
+    async onDeleteAttachment(attachment: CourseVideoAttachment): Promise<void> {
+        if (!(await confirmDelete('Are you sure you want to delete this attachment?'))) return;
         if (!attachment?.oid) {
             return;
         }

@@ -1,26 +1,22 @@
-import { NgFor, NgIf } from '@angular/common';
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-refund-policy',
-  imports: [TranslatePipe,NgFor,NgIf],
+  imports: [TranslatePipe, NgFor, NgIf, AsyncPipe],
   templateUrl: './refund-policy.component.html',
   styleUrl: './refund-policy.component.scss'
 })
 export class RefundPolicyComponent {
-  sections: any[] = [];
-  introList: string[] = [];
+  sections!: Observable<any[]>;
+  introList!: Observable<string[]>;
 
   constructor(private translate: TranslateService) { }
 
   ngOnInit() {
-    this.translate.get('refund.sections').subscribe(res => {
-      this.sections = res;
-    });
-
-    this.translate.get('refund.intro').subscribe(res => {
-      this.introList = res;
-    });
+    this.sections = this.translate.stream('legalRefund.sections');
+    this.introList = this.translate.stream('legalRefund.intro');
   }
 }

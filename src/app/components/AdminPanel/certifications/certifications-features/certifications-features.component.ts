@@ -1,5 +1,6 @@
 // src\app\components\AdminPanel\certifications\certifications-features\certifications-features.component.ts
 import { Component, computed, effect, ElementRef, Inject, inject, PLATFORM_ID, signal, ViewChild } from '@angular/core';
+import { confirmDelete } from '../../../../shared/utils/confirm-delete';
 import { ButtonComponent } from '../../../../shared/button/button.component';
 import { InputComponent } from '../../../../shared/input/input.component';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -169,7 +170,8 @@ export class CertificationsFeaturesComponent {
     this.openModal();
   }
 
-  deleteFeature(feature:any){
+  async deleteFeature(feature:any){
+    if (!(await confirmDelete('Are you sure you want to delete this feature?'))) return;
     const featureId=feature.oid;
     this.certificationService.deleteCourseFeature(featureId).subscribe({
       next: () => {

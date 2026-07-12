@@ -1,5 +1,6 @@
 // src\app\components\AdminPanel\certifications\certification-contents\certification-contents.component.ts
 import { Component, computed, effect, ElementRef, Inject, inject, PLATFORM_ID, signal, ViewChild } from '@angular/core';
+import { confirmDelete } from '../../../../shared/utils/confirm-delete';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CertificationsStore } from '../../../../AdminPanelStores/CertificationStore/certification.store';
 import { ActivatedRoute } from '@angular/router';
@@ -95,7 +96,8 @@ export class CertificationContentsComponent {
     this.openModal();
   }
 
-  deleteContent(content: any) {
+  async deleteContent(content: any) {
+    if (!(await confirmDelete('Are you sure you want to delete this content?'))) return;
     const id = content.oid;
     this.certificationService.deleteCourseFeature(content).subscribe({
       next: () => {

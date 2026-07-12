@@ -1,4 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
+import { confirmDelete } from '../../../../shared/utils/confirm-delete';
 import { WebinarFormComponent } from '../webinar-form/webinar-form.component';
 import { ReusableMaterialTableComponent } from '../../../../shared/angular-material-reusable-table/angular-material-reusable-table.component';
 import { PageEvent } from '@angular/material/paginator';
@@ -117,7 +118,8 @@ export class WebinarsComponent {
     });
   }
 
-  handleDelete(row: any) {
+  async handleDelete(row: any) {
+    if (!(await confirmDelete('Are you sure you want to delete this webinar?'))) return;
     this.webinarService.deleteWebinar(row.oid).subscribe({
       next: () => this.webinarService.reloadWebiinars(this.pageNumber())
 

@@ -1,4 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
+import { confirmDelete } from '../../../../shared/utils/confirm-delete';
 import { BreadcrumbService } from '../../../../Services/breadcrumb.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LiveCourseService } from '../../../../Services/live-course.service';
@@ -125,7 +126,8 @@ export class LiveCoursesComponent {
     });
   }
 
-  handleDelete(row: any) {
+  async handleDelete(row: any) {
+    if (!(await confirmDelete('Are you sure you want to delete this live course?'))) return;
     this.liveCourseService.deleteLiveCourse(row.oid).subscribe({
       next: () => this.liveCourseService.reloadLiveCourses(this.pageNumber())
     })

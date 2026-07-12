@@ -1,4 +1,5 @@
 import { Component, inject, signal, computed } from '@angular/core';
+import { confirmDelete } from '../../../shared/utils/confirm-delete';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ContactUsService } from '../../../Services/contact-us.service';
@@ -164,7 +165,8 @@ export class AdminContactUsComponent {
     this.service.updateStatus(id, body).subscribe(() => this.loadContacts());
   }
 
-  deleteContact(id: string,type:string) {
+  async deleteContact(id: string,type:string) {
+    if (!(await confirmDelete('Are you sure you want to delete this contact?'))) return;
     this.service.deleteContact(id).subscribe(() => {
       this.contacts.update(list => list.filter(c => c.oid !== id));
       if (this.selectedContact()?.oid === id) this.selectedContact.set(null);
@@ -194,7 +196,8 @@ export class AdminContactUsComponent {
     }
   }
 
-  deleteAttachment(id: string) {
+  async deleteAttachment(id: string) {
+    if (!(await confirmDelete('Are you sure you want to delete this attachment?'))) return;
 
     this.service.deleteAttachment(id).subscribe({
 

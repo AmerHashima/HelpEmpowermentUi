@@ -2,15 +2,15 @@
 
   <div class="policy-card">
 
-    <!-- <h2>{{ 'refund.title' | translate }}</h2> -->
+    <h2>{{ 'legalRefund.title' | translate }}</h2>
 
     <!-- Intro -->
-    <p class="w-100" *ngFor="let intro of introList">
+    <p class="w-100" *ngFor="let intro of (introList | async)">
       {{ intro }}
     </p>
 
     <!-- Sections -->
-    <div class="section" *ngFor="let section of sections">
+    <div class="section" *ngFor="let section of (sections | async)">
 
       <h5>{{ section.title }}</h5>
 
@@ -32,10 +32,6 @@
       </ol>
 
     </div>
-
-    <p class="footer w-100">
-      {{ 'refund.lastUpdate' | translate }}
-    </p>
 
   </div>
 </div>

@@ -15,14 +15,32 @@
 /* ================= FOOTER MEDIA ================= */
 .footer-video {
   display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
+  gap: 2.5rem;
+  width: 100%;
 }
 
-.footer-video img {
+.footer-logo {
   max-width: 20%;
   height: auto;
   border-radius: 12px;
+}
+
+.payment-logos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-shrink: 0;
+}
+
+.payment-logo {
+  width: 160px;
+  height: 100px;
+  object-fit: contain;
+  border-radius: 6px;
 }
 
 /* ================= CHECKER DIVIDER ================= */
@@ -65,8 +83,18 @@ a{
 
 /* ================= RESPONSIVE ================= */
 @media (max-width: 768px) {
-  .footer-video img {
+  .footer-video {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .footer-logo {
     max-width: 40%;
+  }
+
+  .payment-logo {
+    width: 125px;
+    height: 78px;
   }
 
   .checker-mover {
@@ -75,9 +103,22 @@ a{
   }
 }
 
+.footer-content p:last-child {
+  flex-wrap: wrap;
+}
+
 @media (max-width: 480px) {
-  .footer-video img {
+  .footer-logo {
     max-width: 55%;
+  }
+
+  .payment-logos {
+    gap: 0.5rem;
+  }
+
+  .payment-logo {
+    width: 100px;
+    height: 64px;
   }
 
   .checker-mover {

@@ -1,5 +1,6 @@
 // src\app\components\AdminPanel\students\students.component.ts
 import { CommonModule } from '@angular/common';
+import { confirmDelete } from '../../../shared/utils/confirm-delete';
 import { Component, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { APIStudent } from '../../../models/student';
@@ -102,7 +103,8 @@ export class StudentsComponent {
         // return ['pmp', 'Imp'];
     }
 
-    removeStudent(id: string): void {
+    async removeStudent(id: string): Promise<void> {
+        if (!(await confirmDelete('Are you sure you want to delete this student?'))) return;
         this.loading.set(true);
         this.errorMessage.set('');
 

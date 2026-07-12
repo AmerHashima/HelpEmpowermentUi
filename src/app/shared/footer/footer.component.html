@@ -1,8 +1,26 @@
 <footer
   class=" footer-parent d-flex flex-column align-content-center justify-content-center gap-2"
 >
-  <div class="footer-video d-flex align-items-center justify-content-center">
-    <img [src]="footerImage()" [alt]="'footer.image' | translate" />
+  <div class="footer-video">
+    <img class="footer-logo" [src]="footerImage()" [alt]="'footer.image' | translate" />
+
+    <div class="payment-logos" role="group" [attr.aria-label]="'footer.acceptedPayments' | translate">
+      <img
+        class="payment-logo"
+        src="assets/images/footer/mastercard.svg"
+        alt="Mastercard"
+      />
+      <img
+        class="payment-logo"
+        src="assets/images/footer/visa.svg"
+        alt="Visa"
+      />
+      <img
+        class="payment-logo"
+        src="assets/images/footer/american-express.svg"
+        alt="American Express"
+      />
+    </div>
   </div>
 
   <div class="checker-mover"></div>
@@ -23,6 +41,16 @@
         <span>
           <a [routerLink]="['/', currentLang(), 'privacy-notice']">
             {{ "footer.privacyNotice" | translate }}
+          </a>
+        </span>
+        <span>
+          <a [routerLink]="['/', currentLang(), 'terms-and-conditions']">
+            {{ "footer.termsAndConditions" | translate }}
+          </a>
+        </span>
+        <span>
+          <a [routerLink]="['/', currentLang(), 'cookie-policy']">
+            {{ "footer.cookiePolicy" | translate }}
           </a>
         </span>
         <span>
