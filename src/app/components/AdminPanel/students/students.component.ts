@@ -11,10 +11,9 @@ import { StudentFormPopupComponent } from './student-form-popup/student-form-pop
 import { ButtonComponent } from '../../../shared/button/button.component';
 import { Router } from '@angular/router';
 import * as XLSX from 'xlsx';
-import { SiteButtonComponent } from '../../../shared/clientSide/site-button/site-button.component';
 @Component({
     selector: 'app-students',
-    imports: [CommonModule, FormsModule, StudentFormPopupComponent, ButtonComponent,SiteButtonComponent],
+    imports: [CommonModule, FormsModule, StudentFormPopupComponent, ButtonComponent],
     templateUrl: './students.component.html',
     styleUrl: './students.component.scss'
 })

@@ -1,10 +1,10 @@
 import { NgFor, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-technical-support-policy',
-  imports: [NgFor,NgIf],
+  imports: [NgFor, NgIf, TranslatePipe],
   templateUrl: './technical-support-policy.component.html',
   styleUrl: './technical-support-policy.component.scss'
 })

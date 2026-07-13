@@ -5,7 +5,7 @@ import { PhoneInputComponent } from '../../../../shared/phone/phone.component';
 import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/site-button.component';
 import { InputComponent } from '../../../../shared/input/input.component';
 import { TranslatePipe } from '@ngx-translate/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { Shared } from '../../../../shared/Services/shared/shared';
 import { AuthService } from '../../../../Services/auth.service';
 import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
@@ -18,7 +18,7 @@ import { AsyncPipe } from '@angular/common';
   standalone: true,
 
   imports: [SiteButtonComponent, InputComponent,AsyncPipe,
-    TranslatePipe, RouterLink, FormsModule, PhoneInputComponent,SpkNgSelectComponent
+    TranslatePipe, FormsModule, PhoneInputComponent,SpkNgSelectComponent
   ],
    templateUrl: './moderator-form.component.html',
   styleUrl: './moderator-form.component.scss'

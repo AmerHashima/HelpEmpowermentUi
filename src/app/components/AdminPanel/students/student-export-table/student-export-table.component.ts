@@ -441,7 +441,7 @@ export class StudentExportTableComponent {
   students = signal<APIStudent[]>([]);
 
   studentFeatures =
-    signal<Record<string, APIStudentCourse[]>>({});
+    signal<Partial<Record<string, APIStudentCourse[]>>>({});
 
   studentReservations =
     signal<Record<string, APICourseReservation[]>>({});

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { InputComponent } from '../../../shared/input/input.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { SiteButtonComponent } from '../../../shared/clientSide/site-button/site-button.component';
@@ -13,12 +13,10 @@ import { ToastingMessagesService } from '../../../shared/Services/ToastingMessag
   selector: 'app-admin-login',
   imports: [
     CommonModule,
-    RouterLink,
     FormsModule,
     InputComponent,
     TranslatePipe,
-    SiteButtonComponent,
-    RouterLink
+    SiteButtonComponent
   ],
   templateUrl: './admin-login.component.html',
   styleUrl: './admin-login.component.scss'
