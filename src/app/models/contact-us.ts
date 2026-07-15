@@ -31,9 +31,10 @@ export interface APIContact {
   statusLookupId: string,
   statusName: string,
   response: string,
-  respondedAt: string,
+  respondedAt: string | null,
   ticketNumber: string,
-  isRead: true,
+  isRead: boolean,
+  readAt: string | null,
   createdAt: string
 }
 

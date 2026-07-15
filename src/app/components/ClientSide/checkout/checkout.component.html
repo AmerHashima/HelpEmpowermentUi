@@ -124,6 +124,9 @@
       </div> -->
 
       <!-- Button -->
+      @if (paymentError()) {
+        <div class="alert alert-danger" role="alert" aria-live="assertive">{{ paymentError() }}</div>
+      }
       <button
         type="button"
         class="place-order-btn"
@@ -131,7 +134,7 @@
         [disabled]="loading()"
       >
         <span *ngIf="!loading()">{{'Complete Order' | translate}}</span>
-        <span *ngIf="loading()">{{'Processing...'| translate}}</span>
+        <span *ngIf="loading()">{{'Preparing secure payment...'| translate}}</span>
       </button>
     </form>
   </div>

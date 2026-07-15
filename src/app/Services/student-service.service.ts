@@ -8,6 +8,7 @@ import { RequestBody } from '../models/rquest';
 import { APIStudentCourse, StudentCourse, updateStudentCourse } from '../models/student-course';
 import { AuthService } from './auth.service';
 import { Shared } from '../shared/Services/shared/shared';
+import { PaginatedStudentExportResponse, StudentExportSearchRequest } from '../models/student-export-report';
 
 @Injectable({
   providedIn: 'root'
@@ -83,6 +84,15 @@ export class StudentService {
           };
         })
       );
+  }
+
+  searchStudentExportReport(
+    request: StudentExportSearchRequest
+  ): Observable<PaginatedStudentExportResponse> {
+    return this.apiService.query<PaginatedStudentExportResponse>(
+      'Students/export-report/search',
+      request
+    );
   }
 
   // getStudents(): Observable<APIStudent[]> {

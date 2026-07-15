@@ -1,449 +1,104 @@
 <div class="card">
   <div class="card-header d-flex justify-content-between align-items-center">
     <h5 class="mb-0">Users Feature Reservation</h5>
-
-    <button
-      class="btn btn-success"
-      (click)="exportSelectedStudents()"
-      [disabled]="selectedStudents().size === 0"
-    >
+    <button class="btn btn-success" type="button" (click)="exportSelectedStudents()" [disabled]="selectedStudents().size === 0">
       Export Selected
     </button>
   </div>
 
-  <!-- Filters -->
   <div class="row p-3 g-2">
-
+    <div class="col-md-3"><input class="form-control" placeholder="Search student By Name" [(ngModel)]="searchText" (keyup.enter)="onSearch()" /></div>
+    <div class="col-md-3"><input class="form-control" placeholder="Search student By Mail" [(ngModel)]="mail" (keyup.enter)="onSearch()" /></div>
     <div class="col-md-3">
-      <input
-        class="form-control"
-        placeholder="Search student By Name"
-        [(ngModel)]="searchText"
-      />
-    </div>
-
-
-    <div class="col-md-3">
-      <input
-        class="form-control"
-        placeholder="Search student By Mail"
-        [(ngModel)]="mail"
-      />
-    </div>
-
-
-
-    <div class="col-md-3">
-      <select
-        class="form-select"
-        [(ngModel)]="selectedStatus"
-      >
-        <option value="">All Statuses</option>
-        <option value="active">Active</option>
-        <option value="inactive">Inactive</option>
+      <select class="form-select" [(ngModel)]="selectedStatus">
+        <option value="">All Statuses</option><option value="active">Active</option><option value="inactive">Inactive</option>
       </select>
     </div>
-
-    <div class="col-md-3">
-      <button
-        class="btn btn-primary w-100"
-        (click)="onSearch()"
-      >
-        Search
-      </button>
+    <div class="col-md-3"><button class="btn btn-primary w-100" type="button" (click)="onSearch()">Search</button></div>
+    <div class="col-md-3 mt-3">
+      <label class="form-label small fw-semibold">Sort By</label>
+      <select class="form-select" [(ngModel)]="sortBy">
+        <option value="createdAt">Created date</option><option value="nameEn">Name</option><option value="email">Email</option><option value="isActive">Status</option>
+      </select>
     </div>
-
+    <div class="col-md-3 mt-3">
+      <label class="form-label small fw-semibold">Direction</label>
+      <select class="form-select" [(ngModel)]="sortDirection"><option value="desc">Desc</option><option value="asc">Asc</option></select>
+    </div>
   </div>
 
-  <!-- <div class="table-responsive">
-
-    <table class="table table-bordered table-hover align-middle text-center">
-
-      <thead class="table-light">
-
-        <tr>
-
-          <th width="50">
-            <input
-              type="checkbox"
-              (change)="toggleAll($event)"
-            />
-          </th>
-
-          <th>Name</th>
-          <th>Email</th>
-          <th>Mobile</th>
-          <th>Username</th>
-          <th>Status</th>
-          <th>Promo</th>
-          <th>Course</th>
-          <th>Service</th>
-          <th>Activated</th>
-          <th>Expires</th>
-
-        </tr>
-
-      </thead>
-
-      <tbody>
-
-        @for (student of students(); track student.oid) {
-
-          @for (course of studentFeatures()[student.oid]; track course.oid) {
-
-            @for (
-              reservation of getReservations(course.oid);
-              track reservation.oid
-            ) {
-
-              <tr>
-
-                <td>
-                  <input
-                    type="checkbox"
-                    [checked]="isSelected(student.oid)"
-                    (change)="toggleStudent(student.oid)"
-                  />
-                </td>
-
-                <td class="fw-semibold">
-                  {{ student.nameEn }}
-                </td>
-
-                <td>
-                  {{ student.email }}
-                </td>
-
-                <td>
-                  {{ student.mobile }}
-                </td>
-
-                <td>
-                  {{ student.username }}
-                </td>
-
-                <td>
-
-                  <span
-                    class="badge"
-                    [class.bg-success]="student.isActive"
-                    [class.bg-danger]="!student.isActive"
-                  >
-                    {{ student.isActive ? 'Active' : 'Inactive' }}
-                  </span>
-
-                </td>
-
-                <td>
-
-                  @if (student.promoCode) {
-
-                    <span
-                      class="badge bg-warning text-dark"
-                    >
-                      {{ student.promoCode }}
-                    </span>
-
-                  } @else {
-
-                    <span
-                      class="badge bg-light text-dark border"
-                    >
-                      No Promo
-                    </span>
-
-                  }
-
-                </td>
-
-                <td>
-
-                  <span class="fw-bold text-primary">
-                    {{ course.courseName }}
-                  </span>
-
-                </td>
-
-                <td>
-
-                  <span class="badge bg-info text-dark">
-                    {{ reservation.serviceName }}
-                  </span>
-
-                </td>
-
-                <td>
-
-                  {{
-                    reservation.reservationDate
-                      | date:'dd/MM/yyyy'
-                  }}
-
-                </td>
-
-                <td>
-
-                  <span
-                    class="badge bg-light text-dark border"
-                  >
-                    {{
-                      reservation.reservationExpiryDate
-                        | date:'dd/MM/yyyy'
-                    }}
-                  </span>
-
-                </td>
-
-              </tr>
-
-            }
-
-          }
-
-        }
-
-      </tbody>
-
-    </table>
-
-  </div> -->
-
-  <div class="table-responsive">
-  <table class="table table-bordered table-hover align-middle text-center">
-    <thead>
-      <tr>
-        <th width="50">
-          <input type="checkbox" (change)="toggleAll($event)" class="form-check-input" />
-        </th>
-
-        <th>Name</th>
-        <th>Email</th>
-        <th>Mobile</th>
-        <th>Username</th>
-        <th>Status</th>
-        <th>Promo Code</th>
-        <th style="min-width: 500px">
-          Certifications & Features
-        </th>
-      </tr>
-    </thead>
-
-    <tbody>
-      @for (student of students(); track student.oid) {
-
-      <tr>
-        <td>
-          <input
-            type="checkbox"
-            [checked]="isSelected(student.oid)"
-            (change)="toggleStudent(student.oid)"
-
-            class="form-check-input"
-          />
-        </td>
-
-        <td>
-          <strong>{{ student.nameEn }}</strong>
-        </td>
-
-        <td>{{ student.email }}</td>
-
-        <td>{{ student.mobile }}</td>
-
-        <td>{{ student.username }}</td>
-
-        <td>
-          <span
-            class="badge"
-            [class.bg-success]="student.isActive"
-            [class.bg-danger]="!student.isActive"
-          >
-            <i
-              class="bi"
-              [class.bi-check-circle-fill]="student.isActive"
-              [class.bi-x-circle-fill]="!student.isActive"
-            ></i>
-
-            {{ student.isActive ? "Active" : "Inactive" }}
-          </span>
-        </td>
-
-        <td>
-          @if (student.promoCode) {
-          <span class="badge bg-warning text-dark">
-            <i class="bi bi-ticket-perforated-fill me-1"></i>
-            {{ student.promoCode }}
-          </span>
-          } @else {
-          <span class="badge bg-light text-dark border">
-            No Promo
-          </span>
-          }
-        </td>
-
-        <td class="p-0">
-
-          @if(studentFeatures()[student.oid]?.length){
-
-          <table class="table table-sm table-bordered mb-0">
-
-            <thead class="table-light">
-              <tr>
-                <th>Certification</th>
-                <th>Feature</th>
-                <th>Active From</th>
-                <th>Expires</th>
-                <th>Added By</th>
-              </tr>
-            </thead>
-
-            <tbody>
-
-              @for (
-                course of studentFeatures()[student.oid];
-                track course.oid
-              ) {
-
-                @if (getReservations(course.oid).length > 0) {
-
-                  @for (
-                    reservation of getReservations(course.oid);
-                    track reservation.oid
-                  ) {
-
-                    <tr>
-
-                      <td>
-                        <span class="fw-bold text-primary">
-                          {{ course.courseName }}
-                        </span>
-                      </td>
-
-                      <td>
-
-                        <span
-                          class="badge"
-                          [class.bg-success]="reservation.serviceName === 'Exam Simulation'"
-                          [class.bg-primary]="reservation.serviceName === 'Recorded Course'"
-                          [class.bg-warning]="reservation.serviceName === 'Live Course'"
-                        >
-                          {{ reservation.serviceName }}
-                        </span>
-
-                      </td>
-
-                      <td>
-                        {{
-                          reservation.reservationDate
-                            | date : "dd/MM/yyyy"
-                        }}
-                      </td>
-
-                      <td>
-                        {{
-                          reservation.reservationExpiryDate
-                            | date : "dd/MM/yyyy"
-                        }}
-                      </td>
-
-                        <td class="text-center">
-                        {{
-                          reservation.notes || '-'
-
-                        }}
-                      </td>
-
-                    </tr>
-
-                  }
-
-                } @else {
-
-                  <tr>
-
-                    <td>
-                      <span class="fw-bold text-primary">
-                        {{ course.courseName }}
-                      </span>
-                    </td>
-
-                    <td colspan="3">
-                      <span
-                        class="text-muted fst-italic"
-                      >
-                        No reserved features
-                      </span>
-                    </td>
-
-                  </tr>
-
-                }
-
-              }
-
-            </tbody>
-
-          </table>
-
-          } @else {
-
-          <div class="p-3 text-muted">
-            No Certifications
-          </div>
-
-          }
-
-        </td>
-      </tr>
-
-      }
-    </tbody>
-  </table>
-</div>
-  <!-- Pagination -->
-
-  <div
-    class="d-flex justify-content-between align-items-center p-3"
-  >
-
-    <div>
-
-      Showing
-
-      {{ pageIndex() * pageSize() + 1 }}
-
-      -
-
-      {{ displayEndRow() }}
-
-      of
-
-      {{ totalCount() }} Studenets
-
+  @if (loading()) {
+    <div class="text-center p-5" role="status"><div class="spinner-border"></div><div class="mt-2">Loading report…</div></div>
+  } @else if (errorMessage()) {
+    <div class="alert alert-danger m-3" role="alert">{{ errorMessage() }}</div>
+  } @else {
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover align-middle text-center mb-0">
+        <thead class="table-light">
+          <tr>
+            <th width="50"><input type="checkbox" class="form-check-input" aria-label="Select all students" (change)="toggleAll($event)" /></th>
+            <th>Name</th><th>Email</th><th>Mobile</th><th>Username</th><th>Status</th><th>Promo Code</th>
+            <th>People Used Promo</th><th>Total Money With Promo</th><th style="min-width:500px">Certifications &amp; Features</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (student of students(); track student.studentId) {
+            <tr>
+              <td><input type="checkbox" class="form-check-input" [checked]="isSelected(student.studentId)" [attr.aria-label]="'Select ' + student.nameEn" (change)="toggleStudent(student.studentId)" /></td>
+              <td><strong>{{ student.nameEn }}</strong></td><td>{{ student.email }}</td><td>{{ student.mobile }}</td><td>{{ student.username }}</td>
+              <td>
+                <span class="badge" [class.bg-success]="student.isActive" [class.bg-danger]="!student.isActive">
+                  <i class="bi" [class.bi-check-circle-fill]="student.isActive" [class.bi-x-circle-fill]="!student.isActive"></i>
+                  {{ student.isActive ? 'Active' : 'Inactive' }}
+                </span>
+              </td>
+              <td>@if (student.promoCode) { <span class="badge bg-warning text-dark"><i class="bi bi-ticket-perforated-fill me-1"></i>{{ student.promoCode }}</span> } @else { <span class="badge bg-light text-dark border">No Promo</span> }</td>
+              <td><span class="badge bg-info text-dark">{{ student.numberOfPeopleUsedPromo || 0 }}</span></td>
+              <td><span class="fw-semibold">{{ student.totalMoneyWithPromo || 0 | number:'1.2-2' }}</span></td>
+              <td class="p-0">
+                @if (student.courses.length) {
+                  <table class="table table-sm table-bordered mb-0">
+                    <thead class="table-light"><tr><th>Certification</th><th>Feature</th><th>Active From</th><th>Expires</th><th>Added By</th></tr></thead>
+                    <tbody>
+                      @for (course of student.courses; track course.studentCourseId) {
+                        @if (course.reservations.length) {
+                          @for (reservation of course.reservations; track reservation.reservationId) {
+                            <tr>
+                              <td><span class="fw-bold text-primary">{{ course.courseName }}</span></td>
+                              <td>
+                                <span class="badge"
+                                  [class.bg-success]="reservation.serviceName === 'Exam Simulation'"
+                                  [class.bg-primary]="reservation.serviceName === 'Recorded Course'"
+                                  [class.bg-warning]="reservation.serviceName === 'Live Course'">
+                                  {{ reservation.serviceName }}
+                                </span>
+                              </td>
+                              <td>{{ reservation.reservationDate | date:'dd/MM/yyyy' }}</td>
+                              <td>{{ reservation.reservationExpiryDate | date:'dd/MM/yyyy' }}</td>
+                              <td class="text-center">{{ reservation.addedBy || '-' }}</td>
+                            </tr>
+                          }
+                        } @else {
+                          <tr><td class="fw-bold text-primary">{{ course.courseName }}</td><td colspan="4" class="text-muted fst-italic">No reserved features</td></tr>
+                        }
+                      }
+                    </tbody>
+                  </table>
+                } @else { <div class="p-3 text-muted">No Certifications</div> }
+              </td>
+            </tr>
+          } @empty { <tr><td colspan="10" class="p-4 text-muted">No students found.</td></tr> }
+        </tbody>
+      </table>
     </div>
 
-    <div class="d-flex gap-2">
-
-      <button
-        class="btn btn-outline-secondary"
-        [disabled]="pageIndex() === 0"
-        (click)="previousPage()"
-      >
-        Previous
-      </button>
-
-      <button
-        class="btn btn-outline-secondary"
-        [disabled]="
-          (pageIndex() + 1) * pageSize() >= totalCount()
-        "
-        (click)="nextPage()"
-      >
-        Next
-      </button>
-
+    <div class="d-flex justify-content-between align-items-center p-3">
+      <div>Showing {{ displayStartRow() }}–{{ displayEndRow() }} of {{ totalCount() }} students</div>
+      <div class="d-flex gap-2">
+        <button class="btn btn-outline-secondary" type="button" [disabled]="pageIndex() === 0" (click)="previousPage()">Previous</button>
+        <span class="align-self-center">Page {{ totalPages() ? pageIndex() + 1 : 0 }} of {{ totalPages() }}</span>
+        <button class="btn btn-outline-secondary" type="button" [disabled]="pageIndex() + 1 >= totalPages()" (click)="nextPage()">Next</button>
+      </div>
     </div>
-
-  </div>
-
+  }
 </div>

@@ -1,4 +1,7 @@
 import { HttpInterceptorFn } from '@angular/common/http';
+import { inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { catchError, throwError } from 'rxjs';
 
 
 // export const studentAuthInterceptor: HttpInterceptorFn = (req, next) => {
@@ -17,6 +20,7 @@ import { HttpInterceptorFn } from '@angular/common/http';
 
 
 export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
+  const router = inject(Router);
 
   if (typeof window === 'undefined') {
 
@@ -32,25 +36,19 @@ export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
 
     : localStorage.getItem('studentToken');
 
-  if (!token) {
+  const request = req.clone({ setHeaders: {
+    Accept: 'application/json',
+    ...(token ? { Authorization: `Bearer ${token}` } : {})
+  }});
 
-    return next(req);
-
-  }
-
-  return next(
-
-    req.clone({
-
-      setHeaders: {
-
-        Authorization: `Bearer ${token}`
-
-      }
-
-    })
-
-  );
+  return next(request).pipe(catchError(error => {
+    if (error.status === 401 && !window.location.pathname.includes('/auth/login')) {
+      const returnUrl = `${window.location.pathname}${window.location.search}`;
+      const lang = window.location.pathname.startsWith('/ar/') ? 'ar' : 'en';
+      void router.navigate([`/${lang}/auth/login`], { queryParams: { returnUrl } });
+    }
+    return throwError(() => error);
+  }));
 
 };
 

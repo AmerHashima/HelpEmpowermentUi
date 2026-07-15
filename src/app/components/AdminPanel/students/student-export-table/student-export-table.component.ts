@@ -1,13 +1,29 @@
-import { Component, inject, Input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import * as XLSX from 'xlsx';
-import { APIStudent } from '../../../../models/student';
-import { Filter, RequestBody } from '../../../../models/rquest';
-import { StudentService } from '../../../../Services/student-service.service';
+import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ReservationService } from '../../../../Services/reservation.service';
-import { APICourseReservation } from '../../../../Interface/course-reservation';
-import { APIStudentCourse } from '../../../../models/student-course';
+import * as XLSX from 'xlsx';
+import { StudentService } from '../../../../Services/student-service.service';
+import {
+  SortDirection, StudentExportReport, StudentExportSearchRequest,
+  StudentExportSortField
+} from '../../../../models/student-export-report';
+
+interface ExportRow {
+  ID: number | string;
+  Student: string;
+  Email: string;
+  Mobile: string;
+  Username: string;
+  Status: string;
+  PromoCode: string;
+  PeopleUsedPromo: number | string;
+  TotalMoneyWithPromo: number | string;
+  Certification: string;
+  Feature: string;
+  ActiveFrom: string;
+  Expires: string;
+  AddedBy: string;
+}
 
 @Component({
   selector: 'app-student-export-table',
@@ -15,1163 +31,115 @@ import { APIStudentCourse } from '../../../../models/student-course';
   imports: [CommonModule, FormsModule],
   templateUrl: './student-export-table.component.html'
 })
-// export class StudentExportTableComponent {
-//   private studentService = inject(StudentService);
-//   private reservationService = inject(ReservationService);
-
-//   students = signal<APIStudent[]>([]);
-//   studentFeatures = signal<Record<string, any[]>>({});
-//   studentReservations =
-//     signal<Record<string, APICourseReservation[]>>({});
-
-//   loading = signal(false);
-//   errorMessage = signal('');
-//   selectedStudents = signal<Set<string>>(new Set());
-//   searchText: string='';
-//   selectedStatus = '';
-
-//   selectedFeature = '';
-//   pageIndex = signal(0);
-//   pageSize = signal(10);
-//   totalCount = signal(0);
-
-
-//   constructor(){
-//     console.log('Constructor');
-//     this.loadStudents();
-//   }
-
-//   onSearch() {
-
-//     this.pageIndex.set(0);
-
-//     this.loadStudents();
-
-//   }
-//   loadStudents(): void {
-//     console.log('loadStudents called');
-//     this.loading.set(true);
-//     this.errorMessage.set('');
-
-//     this.studentService.searchStudents(this.buildSearchRequest()).subscribe({
-//       next: ({ students, total }) => {
-//         console.log('Loaded students:', students, 'Total count:', total);
-//         this.students.set(students);
-//         this.totalCount.set(total);
-
-//         students.forEach(student => {
-
-//           this.loadStudentFeatures(student.oid);
-
-//         });
-//         this.loading.set(false);
-//       },
-//       error: (error: unknown) => {
-//         const message = error instanceof Error ? error.message : 'Failed to load students';
-//         this.errorMessage.set(message);
-//         this.students.set([]);
-//         this.totalCount.set(0);
-//         this.loading.set(false);
-//       }
-//     });
-//   }
-
-//   loadReservations(studentCourseId: string) {
-
-//     this.reservationService
-
-//       .getCourseReservationByStudentCourseId(studentCourseId)
-
-//       .subscribe(reservations => {
-
-//         const current = this.studentReservations();
-
-//         current[studentCourseId] = reservations;
-
-//         this.studentReservations.set({
-
-//           ...current
-
-//         });
-
-//       });
-
-//   }
-
-//   private buildSearchRequest(): RequestBody {
-
-//     const filters: any[] = [];
-
-//     if (this.searchText.trim()) {
-
-//       filters.push({
-
-//         propertyName: 'nameEn',
-
-//         value: this.searchText.trim(),
-
-//         operation: 0
-
-//       });
-
-//     }
-
-//     if (this.selectedStatus) {
-
-//       filters.push({
-
-//         propertyName: 'isActive',
-
-//         value: this.selectedStatus === 'active' ? 'true' : 'false',
-//         operation: 0
-
-//       });
-
-//     }
-
-//     return {
-
-//       filters,
-
-//       sort: [
-
-//         {
-
-//           sortBy: 'createdAt',
-
-//           sortDirection: 'desc'
-
-//         }
-
-//       ],
-
-//       pagination: {
-
-//         getAll: false,
-
-//         pageNumber: this.pageIndex(),
-
-//         pageSize: this.pageSize()
-
-//       },
-
-//       columns: [
-
-
-//       ]
-
-//     };
-
-//   }
-
-//   // loadStudentFeatures(studentId: string) {
-
-//   //   this.studentService
-
-//   //     .getStudentReservedCourses(studentId)
-
-//   //     .subscribe(courses => {
-
-//   //       const featuresMap = this.studentFeatures();
-
-//   //       featuresMap[studentId] = courses;
-
-//   //       this.studentFeatures.set({
-
-//   //         ...featuresMap
-
-//   //       });
-
-//   //     });
-
-//   // }
-
-//   loadStudentFeatures(studentId: string) {
-
-//     this.studentService
-
-//       .getStudentReservedCourses(studentId)
-
-//       .subscribe(courses => {
-
-//         const featuresMap = this.studentFeatures();
-
-//         featuresMap[studentId] = courses;
-
-//         this.studentFeatures.set({
-
-//           ...featuresMap
-
-//         });
-
-//         courses.forEach(course => {
-
-//           this.loadReservations(course.oid);
-
-//         });
-
-//       });
-
-//   }
-//   toggleStudent(studentId: string): void {
-//     const selected = new Set(this.selectedStudents());
-
-//     if (selected.has(studentId)) {
-//       selected.delete(studentId);
-//     } else {
-//       selected.add(studentId);
-//     }
-
-//     this.selectedStudents.set(selected);
-//   }
-
-//   toggleAll(event: Event): void {
-//     const checked = (event.target as HTMLInputElement).checked;
-
-//     if (checked) {
-//       this.selectedStudents.set(
-//         new Set(this.students().map((s) => s.oid))
-//       );
-//     } else {
-//       this.selectedStudents.set(new Set());
-//     }
-//   }
-
-//   isSelected(studentId: string): boolean {
-//     return this.selectedStudents().has(studentId);
-//   }
-
-//   exportSelectedStudents(): void {
-//     const selected = this.students().filter(student =>
-//       this.selectedStudents().has(student.oid)
-//     );
-
-//     const data = selected.map((student, index) => {
-
-//       const reservations =
-//         this.studentFeatures()[student.oid] ?? [];
-//       return {
-
-//         ID: index + 1,
-
-//         Name: student.nameEn,
-
-//         Email: student.email,
-
-//         Mobile: student.mobile,
-
-//         Username: student.username,
-
-//         Status: student.isActive
-
-//           ? 'Active'
-
-//           : 'Inactive',
-
-//         PromoCode: student.promoCode || 'No Promo',
-
-//         PromoValidTo: student.promoToDateValid
-
-//           ? new Date(student.promoToDateValid)
-
-//             .toLocaleDateString('en-GB')
-
-//           : 'N/A',
-
-//         Reservations: reservations
-
-//           .map(course => {
-
-//             const features: string[] = [];
-
-//             if (course.examSimulationReserv) {
-
-//               features.push('Exam Simulator');
-
-//             }
-
-//             if (course.recordedCourseReserv) {
-
-//               features.push('Recorded Course');
-
-//             }
-
-//             if (course.liveCourseReserv) {
-
-//               features.push('Live Course');
-
-//             }
-
-//             return `${course.courseName}: ${features.length
-
-//                 ? features.join(', ')
-
-//                 : 'No Features Reserved'
-
-//               }`;
-
-//           })
-
-//           .join(' | ')
-
-//       };
-//       // return {
-//       //   ID: index + 1,
-//       //   Name: student.nameEn,
-//       //   Email: student.email,
-//       //   Mobile: student.mobile,
-
-//       //   Reservations: reservations
-//       //     .map(course => {
-
-//       //       const features: string[] = [];
-
-//       //       if (course.examSimulationReserv) {
-//       //         features.push('Exam Simulator');
-//       //       }
-
-//       //       if (course.recordedCourseReserv) {
-//       //         features.push('Recorded Course');
-//       //       }
-
-//       //       if (course.liveCourseReserv) {
-//       //         features.push('Live Course');
-//       //       }
-
-//       //       return `${course.courseName}: ${features.length
-//       //           ? features.join(', ')
-//       //           : 'No Features Reserved'
-//       //         }`;
-//       //     })
-//       //     .join(' | ')
-//       // };
-//     });
-
-//     const worksheet = XLSX.utils.json_to_sheet(data);
-//     const workbook = XLSX.utils.book_new();
-
-//     XLSX.utils.book_append_sheet(
-//       workbook,
-//       worksheet,
-//       'Students'
-//     );
-
-//     XLSX.writeFile(
-//       workbook,
-//       `Students_${new Date().toISOString().split('T')[0]}.xlsx`
-//     );
-//   }
-
-//   studentHasSelectedFeature(studentId: string): boolean {
-
-//     if (!this.selectedFeature) return true;
-
-//     const courses =
-
-//       this.studentFeatures()[studentId] || [];
-
-//     return courses.some(course => {
-
-//       switch (this.selectedFeature) {
-
-//         case 'exam':
-
-//           return course.examSimulationReserv;
-
-//         case 'recorded':
-
-//           return course.recordedCourseReserv;
-
-//         case 'live':
-
-//           return course.liveCourseReserv;
-
-//         default:
-
-//           return true;
-
-//       }
-
-//     });
-
-//   }
-
-//   getReservations(studentCourseId: string) {
-
-//     return this.studentReservations()[studentCourseId] ?? [];
-
-//   }
-
-//   nextPage() {
-
-//     this.pageIndex.update(v => v + 1);
-
-//     this.loadStudents();
-
-//   }
-
-//   previousPage() {
-
-//     if (this.pageIndex() === 0) return;
-
-//     this.pageIndex.update(v => v - 1);
-
-//     this.loadStudents();
-
-//   }
-
-//   displayEndRow(): number {
-
-//     return Math.min(
-
-//       (this.pageIndex() + 1) * this.pageSize(),
-
-//       this.totalCount()
-
-//     );
-
-//   }
-// }
-
 export class StudentExportTableComponent {
+  private readonly studentService = inject(StudentService);
 
-  private studentService = inject(StudentService);
-  private reservationService = inject(ReservationService);
-
-  students = signal<APIStudent[]>([]);
-
-  studentFeatures =
-    signal<Partial<Record<string, APIStudentCourse[]>>>({});
-
-  studentReservations =
-    signal<Record<string, APICourseReservation[]>>({});
-
-  loading = signal(false);
-  errorMessage = signal('');
-
-  selectedStudents = signal(new Set());
+  readonly students = signal<StudentExportReport[]>([]);
+  readonly loading = signal(false);
+  readonly errorMessage = signal('');
+  readonly selectedStudents = signal<Set<string>>(new Set<string>());
+  readonly pageIndex = signal(0);
+  readonly pageSize = signal(10);
+  readonly totalCount = signal(0);
+  readonly totalPages = signal(0);
 
   searchText = '';
   mail = '';
   selectedStatus = '';
+  sortBy: StudentExportSortField = 'createdAt';
+  sortDirection: SortDirection = 'desc';
 
-  pageIndex = signal(0);
-  pageSize = signal(10);
-  totalCount = signal(0);
+  constructor() { this.loadStudents(); }
 
-  constructor() {
-    this.loadStudents();
-  }
-  onSearch(): void {
-    this.pageIndex.set(0);
-
-    this.loadStudents();
-  }
+  onSearch(): void { this.pageIndex.set(0); this.loadStudents(); }
 
   loadStudents(): void {
-    this.studentFeatures.set({});
-    this.studentReservations.set({});
-
     this.loading.set(true);
     this.errorMessage.set('');
-
-    this.studentService
-      .searchStudents(this.buildSearchRequest())
-      .subscribe({
-
-        next: ({ students, total }) => {
-
-          this.students.set(students);
-          this.totalCount.set(total);
-
-          students.forEach(student => {
-
-            this.loadStudentFeatures(
-              student.oid
-            );
-
-          });
-
-          this.loading.set(false);
-
-        },
-
-        error: (error: unknown) => {
-
-          const message =
-            error instanceof Error
-              ? error.message
-              : 'Failed to load students';
-
-          this.errorMessage.set(message);
-
+    this.studentService.searchStudentExportReport(this.buildRequest()).subscribe({
+      next: response => {
+        if (!response.success) {
+          this.errorMessage.set(response.message || response.errors.join(', ') || 'Failed to load students.');
           this.students.set([]);
-          this.totalCount.set(0);
-
-          this.loading.set(false);
-
+        } else {
+          this.students.set(response.data ?? []);
+          this.totalCount.set(response.totalCount ?? 0);
+          this.totalPages.set(response.totalPages ?? 0);
+          this.pageIndex.set(response.pageNumber ?? this.pageIndex());
+          this.selectedStudents.update(selected =>
+            new Set([...selected].filter(id => response.data.some(student => student.studentId === id)))
+          );
         }
-
-      });
-  }
-
-  private buildSearchRequest(): RequestBody {
-    const filters: Filter[] = [];
-
-    if (this.searchText.trim()) {
-
-      filters.push({
-
-        propertyName: 'nameEn',
-
-        value: this.searchText.trim(),
-
-        operation: 2
-
-      });
-
-
-
-    }
-
-    if (this.mail.trim()) {
-
-
-
-      filters.push({
-
-        propertyName: 'email',
-
-        value: this.mail.trim(),
-
-        operation: 2
-
-      });
-
-    }
-    if (this.selectedStatus) {
-
-      filters.push({
-
-        propertyName: 'isActive',
-
-        value:
-          this.selectedStatus === 'active'
-            ? 'true'
-            : 'false',
-
-        operation: 2
-
-      });
-
-    }
-
-    return {
-
-      filters,
-
-      sort: [
-        {
-          sortBy: 'createdAt',
-          sortDirection: 'desc'
-        }
-      ],
-
-      pagination: {
-
-        getAll: false,
-
-        pageNumber: this.pageIndex(),
-
-        pageSize: this.pageSize()
-
+        this.loading.set(false);
       },
-
-      columns: []
-
-    };
-  }
-  loadStudentFeatures(studentId: string): void {
-    this.studentService
-      .getStudentReservedCourses(studentId)
-      .subscribe({
-
-        next: courses => {
-
-          const features =
-            this.studentFeatures();
-
-          features[studentId] = courses;
-
-          this.studentFeatures.set({
-            ...features
-          });
-
-          courses.forEach(course => {
-
-            this.loadReservations(
-              course.oid
-            );
-
-          });
-
-        }
-
-      });
-  }
-  loadReservations(studentCourseId: string): void {
-    this.reservationService
-      .getCourseReservationByStudentCourseId(
-        studentCourseId
-      )
-      .subscribe({
-
-        next: reservations => {
-
-          const current =
-            this.studentReservations();
-
-          current[studentCourseId] =
-            reservations;
-
-          this.studentReservations.set({
-            ...current
-          });
-
-        },
-
-        error: () => {
-
-          const current =
-            this.studentReservations();
-
-          current[studentCourseId] = [];
-
-          this.studentReservations.set({
-            ...current
-          });
-
-        }
-
-      });
-  }
-  getReservations(studentCourseId: string): APICourseReservation[] {
-    return (
-      this.studentReservations()[
-      studentCourseId
-      ] ?? []
-    );
-  }
-
-  formatDate(value: string | null | undefined): string {
-    if (!value) {
-      return '-';
-    }
-
-    return new Date(value)
-      .toLocaleDateString('en-GB');
+      error: () => {
+        this.errorMessage.set('Failed to load the student reservation report.');
+        this.students.set([]); this.totalCount.set(0); this.totalPages.set(0); this.loading.set(false);
+      }
+    });
   }
 
   toggleStudent(studentId: string): void {
-    const selected =
-      new Set(this.selectedStudents());
-
-    if (selected.has(studentId)) {
-
-      selected.delete(studentId);
-
-    } else {
-
-      selected.add(studentId);
-
-    }
-
-    this.selectedStudents.set(
-      selected
-    );
+    const selected = new Set(this.selectedStudents());
+    selected.has(studentId) ? selected.delete(studentId) : selected.add(studentId);
+    this.selectedStudents.set(selected);
   }
+
   toggleAll(event: Event): void {
-    const checked =
-      (event.target as HTMLInputElement)
-        .checked;
-
-    if (checked) {
-
-      this.selectedStudents.set(
-        new Set(
-          this.students().map(
-            s => s.oid
-          )
-        )
-      );
-
-    } else {
-
-      this.selectedStudents.set(
-        new Set()
-      );
-
-    }
-  }
-  isSelected(studentId: string): boolean {
-    return this.selectedStudents()
-      .has(studentId);
+    const checked = (event.target as HTMLInputElement).checked;
+    this.selectedStudents.set(checked ? new Set(this.students().map(student => student.studentId)) : new Set<string>());
   }
 
-  // exportSelectedStudents(): void {
-  //   const selected =
-  //     this.students().filter(
-  //       student =>
-  //         this.selectedStudents()
-  //           .has(student.oid)
-  //     );
-
-  //   const rows: any[] = [];
-
-  //   selected.forEach(
-  //     (student, index) => {
-
-  //       const courses =
-  //         this.studentFeatures()[
-  //         student.oid
-  //         ] ?? [];
-
-  //       if (!courses.length) {
-
-  //         rows.push({
-
-  //           ID: index + 1,
-
-  //           Student:
-  //             student.nameEn,
-
-  //           Email:
-  //             student.email,
-
-  //           Mobile:
-  //             student.mobile,
-
-  //           Username:
-  //             student.username,
-
-  //           Status:
-  //             student.isActive
-  //               ? 'Active'
-  //               : 'Inactive',
-
-  //           PromoCode:
-  //             student.promoCode
-  //             ?? 'No Promo',
-
-  //           Course:
-  //             'No Courses',
-
-  //           Feature:
-  //             '-',
-
-  //           Activated:
-  //             '-',
-
-  //           Expires:
-  //             '-'
-
-  //         });
-
-  //         return;
-
-  //       }
-
-  //       courses.forEach(course => {
-
-  //         const reservations =
-  //           this.getReservations(
-  //             course.oid
-  //           );
-
-  //         if (
-  //           !reservations.length
-  //         ) {
-
-  //           rows.push({
-
-  //             ID: index + 1,
-
-  //             Student:
-  //               student.nameEn,
-
-  //             Email:
-  //               student.email,
-
-  //             Mobile:
-  //               student.mobile,
-
-  //             Username:
-  //               student.username,
-
-  //             Status:
-  //               student.isActive
-  //                 ? 'Active'
-  //                 : 'Inactive',
-
-  //             PromoCode:
-  //               student.promoCode
-  //               ?? 'No Promo',
-
-  //             Course:
-  //               course.courseName,
-
-  //             Feature:
-  //               'No Reserved Features',
-
-  //             Activated:
-  //               '-',
-
-  //             Expires:
-  //               '-'
-
-  //           });
-
-  //           return;
-
-  //         }
-
-  //         reservations.forEach(
-  //           reservation => {
-
-  //             rows.push({
-
-  //               ID:
-  //                 index + 1,
-
-  //               Student:
-  //                 student.nameEn,
-
-  //               Email:
-  //                 student.email,
-
-  //               Mobile:
-  //                 student.mobile,
-
-  //               Username:
-  //                 student.username,
-
-  //               Status:
-  //                 student.isActive
-  //                   ? 'Active'
-  //                   : 'Inactive',
-
-  //               PromoCode:
-  //                 student.promoCode
-  //                 ?? 'No Promo',
-
-  //               Course:
-  //                 course.courseName,
-
-  //               Feature:
-  //                 reservation.serviceName,
-
-  //               Activated:
-  //                 this.formatDate(
-  //                   reservation.reservationDate
-  //                 ),
-
-  //               Expires:
-  //                 this.formatDate(
-  //                   reservation.reservationExpiryDate
-  //                 )
-
-  //             });
-
-  //           }
-  //         );
-
-  //       });
-
-  //     }
-  //   );
-
-  //   const worksheet =
-  //     XLSX.utils.json_to_sheet(
-  //       rows
-  //     );
-
-  //   const workbook =
-  //     XLSX.utils.book_new();
-
-  //   XLSX.utils.book_append_sheet(
-  //     workbook,
-  //     worksheet,
-  //     'Students'
-  //   );
-
-  //   XLSX.writeFile(
-  //     workbook,
-  //     `Students_${new Date()
-  //       .toISOString()
-  //       .split('T')[0]}.xlsx`
-  //   );}
+  isSelected(studentId: string): boolean { return this.selectedStudents().has(studentId); }
 
   exportSelectedStudents(): void {
-
-    const selected = this.students().filter(
-
-      student => this.selectedStudents().has(student.oid)
-
-    );
-
-    const rows: any[] = [];
-
-    selected.forEach((student, index) => {
-
-      const courses =
-
-        this.studentFeatures()[student.oid] ?? [];
-
-      let firstStudentRow = true;
-
-      courses.forEach(course => {
-
-        const reservations =
-
-          this.getReservations(course.oid);
-
-        if (!reservations.length) {
-
-          rows.push({
-
-            ID: firstStudentRow ? index + 1 : '',
-
-            Student: firstStudentRow
-
-              ? student.nameEn
-
-              : '',
-
-            Email: firstStudentRow
-
-              ? student.email
-
-              : '',
-
-            Mobile: firstStudentRow
-
-              ? student.mobile
-
-              : '',
-
-            Username: firstStudentRow
-
-              ? student.username
-
-              : '',
-
-            Status: firstStudentRow
-
-              ? (student.isActive
-
-                ? 'Active'
-
-                : 'Inactive')
-
-              : '',
-
-            PromoCode: firstStudentRow
-
-              ? (student.promoCode ?? 'No Promo')
-
-              : '',
-
-            Course: course.courseName,
-
-            Feature: 'No Reserved Features',
-
-            ActiveFrom: '-',
-
-            ExpiryDate: '-',
-            AddedBy: '-'
-          });
-
-          firstStudentRow = false;
-
-          return;
-
-        }
-
-        reservations.forEach(reservation => {
-
-          rows.push({
-
-            ID: firstStudentRow
-
-              ? index + 1
-
-              : '',
-
-            Student: firstStudentRow
-
-              ? student.nameEn
-
-              : '',
-
-            Email: firstStudentRow
-
-              ? student.email
-
-              : '',
-
-            Mobile: firstStudentRow
-
-              ? student.mobile
-
-              : '',
-
-            Username: firstStudentRow
-
-              ? student.username
-
-              : '',
-
-            Status: firstStudentRow
-
-              ? (student.isActive
-
-                ? 'Active'
-
-                : 'Inactive')
-
-              : '',
-
-            PromoCode: firstStudentRow
-
-              ? (student.promoCode ?? 'No Promo')
-
-              : '',
-
-            Course: course.courseName,
-
-            Feature:
-
-              reservation.serviceName,
-
-            ActiveFrom:
-
-              this.formatDate(
-
-                reservation.reservationDate
-
-              ),
-
-            ExpiryDate:
-
-              this.formatDate(
-
-                reservation.reservationExpiryDate
-
-              ),
-            AddedBy: reservation.notes || '-',
-
-
-          });
-
-          firstStudentRow = false;
-
-        });
-
-      });
-
-    });
-
-    const worksheet =
-
-      XLSX.utils.json_to_sheet(rows);
-
-    worksheet['!cols'] = [
-
-      { wch: 6 },   // ID
-
-      { wch: 25 },  // Student
-
-      { wch: 30 },  // Email
-
-      { wch: 18 },  // Mobile
-
-      { wch: 20 },  // Username
-
-      { wch: 12 },  // Status
-
-      { wch: 15 },  // Promo
-
-      { wch: 25 },  // Course
-
-      { wch: 25 },  // Feature
-
-      { wch: 15 },  // Active
-
-      { wch: 15 },   // Expiry
-
-      { wch: 20 }   // Expiry
-
-
-    ];
-
-    const workbook =
-
-      XLSX.utils.book_new();
-
-    XLSX.utils.book_append_sheet(
-
-      workbook,
-
-      worksheet,
-
-      'Students'
-
-    );
-
-    XLSX.writeFile(
-
-      workbook,
-
-      `Students_${new Date()
-
-        .toISOString()
-
-        .split('T')[0]}.xlsx`
-
-    );
-
+    const selected = this.students().filter(student => this.isSelected(student.studentId));
+    const rows = selected.flatMap((student, index) => this.toExportRows(student, index + 1));
+    const worksheet = XLSX.utils.json_to_sheet(rows);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Students');
+    XLSX.writeFile(workbook, `Students_${new Date().toISOString().slice(0, 10)}.xlsx`);
   }
 
-  nextPage(): void {
-    this.pageIndex.update(
-      value => value + 1
-    );
+  previousPage(): void { if (this.pageIndex() > 0) { this.pageIndex.update(value => value - 1); this.loadStudents(); } }
+  nextPage(): void { if (this.pageIndex() + 1 < this.totalPages()) { this.pageIndex.update(value => value + 1); this.loadStudents(); } }
+  displayStartRow(): number { return this.totalCount() ? this.pageIndex() * this.pageSize() + 1 : 0; }
+  displayEndRow(): number { return Math.min((this.pageIndex() + 1) * this.pageSize(), this.totalCount()); }
 
-    this.loadStudents();
+  private buildRequest(): StudentExportSearchRequest {
+    const filters: StudentExportSearchRequest['filters'] = [];
+    if (this.searchText.trim()) filters.push({ propertyName: 'nameEn', value: this.searchText.trim(), operation: 2 });
+    if (this.mail.trim()) filters.push({ propertyName: 'email', value: this.mail.trim(), operation: 2 });
+    if (this.selectedStatus) filters.push({ propertyName: 'isActive', value: String(this.selectedStatus === 'active'), operation: 0 });
+    return {
+      filters,
+      sort: [{ sortBy: this.sortBy, sortDirection: this.sortDirection }],
+      pagination: { getAll: false, pageNumber: this.pageIndex(), pageSize: this.pageSize() },
+      columns: []
+    };
   }
 
-
-  previousPage(): void {
-    if (
-      this.pageIndex() === 0
-    ) {
-      return;
-    }
-
-    this.pageIndex.update(
-      value => value - 1
+  private toExportRows(student: StudentExportReport, number: number): ExportRow[] {
+    const base = {
+      ID: number, Student: student.nameEn, Email: student.email, Mobile: student.mobile,
+      Username: student.username, Status: student.isActive ? 'Active' : 'Inactive',
+      PromoCode: student.promoCode ?? 'No Promo', PeopleUsedPromo: student.numberOfPeopleUsedPromo ?? 0,
+      TotalMoneyWithPromo: student.totalMoneyWithPromo ?? 0
+    };
+    const details = student.courses.flatMap(course =>
+      course.reservations.length
+        ? course.reservations.map(reservation => ({ Certification: course.courseName, Feature: reservation.serviceName,
+            ActiveFrom: this.formatDate(reservation.reservationDate), Expires: this.formatDate(reservation.reservationExpiryDate), AddedBy: reservation.addedBy || '-' }))
+        : [{ Certification: course.courseName, Feature: 'No reserved features', ActiveFrom: '-', Expires: '-', AddedBy: '-' }]
     );
-
-    this.loadStudents();
+    if (!details.length) details.push({ Certification: 'No certifications', Feature: '-', ActiveFrom: '-', Expires: '-', AddedBy: '-' });
+    return details.map((detail, index) => ({
+      ID: index === 0 ? base.ID : '', Student: index === 0 ? base.Student : '', Email: index === 0 ? base.Email : '',
+      Mobile: index === 0 ? base.Mobile : '', Username: index === 0 ? base.Username : '', Status: index === 0 ? base.Status : '',
+      PromoCode: index === 0 ? base.PromoCode : '', PeopleUsedPromo: index === 0 ? base.PeopleUsedPromo : '',
+      TotalMoneyWithPromo: index === 0 ? base.TotalMoneyWithPromo : '', ...detail
+    }));
   }
-  displayEndRow(): number {
-    return Math.min(
 
-      (this.pageIndex() + 1)
-      * this.pageSize(),
-
-      this.totalCount()
-
-    );
-  }
+  private formatDate(value: string | null): string { return value ? new Date(value).toLocaleDateString('en-GB') : '-'; }
 }

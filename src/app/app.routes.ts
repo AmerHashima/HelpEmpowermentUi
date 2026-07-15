@@ -73,6 +73,7 @@ import { ClientInvoiceComponent } from './components/ClientSide/client-invoice/c
 import { ModeratorsComponent } from './components/AdminPanel/moderators/moderators.component';
 import { AnnouncementComponent } from './components/AdminSide/announcement/announcement.component';
 import { StudentExportTableComponent } from './components/AdminPanel/students/student-export-table/student-export-table.component';
+import { PaymentResultComponent } from './components/ClientSide/payment-result/payment-result.component';
 
 export const validLangGuard: CanMatchFn = (route, segments) => {
   const lang = segments[0]?.path;
@@ -80,6 +81,7 @@ export const validLangGuard: CanMatchFn = (route, segments) => {
 };
 
 export const routes: Routes = [
+  { path: 'payment-result', component: PaymentResultComponent },
   {
     path: '',
     redirectTo: 'en',

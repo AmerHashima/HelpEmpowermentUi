@@ -1,4 +1,5 @@
-import { Component, effect, inject, QueryList, signal, ViewChildren } from '@angular/core';
+import { Component, DestroyRef, effect, inject, QueryList, signal, ViewChildren } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputComponent } from '../../../shared/input/input.component';
 import { NgIf } from '@angular/common';
@@ -11,6 +12,10 @@ import { LookupDetail } from '../../../models/lookup';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Shared } from '../../../shared/Services/shared/shared';
+import { EMPTY, Subject, catchError, exhaustMap, finalize, tap } from 'rxjs';
+import { TelrPaymentService } from '../../../Services/telr-payment.service';
+import { ApiProblemDetails } from '../../../models/telr-payment';
+import { ToastingMessagesService } from '../../../shared/Services/ToastingMessages/toasting-messages.service';
 
 @Component({
   selector: 'app-checkout',
@@ -26,6 +31,10 @@ export class CheckoutComponent {
  private studentService=inject(StudentService);
  private checkoutService = inject(CheckoutService);
  private lookUpService=inject(LookupService);
+ private telrPayment = inject(TelrPaymentService);
+ private toasting = inject(ToastingMessagesService);
+ private destroyRef = inject(DestroyRef);
+ private cardCheckout = new Subject<void>();
  student = this.studentService.innerStudent;
 isRTL = this.shared.isRtl;
   // paymentMethods: LookupDetail[]=[];
@@ -39,6 +48,7 @@ isRTL = this.shared.isRtl;
  total = this.cartService.total;
  private fb = inject(FormBuilder);
  loading = signal(false);
+ paymentError = signal('');
 
  checkoutForm = this.fb.group({
     fullName: ['', Validators.required],
@@ -51,6 +61,11 @@ isRTL = this.shared.isRtl;
   });
 
   constructor() {
+
+    this.cardCheckout.pipe(
+      exhaustMap(() => this.startTelrCheckout()),
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe();
 
     // this.loadPaymentMethods();
 
@@ -87,6 +102,8 @@ isRTL = this.shared.isRtl;
 
   placeOrder() {
 
+    if (this.loading()) return;
+
     if (this.checkoutForm.invalid) {
 
       this.checkoutForm.markAllAsTouched();
@@ -98,8 +115,6 @@ isRTL = this.shared.isRtl;
       return;
 
     }
-
-    this.loading.set(true);
 
     const paymentMethodId =
       this.checkoutForm.value.paymentMethod;
@@ -116,10 +131,12 @@ isRTL = this.shared.isRtl;
         break;
 
       case 'Paypal':
+        this.loading.set(true);
         this.continueWithPaypal();
         break;
 
       case 'Cash':
+        this.loading.set(true);
         this.reserveCourse();
         break;
 
@@ -136,7 +153,7 @@ isRTL = this.shared.isRtl;
   }
 
   continueWithCreditOrCard() {
-    this.reserveCourse();
+    this.cardCheckout.next();
   }
 
   // reserveCourse(){
@@ -206,6 +223,43 @@ isRTL = this.shared.isRtl;
         }
 
       });
+  }
+
+  private startTelrCheckout() {
+    this.loading.set(true);
+    this.paymentError.set('');
+    const couponCode = this.cartService.appliedCoupon()?.trim() || null;
+
+    return this.telrPayment.checkout(couponCode).pipe(
+      tap(response => {
+        this.telrPayment.savePending(response.payment.paymentId, response.invoiceId);
+        window.location.assign(response.payment.paymentUrl);
+      }),
+      catchError(error => {
+        const problem = error as ApiProblemDetails;
+        const message = this.checkoutErrorMessage(problem);
+        this.paymentError.set(message);
+        this.toasting.error(message);
+        if (problem.status === 401) {
+          this.router.navigate([`/${this.shared.lang()}/auth/login`], { queryParams: { returnUrl: this.router.url } });
+        }
+        return EMPTY;
+      }),
+      finalize(() => this.loading.set(false))
+    );
+  }
+
+  private checkoutErrorMessage(problem: ApiProblemDetails): string {
+    const messages: Record<string, string> = {
+      BASKET_EMPTY: 'Your basket is empty.', INVALID_COUPON: 'The selected coupon is invalid or expired.',
+      INVALID_BASKET: 'Your basket could not be validated.', INVALID_CHECKOUT_TOTAL: 'The checkout total is invalid.',
+      UNSUPPORTED_CURRENCY: 'This currency is not supported.', INVALID_PAYMENT_URL: 'The secure payment address is invalid.'
+    };
+    if (problem.status === 503) return 'The payment gateway is temporarily unavailable. Please try again later.';
+    if (problem.errorCode && messages[problem.errorCode]) return messages[problem.errorCode];
+    const detail = problem.detail?.trim();
+    return detail && detail.length <= 300 && !/[<>\r\n]|stack|exception/i.test(detail)
+      ? detail : 'Unable to prepare the secure payment. Please try again.';
   }
 
 

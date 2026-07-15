@@ -1,0 +1,17 @@
+<main class="result-page" aria-live="polite" [attr.aria-busy]="loading()">
+  <section class="result-card">
+    @if (loading() && !result()) { <h1>Confirming payment</h1><p>Checking the authoritative payment status…</p> }
+    @if (error()) { <h1>Unable to confirm payment</h1><p class="error">{{ error() }}</p> }
+    @if (timedOut()) { <h1>Payment is still being confirmed</h1><p>Do not create another payment yet. Refresh the status first.</p> }
+    @if (result(); as payment) {
+      @if (payment.status === status.Authorised && payment.isPaid) { <h1 class="success">Payment completed successfully</h1> }
+      @else if (payment.status === status.Declined) { <h1 class="error">Payment declined</h1> }
+      @else if (payment.status === status.Cancelled) { <h1>Payment cancelled</h1> }
+      @else if (payment.status === status.Expired) { <h1>Payment session expired</h1> }
+      @else if (payment.status === status.Failed) { <h1 class="error">Payment could not be confirmed</h1> }
+      @else { <h1>Payment pending</h1> }
+      <dl><div><dt>Invoice</dt><dd>{{ payment.invoiceNumber }}</dd></div><div><dt>Amount</dt><dd>{{ payment.amount }} {{ payment.currency }}</dd></div><div><dt>Status</dt><dd>{{ payment.status }}</dd></div></dl>
+    }
+    <div class="actions"><button type="button" (click)="refresh()" [disabled]="loading()">Refresh status</button><a routerLink="/en/home">Back to home</a></div>
+  </section>
+</main>
