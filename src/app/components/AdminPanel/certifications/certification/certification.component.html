@@ -134,6 +134,15 @@
                     <label class="small fw-semibold mt-2">Active Time (Days)</label>
                     <input class="form-control" type="number" min="0" formControlName="activeTime" />
 
+                        <spk-ng-select
+            formControlName="isActive"
+            label="Status"
+            [options]="status"
+            bindLabel="label"
+            bindValue="value"
+            placeholder="Select status"
+            selectClass="form-control w-100"
+          ></spk-ng-select>
                     <div class="d-flex gap-2 mt-3">
                       <button class="btn btn-primary" type="submit" [disabled]="serviceFormLoading()">
                         {{ editingServiceId() ? 'Update Service' : 'Create Service' }}
@@ -163,11 +172,27 @@
                   <div class="d-flex flex-column gap-2">
                     @for (service of courseServices(); track service.oid) {
                     <div class="border rounded p-3 d-flex flex-column gap-2">
-                      <div class="d-flex justify-content-between align-items-center">
+                      <!-- <div class="d-flex justify-content-between align-items-center">
                         <h6 class="mb-0">{{ getServiceTypeName(service) }}</h6>
-                      </div>
+                      </div> -->
+                        <div class="d-flex justify-content-between align-items-center">
+
+    <h6 class="mb-0">{{ getServiceTypeName(service) }}</h6>
+
+    <span
+
+      class="badge"
+
+      [ngClass]="service.isActive ? 'bg-success' : 'bg-secondary'">
+
+      {{ service.isActive ? 'Active' : 'Inactive' }}
+
+    </span>
+
+  </div>
                       <small class="text-muted">Price Per Day: {{ service.price ?? 0 }}</small>
                       <small class="text-muted">Active Time: {{ service.activeTime ?? 0 }} day(s)</small>
+                      <small class="text-muted">Status: {{ service.isActive ? 'Active' : 'Inactive' }}</small>
                       <div class="d-flex gap-2">
                         <button class="btn btn-sm btn-outline-primary" (click)="startEditService(service)">Edit</button>
                         <button class="btn btn-sm btn-outline-danger" (click)="onDeleteService(service)">Delete</button>

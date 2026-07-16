@@ -4,6 +4,7 @@ export interface CourseService {
     serviceId: string;
     price: number;
     activeTime: number;
+    isActive: boolean;
     createdBy: string;
 }
 
