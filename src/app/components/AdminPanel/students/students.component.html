@@ -103,6 +103,10 @@
                         <i class="bi bi-ticket-perforated-fill me-2"></i>
                         {{ student.promoCode }}
                       </span>
+                      <span class="small text-muted align-self-center">
+                        Expires:
+                        {{ student.promoToDateValid ? (student.promoToDateValid | date: "mediumDate") : "No expiry" }}
+                      </span>
                     </div>
                   </div>
                 }

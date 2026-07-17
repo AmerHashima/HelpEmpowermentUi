@@ -16,6 +16,9 @@ import { APIStudentCourse } from '../../../../models/student-course';
 import { StudentExamService } from '../../../../Services/student-exam.service';
 import { APIStudent } from '../../../../models/student';
 import { createdUpdatedOID } from '../../../../data/lookUPS';
+import { ReservationService } from '../../../../Services/reservation.service';
+import { APICourseReservation } from '../../../../Interface/course-reservation';
+import { RequestBody } from '../../../../models/rquest';
 
 type ProfileTab =
 
@@ -43,6 +46,7 @@ export class ProfileComponent {
   private authService = inject(AuthService);
   private studentService = inject(StudentService);
   private studentExamService = inject(StudentExamService);
+  private reservationService = inject(ReservationService);
   totalExams = this.studentExamService.reports
   private shared = inject(Shared);
   private router = inject(Router);
@@ -70,6 +74,8 @@ export class ProfileComponent {
   }
   showCourseDetailsFlag: boolean = false;
   course = signal<APIStudentCourse | null>(null);
+  courseReservations = signal<APICourseReservation[]>([]);
+  isLoadingCourseServices = signal(false);
   activeTab: ProfileTab = 'certifications';
   // user = computed(() => this.authService.loggedStudent());
   hasAnyCourseFeature = computed(() => {
@@ -102,6 +108,8 @@ export class ProfileComponent {
           this.course.set(selected);
 
           this.showCourseDetailsFlag = true;
+
+          this.loadCourseServices(selected);
 
         }
 
@@ -253,6 +261,79 @@ export class ProfileComponent {
 
     });
 
+  }
+
+  private loadCourseServices(course: APIStudentCourse): void {
+    const body: RequestBody = {
+      filters: [
+        {
+          propertyName: 'StudentId',
+          operation: 0,
+          value: course.studentId
+        },
+        {
+          propertyName: 'CourseId',
+          operation: 0,
+          value: course.courseId
+        }
+      ],
+      sort: [
+        {
+          sortBy: 'CreatedAt',
+          sortDirection: 'desc'
+        }
+      ],
+      pagination: {
+        getAll: false,
+        pageNumber: 1,
+        pageSize: 20
+      },
+      columns: []
+    };
+
+    this.isLoadingCourseServices.set(true);
+    this.courseReservations.set([]);
+
+    this.reservationService.searchCourseReservations(body).subscribe({
+      next: ({ reservations }) => {
+        this.courseReservations.set(
+          reservations.filter(reservation => reservation.isReserved)
+        );
+        this.isLoadingCourseServices.set(false);
+      },
+      error: (error) => {
+        const message = error instanceof Error
+          ? error.message
+          : 'Failed to load course services';
+        this.toasting.showToast(message, 'error');
+        this.isLoadingCourseServices.set(false);
+      }
+    });
+  }
+
+  getCourseServiceRoute(serviceName: string | null): string | null {
+    const normalizedName = serviceName?.trim().toLowerCase() ?? '';
+
+    if (normalizedName.includes('exam')) return 'exam-simulator';
+    if (normalizedName.includes('recorded')) return 'recorded-course';
+    if (normalizedName.includes('live')) return 'live-course';
+
+    return null;
+  }
+
+  getCourseServiceIcon(serviceName: string | null): string {
+    const route = this.getCourseServiceRoute(serviceName);
+
+    if (route === 'exam-simulator') return 'bi-controller';
+    if (route === 'recorded-course') return 'bi-play-circle';
+    if (route === 'live-course') return 'bi-camera-video';
+
+    return 'bi-grid';
+  }
+
+  openCourseService(serviceName: string | null): void {
+    const route = this.getCourseServiceRoute(serviceName);
+    if (route) this.navigateToCourseFeatue(route);
   }
 
   onUpdateInfo(form:NgForm) {

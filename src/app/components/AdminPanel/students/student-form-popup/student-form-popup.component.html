@@ -62,6 +62,15 @@
       />
     </div>
 
+    <div class="mb-2">
+      <label class="form-label mb-1">Promo Expiry Date</label>
+      <input
+        class="form-control"
+        type="date"
+        [(ngModel)]="formModel.promoToDateValid"
+      />
+    </div>
+
     <div class="mb-3">
       <label class="form-label mb-1"
         >Password {{ isEditMode() ? "(optional)" : "*" }}</label

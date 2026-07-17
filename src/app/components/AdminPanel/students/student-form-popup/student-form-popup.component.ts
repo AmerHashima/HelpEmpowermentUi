@@ -117,6 +117,7 @@ export class StudentFormPopupComponent {
           username: student.username,
           promoCode: student.promoCode ?? '',
           promoDiscount: student.promoDiscount ?? null,
+          promoToDateValid: student.promoToDateValid?.slice(0, 10) ?? null,
           password: '',
           confirmPassword: '',
           isActive: student.isActive
@@ -144,6 +145,7 @@ export class StudentFormPopupComponent {
       mobile: this.formModel.mobile.trim(),
       promoCode: trimmedPromoCode ? trimmedPromoCode : undefined,
       promoDiscount: this.formModel.promoDiscount ?? undefined,
+      promoToDateValid: this.formModel.promoToDateValid || null,
     };
   }
 
@@ -159,6 +161,7 @@ export class StudentFormPopupComponent {
       username: this.formModel.username.trim(),
       promoCode: trimmedPromoCode ? trimmedPromoCode : undefined,
       promoDiscount: this.formModel.promoDiscount ?? undefined,
+      promoToDateValid: this.formModel.promoToDateValid || null,
       password: this.formModel.password?.trim() ? this.formModel.password.trim() : undefined,
       isActive: this.formModel.isActive
     };
@@ -185,6 +188,7 @@ export class StudentFormPopupComponent {
       username: '',
       promoCode: '',
       promoDiscount: null,
+      promoToDateValid: null,
       password: '',
       confirmPassword: '',
       isActive:false

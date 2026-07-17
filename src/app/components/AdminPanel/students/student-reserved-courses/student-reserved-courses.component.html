@@ -244,8 +244,16 @@
                   track reservation.oid
                 ) {
                   <div class="border rounded p-2 mb-2">
-                    <div>
+                    <div class="d-flex justify-content-between align-items-center gap-2">
                       <strong>{{ reservation.serviceName }}</strong>
+                      <button
+                        class="btn btn-sm btn-outline-danger"
+                        type="button"
+                        [disabled]="deletingReservationId() === reservation.oid"
+                        (click)="deleteService(item.oid, reservation)"
+                      >
+                        {{ deletingReservationId() === reservation.oid ? "Deleting..." : "Delete" }}
+                      </button>
                     </div>
 
                     <div class="small text-muted">

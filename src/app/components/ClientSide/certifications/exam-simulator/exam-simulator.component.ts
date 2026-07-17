@@ -41,12 +41,12 @@ export class ExamSimulatorComponent {
   })
   showExamSimulator = computed(() => this.isEnrolled() && this.studentService.showExamSimulator === true);
   private toasting = inject(ToastingMessagesService);
-  private certificationService=inject(CertificationService);
+  private certificationService = inject(CertificationService);
   isRTL = this.shared.isRtl;
   // studentToken = this.auth.studentToken;
   isLoggedIn = computed(() => !!this.auth.studentToken());
   hydrated = signal(false);
-  price=this.certificationService.examSimulationPrice;
+  price = this.certificationService.examSimulationPrice;
   certification = this.shared.currentCertificationObject;
   examsStore = inject(ExamsStore);
   //  chooseExam:boolean=false;
@@ -298,23 +298,23 @@ export class ExamSimulatorComponent {
 
     // Already enrolled
 
-    if (
+    // if (
 
-      this.studentService.hasReservation(
+    //   this.studentService.hasReservation(
 
-        courseId,
+    //     courseId,
 
-        'examSimulationReserv'
+    //     'examSimulationReserv'
 
-      )
+    //   )
 
-    ) {
+    // ) {
 
-      this.toasting.showToast('course.already.enrolled', 'warning');
+    //   this.toasting.showToast('course.already.enrolled', 'warning');
 
-      return;
+    //   return;
 
-    }
+    // }
 
     // Already in cart
 
@@ -363,7 +363,7 @@ export class ExamSimulatorComponent {
     };
 
     this.cartService.updateCartItem(payload.oid, payload).subscribe({
-      next: (cartItem) => { this.cartService.updateBasket(cartItem);}
+      next: (cartItem) => { this.cartService.updateBasket(cartItem); }
     });
   }
   private addNewCourse(courseId: string): void {
@@ -378,7 +378,7 @@ export class ExamSimulatorComponent {
     };
 
     this.cartService.addCartItem(cartPayload).subscribe({
-      next: (cartItem) => {  this.cartService.updateBasket(cartItem);}
+      next: (cartItem) => { this.cartService.updateBasket(cartItem); }
     });
   }
 }

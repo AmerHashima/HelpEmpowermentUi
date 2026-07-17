@@ -181,7 +181,9 @@ export class StudentsComponent {
             ],
             pagination: {
                 getAll: false,
-                pageNumber: this.pageIndex(),
+                // The API uses one-based page numbers while the component uses
+                // a zero-based index for its Previous/Next calculations.
+                pageNumber: this.pageIndex() + 1,
                 pageSize: this.pageSize()
             },
             columns: ['oid', 'nameEn', 'nameAr', 'email', 'mobile', 'username', 'isActive', 'courses']

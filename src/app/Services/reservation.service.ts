@@ -92,7 +92,7 @@ export class ReservationService {
 
   searchCourseReservations(body: RequestBody): Observable<{ reservations: APICourseReservation[]; total: number }> {
         return this.apiService
-          .query<ApiSearchResponse<APICourseReservation>>('Students/with-courses', body)
+          .query<ApiSearchResponse<APICourseReservation>>('StudentCourseReservations/search', body)
           .pipe(
             map((response: ApiSearchResponse<APICourseReservation>) => {
               if (!response.success) {

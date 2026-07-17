@@ -8,6 +8,7 @@ export interface Student {
   username: string,
   promoCode?: string,
   promoDiscount?: number,
+  promoToDateValid?: string | null,
   courses?: string[],
   password?: string,
   isActive: boolean,
@@ -45,6 +46,7 @@ export interface AuthStudent {
   username: string,
   promoCode?: string,
   promoDiscount?: number,
+  promoToDateValid?: string | null,
   password?: string,
   confirmPassword?: string,
 }

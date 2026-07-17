@@ -11,19 +11,21 @@ export interface CourseReservation {
 export interface APICourseReservation {
   oid:string,
   studentCourseId: string
+  studentId: string | null,
+  courseId: string | null,
   courseServiceId: string,
-  reservationDate: string,
-  servicePrice: number,
+  reservationDate: string | null,
+  servicePrice: number | null,
   isReserved: boolean,
-  notes: string,
-  createdBy: string,
-  courseName: string,
-  serviceName: string,
-  reservationExpiryDate:string,
-  activeTime: number,
-  createdAt: string,
-  updatedAt: string
-  updatedBy: string
+  notes: string | null,
+  createdBy: string | null,
+  courseName: string | null,
+  serviceName: string | null,
+  reservationExpiryDate:string | null,
+  activeTime: number | null,
+  createdAt: string | null,
+  updatedAt: string | null
+  updatedBy: string | null
 }
 
 export interface UpdateCourseReservation {

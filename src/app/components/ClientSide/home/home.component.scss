@@ -8,3 +8,47 @@ h2{
 .expirteSubTitle{
   color:$primaryColor;
 }
+
+app-page-banner {
+  display: block;
+}
+
+app-page-banner.home-hero {
+  --page-banner-min-height: calc(100svh - 210px);
+}
+
+.training {
+  padding-block: 3rem !important;
+}
+
+.training + .training,
+.home-faq-section {
+  margin-top: 2rem;
+}
+
+.home-faq-section {
+  padding-top: 3rem;
+}
+
+@media screen and (max-width: 767px) {
+  app-page-banner {
+    margin-bottom: 0;
+  }
+
+  app-page-banner.home-hero {
+    --page-banner-min-height: auto;
+  }
+
+  .training {
+    padding-block: 2rem !important;
+  }
+
+  .training + .training,
+  .home-faq-section {
+    margin-top: 1rem;
+  }
+
+  .home-faq-section {
+    padding-top: 2rem;
+  }
+}

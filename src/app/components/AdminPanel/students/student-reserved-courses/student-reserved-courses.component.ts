@@ -18,6 +18,7 @@ import { APICourseReservation } from '../../../../Interface/course-reservation';
 import { LookupService } from '../../../../Services/lookup.service';
 import { LookupDetail } from '../../../../models/lookup';
 import { SpkNgSelectComponent } from '../../../../shared/spk-ng-select/spk-ng-select.component';
+import { confirmDelete } from '../../../../shared/utils/confirm-delete';
 
 @Component({
   selector: 'app-student-reserved-courses',
@@ -57,6 +58,7 @@ export class StudentReservedCoursesComponent {
     createdBy: createdUpdatedOID
   });
   courseReservations = signal<Record<string, APICourseReservation[]>>({});
+  deletingReservationId = signal<string | null>(null);
 
   constructor() {
     this.lookupService.getPaymentMethods().subscribe({
@@ -145,6 +147,32 @@ export class StudentReservedCoursesComponent {
 
       });
 
+  }
+
+  async deleteService(studentCourseId: string, reservation: APICourseReservation): Promise<void> {
+    const serviceName = reservation.serviceName || 'this service';
+    if (!(await confirmDelete(`Are you sure you want to delete ${serviceName}?`))) return;
+
+    this.deletingReservationId.set(reservation.oid);
+    this.errorMessage.set('');
+    this.successMessage.set('');
+
+    this.reservationService.deleteCourseReservation(reservation.oid).subscribe({
+      next: () => {
+        this.courseReservations.update(current => ({
+          ...current,
+          [studentCourseId]: (current[studentCourseId] ?? [])
+            .filter(item => item.oid !== reservation.oid)
+        }));
+        this.successMessage.set(`${serviceName} deleted successfully.`);
+        this.deletingReservationId.set(null);
+      },
+      error: (error: unknown) => {
+        const message = error instanceof Error ? error.message : 'Failed to delete course service';
+        this.errorMessage.set(message);
+        this.deletingReservationId.set(null);
+      }
+    });
   }
   loadCertifications(): void {
     this.loadingCertifications.set(true);

@@ -9,12 +9,7 @@
 
               <label class="profile-edit-btn">
                 <i class="bi bi-camera-fill"></i>
-                <input
-                  type="file"
-                  (change)="handleFileInput($event)"
-                  accept="image/*"
-                  hidden
-                />
+                <input type="file" (change)="handleFileInput($event)" accept="image/*" hidden />
               </label>
             </div>
             <div class="d-flex justify-content-between align-items-center mb-4">
@@ -37,10 +32,10 @@
               <!-- <a href="javascript:void(0);" class="text-primary">More</a> -->
             </div>
             @if (user()?.mobile) {
-              <div class="main-profile-bio text-center">
-                <i class="bi bi-telephone pe-1"></i>
-                <span> {{ user()?.mobile }} </span>
-              </div>
+            <div class="main-profile-bio text-center">
+              <i class="bi bi-telephone pe-1"></i>
+              <span> {{ user()?.mobile }} </span>
+            </div>
             }
 
             <!-- main-profile-bio -->
@@ -86,47 +81,33 @@
             #nav="ngbNav"
             class="nav nav-tabs profile navtab-custom panel-tabs pb-0 pt-0"
           > -->
-          <ul
-            ngbNav
-            #nav="ngbNav"
-            [(activeId)]="activeTab"
-            (activeIdChange)="onTabChange($event)"
-            class="nav nav-tabs profile navtab-custom panel-tabs pb-0 pt-0"
-          >
+          <ul ngbNav #nav="ngbNav" [(activeId)]="activeTab" (activeIdChange)="onTabChange($event)"
+            class="nav nav-tabs profile navtab-custom panel-tabs pb-0 pt-0">
             <li [ngbNavItem]="'certifications'" class="">
               <a ngbNavLink data-bs-toggle="tab" class="" aria-expanded="true">
-                <span class="visible-xs"
-                  ><i class="bi bi-collection me-1"></i
-                ></span>
+                <span class="visible-xs"><i class="bi bi-collection me-1"></i></span>
                 <span class="hidden-xs">{{
                   "profile.enrolledCertifications" | translate
-                }}</span>
+                  }}</span>
               </a>
               <ng-template ngbNavContent>
                 <div class="row g-2">
                   @if (!showCourseDetailsFlag) {
-                    @for (course of enrolledCourses(); track course) {
-                      <div class="col-sm-6 col-md-6 col-lg-4">
-                        <div
-                          class="card course-card h-100 position-relative h-100"
-                          (click)="showCourseDetails(course)"
-                        >
-                          <img
-                            [src]="getCourseImage(course)"
-                            class="card-img-top"
-                            alt="course"
-                          />
+                  @for (course of enrolledCourses(); track course) {
+                  <div class="col-sm-6 col-md-6 col-lg-4">
+                    <div class="card course-card h-100 position-relative h-100" (click)="showCourseDetails(course)">
+                      <img [src]="getCourseImage(course)" class="card-img-top" alt="course" />
 
-                          <div class="card-body d-flex flex-column flex-grow-1">
-                            <h5 class="card-title">
-                              {{ course.courseName }}
-                              {{ "profile.certification" | translate }}
-                            </h5>
-                            <!-- <p class="text-muted small mb-2">
+                      <div class="card-body d-flex flex-column flex-grow-1">
+                        <h5 class="card-title">
+                          {{ course.courseName }}
+                          {{ "profile.certification" | translate }}
+                        </h5>
+                        <!-- <p class="text-muted small mb-2">
                               Mahmoud Elhelbawi
                             </p> -->
 
-                            <!-- <div class="d-flex justify-content-between mb-2">
+                        <!-- <div class="d-flex justify-content-between mb-2">
                               <small
                                 ><i class="bi bi-journal-text me-1"></i
                                 >{{ course.lessons }} Lessons</small
@@ -147,73 +128,51 @@
                               >{{ course.progress }}% Completed</small
                             > -->
 
-                            <!-- <app-site-button
+                        <!-- <app-site-button
                               class="flex-grow-1 align-content-end"
                               title="Continue Course"
                               [isRTL]="isRTL()"
                               type="main"
                               (click)="continueCourse(course)"
                             /> -->
-                          </div>
-                        </div>
                       </div>
-                    } @empty {
-                      <div class="empty-courses text-center py-5">
-                        <i class="bi bi-journal-x fs-1 text-muted"></i>
-                        <p class="mt-3 text-muted w-100">
-                          {{ "profile.noCertifications" | translate }}
-                        </p>
-                      </div>
-                    }
+                    </div>
+                  </div>
+                  } @empty {
+                  <div class="empty-courses text-center py-5">
+                    <i class="bi bi-journal-x fs-1 text-muted"></i>
+                    <p class="mt-3 text-muted w-100">
+                      {{ "profile.noCertifications" | translate }}
+                    </p>
+                  </div>
+                  }
                   } @else {
+                  <div class="w-100">
+                    <h5 class="mb-3">{{ course()?.courseName }}</h5>
                     <div class="d-flex gap-1 align-items-center">
-                      @if (course()?.examSimulationReserv) {
-                        <div
-                          class="course-feature"
-                          (click)="navigateToCourseFeatue('exam-simulator')"
-                        >
-                          <i class="bi bi-controller feature-icon"></i>
-                          <span class="feature-text">{{
-                            "profile.examSimulator" | translate
-                          }}</span>
-                        </div>
+                      @if (isLoadingCourseServices()) {
+                      <div class="course-feature empty-feature w-100 justify-content-center">
+                        <span class="spinner-border spinner-border-sm me-2"></span>
+                        <span class="feature-text">Loading...</span>
+                      </div>
+                      } @else {
+                      @for (reservation of courseReservations(); track reservation.oid) {
+                      <div class="course-feature" (click)="openCourseService(reservation.serviceName)">
+                        <i class="bi feature-icon"
+                          [class]="'bi feature-icon ' + getCourseServiceIcon(reservation.serviceName)"></i>
+                        <span class="feature-text">{{ reservation.serviceName || "Service" }}</span>
+                      </div>
+                      } @empty {
+                      <div class="course-feature empty-feature w-100 justify-content-center">
+                        <i class="bi bi-info-circle feature-icon"></i>
+                        <span class="feature-text">
+                          {{ "profile.noFeatures" | translate }}
+                        </span>
+                      </div>
                       }
-
-                      @if (course()?.recordedCourseReserv) {
-                        <div
-                          class="course-feature"
-                          (click)="navigateToCourseFeatue('recorded-course')"
-                        >
-                          <i class="bi bi-play-circle feature-icon"></i>
-                          <span class="feature-text">{{
-                            "profile.recordedCourses" | translate
-                          }}</span>
-                        </div>
-                      }
-
-                      @if (course()?.liveCourseReserv) {
-                        <div
-                          class="course-feature"
-                          (click)="navigateToCourseFeatue('live-course')"
-                        >
-                          <i class="bi bi-camera-video feature-icon"></i>
-                          <span class="feature-text">{{
-                            "profile.liveCourse" | translate
-                          }}</span>
-                        </div>
-                      }
-
-                      @if (!hasAnyCourseFeature()) {
-                        <div
-                          class="course-feature empty-feature w-100 justify-content-center"
-                        >
-                          <i class="bi bi-info-circle feature-icon"></i>
-                          <span class="feature-text">
-                            {{ "profile.noFeatures" | translate }}
-                          </span>
-                        </div>
                       }
                     </div>
+                  </div>
                   }
                 </div>
                 <!-- } -->
@@ -323,113 +282,89 @@
 
             <li [ngbNavItem]="'coupons'" class="">
               <a ngbNavLink data-bs-toggle="tab" aria-expanded="false">
-                <span class="visible-xs"
-                  ><i class="bi bi-clipboard-check me-1"></i
-                ></span>
+                <span class="visible-xs"><i class="bi bi-clipboard-check me-1"></i></span>
                 <span class="hidden-xs">{{
                   "profile.copuons" | translate
-                }}</span>
+                  }}</span>
               </a>
               <ng-template ngbNavContent>
                 @if (!user()?.promoCode) {
-                  <div class="empty-exams text-center py-5">
-                    <i class="bi bi-file-earmark-text fs-1 text-muted"></i>
-                    <p class="mt-3 text-muted w-100">
-                      {{ "profile.noCoupons" | translate }}
-                    </p>
-                  </div>
+                <div class="empty-exams text-center py-5">
+                  <i class="bi bi-file-earmark-text fs-1 text-muted"></i>
+                  <p class="mt-3 text-muted w-100">
+                    {{ "profile.noCoupons" | translate }}
+                  </p>
+                </div>
                 } @else {
-                  <div class="row g-4 exams">
-                    <div class="row g-3">
-                      <div class="col-md-6 col-lg-4">
-                        <div class="card coupon-card p-3 h-100">
-                          <div
-                            class="d-flex justify-content-between align-items-center mb-2"
-                          >
-                            <h5 class="mb-0 text-primary">
-                              {{ user()?.promoCode }}
-                            </h5>
-                            <span class="badge bg-success">
-                              {{ user()?.promoDiscount }}%
-                            </span>
-                          </div>
+                <div class="row g-4 exams">
+                  <div class="row g-3">
+                    <div class="col-md-6 col-lg-4">
+                      <div class="card coupon-card p-3 h-100">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                          <h5 class="mb-0 text-primary">
+                            {{ user()?.promoCode }}
+                          </h5>
+                          <span class="badge bg-success">
+                            {{ user()?.promoDiscount }}%
+                          </span>
+                        </div>
 
-                          <div class="coupon-details small text-muted">
-                            <p class="mb-1">
-                              <i class="bi bi-people me-1"></i>
-                              Used: {{ user()?.usersUsedPromo }}
-                            </p>
-
+                        <div class="coupon-details small text-muted">
+                          <p class="mb-1">
+                            <i class="bi bi-people me-1"></i>
+                            Used: {{ user()?.usersUsedPromo }}
+                          </p>
+                          <!-- 
                             <p class="mb-1">
                               <i class="bi bi-cash-coin me-1"></i>
                               Total Saved: {{ user()?.totalMoneyWithPromo }}
-                            </p>
+                            </p> -->
 
-                            <p class="mb-0">
-                              <i class="bi bi-calendar-event me-1"></i>
-                              Valid Until:
-                              {{
-                                user()?.promoToDateValid
-                                  ? (user()?.promoToDateValid
-                                    | date: "mediumDate")
-                                  : "No expiry"
-                              }}
-                            </p>
-                          </div>
+                          <p class="mb-0">
+                            <i class="bi bi-calendar-event me-1"></i>
+                            Valid Until:
+                            {{
+                            user()?.promoToDateValid
+                            ? (user()?.promoToDateValid
+                            | date: "mediumDate")
+                            : "No expiry"
+                            }}
+                          </p>
                         </div>
                       </div>
                     </div>
                   </div>
+                </div>
                 }
               </ng-template>
             </li>
             <li [ngbNavItem]="'settings'" class="">
               <a ngbNavLink data-bs-toggle="tab" aria-expanded="false">
-                <span class="visible-xs"
-                  ><i class="las la-cog fs-16 me-1"></i
-                ></span>
+                <span class="visible-xs"><i class="las la-cog fs-16 me-1"></i></span>
                 <span class="hidden-xs">{{
                   "profile.settings" | translate
-                }}</span>
+                  }}</span>
               </a>
               <ng-template ngbNavContent>
                 <div class="border-0 p-0 form" id="settings">
-                  <form
-                    #registerForm="ngForm"
-                    (ngSubmit)="onUpdateInfo(registerForm)"
-                    class="register-form mb-0"
-                  >
+                  <form #registerForm="ngForm" (ngSubmit)="onUpdateInfo(registerForm)" class="register-form mb-0">
                     <div class="d-flex flex-column gap-3">
                       <div class="row">
                         <div class="col-12 col-lg-6">
-                          <app-input
-                            name="firstName"
-                            [(ngModel)]="credentials.firstName"
-                            required
-                            [label]="'register.firstNameLabel' | translate"
-                            [placeholder]="
+                          <app-input name="firstName" [(ngModel)]="credentials.firstName" required
+                            [label]="'register.firstNameLabel' | translate" [placeholder]="
                               'register.firstNamePlaceholder' | translate
-                            "
-                            [icon]="'bi bi-person'"
-                            [errorMessages]="{
+                            " [icon]="'bi bi-person'" [errorMessages]="{
                               required: 'First Name is required' | translate,
-                            }"
-                          ></app-input>
+                            }"></app-input>
                         </div>
                         <div class="col-12 col-lg-6">
-                          <app-input
-                            name="lastName"
-                            [(ngModel)]="credentials.lastName"
-                            required
-                            [label]="'register.lastNameLabel' | translate"
-                            [placeholder]="
+                          <app-input name="lastName" [(ngModel)]="credentials.lastName" required
+                            [label]="'register.lastNameLabel' | translate" [placeholder]="
                               'register.lastNamePlaceholder' | translate
-                            "
-                            [icon]="'bi bi-person'"
-                            [errorMessages]="{
+                            " [icon]="'bi bi-person'" [errorMessages]="{
                               required: 'Last Name is required' | translate,
-                            }"
-                          ></app-input>
+                            }"></app-input>
                         </div>
                       </div>
                       <!-- <div class="row">
@@ -466,47 +401,25 @@
                           ></app-input>
                         </div>
                       </div> -->
-                      <app-input
-                        name="username"
-                        [(ngModel)]="credentials.username"
-                        required
-                        [label]="'register.usernameLabel' | translate"
-                        [placeholder]="
+                      <app-input name="username" [(ngModel)]="credentials.username" required
+                        [label]="'register.usernameLabel' | translate" [placeholder]="
                           'register.usernamePlaceholder' | translate
-                        "
-                        [icon]="'bi bi-person'"
-                        [errorMessages]="{
+                        " [icon]="'bi bi-person'" [errorMessages]="{
                           required: 'User Name is required' | translate,
-                        }"
-                      ></app-input>
-                      <app-input
-                        name="email"
-                        [(ngModel)]="credentials.email"
-                        required
-                        email
-                        [label]="'log.emailLabel' | translate"
-                        [placeholder]="'log.emailPlaceholder' | translate"
-                        [icon]="'bi bi-envelope'"
-                        [errorMessages]="{
+                        }"></app-input>
+                      <app-input name="email" [(ngModel)]="credentials.email" required email
+                        [label]="'log.emailLabel' | translate" [placeholder]="'log.emailPlaceholder' | translate"
+                        [icon]="'bi bi-envelope'" [errorMessages]="{
                           required: 'Email is required' | translate,
                           email: 'Invalid email format' | translate,
-                        }"
-                      ></app-input>
+                        }"></app-input>
 
-                      <app-phone-input
-                        name="mobile"
-                        [(ngModel)]="credentials.mobile"
-                        [required]="true"
-                        [labelKey]="'register.phoneLabel' | translate"
-                      >
+                      <app-phone-input name="mobile" [(ngModel)]="credentials.mobile" [required]="true"
+                        [labelKey]="'register.phoneLabel' | translate">
                       </app-phone-input>
 
-                      <app-site-button
-                        title="profile.save"
-                        type="main"
-                        htmlType="submit"
-                        [icon]="'bi bi-arrow'"
-                      ></app-site-button>
+                      <app-site-button title="profile.save" type="main" htmlType="submit"
+                        [icon]="'bi bi-arrow'"></app-site-button>
                     </div>
                   </form>
                 </div>
@@ -514,72 +427,39 @@
             </li>
             <li [ngbNavItem]="'password'" class="">
               <a ngbNavLink data-bs-toggle="tab" aria-expanded="false">
-                <span class="visible-xs"
-                  ><i class="las la-cog fs-16 me-1"></i
-                ></span>
+                <span class="visible-xs"><i class="las la-cog fs-16 me-1"></i></span>
                 <span class="hidden-xs">{{
                   "profile.changePassword" | translate
-                }}</span>
+                  }}</span>
               </a>
               <ng-template ngbNavContent>
                 <div class="border-0 p-0 form" id="changePassword">
-                  <form
-                    #passwordForm="ngForm"
-                    (ngSubmit)="onChangePassword(passwordForm)"
-                    class="register-form mb-0"
-                  >
+                  <form #passwordForm="ngForm" (ngSubmit)="onChangePassword(passwordForm)" class="register-form mb-0">
                     <div class="d-flex flex-column gap-3">
-                      <app-input
-                        name="currentPassword"
-                        [(ngModel)]="changePasswordForm.currentPassword"
-                        required
-                        minlength="6"
-                        [label]="'profile.currentPassword' | translate"
-                        [placeholder]="'profile.currentPassword' | translate"
-                        [icon]="'bi bi-lock'"
-                        [type]="'password'"
+                      <app-input name="currentPassword" [(ngModel)]="changePasswordForm.currentPassword" required
+                        minlength="6" [label]="'profile.currentPassword' | translate"
+                        [placeholder]="'profile.currentPassword' | translate" [icon]="'bi bi-lock'" [type]="'password'"
                         [errorMessages]="{
                           required: 'CurrentPassword is required' | translate,
                           minlength: 'At least 6 characters' | translate,
-                        }"
-                      ></app-input>
-                      <app-input
-                        name="newPassword"
-                        [(ngModel)]="changePasswordForm.newPassword"
-                        required
-                        minlength="6"
+                        }"></app-input>
+                      <app-input name="newPassword" [(ngModel)]="changePasswordForm.newPassword" required minlength="6"
                         [label]="'profile.newPassword' | translate"
-                        [placeholder]="'profile.enterNewPassword' | translate"
-                        [icon]="'bi bi-lock'"
-                        [type]="'password'"
+                        [placeholder]="'profile.enterNewPassword' | translate" [icon]="'bi bi-lock'" [type]="'password'"
                         [errorMessages]="{
                           required: 'New Password is required' | translate,
                           minlength: 'At least 6 characters' | translate,
-                        }"
-                      ></app-input>
+                        }"></app-input>
 
-                      <app-input
-                        name="confirmPassword"
-                        [(ngModel)]="changePasswordForm.confirmPassword"
-                        required
-                        minlength="6"
-                        [label]="'profile.confirmPassword' | translate"
-                        [placeholder]="
+                      <app-input name="confirmPassword" [(ngModel)]="changePasswordForm.confirmPassword" required
+                        minlength="6" [label]="'profile.confirmPassword' | translate" [placeholder]="
                           'profile.enterConfirmPassword' | translate
-                        "
-                        [icon]="'bi bi-lock'"
-                        [type]="'password'"
-                        [errorMessages]="{
+                        " [icon]="'bi bi-lock'" [type]="'password'" [errorMessages]="{
                           required: 'Confirm Password is required' | translate,
                           minlength: 'At least 6 characters' | translate,
-                        }"
-                      ></app-input>
-                      <app-site-button
-                        title="profile.changePassword"
-                        type="main"
-                        htmlType="submit"
-                        [icon]="'bi bi-arrow'"
-                      ></app-site-button>
+                        }"></app-input>
+                      <app-site-button title="profile.changePassword" type="main" htmlType="submit"
+                        [icon]="'bi bi-arrow'"></app-site-button>
                     </div>
                   </form>
                 </div>
