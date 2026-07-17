@@ -49,7 +49,6 @@ export class RecordedCourseComponent {
   hasRecordedCourseAccess = computed(
     () => this.isEnrolled() && this.studentService.showExamSimulator === true
   );
-  isCourseFinished=this.studentService.isCourseFinished;
   enrollImage = 'assets/images/enroll.png';
   recoedImage = "assets/images/recordedCourse.jpeg";
   price = this.certificationService.recordedCoursePrice;
@@ -112,6 +111,19 @@ export class RecordedCourseComponent {
   );
 
   videos = computed(() => this.videosState().data);
+
+  isCourseFinished = computed(() => {
+    const completedLessons = this.studentService.completedLessonsInCourse() ?? 0;
+    const sessions = this.videos();
+
+    if (!sessions.length) return false;
+
+    const lastSessionOrder = Math.max(
+      ...sessions.map((session, index) => session.orderNo ?? index + 1)
+    );
+
+    return completedLessons >= lastSessionOrder;
+  });
 
 count=signal<number>(0);
   ngOnInit() {

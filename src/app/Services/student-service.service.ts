@@ -14,7 +14,7 @@ import { PaginatedStudentExportResponse, StudentExportSearchRequest } from '../m
   providedIn: 'root'
 })
 export class StudentService {
-  innerStudent=signal<APIStudent | null>(null);
+  innerStudent = signal<APIStudent | null>(null);
   enrolledCourses = signal<APIStudentCourse[]>([]);
   currentCourse = computed(() => {
     const certification = this.shared.currentCertificate();
@@ -28,8 +28,8 @@ export class StudentService {
   );
 
   isRecordedCoursesEnrolled = computed(() =>
-    // true
-    !!this.currentCourse()?.recordedCourseReserv
+    true
+    // !!this.currentCourse()?.recordedCourseReserv
   );
 
   isLiveCourseEnrolled = computed(() =>
@@ -43,9 +43,12 @@ export class StudentService {
     this.currentCourse()?.completedLessons
   );
 
-  isCourseFinished = computed(() =>
-    this.currentCourse()?.completedLessons == this.currentCourse()?.totalLessons
-  );
+  isCourseFinished = computed(() => {
+    const course = this.currentCourse();
+    if (!course || course.totalLessons <= 0) return false;
+
+    return course.completedLessons >= course.totalLessons;
+  });
 
 
   constructor(private apiService: ApiService, private auth: AuthService, private shared: Shared) {

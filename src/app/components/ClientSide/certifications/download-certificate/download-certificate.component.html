@@ -4,10 +4,18 @@
       <div
         class="resource-item d-flex align-items-center justify-content-between gap-1"
       >
-        <div class="d-flex gap-2 align-items-center" (click)="navigateToDownloadCertification()">
+        <div class="d-flex gap-2 align-items-center">
           <i class="bi bi-file-earmark-pdf"></i>
           <span class="resourceName"> Certification Of Completion</span>
         </div>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="navigateToDownloadCertification()"
+        >
+          <i class="bi bi-download me-1"></i>
+          Download Certificate
+        </button>
       </div>
     </div>
   </app-accordion>
