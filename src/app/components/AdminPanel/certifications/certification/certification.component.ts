@@ -21,16 +21,22 @@ import { createdUpdatedOID } from '../../../../data/lookUPS';
 import { signal } from '@angular/core';
 import { CertificationCourseVideosTabComponent } from '../certification-course-videos-tab/certification-course-videos-tab.component';
 import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
+import { SpkNgSelectComponent } from '../../../../shared/spk-ng-select/spk-ng-select.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-certification',
   imports: [
+
     ButtonComponent,
     GenericModelComponent,
     SiteButtonComponent,
     TranslatePipe,
     ReactiveFormsModule,
     CertificationCourseVideosTabComponent,
+    SpkNgSelectComponent,
+    CommonModule
+
   ],
   templateUrl: './certification.component.html',
   styleUrl: './certification.component.scss'
@@ -67,8 +73,13 @@ export class CertificationComponent {
     serviceId: ['', Validators.required],
     price: [0, [Validators.required, Validators.min(0)]],
     activeTime: [0, [Validators.required, Validators.min(0)]],
+    isActive: [true, Validators.required]
   });
 
+  status = [
+    { label: 'Active', value: true },
+    { label: 'Inactive', value: false },
+  ];
   constructor() {
 
     this.route.queryParamMap.subscribe(params => {
@@ -237,6 +248,7 @@ export class CertificationComponent {
   startCreateService() {
     this.editingServiceId.set(null);
     this.serviceForm.reset({
+      isActive: true,
       serviceId: '',
       price: 0,
       activeTime: 0,
@@ -249,6 +261,7 @@ export class CertificationComponent {
       serviceId: service.serviceId ?? service.serviceTypeLookupId ?? '',
       price: service.price ?? 0,
       activeTime: service.activeTime ?? 0,
+      isActive: service.isActive ?? true,
     });
   }
 
@@ -274,6 +287,7 @@ export class CertificationComponent {
       serviceId: value.serviceId,
       price: Number(value.price ?? 0),
       activeTime: Number(value.activeTime ?? 0),
+      isActive: value.isActive ?? true,
       createdBy: createdUpdatedOID,
     };
 
