@@ -232,8 +232,22 @@
                 [class.bg-secondary]="!item.liveCourseReserv"
                 >Live Course</span
               >
-              <!-- <span class="badge" [class.bg-success]="item.isCertificateIssued" [class.bg-secondary]="!item.isCertificateIssued">Certificate Issued</span> -->
+              @if (item.isCertificateIssued) {
+                <span class="badge bg-success">Certificate Ready</span>
+              } @else if (item.progressPercentage >= 100) {
+                <span class="badge bg-secondary">Certificate not configured</span>
+              }
             </div>
+
+            @if (item.isCertificateIssued) {
+              <div class="alert alert-success py-2 mt-3 mb-0">
+                <div><strong>Certificate Number:</strong> {{ item.certificateNumber }}</div>
+                <div>
+                  <strong>Issued Date:</strong>
+                  {{ item.certificateIssuedDate | date: "mediumDate" }}
+                </div>
+              </div>
+            }
 
             @if (getReservations(item.oid).length > 0) {
               <div class="border-top mt-3 pt-3">

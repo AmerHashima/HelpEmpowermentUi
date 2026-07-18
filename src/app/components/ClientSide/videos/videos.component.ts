@@ -197,7 +197,10 @@ export class VideosComponent {
     if (order <= completed) return;
 
     if (order === completed + 1) {
-      this.studentService.updateStudentProgress(order).subscribe();
+      const totalLessons = Math.max(
+        ...this.videos().map((item, index) => item.orderNo ?? index + 1)
+      );
+      this.studentService.updateStudentProgress(order, totalLessons).subscribe();
     }
   }
 

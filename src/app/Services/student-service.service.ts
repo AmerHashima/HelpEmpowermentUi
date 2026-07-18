@@ -327,10 +327,10 @@ export class StudentService {
       );
   }
 
-  updateStudentProgress(completedLessons: number): Observable<APIStudentCourse> {
+  updateStudentProgress(completedLessons: number, totalLessons?: number): Observable<APIStudentCourse> {
     const body = {
       completedLessons: completedLessons,
-      totalLessons: this.totalLessonsInCourse()
+      totalLessons: totalLessons ?? this.totalLessonsInCourse() ?? 0
     }
 
     const studentCourseId = this.currentCourse()?.oid;

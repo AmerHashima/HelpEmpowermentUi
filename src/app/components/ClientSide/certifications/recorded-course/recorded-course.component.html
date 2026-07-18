@@ -124,9 +124,34 @@
             <app-instructor-info />
           </div>
         }
-         @if (isCourseFinished() && hasRecordedCourseAccess()) {
-          <div class="col-12">
-            <app-download-certificate/>
+        @if (hasRecordedCourseAccess() && currentStudentCourse()?.isCertificateIssued) {
+          <div class="col-12 mt-4">
+            <section class="alert alert-success border-success mb-3">
+              <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+                <div>
+                  <span class="badge bg-success mb-2">
+                    <i class="bi bi-patch-check-fill me-1"></i>
+                    Certificate Ready
+                  </span>
+                  <div>
+                    <strong>Certificate Number:</strong>
+                    {{ currentStudentCourse()?.certificateNumber }}
+                  </div>
+                  <div>
+                    <strong>Issued Date:</strong>
+                    {{ currentStudentCourse()?.certificateIssuedDate | date: "mediumDate" }}
+                  </div>
+                </div>
+              </div>
+            </section>
+            <app-download-certificate />
+          </div>
+        } @else if (hasRecordedCourseAccess() && isCertificatePending()) {
+          <div class="col-12 mt-4">
+            <div class="alert alert-secondary" role="status">
+              <i class="bi bi-info-circle me-1"></i>
+              Certificate not configured
+            </div>
           </div>
         }
       </div>

@@ -273,8 +273,13 @@ export class CertificationService {
 
 
   updateCertification(id: string, body: Certification): Observable<APICertification> {
+    const updateBody: Certification = {
+      ...body,
+      oid: id,
+    };
+
     return this.apiService
-      .put<ApiResponse<APICertification>>('Courses', id, body)
+      .put<ApiResponse<APICertification>>('Courses', id, updateBody)
       .pipe(
         map((response: ApiResponse<APICertification>) => {
           if (!response.success) {

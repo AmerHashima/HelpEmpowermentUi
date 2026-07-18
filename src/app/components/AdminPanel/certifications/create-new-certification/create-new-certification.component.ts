@@ -46,6 +46,7 @@ export class CreateNewCertificationComponent {
     courseCode: [''],
     courseName: ['', [Validators.required]],
     courseDescription: [''],
+    certificateNumber: ['', [Validators.maxLength(100)]],
 
     durationMinutes: [0],
     questionCount: [0],
@@ -100,6 +101,7 @@ export class CreateNewCertificationComponent {
         courseCode: certification.courseCode,
         courseName: certification.courseName,
         courseDescription: certification.courseDescription,
+        certificateNumber: certification.certificateNumber ?? '',
 
         durationMinutes: certification.durationMinutes,
         courseLevelLookupId: certification.courseLevelLookupId ?? null,
@@ -150,9 +152,10 @@ export class CreateNewCertificationComponent {
       ...(isEdit ? { oid: this.certification()?.oid } : {}),
 
       // courseCode: v.courseCode!,
-      courseCode: v.courseName!,
+      courseCode: v.courseCode?.trim() || v.courseName!,
       courseName: v.courseName!,
       courseDescription: v.courseDescription!,
+      certificateNumber: v.certificateNumber?.trim() || null,
       durationMinutes: v.durationMinutes!,
       courseLevelLookupId: v.courseLevelLookupId ?? null,
       courseCategoryLookupId: v.courseCategoryLookupId ?? null,
@@ -162,6 +165,9 @@ export class CreateNewCertificationComponent {
         : { createdBy: v.userId! }),
 
       questionCount: v.questionCount!,
+      recordedCourseReservPrice: this.certification()?.recordedCourseReservPrice ?? null,
+      examSimulationReservPrice: this.certification()?.examSimulationReservPrice ?? null,
+      liveCourseReservPrice: this.certification()?.liveCourseReservPrice ?? null,
       isActive: v.isActive!,
     };
 

@@ -52,6 +52,18 @@
             }"
           />
         </div>
+        <div class="col-lg-4">
+          <app-input
+            formControlName="certificateNumber"
+            label="Certificate Number"
+            type="text"
+            placeholder="e.g. CERT-COURSE-001"
+            icon=""
+            [errorMessages]="{
+              maxlength: `Certificate number can't exceed 100 characters`,
+            }"
+          />
+        </div>
         <!-- <div class="col-lg-4">
           <spk-ng-select
             formControlName="courseLevelLookupId"

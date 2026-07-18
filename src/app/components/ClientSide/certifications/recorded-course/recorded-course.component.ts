@@ -6,7 +6,7 @@ import { PageBannerComponent } from '../../../../shared/clientSide/page-banner/p
 import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/site-button.component';
 import { StarRatingComponent } from '../../../../shared/star-rating/star-rating.component';
 import { TranslateModule, TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { NgIf } from '@angular/common';
+import { DatePipe, NgIf } from '@angular/common';
 import { CoureseOutlineComponent } from '../courese-outline/courese-outline.component';
 import { CoureseFeaturesComponent } from '../courese-features/courese-features.component';
 import { CouresePlayerComponent, Lesson } from '../courese-player/courese-player.component';
@@ -31,7 +31,7 @@ import { CertificationService } from '../../../../Services/certification.service
   imports: [PageBannerComponent, SiteButtonComponent, StarRatingComponent, TranslateModule, NgIf,
     TranslatePipe, NgIf, CoureseOutlineComponent, CoureseFeaturesComponent, CouresePlayerComponent,
     CoureseContentComponent, ResourcesComponent, InstructorInfoComponent, TargetAudienceComponent, GenericModelComponent,
-    DownloadCertificateComponent
+    DownloadCertificateComponent, DatePipe
   ],
   templateUrl: './recorded-course.component.html',
   styleUrl: './recorded-course.component.scss'
@@ -46,6 +46,7 @@ export class RecordedCourseComponent {
   private studentService = inject(StudentService);
   private certificationService=inject(CertificationService);
   isEnrolled = this.studentService.isRecordedCoursesEnrolled;
+  currentStudentCourse = this.studentService.currentCourse;
   hasRecordedCourseAccess = computed(
     () => this.isEnrolled() && this.studentService.showExamSimulator === true
   );
@@ -123,6 +124,11 @@ export class RecordedCourseComponent {
     );
 
     return completedLessons >= lastSessionOrder;
+  });
+
+  isCertificatePending = computed(() => {
+    const course = this.currentStudentCourse();
+    return !!course && course.progressPercentage >= 100 && !course.isCertificateIssued;
   });
 
 count=signal<number>(0);

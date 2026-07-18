@@ -6,6 +6,7 @@ import { Shared } from '../../../shared/Services/shared/shared';
 import { ActivatedRoute } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
 import { SiteButtonComponent } from '../../../shared/clientSide/site-button/site-button.component';
+import { StudentService } from '../../../Services/student-service.service';
 
 @Component({
   selector: 'app-finish-certification',
@@ -16,6 +17,7 @@ import { SiteButtonComponent } from '../../../shared/clientSide/site-button/site
 export class FinishCertificationComponent {
   private auth = inject(AuthService);
   private shared = inject(Shared);
+  private studentService = inject(StudentService);
   @ViewChild('certificate', { static: false }) certificate!: ElementRef;
   userName = computed(() => this.auth.loggedStudent()?.nameEn);
 
@@ -61,13 +63,25 @@ export class FinishCertificationComponent {
   });
 
   codeNumber = computed(() => {
+    const issuedNumber = this.studentService.currentCourse()?.certificateNumber;
+    if (issuedNumber) return issuedNumber;
+
     const cert = this.finalCert();
     if (!cert) return 0;
 
     return this.CERT_CONFIG[cert.courseCode]?.codeNumber ?? 0;
   });
 
-  date = computed(() => "30 May 2026");
+  date = computed(() => {
+    const issuedDate = this.studentService.currentCourse()?.certificateIssuedDate;
+    if (!issuedDate) return '';
+
+    return new Intl.DateTimeFormat('en-GB', {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric'
+    }).format(new Date(issuedDate));
+  });
   private localCert = signal<any>(null);
   private platformId = inject(PLATFORM_ID);
   private isBrowser = isPlatformBrowser(this.platformId);
