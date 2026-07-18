@@ -36,8 +36,10 @@ export class StudentExportTableComponent {
 
   readonly students = signal<StudentExportReport[]>([]);
   readonly loading = signal(false);
+  readonly exporting = signal(false);
   readonly errorMessage = signal('');
   readonly selectedStudents = signal<Set<string>>(new Set<string>());
+  readonly allMatchingSelected = signal(false);
   readonly pageIndex = signal(0);
   readonly pageSize = signal(10);
   readonly totalCount = signal(0);
@@ -51,7 +53,11 @@ export class StudentExportTableComponent {
 
   constructor() { this.loadStudents(); }
 
-  onSearch(): void { this.pageIndex.set(0); this.loadStudents(); }
+  onSearch(): void {
+    this.pageIndex.set(0);
+    this.clearSelection();
+    this.loadStudents();
+  }
 
   loadStudents(): void {
     this.loading.set(true);
@@ -80,6 +86,17 @@ export class StudentExportTableComponent {
   }
 
   toggleStudent(studentId: string): void {
+    if (this.allMatchingSelected()) {
+      this.allMatchingSelected.set(false);
+      this.selectedStudents.set(new Set(
+        this.students()
+          .map(student => student.studentId)
+          .filter(id => id !== studentId)
+      ));
+      return;
+    }
+
+    this.allMatchingSelected.set(false);
     const selected = new Set(this.selectedStudents());
     selected.has(studentId) ? selected.delete(studentId) : selected.add(studentId);
     this.selectedStudents.set(selected);
@@ -87,14 +104,42 @@ export class StudentExportTableComponent {
 
   toggleAll(event: Event): void {
     const checked = (event.target as HTMLInputElement).checked;
+    this.allMatchingSelected.set(checked);
     this.selectedStudents.set(checked ? new Set(this.students().map(student => student.studentId)) : new Set<string>());
   }
 
-  isSelected(studentId: string): boolean { return this.selectedStudents().has(studentId); }
+  isSelected(studentId: string): boolean {
+    return this.allMatchingSelected() || this.selectedStudents().has(studentId);
+  }
 
   exportSelectedStudents(): void {
+    if (this.allMatchingSelected()) {
+      this.exporting.set(true);
+      this.errorMessage.set('');
+
+      this.studentService.searchStudentExportReport(this.buildRequest(true)).subscribe({
+        next: response => {
+          if (!response.success) {
+            this.errorMessage.set(response.message || response.errors?.join(', ') || 'Failed to export students.');
+          } else {
+            this.writeStudentsFile(response.data ?? []);
+          }
+          this.exporting.set(false);
+        },
+        error: () => {
+          this.errorMessage.set('Failed to export all matching students.');
+          this.exporting.set(false);
+        }
+      });
+      return;
+    }
+
     const selected = this.students().filter(student => this.isSelected(student.studentId));
-    const rows = selected.flatMap((student, index) => this.toExportRows(student, index + 1));
+    this.writeStudentsFile(selected);
+  }
+
+  private writeStudentsFile(students: StudentExportReport[]): void {
+    const rows = students.flatMap((student, index) => this.toExportRows(student, index + 1));
     const worksheet = XLSX.utils.json_to_sheet(rows);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Students');
@@ -106,7 +151,7 @@ export class StudentExportTableComponent {
   displayStartRow(): number { return this.totalCount() ? this.pageIndex() * this.pageSize() + 1 : 0; }
   displayEndRow(): number { return Math.min((this.pageIndex() + 1) * this.pageSize(), this.totalCount()); }
 
-  private buildRequest(): StudentExportSearchRequest {
+  private buildRequest(getAll = false): StudentExportSearchRequest {
     const filters: StudentExportSearchRequest['filters'] = [];
     if (this.searchText.trim()) filters.push({ propertyName: 'nameEn', value: this.searchText.trim(), operation: 2 });
     if (this.mail.trim()) filters.push({ propertyName: 'email', value: this.mail.trim(), operation: 2 });
@@ -114,9 +159,18 @@ export class StudentExportTableComponent {
     return {
       filters,
       sort: [{ sortBy: this.sortBy, sortDirection: this.sortDirection }],
-      pagination: { getAll: false, pageNumber: this.pageIndex(), pageSize: this.pageSize() },
+      pagination: {
+        getAll,
+        pageNumber: getAll ? 0 : this.pageIndex(),
+        pageSize: getAll ? 0 : this.pageSize()
+      },
       columns: []
     };
+  }
+
+  private clearSelection(): void {
+    this.allMatchingSelected.set(false);
+    this.selectedStudents.set(new Set<string>());
   }
 
   private toExportRows(student: StudentExportReport, number: number): ExportRow[] {
