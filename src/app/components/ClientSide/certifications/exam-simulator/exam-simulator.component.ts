@@ -257,7 +257,7 @@ export class ExamSimulatorComponent {
   }
 
   buyNow() {
-    // Implement buy logic (e.g. open checkout, call service, etc.)
+    this.addToCart(true);
   }
 
   // addToCart(): void {
@@ -284,7 +284,7 @@ export class ExamSimulatorComponent {
   //   this.addNewCourse(courseId);
   // }
 
-  addToCart(): void {
+  addToCart(goToBasket = false): void {
 
     if (!this.auth.studentToken()) {
 
@@ -331,24 +331,27 @@ export class ExamSimulatorComponent {
         )
 
       ) {
-
-        this.toasting.showToast('cart.exist', 'warning');
+        if (goToBasket) {
+          this.navigateToBasket();
+        } else {
+          this.toasting.showToast('cart.exist', 'warning');
+        }
 
         return;
 
       }
 
-      this.updateExistingCourse(courseId);
+      this.updateExistingCourse(courseId, goToBasket);
 
       return;
 
     }
 
-    this.addNewCourse(courseId);
+    this.addNewCourse(courseId, goToBasket);
 
   }
 
-  private updateExistingCourse(courseId: string): void {
+  private updateExistingCourse(courseId: string, goToBasket = false): void {
 
     const course = this.cartService.getCourse(courseId);
     if (!course) return;
@@ -363,10 +366,13 @@ export class ExamSimulatorComponent {
     };
 
     this.cartService.updateCartItem(payload.oid, payload).subscribe({
-      next: (cartItem) => { this.cartService.updateBasket(cartItem); }
+      next: (cartItem) => {
+        this.cartService.updateBasket(cartItem);
+        if (goToBasket) this.navigateToBasket();
+      }
     });
   }
-  private addNewCourse(courseId: string): void {
+  private addNewCourse(courseId: string, goToBasket = false): void {
 
     const cartPayload = {
       studentId: this.auth.loggedStudent()?.userId!,
@@ -378,8 +384,15 @@ export class ExamSimulatorComponent {
     };
 
     this.cartService.addCartItem(cartPayload).subscribe({
-      next: (cartItem) => { this.cartService.updateBasket(cartItem); }
+      next: (cartItem) => {
+        this.cartService.updateBasket(cartItem);
+        if (goToBasket) this.navigateToBasket();
+      }
     });
+  }
+
+  private navigateToBasket(): void {
+    this.router.navigate(['/', this.shared.lang(), 'cart']);
   }
 }
 

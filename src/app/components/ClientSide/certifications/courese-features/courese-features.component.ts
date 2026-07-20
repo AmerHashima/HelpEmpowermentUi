@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, signal } from '@angular/core';
+import { Component, computed, inject, input, output } from '@angular/core';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { AccordionComponent } from '../../../../shared/accordion/accordion.component';
 import { AuthService } from '../../../../Services/auth.service';
@@ -18,6 +18,7 @@ export class CoureseFeaturesComponent {
   type = input<string>('features');
   isEnrolled = input<boolean>(false);
   title = input<string>('Course Features');
+  buy = output<void>();
 
 //   courseFeatures = computed(() => {
 //     if (this.certification() == 'pmp' && this.type() == 'features')
@@ -161,6 +162,7 @@ export class CoureseFeaturesComponent {
 //     else return [];
 //   });
   buyNow() {
+    this.buy.emit();
   }
 
 

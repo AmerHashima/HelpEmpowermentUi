@@ -159,7 +159,10 @@
         <div class="col-lg-3">
           <div class="row">
             <div class="col-12">
-              <app-courese-features [isEnrolled]="hasRecordedCourseAccess()" />
+              <app-courese-features
+                [isEnrolled]="hasRecordedCourseAccess()"
+                (buy)="buyNow()"
+              />
             </div>
           </div>
           <div class="col-12">

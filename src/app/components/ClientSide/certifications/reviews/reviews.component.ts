@@ -103,11 +103,11 @@ export class ReviewsComponent {
     };
   }
 
-  private mapReviews(apiReviews: any[]): ReviewItem[] {
+  private mapReviews(apiReviews: APIContact[]): ReviewItem[] {
     return apiReviews.map(r => ({
       reviewerImage: "assets/images/reviewers/person.png",
       reviewerName: this.isRTL() ? r.fullNameAr : r.fullName,
-      reviewDate: r.isRead ? new Date(r.readAt).toLocaleDateString() : '',
+      reviewDate: r.createdAt,
       reviewTopic: `${this.shared.currentCertificate().toUpperCase()} Review`,
       reviewRate: Number(r.subjectAr) || 0,
       reviewDescription: this.extractReviewMessage(r.message)

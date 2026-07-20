@@ -28,6 +28,7 @@ import { catchError, distinctUntilChanged, map, of, startWith, switchMap } from 
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { CourseVideosService } from '../../../../Services/course-videos.service';
 import { CertificationService } from '../../../../Services/certification.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-live-course',
@@ -48,7 +49,8 @@ export class LiveCourseComponent {
   private cartService = inject(CartService);
   private toasting = inject(ToastingMessagesService);
   private contactService=inject(ContactUsService);
-    private courseVideosService = inject(CourseVideosService);
+  private courseVideosService = inject(CourseVideosService);
+  private router = inject(Router);
 
   isRTL = this.shared.isRtl;
   student= this.auth.loggedStudent;
@@ -131,6 +133,7 @@ export class LiveCourseComponent {
 
   }
   buyNow() {
+    this.addToCart(true);
   }
 
 
@@ -156,7 +159,7 @@ export class LiveCourseComponent {
   //   this.addNewCourse(courseId);
   // }
 
-  addToCart(): void {
+  addToCart(goToBasket = false): void {
 
     if (!this.auth.studentToken()) {
 
@@ -183,24 +186,27 @@ export class LiveCourseComponent {
     if (this.cartService.courseExists(courseId)) {
 
       if (this.cartService.isInCart(courseId, 'liveCourseReserv')) {
-
-        this.toasting.showToast('cart.exist', 'warning');
+        if (goToBasket) {
+          this.navigateToBasket();
+        } else {
+          this.toasting.showToast('cart.exist', 'warning');
+        }
 
         return;
 
       }
 
-      this.updateExistingCourse(courseId);
+      this.updateExistingCourse(courseId, goToBasket);
 
       return;
 
     }
 
-    this.addNewCourse(courseId);
+    this.addNewCourse(courseId, goToBasket);
 
   }
 
-  private updateExistingCourse(courseId: string): void {
+  private updateExistingCourse(courseId: string, goToBasket = false): void {
 
     const course = this.cartService.getCourse(courseId);
     if (!course) return;
@@ -215,10 +221,13 @@ export class LiveCourseComponent {
     };
 
     this.cartService.updateCartItem(payload.oid, payload).subscribe({
-      next: (cartItem) => this.cartService.updateBasket(cartItem)
+      next: (cartItem) => {
+        this.cartService.updateBasket(cartItem);
+        if (goToBasket) this.navigateToBasket();
+      }
     });
   }
-  private addNewCourse(courseId: string): void {
+  private addNewCourse(courseId: string, goToBasket = false): void {
 
     const cartPayload = {
       studentId: this.auth.loggedStudent()?.userId!,
@@ -230,8 +239,15 @@ export class LiveCourseComponent {
     };
 
     this.cartService.addCartItem(cartPayload).subscribe({
-      next: (cartItem) => this.cartService.updateBasket(cartItem)
+      next: (cartItem) => {
+        this.cartService.updateBasket(cartItem);
+        if (goToBasket) this.navigateToBasket();
+      }
     });
+  }
+
+  private navigateToBasket(): void {
+    this.router.navigate(['/', this.shared.lang(), 'cart']);
   }
 
 
