@@ -37,12 +37,12 @@
               },
               "src/assets",
               {
-                "glob": "bootstrap-grid.min.css",
+                "glob": "bootstrap.min.css",
                 "input": "node_modules/bootstrap/dist/css",
                 "output": "/assets/styles"
               },
               {
-                "glob": "bootstrap-grid.rtl.min.css",
+                "glob": "bootstrap.rtl.min.css",
                 "input": "node_modules/bootstrap/dist/css",
                 "output": "/assets/styles"
               },
