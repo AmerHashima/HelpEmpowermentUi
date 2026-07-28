@@ -1,17 +1,18 @@
 /* src\assets\styles\styles.scss */
 /* src\assets\styles\variables.scss */
 /* src\assets\styles\light-theme.scss */
-:root .light-theme, :root[data-theme=light] {
+:root .light-theme,
+:root[data-theme=light] {
   --primary-color: #AD1457;
-  --successColor:green;
-  --quizColor:#fff;
-  --accordionBg:#F4F4F4;
+  --successColor: green;
+  --quizColor: #fff;
+  --accordionBg: #F4F4F4;
   --secondary-color: #EC407A;
-  --dropdownNacColor:#80939f;
-  --bgNav:#fff;
+  --dropdownNacColor: #80939f;
+  --bgNav: #fff;
   --inputFieldBgColor: #fff;
   --inputFieldtextColor: var(--icon-color);
-  --navTextColor:#80939f;
+  --navTextColor: #80939f;
   --border-color: rgb(217, 217, 217);
   --light-bg-text-color: #fff;
   --light-text-color: #233043;
@@ -24,12 +25,12 @@
   --socialLinkBg: #ecedef;
   --socialLinkText: #151d20;
   --headerColor: #151d20;
-  --btnDarkbg:#1e1e1e;
-  --btnDarkText:#fff;
-  --paraTextColor:#80939f;
+  --btnDarkbg: #1e1e1e;
+  --btnDarkText: #fff;
+  --paraTextColor: #80939f;
   --btnTextColor: #fff;
   --btnBgColor: #AD1457;
-  --faqBg:#F9FAFB;
+  --faqBg: #F9FAFB;
   --iconColor: #F7FDF9;
   --iconCircleTextColor: #AD1457;
   --sidebarBgColor: #AD1457;
@@ -46,9 +47,9 @@
 :root .dark-theme,
 :root[data-theme=dark] {
   --secondary-color: #ad1457;
-  --successColor:rgb(82, 177, 82);
-  --accordionBg:#2a2a2a;
-  --quizColor:#2a2a2a;
+  --successColor: rgb(82, 177, 82);
+  --accordionBg: #2a2a2a;
+  --quizColor: #2a2a2a;
   --primary-color: #ec407a;
   --dropdownNacColor: #fff;
   --placeHolderColor: #999999;
@@ -60,8 +61,8 @@
   --headerColor: #fff;
   --btnDarkbg: #fff;
   --btnDarkText: #1e1e1e;
-  --paraTextColor:#cdc5c5;
-  --faqBg:#2a2a2a;
+  --paraTextColor: #cdc5c5;
+  --faqBg: #2a2a2a;
   --bgNav: #1e1e1e;
   --navTextColor: #d6c7c7;
   --inputFieldBgColor: #2a2a2a;
@@ -134,7 +135,8 @@ html #toast-container.toast-top-right {
   background-color: #C02C61;
 }
 
-.form-check-label, label {
+.form-check-label,
+label {
   color: var(--paraTextColor) !important;
 }
 
@@ -148,24 +150,30 @@ html #toast-container.toast-top-right {
   color: var(--inputFieldtextColor) !important;
   border-radius: 8px;
 }
+
 .form .input-group .input-group-text {
   background-color: transparent !important;
   color: var(--placeHolderColor) !important;
 }
+
 .form .input-group .form-control {
   background-color: transparent !important;
   border: none;
   color: inherit !important;
 }
+
 .form .input-group .form-control::-moz-placeholder {
   color: var(--placeHolderColor);
 }
+
 .form .input-group .form-control::placeholder {
   color: var(--placeHolderColor);
 }
+
 .form .input-group:focus-within {
   border-color: var(--primary-color) !important;
 }
+
 .form .input-group:focus-within .bi {
   color: var(--primary-color) !important;
 }
@@ -177,6 +185,7 @@ html #toast-container.toast-top-right {
   outline: none !important;
   box-shadow: none !important;
 }
+
 .form-control:focus {
   border-color: var(--primary-color);
 }
@@ -207,7 +216,7 @@ html #toast-container.toast-top-right {
   border: none;
 }
 
-.ng-select.ng-select-focused:not(.ng-select-opened) > .ng-select-container {
+.ng-select.ng-select-focused:not(.ng-select-opened)>.ng-select-container {
   border: 1px solid var(--primary-color);
   box-shadow: none;
 }
@@ -294,6 +303,7 @@ body {
   background-color: var(--inputFieldBgColor);
   color: var(--inputFieldtextColor);
 }
+
 .card-body .filepond--root * {
   color: var(--inputFieldtextColor) !important;
 }
@@ -399,7 +409,8 @@ p {
   width: 100%;
 }
 
-.ng-dropdown-panel, .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+.ng-dropdown-panel,
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
   background-color: var(--inputFieldBgColor) !important;
   color: var(--inputFieldtextColor) !important;
 }
@@ -448,6 +459,7 @@ p {
   background-color: var(--light-bg-text-color) !important;
   color: var(--primary-color) !important;
 }
+
 .webinarRegister .btn.btn-primary:hover {
   color: var(--light-bg-text-color) !important;
 }
@@ -537,21 +549,33 @@ p {
   font-size: 2rem;
 }
 
-.group-appearance-standard, .mat-button-toggle-appearance-standard.mat-button-toggle-checked {
+.group-appearance-standard,
+.mat-button-toggle-appearance-standard.mat-button-toggle-checked {
   border-color: var(--primary-color) !important;
   background-color: var(--primary-color) !important;
   color: var(--light-bg-text-color) !important;
 }
-.group-appearance-standard *, .mat-button-toggle-appearance-standard.mat-button-toggle-checked * {
+
+.group-appearance-standard *,
+.mat-button-toggle-appearance-standard.mat-button-toggle-checked * {
   color: var(--light-bg-text-color) !important;
 }
 
 .mat-button-toggle-group-appearance-standard .mat-pseudo-checkbox {
-  --mat-minimal-pseudo-checkbox-selected-checkmark-color:$lightBgTextColor !important;
+  --mat-minimal-pseudo-checkbox-selected-checkmark-color: $lightBgTextColor !important;
 }
 
 .modal-dialog {
   max-width: 95%;
+}
+
+.col-6 .col-md-6 {
+  max-width: 50% !important;
+}
+
+.col-4 .col-md-4 {
+  flex: 0 0 auto;
+  width: 33.33333333% !important;
 }
 
 @media screen and (min-width: 992px) {
@@ -559,30 +583,39 @@ p {
     max-width: 65%;
   }
 }
+
 @media screen and (min-width: 1200px) {
   .modal-dialog {
     max-width: 55%;
   }
+
   h1 {
     font-size: 5rem;
   }
+
   h2 {
     font-size: 2.5rem;
   }
+
   h3 {
     font-size: 1.5rem;
   }
+
   .certification .rating {
     flex-direction: row;
     gap: 1rem;
   }
+
   .certification .enrollTag,
   .certification .enrollTag img {
     order: 1;
   }
 }
+
 @media screen and (min-width: 1400px) {
   .page-width {
     width: 80%;
   }
-}/*# sourceMappingURL=styles.css.map */
+}
+
+/*# sourceMappingURL=styles.css.map */
