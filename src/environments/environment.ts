@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  baseUrl: 'http://144.91.127.150:8080/api',
+  baseUrl: 'https://helpempowerment.com/api',
+
   telrAllowedHosts: ['secure.telr.com'],
   mailTemolateId: "template_dhwmgqo",
   mailServiceId: "service_lc3tdtq",
