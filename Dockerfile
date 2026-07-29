@@ -6,13 +6,10 @@ RUN npm install --legacy-peer-deps
 
 COPY . .
 
-# 👇 مهم: اختيار environment من الخارج
+# Select the Angular build configuration from the Docker build argument.
 ARG BUILD_ENV=production
 
-RUN if [ "$BUILD_ENV" = "test" ] ; \
-    then npm run build -- --configuration=test ; \
-    else npm run build ; \
-    fi
+RUN npm run build -- --configuration="$BUILD_ENV"
 
 FROM node:24-alpine AS runner
 WORKDIR /app

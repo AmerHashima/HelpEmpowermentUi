@@ -115,20 +115,17 @@ export class Shared {
   }
 
   /**
-   * Updates document direction and toggles Bootstrap LTR/RTL stylesheets
+   * Updates document direction and swaps the single Bootstrap stylesheet.
    */
   private updateDirectionAndStylesheets(lang: 'en' | 'ar') {
     const isArabic = lang === 'ar';
 
     this.renderer.setAttribute(document.documentElement, 'dir', isArabic ? 'rtl' : 'ltr');
 
-    // Toggle Bootstrap stylesheets
-    const ltrLink = document.querySelector<HTMLLinkElement>('link[id="bootstrap-ltr"]');
-    const rtlLink = document.querySelector<HTMLLinkElement>('link[id="bootstrap-rtl"]');
-
-    if (ltrLink && rtlLink) {
-      this.renderer.setProperty(ltrLink, 'disabled', isArabic);
-      this.renderer.setProperty(rtlLink, 'disabled', !isArabic);
+    const bootstrapLink = document.querySelector<HTMLLinkElement>('link[id="bootstrap-styles"]');
+    if (bootstrapLink) {
+      const stylesheet = isArabic ? 'bootstrap.rtl.min.css' : 'bootstrap.min.css';
+      this.renderer.setAttribute(bootstrapLink, 'href', `/assets/styles/${stylesheet}`);
     }
   }
 

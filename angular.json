@@ -39,12 +39,12 @@
               {
                 "glob": "bootstrap.min.css",
                 "input": "node_modules/bootstrap/dist/css",
-                "output": "/assets/styles"
+                "output": "assets/styles"
               },
               {
                 "glob": "bootstrap.rtl.min.css",
                 "input": "node_modules/bootstrap/dist/css",
-                "output": "/assets/styles"
+                "output": "assets/styles"
               },
               {
                 "glob": "**/*",
@@ -72,6 +72,14 @@
           },
           "configurations": {
             "production": {
+              "optimization": {
+                "scripts": true,
+                "styles": {
+                  "minify": true,
+                  "inlineCritical": false
+                },
+                "fonts": true
+              },
               "budgets": [
                 {
                   "type": "initial",
