@@ -201,6 +201,7 @@
     "image": "Footer image",
     "copyright": "© 2026 Help Empowerment LLC. All rights reserved.",
     "refundPolicy": "Refund Policy",
+    "cancellationPolicy": "Cancellation Policy",
     "privacyNotice": "Privacy Policy",
     "termsAndConditions": "Terms & Conditions",
     "cookiePolicy": "Cookie Policy",
@@ -1560,6 +1561,45 @@
       }
     ],
     "lastUpdate": "Last Updated: 01 Feb 2026"
+  },
+  "cancellationPolicy": {
+    "title": "Cancellation Policy",
+    "intro": "We are committed to fair and transparent service, and we encourage you to review free samples or demos before purchasing.",
+    "sections": [
+      {
+        "title": "Live & Interactive Courses",
+        "content": [
+          "Customers can cancel their order or requested services within 24 hours.",
+          "Refunds will be made back to the payment solution used initially by the customer.",
+          "It takes 45 days for the refund transfer to be completed."
+        ]
+      },
+      {
+        "title": "Digital Products (Exam Simulator, Recorded Courses, Bundles)",
+        "content": [
+          "No cancellations or refunds are available for digital products (including exam simulators, recorded courses, and bundles) once access is granted, as they are available for immediate use."
+        ]
+      },
+      {
+        "title": "How to Request a Cancellation",
+        "steps": [
+          {
+            "text": "Email support@helpempowerment.com with:",
+            "details": [
+              "Your full name and order/invoice number",
+              "Course/product name and purchase date",
+              "A brief reason for your request"
+            ]
+          },
+          {
+            "text": "You will receive an acknowledgment and a case number within 24 business hours."
+          },
+          {
+            "text": "In some cases, we may contact you to discuss alternatives or better understand your needs."
+          }
+        ]
+      }
+    ]
   },
   "legalPrivacy": {
     "title": "Privacy Policy",

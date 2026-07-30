@@ -1,0 +1,24 @@
+<div class="policy-container">
+  <div class="policy-card">
+    <h2>{{ 'cancellationPolicy.title' | translate }}</h2>
+
+    <p class="w-100">{{ 'cancellationPolicy.intro' | translate }}</p>
+
+    <div class="section" *ngFor="let section of (sections | async)">
+      <h5>{{ section.title }}</h5>
+
+      <p class="w-100" *ngFor="let paragraph of section.content">
+        {{ paragraph }}
+      </p>
+
+      <ol *ngIf="section.steps" class="steps">
+        <li *ngFor="let step of section.steps">
+          <span>{{ step.text }}</span>
+          <ul *ngIf="step.details">
+            <li *ngFor="let detail of step.details">{{ detail }}</li>
+          </ul>
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>

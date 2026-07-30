@@ -1,0 +1,17 @@
+:host {
+  display: block;
+}
+
+.steps {
+  margin-top: 10px;
+  padding-inline-start: 18px;
+
+  > li {
+    margin-bottom: 12px;
+    color: var(--paraTextColor);
+  }
+
+  ul {
+    margin-top: 8px;
+  }
+}

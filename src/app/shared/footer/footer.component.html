@@ -39,6 +39,11 @@
           </a>
         </span>
         <span>
+          <a [routerLink]="['/', currentLang(), 'cancellation-policy']">
+            {{ "footer.cancellationPolicy" | translate }}
+          </a>
+        </span>
+        <span>
           <a [routerLink]="['/', currentLang(), 'privacy-notice']">
             {{ "footer.privacyNotice" | translate }}
           </a>

@@ -45,6 +45,7 @@ import { ReviewsComponent } from './components/ClientSide/certifications/reviews
 import { clientAuthGuard, clientGuestGuard } from './Guards/ClientSideGuards/client-auth-guard';
 import { CalculatorComponent } from './shared/calculator/calculator.component';
 import { RefundPolicyComponent } from './components/ClientSide/refund-policy/refund-policy.component';
+import { CancellationPolicyComponent } from './components/ClientSide/cancellation-policy/cancellation-policy.component';
 import { PrivacyNoticeComponent } from './components/ClientSide/privacy-notice/privacy-notice.component';
 import { TermsAndConditionsComponent } from './components/ClientSide/terms-and-conditions/terms-and-conditions.component';
 import { CookiePolicyComponent } from './components/ClientSide/cookie-policy/cookie-policy.component';
@@ -152,6 +153,10 @@ export const routes: Routes = [
       {
         path: 'refund-policy',
         component: RefundPolicyComponent
+      },
+      {
+        path: 'cancellation-policy',
+        component: CancellationPolicyComponent
       },
       {
         path: "privacy-notice",
