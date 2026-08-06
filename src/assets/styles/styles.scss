@@ -675,6 +675,29 @@ p {
   color: $inputText !important;
 }
 
+.iti__country-search-row {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 8px;
+  background: var(--bs-body-bg, #fff);
+}
+
+.iti__country-search {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  background: var(--bs-body-bg, #fff);
+  color: var(--bs-body-color, #212529);
+  outline: none;
+}
+
+.iti__country-search:focus {
+  border-color: #86b7fe;
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+}
+
 /* Theme styling (safer selector) */
 .iti input {
   background-color: $inputBg !important;

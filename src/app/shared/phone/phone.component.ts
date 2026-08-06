@@ -79,6 +79,7 @@ private cdr = inject(ChangeDetectorRef);
     this.iti = intlTelInput(this.input.nativeElement, {
       initialCountry: 'sa',
       preferredCountries: ['eg', 'ae', 'us'],
+      excludeCountries: ['ir', 'cu', 'kp', 'sd', 'ss', 'ua', 'sy', 'ru', 'mm', 'ye'],
       separateDialCode: true,
       utilsScript: '/assets/utils.js'
     });
@@ -111,7 +112,7 @@ private cdr = inject(ChangeDetectorRef);
 
     this.input.nativeElement.addEventListener('open:countrydropdown', () => {
       this.translateCountries();
-      // this.translateSearchPlaceholder();
+      this.setupCountrySearch();
     });
   }
 
@@ -307,6 +308,63 @@ private cdr = inject(ChangeDetectorRef);
     });
   }
 
+  private setupCountrySearch() {
+    setTimeout(() => {
+      const phoneContainer = this.input.nativeElement.closest('.iti');
+      const countryList = phoneContainer?.querySelector('.iti__country-list') as HTMLElement | null;
+
+      if (!countryList) return;
+
+      let searchInput = countryList.querySelector('.iti__country-search') as HTMLInputElement | null;
+
+      if (!searchInput) {
+        const searchRow = document.createElement('li');
+        searchRow.className = 'iti__country-search-row';
+        searchRow.setAttribute('role', 'presentation');
+
+        searchInput = document.createElement('input');
+        searchInput.type = 'search';
+        searchInput.className = 'iti__country-search';
+        searchInput.autocomplete = 'off';
+
+        searchRow.appendChild(searchInput);
+        countryList.prepend(searchRow);
+
+        ['click', 'mousedown', 'keydown'].forEach(eventName => {
+          searchInput!.addEventListener(eventName, event => event.stopPropagation());
+        });
+
+        searchInput.addEventListener('input', () => {
+          const query = searchInput!.value.trim().toLocaleLowerCase();
+
+          countryList.querySelectorAll<HTMLElement>('.iti__country').forEach(country => {
+            const searchableText = [
+              country.querySelector('.iti__country-name')?.textContent,
+              country.querySelector('.iti__dial-code')?.textContent,
+              country.dataset['countryCode']
+            ].filter(Boolean).join(' ').toLocaleLowerCase();
+
+            country.hidden = Boolean(query) && !searchableText.includes(query);
+          });
+
+          countryList.querySelectorAll<HTMLElement>('.iti__divider').forEach(divider => {
+            divider.hidden = Boolean(query);
+          });
+        });
+      }
+
+      const placeholder = this.isRTL()
+        ? 'ابحث عن دولة أو رمز الاتصال'
+        : 'Search country or dial code';
+
+      searchInput.placeholder = placeholder;
+      searchInput.setAttribute('aria-label', placeholder);
+      searchInput.value = '';
+      searchInput.dispatchEvent(new Event('input'));
+      searchInput.focus();
+    });
+  }
+
   validateOnSubmit() {
     const raw = this.input.nativeElement.value.trim();
 
@@ -329,23 +387,5 @@ private cdr = inject(ChangeDetectorRef);
     this.isValid = true;
   }
 
-
-  // translateSearchPlaceholder() {
-  //   setTimeout(() => {
-  //     const input = document.querySelector('.iti__search-input') as HTMLInputElement;
-
-  //     if (!input) return;
-
-  //     if (this.isRTL()) {
-  //       input.placeholder = 'ابحث عن دولة أو رمز الاتصال';
-  //       input.setAttribute('aria-label', input.placeholder);
-  //     } else {
-  //       const defaultText = 'Search country or dial code';
-
-  //       input.placeholder = defaultText;
-  //       input.setAttribute('aria-label', defaultText);
-  //     }
-  //   });
-  // }
 }
 
