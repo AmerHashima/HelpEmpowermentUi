@@ -16,10 +16,17 @@ import { EMPTY, Subject, catchError, exhaustMap, finalize, tap } from 'rxjs';
 import { TelrPaymentService } from '../../../Services/telr-payment.service';
 import { ApiProblemDetails } from '../../../models/telr-payment';
 import { ToastingMessagesService } from '../../../shared/Services/ToastingMessages/toasting-messages.service';
+import { SpkNgSelectComponent } from '../../../shared/spk-ng-select/spk-ng-select.component';
+import { City } from 'country-state-city';
+
+interface CityOption {
+  label: string;
+  value: string;
+}
 
 @Component({
   selector: 'app-checkout',
-  imports: [InputComponent,NgIf,ReactiveFormsModule,PhoneInputComponent,TranslatePipe],
+  imports: [InputComponent,NgIf,ReactiveFormsModule,PhoneInputComponent,TranslatePipe,SpkNgSelectComponent],
   templateUrl: './checkout.component.html',
   styleUrl: './checkout.component.scss'
 })
@@ -40,6 +47,7 @@ isRTL = this.shared.isRtl;
   // paymentMethods: LookupDetail[]=[];
  paymentMethods$=this.lookUpService.getPaymentMethods();
  paymentMethods: LookupDetail[] = [];
+ cities: CityOption[] = [];
  @ViewChildren(PhoneInputComponent)
  phoneCmps!: QueryList<PhoneInputComponent>;
  cartItems=this.cartService.cartItems;
@@ -61,6 +69,8 @@ isRTL = this.shared.isRtl;
   });
 
   constructor() {
+
+    this.loadCities('SA', false);
 
     this.cardCheckout.pipe(
       exhaustMap(() => this.startTelrCheckout()),
@@ -223,6 +233,23 @@ isRTL = this.shared.isRtl;
         }
 
       });
+  }
+
+  onPhoneCountryChange(countryCode: string): void {
+    this.loadCities(countryCode, true);
+  }
+
+  private loadCities(countryCode: string, clearSelection: boolean): void {
+    this.cities = (City.getCitiesOfCountry(countryCode) ?? [])
+      .map(city => ({
+        label: city.stateCode ? `${city.name} (${city.stateCode})` : city.name,
+        value: city.name
+      }))
+      .sort((a, b) => a.label.localeCompare(b.label));
+
+    if (clearSelection) {
+      this.checkoutForm.controls.city.reset('');
+    }
   }
 
   private startTelrCheckout() {

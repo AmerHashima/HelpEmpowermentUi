@@ -7,6 +7,8 @@ import {
   forwardRef,
   inject,
   Input,
+  Output,
+  EventEmitter,
   ViewChild,
   AfterViewInit,
   PLATFORM_ID,
@@ -58,6 +60,7 @@ private cdr = inject(ChangeDetectorRef);
 
   @Input() labelKey = '';
   @Input() required = true;
+  @Output() countryChange = new EventEmitter<string>();
 
   iti: any;
   value: string = '';
@@ -108,12 +111,20 @@ private cdr = inject(ChangeDetectorRef);
 
     this.input.nativeElement.addEventListener('countrychange', () => {
       this.updatePlaceholder();
+      this.emitSelectedCountry();
     });
 
     this.input.nativeElement.addEventListener('open:countrydropdown', () => {
       this.translateCountries();
       this.setupCountrySearch();
     });
+
+    this.emitSelectedCountry();
+  }
+
+  private emitSelectedCountry(): void {
+    const iso2 = this.iti?.getSelectedCountryData()?.iso2;
+    if (iso2) this.countryChange.emit(iso2.toUpperCase());
   }
 
   registerOnValidatorChange(fn: () => void): void {

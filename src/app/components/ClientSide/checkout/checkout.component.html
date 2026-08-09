@@ -38,6 +38,7 @@
                 formControlName="phone"
                 [labelKey]="'Phone Number' | translate"
                 [required]="true"
+                (countryChange)="onPhoneCountryChange($event)"
               ></app-phone-input>
             </div>
           </div>
@@ -57,15 +58,17 @@
 
         <div class="col-12">
           <!-- City -->
-          <app-input
+          <spk-ng-select
             formControlName="city"
             [label]="'City' | translate"
-            type="text"
-            icon="bi bi-building"
-            [errorMessages]="{
-              required: 'City is required',
-            }"
-          />
+            [options]="cities"
+            bindLabel="label"
+            bindValue="value"
+            [placeholder]="'Select City' | translate"
+            [searchable]="true"
+            [clearable]="true"
+            [disabled]="cities.length === 0"
+          ></spk-ng-select>
         </div>
       </div>
 
