@@ -4,7 +4,7 @@ export const environment = {
   // baseUrl: 'http://144.91.127.150:8080/api',
   // baseUrl: "http://localhost:5075/api",
 
-  baseUrl: 'http://144.91.127.150:8090/api',
+  baseUrl: 'https://helpempowerment.com/api',
   telrAllowedHosts: ['secure.telr.com'],
   firebase: {
     apiKey: '********************************',
