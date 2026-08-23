@@ -43,11 +43,19 @@
 }
 
 .collapsed {
-  width: fit-content;
+  width: 80px;
+  min-width: 80px;
+  padding-inline: 10px !important;
 }
 
 .collapsed .logo img {
-  width: 80px !important;
+  width: 52px !important;
+}
+
+@media (max-width: 767px) {
+  .sidebar:not(.collapsed) {
+    width: min(250px, 78vw);
+  }
 }
 
 .navOptions {

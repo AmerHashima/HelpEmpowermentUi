@@ -31,7 +31,7 @@
 }
 
 h1 {
-    font-size: 4rem;
+    font-size: clamp(2rem, 8vw, 4rem);
     margin: 0px;
 }
 
@@ -138,7 +138,7 @@ h2:hover{
 }
 
 .HomeParagraph {
-  width: 80%;
+  width: min(80%, 65ch);
 }
 
 .accordion-body p{
@@ -159,5 +159,37 @@ h2:hover{
 
   .Homebanner .content {
     order:0
+  }
 }
+
+@media screen and (max-width: 575px) {
+  .Homebanner {
+    gap: 1.5rem;
+  }
+
+  .Homebanner .content,
+  .intro-video {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .Homebanner .content {
+    order: 0;
+  }
+
+  .intro-video {
+    order: 1;
+  }
+
+  .Homebanner .image-wrapper {
+    height: auto;
+    min-height: 240px;
+    aspect-ratio: 4 / 3;
+    transform: none;
+  }
+
+  .HomeParagraph,
+  .expirte h2 {
+    width: 100%;
+  }
 }

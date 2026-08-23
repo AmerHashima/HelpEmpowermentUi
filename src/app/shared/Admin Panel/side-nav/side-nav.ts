@@ -39,7 +39,7 @@ export class SideNav {
   private router=inject(Router);
   private toasting=inject(ToastingMessagesService);
   lang = this.shared.lang;
-  // isCollapse = this.shared.isCollapse;
+  isCollapse = this.shared.isCollapse;
   previousIndex: number = -1;
   smallScreen = signal(false);
 

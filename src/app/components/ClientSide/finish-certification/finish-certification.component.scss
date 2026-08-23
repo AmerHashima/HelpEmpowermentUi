@@ -1,4 +1,14 @@
 @use 'variables' as *;
+.certificate-page {
+  --certificate-width: 1123;
+  --certificate-height: 794;
+}
+
+.certificate-preview {
+  width: 1123px;
+  height: 794px;
+}
+
 .certificate-container {
   width: 1123px;
   height: 794px;
@@ -193,4 +203,23 @@ p{
   margin-top: 20px;
   display: flex;
   justify-content: center;
+}
+
+@media (max-width: 1199px) {
+  .certificate-page {
+    align-items: flex-start !important;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    padding-bottom: 8px;
+  }
+
+  .certificate-preview {
+    flex: 0 0 1123px;
+  }
+
+  .download-btn {
+    position: sticky;
+    inset-inline-start: 0;
+    width: min(100vw, 100%);
+  }
 }

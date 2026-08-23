@@ -1,4 +1,8 @@
 @use "variables" as * ;
+:host {
+  display: contents;
+}
+
 // .announcement-bar {
 
 //   width: 100%;
@@ -30,10 +34,8 @@
 
 // }
 
-@use "variables" as *;
-
 .announcement-bar {
-  position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
   width: 100%;

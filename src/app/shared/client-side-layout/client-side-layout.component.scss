@@ -1,7 +1,6 @@
 @use 'variables' as *;
 .mainContainer{
-  // padding-top: 165px;
-   padding-top: 190px;
+   padding-top: 0;
    flex-grow: 1;
 
 }
@@ -17,25 +16,6 @@
     color:$lightBgTextColor;
   }
 }
-
-
-@media screen and  (min-width: 636px) {
-.mainContainer{
-  padding-top: 145px;
-}}
-
-
-@media screen and  (min-width: 980px) {
-.mainContainer{
-  padding-top: 108px;
-}}
-
-@media screen and  (min-width: 992px) {
-.mainContainer{
-  padding-top: 162px;
-}}
-
-
 
 
 

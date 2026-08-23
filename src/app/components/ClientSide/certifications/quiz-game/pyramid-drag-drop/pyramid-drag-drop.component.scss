@@ -122,3 +122,50 @@
   font-size: 1rem;
   line-height: 1.4;
 }
+
+@media (max-width: 1199px) {
+  .main-container {
+    flex-direction: column;
+    align-items: center;
+    margin: 24px 0;
+  }
+
+  .left-descriptions,
+  .source {
+    width: min(100%, 500px);
+    max-width: 500px;
+    min-width: 0;
+    height: auto;
+    gap: 12px;
+  }
+
+  .desc {
+    min-height: auto;
+    justify-content: center;
+    padding: 0;
+    text-align: center;
+  }
+}
+
+@media (max-width: 575px) {
+  .main-container {
+    gap: 24px;
+  }
+
+  .pyramid {
+    width: min(500px, 100%);
+    height: clamp(280px, 80vw, 400px);
+    padding-block: 28px;
+  }
+
+  .source {
+    padding: 1rem;
+  }
+
+  .green-box {
+    max-width: 90%;
+    padding: 8px 12px;
+    white-space: normal;
+    text-align: center;
+  }
+}
