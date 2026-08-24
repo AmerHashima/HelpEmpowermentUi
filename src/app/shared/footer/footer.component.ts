@@ -14,6 +14,12 @@ import { Shared } from '../Services/shared/shared';
 export class FooterComponent {
   private shared=inject(Shared);
   currentLang=this.shared.lang;
+  linksExpanded = signal(false);
+
+  toggleLinks() {
+    this.linksExpanded.update((expanded) => !expanded);
+  }
+
   footerImage=computed(()=> {
     if(this.shared.theme() == 'light')
       return 'assets/images/footer/footer.png';

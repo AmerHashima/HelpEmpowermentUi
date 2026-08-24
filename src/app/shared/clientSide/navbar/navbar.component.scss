@@ -199,6 +199,10 @@ ul{
   list-style:none;
 }
 
+.menu-toggle {
+  display: none;
+}
+
 
 @media (max-width: 992px) {
 
@@ -272,24 +276,48 @@ ul{
   }
 
   /* Main menu */
+  .menu-toggle {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.65rem 1rem;
+    border: 0;
+    border-top: 1px solid $borderColor;
+    background-color: $bgNav;
+    color: $navTextColor;
+    font-weight: 600;
+  }
+
+  .menu-toggle i {
+    font-size: 1.35rem;
+  }
+
   .clientNavbar .menu {
-    flex-direction: row;
-    flex-wrap: wrap;
+    display: none;
+    flex-direction: column;
     gap: 0.3rem;
     padding: 0.3rem 1rem;
-    justify-content: center;
+  }
+
+  .clientNavbar .menu.menu-open {
+    display: flex;
   }
 
   .clientNavbar .menu li a {
+    width: 100%;
     padding: 0.4rem 0.8rem;
     font-size: 0.85rem;
   }
 
   /* Submenus below parent */
   .clientNavbar .menu li.has-children ul {
-    position: absolute;
-    top: 100%;
-    min-width: 200px;
+    position: static;
+    min-width: 0;
+    width: 100%;
+    margin-top: 0.25rem;
+    box-shadow: none;
+    border-inline-start: 2px solid $borderColor;
   }
 }
 

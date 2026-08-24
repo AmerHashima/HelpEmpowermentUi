@@ -123,7 +123,18 @@
       </div>
     </div>
 
-    <ul class="menu">
+    <button
+      type="button"
+      class="menu-toggle"
+      [attr.aria-expanded]="menuExpanded()"
+      aria-controls="client-main-menu"
+      (click)="toggleMenu()"
+    >
+      <span>{{ lang() === 'ar' ? 'القائمة' : 'Menu' }}</span>
+      <i [class]="menuExpanded() ? 'bi bi-x-lg' : 'bi bi-list'"></i>
+    </button>
+
+    <ul id="client-main-menu" class="menu" [class.menu-open]="menuExpanded()">
       <li
         *ngFor="let item of menu()"
         [class.active]="currentPath() === item.path"

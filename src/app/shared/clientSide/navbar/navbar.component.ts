@@ -54,6 +54,7 @@ export class ClientNavbarComponent {
   // Local component state
   currentPath = signal('');
   openDropdown = signal<string | null>(null);
+  menuExpanded = signal(false);
 
   constructor() {
 
@@ -74,6 +75,7 @@ export class ClientNavbarComponent {
     this.router.events.subscribe(() => {
       this.currentPath.set(this.router.url);
       this.openDropdown.set(null);
+      this.menuExpanded.set(false);
     });
   }
 
@@ -102,11 +104,17 @@ export class ClientNavbarComponent {
     this.openDropdown.set(this.openDropdown() === key ? null : key);
   }
 
+  toggleMenu() {
+    this.menuExpanded.update((expanded) => !expanded);
+    this.openDropdown.set(null);
+  }
+
   /** Navigate to path */
   navigate(path: string) {
     this.studentService.showExamSimulator = false;
     if (this.currentPath() === path) {
       this.openDropdown.set(null);
+      this.menuExpanded.set(false);
       return;
     }
     this.router.navigateByUrl(path);

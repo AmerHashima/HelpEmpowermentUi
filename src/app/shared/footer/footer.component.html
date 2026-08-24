@@ -32,7 +32,21 @@
       <p class="w-100 text-center text-lg-start">
         {{ "footer.copyright" | translate }}
       </p>
-      <p class="d-flex justify-content-center justify-content-lg-end gap-2 w-100">
+      <button
+        type="button"
+        class="footer-links-toggle"
+        [attr.aria-expanded]="linksExpanded()"
+        aria-controls="footer-policy-links"
+        (click)="toggleLinks()"
+      >
+        <span>{{ currentLang() === 'ar' ? 'السياسات والروابط' : 'Policies and links' }}</span>
+        <i class="bi bi-chevron-down" [class.is-open]="linksExpanded()"></i>
+      </button>
+      <p
+        id="footer-policy-links"
+        class="footer-policy-links d-flex justify-content-center justify-content-lg-end gap-2 w-100"
+        [class.links-open]="linksExpanded()"
+      >
         <span>
           <a [routerLink]="['/', currentLang(), 'refund-policy']">
             {{ "footer.refundPolicy" | translate }}

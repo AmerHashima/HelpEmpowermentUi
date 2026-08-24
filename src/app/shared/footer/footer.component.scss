@@ -86,6 +86,10 @@ a{
   color:$paraTextColor;
 }
 
+.footer-links-toggle {
+  display: none;
+}
+
 /* ================= RESPONSIVE ================= */
 @media (max-width: 768px) {
   .footer-video {
@@ -114,6 +118,53 @@ a{
   .checker-mover {
     height: 8px;
     background-size: 12px 12px;
+  }
+
+  .footer-links-toggle {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border: 0;
+    border-bottom: 1px solid $borderColor;
+    background: transparent;
+    color: $navTextColor;
+    font-weight: 600;
+  }
+
+  .footer-links-toggle i {
+    transition: transform 0.2s ease;
+  }
+
+  .footer-links-toggle i.is-open {
+    transform: rotate(180deg);
+  }
+
+  .footer-policy-links {
+    max-height: 0;
+    margin: 0;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transition: max-height 0.3s ease, opacity 0.2s ease;
+  }
+
+  .footer-policy-links.links-open {
+    max-height: 28rem;
+    padding-top: 0.75rem;
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .footer-policy-links span {
+    width: 100%;
+    text-align: start;
+  }
+
+  .footer-policy-links a {
+    display: block;
+    padding-block: 0.35rem;
   }
 }
 
