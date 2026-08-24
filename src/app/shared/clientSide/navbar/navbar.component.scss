@@ -199,8 +199,24 @@ ul{
   list-style:none;
 }
 
+.navbar-icon-button {
+  display: inline-flex;
+  min-width: 40px;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  border-radius: $borderRadius;
+  background: transparent;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
 .menu-toggle {
   display: none;
+  cursor: pointer;
+  touch-action: manipulation;
 }
 
 
@@ -273,6 +289,9 @@ ul{
   /* Dropdown menus below their icon */
   .clientNavbar .top-bar .dropdown ul {
     top: calc(100% + 0.2rem);
+    inset-inline-end: 0;
+    inset-inline-start: auto;
+    z-index: 1100;
   }
 
   /* Main menu */
@@ -287,6 +306,7 @@ ul{
     background-color: $bgNav;
     color: $navTextColor;
     font-weight: 600;
+    min-height: 44px;
   }
 
   .menu-toggle i {
@@ -302,12 +322,17 @@ ul{
 
   .clientNavbar .menu.menu-open {
     display: flex;
+    max-height: calc(100dvh - 170px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
   }
 
   .clientNavbar .menu li a {
     width: 100%;
     padding: 0.4rem 0.8rem;
     font-size: 0.85rem;
+    cursor: pointer;
+    min-height: 44px;
   }
 
   /* Submenus below parent */

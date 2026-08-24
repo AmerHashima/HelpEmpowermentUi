@@ -8,7 +8,8 @@ import {
   input,
 } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Router, RouterModule, ActivatedRoute } from '@angular/router';
+import { Router, RouterModule, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 import { Shared } from '../../Services/shared/shared';
@@ -72,7 +73,9 @@ export class ClientNavbarComponent {
     });
 
 
-    this.router.events.subscribe(() => {
+    this.router.events.pipe(
+      filter((event): event is NavigationEnd => event instanceof NavigationEnd)
+    ).subscribe(() => {
       this.currentPath.set(this.router.url);
       this.openDropdown.set(null);
       this.menuExpanded.set(false);
@@ -125,6 +128,8 @@ export class ClientNavbarComponent {
   changeLang(newLang: 'en' | 'ar') {
     this.studentService.showExamSimulator = false;
     this.shared.useLanguage(newLang);
+    this.openDropdown.set(null);
+    this.menuExpanded.set(false);
 
     // Optional: update URL to match new language prefix
     const current = this.currentPath();

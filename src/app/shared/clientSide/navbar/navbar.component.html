@@ -28,8 +28,17 @@
           <i class="bi bi-moon theme-toggle" (click)="toggleTheme()"></i>
           <!-- Language -->
           <div class="dropdown">
-            <i class="bi bi-globe" (click)="toggleDropdown('lang')"></i>
-            <ul *ngIf="openDropdown() === 'lang'">
+            <button
+              type="button"
+              class="navbar-icon-button"
+              [attr.aria-expanded]="openDropdown() === 'lang'"
+              aria-controls="language-menu"
+              [attr.aria-label]="lang() === 'ar' ? 'تغيير اللغة' : 'Change language'"
+              (click)="toggleDropdown('lang')"
+            >
+              <i class="bi bi-globe"></i>
+            </button>
+            <ul id="language-menu" *ngIf="openDropdown() === 'lang'">
               <li (click)="changeLang('en')" class="text-center">
                 {{ lang() == "ar" ? "اللغة الانجليزية" : "English" }}
               </li>
