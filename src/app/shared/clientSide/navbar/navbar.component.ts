@@ -25,9 +25,6 @@ import { ToastingMessagesService } from '../../Services/ToastingMessages/toastin
 @Component({
   selector: 'app-client-navbar',
   standalone: true,
-  host: {
-    '[style.top.px]': 'navbarTop()'
-  },
   imports: [CommonModule, RouterModule, TranslatePipe],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],

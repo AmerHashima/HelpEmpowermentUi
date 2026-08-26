@@ -1,8 +1,7 @@
 @use 'variables' as *;
 :host {
   display: block;
-  position: sticky;
-  z-index: 1000;
+  position: relative;
 }
 
 /* === NAVBAR BASE === */
