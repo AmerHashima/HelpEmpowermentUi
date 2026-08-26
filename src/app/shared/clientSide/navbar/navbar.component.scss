@@ -1,16 +1,18 @@
 @use 'variables' as *;
 :host {
-  display: contents;
+  display: block;
+  position: sticky;
+  z-index: 1000;
 }
 
 /* === NAVBAR BASE === */
 .clientNavbar {
   width: 100%;
-  position: sticky;
+  position: relative;
   // top: 0px;
   background-color: $bgNav;
   box-shadow:$boxShadow;
-  z-index: 1000;
+  z-index: auto;
   display: flex;
   flex-direction: column;
 }

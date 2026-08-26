@@ -1,6 +1,9 @@
 @use "variables" as * ;
 :host {
-  display: contents;
+  display: block;
+  position: sticky;
+  top: 0;
+  z-index: 1100;
 }
 
 // .announcement-bar {
@@ -35,11 +38,9 @@
 // }
 
 .announcement-bar {
-  position: sticky;
-  top: 0;
-  left: 0;
+  position: relative;
   width: 100%;
-  z-index: 40000000;
+  z-index: auto;
 
 background: linear-gradient(
 
