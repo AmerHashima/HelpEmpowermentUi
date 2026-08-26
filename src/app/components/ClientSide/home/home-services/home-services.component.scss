@@ -11,3 +11,36 @@ width:100%;
   right: -40px;
 }
 
+.services-slider {
+  position: relative;
+}
+
+@media (max-width: 767px) {
+  .services-slider {
+    padding-inline: 2.75rem;
+  }
+
+  .cards-wrapper {
+    margin-inline: 0;
+  }
+
+  .arrow {
+    width: 36px;
+    height: 36px;
+  }
+
+  .arrow-left {
+    left: 0;
+  }
+
+  .arrow-right {
+    right: 0;
+  }
+}
+
+@media (max-width: 380px) {
+  .services-slider {
+    padding-inline: 2.25rem;
+  }
+}
+

@@ -88,10 +88,17 @@ a{
 
 .footer-links-toggle {
   display: none;
+  position: relative;
+  z-index: 2;
+  min-height: 44px;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* ================= RESPONSIVE ================= */
-@media (max-width: 768px) {
+@media (max-width: 992px) {
   .footer-video {
     display: flex;
     flex-direction: column;

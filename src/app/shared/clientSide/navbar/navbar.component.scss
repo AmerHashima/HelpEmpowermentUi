@@ -211,12 +211,18 @@ ul{
   background: transparent;
   cursor: pointer;
   touch-action: manipulation;
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .menu-toggle {
   display: none;
+  position: relative;
+  z-index: 2;
   cursor: pointer;
   touch-action: manipulation;
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 
@@ -322,8 +328,10 @@ ul{
 
   .clientNavbar .menu.menu-open {
     display: flex;
+    max-height: calc(100vh - 170px);
     max-height: calc(100dvh - 170px);
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
   }
 

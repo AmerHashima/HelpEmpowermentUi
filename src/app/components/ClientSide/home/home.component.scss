@@ -21,6 +21,25 @@ app-page-banner.home-hero {
   padding-block: 3rem !important;
 }
 
+.services-heading {
+  width: 100%;
+  padding-inline: 1rem;
+  text-align: center;
+}
+
+.services-heading .sectionSubHeader {
+  max-width: 65ch;
+  line-height: 1.5;
+}
+
+.services-heading h2 {
+  max-width: 22ch;
+  margin-inline: auto;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
 .training + .training,
 .home-faq-section {
   margin-top: 2rem;
@@ -41,6 +60,15 @@ app-page-banner.home-hero {
 
   .training {
     padding-block: 2rem !important;
+  }
+
+  .services-section {
+    gap: 1.5rem !important;
+  }
+
+  .services-heading {
+    gap: 0.5rem !important;
+    padding-inline: 0.5rem;
   }
 
   .training + .training,
