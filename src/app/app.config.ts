@@ -3,7 +3,6 @@ import { APP_INITIALIZER, ApplicationConfig, inject, LOCALE_ID, provideZoneChang
 import { provideRouter, withInMemoryScrolling } from '@angular/router';
 
 import { routes } from './app.routes';
-import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { HttpClient, provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -61,10 +60,6 @@ export const appConfig: ApplicationConfig = {
       deps: [TranslateService],
       multi: true
     },
-    // Native Angular listeners are attached during hydration. Event replay adds a
-    // document-level event layer that has caused taps to be lost in some WebKit
-    // versions before hydration completes.
-    provideClientHydration(),
     provideHttpClient(
       withFetch(),
       withInterceptors([AuthInterceptor, errorInterceptor])
