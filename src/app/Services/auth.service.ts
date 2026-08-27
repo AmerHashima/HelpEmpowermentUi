@@ -71,9 +71,11 @@ export class AuthService {
   private isLoggingOutAdmin = false;
   examIdsToDelete = signal<string[]>([]);
   constructor(private apiService: ApiService) {
+    if (this.isBrowser) (window as any).__helpPhase?.('AuthService: constructor');
     if (this.isBrowser) {
       this.restoreSession();
     }
+    if (this.isBrowser) (window as any).__helpPhase?.('AuthService: ready');
   }
 
   // ================= RESTORE =================

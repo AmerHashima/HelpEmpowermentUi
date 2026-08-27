@@ -55,12 +55,13 @@ export class Shared {
   private renderer: Renderer2 = this.rendererFactory.createRenderer(null, null);
 
   constructor() {
+    if (isPlatformBrowser(this.platformId)) (window as any).__helpPhase?.('Shared: constructor');
     this.initLanguage();
+    if (isPlatformBrowser(this.platformId)) (window as any).__helpPhase?.('Shared: language ready');
     if (isPlatformBrowser(this.platformId)) {
       this.restoreExamIdFromStorage();
     }
-
-
+    if (isPlatformBrowser(this.platformId)) (window as any).__helpPhase?.('Shared: ready');
   }
 
   private restoreExamIdFromStorage() {

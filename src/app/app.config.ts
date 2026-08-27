@@ -20,12 +20,19 @@ export function localeFactory(translate: TranslateService) {
 
 export function initTranslate(translate: TranslateService) {
   return () => {
+    if (typeof window !== 'undefined') (window as any).__helpPhase?.('initializer: translate start');
     const lang = translate.currentLang || 'en';
 
     return new Promise<void>((resolve) => {
       translate.use(lang).subscribe({
-        next: () => resolve(),
-        error: () => resolve()
+        next: () => {
+          if (typeof window !== 'undefined') (window as any).__helpPhase?.('initializer: translate loaded');
+          resolve();
+        },
+        error: () => {
+          if (typeof window !== 'undefined') (window as any).__helpPhase?.('initializer: translate error');
+          resolve();
+        }
       });
     });
   };

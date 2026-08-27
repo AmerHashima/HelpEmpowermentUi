@@ -38,8 +38,10 @@ export class AppComponent {
   };
 
   constructor(private loadingService: LoadingService) {
+    if (isPlatformBrowser(this.platformId)) (window as any).__helpPhase?.('AppComponent: constructor');
     this.loading$ = this.loadingService.loading$;
     this.setupScreenshotProtection();
+    if (isPlatformBrowser(this.platformId)) (window as any).__helpPhase?.('AppComponent: ready');
   }
 
   private setupScreenshotProtection(): void {

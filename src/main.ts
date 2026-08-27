@@ -3,8 +3,10 @@ import { bootstrapApplication } from '@angular/platform-browser';
 import { appConfig } from './app/app.config';
 import { AppComponent } from './app/app.component';
 
+(window as any).__helpPhase?.('main: before bootstrap');
 bootstrapApplication(AppComponent, appConfig)
   .then(() => {
+    (window as any).__helpPhase?.('main: bootstrap resolved');
     window.dispatchEvent(new Event('help-angular-ready'));
   })
   .catch((err) => {

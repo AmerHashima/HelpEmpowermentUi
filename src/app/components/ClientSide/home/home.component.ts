@@ -1,5 +1,6 @@
 // src\app\components\home\home.component.ts
-import { Component, ElementRef, inject, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, PLATFORM_ID, ViewChild } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { PageBannerComponent } from '../../../shared/clientSide/page-banner/page-banner.component';
 import { FeatureComponent } from '../../../shared/clientSide/feature/feature.component';
 import { SocialLinksComponent } from '../../../shared/clientSide/social-links/social-links.component';
@@ -30,8 +31,12 @@ export class HomeComponent {
 
 
   private shared = inject(Shared);
+  private platformId = inject(PLATFORM_ID);
   isRTL = this.shared.isRtl;
   homeVideo = 'assets/videos/Home1.mp4';
+  constructor() {
+    if (isPlatformBrowser(this.platformId)) (window as any).__helpPhase?.('HomeComponent: constructor');
+  }
   // showEnrollForm:boolean=false;
   // enrolledCertification:CertificationItem| null=null;
   scrollToElement(elRef: ElementRef | null, headerOffset: number = 140) {
