@@ -23,6 +23,80 @@
       }
     })();
   </script>
+  <script>
+    (function () {
+      if (!/[?&]iosDebug=1(?:&|$)/.test(window.location.search)) return;
+
+      var state = {
+        angular: 'waiting',
+        touchstart: 0,
+        touchend: 0,
+        pointerdown: 0,
+        pointerup: 0,
+        click: 0,
+        last: 'none',
+        error: 'none'
+      };
+      var panel;
+
+      function targetText(event) {
+        var target = event.target;
+        if (!target || !target.tagName) return 'unknown';
+        var label = target.tagName.toLowerCase();
+        if (target.id) label += '#' + target.id;
+        if (target.className && typeof target.className === 'string') {
+          label += '.' + target.className.trim().replace(/\s+/g, '.');
+        }
+        return label.slice(0, 180);
+      }
+
+      function render() {
+        if (!panel) return;
+        panel.textContent =
+          'iOS debug | Angular: ' + state.angular + '\n' +
+          'touch: ' + state.touchstart + '/' + state.touchend +
+          ' pointer: ' + state.pointerdown + '/' + state.pointerup +
+          ' click: ' + state.click + '\n' +
+          'last: ' + state.last + '\n' +
+          'error: ' + state.error + '\n' +
+          navigator.userAgent;
+      }
+
+      document.addEventListener('DOMContentLoaded', function () {
+        panel = document.createElement('pre');
+        panel.id = 'ios-debug-panel';
+        panel.style.cssText = 'position:fixed;left:4px;right:4px;bottom:4px;z-index:2147483647;margin:0;padding:8px;max-height:38vh;overflow:auto;background:rgba(0,0,0,.88);color:#7CFC00;font:11px/1.35 monospace;white-space:pre-wrap;pointer-events:none;direction:ltr;text-align:left';
+        document.body.appendChild(panel);
+        render();
+      });
+
+      ['touchstart', 'touchend', 'pointerdown', 'pointerup', 'click'].forEach(function (name) {
+        document.addEventListener(name, function (event) {
+          state[name] += 1;
+          state.last = name + ' ' + targetText(event);
+          render();
+        }, true);
+      });
+
+      window.addEventListener('help-angular-ready', function () {
+        state.angular = 'ready';
+        render();
+      });
+      window.addEventListener('help-angular-error', function (event) {
+        state.angular = 'FAILED';
+        state.error = String(event.detail || 'bootstrap failed').slice(0, 500);
+        render();
+      });
+      window.addEventListener('error', function (event) {
+        state.error = String(event.message || event.error || 'window error').slice(0, 500);
+        render();
+      });
+      window.addEventListener('unhandledrejection', function (event) {
+        state.error = String(event.reason || 'unhandled rejection').slice(0, 500);
+        render();
+      });
+    })();
+  </script>
 </head>
 
 <body class="mat-typography">

@@ -4,4 +4,12 @@ import { appConfig } from './app/app.config';
 import { AppComponent } from './app/app.component';
 
 bootstrapApplication(AppComponent, appConfig)
-  .catch((err) => console.error(err));
+  .then(() => {
+    window.dispatchEvent(new Event('help-angular-ready'));
+  })
+  .catch((err) => {
+    console.error(err);
+    window.dispatchEvent(new CustomEvent('help-angular-error', {
+      detail: err instanceof Error ? `${err.name}: ${err.message}` : String(err),
+    }));
+  });
