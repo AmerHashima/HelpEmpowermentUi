@@ -15,60 +15,6 @@
     pointer-events: none;
 }
 
-var dbConn;
-
-try {
-    dbConn=DatabaseConnectionFactory.createDatabaseConnection('com.microsoft.sqlserver.jdbc.SQLServerDriver',
-        'jdbc:sqlserver://DESKTOP-NSSN8QG;databaseName=MedicalCare2026',
-        'admin',
-        'P@ssw0rd'
-    );
-
-    var uuid=UUIDGenerator.getUUID();
-    var obxListJson=channelMap.get('OBXList');
-    var obxArray=JSON.parse(obxListJson);
-
-    //logger.info("Inserting for Service ID: " + obxArray.SericeId);
-
-    // Insert into Hl7LabOrders
-    var insertOrderQuery="INSERT INTO Hl7LabOrders (OrderID, HL7MessageID, SpecimenID, SendingApp) VALUES (?, ?, ?, ?)";
-    dbConn.executeUpdate(insertOrderQuery, [uuid, connectorMessage.getMessageId(), obxArray.SericeId, 'BioSus']);
-
-    // Loop through OBX items
-    for each (var obxItem in obxArray.arrOBXs) {
-        // Insert into LabTestIntegration
-
-
-        // Insert into Hl7LabOrdersDetail
-        var insertDetailQuery="INSERT INTO Hl7LabOrdersDetail (OrderID, TestSequence, TestCode, TestValue, Units, ReferenceRange, AbnormalFlags, ResultStatus,  PerformingOrganization, TechnicianID, NoteNumber) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        dbConn.executeUpdate(insertDetailQuery, [ uuid, // use generated UUID as OrderID
-            obxItem.id,
-            obxItem.Test_Name,
-            obxItem.value,
-            obxItem.Units,
-            obxItem.ReferenceRange,
-            obxItem.Abnomal_flag,
-            obxItem.ResultStatus,
-
-            'MaglumiBio',
-            obxItem.TechnicianID,
-            obxItem.NoteNumber]);
-
-        // logger.info("Inserted OBX item: " + JSON.stringify(obxItem));
-    }
-
-}
-
-catch (e) {
-    logger.error("Error occurred: " + e);
-}
-
-finally {
-    if (dbConn) {
-        dbConn.close();
-    }
-}
-
 .spinner {
     border: 4px solid #e5e7eb;
     border-top-color: var(--primary-color, #ad1457);
