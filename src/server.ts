@@ -82,8 +82,21 @@ const commonEngine = new CommonEngine();
 app.get(
   '**',
   express.static(browserDistFolder, {
-    maxAge: '1y',
+    maxAge: 0,
     index: 'index.html',
+    setHeaders: (res, filePath) => {
+      // Angular production bundles contain a content hash, so they are safe to
+      // cache forever. Never give unhashed HTML/JS/CSS a year-long lifetime:
+      // real mobile browsers can otherwise keep running an obsolete app after
+      // a deployment, while a fresh Playwright profile appears to work.
+      const isHashedAsset = /-[a-z0-9]{8,}\.(?:js|css)$/i.test(filePath);
+
+      if (isHashedAsset) {
+        res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+      } else {
+        res.setHeader('Cache-Control', 'no-cache, must-revalidate');
+      }
+    },
   })
 );
 
@@ -99,7 +112,10 @@ app.get('**', (req, res, next) => {
       inlineCriticalCss: false,
       providers: [{ provide: APP_BASE_HREF, useValue: baseUrl }],
     })
-    .then((html) => res.send(html))
+    .then((html) => {
+      res.setHeader('Cache-Control', 'no-cache, must-revalidate');
+      res.send(html);
+    })
     .catch((err) => next(err));
 });
 
