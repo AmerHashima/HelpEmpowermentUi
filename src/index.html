@@ -88,11 +88,20 @@
         render();
       });
       window.addEventListener('error', function (event) {
-        state.error = String(event.message || event.error || 'window error').slice(0, 500);
+        var stack = event.error && event.error.stack ? event.error.stack : '';
+        var location = event.filename
+          ? event.filename + ':' + event.lineno + ':' + event.colno
+          : '';
+        state.error = String(
+          (event.message || event.error || 'window error') + '\n' + location + '\n' + stack
+        ).slice(0, 1800);
         render();
       });
       window.addEventListener('unhandledrejection', function (event) {
-        state.error = String(event.reason || 'unhandled rejection').slice(0, 500);
+        var reason = event.reason;
+        state.error = String(
+          reason && reason.stack ? reason.stack : reason || 'unhandled rejection'
+        ).slice(0, 1800);
         render();
       });
     })();

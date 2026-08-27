@@ -10,6 +10,8 @@ bootstrapApplication(AppComponent, appConfig)
   .catch((err) => {
     console.error(err);
     window.dispatchEvent(new CustomEvent('help-angular-error', {
-      detail: err instanceof Error ? `${err.name}: ${err.message}` : String(err),
+      detail: err instanceof Error
+        ? (err.stack || `${err.name}: ${err.message}`)
+        : String(err),
     }));
   });
