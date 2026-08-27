@@ -78,7 +78,11 @@ export class ClientSideLayoutComponent {
       if (isPlatformBrowser(this.platformId)) {
         this.document.documentElement.lang = lang;
         this.document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-        localStorage.setItem('preferredLang', lang);
+        try {
+          localStorage.setItem('preferredLang', lang);
+        } catch {
+          // Language still works in memory when browser storage is unavailable.
+        }
       }
     });
 

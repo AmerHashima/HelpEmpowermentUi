@@ -93,7 +93,12 @@ export class ClientNavbarComponent {
   ngOnInit() {
     if (!isPlatformBrowser(this.platformId)) return;
 
-    const theme = localStorage.getItem('theme') || 'light';
+    let theme = 'light';
+    try {
+      theme = localStorage.getItem('theme') || 'light';
+    } catch {
+      // iOS can expose localStorage while denying access to it.
+    }
     document.documentElement.setAttribute('data-theme', theme);
     this.currentTheme.set(theme);
     this.shared.theme.set(theme);

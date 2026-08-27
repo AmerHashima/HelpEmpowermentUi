@@ -16,10 +16,11 @@ export class Theme {
     if (!isPlatformBrowser(this.platformId)) return; // SSR-safe early exit
 
     // Detect user's preferred color scheme
-    const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+    const colorScheme = window.matchMedia('(prefers-color-scheme: light)');
+    const prefersLight = colorScheme.matches;
 
     // Load saved theme from localStorage
-    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
+    const savedTheme = this.readStorage('theme') as 'light' | 'dark' | null;
 
     // Load full theme list
     this.fullTheme = this.getStoredThemeList();
@@ -39,12 +40,19 @@ export class Theme {
     }
 
     // Listen to system preference changes
-    window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', e => {
-      const theme = localStorage.getItem('theme');
+    const onColorSchemeChange = (e: MediaQueryListEvent) => {
+      const theme = this.readStorage('theme');
       if (!theme) {
         this.setTheme(e.matches ? 'light' : 'dark');
       }
-    });
+    };
+
+    // Older iOS WebKit only implements the legacy MediaQueryList listener API.
+    if (typeof colorScheme.addEventListener === 'function') {
+      colorScheme.addEventListener('change', onColorSchemeChange);
+    } else {
+      colorScheme.addListener(onColorSchemeChange);
+    }
 
     // Reactively update additional theme classes
     effect(() => {
@@ -58,7 +66,7 @@ export class Theme {
   private getStoredThemeList(): string[] {
     if (!isPlatformBrowser(this.platformId)) return [];
     try {
-      const stored = localStorage.getItem('fullTheme');
+      const stored = this.readStorage('fullTheme');
       return stored ? JSON.parse(stored) : [];
     } catch {
       return [];
@@ -81,8 +89,8 @@ export class Theme {
     updatedThemes.push(`${theme}-theme`);
     this.fullTheme = updatedThemes;
 
-    localStorage.setItem('theme', theme);
-    localStorage.setItem('fullTheme', JSON.stringify(updatedThemes));
+    this.writeStorage('theme', theme);
+    this.writeStorage('fullTheme', JSON.stringify(updatedThemes));
 
     this.setFullTheme(updatedThemes);
   }
@@ -105,7 +113,7 @@ export class Theme {
     const themeList = additional && additional !== 'none' ? [additional, base] : [base];
 
     this.fullTheme = themeList;
-    localStorage.setItem('fullTheme', JSON.stringify(themeList));
+    this.writeStorage('fullTheme', JSON.stringify(themeList));
     this.setFullTheme(themeList);
   }
 
@@ -113,5 +121,21 @@ export class Theme {
   toggleTheme() {
     if (!isPlatformBrowser(this.platformId)) return;
     this.setTheme(this.currentTheme() === 'light' ? 'dark' : 'light');
+  }
+
+  private readStorage(key: string): string | null {
+    try {
+      return window.localStorage.getItem(key);
+    } catch {
+      return null;
+    }
+  }
+
+  private writeStorage(key: string, value: string): void {
+    try {
+      window.localStorage.setItem(key, value);
+    } catch {
+      // Storage can be unavailable in iOS private/restricted browsing.
+    }
   }
 }

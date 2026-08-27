@@ -78,8 +78,17 @@ export class AuthService {
 
   // ================= RESTORE =================
   private restoreSession() {
-    this.restoreStudent();
-    this.restoreAdmin();
+    try {
+      this.restoreStudent();
+      this.restoreAdmin();
+    } catch {
+      // Safari can deny localStorage in private/restricted browsing. Treat that
+      // as a signed-out session instead of aborting the entire app bootstrap.
+      this.loggedStudent.set(null);
+      this.studentToken.set('');
+      this.loggedAdmin.set(null);
+      this.adminToken.set('');
+    }
   }
 
   private restoreStudent() {

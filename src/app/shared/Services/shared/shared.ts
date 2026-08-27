@@ -67,9 +67,9 @@ export class Shared {
     if (!isPlatformBrowser(this.platformId)) return;
 
     const currentUrl = this.router.url;
-    const savedExamId = localStorage.getItem('currentExamId');
-    const savedExam = localStorage.getItem('currentExam');
-    const savedstudettExamId = localStorage.getItem('studentExamId');
+    const savedExamId = this.readStorage('currentExamId');
+    const savedExam = this.readStorage('currentExam');
+    const savedstudettExamId = this.readStorage('studentExamId');
     if (savedstudettExamId) {
       this.studentExamId.set(savedstudettExamId);
     }
@@ -84,7 +84,11 @@ export class Shared {
       savedExam &&
       (currentUrl.includes('/chooseExam') || currentUrl.includes('/lesson-learned') || currentUrl.includes('/reports') || currentUrl.includes('?mode'))
     ) {
-      this.currentExam.set(JSON.parse(savedExam));
+      try {
+        this.currentExam.set(JSON.parse(savedExam));
+      } catch {
+        this.currentExam.set(null);
+      }
     }
   }
 
@@ -95,7 +99,7 @@ export class Shared {
       return;
     }
 
-    const savedLang = localStorage.getItem('preferredLang');
+    const savedLang = this.readStorage('preferredLang');
     const browserLang = this.translate.getBrowserLang() || 'en';
     const initialLang = ['en', 'ar'].includes(savedLang!) ? savedLang : browserLang;
 
@@ -109,7 +113,7 @@ export class Shared {
 
     this.lang.set(lang);
 
-    localStorage.setItem('preferredLang', lang);
+    this.writeStorage('preferredLang', lang);
 
     this.updateDirectionAndStylesheets(lang);
   }
@@ -135,6 +139,22 @@ export class Shared {
 
     if (window.innerWidth < 768) {
       this.isCollapse.set(true);
+    }
+  }
+
+  private readStorage(key: string): string | null {
+    try {
+      return window.localStorage.getItem(key);
+    } catch {
+      return null;
+    }
+  }
+
+  private writeStorage(key: string, value: string): void {
+    try {
+      window.localStorage.setItem(key, value);
+    } catch {
+      // Keep the application interactive when iOS blocks persistent storage.
     }
   }
 
