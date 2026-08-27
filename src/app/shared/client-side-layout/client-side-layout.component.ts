@@ -60,6 +60,7 @@ export class ClientSideLayoutComponent {
 
   private announcementsSubscription?: Subscription;
   constructor() {
+    if (isPlatformBrowser(this.platformId)) (window as any).__helpPhase?.('ClientLayout: constructor');
 
     // 1. Handle language from route param
     this.route.paramMap.subscribe(params => {
@@ -103,9 +104,11 @@ export class ClientSideLayoutComponent {
       this.shared.fullPage.set(this.isFullPage);
       this.isNoLayout = this.checkNoLayout(this.router.url);
     });
+    if (isPlatformBrowser(this.platformId)) (window as any).__helpPhase?.('ClientLayout: ready');
   }
 
   ngOnInit() {
+    if (isPlatformBrowser(this.platformId)) (window as any).__helpPhase?.('ClientLayout: ngOnInit');
 
     this.loadAnnouncements();
 

@@ -58,6 +58,7 @@ export class ClientNavbarComponent {
   menuExpanded = signal(false);
 
   constructor() {
+    if (isPlatformBrowser(this.platformId)) (window as any).__helpPhase?.('ClientNavbar: constructor');
 
     effect(() => {
       const certs = this.certifications();
@@ -80,6 +81,7 @@ export class ClientNavbarComponent {
       this.openDropdown.set(null);
       this.menuExpanded.set(false);
     });
+    if (isPlatformBrowser(this.platformId)) (window as any).__helpPhase?.('ClientNavbar: ready');
   }
 
   // ngOnInit() {
