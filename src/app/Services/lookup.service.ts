@@ -14,6 +14,7 @@ export const LOOKUP_CODES = {
   WEBINAR_FORMAT: 'WebinarFormat',
   TIME_ZONE: "TimeZone",
   USER_ROLE:"USER_ROLE",
+  USER_STATUS:"USER_STATUS",
   PAYMENT_METHOD:"PAYMENT_METHODS",
   announcement:"announcement"
 } as const;
@@ -129,6 +130,10 @@ export class LookupService {
 
   getUserRoles() {
     return this.getLookUpByCode(LOOKUP_CODES.USER_ROLE);
+  }
+
+  getUserStatuses() {
+    return this.getLookUpByCode(LOOKUP_CODES.USER_STATUS);
   }
 
   getAnnouncements(){

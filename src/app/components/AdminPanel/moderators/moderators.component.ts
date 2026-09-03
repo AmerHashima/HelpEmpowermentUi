@@ -5,6 +5,7 @@ import { ModeratorService } from '../../../Services/moderator-services.service';
 import { PageEvent } from '@angular/material/paginator';
 import { ModeratorFormComponent } from './moderator-form/moderator-form.component';
 import { ReusableMaterialTableComponent } from '../../../shared/angular-material-reusable-table/angular-material-reusable-table.component';
+import { confirmDelete } from '../../../shared/utils/confirm-delete';
 
 @Component({
   selector: 'app-moderators',
@@ -30,10 +31,7 @@ export class ModeratorsComponent {
   // 🔹 columns
   columns = [
     { field: 'username', header: 'Username', type: 'text' },
-    { field: 'nameEn', header: 'Name', type: 'text' },
-    { field: 'nameAr', header: 'Arabic Name', type: 'text' },
     { field: 'email', header: 'Email', type: 'text' },
-    { field: 'mobile', header: 'Mobile', type: 'text' },
     {
       field: 'isActive',
       header: 'Status',
@@ -115,10 +113,12 @@ export class ModeratorsComponent {
     });
   }
 
-  handleDelete(row: any) {
-    // this.moderatorService.deleteModerator(row.oid).subscribe({
-    //   next: () => this.moderatorService.reloadModerators(this.pageNumber())
-    // })
+  async handleDelete(row: any) {
+    if (!(await confirmDelete('Are you sure you want to delete this moderator?'))) return;
+
+    this.moderatorService.deleteModerator(row.oid).subscribe({
+      next: () => this.moderatorService.reloadModerators(this.pageNumber())
+    });
   }
 
   onCancal() {

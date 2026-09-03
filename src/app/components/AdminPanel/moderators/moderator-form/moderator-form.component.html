@@ -3,7 +3,7 @@
     <div class="col-12 ">
        <div class="card shadow-sm">
     <div class="card-header fw-bold">
-      <h5 class="mb-0">Account Details</h5>
+      <h5 class="mb-0">{{ (oid() ? 'Edit Account' : 'Account Details') | translate }}</h5>
     </div>
     <div class="card-body px-3">
       <section
@@ -15,22 +15,6 @@
           class="register-form mb-0"
         >
           <div class="d-flex flex-column gap-3">
-            <div class="row">
-              <div class="col-12">
-                <app-input
-                  name="nameEn"
-                  [(ngModel)]="credentials.nameEn"
-                  required
-                  [label]="'Name' | translate"
-                  [placeholder]="'Enter your name' | translate"
-                  [icon]="'bi bi-person'"
-                  [errorMessages]="{
-                    required: 'First Name is required' | translate,
-                  }"
-                ></app-input>
-              </div>
-            </div>
-
             <app-input
               name="username"
               [(ngModel)]="credentials.username"
@@ -56,44 +40,43 @@
               }"
             ></app-input>
 
-            <app-phone-input
-              name="phone"
-              [(ngModel)]="credentials.mobile"
-              [required]="true"
-              [labelKey]="'register.phoneLabel' | translate"
-            >
-            </app-phone-input>
-
-            <app-input
-              name="password"
-              [(ngModel)]="credentials.password"
-              required
-              minlength="6"
-              [label]="'log.passwordLabel' | translate"
-              [placeholder]="'log.passwordPlaceholder' | translate"
-              [icon]="'bi bi-lock'"
-              [type]="'password'"
-              [errorMessages]="{
-                required: 'Password is required' | translate,
-                minlength: 'At least 6 characters' | translate,
-              }"
-            ></app-input>
-            <app-input
-              name="confirmPassword"
-              [(ngModel)]="credentials.confirmPassword"
-              required
-              minlength="6"
-              [label]="'log.confirmPasswordLabel' | translate"
-              [placeholder]="'log.confirmPasswordPlaceholder' | translate"
-              [icon]="'bi bi-lock'"
-              [type]="'password'"
-              [errorMessages]="{
-                required: 'Password is required' | translate,
-                minlength: 'At least 6 characters' | translate,
-              }"
-            ></app-input>
+            @if (!oid()) {
+              <app-input
+                name="password"
+                [(ngModel)]="credentials.password"
+                required
+                minlength="6"
+                [label]="'log.passwordLabel' | translate"
+                [placeholder]="'log.passwordPlaceholder' | translate"
+                [icon]="'bi bi-lock'"
+                [type]="'password'"
+                [errorMessages]="{
+                  required: 'Password is required' | translate,
+                  minlength: 'At least 6 characters' | translate,
+                }"
+              ></app-input>
+              <app-input
+                name="confirmPassword"
+                [(ngModel)]="credentials.confirmPassword"
+                required
+                minlength="6"
+                [label]="'log.confirmPasswordLabel' | translate"
+                [placeholder]="'log.confirmPasswordPlaceholder' | translate"
+                [icon]="'bi bi-lock'"
+                [type]="'password'"
+                [errorMessages]="{
+                  required: 'Password is required' | translate,
+                  minlength: 'At least 6 characters' | translate,
+                }"
+              ></app-input>
+              @if (createPasswordsDoNotMatch()) {
+                <div class="text-danger small">
+                  {{ 'Password and confirm password must match.' | translate }}
+                </div>
+              }
+            }
             <div class="row">
-              <div class="col-12 col-lg-6">
+              <div class="col-12 col-lg-4">
    <spk-ng-select
    name="isActive"
 
@@ -109,11 +92,11 @@
               selectClass="form-control"
             />
               </div>
-                <div class="col-12 col-lg-6">
+                <div class="col-12 col-lg-4">
               <spk-ng-select
               name="roleLookupId"
-
-[(ngModel)]="credentials.roleLookupId"
+        [(ngModel)]="credentials.roleLookupId"
+        [required]="true"
         [label]="'Role' | translate"
         [options]="$any((userRoles$ | async) ?? [])"
         [bindLabel]="isRTL()?'lookupNameAr':'lookupNameEn'"
@@ -123,18 +106,107 @@
         selectClass="form-control"
       />
               </div>
+              <div class="col-12 col-lg-4">
+                <spk-ng-select
+                  name="statusLookupId"
+                  [(ngModel)]="credentials.statusLookupId"
+                  [required]="true"
+                  [label]="'Status' | translate"
+                  [options]="$any((userStatuses$ | async) ?? [])"
+                  [bindLabel]="isRTL() ? 'lookupNameAr' : 'lookupNameEn'"
+                  bindValue="oid"
+                  [multiple]="false"
+                  [placeholder]="'Choose Status' | translate"
+                  selectClass="form-control"
+                />
+              </div>
             </div>
             <app-site-button
-              title="Create Account"
+              [title]="oid() ? 'Update Account' : 'Create Account'"
               type="main"
               htmlType="submit"
+              [disabled]="submitting() || createPasswordsDoNotMatch()"
               [icon]="'bi bi-arrow'"
             ></app-site-button>
           </div>
         </form>
       </section>
+
+      @if (oid()) {
+        <section class="form w-100 p-3 pt-0">
+          <hr />
+          <app-site-button
+            title="Change Password"
+            type="secondary"
+            htmlType="button"
+            icon="bi bi-key"
+            (onClick)="openPasswordPopup()"
+          ></app-site-button>
+        </section>
+      }
     </div>
   </div>
 </div>
 </div>
 </div>
+
+<app-generic-modal
+  [isOpen]="passwordPopupOpen()"
+  title="Change Password"
+  (close)="closePasswordPopup(passwordForm)"
+  (isOpenChange)="!$event && closePasswordPopup(passwordForm)"
+>
+  <form #passwordForm="ngForm" (ngSubmit)="onChangePassword(passwordForm)">
+    <div class="d-flex flex-column gap-3">
+      <app-input
+        name="currentPassword"
+        [(ngModel)]="passwordCredentials.currentPassword"
+        required
+        [label]="'Current Password' | translate"
+        [type]="'password'"
+        [icon]="'bi bi-lock'"
+        [errorMessages]="{ required: 'Current Password is required' | translate }"
+      ></app-input>
+      <app-input
+        name="newPassword"
+        [(ngModel)]="passwordCredentials.newPassword"
+        required
+        minlength="6"
+        [label]="'New Password' | translate"
+        [type]="'password'"
+        [icon]="'bi bi-lock'"
+        [errorMessages]="{
+          required: 'Password is required' | translate,
+          minlength: 'At least 6 characters' | translate
+        }"
+      ></app-input>
+      <app-input
+        name="newPasswordConfirmation"
+        [(ngModel)]="passwordCredentials.confirmPassword"
+        required
+        minlength="6"
+        [label]="'log.confirmPasswordLabel' | translate"
+        [type]="'password'"
+        [icon]="'bi bi-lock'"
+        [errorMessages]="{
+          required: 'Password is required' | translate,
+          minlength: 'At least 6 characters' | translate
+        }"
+      ></app-input>
+
+      @if (passwordsDoNotMatch()) {
+        <div class="text-danger small">
+          {{ 'Password and confirm password must match.' | translate }}
+        </div>
+      }
+
+      <app-site-button
+        title="Change Password"
+        type="main"
+        htmlType="submit"
+        [disabled]="changingPassword() || passwordsDoNotMatch()"
+        icon="bi bi-key"
+      ></app-site-button>
+    </div>
+  </form>
+</app-generic-modal>

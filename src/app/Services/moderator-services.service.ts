@@ -7,13 +7,35 @@ import ApiService from '../shared/Services/ApiService/api.service';
 export interface APIUser {
   oid: string;
   username: string;
-  nameEn: string;
-  nameAr: string;
   email: string;
-  mobile: string;
   isActive: boolean;
   roleLookupId?: string;
   roleName?: string;
+  statusLookupId?: string;
+}
+
+export interface CreateUser {
+  username: string;
+  email: string;
+  password: string;
+  roleLookupId: string;
+  statusLookupId: string;
+  isActive: boolean;
+  createdBy: string;
+}
+
+export type UpdateUser = Omit<CreateUser, 'password' | 'createdBy'> & {
+  oid: string;
+  updatedBy: string;
+};
+
+export interface ChangeUserPassword {
+  oid: string;
+  userId: string;
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+  updatedBy: string;
 }
 
 @Injectable({
@@ -86,6 +108,59 @@ export class ModeratorService {
           return response.data;
         })
       );
+  }
+
+  getModerator(oid: string): Observable<APIUser> {
+    return this.apiService.getSingle<ApiResponse<APIUser>>('Users', oid).pipe(
+      map((response) => {
+        if (!response.success) {
+          throw new Error(response.errors?.join(', ') || response.message || 'API failed to load moderator');
+        }
+        return response.data;
+      })
+    );
+  }
+
+  createModerator(body: CreateUser): Observable<APIUser> {
+    return this.apiService.post<ApiResponse<APIUser>>('Users', body, 'Moderator created successfully').pipe(
+      map((response) => {
+        if (!response.success) {
+          throw new Error(response.errors?.join(', ') || response.message || 'API failed to create moderator');
+        }
+        return response.data;
+      })
+    );
+  }
+
+  updateModerator(oid: string, body: Omit<UpdateUser, 'oid'>): Observable<APIUser> {
+    return this.apiService.put<ApiResponse<APIUser>>(
+      'Users',
+      oid,
+      { ...body, oid },
+      'Moderator updated successfully'
+    ).pipe(
+      map((response) => {
+        if (!response.success) {
+          throw new Error(response.errors?.join(', ') || response.message || 'API failed to update moderator');
+        }
+        return response.data;
+      })
+    );
+  }
+
+  changePassword(body: ChangeUserPassword): Observable<boolean> {
+    return this.apiService.post<ApiResponse<boolean>>(
+      'Users/change-password',
+      body,
+      'Password changed successfully'
+    ).pipe(
+      map((response) => {
+        if (!response.success) {
+          throw new Error(response.errors?.join(', ') || response.message || 'API failed to change password');
+        }
+        return response.data;
+      })
+    );
   }
 
   reloadModerators(pageNumber: number = 0) {

@@ -1,24 +1,23 @@
-import { Component, inject, input, output, QueryList, ViewChildren } from '@angular/core';
-import { FormBuilder, FormsModule, NgForm } from '@angular/forms';
-import { ActiveStatus } from '../../../../data/lookUPS';
-import { PhoneInputComponent } from '../../../../shared/phone/phone.component';
+import { Component, effect, inject, input, output, signal } from '@angular/core';
+import { FormsModule, NgForm } from '@angular/forms';
+import { ActiveStatus, createdUpdatedOID } from '../../../../data/lookUPS';
 import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/site-button.component';
 import { InputComponent } from '../../../../shared/input/input.component';
 import { TranslatePipe } from '@ngx-translate/core';
-import { Router } from '@angular/router';
 import { Shared } from '../../../../shared/Services/shared/shared';
-import { AuthService } from '../../../../Services/auth.service';
 import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
 import { SpkNgSelectComponent } from '../../../../shared/spk-ng-select/spk-ng-select.component';
 import { LookupService } from '../../../../Services/lookup.service';
 import { AsyncPipe } from '@angular/common';
+import { ModeratorService } from '../../../../Services/moderator-services.service';
+import { GenericModelComponent } from '../../../../shared/generic-model/generic-model.component';
 
 @Component({
   selector: 'app-moderator-form',
   standalone: true,
 
   imports: [SiteButtonComponent, InputComponent,AsyncPipe,
-    TranslatePipe, FormsModule, PhoneInputComponent,SpkNgSelectComponent
+    TranslatePipe, FormsModule, SpkNgSelectComponent, GenericModelComponent
   ],
    templateUrl: './moderator-form.component.html',
   styleUrl: './moderator-form.component.scss'
@@ -26,73 +25,162 @@ import { AsyncPipe } from '@angular/common';
 export class ModeratorFormComponent {
   oid = input<string>('');
   cancalEvent = output<void>();
-  fb = inject(FormBuilder);
   status = ActiveStatus;
-
-  @ViewChildren(PhoneInputComponent)
-  phoneCmps!: QueryList<PhoneInputComponent>;
   private shared = inject(Shared);
-  private auth = inject(AuthService);
   private toasting = inject(ToastingMessagesService);
+  private moderatorService = inject(ModeratorService);
   private lookupService=inject(LookupService);
   userRoles$ = this.lookupService.getUserRoles();
+  userStatuses$ = this.lookupService.getUserStatuses();
 
-  private router = inject(Router);
   isRTL = this.shared.isRtl;
   lang = this.shared.lang;
+  submitting = signal(false);
+  changingPassword = signal(false);
+  passwordPopupOpen = signal(false);
 
   credentials = {
-    nameEn:'',
-    nameAr: '',
     username: '',
     email: '',
-    mobile: "",
     password: '',
     confirmPassword: '',
     roleLookupId:'',
+    statusLookupId:'',
     isActive:false
   };
+
+  passwordCredentials = {
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: ''
+  };
+
+  constructor() {
+    effect(() => {
+      const oid = this.oid();
+      this.resetCredentials();
+      if (!oid) return;
+
+      this.moderatorService.getModerator(oid).subscribe({
+        next: (user) => {
+          this.credentials = {
+            username: user.username ?? '',
+            email: user.email ?? '',
+            password: '',
+            confirmPassword: '',
+            roleLookupId: user.roleLookupId ?? '',
+            statusLookupId: user.statusLookupId ?? '',
+            isActive: user.isActive
+          };
+        }
+      });
+    });
+  }
 
   onRegister(form: NgForm) {
 
     if (form.invalid) {
       form.control.markAllAsTouched();
-      this.phoneCmps?.forEach(c => c.validateOnSubmit());
       return;
     }
 
-    const payload = {
-      nameEn: this.credentials.nameEn,
-      nameAr: this.credentials.nameAr,
+    if (!this.oid() && this.credentials.password !== this.credentials.confirmPassword) {
+      this.toasting.showToast('Password and confirm password must match.', 'error');
+      return;
+    }
+
+    const commonPayload = {
       email: this.credentials.email,
-      mobile: this.credentials.mobile,
       username: this.credentials.username,
-      password: this.credentials.password,
-      confirmPassword: this.credentials.confirmPassword,
-      // isActive: this.credentials.isActive,
-      roleLookupId: this.credentials.roleLookupId
+      roleLookupId: this.credentials.roleLookupId,
+      statusLookupId: this.credentials.statusLookupId,
+      isActive: this.credentials.isActive
     };
 
-    this.auth.registerUser(payload).subscribe({
+    const request$ = this.oid()
+      ? this.moderatorService.updateModerator(this.oid(), { ...commonPayload, updatedBy: createdUpdatedOID })
+      : this.moderatorService.createModerator({
+          ...commonPayload,
+          password: this.credentials.password,
+          createdBy: createdUpdatedOID
+        });
+
+    this.submitting.set(true);
+    request$.subscribe({
       next: () => {
-        // this.toasting.showToast('Account created suffccessfully please login','success');
+        this.submitting.set(false);
+        this.moderatorService.reloadModerators(this.moderatorService.pageNumber());
         this.cancel(form);
       },
       error: (err) => {
-
-        const apiMessage =
-          err?.error?.message ||
-          err?.error?.errors?.[0] ||
-          'auth.register.error';
-        this.toasting.showToast(apiMessage, 'error');
+        this.submitting.set(false);
+        if (err instanceof Error) this.toasting.showToast(err.message, 'error');
       }
-    })
+    });
+  }
+
+  onChangePassword(form: NgForm) {
+    if (form.invalid) {
+      form.control.markAllAsTouched();
+      return;
+    }
+    if (this.passwordCredentials.newPassword !== this.passwordCredentials.confirmPassword) {
+      this.toasting.showToast('Password and confirm password must match.', 'error');
+      return;
+    }
+
+    this.changingPassword.set(true);
+    this.moderatorService.changePassword({
+      oid: this.oid(),
+      userId: this.oid(),
+      currentPassword: this.passwordCredentials.currentPassword,
+      newPassword: this.passwordCredentials.newPassword,
+      confirmPassword: this.passwordCredentials.confirmPassword,
+      updatedBy: createdUpdatedOID
+    }).subscribe({
+      next: () => {
+        this.changingPassword.set(false);
+        this.closePasswordPopup(form);
+      },
+      error: (err) => {
+        this.changingPassword.set(false);
+        if (err instanceof Error) this.toasting.showToast(err.message, 'error');
+      }
+    });
+  }
+
+  openPasswordPopup() {
+    this.passwordCredentials = { currentPassword: '', newPassword: '', confirmPassword: '' };
+    this.passwordPopupOpen.set(true);
+  }
+
+  closePasswordPopup(form?: NgForm) {
+    this.passwordPopupOpen.set(false);
+    this.passwordCredentials = { currentPassword: '', newPassword: '', confirmPassword: '' };
+    form?.resetForm(this.passwordCredentials);
+  }
+
+  passwordsDoNotMatch(): boolean {
+    return !!this.passwordCredentials.confirmPassword &&
+      this.passwordCredentials.newPassword !== this.passwordCredentials.confirmPassword;
   }
 
   cancel(form:NgForm) {
     form.form.markAsUntouched();
     form.reset();
-    this.phoneCmps?.forEach(c => c.resetState());
     this.cancalEvent.emit();
+  }
+
+  createPasswordsDoNotMatch(): boolean {
+    return !this.oid() && !!this.credentials.confirmPassword &&
+      this.credentials.password !== this.credentials.confirmPassword;
+  }
+
+  private resetCredentials() {
+    this.credentials = {
+      username: '', email: '', password: '', confirmPassword: '',
+      roleLookupId: '', statusLookupId: '', isActive: false
+    };
+    this.passwordCredentials = { currentPassword: '', newPassword: '', confirmPassword: '' };
   }
 }
