@@ -6,6 +6,13 @@
       <h5 class="mb-0">{{ (oid() ? 'Edit Account' : 'Account Details') | translate }}</h5>
     </div>
     <div class="card-body px-3">
+      @if (oid()) {
+        <ul class="nav nav-tabs mb-3" role="tablist">
+          <li class="nav-item" role="presentation"><button type="button" class="nav-link" [class.active]="activeTab() === 'account'" (click)="activeTab.set('account')" role="tab">Account Details</button></li>
+          <li class="nav-item" role="presentation"><button type="button" class="nav-link" [class.active]="activeTab() === 'assignments'" (click)="activeTab.set('assignments')" role="tab">Course Assignments</button></li>
+        </ul>
+      }
+      @if (activeTab() === 'account') {
       <section
         class="form w-100 d-flex flex-column align-items-stretch gap-3 p-3 rounded"
       >
@@ -143,6 +150,9 @@
             (onClick)="openPasswordPopup()"
           ></app-site-button>
         </section>
+      }
+      } @else if (oid()) {
+        <app-user-course-assignments [userId]="oid()"></app-user-course-assignments>
       }
     </div>
   </div>

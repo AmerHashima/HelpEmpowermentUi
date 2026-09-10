@@ -51,6 +51,12 @@ export class SideNav {
       route: 'dashboard'
     },
     {
+      name: 'Reports',
+      nameAr: 'التقارير',
+      icon: 'bi bi-bar-chart-line',
+      route: 'reports'
+    },
+    {
       name: 'Certifications',
       nameAr: 'الشهادات',
       icon: 'bi bi-patch-check-fill',

@@ -1,0 +1,16 @@
+<section class="assignments-panel">
+  <div class="section-heading"><div><h5>Course Assignments</h5><p>Assign courses and responsibilities to this account.</p></div><span class="badge text-bg-light">{{ assignments().length }} assignments</span></div>
+
+  @if (errorMessage()) { <div class="alert alert-danger py-2" role="alert">{{ errorMessage() }}</div> }
+  <form #assignmentForm="ngForm" (ngSubmit)="save(assignmentForm)" class="assignment-form">
+    <div><label for="assignment-course" class="form-label">Course</label><select id="assignment-course" name="courseId" class="form-select" [(ngModel)]="model.courseId" required><option value="" disabled>Select course</option>@for (course of courses(); track course.oid) {<option [value]="course.oid">{{ course.courseName }}</option>}</select></div>
+    <div><label for="assignment-type" class="form-label">Assignment type</label><select id="assignment-type" name="assignmentTypeId" class="form-select" [(ngModel)]="model.assignmentTypeId" required><option value="" disabled>Select type</option>@for (type of assignmentTypes(); track type.oid) {<option [value]="type.oid">{{ type.lookupNameEn }}</option>}</select></div>
+    <label class="form-check"><input class="form-check-input" type="checkbox" name="isPrimary" [(ngModel)]="model.isPrimary"><span class="form-check-label">Primary</span></label>
+    <label class="form-check"><input class="form-check-input" type="checkbox" name="assignmentActive" [(ngModel)]="model.isActive"><span class="form-check-label">Active</span></label>
+    <div class="form-actions"><button type="submit" class="btn btn-primary" [disabled]="saving()">@if (saving()) {<span class="spinner-border spinner-border-sm"></span>} {{ editingId() ? 'Update' : 'Add assignment' }}</button>@if (editingId()) {<button type="button" class="btn btn-outline-secondary" (click)="cancelEdit(assignmentForm)">Cancel</button>}</div>
+  </form>
+
+  @if (loading()) { <div class="state" role="status"><span class="spinner-border text-primary"></span> Loading assignments…</div> }
+  @else if (!assignments().length) { <div class="state empty"><i class="bi bi-journal-plus"></i><span>No course assignments yet.</span></div> }
+  @else { <div class="table-responsive"><table class="table align-middle"><thead><tr><th>Course</th><th>Type</th><th>Primary</th><th>Status</th><th class="text-end">Actions</th></tr></thead><tbody>@for (assignment of assignments(); track assignment.oid) {<tr><td><strong>{{ assignment.courseName }}</strong></td><td>{{ assignment.assignmentType }}</td><td><span class="badge" [class.text-bg-primary]="assignment.isPrimary" [class.text-bg-light]="!assignment.isPrimary">{{ assignment.isPrimary ? 'Yes' : 'No' }}</span></td><td><span class="badge" [class.text-bg-success]="assignment.isActive" [class.text-bg-secondary]="!assignment.isActive">{{ assignment.isActive ? 'Active' : 'Inactive' }}</span></td><td class="text-end actions"><button type="button" class="btn btn-sm btn-outline-primary" (click)="edit(assignment)" aria-label="Edit assignment"><i class="bi bi-pencil"></i></button><button type="button" class="btn btn-sm btn-outline-danger" (click)="remove(assignment)" [disabled]="deletingId() === assignment.oid" aria-label="Delete assignment"><i class="bi bi-trash"></i></button></td></tr>}</tbody></table></div> }
+</section>

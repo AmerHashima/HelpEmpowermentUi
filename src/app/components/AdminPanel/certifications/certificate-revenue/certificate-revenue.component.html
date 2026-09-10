@@ -1,0 +1,39 @@
+<section class="revenue-panel">
+  @if (errorMessage()) { <div class="alert alert-danger" role="alert">{{ errorMessage() }}</div> }
+  @if (loading()) {
+    <div class="state" role="status"><span class="spinner-border text-primary"></span> Loading certificate revenue…</div>
+  } @else {
+    @if (summary(); as revenue) {
+      <div class="summary-grid mb-3">
+        <article><span>Total revenue</span><strong>{{ revenue.totalRevenue | number:'1.2-2' }}</strong></article>
+        <article><span>Distributed</span><strong>{{ revenue.distributedRevenue | number:'1.2-2' }}</strong></article>
+        <article><span>Pending</span><strong>{{ revenue.pendingRevenue | number:'1.2-2' }}</strong></article>
+        <article><span>Paid</span><strong>{{ revenue.paidRevenue | number:'1.2-2' }}</strong></article>
+      </div>
+    }
+    <div class="row g-3">
+      <div class="col-xl-5"><div class="card border-0 shadow-sm p-3 h-100">
+        <h6 class="fw-bold mb-3">{{ editingId() ? 'Edit Revenue Share' : 'Add Revenue Share' }}</h6>
+        <form [formGroup]="form" (ngSubmit)="save()" class="d-flex flex-column gap-2">
+          <label class="form-label">Beneficiary</label><select class="form-select" formControlName="beneficiaryUserId"><option [ngValue]="null">Platform / no user</option>@for (user of users(); track user.oid) { <option [value]="user.oid">{{ user.username }}</option> }</select>
+          <label class="form-label mt-1">Share Type</label><select class="form-select" formControlName="shareTypeId" [class.is-invalid]="form.controls.shareTypeId.touched && form.controls.shareTypeId.invalid"><option value="">Select type</option>@for (type of shareTypes(); track type.oid) { <option [value]="type.oid">{{ type.lookupNameEn }}</option> }</select>
+          @if (form.controls.shareTypeId.touched && form.controls.shareTypeId.invalid) { <div class="invalid-feedback d-block">Share type is required.</div> }
+          <label class="form-label mt-1">Calculation</label><select class="form-select" formControlName="calculationType"><option [ngValue]="calculationType.Percentage">Percentage</option><option [ngValue]="calculationType.FixedAmount">Fixed amount</option></select>
+          <label class="form-label mt-1">Value</label><div class="input-group"><input class="form-control" type="number" min="0" step="0.01" formControlName="value" /><span class="input-group-text">{{ form.controls.calculationType.value === calculationType.Percentage ? '%' : 'Amount' }}</span></div>
+          @if (form.hasError('percentageMax')) { <div class="text-danger small">Percentage cannot exceed 100.</div> }
+          <div class="row g-2 mt-1"><div class="col-md-6"><label class="form-label">Effective From</label><input class="form-control" type="date" formControlName="effectiveFrom" /></div><div class="col-md-6"><label class="form-label">Effective To</label><input class="form-control" type="date" formControlName="effectiveTo" /></div></div>
+          @if (form.hasError('invalidDateRange')) { <div class="text-danger small">Effective-to date cannot be before effective-from date.</div> }
+          <label class="form-label mt-1">Notes</label><textarea class="form-control" rows="3" maxlength="500" formControlName="notes"></textarea>
+          <label class="form-check mt-1"><input class="form-check-input" type="checkbox" formControlName="isActive" /><span class="form-check-label">Active</span></label>
+          <div class="d-flex gap-2 mt-2"><button class="btn btn-primary" type="submit" [disabled]="saving()">@if (saving()) { <span class="spinner-border spinner-border-sm me-1"></span> }{{ editingId() ? 'Update Share' : 'Create Share' }}</button>@if (editingId()) { <button class="btn btn-outline-secondary" type="button" (click)="resetForm()">Cancel</button> }</div>
+        </form>
+      </div></div>
+      <div class="col-xl-7"><div class="card border-0 shadow-sm p-3 h-100"><h6 class="fw-bold mb-3">Revenue Plan</h6>
+        @if (!shares().length) { <div class="state empty"><i class="bi bi-cash-stack"></i><span>No revenue shares configured.</span></div> }
+        @else { <div class="table-responsive"><table class="table align-middle"><thead><tr><th>Beneficiary</th><th>Type</th><th>Share</th><th>Status</th><th class="text-end">Actions</th></tr></thead><tbody>
+          @for (share of shares(); track share.oid) { <tr><td>{{ share.userName || 'Platform' }}</td><td>{{ share.shareType }}</td><td>{{ share.value | number:'1.0-2' }}{{ share.calculationType === calculationType.Percentage ? '%' : '' }}</td><td><span class="badge" [class.text-bg-success]="share.isActive" [class.text-bg-secondary]="!share.isActive">{{ share.isActive ? 'Active' : 'Inactive' }}</span></td><td class="text-end actions"><button class="btn btn-sm btn-outline-primary" type="button" (click)="edit(share)" aria-label="Edit revenue share"><i class="bi bi-pencil"></i></button><button class="btn btn-sm btn-outline-danger" type="button" (click)="remove(share)" [disabled]="deletingId() === share.oid" aria-label="Delete revenue share"><i class="bi bi-trash"></i></button></td></tr> }
+        </tbody></table></div> }
+      </div></div>
+    </div>
+  }
+</section>

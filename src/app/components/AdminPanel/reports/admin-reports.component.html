@@ -1,0 +1,18 @@
+<div class="reports-container">
+  <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3"><div><h4 class="mb-1">Reports</h4><p class="text-muted mb-0">Revenue and course assignment reports</p></div></div>
+  <div class="report-links mb-3"><button type="button" [class.active]="activeReport() === 'revenue'" (click)="setReport('revenue')"><i class="bi bi-graph-up-arrow"></i> Revenue</button><button type="button" [class.active]="activeReport() === 'assignments'" (click)="setReport('assignments')"><i class="bi bi-person-workspace"></i> User Course Assignments</button></div>
+  @if (errorMessage()) { <div class="alert alert-danger">{{ errorMessage() }}</div> }
+  @if (activeReport() === 'revenue') {
+    <div class="card border-0 shadow-sm p-3"><div class="filter-row"><div><label class="form-label">Certificate</label><select class="form-select" [(ngModel)]="selectedCourseId" (ngModelChange)="loadRevenue()"><option value="">Select certificate</option>@for(course of courses(); track course.oid){<option [value]="course.oid">{{ course.courseName }}</option>}</select></div></div>
+      @if (loading()) { <div class="state"><span class="spinner-border"></span> Loading report…</div> }
+      @else if (!selectedCourseId) { <div class="state">Select a certificate to view revenue.</div> }
+      @else { @if(revenueSummary(); as summary){<div class="summary"><span>Total <strong>{{summary.totalRevenue | number:'1.2-2'}}</strong></span><span>Distributed <strong>{{summary.distributedRevenue | number:'1.2-2'}}</strong></span><span>Pending <strong>{{summary.pendingRevenue | number:'1.2-2'}}</strong></span><span>Paid <strong>{{summary.paidRevenue | number:'1.2-2'}}</strong></span></div>}
+        @if(!revenueShares().length){<div class="state">No revenue shares found.</div>}@else{<div class="table-responsive"><table class="table align-middle"><thead><tr><th>Beneficiary</th><th>Type</th><th>Calculation</th><th>Value</th><th>Status</th></tr></thead><tbody>@for(share of revenueShares(); track share.oid){<tr><td>{{share.userName || 'Platform'}}</td><td>{{share.shareType}}</td><td>{{share.calculationType === calculationType.Percentage ? 'Percentage' : 'Fixed amount'}}</td><td>{{share.value | number:'1.0-2'}}{{share.calculationType === calculationType.Percentage ? '%' : ''}}</td><td>{{share.isActive ? 'Active' : 'Inactive'}}</td></tr>}</tbody></table></div>}
+      }
+    </div>
+  } @else {
+    <div class="card border-0 shadow-sm p-3"><div class="filter-row"><div><label class="form-label">User name</label><div class="input-group"><input class="form-control" [(ngModel)]="assignmentSearch" (keyup.enter)="loadAssignments()" placeholder="Search user"><button class="btn btn-primary" type="button" (click)="loadAssignments()">Search</button></div></div></div>
+      @if(loading()){<div class="state"><span class="spinner-border"></span> Loading report…</div>}@else if(!assignments().length){<div class="state">No course assignments found.</div>}@else{<div class="table-responsive"><table class="table align-middle"><thead><tr><th>User</th><th>Certificate</th><th>Assignment</th><th>Primary</th><th>Status</th></tr></thead><tbody>@for(item of assignments(); track item.oid){<tr><td>{{item.userName}}</td><td>{{item.courseName}}</td><td>{{item.assignmentType}}</td><td>{{item.isPrimary ? 'Yes' : 'No'}}</td><td>{{item.isActive ? 'Active' : 'Inactive'}}</td></tr>}</tbody></table></div>}
+    </div>
+  }
+</div>

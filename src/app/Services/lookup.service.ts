@@ -16,6 +16,7 @@ export const LOOKUP_CODES = {
   USER_ROLE:"USER_ROLE",
   USER_STATUS:"USER_STATUS",
   PAYMENT_METHOD:"PAYMENT_METHODS",
+  COURSE_ASSIGNMENT_TYPE: 'COURSE_ASSIGNMENT_TYPE',
   announcement:"announcement"
 } as const;
 
@@ -142,6 +143,10 @@ export class LookupService {
 
   getPaymentMethods() {
     return this.getLookUpByCode(LOOKUP_CODES.PAYMENT_METHOD);
+  }
+
+  getCourseAssignmentTypes() {
+    return this.getLookUpByCode(LOOKUP_CODES.COURSE_ASSIGNMENT_TYPE);
   }
 
  

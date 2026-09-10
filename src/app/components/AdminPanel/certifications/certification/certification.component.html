@@ -27,7 +27,7 @@
             <app-button btnLabel="Add New Exam" [mainBtn]="true" (click)="onAddNewExam()" />
             } @else if (activeTab() === 'services') {
             <app-button btnLabel="Add New Service" [mainBtn]="true" (click)="startCreateService()" />
-            } @else {
+            } @else if (activeTab() === 'videos') {
             <app-button btnLabel="Add New Video" [mainBtn]="true" (click)="onAddNewVideo()" />
             }
           </div>
@@ -55,6 +55,8 @@
                 [attr.aria-selected]="activeTab() === 'videos'" (click)="setActiveTab('videos')">
                 Course Videos
               </button>
+              <button type="button" class="tabBtn" [class.active]="activeTab() === 'revenue'" role="tab"
+                [attr.aria-selected]="activeTab() === 'revenue'" (click)="setActiveTab('revenue')">Revenue</button>
             </div>
 
             @if (activeTab() === 'exams') {
@@ -209,8 +211,10 @@
                 </div>
               </div>
             </div>
-            } @else {
+            } @else if (activeTab() === 'videos') {
             <app-certification-course-videos-tab [courseId]="certification()?.oid ?? ''" />
+            } @else if (activeTab() === 'revenue') {
+            <app-certificate-revenue [courseId]="certification()?.oid ?? ''" />
             }
           </div>
         </div>

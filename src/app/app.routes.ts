@@ -277,6 +277,11 @@ export const routes: Routes = [
         data: { breadcrumb: 'Dashboard' },
       },
       {
+        path: 'reports',
+        loadComponent: () => import('./components/AdminPanel/reports/admin-reports.component').then(m => m.AdminReportsComponent),
+        data: { breadcrumb: 'Reports' },
+      },
+      {
         path: 'certifications',
         loadComponent: () => import('./components/AdminPanel/certifications/certifications.component').then(m => m.CertificationsComponent),
         data: { breadcrumb: 'Certifications' },

@@ -11,13 +11,14 @@ import { LookupService } from '../../../../Services/lookup.service';
 import { AsyncPipe } from '@angular/common';
 import { ModeratorService } from '../../../../Services/moderator-services.service';
 import { GenericModelComponent } from '../../../../shared/generic-model/generic-model.component';
+import { UserCourseAssignmentsComponent } from '../user-course-assignments/user-course-assignments.component';
 
 @Component({
   selector: 'app-moderator-form',
   standalone: true,
 
   imports: [SiteButtonComponent, InputComponent,AsyncPipe,
-    TranslatePipe, FormsModule, SpkNgSelectComponent, GenericModelComponent
+    TranslatePipe, FormsModule, SpkNgSelectComponent, GenericModelComponent, UserCourseAssignmentsComponent
   ],
    templateUrl: './moderator-form.component.html',
   styleUrl: './moderator-form.component.scss'
@@ -38,6 +39,7 @@ export class ModeratorFormComponent {
   submitting = signal(false);
   changingPassword = signal(false);
   passwordPopupOpen = signal(false);
+  activeTab = signal<'account' | 'assignments'>('account');
 
   credentials = {
     username: '',
@@ -58,6 +60,7 @@ export class ModeratorFormComponent {
   constructor() {
     effect(() => {
       const oid = this.oid();
+      this.activeTab.set('account');
       this.resetCredentials();
       if (!oid) return;
 

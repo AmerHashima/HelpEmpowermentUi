@@ -1,12 +1,12 @@
 // src\app\components\AdminPanel\dashboard\dashboard.component.ts
 import { Component, inject, signal } from '@angular/core';
 import { StudentService } from '../../../Services/student-service.service';
-import { request } from 'http';
 import { forkJoin } from 'rxjs';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })

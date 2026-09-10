@@ -23,6 +23,7 @@ import { CertificationCourseVideosTabComponent } from '../certification-course-v
 import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
 import { SpkNgSelectComponent } from '../../../../shared/spk-ng-select/spk-ng-select.component';
 import { CommonModule } from '@angular/common';
+import { CertificateRevenueComponent } from '../certificate-revenue/certificate-revenue.component';
 
 @Component({
   selector: 'app-certification',
@@ -35,7 +36,8 @@ import { CommonModule } from '@angular/common';
     ReactiveFormsModule,
     CertificationCourseVideosTabComponent,
     SpkNgSelectComponent,
-    CommonModule
+    CommonModule,
+    CertificateRevenueComponent
 
   ],
   templateUrl: './certification.component.html',
@@ -56,7 +58,7 @@ export class CertificationComponent {
   certification = this.certificationStore.selectedCertification;
   courseContents = [];
   exams = computed(() => this.examsStore.exams());
-  activeTab = signal<'exams' | 'services' | 'videos'>('exams');
+  activeTab = signal<'exams' | 'services' | 'videos' | 'revenue'>('exams');
   showConfirm: boolean = false;
   deleteExam: APIExam | null = null;
 
@@ -92,7 +94,9 @@ export class CertificationComponent {
 
         tab === 'services' ||
 
-        tab === 'videos'
+        tab === 'videos' ||
+
+        tab === 'revenue'
 
       ) {
 
@@ -133,7 +137,7 @@ export class CertificationComponent {
   //   this.activeTab.set(tab);
   // }
 
-  setActiveTab(tab: 'exams' | 'services' | 'videos') {
+  setActiveTab(tab: 'exams' | 'services' | 'videos' | 'revenue') {
 
     this.activeTab.set(tab);
 

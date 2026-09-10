@@ -1,5 +1,11 @@
 <div class="dashboard-container">
 
+  <div class="section-title">Reports</div>
+  <div class="row g-3 mb-4">
+    <div class="col-md-6"><a class="stat-card primary text-decoration-none" routerLink="/admin/reports" [queryParams]="{ report: 'revenue' }"><div class="stat-icon"><i class="bi bi-graph-up-arrow"></i></div><div><div class="stat-title">Revenue Report</div><div class="report-action">View report <i class="bi bi-arrow-right"></i></div></div></a></div>
+    <div class="col-md-6"><a class="stat-card success text-decoration-none" routerLink="/admin/reports" [queryParams]="{ report: 'assignments' }"><div class="stat-icon"><i class="bi bi-person-workspace"></i></div><div><div class="stat-title">User Course Assignments</div><div class="report-action">View report <i class="bi bi-arrow-right"></i></div></div></a></div>
+  </div>
+
   <!-- 🔷 USERS -->
   <div class="section-title">Users Overview</div>
 

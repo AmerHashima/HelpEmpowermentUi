@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { EMPTY, Observable, catchError, finalize, tap, throwError } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { ToastingMessagesService } from '../ToastingMessages/toasting-messages.service';
@@ -40,10 +40,10 @@ export default class ApiService {
   // }
 
 
-  private handleError(error: any, url?: string) {
+  private handleError(error: HttpErrorResponse, url?: string) {
     if (this.apiStatus.isServerDown()) return throwError(() => '');
 
-    const responseBody = error?.error;
+    const responseBody = this.asErrorBody(error.error);
     const validationErrors = responseBody?.errors;
     const firstValidationError = Array.isArray(validationErrors)
       ? validationErrors[0]
@@ -58,6 +58,12 @@ export default class ApiService {
     }
 
     return throwError(() => error);
+  }
+
+  private asErrorBody(value: unknown): { message?: unknown; errors?: unknown } | null {
+    return typeof value === 'object' && value !== null
+      ? value as { message?: unknown; errors?: unknown }
+      : null;
   }
 
   private createHeaders(): HttpHeaders {
@@ -121,7 +127,7 @@ export default class ApiService {
 
   post<T>(
     url: string,
-    body: any,
+    body: unknown,
     successMessage: string = 'Success',
     page:string='',
   ): Observable<T> {
@@ -165,7 +171,7 @@ export default class ApiService {
   put<T>(
     url: string,
     id: string,
-    body: any,
+    body: unknown,
     successMessage: string = 'Success',
     type?: string
   ): Observable<T> {
@@ -262,7 +268,7 @@ export default class ApiService {
   }
 
   // ==================== QUERY ====================
-  query<T>(url: string, body: any): Observable<T> {
+  query<T>(url: string, body: unknown): Observable<T> {
     // if (this.shouldBlockRequest(url)) {
     //   return new Observable<T>((observer) => observer.complete());
     // }
