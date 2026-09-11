@@ -47,3 +47,17 @@ export interface CourseRevenueSummary {
   paidRevenue: number;
   shares: RevenueShareBreakdown[];
 }
+
+export interface CourseRevenueReport {
+  course: {
+    oid: string;
+    courseCode: string;
+    courseName: string;
+  };
+  totalRevenue: number;
+  distributedRevenue: number;
+  pendingRevenue: number;
+  paidRevenue: number;
+  revenueShares: CourseRevenueShare[];
+  distributionDetails: RevenueShareBreakdown[];
+}

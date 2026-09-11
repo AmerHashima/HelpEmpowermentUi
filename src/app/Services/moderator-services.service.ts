@@ -9,7 +9,7 @@ export interface APIUser {
   username: string;
   email: string;
   isActive: boolean;
-  roleLookupId?: string;
+  roleId?: string;
   roleName?: string;
   statusLookupId?: string;
 }
@@ -18,7 +18,7 @@ export interface CreateUser {
   username: string;
   email: string;
   password: string;
-  roleLookupId: string;
+  roleId: string;
   statusLookupId: string;
   isActive: boolean;
   createdBy: string;

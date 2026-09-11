@@ -18,10 +18,10 @@ import { RoleService } from '../../../../Services/role.service';
   selector: 'app-moderator-form',
   standalone: true,
 
-  imports: [SiteButtonComponent, InputComponent,AsyncPipe,
+  imports: [SiteButtonComponent, InputComponent, AsyncPipe,
     TranslatePipe, FormsModule, SpkNgSelectComponent, GenericModelComponent, UserCourseAssignmentsComponent
   ],
-   templateUrl: './moderator-form.component.html',
+  templateUrl: './moderator-form.component.html',
   styleUrl: './moderator-form.component.scss'
 })
 export class ModeratorFormComponent {
@@ -31,8 +31,8 @@ export class ModeratorFormComponent {
   private shared = inject(Shared);
   private toasting = inject(ToastingMessagesService);
   private moderatorService = inject(ModeratorService);
-  private lookupService=inject(LookupService);
-  private roleService=inject(RoleService);
+  private lookupService = inject(LookupService);
+  private roleService = inject(RoleService);
   userRoles$ = this.roleService.search();
   userStatuses$ = this.lookupService.getUserStatuses();
 
@@ -48,9 +48,9 @@ export class ModeratorFormComponent {
     email: '',
     password: '',
     confirmPassword: '',
-    roleLookupId:'',
-    statusLookupId:'',
-    isActive:false
+    roleId: '',
+    statusLookupId: '',
+    isActive: false
   };
 
   passwordCredentials = {
@@ -73,7 +73,7 @@ export class ModeratorFormComponent {
             email: user.email ?? '',
             password: '',
             confirmPassword: '',
-            roleLookupId: user.roleLookupId ?? '',
+            roleId: user.roleId ?? '',
             statusLookupId: user.statusLookupId ?? '',
             isActive: user.isActive
           };
@@ -97,7 +97,7 @@ export class ModeratorFormComponent {
     const commonPayload = {
       email: this.credentials.email,
       username: this.credentials.username,
-      roleLookupId: this.credentials.roleLookupId,
+      roleId: this.credentials.roleId,
       statusLookupId: this.credentials.statusLookupId,
       isActive: this.credentials.isActive
     };
@@ -105,10 +105,10 @@ export class ModeratorFormComponent {
     const request$ = this.oid()
       ? this.moderatorService.updateModerator(this.oid(), { ...commonPayload, updatedBy: createdUpdatedOID })
       : this.moderatorService.createModerator({
-          ...commonPayload,
-          password: this.credentials.password,
-          createdBy: createdUpdatedOID
-        });
+        ...commonPayload,
+        password: this.credentials.password,
+        createdBy: createdUpdatedOID
+      });
 
     this.submitting.set(true);
     request$.subscribe({
@@ -170,7 +170,7 @@ export class ModeratorFormComponent {
       this.passwordCredentials.newPassword !== this.passwordCredentials.confirmPassword;
   }
 
-  cancel(form:NgForm) {
+  cancel(form: NgForm) {
     form.form.markAsUntouched();
     form.reset();
     this.cancalEvent.emit();
@@ -184,7 +184,7 @@ export class ModeratorFormComponent {
   private resetCredentials() {
     this.credentials = {
       username: '', email: '', password: '', confirmPassword: '',
-      roleLookupId: '', statusLookupId: '', isActive: false
+      roleId: '', statusLookupId: '', isActive: false
     };
     this.passwordCredentials = { currentPassword: '', newPassword: '', confirmPassword: '' };
   }

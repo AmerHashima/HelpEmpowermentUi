@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { ApiResponse, ApiSearchResponse } from '../models/apiResponse';
-import { CourseRevenueShare, CourseRevenueSummary, SaveCourseRevenueShare } from '../models/course-revenue';
+import { CourseRevenueReport, CourseRevenueShare, CourseRevenueSummary, SaveCourseRevenueShare } from '../models/course-revenue';
 import { RequestBody } from '../models/rquest';
 import ApiService from '../shared/Services/ApiService/api.service';
 
@@ -24,8 +24,8 @@ export class CourseRevenueService {
     );
   }
 
-  searchReport(courseId: string, request: RequestBody): Observable<ApiSearchResponse<CourseRevenueShare>> {
-    return this.api.query<ApiSearchResponse<CourseRevenueShare>>(`CourseRevenue/${courseId}/search`, request);
+  searchReport(request: RequestBody): Observable<ApiSearchResponse<CourseRevenueReport>> {
+    return this.api.query<ApiSearchResponse<CourseRevenueReport>>('CourseRevenue/search', request);
   }
 
   summary(courseId: string): Observable<CourseRevenueSummary> {
