@@ -12,6 +12,7 @@ import { AsyncPipe } from '@angular/common';
 import { ModeratorService } from '../../../../Services/moderator-services.service';
 import { GenericModelComponent } from '../../../../shared/generic-model/generic-model.component';
 import { UserCourseAssignmentsComponent } from '../user-course-assignments/user-course-assignments.component';
+import { RoleService } from '../../../../Services/role.service';
 
 @Component({
   selector: 'app-moderator-form',
@@ -31,7 +32,8 @@ export class ModeratorFormComponent {
   private toasting = inject(ToastingMessagesService);
   private moderatorService = inject(ModeratorService);
   private lookupService=inject(LookupService);
-  userRoles$ = this.lookupService.getUserRoles();
+  private roleService=inject(RoleService);
+  userRoles$ = this.roleService.search();
   userStatuses$ = this.lookupService.getUserStatuses();
 
   isRTL = this.shared.isRtl;

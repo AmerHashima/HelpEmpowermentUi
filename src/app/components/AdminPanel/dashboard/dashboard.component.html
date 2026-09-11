@@ -1,114 +1,23 @@
 <div class="dashboard-container">
-
-  <div class="section-title">Reports</div>
-  <div class="row g-3 mb-4">
-    <div class="col-md-6"><a class="stat-card primary text-decoration-none" routerLink="/admin/reports" [queryParams]="{ report: 'revenue' }"><div class="stat-icon"><i class="bi bi-graph-up-arrow"></i></div><div><div class="stat-title">Revenue Report</div><div class="report-action">View report <i class="bi bi-arrow-right"></i></div></div></a></div>
-    <div class="col-md-6"><a class="stat-card success text-decoration-none" routerLink="/admin/reports" [queryParams]="{ report: 'assignments' }"><div class="stat-icon"><i class="bi bi-person-workspace"></i></div><div><div class="stat-title">User Course Assignments</div><div class="report-action">View report <i class="bi bi-arrow-right"></i></div></div></a></div>
-  </div>
-
-  <!-- 🔷 USERS -->
-  <div class="section-title">Users Overview</div>
-
-  <div class="row g-3">
-    <div class="col-md-6">
-      <div class="stat-card primary">
-        <div class="stat-icon"><i class="bi bi-people-fill"></i></div>
-        <div>
-          <div class="stat-title">Total Users</div>
-          <div class="stat-value">{{ stats().totalUsers }}</div>
-        </div>
-      </div>
+  @if (isAdmin()) {
+    <div class="section-title">Reports</div><div class="row g-3 mb-4">
+      <div class="col-md-6"><a class="stat-card primary text-decoration-none" routerLink="/admin/reports" [queryParams]="{ report: 'revenue' }"><div class="stat-icon"><i class="bi bi-graph-up-arrow"></i></div><div><div class="stat-title">Revenue Report</div><div class="report-action">View report <i class="bi bi-arrow-right"></i></div></div></a></div>
+      <div class="col-md-6"><a class="stat-card success text-decoration-none" routerLink="/admin/reports" [queryParams]="{ report: 'assignments' }"><div class="stat-icon"><i class="bi bi-person-workspace"></i></div><div><div class="stat-title">User Course Assignments</div><div class="report-action">View report <i class="bi bi-arrow-right"></i></div></div></a></div>
     </div>
-
-    <div class="col-md-6">
-      <div class="stat-card success">
-        <div class="stat-icon"><i class="bi bi-person-check-fill"></i></div>
-        <div>
-          <div class="stat-title">Active Users</div>
-          <div class="stat-value">{{ stats().activeUsers }}</div>
-        </div>
-      </div>
+  }
+  <div class="section-title">{{ isAdmin() ? 'Platform Overview' : 'My Assigned Courses Overview' }}</div>
+  @if (errorMessage()) { <div class="alert alert-danger d-flex justify-content-between align-items-center"><span>{{ errorMessage() }}</span><button class="btn btn-sm btn-outline-danger" type="button" (click)="load()">Retry</button></div> }
+  @if (loading()) { <div class="dashboard-state"><span class="spinner-border text-primary"></span> Loading dashboard…</div> }
+  @else { @if (stats(); as data) {
+    <div class="row g-3">
+      <div class="col-sm-6 col-xl-3"><div class="stat-card primary"><div class="stat-icon"><i class="bi bi-patch-check"></i></div><div><div class="stat-title">{{ isAdmin() ? 'Total Courses' : 'Assigned Courses' }}</div><div class="stat-value">{{ data.assignedCourses }}</div></div></div></div>
+      <div class="col-sm-6 col-xl-3"><div class="stat-card success"><div class="stat-icon"><i class="bi bi-check-circle"></i></div><div><div class="stat-title">Active Courses</div><div class="stat-value">{{ data.activeCourses }}</div></div></div></div>
+      <div class="col-sm-6 col-xl-3"><div class="stat-card info"><div class="stat-icon"><i class="bi bi-people"></i></div><div><div class="stat-title">Related Students</div><div class="stat-value">{{ data.studentsCount }}</div></div></div></div>
+      <div class="col-sm-6 col-xl-3"><div class="stat-card secondary"><div class="stat-icon"><i class="bi bi-bookmark-check"></i></div><div><div class="stat-title">Reservations</div><div class="stat-value">{{ data.reservationsCount }}</div></div></div></div>
+      <div class="col-sm-6 col-xl-3"><div class="stat-card dark"><div class="stat-icon"><i class="bi bi-calendar-event"></i></div><div><div class="stat-title">Upcoming Sessions</div><div class="stat-value">{{ data.upcomingLiveSessions }}</div></div></div></div>
+      <div class="col-sm-6 col-xl-3"><div class="stat-card primary"><div class="stat-icon"><i class="bi bi-cash-stack"></i></div><div><div class="stat-title">{{ isAdmin() ? 'Total Revenue' : 'Course Revenue' }}</div><div class="stat-value">{{ data.totalRevenue }}</div></div></div></div>
+      <div class="col-sm-6 col-xl-3"><div class="stat-card warning"><div class="stat-icon"><i class="bi bi-hourglass-split"></i></div><div><div class="stat-title">My Pending Revenue</div><div class="stat-value">{{ data.pendingRevenue }}</div></div></div></div>
+      <div class="col-sm-6 col-xl-3"><div class="stat-card success"><div class="stat-icon"><i class="bi bi-wallet2"></i></div><div><div class="stat-title">My Paid Revenue</div><div class="stat-value">{{ data.paidRevenue }}</div></div></div></div>
     </div>
-<!--
-    <div class="col-md-4">
-      <div class="stat-card warning">
-        <div class="stat-icon"><i class="bi bi-person-lines-fill"></i></div>
-        <div>
-          <div class="stat-title">Current Users</div>
-          <div class="stat-value">{{ stats().currentUsers }}</div>
-        </div>
-      </div>
-    </div> -->
-  </div>
-
-  <!-- 🔷 PMP -->
-  <div class="section-title mt-4">PMP Statistics</div>
-
-  <div class="row g-3">
-    <div class="col-md-4">
-      <div class="stat-card info">
-        <div class="stat-icon"><i class="bi bi-laptop"></i></div>
-        <div>
-          <div class="stat-title">Exam Simulator</div>
-          <div class="stat-value">{{ stats().pmpExamSimulators }}</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-md-4">
-      <div class="stat-card secondary">
-        <div class="stat-icon"><i class="bi bi-camera-video-fill"></i></div>
-        <div>
-          <div class="stat-title">Recorded Courses</div>
-          <div class="stat-value">{{ stats().pmpRecordedCourses }}</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-md-4">
-      <div class="stat-card dark">
-        <div class="stat-icon"><i class="bi bi-broadcast"></i></div>
-        <div>
-          <div class="stat-title">Live Courses</div>
-          <div class="stat-value">{{ stats().pmpLiveCourses }}</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 🔷 CAPM -->
-  <div class="section-title mt-4">CAPM Statistics</div>
-
-  <div class="row g-3">
-    <div class="col-md-4">
-      <div class="stat-card info">
-        <div class="stat-icon"><i class="bi bi-laptop-fill"></i></div>
-        <div>
-          <div class="stat-title">Exam Simulator</div>
-          <div class="stat-value">{{ stats().capmExamSimulators }}</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-md-4">
-      <div class="stat-card secondary">
-        <div class="stat-icon"><i class="bi bi-play-btn-fill"></i></div>
-        <div>
-          <div class="stat-title">Recorded Courses</div>
-          <div class="stat-value">{{ stats().capmRecordedCourses }}</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-md-4">
-      <div class="stat-card dark">
-        <div class="stat-icon"><i class="bi bi-easel-fill"></i></div>
-        <div>
-          <div class="stat-title">Live Courses</div>
-          <div class="stat-value">{{ stats().capmLiveCourses }}</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
+  } @else if (!errorMessage()) { <div class="dashboard-state">No dashboard data is available.</div> } }
 </div>

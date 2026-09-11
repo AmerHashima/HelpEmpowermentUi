@@ -1,6 +1,7 @@
 // src\app\shared\Admin Panel\side-nav\side-nav.ts
 import {
   Component,
+  computed,
   ElementRef,
   HostListener,
   inject,
@@ -42,6 +43,7 @@ export class SideNav {
   isCollapse = this.shared.isCollapse;
   previousIndex: number = -1;
   smallScreen = signal(false);
+  isAdmin = computed(() => this.auth.loggedAdmin()?.roles.some(role => role.toLowerCase() === 'admin') ?? false);
 
   sectionOneNavItems: Navitem[] = [
     {
@@ -108,6 +110,12 @@ export class SideNav {
       nameAr: 'المشرفون',
       icon: 'bi bi-person-badge',
       route: 'moderators'
+    },
+    {
+      name: 'Roles',
+      nameAr: 'الأدوار',
+      icon: 'bi bi-shield-lock',
+      route: 'roles'
     },
     // {
     //   name: 'Articles',

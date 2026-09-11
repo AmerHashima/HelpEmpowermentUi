@@ -273,7 +273,7 @@ export const routes: Routes = [
       },
       {
         path: 'dashboard',
-        loadComponent: () => import('./components/AdminPanel/dashboard/dashboard.component').then(m => m.DashboardComponent),
+        loadComponent: () => import('./components/AdminPanel/dashboard/admin-dashboard.component').then(m => m.AdminDashboardComponent),
         data: { breadcrumb: 'Dashboard' },
       },
       {
@@ -389,6 +389,11 @@ export const routes: Routes = [
         path: 'moderators',
         loadComponent: () => import('./components/AdminPanel/moderators/moderators.component').then(m => m.ModeratorsComponent),
         data: { breadcrumb: 'Moderators' },
+      },
+      {
+        path: 'roles',
+        loadComponent: () => import('./components/AdminPanel/roles/roles.component').then(m => m.RolesComponent),
+        data: { breadcrumb: 'Roles' },
       },
     ],
   },

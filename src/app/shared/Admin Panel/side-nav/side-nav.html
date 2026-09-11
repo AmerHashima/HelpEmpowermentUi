@@ -37,7 +37,7 @@
     <div class="sidenav-section-one pb-3">
       <ul>
         @for (navItem of sectionOneNavItems; track navItem; let index = $index)
-        { @if(navItem.name == 'settings'){
+        { @if(navItem.name !== 'Reports' || isAdmin()) { @if(navItem.name == 'settings'){
         <div class="text-site fs-regular-xs fw-bold pb-1 pt-3">
           <span
             >{{lang() == 'ar' ? navItem.nameAr : navItem.name |
@@ -61,6 +61,7 @@
             <!-- <i [ngClass]="navItem.icon"></i> -->
           </app-side-nav-item>
         </li>
+        }
         }
         <li (click)="logout()" class="cursor-pointer">
           <app-side-nav-item
