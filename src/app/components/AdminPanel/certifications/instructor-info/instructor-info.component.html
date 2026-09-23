@@ -1,5 +1,7 @@
+@if (introSection()?.isEnabled !== false) {
 <div class="w-full">
-  <app-accordion [title]="accordionTitle">
+  <app-accordion [title]="sectionTitle()">
+    @if (sectionDescription()) { <p class="mb-3">{{ sectionDescription() }}</p> }
     <div class="instructor-content d-flex flex-column gap-4">
       <!-- Introduction paragraph -->
       <p>{{ instructor().introParagragh | translate}}</p>
@@ -44,3 +46,4 @@
     </div>
   </app-accordion>
 </div>
+}

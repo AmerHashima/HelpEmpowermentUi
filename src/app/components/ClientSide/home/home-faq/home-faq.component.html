@@ -1,3 +1,4 @@
+@if (faqSection()?.isEnabled !== false) {
 <div class="faqHomeSection gap-5 py-5" [class.rtl]="shared.isRtl()">
   <div class="row g-5">
     <div class="col-xl-4 col-md-6">
@@ -8,14 +9,14 @@
 
         <div class="darkText">
           <h1 class="faqTitle">
-              {{ "home.faq.title" | translate }}
+              {{ faqTitle() | translate }}
           </h1>
         </div>
 
         <div>
           <p class="py-lg-2">
 
-                  {{ "home.faq.description" | translate }}
+                  {{ faqDescription() | translate }}
 
           </p>
         </div>
@@ -40,3 +41,4 @@
 
   </div>
 </div>
+}

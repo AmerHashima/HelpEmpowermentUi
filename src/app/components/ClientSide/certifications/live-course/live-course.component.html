@@ -8,15 +8,15 @@
         <div class="d-flex flex-column gap-3">
           <h3 class="CertificationHeader">
             <span class="darkText">
-              {{ liveCourseContent().master | translate }}
+              {{ tabBanner()?.titlePart1 || (liveCourseContent().master | translate) }}
             </span>
             <span class="mainTextColor">
-              {{ liveCourseContent().title | translate }}
+              {{ tabBanner()?.titlePart2 || (liveCourseContent().title | translate) }}
             </span>
           </h3>
 
           <p>
-            {{ liveCourseContent().description | translate }}
+            {{ tabBanner()?.description || (liveCourseContent().description | translate) }}
           </p>
 
           <div class="d-flex justify-content-between rating">
@@ -57,7 +57,7 @@
 
       <img
         media
-        [src]="courseImage"
+        [src]="tabContent()?.content?.banner?.mediaUrl || courseImage"
         alt="contact Image"
         class="Homebanner-video shadow w-100 h-100"
       />
@@ -74,14 +74,14 @@
           </div>
           @if (!hasLiveCourseAccess()) {
             <div class="col-12">
-              <app-courese-outline />
+              <app-courese-outline tabKey="live-course" />
             </div>
             <div class="col-12">
-              <app-courese-content  [videos]="videos()"/>
+              <app-courese-content tabKey="live-course" [videos]="videos()"/>
             </div>
 
             <div class="col-12">
-              <app-instructor-info />
+              <app-instructor-info tabKey="live-course" />
             </div>
           }
         </div>
@@ -91,13 +91,14 @@
           <div class="row">
             <div class="col-12">
               <app-courese-features
+                tabKey="live-course"
                 [isEnrolled]="isEnrolled()"
                 (buy)="buyNow()"
               />
             </div>
           </div>
           <div class="col-12">
-            <app-target-audience />
+            <app-target-audience tabKey="live-course" />
           </div>
         </div>
       }

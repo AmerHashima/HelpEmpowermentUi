@@ -4,6 +4,9 @@
   (ngSubmit)="onSubmit()"
   class="d-flex flex-column gap-4 p-3"
 >
+  @if (formError()) {
+    <div class="alert alert-danger mb-0" role="alert">{{ formError() }}</div>
+  }
   <div class="card shadow-sm">
     <div class="card-header fw-bold">
       <h5 class="mb-0">Certification Details</h5>
@@ -56,11 +59,11 @@
           <app-input
             formControlName="certificateNumber"
             label="Certificate Number"
-            type="text"
-            placeholder="e.g. CERT-COURSE-001"
+            type="number"
+            placeholder="e.g. 1001"
             icon=""
             [errorMessages]="{
-              maxlength: `Certificate number can't exceed 100 characters`,
+              min: `Certificate number must be greater than zero`,
             }"
           />
         </div>
@@ -140,9 +143,9 @@
     <app-button btnLabel="Cancel" [mainBtn]="false" (click)="cancel()" />
 
     @if (isEdit()) {
-      <app-button btnLabel="Update Certification" buttonType="submit" />
+      <app-button btnLabel="Update Certification" buttonType="submit" [disabled]="store.loading()" />
     } @else {
-      <app-button btnLabel="Add Certification" buttonType="submit" />
+      <app-button btnLabel="Add & Edit Website Content" buttonType="submit" [disabled]="store.loading()" />
     }
   </div>
 </form>

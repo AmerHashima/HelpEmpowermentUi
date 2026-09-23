@@ -155,8 +155,9 @@ export const CertificationsStore = signalStore(
                 patchState(store, setSuccess(true));
               }),
               catchError((err) => {
-                patchState(store, setError(err?.msg ?? 'Failed to update certification'));
-                toasting.showToast('certification.update.error', 'error')
+                const message = err?.error?.errorMessage || err?.error?.message || err?.message || 'Failed to update certification';
+                patchState(store, setError(message));
+                toasting.showToast(message, 'error')
 
                 return EMPTY;
               }),

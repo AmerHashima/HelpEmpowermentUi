@@ -1,7 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Shared } from '../../../../shared/Services/shared/shared';
-import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
-import { slu } from 'mathjs';
+import { ActivatedRoute, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-slug-certification',
@@ -11,9 +10,7 @@ import { slu } from 'mathjs';
 })
 export class SlugCertificationComponent {
   private shared = inject(Shared);
-  constructor(private route: ActivatedRoute) {
-    this.shared.currentCertificate.set('pmp');
-  }
+  constructor(private route: ActivatedRoute) {}
 
 
   ngOnInit() {

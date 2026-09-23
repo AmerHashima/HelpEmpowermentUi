@@ -11,6 +11,8 @@
   <main class="question-area py-4">
     @if (this.currentLevelIndex() == 0) {
       <app-first-question
+        [options]="currentLevel().options ?? ['Executing', 'Planning', 'Initiation', 'Monitoring & Control', 'Closing']"
+        [correctOrder]="currentLevel().correctAnswers['order'] ?? ['Initiation', 'Planning', 'Executing', 'Closing', 'Monitoring & Control']"
         [next]="next()"
         [reset]="resetTrigger()"
         (isCorrect)="onGetQuestionResult($event)"

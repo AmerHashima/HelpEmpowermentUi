@@ -18,6 +18,9 @@ import { StudentService } from '../../../../Services/student-service.service';
 import { ExamsStore } from '../../../../AdminPanelStores/ExamsStore/exam.store';
 import { APIExam } from '../../../../models/certification';
 import { CertificationService } from '../../../../Services/certification.service';
+import { CourseTabContentService } from '../../../../Services/course-tab-content.service';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { catchError, of } from 'rxjs';
 
 @Component({
   selector: 'app-exam-simulator',
@@ -42,11 +45,14 @@ export class ExamSimulatorComponent {
   showExamSimulator = computed(() => this.isEnrolled() && this.studentService.showExamSimulator === true);
   private toasting = inject(ToastingMessagesService);
   private certificationService = inject(CertificationService);
+  private tabService = inject(CourseTabContentService);
   isRTL = this.shared.isRtl;
   // studentToken = this.auth.studentToken;
   isLoggedIn = computed(() => !!this.auth.studentToken());
   hydrated = signal(false);
   price = this.certificationService.examSimulationPrice;
+  tabContent = toSignal(this.tabService.getTab(this.shared.currentCertificate(), 'exam-simulator').pipe(catchError(() => of(null))), { initialValue: null });
+  tabBanner = computed(() => this.tabContent()?.content.banner[this.isRTL() ? 'ar' : 'en']);
   certification = this.shared.currentCertificationObject;
   examsStore = inject(ExamsStore);
   //  chooseExam:boolean=false;
@@ -170,15 +176,49 @@ export class ExamSimulatorComponent {
     return cert === 'capm' ? 'capm' : 'pmp';
   });
 
+  examFallbackBanner = computed(() => {
+    const cert = this.shared.currentCertificate();
+    if (cert === 'pmp' || cert === 'capm') {
+      const key = this.examKey();
+      return {
+        titlePart1: `examSimulator.${key}.master`,
+        titlePart2: `examSimulator.${key}.realisticSimulation`,
+        description: `examSimulator.${key}.description`
+      };
+    }
+
+    const name = cert.toUpperCase();
+    return this.isRTL()
+      ? { titlePart1: `أتقن اختبار ${name}`, titlePart2: 'في بيئة محاكاة واقعية', description: `استعد بثقة لاختبار ${name}.` }
+      : { titlePart1: `Master the ${name}`, titlePart2: 'exam environment', description: `Prepare confidently for the ${name} exam.` };
+  });
+
   examSimulatorBenefitsComputed = computed(() => {
+    const section = this.benefitsSection();
+    if (section?.isEnabled === false) return [];
+    const items = section?.items;
+    if (items) {
+      const lang = this.isRTL() ? 'ar' : 'en';
+      return items.map((item, index) => ({
+        title: typeof item.title === 'string' ? item.title : item.title?.[lang] ?? '',
+        description: typeof item.description === 'string' ? item.description : item.description?.[lang] ?? '',
+        icon: item.icon || this.pmpBenefits[index]?.icon || 'bi bi-check-circle',
+        gap: 'gap-1'
+      }));
+    }
     const cert = this.shared.currentCertificate();
 
     if (cert === 'capm') {
       return this.capmBenefits;
     }
 
-    return this.pmpBenefits;
+    return cert === 'pmp' ? this.pmpBenefits : [];
   });
+
+  readonly benefitsSection = computed(() => this.tabContent()?.content.sections.find(s => s.type === 'benefits'));
+  readonly benefitsTitle = computed(() => this.benefitsSection()?.header?.[this.isRTL() ? 'ar' : 'en'] || 'examSimulator.everythingYouNeed');
+  readonly benefitsDescription = computed(() => this.benefitsSection()?.description?.[this.isRTL() ? 'ar' : 'en'] ||
+    (this.shared.currentCertificate() === 'pmp' ? 'examSimulator.masterPmpQuestions' : ''));
 
   simulatorVideo = 'assets/videos/SimulatorVideo.mp4';
   enrollImage = 'assets/images/enroll.png';

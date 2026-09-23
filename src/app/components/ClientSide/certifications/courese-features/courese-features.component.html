@@ -1,8 +1,10 @@
+@if (section()?.isEnabled !== false) {
 <div class="w-100">
-  <app-accordion [title]="title() ">
+  <app-accordion [title]="sectionTitle()">
+    @if (sectionDescription()) { <p class="mb-3">{{ sectionDescription() }}</p> }
     <div class="d-flex flex-column gap-2">
-      @if (courseFeatures().length > 0) {
-        @for (item of courseFeatures(); let i = $index; track item) {
+      @if (displayFeatures().length > 0) {
+        @for (item of displayFeatures(); let i = $index; track item) {
           <div class="feature-item flex flex-column gap-1">
             <div class="d-flex align-items-start gap-1">
               <i class="featureIcon bi bi-pin-angle mainTextColor pt-1"></i>
@@ -37,3 +39,4 @@
     </div>
   </app-accordion>
 </div>
+}

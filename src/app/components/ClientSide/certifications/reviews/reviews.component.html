@@ -4,15 +4,15 @@
     <div class="d-flex flex-column gap-3">
       <h3 class="CertificationHeader">
         <span class="darkText">
-          {{ "reviews.masterPmp" | translate }}
+          {{ tabBanner()?.titlePart1 || ("reviews.masterPmp" | translate) }}
         </span>
         <span class="mainTextColor">
-          {{ "reviews.title" | translate }}
+          {{ tabBanner()?.titlePart2 || ("reviews.title" | translate) }}
         </span>
       </h3>
 
       <p>
-        {{ "reviews.description" | translate }}
+        {{ tabBanner()?.description || ("reviews.description" | translate) }}
       </p>
     </div>
     <div class="d-flex align-content-center gap-3">
@@ -27,7 +27,7 @@
 
   <img
     media
-    [src]="courseImage"
+    [src]="tabContent()?.content?.banner?.mediaUrl || courseImage"
     alt="contact Image"
     class="Homebanner-video shadow w-100 h-100"
   />

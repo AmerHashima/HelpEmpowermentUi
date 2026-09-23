@@ -1,0 +1,10 @@
+.content-editor { padding: 1rem 0; }
+.editor-layout { display: grid; grid-template-columns: minmax(190px, 240px) 1fr; gap: 1.25rem; }
+.list-group { align-self: start; position: sticky; top: 1rem; }
+textarea.font-monospace { font-size: .82rem; }
+.custom-section { border: 1px solid #e6e9ed; background: #fbfcfe; }
+.built-in-section { border: 1px solid #e6e9ed; }
+.built-in-section summary { cursor: pointer; list-style: none; }
+.built-in-section summary::-webkit-details-marker { display: none; }
+.section-item { background: #f7f9fc; border: 1px solid #edf0f4; }
+@media (max-width: 767px) { .editor-layout { grid-template-columns: 1fr; } .list-group { position: static; } }

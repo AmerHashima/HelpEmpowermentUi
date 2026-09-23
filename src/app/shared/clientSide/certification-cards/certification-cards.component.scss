@@ -53,7 +53,12 @@
 .certification-cards {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   gap:1rem;
+}
+.certification-card-wrapper {
+  flex: 1 1 320px;
+  max-width: calc(50% - .5rem);
 }
 .bi-patch-check-fill{
   color:$secondaryColor;
@@ -66,6 +71,7 @@
 
   .certification-card-wrapper {
     width: 100%;
+    max-width: none;
     flex-grow: 0;
   }
 }

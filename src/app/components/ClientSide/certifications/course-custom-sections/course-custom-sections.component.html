@@ -1,0 +1,10 @@
+@if (visibleSections().length) {
+  <div class="custom-course-sections container-fluid" [attr.dir]="isRTL() ? 'rtl' : 'ltr'">
+    @for (section of visibleSections(); track section.id) {
+      <section class="custom-course-section">
+        <h2>{{ isRTL() ? section.header.ar : section.header.en }}</h2>
+        <p>{{ isRTL() ? section.description.ar : section.description.en }}</p>
+      </section>
+    }
+  </div>
+}

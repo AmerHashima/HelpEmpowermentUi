@@ -1,20 +1,23 @@
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, effect, inject, input, signal } from '@angular/core';
-import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
-import { forkJoin } from 'rxjs';
+import { AbstractControl, FormBuilder, FormsModule, NgForm, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { forkJoin, switchMap } from 'rxjs';
 import { CourseRevenueService } from '../../../../Services/course-revenue.service';
+import { RevenueSettlementService } from '../../../../Services/revenue-settlement.service';
 import { LookupService } from '../../../../Services/lookup.service';
 import { APIUser, ModeratorService } from '../../../../Services/moderator-services.service';
-import { CourseRevenueShare, CourseRevenueSummary, RevenueCalculationType, SaveCourseRevenueShare } from '../../../../models/course-revenue';
+import { CourseRevenueShare, CourseRevenueSummary, RevenueCalculationType, RevenueShareBreakdown, SaveCourseRevenueShare } from '../../../../models/course-revenue';
+import { RevenueSettlementStatus } from '../../../../models/revenue-settlement';
 import { LookupDetail } from '../../../../models/lookup';
 import { RequestBody } from '../../../../models/rquest';
 import { confirmDelete } from '../../../../shared/utils/confirm-delete';
+import { GenericModelComponent } from '../../../../shared/generic-model/generic-model.component';
 
 @Component({
   selector: 'app-certificate-revenue',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, GenericModelComponent],
   templateUrl: './certificate-revenue.component.html',
   styleUrl: './certificate-revenue.component.scss'
 })
@@ -24,6 +27,7 @@ export class CertificateRevenueComponent {
   private revenueService = inject(CourseRevenueService);
   private lookupService = inject(LookupService);
   private moderatorService = inject(ModeratorService);
+  private settlementService = inject(RevenueSettlementService);
 
   protected readonly calculationType = RevenueCalculationType;
   shares = signal<CourseRevenueShare[]>([]);
@@ -35,6 +39,10 @@ export class CertificateRevenueComponent {
   deletingId = signal('');
   editingId = signal('');
   errorMessage = signal('');
+  paymentModalOpen = signal(false);
+  paying = signal(false);
+  beneficiaryToPay = signal<RevenueShareBreakdown | null>(null);
+  payment = { periodFrom: '', periodTo: '', paymentReference: '', notes: '' };
 
   form = this.fb.group({
     beneficiaryUserId: this.fb.control<string | null>(null),
@@ -111,6 +119,49 @@ export class CertificateRevenueComponent {
     });
   }
 
+  openPayment(beneficiary: RevenueShareBreakdown): void {
+    if (!beneficiary.userId || beneficiary.pending <= 0) return;
+    const today = new Date();
+    const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+    this.beneficiaryToPay.set(beneficiary);
+    this.payment = {
+      periodFrom: this.localDate(firstDay),
+      periodTo: this.localDate(today),
+      paymentReference: '',
+      notes: `Settlement initiated from course ${this.courseId()}`
+    };
+    this.paymentModalOpen.set(true);
+  }
+
+  closePayment(): void {
+    if (this.paying()) return;
+    this.paymentModalOpen.set(false);
+    this.beneficiaryToPay.set(null);
+  }
+
+  pay(form: NgForm): void {
+    const beneficiary = this.beneficiaryToPay();
+    if (!beneficiary?.userId || form.invalid || this.paying()) { form.control.markAllAsTouched(); return; }
+    if (this.payment.periodFrom > this.payment.periodTo) { this.errorMessage.set('Period From cannot be after Period To.'); return; }
+    if (!window.confirm(`Confirm paying pending revenue for ${beneficiary.userName}?`)) return;
+
+    this.paying.set(true);
+    this.errorMessage.set('');
+    this.settlementService.create({
+      beneficiaryUserId: beneficiary.userId,
+      periodFrom: this.toIso(this.payment.periodFrom),
+      periodTo: this.toIso(this.payment.periodTo, true),
+      notes: this.payment.notes.trim() || null
+    }).pipe(
+      switchMap(settlement => this.settlementService.updateStatus(settlement.oid, { status: RevenueSettlementStatus.Approved, paymentReference: null }).pipe(
+        switchMap(() => this.settlementService.updateStatus(settlement.oid, { status: RevenueSettlementStatus.Paid, paymentReference: this.payment.paymentReference.trim() }))
+      ))
+    ).subscribe({
+      next: () => { this.paying.set(false); this.closePayment(); this.reloadRevenue(this.courseId()); },
+      error: error => { this.paying.set(false); this.errorMessage.set(this.errorText(error)); }
+    });
+  }
+
   private load(courseId: string): void {
     this.loading.set(true);
     this.errorMessage.set('');
@@ -150,9 +201,16 @@ export class CertificateRevenueComponent {
   }
 
   private datePart(value: string | null): string | null { return value ? value.slice(0, 10) : null; }
+  private localDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+  private toIso(value: string, endOfDay = false): string { return new Date(`${value}T${endOfDay ? '23:59:59.999' : '00:00:00.000'}`).toISOString(); }
   private errorText(error: unknown): string {
-    if (error instanceof HttpErrorResponse && this.isErrorBody(error.error)) return error.error.message || error.message;
+    if (error instanceof HttpErrorResponse && this.isErrorBody(error.error)) return error.error.errorMessage || error.error.message || error.message;
     return error instanceof Error ? error.message : 'The operation could not be completed.';
   }
-  private isErrorBody(value: unknown): value is { message?: string } { return typeof value === 'object' && value !== null; }
+  private isErrorBody(value: unknown): value is { message?: string; errorMessage?: string } { return typeof value === 'object' && value !== null; }
 }

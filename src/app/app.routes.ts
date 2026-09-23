@@ -146,6 +146,11 @@ export const routes: Routes = [
             path: "capm",
             loadComponent: () => import('./components/ClientSide/certifications/camp/camp.component').then(m => m.CampComponent),
             children: getCertificationChildren()
+          },
+          {
+            path: ':slug',
+            loadComponent: () => import('./components/ClientSide/certifications/slug-certification/slug-certification.component').then(m => m.SlugCertificationComponent),
+            children: getCertificationChildren()
           }
 
         ]
@@ -335,6 +340,11 @@ export const routes: Routes = [
             path: ':id/videos/:videoId/edit',
             loadComponent: () => import('./components/AdminPanel/certifications/course-video-form/course-video-form.component').then(m => m.CourseVideoFormComponent),
             data: { breadcrumb: 'Edit Course Video' },
+          },
+          {
+            path: ':id/content',
+            loadComponent: () => import('./components/AdminPanel/certifications/course-content-editor/course-content-editor.component').then(m => m.CourseContentEditorComponent),
+            data: { breadcrumb: 'Website Content' },
           },
           {
             path: ':id',

@@ -9,18 +9,17 @@
         <div class="d-flex flex-column gap-3">
           <h3 class="CertificationHeader">
             <span class="darkText">
-              {{ "examSimulator." + examKey() + ".master" | translate }}
+              {{ tabBanner()?.titlePart1 || (examFallbackBanner().titlePart1 | translate) }}
             </span>
             <span class="mainTextColor">
               {{
-                "examSimulator." + examKey() + ".realisticSimulation"
-                  | translate
+                tabBanner()?.titlePart2 || (examFallbackBanner().titlePart2 | translate)
               }}
             </span>
           </h3>
 
           <p>
-            {{ "examSimulator." + examKey() + ".description" | translate }}
+            {{ tabBanner()?.description || (examFallbackBanner().description | translate) }}
           </p>
 
           <div class="d-flex justify-content-between rating">
@@ -62,7 +61,7 @@
 
       <video
         media
-        [src]="simulatorVideo"
+        [src]="tabContent()?.content?.banner?.mediaUrl || simulatorVideo"
         autoplay
         loop
         muted
@@ -74,15 +73,15 @@
 
   <!-- Benefits section -->
 
-  @if (hydrated() && (!showExamSimulator() || !isLoggedIn())) {
+  @if (hydrated() && benefitsSection()?.isEnabled !== false && (!showExamSimulator() || !isLoggedIn())) {
     <!-- @if(!isEnrolled() || !isLoggedIn()){ -->
     <div class="CertifticationBenfits d-flex flex-column gap-5 pt-5 pb-5">
       <div class="d-flex flex-column align-items-center gap-2">
         <h2 class="mainTextColor">
-          {{ "examSimulator.everythingYouNeed" | translate }}
+          {{ benefitsTitle() | translate }}
         </h2>
         <p class="CertifticationBenfitsSubTitle">
-          {{ "examSimulator.masterPmpQuestions" | translate }}
+          {{ benefitsDescription() | translate }}
         </p>
       </div>
 

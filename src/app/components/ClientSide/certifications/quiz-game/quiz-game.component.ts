@@ -6,6 +6,9 @@ import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/s
 import { ActivatedRoute, Router } from '@angular/router';
 import { GenericModelComponent } from '../../../../shared/generic-model/generic-model.component';
 import { AuthService } from '../../../../Services/auth.service';
+import { CourseTabContentService } from '../../../../Services/course-tab-content.service';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { catchError, of } from 'rxjs';
 
 @Component({
   selector: 'app-quiz-game',
@@ -18,12 +21,22 @@ export class QuizGameComponent {
   private router=inject(Router);
   private route = inject(ActivatedRoute);
   private auth=inject(AuthService);
+  private tabService=inject(CourseTabContentService);
   isRTL = this.shared.isRtl;
   courseImage = "assets/images/quizGame/quizGame.jpeg";
   showMustLogin=false;
+  tabContent = toSignal(this.tabService.getTab(this.shared.currentCertificate(), 'quiz-game').pipe(catchError(() => of(null))), { initialValue: null });
+  tabBanner = computed(() => this.tabContent()?.content.banner[this.isRTL() ? 'ar' : 'en']);
   quizGameContent = computed(() => {
     const cert = this.shared.currentCertificate();
-    const key = cert === 'capm' ? 'capm' : 'pmp';
+    const key = cert === 'capm' ? 'capm' : cert === 'pmp' ? 'pmp' : null;
+
+    if (!key) {
+      const name = cert.toUpperCase();
+      return this.isRTL()
+        ? { master: `طوّر معرفتك في ${name}`, title: 'من خلال تحديات تفاعلية', description: `ثبّت مفاهيم ${name} بطريقة ممتعة.`, play: 'ابدأ الآن' }
+        : { master: `Level up your ${name} knowledge`, title: 'with interactive challenges', description: `Reinforce ${name} concepts in a fun way.`, play: 'Play now' };
+    }
 
     return {
       master: `quizGame.${key}.master`,

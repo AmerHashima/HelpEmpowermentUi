@@ -29,6 +29,7 @@ import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { CourseVideosService } from '../../../../Services/course-videos.service';
 import { CertificationService } from '../../../../Services/certification.service';
 import { Router } from '@angular/router';
+import { CourseTabContentService } from '../../../../Services/course-tab-content.service';
 
 @Component({
   selector: 'app-live-course',
@@ -51,6 +52,7 @@ export class LiveCourseComponent {
   private contactService=inject(ContactUsService);
   private courseVideosService = inject(CourseVideosService);
   private router = inject(Router);
+  private tabService = inject(CourseTabContentService);
 
   isRTL = this.shared.isRtl;
   student= this.auth.loggedStudent;
@@ -61,12 +63,21 @@ export class LiveCourseComponent {
   showRegisterConfirm: boolean = false;
   enrollImage = 'assets/images/enroll.png';
   courseImage = "assets/images/liveCourse/liveCourse.jpeg";
+  tabContent = toSignal(this.tabService.getTab(this.shared.currentCertificate(), 'live-course').pipe(catchError(() => of(null))), { initialValue: null });
+  tabBanner = computed(() => this.tabContent()?.content.banner[this.isRTL() ? 'ar' : 'en']);
   hasLiveCourseAccess = computed(
     () => this.isEnrolled() && this.studentService.showExamSimulator === true
   );
   liveCourseContent = computed(() => {
     const cert = this.shared.currentCertificate();
-    const key = cert === 'capm' ? 'capm' : 'pmp';
+    const key = cert === 'capm' ? 'capm' : cert === 'pmp' ? 'pmp' : null;
+
+    if (!key) {
+      const name = cert.toUpperCase();
+      return this.isRTL()
+        ? { master: `طوّر مسيرتك مع ${name}`, title: 'من خلال تدريب مباشر', description: `تدريب ${name} مباشر وتفاعلي.`, price: '' }
+        : { master: `Transform your career with ${name}`, title: 'through live guidance', description: `Interactive live ${name} training.`, price: '' };
+    }
 
     return {
       master: `liveCourse.${key}.master`,

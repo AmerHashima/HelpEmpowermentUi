@@ -218,7 +218,7 @@ export class ClientNavbarComponent {
       children: this.certifications().filter(cert => cert.isActive).map(cert => ({
         translateKey: cert.courseName,
         icon: 'bi bi-clipboard',
-        path: `/${this.lang()}/certifications/${cert.courseName.toLowerCase()}`,
+        path: `/${this.lang()}/certifications/${cert.courseCode.toLowerCase()}`,
       })),
     },
     // {

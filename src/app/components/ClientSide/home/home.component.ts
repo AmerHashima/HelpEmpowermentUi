@@ -1,5 +1,5 @@
 // src\app\components\home\home.component.ts
-import { Component, ElementRef, inject, PLATFORM_ID, ViewChild } from '@angular/core';
+import { Component, computed, ElementRef, inject, PLATFORM_ID, ViewChild } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { PageBannerComponent } from '../../../shared/clientSide/page-banner/page-banner.component';
 import { FeatureComponent } from '../../../shared/clientSide/feature/feature.component';
@@ -13,6 +13,7 @@ import { HomeFAQComponent } from './home-faq/home-faq.component';
 import { GenericModelComponent } from '../../../shared/generic-model/generic-model.component';
 import { EnrollFormComponent } from '../services/enroll-form/enroll-form.component';
 import { HomeServicesComponent } from './home-services/home-services.component';
+import { CertificationsStore } from '../../../AdminPanelStores/CertificationStore/certification.store';
 
 @Component({
   selector: 'app-home',
@@ -23,7 +24,8 @@ import { HomeServicesComponent } from './home-services/home-services.component';
     // GenericModelComponent,EnrollFormComponent
   ],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+  styleUrl: './home.component.scss',
+  providers: [CertificationsStore]
 })
 export class HomeComponent {
   @ViewChild('homeCertificationCards') certCards!: ElementRef;
@@ -31,8 +33,22 @@ export class HomeComponent {
 
 
   private shared = inject(Shared);
+  private certificationsStore = inject(CertificationsStore);
   private platformId = inject(PLATFORM_ID);
   isRTL = this.shared.isRtl;
+  activeCertifications = computed<CertificationItem[]>(() =>
+    this.certificationsStore.certifications()
+      .filter(course => course.isActive)
+      .map(course => ({
+        imgAlt: course.courseName,
+        courseDuration: this.formatDuration(course.durationMinutes),
+        tags: [],
+        courseName: course.courseName,
+        courseAbb: course.courseDescription,
+        courseCode: course.courseCode,
+        rateValue: 4.8
+      }))
+  );
   homeVideo = 'assets/videos/Home1.mp4';
   constructor() {
     if (isPlatformBrowser(this.platformId)) (window as any).__helpPhase?.('HomeComponent: constructor');
@@ -58,6 +74,13 @@ export class HomeComponent {
 
   onCorporateClick() {
     this.scrollToElement(this.serviceCards);
+  }
+
+  private formatDuration(minutes: number): string {
+    if (!minutes) return '';
+    if (minutes < 60) return `${minutes} min`;
+    const hours = minutes / 60;
+    return `${Number.isInteger(hours) ? hours : hours.toFixed(1)} hours`;
   }
 
 

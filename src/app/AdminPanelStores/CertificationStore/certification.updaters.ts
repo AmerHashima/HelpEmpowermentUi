@@ -33,6 +33,7 @@ export const addCertification = (
   const mappedCertification: Certification = mapApiCertificationToCertification(certification);
   return (state) => ({
     certifications: [...state.certifications, mappedCertification],
+    selectedCertification: mappedCertification,
   });
 };
 

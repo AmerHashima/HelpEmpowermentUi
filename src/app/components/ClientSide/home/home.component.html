@@ -65,7 +65,11 @@
       </p>
     </div>
 
-    <app-certification-cards />
+    @if (activeCertifications().length) {
+      <app-certification-cards [certifications]="activeCertifications()" />
+    } @else {
+      <p class="text-muted text-center mb-0">No active courses are available right now.</p>
+    }
   </div>
 
   <!-- Services -->

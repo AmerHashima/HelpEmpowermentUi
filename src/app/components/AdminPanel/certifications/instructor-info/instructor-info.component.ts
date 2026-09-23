@@ -1,9 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, input, signal } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { AccordionComponent } from '../../../../shared/accordion/accordion.component';
 import { ServiceCardComponent } from '../../../ClientSide/services/service-card/service-card.component';
 import { Shared } from '../../../../shared/Services/shared/shared';
+import { CourseTabContentService } from '../../../../Services/course-tab-content.service';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { catchError, of } from 'rxjs';
 interface InstructorData {
   introParagragh: string;
   skills: any[];
@@ -22,9 +25,15 @@ interface InstructorData {
 })
 export class InstructorInfoComponent {
   private shared = inject(Shared);
+  tabKey = input<'recorded-course' | 'live-course'>('recorded-course');
+  private tabService = inject(CourseTabContentService);
+  private tabContents = toSignal(this.tabService.getCourse(this.shared.currentCertificate()).pipe(catchError(() => of([]))), {initialValue: []});
+  readonly introSection = computed(() => this.tabContents().find(tab => tab.tabKey === this.tabKey())?.content.sections.find(s => s.type === 'instructorIntro'));
+  readonly sectionTitle = computed(() => this.introSection()?.header?.[this.shared.isRtl() ? 'ar' : 'en'] || 'instructor.info');
+  readonly sectionDescription = computed(() => this.introSection()?.description?.[this.shared.isRtl() ? 'ar' : 'en'] || '');
   certification = this.shared.currentCertificate;
 
-  instructor = signal<any>({
+  private fallbackInstructor = {
     introParagragh: 'instructor.introParagragh',
 
     skills: [
@@ -67,6 +76,21 @@ export class InstructorInfoComponent {
       "instructor.certifications.13",
       "instructor.certifications.14"
     ]
+  };
+  instructor = computed(() => {
+    const sections = this.tabContents().find(tab => tab.tabKey === this.tabKey())?.content.sections ?? [];
+    const intro = sections.find(s => s.type === 'instructorIntro' && s.isEnabled !== false)?.items[0];
+    const skills = sections.find(s => s.type === 'instructorSkills' && s.isEnabled !== false)?.items;
+    const certs = sections.find(s => s.type === 'instructorCertifications' && s.isEnabled !== false)?.items;
+    if (!intro && !skills?.length && !certs?.length) return this.fallbackInstructor;
+    const lang = this.shared.isRtl() ? 'ar' : 'en';
+    const localize = (value: string | {en: string; ar: string} | undefined) =>
+      typeof value === 'string' ? value : value?.[lang] ?? '';
+    return {
+      introParagragh: localize(intro?.title),
+      skills: (skills ?? []).map(item => ({icon: item.icon || 'bi bi-award', header: localize(item.title), text: localize(item.description)})),
+      certifcations: (certs ?? []).map(item => localize(item.title))
+    };
   });
   readonly accordionTitle = 'instructor.info'
 }

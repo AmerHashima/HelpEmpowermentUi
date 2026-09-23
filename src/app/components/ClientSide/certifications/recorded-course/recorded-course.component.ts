@@ -26,6 +26,7 @@ import { FinishCertificationComponent } from '../../finish-certification/finish-
 import { DownloadCertificateComponent } from '../download-certificate/download-certificate.component';
 import { CertificationService } from '../../../../Services/certification.service';
 import { Router } from '@angular/router';
+import { CourseTabContentService } from '../../../../Services/course-tab-content.service';
 
 @Component({
   selector: 'app-recorded-course',
@@ -47,6 +48,7 @@ export class RecordedCourseComponent {
   private studentService = inject(StudentService);
   private certificationService = inject(CertificationService);
   private router = inject(Router);
+  private tabService = inject(CourseTabContentService);
   isEnrolled = this.studentService.isRecordedCoursesEnrolled;
   currentStudentCourse = this.studentService.currentCourse;
   hasRecordedCourseAccess = computed(
@@ -55,10 +57,19 @@ export class RecordedCourseComponent {
   enrollImage = 'assets/images/enroll.png';
   recoedImage = "assets/images/recordedCourse.jpeg";
   price = this.certificationService.recordedCoursePrice;
+  tabContent = toSignal(this.tabService.getTab(this.shared.currentCertificate(), 'recorded-course').pipe(catchError(() => of(null))), { initialValue: null });
+  tabBanner = computed(() => this.tabContent()?.content.banner[this.isRTL() ? 'ar' : 'en']);
 
   recordedCourseContent = computed(() => {
     const cert = this.shared.currentCertificate();
-    const key = cert === 'capm' ? 'capm' : 'pmp';
+    const key = cert === 'capm' ? 'capm' : cert === 'pmp' ? 'pmp' : null;
+
+    if (!key) {
+      const name = cert.toUpperCase();
+      return this.isRTL()
+        ? { master: `تعلّم ${name} في الوقت الذي يناسبك`, title: 'ابدأ رحلتك الآن', description: `تدريب ${name} منظم ومرن.`, price: '' }
+        : { master: `Learn ${name} on your schedule`, title: 'Start your journey now', description: `Structured and flexible ${name} training.`, price: '' };
+    }
 
     return {
       master: `recordedCourse.${key}.master`,

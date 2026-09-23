@@ -3,3 +3,6 @@
 <app-generic-tabs [tabs]="tabs()"></app-generic-tabs>
 }
 <router-outlet></router-outlet>
+@if (!isFullPage() && showTabs && activeTabKey()) {
+  <app-course-custom-sections [sections]="activeSections()" />
+}

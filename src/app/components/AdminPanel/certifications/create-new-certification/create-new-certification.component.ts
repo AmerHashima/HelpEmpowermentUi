@@ -1,5 +1,5 @@
 // src\app\components\AdminPanel\certifications\create-new-certification\create-new-certification.component.ts
-import { Component, computed, effect, inject } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SpkNgSelectComponent } from '../../../../shared/spk-ng-select/spk-ng-select.component';
 import { ButtonComponent } from '../../../../shared/button/button.component';
@@ -26,6 +26,7 @@ export class CreateNewCertificationComponent {
   private route = inject(ActivatedRoute);
   private location = inject(Location);
   private breadcrumbService = inject(BreadcrumbService);
+  private readonly certificationId = this.route.snapshot.paramMap.get('id');
 
   fb = inject(FormBuilder);
   store = inject(CertificationsStore);
@@ -46,7 +47,7 @@ export class CreateNewCertificationComponent {
     courseCode: [''],
     courseName: ['', [Validators.required]],
     courseDescription: [''],
-    certificateNumber: ['', [Validators.maxLength(100)]],
+    certificateNumber: [null as number | null, [Validators.min(1)]],
 
     durationMinutes: [0],
     questionCount: [0],
@@ -56,19 +57,19 @@ export class CreateNewCertificationComponent {
     courseCategoryLookupId: [null as string | null],
     userId: [createdUpdatedOID, [Validators.required]],
     // createdBy: ['3fa85f64-5717-4562-b3fc-2c963f66afa6', [Validators.required]],
-    isActive: [true, [Validators.required]],
+    isActive: [true],
     files: [[] as File[]]
   });
 
   certification = this.store.selectedCertification;
-  isEdit = computed(() => !!this.certification()?.oid);
+  isEdit = computed(() => !!this.certificationId);
+  formError = signal('');
 
 
   constructor() {
-    const certificationId = this.route.snapshot.paramMap.get('id');
     effect(() => {
-      if (certificationId && !this.certification()) {
-        this.store.getCertification(certificationId);
+      if (this.certificationId && this.certification()?.oid !== this.certificationId) {
+        this.store.getCertification(this.certificationId);
       }
     });
 
@@ -101,7 +102,7 @@ export class CreateNewCertificationComponent {
         courseCode: certification.courseCode,
         courseName: certification.courseName,
         courseDescription: certification.courseDescription,
-        certificateNumber: certification.certificateNumber ?? '',
+        certificateNumber: certification.certificateNumber ?? null,
 
         durationMinutes: certification.durationMinutes,
         courseLevelLookupId: certification.courseLevelLookupId ?? null,
@@ -113,8 +114,15 @@ export class CreateNewCertificationComponent {
     });
     effect(() => {
       const success = this.store.success();
-      if (success)
+      if (!success) return;
+
+      const savedCertification = this.certification();
+      if (!this.certificationId && savedCertification?.oid) {
+        this.form.markAsUntouched();
+        this.router.navigate(['/admin/certifications', savedCertification.oid, 'content']);
+      } else {
         this.cancel();
+      }
       this.store.setSuccess(false);
     });
   }
@@ -123,17 +131,19 @@ export class CreateNewCertificationComponent {
 
 
   onSubmit() {
+    this.formError.set('');
     if (this.form.invalid) {
       this.form.markAllAsTouched();
+      const invalidFields = Object.entries(this.form.controls)
+        .filter(([, control]) => control.invalid)
+        .map(([name]) => name);
+      this.formError.set(`Please correct the following fields: ${invalidFields.join(', ')}.`);
       return;
     }
 
-
-    if (this.form.valid && this.isEdit()) {
+    if (this.isEdit()) {
       this.editCertificaion();
-    }
-
-    if (this.form.valid && !this.isEdit()) {
+    } else {
       this.createCertification();
     }
   }
@@ -155,7 +165,7 @@ export class CreateNewCertificationComponent {
       courseCode: v.courseCode?.trim() || v.courseName!,
       courseName: v.courseName!,
       courseDescription: v.courseDescription!,
-      certificateNumber: v.certificateNumber?.trim() || null,
+      certificateNumber: this.toCertificateNumber(v.certificateNumber),
       durationMinutes: v.durationMinutes!,
       courseLevelLookupId: v.courseLevelLookupId ?? null,
       courseCategoryLookupId: v.courseCategoryLookupId ?? null,
@@ -172,6 +182,13 @@ export class CreateNewCertificationComponent {
     };
 
     return payload;
+  }
+
+  private toCertificateNumber(value: number | string | null | undefined): number | null {
+    if (value === null || value === undefined || value === '') return null;
+
+    const certificateNumber = Number(value);
+    return Number.isFinite(certificateNumber) ? certificateNumber : null;
   }
   cancel() {
     this.form.markAsUntouched();

@@ -20,10 +20,13 @@ export class Shared {
   currentCertificate = signal('');
   certifications = signal<any>(null);
   currentCertificationObject = computed(() => {
-    const certName = this.currentCertificate();
+    const certName = this.currentCertificate().trim().toLowerCase();
     const certs = this.certifications();
     if (!certName || !certs?.length) return null;
-    const certification = certs.find((c: any) => c.courseName.toLowerCase() === certName) ?? null;
+    const certification = certs.find((c: any) =>
+      c.courseCode?.trim().toLowerCase() === certName ||
+      c.courseName?.trim().toLowerCase().replace(/\s+/g, '-') === certName
+    ) ?? null;
     return certification;
   });
 

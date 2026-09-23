@@ -1,0 +1,137 @@
+<section class="content-editor">
+  @if (error()) {
+    <div class="alert alert-danger" role="alert">{{ error() }}</div>
+  }
+  @if (templateLoaded()) {
+    <div class="alert alert-info" role="status">Course template loaded for {{ currentCourseCode() }}. Review it, then save to create all website tabs.</div>
+  }
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div><h3 class="mb-1">Course Website Content</h3><p class="text-muted mb-0">The design stays fixed; edit the content shown for this course.</p></div>
+    <div class="d-flex align-items-center gap-3">
+      @if (translatingCount()) { <span class="small text-muted"><span class="spinner-border spinner-border-sm me-1"></span> Translating to Arabic…</span> }
+      <button class="btn btn-outline-primary" type="button" [disabled]="loading() || loadingTemplate() || saving()" (click)="loadTemplate()">
+        {{ loadingTemplate() ? 'Loading template…' : 'Load Template' }}
+      </button>
+      <button class="btn btn-primary" [disabled]="saving() || loading() || translatingCount() > 0 || !activeTab()" (click)="save()">{{ saving() ? 'Saving…' : 'Save changes' }}</button>
+    </div>
+  </div>
+
+  @if (loading()) { <div class="text-center py-5">Loading content…</div> }
+  @else {
+    <div class="editor-layout">
+      <nav class="list-group">
+        @for (tab of tabs(); track tab.tabKey) {
+          <button class="list-group-item list-group-item-action" [class.active]="activeKey() === tab.tabKey" (click)="select(tab.tabKey)">
+            {{ tab.tabKey }} <span class="float-end">{{ tab.isEnabled ? '●' : '○' }}</span>
+          </button>
+        }
+      </nav>
+
+      @if (activeTab(); as tab) {
+        <div class="card border-0 shadow-sm"><div class="card-body p-4">
+          <div class="row g-3 mb-4">
+            <div class="col-md-4"><label class="form-label">Status</label><select class="form-select" [(ngModel)]="tab.status"><option>Draft</option><option>Published</option><option>Archived</option></select></div>
+            <div class="col-md-4"><label class="form-label">Order</label><input class="form-control" type="number" [(ngModel)]="tab.orderNo"></div>
+            <div class="col-md-4 d-flex align-items-end"><label class="form-check"><input class="form-check-input" type="checkbox" [(ngModel)]="tab.isEnabled"> <span class="form-check-label">Show this tab</span></label></div>
+          </div>
+
+          <h5>Banner</h5>
+          <div class="row g-3">
+            <div class="col-md-6"><label class="form-label">English title</label><input class="form-control" [ngModel]="tab.content.banner.en.titlePart1" (ngModelChange)="setBannerEnglish('titlePart1', $event)"></div>
+            <div class="col-md-6"><label class="form-label">Arabic title</label><input class="form-control text-end" dir="rtl" [(ngModel)]="tab.content.banner.ar.titlePart1"></div>
+            <div class="col-md-6"><label class="form-label">English highlighted title</label><input class="form-control" [ngModel]="tab.content.banner.en.titlePart2" (ngModelChange)="setBannerEnglish('titlePart2', $event)"></div>
+            <div class="col-md-6"><label class="form-label">Arabic highlighted title</label><input class="form-control text-end" dir="rtl" [(ngModel)]="tab.content.banner.ar.titlePart2"></div>
+            <div class="col-md-6"><label class="form-label">English description</label><textarea class="form-control" rows="4" [ngModel]="tab.content.banner.en.description" (ngModelChange)="setBannerEnglish('description', $event)"></textarea></div>
+            <div class="col-md-6"><label class="form-label">Arabic description</label><textarea class="form-control text-end" dir="rtl" rows="4" [(ngModel)]="tab.content.banner.ar.description"></textarea></div>
+            <div class="col-md-8"><label class="form-label">Image/video URL</label><input class="form-control" [(ngModel)]="tab.content.banner.mediaUrl"></div>
+            <div class="col-md-4"><label class="form-label">Media type</label><select class="form-select" [(ngModel)]="tab.content.banner.mediaType"><option value="image">Image</option><option value="video">Video</option></select></div>
+          </div>
+
+          <h5 class="mt-4 mb-3">Existing sections</h5>
+          @for (section of builtInSections(); track section.type) {
+            <details class="built-in-section card mb-3">
+              <summary class="card-header d-flex align-items-center justify-content-between">
+                <span><strong>{{ sectionLabel(section) }}</strong> <small class="text-muted">({{ section.items.length }} items)</small></span>
+                <span class="text-muted">Edit</span>
+              </summary>
+              <div class="card-body">
+                <div class="row g-3 mb-3">
+                  <div class="col-md-6"><label class="form-label">Section header (English)</label><input class="form-control" [ngModel]="localized(section.header, 'en')" (ngModelChange)="setSectionEnglish(section, 'header', $event)"></div>
+                  <div class="col-md-6"><label class="form-label">Section header (Arabic)</label><input class="form-control text-end" dir="rtl" [ngModel]="localized(section.header, 'ar')" (ngModelChange)="setSectionText(section, 'header', 'ar', $event)"></div>
+                  <div class="col-md-6"><label class="form-label">Section description (English)</label><textarea class="form-control" rows="2" [ngModel]="localized(section.description, 'en')" (ngModelChange)="setSectionEnglish(section, 'description', $event)"></textarea></div>
+                  <div class="col-md-6"><label class="form-label">Section description (Arabic)</label><textarea class="form-control text-end" dir="rtl" rows="2" [ngModel]="localized(section.description, 'ar')" (ngModelChange)="setSectionText(section, 'description', 'ar', $event)"></textarea></div>
+                  <div class="col-12"><label class="form-check"><input class="form-check-input" type="checkbox" [ngModel]="section.isEnabled !== false" (ngModelChange)="section.isEnabled = $event"> <span class="form-check-label">Show section on website</span></label></div>
+                </div>
+
+                @for (item of section.items; track $index; let index = $index; let first = $first; let last = $last) {
+                  <div class="section-item p-3 mb-2 rounded">
+                    <div class="d-flex justify-content-between align-items-center gap-2 mb-3">
+                      <strong>Item {{ index + 1 }}</strong>
+                      <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-sm btn-outline-secondary" [disabled]="first" (click)="moveItem(section, index, -1)" aria-label="Move item up">↑</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary" [disabled]="last" (click)="moveItem(section, index, 1)" aria-label="Move item down">↓</button>
+                        <button type="button" class="btn btn-sm btn-outline-danger" (click)="removeItem(section, index)">Remove</button>
+                      </div>
+                    </div>
+                    <div class="row g-3">
+                      <div class="col-md-6"><label class="form-label">{{ section.type === 'faq' ? 'Question' : 'Title' }} (English)</label><input class="form-control" [ngModel]="localized(item.title, 'en')" (ngModelChange)="setItemEnglish(item, 'title', $event)"></div>
+                      <div class="col-md-6"><label class="form-label">{{ section.type === 'faq' ? 'Question' : 'Title' }} (Arabic)</label><input class="form-control text-end" dir="rtl" [ngModel]="localized(item.title, 'ar')" (ngModelChange)="setItemText(item, 'title', 'ar', $event)"></div>
+                      @if (hasItemDescription(section)) {
+                        <div class="col-md-6"><label class="form-label">{{ section.type === 'faq' ? 'Answer' : 'Description' }} (English)</label><textarea class="form-control" rows="3" [ngModel]="localized(item.description, 'en')" (ngModelChange)="setItemEnglish(item, 'description', $event)"></textarea></div>
+                        <div class="col-md-6"><label class="form-label">{{ section.type === 'faq' ? 'Answer' : 'Description' }} (Arabic)</label><textarea class="form-control text-end" dir="rtl" rows="3" [ngModel]="localized(item.description, 'ar')" (ngModelChange)="setItemText(item, 'description', 'ar', $event)"></textarea></div>
+                      }
+                    </div>
+                  </div>
+                }
+                <button type="button" class="btn btn-sm btn-outline-primary mt-2" (click)="addItem(section)">+ Add item</button>
+              </div>
+            </details>
+          } @empty {
+            <p class="text-muted">No built-in sections for this tab.</p>
+          }
+          @if (hasQuizLevels()) {
+            <p class="small text-muted">Quiz levels have a special structure. Edit them in the advanced section editor below.</p>
+          }
+
+          <div class="d-flex align-items-center justify-content-between mt-4 mb-3">
+            <div><h5 class="mb-1">Custom sections</h5><p class="small text-muted mb-0">Add bilingual sections below the existing tab content.</p></div>
+            <button type="button" class="btn btn-outline-primary" (click)="addSection()">+ Add section</button>
+          </div>
+          @for (section of customSections(); track section.id; let first = $first; let last = $last) {
+            <div class="custom-section card mb-3">
+              <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between mb-3 gap-2">
+                  <strong>Section {{ $index + 1 }}</strong>
+                  <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-sm btn-outline-secondary" [disabled]="first" (click)="moveSection(section, -1)" aria-label="Move section up">↑</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" [disabled]="last" (click)="moveSection(section, 1)" aria-label="Move section down">↓</button>
+                    <button type="button" class="btn btn-sm btn-outline-danger" (click)="removeSection(section)">Remove</button>
+                  </div>
+                </div>
+                <div class="row g-3">
+                  <div class="col-md-6"><label class="form-label">Header (English)</label><input class="form-control" [ngModel]="section.header.en" (ngModelChange)="setCustomEnglish(section, 'header', $event)"></div>
+                  <div class="col-md-6"><label class="form-label">Header (Arabic)</label><input class="form-control text-end" dir="rtl" [(ngModel)]="section.header.ar"></div>
+                  <div class="col-md-6"><label class="form-label">Description (English)</label><textarea class="form-control" rows="4" [ngModel]="section.description.en" (ngModelChange)="setCustomEnglish(section, 'description', $event)"></textarea></div>
+                  <div class="col-md-6"><label class="form-label">Description (Arabic)</label><textarea class="form-control text-end" dir="rtl" rows="4" [(ngModel)]="section.description.ar"></textarea></div>
+                  <div class="col-12"><label class="form-check"><input class="form-check-input" type="checkbox" [(ngModel)]="section.isEnabled"> <span class="form-check-label">Show on website</span></label></div>
+                </div>
+              </div>
+            </div>
+          } @empty {
+            <p class="text-muted">No custom sections yet.</p>
+          }
+          <div class="mt-4">
+            <button type="button" class="btn btn-link px-0" (click)="toggleAdvanced()">
+              {{ showAdvanced() ? 'Hide advanced editor' : 'Edit all sections (advanced)' }}
+            </button>
+            @if (showAdvanced()) {
+              <p class="small text-muted">This edits the full section data, including built-in sections. Apply changes before saving.</p>
+              <textarea class="form-control font-monospace" rows="14" [ngModel]="rawSections()" (ngModelChange)="rawSections.set($event)"></textarea>
+              <button type="button" class="btn btn-outline-primary mt-2" (click)="applyAdvanced()">Apply JSON changes</button>
+            }
+          </div>
+        </div></div>
+      }
+    </div>
+  }
+</section>

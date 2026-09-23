@@ -1,7 +1,9 @@
+@if (section()?.isEnabled !== false) {
 <div class="w-100">
-  <app-accordion [title]="'courseOutline' | translate">
+  <app-accordion [title]="sectionTitle()">
+    @if (sectionDescription()) { <p class="mb-3">{{ sectionDescription() }}</p> }
     <div class="course-outline-grid row gy-2">
-      @for (item of courseOutlines(); track item) {
+      @for (item of displayOutlines(); track item) {
         <div class="col-sm-6 col-lg-12 col-xl-6">
           <div class="outline-item d-flex align-items-center gap-2">
             <i class="bi bi-check-circle mainTextColor"></i>
@@ -12,3 +14,4 @@
     </div>
   </app-accordion>
 </div>
+}

@@ -5,6 +5,9 @@ import { AuthService } from '../../../../Services/auth.service';
 import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/site-button.component';
 import { Shared } from '../../../../shared/Services/shared/shared';
 import { StudentService } from '../../../../Services/student-service.service';
+import { CourseTabContentService } from '../../../../Services/course-tab-content.service';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { catchError, of } from 'rxjs';
 
 @Component({
   selector: 'app-courese-features',
@@ -14,6 +17,26 @@ import { StudentService } from '../../../../Services/student-service.service';
 })
 export class CoureseFeaturesComponent {
   private shared = inject(Shared);
+  private tabService = inject(CourseTabContentService);
+  tabKey = input<'recorded-course' | 'live-course'>('recorded-course');
+  private tabContents = toSignal(this.tabService.getCourse(this.shared.currentCertificate()).pipe(catchError(() => of([]))), {initialValue: []});
+  readonly section = computed(() => {
+    const tabKey = this.type() === 'features' ? this.tabKey() : 'webinar';
+    const sectionType = this.type() === 'webinar' ? 'agenda' : this.type();
+    return this.tabContents().find(tab => tab.tabKey === tabKey)?.content.sections.find(s => s.type === sectionType);
+  });
+  readonly sectionTitle = computed(() => this.section()?.header?.[this.shared.isRtl() ? 'ar' : 'en'] || this.title());
+  readonly sectionDescription = computed(() => this.section()?.description?.[this.shared.isRtl() ? 'ar' : 'en'] || '');
+  displayFeatures = computed(() => {
+    const section = this.section();
+    if (!section) return this.courseFeatures();
+    if (section.isEnabled === false) return [];
+    const lang = this.shared.isRtl() ? 'ar' : 'en';
+    return section.items.map(item => ({
+      title: typeof item.title === 'string' ? item.title : item.title?.[lang] ?? '',
+      description: typeof item.description === 'string' ? item.description : item.description?.[lang] ?? ''
+    }));
+  });
   certification = this.shared.currentCertificate;
   type = input<string>('features');
   isEnrolled = input<boolean>(false);

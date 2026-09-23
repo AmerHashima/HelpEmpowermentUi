@@ -18,6 +18,8 @@ import {
 export class FirstQuestionComponent {
 
   next = input<boolean>(false);
+  options = input<string[]>(['Executing', 'Planning', 'Initiation', 'Monitoring & Control', 'Closing']);
+  correctOrder = input<string[]>(['Initiation', 'Planning', 'Executing', 'Closing', 'Monitoring & Control']);
   isCorrect = output<boolean>();
   reset = input<number>(0);
   sourceItems = signal<string[]>([
@@ -66,13 +68,7 @@ export class FirstQuestionComponent {
 
   private resetState(): void {
 
-    this.sourceItems.set([
-      'Executing',
-      'Planning',
-      'Initiation',
-      'Monitoring & Control',
-      'Closing'
-    ]);
+    this.sourceItems.set([...this.options()]);
 
     this.topZones.set([
       { items: [] },
@@ -144,13 +140,7 @@ export class FirstQuestionComponent {
   }
 
   private checkAnswers(): void {
-    const correctOrder = [
-      'Initiation',
-      'Planning',
-      'Executing',
-      'Closing',
-            'Monitoring & Control',
-    ];
+    const correctOrder = this.correctOrder();
 
     const placedItems = [
       ...this.topZones().map(z => z.items[0] || null),

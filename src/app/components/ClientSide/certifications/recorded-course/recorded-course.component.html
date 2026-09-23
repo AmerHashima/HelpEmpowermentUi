@@ -35,15 +35,15 @@
           </div> -->
           <h3 class="CertificationHeader">
             <span class="darkText">
-              {{ recordedCourseContent().master | translate }}
+              {{ tabBanner()?.titlePart1 || (recordedCourseContent().master | translate) }}
             </span>
             <span class="mainTextColor">
-              {{ recordedCourseContent().title | translate }}
+              {{ tabBanner()?.titlePart2 || (recordedCourseContent().title | translate) }}
             </span>
           </h3>
 
           <p>
-            {{ recordedCourseContent().description | translate }}
+            {{ tabBanner()?.description || (recordedCourseContent().description | translate) }}
           </p>
 
           <div class="d-flex justify-content-between rating">
@@ -85,7 +85,7 @@
 
       <img
         media
-        [src]="recoedImage"
+        [src]="tabContent()?.content?.banner?.mediaUrl || recoedImage"
         alt="contact Image"
         class="Homebanner-video shadow w-100 h-100"
       />

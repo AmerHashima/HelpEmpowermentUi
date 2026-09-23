@@ -1,5 +1,7 @@
+@if (section()?.isEnabled !== false) {
 <div class="w-100">
-  <app-accordion [title]="accordionTitle">
+  <app-accordion [title]="sectionTitle()">
+    @if (sectionDescription()) { <p class="mb-3">{{ sectionDescription() }}</p> }
     <div class="courseInnerContent d-flex flex-column gap-2">
       <!-- @for (item of courseCon(); let i = $index; track item) {
         <div
@@ -55,3 +57,4 @@
     </div>
   </app-accordion>
 </div>
+}

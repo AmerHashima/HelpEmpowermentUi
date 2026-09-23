@@ -13,10 +13,12 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
 import { ContactUsService } from '../../../../Services/contact-us.service';
 import { AuthService } from '../../../../Services/auth.service';
-import { forkJoin } from 'rxjs';
+import { catchError, forkJoin, of } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { TranslateService } from '../../../../Services/translate.service';
 import { CertificationReviewContactLookUp } from '../../../../data/lookUPS';
 import { APIContact } from '../../../../models/contact-us';
+import { CourseTabContentService } from '../../../../Services/course-tab-content.service';
 interface ReviewItem {
   reviewerName: string;
   reviewDate: string;
@@ -42,6 +44,7 @@ export class ReviewsComponent {
   private contactService = inject(ContactUsService);
   private translationService = inject(TranslateService);
   private auth = inject(AuthService);
+  private tabService = inject(CourseTabContentService);
   student = this.auth.loggedStudent;
   showConfirm = false;
   mustLogged: boolean = false;
@@ -54,6 +57,8 @@ export class ReviewsComponent {
   sectionImage = input<string>('');
   reviews = signal<ReviewItem[]>([]);
   courseImage = "assets/images/reviewers/review.jpeg";
+  tabContent = toSignal(this.tabService.getTab(this.shared.currentCertificate(), 'reviews').pipe(catchError(() => of(null))), { initialValue: null });
+  tabBanner = computed(() => this.tabContent()?.content.banner[this.isRTL() ? 'ar' : 'en']);
   page = signal(1);
   pageSize = signal(6);
   review = {

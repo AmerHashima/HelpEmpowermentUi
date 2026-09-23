@@ -4,22 +4,22 @@
     <div class="d-flex flex-column gap-3">
       <h3 class="CertificationHeader">
         <span class="darkText">
-          {{ webinarContent().master | translate }}
+          {{ tabBanner()?.titlePart1 || (webinarContent().master | translate) }}
         </span>
         <span class="mainTextColor">
-          {{ webinarContent().title | translate }}
+          {{ tabBanner()?.titlePart2 || (webinarContent().title | translate) }}
         </span>
       </h3>
 
       <p>
-        {{ webinarContent().description | translate }}
+        {{ tabBanner()?.description || (webinarContent().description | translate) }}
       </p>
     </div>
   </div>
 
   <img
     media
-    [src]="courseImage"
+    [src]="tabContent()?.content?.banner?.mediaUrl || courseImage"
     alt="contact Image"
     class="Homebanner-video shadow w-100 h-100"
   />

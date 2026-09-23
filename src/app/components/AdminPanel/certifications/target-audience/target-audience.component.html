@@ -1,7 +1,9 @@
+@if (section()?.isEnabled !== false) {
 <div class="w-100">
-  <app-accordion [title]="accordionTitle">
+  <app-accordion [title]="sectionTitle()">
+    @if (sectionDescription()) { <p class="mb-3">{{ sectionDescription() }}</p> }
     <div class="audience-container d-flex gap-1 flex-wrap justify-content-center">
-      @for (audience of targetAudiences(); track $index) {
+      @for (audience of displayAudiences(); track $index) {
         <span class="audience">
           {{ audience | translate }}
         </span>
@@ -13,3 +15,4 @@
     </div>
   </app-accordion>
 </div>
+}

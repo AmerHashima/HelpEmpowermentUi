@@ -35,5 +35,33 @@
         </tbody></table></div> }
       </div></div>
     </div>
+
+    @if (summary(); as revenue) {
+      <div class="card border-0 shadow-sm p-3 mt-3 beneficiary-card">
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3"><div><h6 class="fw-bold mb-1">Beneficiary Earnings & Payments</h6><small class="text-muted">Actual calculated amounts for this course</small></div></div>
+        @if (!revenue.shares.length) {
+          <div class="state empty"><i class="bi bi-wallet2"></i><span>No beneficiary revenue calculated yet.</span></div>
+        } @else {
+          <div class="table-responsive"><table class="table align-middle mb-0"><thead><tr><th>Beneficiary</th><th>Type</th><th class="text-end">Percentage</th><th class="text-end">Earned</th><th class="text-end">Pending</th><th class="text-end">Paid</th><th class="text-end">Payment</th></tr></thead><tbody>
+            @for (beneficiary of revenue.shares; track beneficiary.userId + '-' + beneficiary.type) {
+              <tr><td><strong>{{ beneficiary.userName || 'Platform' }}</strong></td><td>{{ beneficiary.type }}</td><td class="text-end percentage">{{ beneficiary.percentage !== null ? (beneficiary.percentage | number:'1.0-4') + '%' : 'Fixed' }}</td><td class="text-end fw-semibold">{{ beneficiary.amount | number:'1.2-2' }} AED</td><td class="text-end pending">{{ beneficiary.pending | number:'1.2-2' }} AED</td><td class="text-end paid">{{ beneficiary.paid | number:'1.2-2' }} AED</td><td class="text-end">@if (beneficiary.userId && beneficiary.pending > 0) {<button class="btn btn-sm btn-success" type="button" (click)="openPayment(beneficiary)"><i class="bi bi-cash-coin me-1"></i>Pay</button>} @else if (!beneficiary.userId) {<span class="text-muted small">Platform</span>} @else {<span class="badge text-bg-light">Settled</span>}</td></tr>
+            }
+          </tbody><tfoot><tr><th colspan="3">Course totals</th><th class="text-end">{{ revenue.distributedRevenue | number:'1.2-2' }} AED</th><th class="text-end">{{ revenue.pendingRevenue | number:'1.2-2' }} AED</th><th class="text-end">{{ revenue.paidRevenue | number:'1.2-2' }} AED</th><th></th></tr></tfoot></table></div>
+        }
+      </div>
+    }
   }
 </section>
+
+<app-generic-modal [isOpen]="paymentModalOpen()" title="Pay Beneficiary" (close)="closePayment()" (isOpenChange)="!$event && closePayment()">
+  @if (beneficiaryToPay(); as beneficiary) {
+    <form #paymentForm="ngForm" (ngSubmit)="pay(paymentForm)">
+      <div class="payment-summary"><span>Beneficiary<strong>{{ beneficiary.userName }}</strong></span><span>Course pending<strong>{{ beneficiary.pending | number:'1.2-2' }} AED</strong></span></div>
+      <div class="alert alert-warning py-2 small"><i class="bi bi-info-circle me-1"></i>The settlement API pays all eligible pending revenue for this beneficiary within the selected period. It does not currently accept a course ID.</div>
+      <div class="row g-2 mb-3"><div class="col-sm-6"><label class="form-label">Period From</label><input class="form-control" type="date" name="paymentPeriodFrom" [(ngModel)]="payment.periodFrom" required></div><div class="col-sm-6"><label class="form-label">Period To</label><input class="form-control" type="date" name="paymentPeriodTo" [(ngModel)]="payment.periodTo" required></div></div>
+      <div class="mb-3"><label class="form-label">Payment Reference</label><input class="form-control" name="paymentReference" [(ngModel)]="payment.paymentReference" required maxlength="200" placeholder="Bank transfer / transaction reference"><div class="form-text">Required for the payment audit trail.</div></div>
+      <div class="mb-3"><label class="form-label">Notes</label><textarea class="form-control" rows="2" name="paymentNotes" [(ngModel)]="payment.notes" maxlength="500"></textarea></div>
+      <div class="d-flex justify-content-end gap-2"><button class="btn btn-outline-secondary" type="button" (click)="closePayment()" [disabled]="paying()">Cancel</button><button class="btn btn-success" type="submit" [disabled]="paying()">@if (paying()) {<span class="spinner-border spinner-border-sm me-1"></span>}Confirm Payment</button></div>
+    </form>
+  }
+</app-generic-modal>

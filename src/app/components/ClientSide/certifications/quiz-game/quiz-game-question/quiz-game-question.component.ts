@@ -11,6 +11,9 @@ import { MultiTableQuestionsComponent } from '../multi-table-questions/multi-tab
 import { PyramidDragDropComponent } from '../pyramid-drag-drop/pyramid-drag-drop.component';
 import { GenericDragMatchComponent } from '../generic-drag-match/generic-drag-match.component';
 import { MatchingTableComponent } from '../matching-table/matching-table.component';
+import { CourseTabContentService } from '../../../../../Services/course-tab-content.service';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { catchError, of } from 'rxjs';
 
 interface QuizLevel {
   level: string;
@@ -39,6 +42,8 @@ interface QuizLevel {
 })
 export class QuizGameQuestionComponent {
   private shared = inject(Shared);
+  private tabService = inject(CourseTabContentService);
+  private tabContent = toSignal(this.tabService.getTab(this.shared.currentCertificate(), 'quiz-game').pipe(catchError(() => of(null))), { initialValue: null });
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   next = signal<boolean>(false);
@@ -2070,6 +2075,10 @@ export class QuizGameQuestionComponent {
 
 
   constructor() {
+    effect(() => {
+      const items = this.tabContent()?.content.sections.find(section => section.type === 'quizLevels')?.items;
+      if (items?.length) this.levels = items as unknown as QuizLevel[];
+    });
     effect(() => {
       this.currentLevelIndex();
       this.attempts.set(0);

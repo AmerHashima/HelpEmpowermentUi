@@ -10,11 +10,13 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { InputComponent } from '../../../../shared/input/input.component';
 import { PhoneInputComponent } from '../../../../shared/phone/phone.component';
 import { AuthService } from '../../../../Services/auth.service';
-import { forkJoin } from 'rxjs';
+import { catchError, forkJoin, of } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { TranslateService } from '../../../../Services/translate.service';
 import { webinarContactLookup } from '../../../../data/lookUPS';
 import { ContactUsService } from '../../../../Services/contact-us.service';
 import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
+import { CourseTabContentService } from '../../../../Services/course-tab-content.service';
 
 @Component({
   selector: 'app-webinar',
@@ -33,14 +35,24 @@ export class WebinarComponent {
   private translationService=inject(TranslateService);
   private contactService=inject(ContactUsService);
   private toasting=inject(ToastingMessagesService);
+  private tabService=inject(CourseTabContentService);
   student=this.auth.loggedStudent;
   isRTL = this.shared.isRtl;
   showConfirm = false;
   courseImage = "assets/images/webinar/webinar.jpeg";
+  tabContent = toSignal(this.tabService.getTab(this.shared.currentCertificate(), 'webinar').pipe(catchError(() => of(null))), { initialValue: null });
+  tabBanner = computed(() => this.tabContent()?.content.banner[this.isRTL() ? 'ar' : 'en']);
 
   webinarContent = computed(() => {
     const cert = this.shared.currentCertificate();
-    const key = cert === 'capm' ? 'capm' : 'pmp';
+    const key = cert === 'capm' ? 'capm' : cert === 'pmp' ? 'pmp' : null;
+
+    if (!key) {
+      const name = cert.toUpperCase();
+      return this.isRTL()
+        ? { master: `اكتشف ${name}`, title: 'في ويبينار مباشر', description: `تعرّف على رحلة ${name} والخطوات التالية.` }
+        : { master: `Discover ${name}`, title: 'in a live webinar', description: `Understand the ${name} journey and next steps.` };
+    }
 
     return {
       master: `webinar.${key}.master`,

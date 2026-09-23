@@ -8,6 +8,9 @@ import { FeatureComponent } from '../../../../shared/clientSide/feature/feature.
 import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/site-button.component';
 import { FaqItemComponent } from '../../../../shared/faq-item/faq-item.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CourseTabContentService } from '../../../../Services/course-tab-content.service';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { catchError, of, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-home-faq',
@@ -23,6 +26,12 @@ export class HomeFAQComponent {
   private currentCertification = this.shared.currentCertificate;
   private router=inject(Router);
   private route=inject(ActivatedRoute);
+  private tabService=inject(CourseTabContentService);
+  private faqContent=toSignal(toObservable(this.currentCertification).pipe(
+    switchMap(code => code === 'pmp' || code === 'capm'
+      ? this.tabService.getTab(code, 'faq').pipe(catchError(() => of(null)))
+      : of(null))
+  ), {initialValue: null});
   // You need to provide this array – can come from service, input, or static
   questions = [
     {
@@ -97,12 +106,26 @@ export class HomeFAQComponent {
   ];
 
   displayedQuestions = computed(() => {
+    const section=this.faqSection();
+    if (section?.isEnabled === false) return [];
+    const items=section?.items;
+    if (items) {
+      const lang=this.shared.isRtl() ? 'ar' : 'en';
+      return items.map(item => ({
+        question: typeof item.title === 'string' ? item.title : item.title?.[lang] ?? '',
+        answer: typeof item.description === 'string' ? item.description : item.description?.[lang] ?? ''
+      }));
+    }
     if (this.currentCertification() == 'pmp')
       return this.pmpQuestions;
     else if (this.currentCertification() == 'capm')
       return this.campQuestions;
     else return this.questions;
   })
+
+  readonly faqSection = computed(() => this.faqContent()?.content.sections.find(s => s.type === 'faq'));
+  readonly faqTitle = computed(() => this.faqSection()?.header?.[this.shared.isRtl() ? 'ar' : 'en'] || 'home.faq.title');
+  readonly faqDescription = computed(() => this.faqSection()?.description?.[this.shared.isRtl() ? 'ar' : 'en'] || 'home.faq.description');
 
   onContactSupport() {
     // window.location.href = 'mailto:Support@helpempowerment.com';
