@@ -1,11 +1,11 @@
-import { DatePipe } from '@angular/common';
 import { Component, inject, input } from '@angular/core';
 import { Shared } from '../../../shared/Services/shared/shared';
 import { TranslatePipe } from '@ngx-translate/core';
+import { LocalizedDatePipe } from '../../../shared/pipes/localized-date.pipe';
 
 @Component({
   selector: 'app-invoice',
-  imports: [DatePipe,TranslatePipe],
+  imports: [LocalizedDatePipe, TranslatePipe],
   templateUrl: './invoice.component.html',
   styleUrl: './invoice.component.scss'
 })

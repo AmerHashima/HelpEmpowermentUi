@@ -13,6 +13,7 @@ export function mapApiQuestionToCourseQuestion(api: any, studentQuestion: boolea
     questionText: api.questionText,
     questionExplination: api.questionExplination,
     questionImage: api.questionImage ?? '',
+    questionImages: api.questionImages ?? [],
     questionText_Ar: api.questionText_Ar,
     questionTypeLookupId: api.questionTypeLookupId,
     questionScore: api.questionScore,

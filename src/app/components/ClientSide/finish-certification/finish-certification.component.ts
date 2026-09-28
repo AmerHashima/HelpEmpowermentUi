@@ -76,7 +76,7 @@ export class FinishCertificationComponent {
     const issuedDate = this.studentService.currentCourse()?.certificateIssuedDate;
     if (!issuedDate) return '';
 
-    return new Intl.DateTimeFormat('en-GB', {
+    return new Intl.DateTimeFormat(this.shared.lang() === 'ar' ? 'ar-EG' : 'en-GB', {
       day: '2-digit',
       month: 'long',
       year: 'numeric'

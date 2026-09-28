@@ -6,7 +6,7 @@ import { PageBannerComponent } from '../../../../shared/clientSide/page-banner/p
 import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/site-button.component';
 import { StarRatingComponent } from '../../../../shared/star-rating/star-rating.component';
 import { TranslateModule, TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { DatePipe, NgIf } from '@angular/common';
+import { NgIf } from '@angular/common';
 import { CoureseOutlineComponent } from '../courese-outline/courese-outline.component';
 import { CoureseFeaturesComponent } from '../courese-features/courese-features.component';
 import { CouresePlayerComponent, Lesson } from '../courese-player/courese-player.component';
@@ -27,13 +27,14 @@ import { DownloadCertificateComponent } from '../download-certificate/download-c
 import { CertificationService } from '../../../../Services/certification.service';
 import { Router } from '@angular/router';
 import { CourseTabContentService } from '../../../../Services/course-tab-content.service';
+import { LocalizedDatePipe } from '../../../../shared/pipes/localized-date.pipe';
 
 @Component({
   selector: 'app-recorded-course',
   imports: [PageBannerComponent, SiteButtonComponent, StarRatingComponent, TranslateModule, NgIf,
     TranslatePipe, NgIf, CoureseOutlineComponent, CoureseFeaturesComponent, CouresePlayerComponent,
     CoureseContentComponent, ResourcesComponent, InstructorInfoComponent, TargetAudienceComponent, GenericModelComponent,
-    DownloadCertificateComponent, DatePipe
+    DownloadCertificateComponent, LocalizedDatePipe
   ],
   templateUrl: './recorded-course.component.html',
   styleUrl: './recorded-course.component.scss'

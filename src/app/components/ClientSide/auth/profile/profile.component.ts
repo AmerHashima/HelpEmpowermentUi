@@ -2,7 +2,7 @@
 import { Component, computed, effect, inject, QueryList, signal, ViewChild, ViewChildren } from '@angular/core';
 import { AuthService, changePasswordForm } from '../../../../Services/auth.service';
 import { Shared } from '../../../../shared/Services/shared/shared';
-import { DatePipe, TitleCasePipe } from '@angular/common';
+import { TitleCasePipe } from '@angular/common';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -19,6 +19,7 @@ import { createdUpdatedOID } from '../../../../data/lookUPS';
 import { ReservationService } from '../../../../Services/reservation.service';
 import { APICourseReservation } from '../../../../Interface/course-reservation';
 import { RequestBody } from '../../../../models/rquest';
+import { LocalizedDatePipe } from '../../../../shared/pipes/localized-date.pipe';
 
 type ProfileTab =
 
@@ -34,7 +35,7 @@ type ProfileTab =
   selector: 'app-profile',
   standalone: true,
   imports: [FormsModule, NgbNavModule, TranslatePipe, TitleCasePipe,
-    SiteButtonComponent, InputComponent, PhoneInputComponent,DatePipe
+    SiteButtonComponent, InputComponent, PhoneInputComponent, LocalizedDatePipe
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
@@ -426,10 +427,23 @@ export class ProfileComponent {
   }
 
   navigateToCourseFeatue(key: string) {
-    const courseName = this.course()?.courseName.toLowerCase();
-    //if (key == "exam-simulator")
+    const selectedCourse = this.course();
+    if (!selectedCourse) return;
+
+    const certification = this.shared.certifications()?.find(
+      (item: any) => item.oid === selectedCourse.courseId
+    );
+    const courseSlug = (
+      selectedCourse.courseCode ||
+      certification?.courseCode ||
+      selectedCourse.courseName
+    )
+      .trim()
+      .toLowerCase()
+      .replace(/[\s_]+/g, '-');
+
     this.studentService.showExamSimulator = true;
-    this.router.navigate(['../../certifications/', courseName, key], {
+    this.router.navigate(['../../certifications', courseSlug, key], {
 
 
       relativeTo: this.route,

@@ -1,128 +1,167 @@
-import { CourseTabContent } from '../../../../models/course-tab-content';
+import { CourseTabContent, CourseTabSection, CourseTabSectionItem } from '../../../../models/course-tab-content';
+import enTranslations from '../../../../../assets/i18n/en.json';
+import arTranslations from '../../../../../assets/i18n/ar.json';
 
-// Keep this token in the reusable content. The editor replaces it with the
-// current course code when the administrator loads the template.
 export const COURSE_CODE_TOKEN = '{{coursecode}}';
 
-export const COURSE_CONTENT_TEMPLATE: CourseTabContent[] = [
+const en: any = enTranslations;
+const ar: any = arTranslations;
+
+function text(enText: string, arText: string): { en: string; ar: string } {
+  return { en: enText, ar: arText };
+}
+
+function reviewText(value: string): string {
+  return value.replace(/PMP/g, 'CAPM');
+}
+
+function item(enItem: any, arItem: any, icon?: string): CourseTabSectionItem {
+  return {
+    title: text(enItem.title ?? enItem.header ?? '', arItem.title ?? arItem.header ?? ''),
+    description: text(enItem.description ?? enItem.text ?? '', arItem.description ?? arItem.text ?? ''),
+    ...(icon ? { icon } : {})
+  };
+}
+
+function section(
+  type: string,
+  headerEn: string,
+  headerAr: string,
+  items: CourseTabSectionItem[],
+  descriptionEn = '',
+  descriptionAr = ''
+): CourseTabSection {
+  return {
+    type,
+    header: text(headerEn, headerAr),
+    description: text(descriptionEn, descriptionAr),
+    isEnabled: true,
+    items
+  };
+}
+
+function banner(sourceEn: any, sourceAr: any, mediaUrl: string) {
+  return {
+    en: { titlePart1: sourceEn.master, titlePart2: sourceEn.title ?? sourceEn.realisticSimulation ?? '', description: sourceEn.description },
+    ar: { titlePart1: sourceAr.master, titlePart2: sourceAr.title ?? sourceAr.realisticSimulation ?? '', description: sourceAr.description },
+    mediaUrl,
+    mediaType: 'image' as const
+  };
+}
+
+function courseSections(): CourseTabSection[] {
+  const featureKeys = Object.keys(en.courseFeatures.capm.features);
+  const outlineEn = en.courseOutlines.capm as string[];
+  const outlineAr = ar.courseOutlines.capm as string[];
+  const audienceEn = en.targetAudiences.capm as string[];
+  const audienceAr = ar.targetAudiences.capm as string[];
+  const skillsEn = en.instructor.skills as any[];
+  const skillsAr = ar.instructor.skills as any[];
+  const certificationsEn = en.instructor.certifications as string[];
+  const certificationsAr = ar.instructor.certifications as string[];
+
+  return [
+    section('outline', 'Course Outline', 'محتوى الدورة',
+      outlineEn.map((title, index) => ({ title: text(title, outlineAr[index] ?? '') }))),
+    section('instructorIntro', en.instructor.info, ar.instructor.info,
+      [{ title: text(en.instructor.introParagragh, ar.instructor.introParagragh) }]),
+    section('instructorSkills', 'Instructor Expertise', 'خبرات المدرب',
+      skillsEn.map((skill, index) => item(skill, skillsAr[index], [
+        'bi bi-person-badge', 'bi bi-briefcase', 'bi bi-building', 'bi bi-bar-chart'
+      ][index]))),
+    section('instructorCertifications', 'Instructor Certifications', 'شهادات المدرب',
+      certificationsEn.map((title, index) => ({ title: text(title, certificationsAr[index] ?? '') }))),
+    section('features', 'Course Features', 'مميزات الدورة',
+      featureKeys.map(key => item(en.courseFeatures.capm.features[key], ar.courseFeatures.capm.features[key]))),
+    section('targetAudience', 'Target Audience', 'الفئة المستهدفة',
+      audienceEn.map((title, index) => ({ title: text(title, audienceAr[index] ?? '') })))
+  ];
+}
+
+const benefitIcons = [
+  'bi bi-arrow-clockwise', 'bi bi-database', 'bi bi-toggles',
+  'bi bi-lightbulb', 'bi bi-journal-check', 'bi bi-bar-chart-line',
+  'bi bi-infinity', 'bi bi-calendar-check', 'bi bi-headset'
+];
+const benefitKeys = Object.keys(en.capmBenefits);
+const webinarAgendaKeys = ['hour1', 'hour2'];
+const faqItems = [1, 2, 3, 4, 5].map(index => ({
+  title: text(en.campFaq[`question${index}`], ar.campFaq[`question${index}`]),
+  description: text(en.campFaq[`answer${index}`], ar.campFaq[`answer${index}`])
+}));
+
+const capmTemplate: CourseTabContent[] = [
   {
-    oid: '', courseCode: COURSE_CODE_TOKEN, tabKey: 'exam-simulator', isEnabled: true,
-    orderNo: 1, status: 'Published',
+    oid: '', courseCode: 'CAPM', tabKey: 'exam-simulator', isEnabled: true, orderNo: 1, status: 'Published',
     content: {
-      banner: {
-        en: { titlePart1: `Master the ${COURSE_CODE_TOKEN}`, titlePart2: 'exam environment', description: `Prepare confidently for the ${COURSE_CODE_TOKEN} exam with realistic practice and detailed feedback.` },
-        ar: { titlePart1: `أتقن اختبار ${COURSE_CODE_TOKEN}`, titlePart2: 'في بيئة محاكاة واقعية', description: `استعد بثقة لاختبار ${COURSE_CODE_TOKEN} من خلال تدريب واقعي ونتائج تفصيلية.` },
-        mediaUrl: 'assets/images/examSimulator/examSimulator.jpeg', mediaType: 'image'
-      },
-      sections: [{
-        type: 'benefits', header: { en: 'Everything you need to succeed', ar: 'كل ما تحتاجه للنجاح' },
-        description: { en: `A complete ${COURSE_CODE_TOKEN} exam preparation experience.`, ar: `تجربة متكاملة للاستعداد لاختبار ${COURSE_CODE_TOKEN}.` },
-        isEnabled: true,
-        items: [
-          { title: { en: 'Realistic practice', ar: 'تدريب واقعي' }, description: { en: 'Practice in an environment close to the real exam.', ar: 'تدرب في بيئة قريبة من الاختبار الحقيقي.' }, icon: 'bi bi-journal-check' },
-          { title: { en: 'Detailed feedback', ar: 'نتائج تفصيلية' }, description: { en: 'Understand your strengths and improvement areas.', ar: 'تعرّف على نقاط قوتك وفرص التحسين.' }, icon: 'bi bi-graph-up' }
-        ]
-      }]
+      banner: banner(en.examSimulator.capm, ar.examSimulator.capm, 'assets/images/certification.jpg'),
+      sections: [section(
+        'benefits', en.examSimulator.everythingYouNeed, ar.examSimulator.everythingYouNeed,
+        benefitKeys.map((key, index) => item(en.capmBenefits[key], ar.capmBenefits[key], benefitIcons[index])),
+        'Master the CAPM exam with realistic questions designed to ensure your success.',
+        'أتقن اختبار CAPM من خلال أسئلة واقعية مصممة لضمان نجاحك.'
+      )]
     }
   },
   {
-    oid: '', courseCode: COURSE_CODE_TOKEN, tabKey: 'recorded-course', isEnabled: true,
-    orderNo: 2, status: 'Published',
+    oid: '', courseCode: 'CAPM', tabKey: 'recorded-course', isEnabled: true, orderNo: 2, status: 'Published',
+    content: { banner: banner(en.recordedCourse.capm, ar.recordedCourse.capm, 'assets/images/recordedCourse.jpeg'), sections: courseSections() }
+  },
+  {
+    oid: '', courseCode: 'CAPM', tabKey: 'live-course', isEnabled: true, orderNo: 3, status: 'Published',
+    content: { banner: banner(en.liveCourse.capm, ar.liveCourse.capm, 'assets/images/liveCourse/liveCourse.jpeg'), sections: courseSections() }
+  },
+  {
+    oid: '', courseCode: 'CAPM', tabKey: 'webinar', isEnabled: true, orderNo: 4, status: 'Published',
     content: {
-      banner: {
-        en: { titlePart1: `Learn ${COURSE_CODE_TOKEN}`, titlePart2: 'on your schedule', description: `A structured recorded ${COURSE_CODE_TOKEN} course that you can access whenever it suits you.` },
-        ar: { titlePart1: `تعلّم ${COURSE_CODE_TOKEN}`, titlePart2: 'في الوقت الذي يناسبك', description: `دورة ${COURSE_CODE_TOKEN} مسجلة ومنظمة يمكنك الوصول إليها في أي وقت.` },
-        mediaUrl: 'assets/images/recordedCourse.jpeg', mediaType: 'image'
-      },
-      sections: [{
-        type: 'features', header: { en: 'Course features', ar: 'مميزات الدورة' },
-        description: { en: `A flexible path to master ${COURSE_CODE_TOKEN}.`, ar: `مسار مرن لإتقان ${COURSE_CODE_TOKEN}.` }, isEnabled: true,
-        items: [
-          { title: { en: 'Learn at your own pace', ar: 'تعلّم بالسرعة التي تناسبك' }, description: { en: 'Pause and revisit lessons whenever needed.', ar: 'أوقف الدروس وراجعها وقتما تحتاج.' }, icon: 'bi bi-play-circle' },
-          { title: { en: 'Structured learning', ar: 'تعلم منظم' }, description: { en: 'Follow a clear path from fundamentals to exam readiness.', ar: 'اتبع مسارًا واضحًا من الأساسيات حتى الاستعداد للاختبار.' }, icon: 'bi bi-list-check' }
-        ]
-      }]
+      banner: banner(en.webinar.capm, ar.webinar.capm, 'assets/images/webinar/webinar.jpeg'),
+      sections: [
+        section('agenda', 'Webinar Agenda', 'محاور الويبينار',
+          webinarAgendaKeys.map(key => item(en.courseFeatures.capm.webinar[key], ar.courseFeatures.capm.webinar[key]))),
+        section('takeAway', 'Key Takeaways', 'أهم النتائج',
+          [item(en.courseFeatures.capm.webinar.takeAway, ar.courseFeatures.capm.webinar.takeAway)]),
+        section('audience', 'Target Audience', 'الفئة المستهدفة',
+          [item(en.courseFeatures.capm.audience, ar.courseFeatures.capm.audience)])
+      ]
     }
   },
   {
-    oid: '', courseCode: COURSE_CODE_TOKEN, tabKey: 'live-course', isEnabled: true,
-    orderNo: 3, status: 'Published',
-    content: {
-      banner: {
-        en: { titlePart1: `Transform your career with ${COURSE_CODE_TOKEN}`, titlePart2: 'live guidance', description: `Interactive live ${COURSE_CODE_TOKEN} training led by experienced instructors.` },
-        ar: { titlePart1: `طوّر مسيرتك مع ${COURSE_CODE_TOKEN}`, titlePart2: 'من خلال تدريب مباشر', description: `تدريب ${COURSE_CODE_TOKEN} مباشر وتفاعلي بقيادة مدربين ذوي خبرة.` },
-        mediaUrl: 'assets/images/liveCourse/liveCourse.jpeg', mediaType: 'image'
-      },
-      sections: [{
-        type: 'features', header: { en: 'Live learning experience', ar: 'تجربة تعلم مباشرة' },
-        description: { en: 'Learn, discuss, and apply the concepts with your instructor.', ar: 'تعلّم وناقش وطبّق المفاهيم مع مدربك.' }, isEnabled: true,
-        items: [
-          { title: { en: 'Expert instruction', ar: 'تدريب متخصص' }, description: { en: 'Get direct explanations and answers.', ar: 'احصل على شرح وإجابات مباشرة.' }, icon: 'bi bi-person-video3' },
-          { title: { en: 'Interactive sessions', ar: 'جلسات تفاعلية' }, description: { en: 'Participate in discussions and practical activities.', ar: 'شارك في المناقشات والأنشطة العملية.' }, icon: 'bi bi-people' }
-        ]
-      }]
-    }
+    oid: '', courseCode: 'CAPM', tabKey: 'quiz-game', isEnabled: true, orderNo: 5, status: 'Published',
+    content: { banner: banner(en.quizGame.capm, ar.quizGame.capm, 'assets/images/quizGame/quizGame.jpeg'), sections: [] }
   },
   {
-    oid: '', courseCode: COURSE_CODE_TOKEN, tabKey: 'webinar', isEnabled: true,
-    orderNo: 4, status: 'Published',
+    oid: '', courseCode: 'CAPM', tabKey: 'faq', isEnabled: true, orderNo: 6, status: 'Published',
     content: {
       banner: {
-        en: { titlePart1: `Discover ${COURSE_CODE_TOKEN}`, titlePart2: 'in a free live webinar', description: `Understand the ${COURSE_CODE_TOKEN} journey, exam, and next steps in one focused session.` },
-        ar: { titlePart1: `اكتشف ${COURSE_CODE_TOKEN}`, titlePart2: 'في ويبينار مباشر مجاني', description: `تعرّف على رحلة ${COURSE_CODE_TOKEN} والاختبار والخطوات التالية في جلسة مركزة.` },
-        mediaUrl: 'assets/images/webinar/webinar.jpeg', mediaType: 'image'
-      },
-      sections: [{
-        type: 'agenda', header: { en: 'Webinar agenda', ar: 'محاور الويبينار' },
-        description: { en: 'A clear introduction to the certification journey.', ar: 'مقدمة واضحة عن رحلة الحصول على الشهادة.' }, isEnabled: true,
-        items: [
-          { title: { en: 'Certification overview', ar: 'نظرة عامة على الشهادة' }, description: { en: `Understand the ${COURSE_CODE_TOKEN} requirements and exam format.`, ar: `تعرّف على متطلبات ${COURSE_CODE_TOKEN} ونظام الاختبار.` } },
-          { title: { en: 'Your study roadmap', ar: 'خطة مذاكرتك' }, description: { en: 'Leave with practical next steps.', ar: 'اخرج بخطوات عملية واضحة.' } }
-        ]
-      }]
-    }
-  },
-  {
-    oid: '', courseCode: COURSE_CODE_TOKEN, tabKey: 'quiz-game', isEnabled: true,
-    orderNo: 5, status: 'Published',
-    content: {
-      banner: {
-        en: { titlePart1: `Level up your ${COURSE_CODE_TOKEN}`, titlePart2: 'knowledge', description: `Reinforce important ${COURSE_CODE_TOKEN} concepts through quick interactive challenges.` },
-        ar: { titlePart1: `طوّر معرفتك في ${COURSE_CODE_TOKEN}`, titlePart2: 'من خلال تحديات تفاعلية', description: `ثبّت مفاهيم ${COURSE_CODE_TOKEN} المهمة من خلال تحديات سريعة وتفاعلية.` },
-        mediaUrl: 'assets/images/quizGame/quizGame.jpeg', mediaType: 'image'
-      },
-      sections: []
-    }
-  },
-  {
-    oid: '', courseCode: COURSE_CODE_TOKEN, tabKey: 'faq', isEnabled: true,
-    orderNo: 6, status: 'Published',
-    content: {
-      banner: {
-        en: { titlePart1: `${COURSE_CODE_TOKEN} frequently asked`, titlePart2: 'questions', description: 'Clear answers to the questions learners ask most.' },
-        ar: { titlePart1: `الأسئلة الشائعة عن ${COURSE_CODE_TOKEN}`, titlePart2: '', description: 'إجابات واضحة عن أكثر الأسئلة التي يطرحها المتعلمون.' },
+        en: { titlePart1: 'CAPM Frequently Asked Questions', titlePart2: '', description: 'Clear answers to the most common CAPM questions.' },
+        ar: { titlePart1: 'الأسئلة الشائعة عن CAPM', titlePart2: '', description: 'إجابات واضحة عن أكثر الأسئلة الشائعة حول CAPM.' },
         mediaUrl: '', mediaType: 'image'
       },
-      sections: [{
-        type: 'faq', header: { en: 'Frequently asked questions', ar: 'الأسئلة الشائعة' },
-        description: { en: `Everything you need to know before starting ${COURSE_CODE_TOKEN}.`, ar: `كل ما تحتاج إلى معرفته قبل بدء ${COURSE_CODE_TOKEN}.` }, isEnabled: true,
-        items: [
-          { title: { en: `What is ${COURSE_CODE_TOKEN}?`, ar: `ما هي ${COURSE_CODE_TOKEN}؟` }, description: { en: 'Add the certification overview here.', ar: 'أضف هنا نبذة عن الشهادة.' } },
-          { title: { en: 'Who is this course for?', ar: 'لمن تناسب هذه الدورة؟' }, description: { en: 'Add the target audience and prerequisites here.', ar: 'أضف هنا الفئة المستهدفة والمتطلبات.' } }
-        ]
-      }]
+      sections: [section('faq', 'Frequently Asked Questions', 'الأسئلة الشائعة', faqItems)]
     }
   },
   {
-    oid: '', courseCode: COURSE_CODE_TOKEN, tabKey: 'reviews', isEnabled: true,
-    orderNo: 7, status: 'Published',
+    oid: '', courseCode: 'CAPM', tabKey: 'reviews', isEnabled: true, orderNo: 7, status: 'Published',
     content: {
       banner: {
-        en: { titlePart1: `${COURSE_CODE_TOKEN} learner`, titlePart2: 'reviews', description: 'See what learners say about their experience.' },
-        ar: { titlePart1: `آراء متعلمي ${COURSE_CODE_TOKEN}`, titlePart2: '', description: 'تعرّف على آراء المتعلمين حول تجربتهم.' },
+        en: {
+          titlePart1: reviewText(en.reviews.masterPmp),
+          titlePart2: reviewText(en.reviews.title),
+          description: reviewText(en.reviews.description)
+        },
+        ar: {
+          titlePart1: reviewText(ar.reviews.masterPmp),
+          titlePart2: reviewText(ar.reviews.title),
+          description: reviewText(ar.reviews.description)
+        },
         mediaUrl: 'assets/images/reviewers/review.jpeg', mediaType: 'image'
       },
       sections: []
     }
   }
 ];
+
+// Exact CAPM content, with only the course name/code converted to a token.
+export const COURSE_CONTENT_TEMPLATE = JSON.parse(
+  JSON.stringify(capmTemplate).replace(/CAPM/g, COURSE_CODE_TOKEN)
+) as CourseTabContent[];

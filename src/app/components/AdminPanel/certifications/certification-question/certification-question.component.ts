@@ -36,6 +36,12 @@ interface AnswerGroup {
   oid?: string;
 }
 
+interface QuestionImageView {
+  oid: string | null;
+  fileName: string;
+  url: string;
+}
+
 const DEFAULT_USER_ID = '3fa85f64-5717-4562-b3fc-2c963f66afa6';
 
 @Component({
@@ -104,8 +110,10 @@ export class CertificationQuestionComponent {
   apiQuestions: any[] = [];
 
   // Image upload
-  selectedImageFile = signal<File | null>(null);
-  questionImageUrl = signal<string | null>(null);
+  selectedImageFiles = signal<File[]>([]);
+  selectedImagePreviews = signal<string[]>([]);
+  questionImages = signal<QuestionImageView[]>([]);
+  imagePreview = signal<{ url: string; name: string } | null>(null);
   imageUploading = signal(false);
 
   // Options
@@ -222,14 +230,18 @@ export class CertificationQuestionComponent {
       const q = this.question();
       if (!q) return;
       if (q.oid) {
-        this.questionId = q.oid;
-        if (q.questionImage != null && q.questionImage !== '') {
-          this.certificationService.checkQuestionImage(q.oid).subscribe(url => {
-            this.questionImageUrl.set(url);
-          });
-        } else {
-          this.questionImageUrl.set(null);
-        }
+        const questionId = q.oid;
+        this.questionId = questionId;
+        const images = q.questionImages ?? [];
+        this.questionImages.set(images.length > 0
+          ? images.map((image: any) => ({
+              oid: image.oid,
+              fileName: image.fileName,
+              url: this.certificationService.getQuestionImageByIdUrl(questionId, image.oid)
+            }))
+          : q.questionImage
+            ? [{ oid: null, fileName: q.questionImage, url: this.certificationService.getQuestionImageUrl(questionId) }]
+            : []);
       }
       this.editMode = true;
       this.choiceAnswerOrderCounter = 0;
@@ -475,14 +487,10 @@ export class CertificationQuestionComponent {
         this.apiAnswers.set(response.answers?.filter((a: any) => !a.question_Ask) || []);
         this.linkDragAnswerAndQuestionFlag.set(true);
         this.toast.showToast('question.create.success', 'success');
-        const imageFile = this.selectedImageFile();
-        if (imageFile && response.oid) {
-          this.certificationService.uploadQuestionImage(response.oid, imageFile).subscribe({
-            next: () => {
-              this.questionImageUrl.set(
-                this.certificationService.getQuestionImageUrl(response.oid) + '?t=' + Date.now()
-              );
-            },
+        const imageFiles = this.selectedImageFiles();
+        if (imageFiles.length && response.oid) {
+          this.certificationService.uploadQuestionImages(response.oid, imageFiles).subscribe({
+            next: (updated) => this.setQuestionImagesFromResponse(response.oid, updated),
             error: () => this.toast.showToast('question.image.upload.error', 'error')
           });
         }
@@ -675,6 +683,9 @@ export class CertificationQuestionComponent {
     // Reset the form
     this.form.reset();
     this.form.markAsUntouched();
+    this.selectedImageFiles.set([]);
+    this.selectedImagePreviews.set([]);
+    this.questionImages.set([]);
 
     // Clear arrays
     this.resetFormArrays();
@@ -834,24 +845,53 @@ export class CertificationQuestionComponent {
 
   onImageSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
-    const file = input.files?.[0] ?? null;
-    if (!file) return;
-    this.selectedImageFile.set(file);
-    const reader = new FileReader();
-    reader.onload = (e) => this.questionImageUrl.set(e.target?.result as string);
-    reader.readAsDataURL(file);
+    const selectedFiles = Array.from(input.files ?? []);
+    const existingFiles = this.selectedImageFiles();
+    const files = selectedFiles.filter(file =>
+      !existingFiles.some(existing =>
+        existing.name === file.name &&
+        existing.size === file.size &&
+        existing.lastModified === file.lastModified
+      )
+    );
+    if (!files.length) {
+      input.value = '';
+      return;
+    }
+
+    Promise.all(files.map(file => this.readFileAsDataUrl(file)))
+      .then(previews => {
+        this.selectedImageFiles.update(current => [...current, ...files]);
+        this.selectedImagePreviews.update(current => [...current, ...previews]);
+        input.value = '';
+      });
   }
 
-  async onDeleteImage(imageInput: HTMLInputElement): Promise<void> {
+  removePendingImage(index: number, imageInput: HTMLInputElement): void {
+    this.selectedImagePreviews.update(previews => previews.filter((_, previewIndex) => previewIndex !== index));
+    this.selectedImageFiles.update(files => files.filter((_, fileIndex) => fileIndex !== index));
+    if (this.selectedImageFiles().length === 0) imageInput.value = '';
+  }
+
+  openImagePreview(url: string, name: string): void {
+    this.imagePreview.set({ url, name });
+  }
+
+  closeImagePreview(): void {
+    this.imagePreview.set(null);
+  }
+
+  async onDeleteImage(image: QuestionImageView): Promise<void> {
     if (!(await confirmDelete('Are you sure you want to delete this image?'))) return;
     if (this.editMode && this.questionId) {
       this.imageUploading.set(true);
-      this.certificationService.deleteQuestionImage(this.questionId).subscribe({
+      const request = image.oid
+        ? this.certificationService.deleteQuestionImageById(this.questionId, image.oid)
+        : this.certificationService.deleteQuestionImage(this.questionId);
+      request.subscribe({
         next: () => {
           this.imageUploading.set(false);
-          this.questionImageUrl.set(null);
-          this.selectedImageFile.set(null);
-          imageInput.value = '';
+          this.questionImages.update(images => images.filter(item => item !== image));
           this.toast.showToast('question.image.delete.success', 'success');
         },
         error: () => {
@@ -859,25 +899,37 @@ export class CertificationQuestionComponent {
           this.toast.showToast('question.image.delete.error', 'error');
         }
       });
-    } else {
-      this.questionImageUrl.set(null);
-      this.selectedImageFile.set(null);
-      imageInput.value = '';
     }
+  }
+
+  private readFileAsDataUrl(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(String(reader.result ?? ''));
+      reader.onerror = () => reject(reader.error);
+      reader.readAsDataURL(file);
+    });
+  }
+
+  private setQuestionImagesFromResponse(questionId: string, question: any): void {
+    this.selectedImageFiles.set([]);
+    this.selectedImagePreviews.set([]);
+    this.questionImages.set((question?.questionImages ?? []).map((image: any) => ({
+      oid: image.oid,
+      fileName: image.fileName,
+      url: this.certificationService.getQuestionImageByIdUrl(questionId, image.oid) + '?t=' + Date.now()
+    })));
   }
 
   private createNewQuestion(payload: any): void {
     this.certificationService.createQuestion(payload).subscribe({
       next: (created: any) => {
         this.questionId = created.oid;
-        const imageFile = this.selectedImageFile();
-        if (imageFile && created.oid) {
-          this.certificationService.uploadQuestionImage(created.oid, imageFile).subscribe({
-            next: () => {
-              this.selectedImageFile.set(null);
-              this.questionImageUrl.set(
-                this.certificationService.getQuestionImageUrl(created.oid) + '?t=' + Date.now()
-              );
+        const imageFiles = this.selectedImageFiles();
+        if (imageFiles.length && created.oid) {
+          this.certificationService.uploadQuestionImages(created.oid, imageFiles).subscribe({
+            next: (updated) => {
+              this.setQuestionImagesFromResponse(created.oid, updated);
               this.handleAfterQuestionSaved();
             },
             error: () => {
@@ -950,19 +1002,17 @@ export class CertificationQuestionComponent {
 
     this.certificationService.updateCourseQuestion(payload).subscribe({
       next: () => {
-        const imageFile = this.selectedImageFile();
+        const imageFiles = this.selectedImageFiles();
         const afterUpload = () => {
           this.toast.showToast('question.update.success', 'success');
           this.questionStore.setSelectedQuestion(null);
           this.location.back();
         };
-        if (imageFile && this.questionId) {
+        if (imageFiles.length && this.questionId) {
           this.imageUploading.set(true);
-          this.certificationService.uploadQuestionImage(this.questionId, imageFile).subscribe({
-            next: () => {
-              this.questionImageUrl.set(
-                this.certificationService.getQuestionImageUrl(this.questionId) + '?t=' + Date.now()
-              );
+          this.certificationService.uploadQuestionImages(this.questionId, imageFiles).subscribe({
+            next: (updated) => {
+              this.setQuestionImagesFromResponse(this.questionId, updated);
               this.imageUploading.set(false);
               afterUpload();
             },

@@ -5,6 +5,7 @@ export interface APIStudentCourse {
   studentName: string;
   courseId: string;
   courseName: string;
+  courseCode?: string | null;
   paymentStatusLookupId: string | null;
   paymentStatusName: string | null;
   price: number;

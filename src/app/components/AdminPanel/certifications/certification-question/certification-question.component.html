@@ -86,51 +86,89 @@
           ></app-textarea>
         </div>
         <div class="col-12">
-          @if (questionImageUrl()) {
+          @if (questionImages().length) {
             <div class="mb-2">
-              <label class="form-label fw-semibold">Current Image</label>
-              <div class="position-relative d-inline-block">
-                <img
-                  [src]="questionImageUrl()!"
-                  alt="Question image"
-                  class="img-thumbnail d-block"
-                  style="max-width: 200px; max-height: 150px; object-fit: contain;"
-                />
-                @if (imageUploading()) {
-                  <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-white bg-opacity-75 rounded">
-                    <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
+              <label class="form-label fw-semibold">Current Images</label>
+              <div class="d-flex flex-wrap gap-3">
+                @for (image of questionImages(); track image.oid ?? image.url) {
+                  <div class="question-image-card position-relative">
+                    <button
+                      type="button"
+                      class="question-image-preview-button"
+                      (click)="openImagePreview(image.url, image.fileName)"
+                      title="Preview image"
+                    >
+                      <img [src]="image.url" [alt]="image.fileName" class="img-thumbnail d-block" />
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-sm btn-danger question-image-remove"
+                      [disabled]="imageUploading()"
+                      (click)="onDeleteImage(image)"
+                      aria-label="Delete image"
+                    >
+                      <i class="bi bi-trash"></i>
+                    </button>
                   </div>
                 }
               </div>
-              <div class="mt-1">
-                <button
-                  type="button"
-                  class="btn btn-sm btn-outline-danger"
-                  [disabled]="imageUploading()"
-                  (click)="onDeleteImage(imageInput)"
-                >
-                  <i class="bi bi-trash me-1"></i>Delete Image
-                </button>
+            </div>
+          }
+          @if (selectedImagePreviews().length) {
+            <div class="mb-2">
+              <label class="form-label fw-semibold">Images to upload</label>
+              <div class="d-flex flex-wrap gap-3">
+                @for (preview of selectedImagePreviews(); track $index) {
+                  <div class="question-image-card position-relative">
+                    <button
+                      type="button"
+                      class="question-image-preview-button"
+                      (click)="openImagePreview(preview, selectedImageFiles()[$index].name)"
+                      title="Preview image"
+                    >
+                      <img [src]="preview" [alt]="selectedImageFiles()[$index].name" class="img-thumbnail d-block" />
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-sm btn-danger question-image-remove"
+                      (click)="removePendingImage($index, imageInput)"
+                      aria-label="Remove selected image"
+                    >
+                      <i class="bi bi-x-lg"></i>
+                    </button>
+                    <small class="d-block text-truncate mt-1">{{ selectedImageFiles()[$index].name }}</small>
+                  </div>
+                }
               </div>
             </div>
           }
-          <div class="">
-            <label class="form-label">{{ questionImageUrl() ? 'Change Image' : 'Upload Image' }}</label>
+          <div>
+            <label class="form-label">Add Images</label>
             <input
               #imageInput
               type="file"
               class="form-control"
               accept="image/jpeg,image/png,image/gif,image/webp"
+              multiple
               (change)="onImageSelected($event)"
             />
-            @if (selectedImageFile()) {
-              <small class="text-muted mt-1 d-block">{{ selectedImageFile()!.name }}</small>
-            }
           </div>
           @if (!editMode) {
             <small class="text-info mt-1 d-block">
-              <i class="bi bi-info-circle me-1"></i>Image will be uploaded after the question is saved.
+              <i class="bi bi-info-circle me-1"></i>Images will be uploaded after the question is saved.
             </small>
+          }
+
+          @if (imagePreview(); as preview) {
+            <div class="image-preview-backdrop" (click)="closeImagePreview()">
+              <div class="image-preview-dialog" role="dialog" aria-modal="true" [attr.aria-label]="preview.name" (click)="$event.stopPropagation()">
+                <div class="image-preview-header">
+                  <span class="text-truncate">{{ preview.name }}</span>
+                  <button type="button" class="btn-close" (click)="closeImagePreview()" aria-label="Close preview"></button>
+                </div>
+                <img [src]="preview.url" [alt]="preview.name" />
+              </div>
+            </div>
           }
         </div>
         <div class="col-12 col-md-4">

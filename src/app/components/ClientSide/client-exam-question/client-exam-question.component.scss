@@ -113,6 +113,52 @@
   color:$inputText
 }
 
+.question-images-wrapper {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 1rem;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.25rem 0 0.75rem;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  scrollbar-color: $primaryColor rgba(0, 0, 0, 0.08);
+  scrollbar-width: thin;
+
+  &::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.08);
+    border-radius: 999px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $primaryColor;
+    border-radius: 999px;
+  }
+
+  img {
+    flex: 0 0 min(85%, 720px);
+    width: min(85%, 720px);
+    height: 300px;
+    object-fit: contain;
+    scroll-snap-align: start;
+    background: $inputBg;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+}
+
+@media (max-width: 576px) {
+  .question-images-wrapper img {
+    flex-basis: 92%;
+    width: 92%;
+    height: 220px;
+  }
+}
+
 .options {
   display: flex;
   flex-direction: column;

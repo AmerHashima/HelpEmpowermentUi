@@ -11,3 +11,68 @@ h5 {
   color: $primaryColor;
   text-decoration: underline;
 }
+
+.question-image-card {
+  width: 200px;
+
+  img {
+    width: 200px;
+    height: 150px;
+    object-fit: contain;
+  }
+
+  small {
+    max-width: 200px;
+  }
+}
+
+.question-image-preview-button {
+  display: block;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: zoom-in;
+}
+
+.question-image-remove {
+  position: absolute;
+  top: 0.35rem;
+  right: 0.35rem;
+  line-height: 1;
+}
+
+.image-preview-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1080;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: rgba(0, 0, 0, 0.75);
+}
+
+.image-preview-dialog {
+  width: min(100%, 1000px);
+  max-height: calc(100vh - 3rem);
+  padding: 1rem;
+  border-radius: 0.75rem;
+  background: #fff;
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.35);
+
+  > img {
+    display: block;
+    width: 100%;
+    max-height: calc(100vh - 8rem);
+    object-fit: contain;
+  }
+}
+
+.image-preview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}

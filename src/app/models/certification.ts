@@ -85,6 +85,7 @@ export interface courseQuestion {
   questionTypeLookupId: string,
   questionExplination: string,
   questionImage?: string,
+  questionImages?: CourseQuestionImage[],
   questionScore: number,
   questionTypeName?: any,
   orderNo: number,
@@ -94,6 +95,11 @@ export interface courseQuestion {
   correctChoiceOid: string,
   createdBy: string,
   answers: courseAnswer[]
+}
+export interface CourseQuestionImage {
+  oid: string,
+  fileName: string,
+  orderNo: number
 }
 export interface courseAnswer {
   oid?: string,
@@ -221,6 +227,7 @@ export interface APICourseQuestion {
   questionTypeName: string,
   questionExplination: string,
   questionImage?: string,
+  questionImages?: CourseQuestionImage[],
   questionScore: number,
   orderNo: number,
   isActive: boolean,

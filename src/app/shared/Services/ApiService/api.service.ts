@@ -308,8 +308,25 @@ export default class ApiService {
     );
   }
 
-  getImageUrl(endpoint: string, id: string): string {
-    return `${this.baseUrl}/${endpoint}/${id}/image`;
+  uploadImages<T>(endpoint: string, id: string, files: File[]): Observable<T> {
+    if (this.shouldBlockRequest(endpoint)) {
+      return EMPTY;
+    }
+
+    const formData = new FormData();
+    files.forEach(file => formData.append('images', file));
+    this.loader.start();
+
+    return this.http.post<T>(`${this.baseUrl}/${endpoint}/${id}/images`, formData).pipe(
+      catchError(err => this.handleError(err, endpoint)),
+      finalize(() => this.loader.stop())
+    );
+  }
+
+  getImageUrl(endpoint: string, id: string, imageId?: string): string {
+    return imageId
+      ? `${this.baseUrl}/${endpoint}/${id}/images/${imageId}`
+      : `${this.baseUrl}/${endpoint}/${id}/image`;
   }
 
   getImage(endpoint: string, id: string): Observable<Blob> {

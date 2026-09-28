@@ -16,6 +16,134 @@
   }
 }
 
+.message-type-tabs {
+  display: flex;
+  gap: 0.5rem;
+  max-width: 100%;
+  padding-bottom: 0.35rem;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.message-type-tab {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.8rem;
+  color: $primaryColor;
+  background: $lightBgTextColor;
+  border: 1px solid rgba($primaryColor, 0.25);
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: 0.15s ease;
+
+  &:hover,
+  &.active {
+    color: $lightBgTextColor;
+    background: $primaryColor;
+    border-color: $primaryColor;
+  }
+}
+
+.tab-count,
+.tab-unread {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.35rem;
+  height: 1.35rem;
+  padding: 0 0.3rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  line-height: 1;
+}
+
+.tab-count {
+  color: inherit;
+  background: rgba(128, 128, 128, 0.16);
+}
+
+.tab-unread {
+  color: #fff;
+  background: #dc3545;
+}
+
+.messages-workspace {
+  height: calc(100dvh - 260px);
+  min-height: 420px;
+}
+
+.messages-column {
+  height: 100%;
+  min-height: 0;
+}
+
+.message-list,
+.message-detail-panel {
+  height: 100%;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-color: $primaryColor #e9ecef;
+  scrollbar-width: auto;
+
+  &::-webkit-scrollbar {
+    width: 11px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #e9ecef;
+    border-radius: 999px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $primaryColor;
+    border: 2px solid #e9ecef;
+    border-radius: 999px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: $primaryColor;
+  }
+}
+
+.message-list {
+  max-height: calc(100dvh - 260px);
+  overflow-y: scroll;
+  padding-right: 0.2rem;
+}
+
+.message-body {
+  max-height: 32vh;
+  overflow: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  overscroll-behavior: contain;
+}
+
+@media (max-width: 991.98px) {
+  .messages-workspace {
+    height: auto;
+    min-height: 0;
+  }
+
+  .messages-column {
+    height: auto;
+  }
+
+  .message-list {
+    max-height: 42vh;
+  }
+
+  .message-detail-panel {
+    height: auto;
+    max-height: 70vh;
+  }
+}
+
 
 .attachment-card {
   border-color: #dee2e6 !important;

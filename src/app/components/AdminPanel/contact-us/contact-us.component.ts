@@ -33,16 +33,43 @@ export class AdminContactUsComponent {
   respondText = signal('');
   submitting = signal(false);
   search = signal<string>('');
+  activeContactType = signal('all');
+
+  contactTypeTabs = computed(() => {
+    const types = new Map<string, { key: string; label: string; count: number; unread: number }>();
+
+    for (const contact of this.contacts()) {
+      const label = contact.contactTypeName?.trim() || 'Other';
+      const key = label.toLowerCase();
+      const current = types.get(key) ?? { key, label, count: 0, unread: 0 };
+      current.count += 1;
+      current.unread += contact.isRead ? 0 : 1;
+      types.set(key, current);
+    }
+
+    return [...types.values()].sort((a, b) => a.label.localeCompare(b.label));
+  });
+
+  allUnreadCount = computed(() => this.contacts().filter(contact => !contact.isRead).length);
 
   filteredContacts = computed(() => {
     const search = this.search().toLowerCase().trim();
+    const activeType = this.activeContactType();
 
-    if (!search) return this.contacts();
+    const contactsByType = activeType === 'all'
+      ? this.contacts()
+      : this.contacts().filter(contact =>
+          (contact.contactTypeName?.trim() || 'Other').toLowerCase() === activeType
+        );
 
-    return this.contacts().filter(c =>
+    if (!search) return contactsByType;
+
+    return contactsByType.filter(c =>
       (c.contactTypeName ?? '').toLowerCase().includes(search) ||
       (c.fullName ?? '').toLowerCase().includes(search) ||
-      (c.email ?? '').toLowerCase().includes(search)
+      (c.email ?? '').toLowerCase().includes(search) ||
+      (c.subject ?? '').toLowerCase().includes(search) ||
+      (c.ticketNumber ?? '').toLowerCase().includes(search)
     );
   });
 
@@ -194,6 +221,16 @@ export class AdminContactUsComponent {
     if (this.selectedContact()) {
       this.selectedContact.set(null);
     }
+  }
+
+  selectContactType(type: string): void {
+    if (this.activeContactType() === type) return;
+
+    this.activeContactType.set(type);
+    this.selectedContact.set(null);
+    this.attachmentUrl.set(null);
+    this.hasAttachment.set(false);
+    this.respondText.set('');
   }
 
   async deleteAttachment(id: string) {

@@ -129,7 +129,6 @@ export class StudentsComponent {
 
         this.studentService.searchStudents(this.buildSearchRequest()).subscribe({
             next: ({ students, total }) => {
-              console.log('Loaded students:', students, 'Total count:', total);
                 this.students.set(students);
                 this.totalCount.set(total);
                 this.loading.set(false);
@@ -186,7 +185,21 @@ export class StudentsComponent {
                 pageNumber: this.pageIndex() + 1,
                 pageSize: this.pageSize()
             },
-            columns: ['oid', 'nameEn', 'nameAr', 'email', 'mobile', 'username', 'isActive', 'courses']
+            columns: [
+                'oid',
+                'nameEn',
+                'nameAr',
+                'email',
+                'mobile',
+                'username',
+                'isActive',
+                'courses',
+                'promoCode',
+                'promoDiscount',
+                'promoToDateValid',
+                'usersUsedPromo',
+                'totalMoneyWithPromo'
+            ]
         };
     }
 

@@ -17,9 +17,17 @@ export class StudentService {
   innerStudent = signal<APIStudent | null>(null);
   enrolledCourses = signal<APIStudentCourse[]>([]);
   currentCourse = computed(() => {
-    const certification = this.shared.currentCertificate();
+    const normalize = (value: string | null | undefined) =>
+      (value ?? '').trim().toLowerCase().replace(/[\s_]+/g, '-');
+    const certification = normalize(this.shared.currentCertificate());
+    const selectedCertificationId = this.shared.currentCertificationObject()?.oid;
+
     return this.enrolledCourses()
-      .find(c => c.courseName.toLowerCase() === certification?.toLowerCase()) ?? null;
+      .find(c =>
+        (!!selectedCertificationId && c.courseId === selectedCertificationId) ||
+        normalize(c.courseCode) === certification ||
+        normalize(c.courseName) === certification
+      ) ?? null;
   });
   showExamSimulator = false;
   isExamSimulatorEnrolled = computed(() =>

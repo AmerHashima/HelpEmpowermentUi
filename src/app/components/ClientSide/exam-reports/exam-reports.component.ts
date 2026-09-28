@@ -3,7 +3,6 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { ExamReportCardComponent } from '../../../../components/ClientSide/exam-report-card/exam-report-card.component';
 import { StudentExamService } from '../../../Services/student-exam.service';
 import { AuthService } from '../../../Services/auth.service';
-import { DatePipe } from '@angular/common';
 import { APIStudentExamResponse } from '../../../models/certification';
 import { Shared } from '../../../shared/Services/shared/shared';
 
@@ -11,7 +10,6 @@ import { Shared } from '../../../shared/Services/shared/shared';
   selector: 'app-exam-reports',
   imports: [TranslatePipe, ExamReportCardComponent],
   templateUrl: './exam-reports.component.html',
-  providers: [DatePipe],
   styleUrl: './exam-reports.component.scss'
 })
 export class ExamReportsComponent {
@@ -21,7 +19,6 @@ export class ExamReportsComponent {
   currentExamId = this.shared.currentExamId
   currentExam = this.shared.currentExam
   isFreeExam = computed(() => this.currentExam()?.freeExam)
-  private datePipe = inject(DatePipe);
   studentId = computed(() => this.auth.loggedStudent()?.userId);
   averageScore = computed(() => {
     const reports = this.reports();
@@ -77,7 +74,13 @@ export class ExamReportsComponent {
   //   ];
   // });
   formatDate(date: string | null): string {
-    return date ? this.datePipe.transform(date, 'MMM d, y') ?? '' : '';
+    if (!date) return '';
+
+    return new Intl.DateTimeFormat(this.shared.lang() === 'ar' ? 'ar-EG' : 'en-GB', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric'
+    }).format(new Date(date));
   }
 
   getDurationInMinutes(start: string | null, end: string | null): number {

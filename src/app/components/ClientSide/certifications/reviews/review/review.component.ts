@@ -1,11 +1,11 @@
-import { DatePipe, NgClass, TitleCasePipe } from '@angular/common';
 import { Component, computed, input, signal } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { StarRatingComponent } from '../../../../../shared/star-rating/star-rating.component';
+import { LocalizedDatePipe } from '../../../../../shared/pipes/localized-date.pipe';
 
 @Component({
   selector: 'app-review',
-  imports: [TranslatePipe,StarRatingComponent,DatePipe],
+  imports: [TranslatePipe, StarRatingComponent, LocalizedDatePipe],
   templateUrl: './review.component.html',
   styleUrl: './review.component.scss'
 })

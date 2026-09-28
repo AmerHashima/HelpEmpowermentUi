@@ -63,7 +63,7 @@ export class ClientExamQuestionComponent {
   // UI state
   isBlurred = signal(false);
   violationsCount = signal(0);
-  questionImageUrl = signal<string | null>(null);
+  questionImageUrls = signal<string[]>([]);
 
   showResultState = signal(false);
   ngOnInit() {
@@ -139,13 +139,13 @@ export class ClientExamQuestionComponent {
       this.hideAnswersAndTranslations();
 
       const q = this.question();
-      if (q?.questionImage && q.questionImage.trim() !== '') {
-        this.certificationService.checkQuestionImage(q.oid).subscribe(url => {
-          this.questionImageUrl.set(url);
-        });
-      } else {
-        this.questionImageUrl.set(null);
-      }
+      const questionId = q?.questionOid ?? q?.oid;
+      const images = q?.questionImages ?? [];
+      this.questionImageUrls.set(images.length && questionId
+        ? images.map((image: any) => this.certificationService.getQuestionImageByIdUrl(questionId, image.oid))
+        : q?.questionImage?.trim() && questionId
+          ? [this.certificationService.getQuestionImageUrl(questionId)]
+          : []);
     }
     if (changes['question'] && this.isMatchingQuestion) {
 

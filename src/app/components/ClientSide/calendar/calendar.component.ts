@@ -47,7 +47,8 @@ export class CalendarComponent {
           endDate: this.formatDate(end),
           courseName: w.courseName,
           type: 'webinar',
-          route: ''
+          route: '',
+          sortTimestamp: start.getTime()
         };
       });
 
@@ -63,14 +64,12 @@ export class CalendarComponent {
         //   c.numberOfSessions
         // ),
         type: 'liveCourse',
-        route: ''
+        route: '',
+        sortTimestamp: new Date(c.startDate).getTime()
       }));
 
     return [...webinars, ...liveCourses]
-      .sort((a, b) =>
-        new Date(a.startDate).getTime() -
-        new Date(b.startDate).getTime()
-      );
+      .sort((a, b) => a.sortTimestamp - b.sortTimestamp);
   });
   // calendarData = [
   //   {
@@ -128,10 +127,10 @@ export class CalendarComponent {
     return this.formatDate(start);
   }
   formatDate(date: Date): string {
-    return date.toLocaleDateString('en-GB', {
+    return date.toLocaleDateString(this.shared.lang() === 'ar' ? 'ar-EG' : 'en-GB', {
       day: '2-digit',
       month: 'short',
-      year: '2-digit'
+      year: 'numeric'
     });
   }
 }

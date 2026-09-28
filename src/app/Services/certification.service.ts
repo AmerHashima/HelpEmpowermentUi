@@ -698,8 +698,26 @@ export class CertificationService {
       );
   }
 
+  uploadQuestionImages(id: string, images: File[]): Observable<any> {
+    return this.apiService
+      .uploadImages<ApiResponse<any>>('CourseQuestions', id, images)
+      .pipe(
+        map((response: ApiResponse<any>) => {
+          if (!response.success) {
+            const msg = response.errors?.join(', ') || response.message || 'Failed to upload images';
+            throw new Error(msg);
+          }
+          return response.data;
+        })
+      );
+  }
+
   getQuestionImageUrl(id: string): string {
     return this.apiService.getImageUrl('CourseQuestions', id);
+  }
+
+  getQuestionImageByIdUrl(questionId: string, imageId: string): string {
+    return this.apiService.getImageUrl('CourseQuestions', questionId, imageId);
   }
 
   checkQuestionImage(id: string): Observable<string | null> {
@@ -713,6 +731,10 @@ export class CertificationService {
     return this.apiService.deleteImage('CourseQuestions', id).pipe(
       catchError(() => of(null))
     );
+  }
+
+  deleteQuestionImageById(questionId: string, imageId: string): Observable<any> {
+    return this.apiService.delete<any>(`CourseQuestions/${questionId}/images`, imageId, '');
   }
 
 

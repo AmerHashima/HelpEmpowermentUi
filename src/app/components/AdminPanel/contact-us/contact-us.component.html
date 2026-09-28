@@ -15,6 +15,40 @@
     </div>
   </div>
 
+  @if (!loading() && !error()) {
+    <div class="message-type-tabs mb-3" role="tablist" aria-label="Message types">
+      <button
+        type="button"
+        class="message-type-tab"
+        [class.active]="activeContactType() === 'all'"
+        [attr.aria-selected]="activeContactType() === 'all'"
+        (click)="selectContactType('all')"
+      >
+        <span>All</span>
+        <span class="tab-count">{{ contacts().length }}</span>
+        @if (allUnreadCount()) {
+          <span class="tab-unread">{{ allUnreadCount() }}</span>
+        }
+      </button>
+
+      @for (tab of contactTypeTabs(); track tab.key) {
+        <button
+          type="button"
+          class="message-type-tab"
+          [class.active]="activeContactType() === tab.key"
+          [attr.aria-selected]="activeContactType() === tab.key"
+          (click)="selectContactType(tab.key)"
+        >
+          <span>{{ tab.label }}</span>
+          <span class="tab-count">{{ tab.count }}</span>
+          @if (tab.unread) {
+            <span class="tab-unread">{{ tab.unread }}</span>
+          }
+        </button>
+      }
+    </div>
+  }
+
   @if (loading()) {
     <div class="d-flex justify-content-center py-5">
       <div class="spinner-border" role="status">
@@ -24,10 +58,10 @@
   } @else if (error()) {
     <div class="alert alert-danger">{{ error() }}</div>
   } @else {
-    <div class="row g-3">
+    <div class="row g-3 messages-workspace">
       <!-- List -->
-      <div class="col-lg-4">
-        <div class="list-group">
+      <div class="col-lg-4 messages-column">
+        <div class="list-group message-list">
           @for (item of filteredContacts(); track item.oid) {
             <button
               type="button"
@@ -67,9 +101,9 @@
       </div>
 
       <!-- Detail -->
-      <div class="col-lg-8">
+      <div class="col-lg-8 messages-column">
         @if (selectedContact(); as c) {
-          <div class="border rounded-3 p-3 bg-white d-flex flex-column gap-3">
+          <div class="message-detail-panel border rounded-3 p-3 bg-white d-flex flex-column gap-3">
             <div class="d-flex justify-content-between align-items-start">
               <div>
                 <h5 class="mb-0">{{ c.subject }}</h5>
@@ -112,11 +146,10 @@
               </div>
             </div>
 
-            <div>
+            <div class="message-body-section">
               <strong class="small">Message:</strong>
               <p
-                class="mt-1 mb-0 border rounded p-2 bg-light small w-100"
-                style="white-space: pre-line"
+                class="message-body mt-1 mb-0 border rounded p-2 bg-light small w-100"
               >
                 {{ c.message }}
               </p>
@@ -215,7 +248,7 @@
           </div>
         } @else {
           <div
-            class="d-flex align-items-center justify-content-center h-100 text-muted border rounded-3 p-5"
+            class="message-detail-panel d-flex align-items-center justify-content-center text-muted border rounded-3 p-5"
           >
             Select a message to view details
           </div>

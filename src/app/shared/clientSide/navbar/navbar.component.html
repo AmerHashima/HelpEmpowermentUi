@@ -54,7 +54,7 @@
         <i class="bi bi-user" (click)="toggleDropdown('auth')"></i>
         <ul *ngIf="openDropdown() === 'auth'" class="shadow">
           <li (click)="navigate('/' + lang() + '/auth/profile')">
-            <i class="bi bi-box-arrow-in-right"></i>
+            <i class="bi bi-person-circle"></i>
             {{ 'auth.profile' | translate }}
           </li>
             <li (click)="logout()">
@@ -66,10 +66,10 @@
        }
        @else{
           <div class="dropdown">
-        <i class="bi bi-box-arrow-in-right" (click)="toggleDropdown('auth')"></i>
+        <i class="bi bi-person-circle" (click)="toggleDropdown('auth')"></i>
         <ul *ngIf="openDropdown() === 'auth'" class="shadow">
           <li (click)="navigate('/' + lang() + '/auth/login')">
-            <i class="bi bi-box-arrow-in-right"></i>
+            <i class="bi bi-person-circle"></i>
             {{ 'auth.login' | translate }}
           </li>
           <li (click)="navigate('/' + lang() + '/auth/register')">
@@ -112,12 +112,12 @@
             } @else {
               <div class="dropdown">
                 <i
-                  class="bi bi-box-arrow-in-right"
+                  class="bi bi-person-circle"
                   (click)="toggleDropdown('auth')"
                 ></i>
                 <ul *ngIf="openDropdown() === 'auth'" class="shadow">
                   <li (click)="navigate('/' + lang() + '/auth/login')">
-                    <i class="bi bi-box-arrow-in-right"></i>
+                    <i class="bi bi-person-circle"></i>
                     {{ "auth.login" | translate }}
                   </li>
                   <li (click)="navigate('/' + lang() + '/auth/register')">
