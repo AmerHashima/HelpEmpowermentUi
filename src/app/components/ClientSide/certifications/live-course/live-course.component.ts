@@ -61,7 +61,7 @@ export class LiveCourseComponent {
   isEnrolled = this.studentService.isLiveCourseEnrolled;
   showConfirm: boolean = false;
   showRegisterConfirm: boolean = false;
-  enrollImage = 'assets/images/enroll.png';
+  enrollImage = 'assets/images/navBar/user.jpg';
   courseImage = "assets/images/liveCourse/liveCourse.jpeg";
   tabContent = toSignal(this.tabService.getTab(this.shared.currentCertificate(), 'live-course').pipe(catchError(() => of(null))), { initialValue: null });
   tabBanner = computed(() => this.tabContent()?.content.banner[this.isRTL() ? 'ar' : 'en']);

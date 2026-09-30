@@ -200,6 +200,7 @@
   "footer": {
     "image": "Footer image",
     "copyright": "© 2026 Help Empowerment LLC. All rights reserved.",
+    "contactUs": "Contact Us",
     "refundPolicy": "Refund Policy",
     "cancellationPolicy": "Cancellation Policy",
     "privacyNotice": "Privacy Policy",
@@ -919,7 +920,7 @@
     "digital-transformation-failure": "General Article",
     "pmp-study-plan": "PMP",
     "capm-study-plan": "CAPM",
-    "about": "About US",
+    "about": "Professional Certifications",
     "profile": "Profile",
     "contact": "Contact US",
     "login": "Login",

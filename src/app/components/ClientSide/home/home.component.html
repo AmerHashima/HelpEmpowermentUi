@@ -1,6 +1,6 @@
   <div>
   <app-page-banner class="home-hero" [isRTL]="isRTL()" [media]="true">
-    <div content class="d-flex flex-column gap-4 ">
+    <div content class="d-flex flex-column gap-3">
 
       <app-feature [title]="'home.hero.feature' | translate" icon="bi bi-star" />
 
@@ -50,7 +50,7 @@
   </app-page-banner>
 
   <!-- Certifications -->
-  <div class="training d-flex flex-column gap-4 py-5"   #homeCertificationCards>
+  <div class="training d-flex flex-column gap-3 py-4" #homeCertificationCards>
     <div class="d-flex flex-column align-items-center gap-2">
       <span class="sectionSubHeader">
         {{ "home.certifications.subtitle" | translate }}
@@ -73,7 +73,7 @@
   </div>
 
   <!-- Services -->
-  <div class="training services-section d-flex flex-column gap-4 py-5" #homeServiceCards>
+  <div class="training services-section d-flex flex-column gap-3 py-4" #homeServiceCards>
     <div class="services-heading d-flex flex-column align-items-center gap-2">
       <span class="sectionSubHeader">
         {{ "home.services.subtitle" | translate }}
@@ -88,7 +88,7 @@
   </div>
 
   <!-- Articles -->
-  <div class="training d-flex flex-column align-items-center gap-4 py-5">
+  <div class="training d-flex flex-column align-items-center gap-3 py-4">
     <span class="sectionSubHeader">
       {{ "home.articles.subtitle" | translate }}
     </span>

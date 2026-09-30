@@ -55,7 +55,7 @@ export class RecordedCourseComponent {
   hasRecordedCourseAccess = computed(
     () => this.isEnrolled() && this.studentService.showExamSimulator === true
   );
-  enrollImage = 'assets/images/enroll.png';
+  enrollImage = 'assets/images/reviewers/person.png';
   recoedImage = "assets/images/recordedCourse.jpeg";
   price = this.certificationService.recordedCoursePrice;
   tabContent = toSignal(this.tabService.getTab(this.shared.currentCertificate(), 'recorded-course').pipe(catchError(() => of(null))), { initialValue: null });

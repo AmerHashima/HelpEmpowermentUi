@@ -18,7 +18,7 @@ app-page-banner.home-hero {
 }
 
 .training {
-  padding-block: 3rem !important;
+  padding-block: 2rem !important;
 }
 
 .services-heading {
@@ -42,11 +42,11 @@ app-page-banner.home-hero {
 
 .training + .training,
 .home-faq-section {
-  margin-top: 2rem;
+  margin-top: 0.75rem;
 }
 
 .home-faq-section {
-  padding-top: 3rem;
+  padding-top: 2rem;
 }
 
 @media screen and (max-width: 767px) {
@@ -59,7 +59,7 @@ app-page-banner.home-hero {
   }
 
   .training {
-    padding-block: 2rem !important;
+    padding-block: 1.5rem !important;
   }
 
   .services-section {
@@ -73,10 +73,10 @@ app-page-banner.home-hero {
 
   .training + .training,
   .home-faq-section {
-    margin-top: 1rem;
+    margin-top: 0.5rem;
   }
 
   .home-faq-section {
-    padding-top: 2rem;
+    padding-top: 1.5rem;
   }
 }
