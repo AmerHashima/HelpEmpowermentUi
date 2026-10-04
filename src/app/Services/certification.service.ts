@@ -698,6 +698,23 @@ export class CertificationService {
       );
   }
 
+  uploadCertificationImage(id: string, image: File): Observable<APICertification> {
+    return this.apiService.uploadImage<ApiResponse<APICertification>>('Courses', id, image).pipe(
+      map(response => {
+        if (!response.success) throw new Error(response.message || 'Failed to upload certification image');
+        return response.data;
+      })
+    );
+  }
+
+  getCertificationImageUrl(id: string): string {
+    return this.apiService.getImageUrl('Courses', id);
+  }
+
+  deleteCertificationImage(id: string): Observable<string> {
+    return this.apiService.deleteImage('Courses', id);
+  }
+
   uploadQuestionImages(id: string, images: File[]): Observable<any> {
     return this.apiService
       .uploadImages<ApiResponse<any>>('CourseQuestions', id, images)
@@ -735,6 +752,28 @@ export class CertificationService {
 
   deleteQuestionImageById(questionId: string, imageId: string): Observable<any> {
     return this.apiService.delete<any>(`CourseQuestions/${questionId}/images`, imageId, '');
+  }
+
+  uploadQuestionExplanationImages(id: string, images: File[]): Observable<any> {
+    return this.apiService
+      .uploadImages<ApiResponse<any>>('CourseQuestions', id, images, 'explanation-images')
+      .pipe(
+        map((response: ApiResponse<any>) => {
+          if (!response.success) {
+            const msg = response.errors?.join(', ') || response.message || 'Failed to upload explanation images';
+            throw new Error(msg);
+          }
+          return response.data;
+        })
+      );
+  }
+
+  getQuestionExplanationImageUrl(questionId: string, imageId: string): string {
+    return this.apiService.getImageUrl('CourseQuestions', questionId, imageId, 'explanation-images');
+  }
+
+  deleteQuestionExplanationImage(questionId: string, imageId: string): Observable<any> {
+    return this.apiService.delete<any>(`CourseQuestions/${questionId}/explanation-images`, imageId, '');
   }
 
 

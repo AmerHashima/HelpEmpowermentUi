@@ -21,6 +21,7 @@ import { createdUpdatedOID } from '../../../../data/lookUPS';
   styleUrl: './create-new-certification.component.scss'
 })
 export class CreateNewCertificationComponent {
+  readonly defaultImage = 'assets/images/certifications/certfication_1.jpeg';
   private certificationService = inject(CertificationService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
@@ -64,6 +65,9 @@ export class CreateNewCertificationComponent {
   certification = this.store.selectedCertification;
   isEdit = computed(() => !!this.certificationId);
   formError = signal('');
+  selectedImage = signal<File | null>(null);
+  imagePreview = signal<string | null>(null);
+  imageUploading = signal(false);
 
 
   constructor() {
@@ -117,13 +121,25 @@ export class CreateNewCertificationComponent {
       if (!success) return;
 
       const savedCertification = this.certification();
-      if (!this.certificationId && savedCertification?.oid) {
-        this.form.markAsUntouched();
-        this.router.navigate(['/admin/certifications', savedCertification.oid, 'content']);
-      } else {
-        this.cancel();
-      }
       this.store.setSuccess(false);
+      if (!savedCertification?.oid) return;
+      const savedCertificationId = savedCertification.oid;
+      const image = this.selectedImage();
+      if (image) {
+        this.imageUploading.set(true);
+        this.certificationService.uploadCertificationImage(savedCertificationId, image).subscribe({
+          next: certification => {
+            this.store.setSelectedCertification(certification);
+            this.finishSave(savedCertificationId);
+          },
+          error: error => {
+            this.imageUploading.set(false);
+            this.formError.set(error?.message || 'Certification was saved, but its image could not be uploaded.');
+          }
+        });
+        return;
+      }
+      this.finishSave(savedCertificationId);
     });
   }
 
@@ -189,6 +205,41 @@ export class CreateNewCertificationComponent {
 
     const certificateNumber = Number(value);
     return Number.isFinite(certificateNumber) ? certificateNumber : null;
+  }
+  onImageSelected(event: Event) {
+    const file = (event.target as HTMLInputElement).files?.[0] ?? null;
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      this.formError.set('Please select a valid image file.');
+      return;
+    }
+    this.selectedImage.set(file);
+    this.imagePreview.set(URL.createObjectURL(file));
+  }
+
+  removeSelectedImage() {
+    const preview = this.imagePreview();
+    if (preview?.startsWith('blob:')) URL.revokeObjectURL(preview);
+    this.selectedImage.set(null);
+    this.imagePreview.set(null);
+  }
+
+  certificationImageUrl(): string {
+    const certification = this.certification();
+    return certification?.oid && certification.imagePath
+      ? this.certificationService.getCertificationImageUrl(certification.oid)
+      : this.defaultImage;
+  }
+
+  useDefaultImage(event: Event) {
+    (event.target as HTMLImageElement).src = this.defaultImage;
+  }
+
+  private finishSave(id: string) {
+    this.imageUploading.set(false);
+    this.form.markAsUntouched();
+    if (!this.certificationId) this.router.navigate(['/admin/certifications', id, 'content']);
+    else this.cancel();
   }
   cancel() {
     this.form.markAsUntouched();

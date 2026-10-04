@@ -40,12 +40,12 @@ function section(
   };
 }
 
-function banner(sourceEn: any, sourceAr: any, mediaUrl: string) {
+function banner(sourceEn: any, sourceAr: any, mediaUrl: string, mediaType: 'image' | 'video' = 'image') {
   return {
     en: { titlePart1: sourceEn.master, titlePart2: sourceEn.title ?? sourceEn.realisticSimulation ?? '', description: sourceEn.description },
     ar: { titlePart1: sourceAr.master, titlePart2: sourceAr.title ?? sourceAr.realisticSimulation ?? '', description: sourceAr.description },
     mediaUrl,
-    mediaType: 'image' as const
+    mediaType
   };
 }
 
@@ -94,7 +94,12 @@ const capmTemplate: CourseTabContent[] = [
   {
     oid: '', courseCode: 'CAPM', tabKey: 'exam-simulator', isEnabled: true, orderNo: 1, status: 'Published',
     content: {
-      banner: banner(en.examSimulator.capm, ar.examSimulator.capm, 'assets/images/certification.jpg'),
+      banner: banner(
+        en.examSimulator.capm,
+        ar.examSimulator.capm,
+        'assets/videos/SimulatorVideo.mp4',
+        'video'
+      ),
       sections: [section(
         'benefits', en.examSimulator.everythingYouNeed, ar.examSimulator.everythingYouNeed,
         benefitKeys.map((key, index) => item(en.capmBenefits[key], ar.capmBenefits[key], benefitIcons[index])),

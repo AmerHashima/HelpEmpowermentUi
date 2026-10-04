@@ -1,1 +1,16 @@
 /* src\app\components\AdminPanel\create-new-certification\create-new-certification.component.scss */
+.certification-image-editor {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.certification-image-preview {
+  width: 240px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 0.75rem;
+  border: 1px solid #dee2e6;
+  background: #f8f9fa;
+}

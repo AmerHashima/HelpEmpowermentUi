@@ -18,11 +18,11 @@
 
         @if (announcement.title) {
 
-          <strong class="announcement-title">{{ announcement.title }}</strong>
+          <strong class="announcement-title">{{ announcementText(announcement.title) }}</strong>
 
         }
 
-        <span class="ms-2">{{ announcement.message }}</span>
+        <span class="ms-2">{{ announcementText(announcement.message) }}</span>
 
       </div>
 

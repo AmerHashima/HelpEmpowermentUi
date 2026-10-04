@@ -40,6 +40,8 @@ export class HomeComponent {
     this.certificationsStore.certifications()
       .filter(course => course.isActive)
       .map(course => ({
+        oid: course.oid,
+        imagePath: course.imagePath,
         imgAlt: course.courseName,
         courseDuration: this.formatDuration(course.durationMinutes),
         tags: [],

@@ -97,3 +97,129 @@
   background: rgba(0, 0, 0, 0.10);
   color: #111827;
 }
+
+.course-statistics-title {
+  margin-top: 30px;
+}
+
+.course-statistics {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.course-statistics-card {
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.course-statistics-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 18px;
+  background: #f8fafc;
+
+  h5 {
+    margin: 0;
+    color: #111827;
+    font-size: 1rem;
+  }
+
+  > div:first-child > span {
+    color: #6b7280;
+    font-size: 0.78rem;
+  }
+}
+
+.course-reservations-total {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  flex: 0 0 auto;
+
+  strong {
+    color: $primaryColor;
+    font-size: 1.35rem;
+    line-height: 1;
+  }
+
+  span {
+    margin-top: 4px;
+    color: #6b7280;
+    font-size: 0.7rem;
+  }
+}
+
+.service-statistics-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  padding: 14px;
+}
+
+.service-statistic {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 12px;
+  background: #f8fafc;
+  border-radius: 10px;
+
+  > i {
+    display: grid;
+    flex: 0 0 36px;
+    width: 36px;
+    height: 36px;
+    place-items: center;
+    border-radius: 9px;
+    background: rgba($primaryColor, 0.1);
+    color: $primaryColor;
+  }
+
+  > div {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+  }
+
+  span {
+    overflow: hidden;
+    color: #6b7280;
+    font-size: 0.72rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  strong {
+    color: #111827;
+    font-size: 1.15rem;
+  }
+}
+
+.course-statistics-empty {
+  min-height: 100px;
+  background: #f8fafc;
+  border-radius: 12px;
+}
+
+@media (max-width: 1199.98px) {
+  .course-statistics {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .dashboard-container {
+    padding: 14px;
+  }
+
+  .service-statistics-grid {
+    grid-template-columns: 1fr;
+  }
+}

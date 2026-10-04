@@ -119,33 +119,39 @@
     </div>
   </div>
 
-  <!-- <div class="card shadow-sm">
+  <div class="card shadow-sm">
     <div class="card-header fw-bold">
-      <h5 class="mb-0">Certification Attachment</h5>
+      <h5 class="mb-0">Certification Image</h5>
     </div>
     <div class="card-body">
-      <div class="row flex-wrap g-2">
-        <div class="col-12">
-          <div class="px-3">
-            <label for="" class="mb-2">Course Image</label>
-            <app-file-upload
-              formControlName="files"
-              [multiple]="false"
-              label="Upload certification images"
-            ></app-file-upload>
-          </div>
+      <div class="certification-image-editor">
+        <img class="certification-image-preview" [src]="imagePreview() || certificationImageUrl()"
+          alt="Certification image preview" (error)="useDefaultImage($event)" />
+        <div class="d-flex flex-column align-items-start gap-2">
+          <input #imageInput class="d-none" type="file" accept="image/jpeg,image/png,image/gif,image/webp"
+            (change)="onImageSelected($event)" />
+          <button type="button" class="btn btn-dark" (click)="imageInput.click()">
+            <i class="bi bi-image me-2"></i>{{ selectedImage() ? 'Change Image' : 'Browse Image' }}
+          </button>
+          @if (selectedImage()) {
+            <button type="button" class="btn btn-sm btn-outline-danger" (click)="removeSelectedImage()">
+              Remove selected image
+            </button>
+            <small class="fw-semibold">{{ selectedImage()?.name }}</small>
+          }
+          <small class="text-muted">JPG, PNG, GIF or WEBP. The default image is used when no image is uploaded.</small>
         </div>
       </div>
     </div>
-  </div> -->
+  </div>
 
   <div class="d-flex justify-content-end gap-2">
     <app-button btnLabel="Cancel" [mainBtn]="false" (click)="cancel()" />
 
     @if (isEdit()) {
-      <app-button btnLabel="Update Certification" buttonType="submit" [disabled]="store.loading()" />
+      <app-button btnLabel="Update Certification" buttonType="submit" [disabled]="store.loading() || imageUploading()" />
     } @else {
-      <app-button btnLabel="Add & Edit Website Content" buttonType="submit" [disabled]="store.loading()" />
+      <app-button btnLabel="Add & Edit Website Content" buttonType="submit" [disabled]="store.loading() || imageUploading()" />
     }
   </div>
 </form>

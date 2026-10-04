@@ -59,6 +59,11 @@
             >
           }
 
+          <span class="question-score" [attr.aria-label]="questionScore + ' points'">
+            <i class="bi bi-award-fill"></i>
+            {{ questionScore }} {{ questionScore === 1 ? 'Point' : 'Points' }}
+          </span>
+
           <div class="progress-bar">
             <div
               class="progress-fill"
@@ -271,6 +276,22 @@
         <div class="d-flex flex-column">
           <h3 class="mainTextColor">Explanation</h3>
           <span class="darkText">{{ question().questionExplination }}</span>
+          @if (explanationImageUrls().length) {
+            <div
+              class="question-images-wrapper explanation-images-wrapper mt-2"
+              role="region"
+              aria-label="Explanation images"
+              tabindex="0"
+            >
+              @for (imageUrl of explanationImageUrls(); track imageUrl; let imageIndex = $index) {
+                <img
+                  [src]="imageUrl"
+                  [alt]="'Explanation image ' + (imageIndex + 1)"
+                  class="rounded"
+                />
+              }
+            </div>
+          }
         </div>
       </div>
     }

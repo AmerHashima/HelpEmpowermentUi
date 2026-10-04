@@ -10,7 +10,7 @@ export class DashboardService {
   getMine(): Observable<AssignedDashboard> {
     return this.api.get<ApiResponse<AssignedDashboard>>('me/dashboard').pipe(map(response => {
       if (!response.success) throw new Error(response.message || 'Unable to load dashboard');
-      return response.data;
+      return { ...response.data, courses: response.data.courses ?? [] };
     }));
   }
 }

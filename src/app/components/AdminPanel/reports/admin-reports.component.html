@@ -29,16 +29,21 @@
         } @else {
           <div class="course-reports">
             @for (item of revenueReports(); track item.course.oid) {
-              <article class="course-report">
-                <header class="course-header">
-                  <div><h5>{{ item.course.courseName }}</h5><span>{{ item.course.courseCode }}</span></div>
-                  <div class="course-totals">
-                    <span>Total <strong>{{ item.totalRevenue | number:'1.2-2' }} AED</strong></span>
-                    <span>Distributed <strong>{{ item.distributedRevenue | number:'1.2-2' }} AED</strong></span>
-                    <span>Pending <strong>{{ item.pendingRevenue | number:'1.2-2' }} AED</strong></span>
-                    <span>Paid <strong>{{ item.paidRevenue | number:'1.2-2' }} AED</strong></span>
+              <details class="course-report">
+                <summary class="course-header">
+                  <div class="course-identity"><h5>{{ item.course.courseName }}</h5><span>{{ item.course.courseCode }}</span></div>
+                  <div class="course-header-side">
+                    <div class="course-totals">
+                      <span>Total <strong>{{ item.totalRevenue | number:'1.2-2' }} AED</strong></span>
+                      <span>Distributed <strong>{{ item.distributedRevenue | number:'1.2-2' }} AED</strong></span>
+                      <span>Pending <strong>{{ item.pendingRevenue | number:'1.2-2' }} AED</strong></span>
+                      <span>Paid <strong>{{ item.paidRevenue | number:'1.2-2' }} AED</strong></span>
+                    </div>
+                    <span class="course-collapse-icon" aria-hidden="true">
+                      <i class="bi bi-chevron-down"></i>
+                    </span>
                   </div>
-                </header>
+                </summary>
 
                 <section class="distribution-section">
                   <div class="shares-title">Actual beneficiary distribution</div>
@@ -78,7 +83,7 @@
                     </tbody></table></div>
                   }
                 </details>
-              </article>
+              </details>
             }
           </div>
         }

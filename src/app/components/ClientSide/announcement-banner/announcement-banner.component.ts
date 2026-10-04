@@ -1,6 +1,7 @@
 import { isPlatformBrowser } from '@angular/common';
 import { Component, inject, Input, PLATFORM_ID, signal } from '@angular/core';
 import { Announcement } from '../../../shared/client-side-layout/client-side-layout.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-announcement-banner',
@@ -11,6 +12,7 @@ import { Announcement } from '../../../shared/client-side-layout/client-side-lay
 })
 export class AnnouncementBannerComponent {
   private platformId = inject(PLATFORM_ID);
+  private translate = inject(TranslateService);
   @Input() announcements: Announcement[] = [];
 
   currentIndex = signal(0);
@@ -35,6 +37,17 @@ export class AnnouncementBannerComponent {
 
     return announcements[this.currentIndex()];
 
+  }
+
+  announcementText(value: string): string {
+    if (!value) return '';
+    const subjectMatch = value.match(/^subject:\s*(.+)$/i);
+    if (subjectMatch) {
+      const subject = this.translate.instant('announcement.subject');
+      const translatedValue = this.translate.instant(subjectMatch[1].trim());
+      return `${subject}: ${translatedValue}`;
+    }
+    return this.translate.instant(value);
   }
 
   ngOnInit(): void {

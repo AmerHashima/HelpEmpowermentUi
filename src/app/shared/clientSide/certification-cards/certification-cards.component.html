@@ -4,7 +4,7 @@
       <div class="certification-card shadow">
         <!-- Image + duration tag -->
         <div class="certification-image">
-          <img [src]="getImage($index)" [alt]="item.imgAlt | translate" />
+          <img [src]="getImage(item)" [alt]="item.imgAlt | translate" (error)="useDefaultImage($event)" />
           <span class="course-duration">
             <app-tag [title]="item.courseDuration | translate" />
           </span>

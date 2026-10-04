@@ -8,4 +8,15 @@ export interface AssignedDashboard {
   pendingRevenue: number;
   paidRevenue: number;
   upcomingLiveSessions: number;
+  courses: CourseDashboardStatistics[];
+}
+
+export interface CourseDashboardStatistics {
+  courseId: string;
+  courseCode: string;
+  courseName: string;
+  examSimulatorReservations: number;
+  recordedVideoReservations: number;
+  liveCourseReservations: number;
+  totalReservations: number;
 }

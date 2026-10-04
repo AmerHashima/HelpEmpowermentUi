@@ -8,7 +8,7 @@ import ApiStatusService from './api-status.service';
 
 @Injectable({ providedIn: 'root' })
 export default class ApiService {
-  private readonly baseUrl: string = environment.baseUrl;
+  private readonly baseUrl: string = environment.baseUrl.trim().replace(/\/+$/, '');
 
   constructor(
     private http: HttpClient,
@@ -308,7 +308,7 @@ export default class ApiService {
     );
   }
 
-  uploadImages<T>(endpoint: string, id: string, files: File[]): Observable<T> {
+  uploadImages<T>(endpoint: string, id: string, files: File[], collection: string = 'images'): Observable<T> {
     if (this.shouldBlockRequest(endpoint)) {
       return EMPTY;
     }
@@ -317,15 +317,15 @@ export default class ApiService {
     files.forEach(file => formData.append('images', file));
     this.loader.start();
 
-    return this.http.post<T>(`${this.baseUrl}/${endpoint}/${id}/images`, formData).pipe(
+    return this.http.post<T>(`${this.baseUrl}/${endpoint}/${id}/${collection}`, formData).pipe(
       catchError(err => this.handleError(err, endpoint)),
       finalize(() => this.loader.stop())
     );
   }
 
-  getImageUrl(endpoint: string, id: string, imageId?: string): string {
+  getImageUrl(endpoint: string, id: string, imageId?: string, collection: string = 'images'): string {
     return imageId
-      ? `${this.baseUrl}/${endpoint}/${id}/images/${imageId}`
+      ? `${this.baseUrl}/${endpoint}/${id}/${collection}/${imageId}`
       : `${this.baseUrl}/${endpoint}/${id}/image`;
   }
 

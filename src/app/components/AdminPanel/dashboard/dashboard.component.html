@@ -19,5 +19,41 @@
       <div class="col-sm-6 col-xl-3"><div class="stat-card warning"><div class="stat-icon"><i class="bi bi-hourglass-split"></i></div><div><div class="stat-title">My Pending Revenue</div><div class="stat-value">{{ data.pendingRevenue }}</div></div></div></div>
       <div class="col-sm-6 col-xl-3"><div class="stat-card success"><div class="stat-icon"><i class="bi bi-wallet2"></i></div><div><div class="stat-title">My Paid Revenue</div><div class="stat-value">{{ data.paidRevenue }}</div></div></div></div>
     </div>
+
+    <div class="section-title course-statistics-title">Course Service Statistics</div>
+    @if (data.courses.length) {
+      <div class="course-statistics">
+        @for (course of data.courses; track course.courseId) {
+          <article class="course-statistics-card">
+            <div class="course-statistics-header">
+              <div>
+                <h5>{{ course.courseName }}</h5>
+                <span>{{ course.courseCode }}</span>
+              </div>
+              <div class="course-reservations-total">
+                <strong>{{ course.totalReservations }}</strong>
+                <span>Total reservations</span>
+              </div>
+            </div>
+            <div class="service-statistics-grid">
+              <div class="service-statistic exam-simulator">
+                <i class="bi bi-ui-checks-grid"></i>
+                <div><span>Exam Simulator</span><strong>{{ course.examSimulatorReservations }}</strong></div>
+              </div>
+              <div class="service-statistic recorded-videos">
+                <i class="bi bi-play-btn"></i>
+                <div><span>Recorded Videos</span><strong>{{ course.recordedVideoReservations }}</strong></div>
+              </div>
+              <div class="service-statistic live-course">
+                <i class="bi bi-camera-video"></i>
+                <div><span>Live Course</span><strong>{{ course.liveCourseReservations }}</strong></div>
+              </div>
+            </div>
+          </article>
+        }
+      </div>
+    } @else {
+      <div class="dashboard-state course-statistics-empty">No course statistics are available.</div>
+    }
   } @else if (!errorMessage()) { <div class="dashboard-state">No dashboard data is available.</div> } }
 </div>

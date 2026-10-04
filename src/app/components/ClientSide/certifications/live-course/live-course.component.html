@@ -33,34 +33,22 @@
 
           <div class="certificationPrice">
             <span class="darkText">
-                            {{price()}} {{'AED'  | translate}}
+              {{price()}} {{'AED' | translate}}
               <!-- {{ liveCourseContent().price | translate }} -->
             </span>
           </div>
           <div class="d-flex align-content-center gap-3">
-            <app-site-button
-              title="examSimulator.buyNow"
-              [icon]="'bi bi-arrow'"
-              type="main"
-              (click)="buyNow()"
-            ></app-site-button>
+            <app-site-button title="examSimulator.buyNow" [icon]="'bi bi-arrow'" type="main"
+              (click)="buyNow()"></app-site-button>
 
-            <app-site-button
-              title="examSimulator.addToCart"
-              [icon]="'bi bi-arrow'"
-              type="secondary"
-              (click)="addToCart()"
-            ></app-site-button>
+            <app-site-button title="examSimulator.addToCart" [icon]="'bi bi-arrow'" type="secondary"
+              (click)="addToCart()"></app-site-button>
           </div>
         </div>
       </div>
 
-      <img
-        media
-        [src]="tabContent()?.content?.banner?.mediaUrl || courseImage"
-        alt="contact Image"
-        class="Homebanner-video shadow w-100 h-100"
-      />
+      <img media [src]="tabContent()?.content?.banner?.mediaUrl || courseImage" alt="contact Image"
+        class="Homebanner-video shadow w-100 h-100" />
     </app-page-banner>
   </ng-container>
   <!-- <ng-container *ngIf="isEnrolled()"> </ng-container> -->
@@ -70,49 +58,41 @@
       <div [ngClass]="hasLiveCourseAccess() ? 'col-lg-12' : 'col-lg-9'">
         <div class="row">
           <div class="col-12">
-            <app-upcoming-sessions (liveCourseRegister)="register($event)"/>
+            <app-upcoming-sessions (liveCourseRegister)="register($event)" />
           </div>
           @if (!hasLiveCourseAccess()) {
-            <div class="col-12">
-              <app-courese-outline tabKey="live-course" />
-            </div>
-            <div class="col-12">
-              <app-courese-content tabKey="live-course" [videos]="videos()"/>
-            </div>
+          <div class="col-12">
+            <app-courese-outline tabKey="live-course" />
+          </div>
+          <div class="col-12">
+            <app-courese-content tabKey="live-course" [videos]="videos()" />
+          </div>
 
-            <div class="col-12">
-              <app-instructor-info tabKey="live-course" />
-            </div>
+          <div class="col-12">
+            <app-instructor-info tabKey="live-course" />
+          </div>
           }
         </div>
       </div>
       @if (!hasLiveCourseAccess()) {
-        <div class="col-lg-3">
-          <div class="row">
-            <div class="col-12">
-              <app-courese-features
-                tabKey="live-course"
-                [isEnrolled]="isEnrolled()"
-                (buy)="buyNow()"
-              />
-            </div>
-          </div>
+      <div class="col-lg-3">
+        <div class="row">
           <div class="col-12">
-            <app-target-audience tabKey="live-course" />
+            <app-courese-features tabKey="live-course" [isEnrolled]="isEnrolled()" (buy)="buyNow()" />
           </div>
         </div>
+        <div class="col-12">
+          <app-target-audience tabKey="live-course" />
+        </div>
+      </div>
       }
     </div>
   </div>
 </div>
 
 <app-generic-modal [(isOpen)]="showConfirm" title="Alert Message">
-  <section
-    class="w-100 d-flex flex-column align-items-stretch gap-3 p-3 rounded"
-  >
-    <div
-      class="d-flex flex-column align-items-center justify-content-center gap-2 w-100"
-    >
+  <section class="w-100 d-flex flex-column align-items-stretch gap-3 p-3 rounded">
+    <div class="d-flex flex-column align-items-center justify-content-center gap-2 w-100">
       <i class="bi bi-info-circle-fill infoColor"></i>
       <p class="text-center darkText w-75 mx-auto">
         {{ "You Must be logged to be able to contact us." | translate }}
@@ -122,79 +102,46 @@
 </app-generic-modal>
 
 <app-generic-modal [(isOpen)]="showRegisterConfirm" title="">
-  <section
-    class="form w-100 d-flex flex-column align-items-stretch gap-3 p-3 rounded"
-  >
+  <section class="form w-100 d-flex flex-column align-items-stretch gap-3 p-3 rounded">
     <div class="d-flex flex-column gap-2 w-100">
       <h3 class="m-0 text-center">{{ "liveCourseForm.title" | translate }}</h3>
       <p class="text-center w-100">{{ "liveCourseForm.subTitle" | translate }}</p>
     </div>
 
-    <form
-      #liveCourseRegisterForm="ngForm"
-      (ngSubmit)="onLiveCourseRegister(liveCourseRegisterForm)"
-      class="webinar-form mb-0"
-    >
+    <form #liveCourseRegisterForm="ngForm" (ngSubmit)="onLiveCourseRegister(liveCourseRegisterForm)"
+      class="webinar-form mb-0">
       <div class="d-flex flex-column gap-3">
 
         <!-- Full Name -->
-        <app-input
-          name="fullname"
-          [(ngModel)]="liveCourse.fullname"
-          required
-          [label]="'liveCourse.fullnameLabel' | translate"
-          [placeholder]="'liveCourse.fullnamePlaceholder' | translate"
-          [icon]="'bi bi-user'"
-          [errorMessages]="{
+        <app-input name="fullname" [(ngModel)]="liveCourse.fullname" [required]="true"
+          [label]="'liveCourse.fullnameLabel' | translate" [placeholder]="'liveCourse.fullnamePlaceholder' | translate"
+          [icon]="'bi bi-user'" [errorMessages]="{
             required: 'liveCourse.errors.fullnameRequired' | translate
-          }"
-        ></app-input>
+          }"></app-input>
 
         <!-- Email -->
-        <app-input
-          name="email"
-          [(ngModel)]="liveCourse.email"
-          required
-          email
-          [label]="'liveCourse.emailLabel' | translate"
-          [placeholder]="'liveCourse.emailPlaceholder' | translate"
-          [icon]="'bi bi-envelope'"
-          [errorMessages]="{
+        <app-input name="email" [(ngModel)]="liveCourse.email" [required]="true" email
+          [label]="'liveCourse.emailLabel' | translate" [placeholder]="'liveCourse.emailPlaceholder' | translate"
+          [icon]="'bi bi-envelope'" [errorMessages]="{
             required: 'liveCourse.errors.emailRequired' | translate,
             email: 'liveCourse.errors.invalidEmail' | translate
-          }"
-        ></app-input>
+          }"></app-input>
 
         <!-- Phone -->
-        <app-phone-input
-          name="phone"
-          [(ngModel)]="liveCourse.phone"
-          [required]="true"
-          [labelKey]="'liveCourse.phoneLabel' | translate"
-        >
+        <app-phone-input name="phone" [(ngModel)]="liveCourse.phone" [required]="true"
+          [labelKey]="'liveCourse.phoneLabel' | translate">
         </app-phone-input>
 
         <!-- Position -->
-        <app-input
-          name="position"
-          [(ngModel)]="liveCourse.position"
-          required
-          [label]="'liveCourse.positionLabel' | translate"
-          [placeholder]="'liveCourse.positionPlaceholder' | translate"
-          [icon]="'bi bi-person-workspace'"
-          [type]="'text'"
-          [errorMessages]="{
+        <app-input name="position" [(ngModel)]="liveCourse.position" required
+          [label]="'liveCourse.positionLabel' | translate" [placeholder]="'liveCourse.positionPlaceholder' | translate"
+          [icon]="'bi bi-person-workspace'" [type]="'text'" [errorMessages]="{
             required: 'liveCourse.errors.positionRequired' | translate
-          }"
-        ></app-input>
+          }"></app-input>
 
         <!-- Submit -->
-        <app-site-button
-          [title]="'liveCourse.submitButton' | translate"
-          type="main"
-          htmlType="submit"
-          [icon]="'bi bi-arrow'"
-        ></app-site-button>
+        <app-site-button [title]="'liveCourse.submitButton' | translate" type="main" htmlType="submit"
+          [icon]="'bi bi-arrow'"></app-site-button>
 
       </div>
     </form>

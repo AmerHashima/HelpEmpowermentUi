@@ -6,6 +6,7 @@ import { CertificationsStore } from '../../../../AdminPanelStores/CertificationS
 import { Router } from '@angular/router';
 import { Certification } from '../../../../models/certification';
 import { BreadcrumbService } from '../../../../Services/breadcrumb.service';
+import { CertificationService } from '../../../../Services/certification.service';
 
 @Component({
   selector: 'app-certifications-list',
@@ -18,6 +19,8 @@ export class CertificationsListComponent {
   loading = this.store.loading;
   private router = inject(Router);
   private breadcrumbService = inject(BreadcrumbService);
+  private certificationService = inject(CertificationService);
+  readonly defaultImage = 'assets/images/certifications/certfication_1.jpeg';
   certifications = computed(() => this.store.certifications());
 
   constructor() {
@@ -38,6 +41,12 @@ export class CertificationsListComponent {
   openCertificationPage(certification: Certification) {
     this.store.setSelectedCertification(certification);
     this.router.navigate(['/admin/certifications', certification.oid]);
+  }
+
+  getCertificationImage(certification: Certification): string {
+    return certification.oid && certification.imagePath
+      ? this.certificationService.getCertificationImageUrl(certification.oid)
+      : this.defaultImage;
   }
 
 }

@@ -113,6 +113,31 @@
   color:$inputText
 }
 
+.question-score {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex: 0 0 auto;
+  padding: 0.35rem 0.7rem;
+  border: 1px solid rgba($primaryColor, 0.25);
+  border-radius: 999px;
+  background: rgba($primaryColor, 0.08);
+  color: $primaryColor;
+  font-size: 0.82rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+@media (max-width: 576px) {
+  .progress-info {
+    flex-wrap: wrap;
+  }
+
+  .progress-bar {
+    flex-basis: 100%;
+  }
+}
+
 .question-images-wrapper {
   display: flex;
   flex-wrap: nowrap;

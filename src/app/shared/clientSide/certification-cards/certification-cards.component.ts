@@ -7,9 +7,12 @@ import { StarRatingComponent } from '../../star-rating/star-rating.component';
 import { Shared } from '../../Services/shared/shared';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { Router } from '@angular/router';
+import { environment } from '../../../../environments/environment';
 
 // Assuming you have a type/interface for the data
 export interface CertificationItem {
+  oid?: string;
+  imagePath?: string | null;
   imgAlt: string;
   courseDuration: string;
   tags: string[];
@@ -62,6 +65,7 @@ export const certifications: CertificationItem[] = [
   styleUrl: './certification-cards.component.scss'
 })
 export class CertificationCardsComponent {
+  readonly defaultImage = 'assets/images/certifications/certfication_1.jpeg';
 
   certifications = input<CertificationItem[]>(certifications);
   private shared = inject(Shared);
@@ -69,13 +73,18 @@ export class CertificationCardsComponent {
 
   isRTL = this.shared.isRtl;
   enrollCourse = output<CertificationItem>();
-  private images = [
-    'assets/images/certifications/certfication_1.jpeg',
-    'assets/images/certifications/certfication_2.jpeg'
-  ];
+  getImage(item: CertificationItem): string {
+    return item.oid && item.imagePath
+      ? this.certificationImageUrl(item.oid)
+      : this.defaultImage;
+  }
 
-  getImage(index: number): string {
-    return this.images[index % 2];
+  useDefaultImage(event: Event) {
+    (event.target as HTMLImageElement).src = this.defaultImage;
+  }
+
+  private certificationImageUrl(id: string): string {
+    return `${environment.baseUrl.trim().replace(/\/$/, '')}/Courses/${id}/image`;
   }
 
   onEnroll(item: CertificationItem) {

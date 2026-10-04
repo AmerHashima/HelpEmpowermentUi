@@ -516,6 +516,14 @@
     "retry": "إعادة المحاولة"
   },
   "pages": {
+    "home": "الرئيسية",
+    "certifications": "الشهادات الاحترافية",
+    "services": "الخدمات",
+    "manpower": "القوى العاملة",
+    "videos": "الفيديوهات",
+    "terms-and-conditions": "الشروط والأحكام",
+    "cancellation-policy": "سياسة الإلغاء",
+    "cookie-policy": "سياسة ملفات الارتباط",
     "search": {
       "search": "بحث",
       "label": "نتيجة البحث",
@@ -1588,6 +1596,10 @@
       }
     ]
   },
+  "announcement": {
+    "subject": "الموضوع"
+  },
+  "Revise Terms & conditions": "تحديث الشروط والأحكام",
   "legalPrivacy": {
     "title": "سياسة الخصوصية",
     "sections": [

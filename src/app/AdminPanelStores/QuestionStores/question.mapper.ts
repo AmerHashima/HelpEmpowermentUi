@@ -14,6 +14,7 @@ export function mapApiQuestionToCourseQuestion(api: any, studentQuestion: boolea
     questionExplination: api.questionExplination,
     questionImage: api.questionImage ?? '',
     questionImages: api.questionImages ?? [],
+    explanationImages: api.explanationImages ?? [],
     questionText_Ar: api.questionText_Ar,
     questionTypeLookupId: api.questionTypeLookupId,
     questionScore: api.questionScore,

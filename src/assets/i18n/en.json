@@ -55,11 +55,11 @@
         "error": "Failed to send request"
       }
     },
-      "otp": {
-        "verify": {
-          "success": "OTP has been verified successfully."
-        }
-      },
+    "otp": {
+      "verify": {
+        "success": "OTP has been verified successfully."
+      }
+    },
     "token": {
       "refresh": {
         "error": "Session expired, please login again"
@@ -839,7 +839,7 @@
     "question4": "What do I need to apply for the official PMI - CAPM exam?",
     "answer4": "You need to fulfill these 2 simple requirements:\n\n1. Education: A secondary degree (high school diploma or global equivalent).\n\n2. Project Management Education: 23 contact hours of formal education in project management. You will receive these required hours upon completion of our CAPM course.",
     "question5": "Which official Project Management Institute (PMI) book should I study for the CAPM exam?",
-        "answer5": "PMI recommends the following primary references:\n\n• PMBOK® Guide – 8th Edition (focuses on project management principles).\n\nOur CAPM course consolidates all essential information from these references into one structured learning path, so you don’t need to study each book separately."
+    "answer5": "PMI recommends the following primary references:\n\n• PMBOK® Guide – 8th Edition (focuses on project management principles).\n\nOur CAPM course consolidates all essential information from these references into one structured learning path, so you don’t need to study each book separately."
   },
   "services": {
     "organizationalEmpowerment": "Organizational Empowerment",
@@ -901,16 +901,24 @@
     }
   },
   "pages": {
+    "home": "Home",
+    "certifications": "Certifications",
+    "services": "Services",
+    "manpower": "Manpower",
+    "videos": "Videos",
+    "terms-and-conditions": "Terms & Conditions",
+    "cancellation-policy": "Cancellation Policy",
+    "cookie-policy": "Cookie Policy",
     "search": {
       "label": "SEARCH RESULT",
-            "search": "Search",
-      "title":"No Results Found",
+      "search": "Search",
+      "title": "No Results Found",
       "description": "We couldn’t find any matches for \"{{value}}\"",
       "suggestions": "Try searching for:"
     },
-    "reset-password":"Reset Password",
-    "verify-otp":"Verify Otp",
-    "forget-password":"Forget Password",
+    "reset-password": "Reset Password",
+    "verify-otp": "Verify Otp",
+    "forget-password": "Forget Password",
     "invoice": "Invoice",
     "technical-support-policy": "Technical Support Policy",
     "privacy-notice": "Privacy Notice",
@@ -920,7 +928,7 @@
     "digital-transformation-failure": "General Article",
     "pmp-study-plan": "PMP",
     "capm-study-plan": "CAPM",
-    "about": "Professional Certifications",
+    "about": "About Us",
     "profile": "Profile",
     "contact": "Contact US",
     "login": "Login",
@@ -940,6 +948,10 @@
     "checkout": "Checkout",
     "performance-levels": "Performance Levels"
   },
+  "announcement": {
+    "subject": "Subject"
+  },
+  "Revise Terms & conditions": "Revised Terms & Conditions",
   "courseOutline": "Course Outline",
   "Course Content": "Course Content",
   "courseContent": {
@@ -953,13 +965,13 @@
       "Department Heads",
       "Team Leads"
     ],
-      "capm": [
-         "Project Coordinator",
-         "PMO Officer",
-         "Junior Project Manager",
-         "Project Team Member",
-         "Career Switcher"
-      ]
+    "capm": [
+      "Project Coordinator",
+      "PMO Officer",
+      "Junior Project Manager",
+      "Project Team Member",
+      "Career Switcher"
+    ]
   },
   "Upcoming Live Sessions": "Upcoming Live Sessions",
   "instructor": {
@@ -1165,10 +1177,10 @@
   "Total Exam Number": "Total Exam Number",
   "Review Your Previous Exam Attempts": "Review Your Previous Exam Attempts",
   "performance": {
-    "core":"Project Management Fundamentals and Core Concepts (36%)",
-    "plan":"Predictive, Plan-Based Methodologies (17%)",
-    "agile":"Agile Frameworks/Methodologies (20%)",
-    "business":"Business Analysis Frameworks (27%)",
+    "core": "Project Management Fundamentals and Core Concepts (36%)",
+    "plan": "Predictive, Plan-Based Methodologies (17%)",
+    "agile": "Agile Frameworks/Methodologies (20%)",
+    "business": "Business Analysis Frameworks (27%)",
     "level": "Performance Level",
     "peopleDomain": "What It Means for the People Domain (33%)",
     "processDomain": "What It Means for the Process Domain (41%)",
@@ -1179,37 +1191,37 @@
     "needsImprovement": "Needs Improvement",
     "rows": {
       "above": {
-        "core":"Consistently applies core principles, project lifecycles, and process interactions. Demonstrates strong understanding of roles, responsibilities, and common frameworks.",
-        "plan":"Clearly understands waterfall planning, baselines, and control processes. Applies earned value management and schedule development effectively.",
-        "agile":"Deep knowledge of Scrum, Kanban, and hybrid models. Confidently applies user stories, backlog refinement, and iterative value delivery.",
-        "capmbusiness":"Strong ability to elicit, analyze, and manage requirements. Links business needs directly to project outcomes and success criteria.",
+        "core": "Consistently applies core principles, project lifecycles, and process interactions. Demonstrates strong understanding of roles, responsibilities, and common frameworks.",
+        "plan": "Clearly understands waterfall planning, baselines, and control processes. Applies earned value management and schedule development effectively.",
+        "agile": "Deep knowledge of Scrum, Kanban, and hybrid models. Confidently applies user stories, backlog refinement, and iterative value delivery.",
+        "capmbusiness": "Strong ability to elicit, analyze, and manage requirements. Links business needs directly to project outcomes and success criteria.",
         "people": "You consistently demonstrated the ability to lead, motivate, and manage a project team effectively. You excelled in conflict resolution, stakeholder engagement, team development, and communication.",
         "process": "You showed a strong understanding of project management processes and applied predictive, agile, and hybrid approaches effectively.",
         "business": "You connected project work to business strategy and value, understanding benefits, compliance, and external impacts."
       },
       "target": {
-        "core":"Meets expected knowledge of key terminology, process groups, and foundational concepts. Can identify standard inputs, outputs, and tools.",
-        "plan":"Correctly describes predictive lifecycles, typical artifacts, and phase gates. Can perform standard planning tasks without major errors.",
-        "agile":"Correctly identifies agile roles, events, and artifacts. Understands basic adaptive planning and frequent inspection.",
-        "capmbusiness":"Understands requirements traceability, stakeholder analysis, and acceptance criteria. Can differentiate between needs and solutions.",
+        "core": "Meets expected knowledge of key terminology, process groups, and foundational concepts. Can identify standard inputs, outputs, and tools.",
+        "plan": "Correctly describes predictive lifecycles, typical artifacts, and phase gates. Can perform standard planning tasks without major errors.",
+        "agile": "Correctly identifies agile roles, events, and artifacts. Understands basic adaptive planning and frequent inspection.",
+        "capmbusiness": "Understands requirements traceability, stakeholder analysis, and acceptance criteria. Can differentiate between needs and solutions.",
         "people": "You demonstrated a solid understanding of managing and supporting a project team with strong leadership skills.",
         "process": "You correctly applied processes and practices to manage projects and deliver outcomes.",
         "business": "You understood the link between projects and business context, including governance and benefits."
       },
       "below": {
-        "core":"Shows partial understanding of basic concepts. May confuse process interactions or misapply common terminology.",
-        "plan":"Inconsistent with predictive tools (e.g., WBS, critical path). Limited ability to explain change control or baseline management.",
-        "agile":"Partial recall of agile terminology. May confuse agile with predictive practices or misstate sprint events.",
-        "capmbusiness":"Inconsistent with business analysis tools (e.g., user stories, use cases, process flows). Weak on requirements validation.",
+        "core": "Shows partial understanding of basic concepts. May confuse process interactions or misapply common terminology.",
+        "plan": "Inconsistent with predictive tools (e.g., WBS, critical path). Limited ability to explain change control or baseline management.",
+        "agile": "Partial recall of agile terminology. May confuse agile with predictive practices or misstate sprint events.",
+        "capmbusiness": "Inconsistent with business analysis tools (e.g., user stories, use cases, process flows). Weak on requirements validation.",
         "people": "You struggled with leadership and interpersonal skills such as motivation and conflict management.",
         "process": "You had gaps in applying project processes like planning, scheduling, and risk management.",
         "business": "You showed weak understanding of project alignment with business goals."
       },
       "improvement": {
-        "core":"Lacks grasp of core fundamentals. Struggles to define basic project management roles or standard processes.",
-        "plan":"Minimal understanding of plan-based approaches. Unable to differentiate sequential vs. iterative phases.",
-        "agile":"Very limited exposure to agile concepts. Cannot explain iterations, backlog, or the agile manifesto principles.",
-        "capmbusiness":"Little to no understanding of BA role in projects. Unable to define requirements lifecycle or traceability.",
+        "core": "Lacks grasp of core fundamentals. Struggles to define basic project management roles or standard processes.",
+        "plan": "Minimal understanding of plan-based approaches. Unable to differentiate sequential vs. iterative phases.",
+        "agile": "Very limited exposure to agile concepts. Cannot explain iterations, backlog, or the agile manifesto principles.",
+        "capmbusiness": "Little to no understanding of BA role in projects. Unable to define requirements lifecycle or traceability.",
         "people": "You need significant improvement in people management and leadership skills.",
         "process": "Your understanding of project management processes is insufficient.",
         "business": "You need to better understand how projects align with business strategy."
@@ -1617,56 +1629,154 @@
       },
       {
         "title": "Data Protection",
-        "content": ["We implement strict technical and administrative measures to protect your data, including:"],
-        "list": ["Encryption of sensitive data", "Protection against unauthorized access", "Regular data backups", "Staff training on information security"]
+        "content": [
+          "We implement strict technical and administrative measures to protect your data, including:"
+        ],
+        "list": [
+          "Encryption of sensitive data",
+          "Protection against unauthorized access",
+          "Regular data backups",
+          "Staff training on information security"
+        ]
       },
       {
         "title": "Your Rights",
-        "content": ["As the data owner, you have the right to:"],
-        "list": ["Access your personal data held by us", "Correct inaccurate data", "Request deletion of your data (where permitted by law)", "Withdraw consent for data processing", "Transfer your data to another entity"]
+        "content": [
+          "As the data owner, you have the right to:"
+        ],
+        "list": [
+          "Access your personal data held by us",
+          "Correct inaccurate data",
+          "Request deletion of your data (where permitted by law)",
+          "Withdraw consent for data processing",
+          "Transfer your data to another entity"
+        ]
       },
       {
         "title": "Data Retention",
-        "content": ["We retain your data only for as long as necessary to fulfill the specified purposes, or as required by local laws in the United Arab Emirates and other countries where we operate."]
+        "content": [
+          "We retain your data only for as long as necessary to fulfill the specified purposes, or as required by local laws in the United Arab Emirates and other countries where we operate."
+        ]
       },
       {
         "title": "Online Community",
-        "content": ["When participating in our online community:"],
-        "list": ["Use your real name and valid email address", "Adhere to professional dialogue etiquette", "Published information may be visible to the public"]
+        "content": [
+          "When participating in our online community:"
+        ],
+        "list": [
+          "Use your real name and valid email address",
+          "Adhere to professional dialogue etiquette",
+          "Published information may be visible to the public"
+        ]
       },
       {
         "title": "Updates",
-        "content": ["We may update this notice to reflect changes in our practices or legal requirements. Significant changes will be communicated via our website or email."]
+        "content": [
+          "We may update this notice to reflect changes in our practices or legal requirements. Significant changes will be communicated via our website or email."
+        ]
       },
       {
         "title": "Contact Us",
-        "content": ["For any inquiries regarding your privacy or data, please contact us at:", "Help Empowerment", "Email: Support@helpempowerment.com", "Website: www.helpempowerment.com"]
+        "content": [
+          "For any inquiries regarding your privacy or data, please contact us at:",
+          "Help Empowerment",
+          "Email: Support@helpempowerment.com",
+          "Website: www.helpempowerment.com"
+        ]
       }
     ]
   },
   "legalRefund": {
     "title": "Refund Policy",
-    "intro": ["Once the payment is made, the confirmation notice will be sent to you via email within 24 hours of receipt.", "We are committed to fair and transparent service, and we encourage you to review free samples or demos before purchasing."],
+    "intro": [
+      "Once the payment is made, the confirmation notice will be sent to you via email within 24 hours of receipt.",
+      "We are committed to fair and transparent service, and we encourage you to review free samples or demos before purchasing."
+    ],
     "sections": [
-      {"title": "Live & Interactive Courses", "content": ["A full refund is available if you contact us before the start of the second session. Once the second session begins, refunds cannot be issued as your seat and instructor resources are reserved.", "Refunds will be made back to the payment solution used initially by you. It needs 45 days for the refund transfer to be completed."]},
-      {"title": "Digital Products (Exam Simulator, Recorded Courses, Bundles)", "content": ["No refunds are available for digital products (including exam simulators, recorded courses, and bundles) once access is granted, as they are available for immediate use."]},
-      {"title": "Non-Refundable Items", "list": ["Activated exam vouchers", "Downloaded materials (e.g., workbooks, templates)", "Custom training programs developed specifically for your organization", "Membership or subscription fees after the billing period has started"]},
-      {"title": "How to Request a Refund", "steps": ["Email support@helpempowerment.com with your full name and order/invoice number, course/product name and purchase date, and a brief reason for your request.", "You will receive an acknowledgment and a case number within 24 business hours.", "In some cases, we may contact you to discuss alternatives or better understand your needs."]},
-      {"title": "Processing Timeline", "list": ["Approved refunds are processed within 10–14 business days.", "Refunds are issued to the original payment method.", "International refunds may take additional time due to banking procedures."]}
+      {
+        "title": "Live & Interactive Courses",
+        "content": [
+          "A full refund is available if you contact us before the start of the second session. Once the second session begins, refunds cannot be issued as your seat and instructor resources are reserved.",
+          "Refunds will be made back to the payment solution used initially by you. It needs 45 days for the refund transfer to be completed."
+        ]
+      },
+      {
+        "title": "Digital Products (Exam Simulator, Recorded Courses, Bundles)",
+        "content": [
+          "No refunds are available for digital products (including exam simulators, recorded courses, and bundles) once access is granted, as they are available for immediate use."
+        ]
+      },
+      {
+        "title": "Non-Refundable Items",
+        "list": [
+          "Activated exam vouchers",
+          "Downloaded materials (e.g., workbooks, templates)",
+          "Custom training programs developed specifically for your organization",
+          "Membership or subscription fees after the billing period has started"
+        ]
+      },
+      {
+        "title": "How to Request a Refund",
+        "steps": [
+          "Email support@helpempowerment.com with your full name and order/invoice number, course/product name and purchase date, and a brief reason for your request.",
+          "You will receive an acknowledgment and a case number within 24 business hours.",
+          "In some cases, we may contact you to discuss alternatives or better understand your needs."
+        ]
+      },
+      {
+        "title": "Processing Timeline",
+        "list": [
+          "Approved refunds are processed within 10–14 business days.",
+          "Refunds are issued to the original payment method.",
+          "International refunds may take additional time due to banking procedures."
+        ]
+      }
     ],
     "lastUpdate": ""
   },
   "terms": {
     "title": "Terms and Conditions",
     "sections": [
-      {"content": ["Welcome to www.helpempowerment.com. These Terms and Conditions govern your use of our Site and the purchase of any services or products offered by Help Empowerment LLC. By using this Site, you agree to be bound by these Terms.", "Help Empowerment LLC maintains the www.helpempowerment.com Website (Site).", "United Arab Emirates is our country of domicile and the governing law is the local law.", "Any purchase, dispute or claim arising out of or in connection with this website shall be governed and construed in accordance with the laws of UAE.", "Visa or MasterCard debit and credit cards in AED will be accepted for payment.", "The displayed price and currency at the checkout page will be the same price and currency printed on the Transaction Receipt, and the amount charged to the card will be shown in your card currency.", "We will not trade with or provide any services to OFAC and sanctioned countries.", "Customers using the website who are minors or under the age of 18 shall not register as users of the website and shall not transact on or use the website.", "The cardholder must retain a copy of transaction records and www.helpempowerment.com policies and rules.", "The user is responsible for maintaining the confidentiality of their account."]}
+      {
+        "content": [
+          "Welcome to www.helpempowerment.com. These Terms and Conditions govern your use of our Site and the purchase of any services or products offered by Help Empowerment LLC. By using this Site, you agree to be bound by these Terms.",
+          "Help Empowerment LLC maintains the www.helpempowerment.com Website (Site).",
+          "United Arab Emirates is our country of domicile and the governing law is the local law.",
+          "Any purchase, dispute or claim arising out of or in connection with this website shall be governed and construed in accordance with the laws of UAE.",
+          "Visa or MasterCard debit and credit cards in AED will be accepted for payment.",
+          "The displayed price and currency at the checkout page will be the same price and currency printed on the Transaction Receipt, and the amount charged to the card will be shown in your card currency.",
+          "We will not trade with or provide any services to OFAC and sanctioned countries.",
+          "Customers using the website who are minors or under the age of 18 shall not register as users of the website and shall not transact on or use the website.",
+          "The cardholder must retain a copy of transaction records and www.helpempowerment.com policies and rules.",
+          "The user is responsible for maintaining the confidentiality of their account."
+        ]
+      }
     ]
   },
   "cookies": {
     "title": "Cookie Policy",
     "sections": [
-      {"content": ["Welcome to Help Empowerment LLC. We use cookies on our website, www.helpempowerment.com, to enhance your experience.", "Cookies are small text files that are stored on your device when you visit our website. They help us make the site function efficiently and provide a smooth browsing experience.", "Cookies are used to ensure the proper functioning of the website (e.g., to remember your browsing session), to improve performance by analyzing how visitors use the site, to personalize the experience based on your preferences (e.g., language and settings), and to support security and protect against fraudulent activity.", "By continuing to browse the website, you consent to our use of cookies in accordance with this policy.", "You can control cookies through your browser settings.", "We may update this policy from time to time to reflect changes in law, technology, or our operations.", "Any updates will be posted on this page with a new Last Updated date.", "We encourage you to review this policy periodically."]},
-      {"title": "Contact Us", "content": ["For inquiries or questions about our cookie policy, please contact us:", "Empowerment Support", "Email: support@helpempowerment.com", "Website: www.helpempowerment.com"]}
+      {
+        "content": [
+          "Welcome to Help Empowerment LLC. We use cookies on our website, www.helpempowerment.com, to enhance your experience.",
+          "Cookies are small text files that are stored on your device when you visit our website. They help us make the site function efficiently and provide a smooth browsing experience.",
+          "Cookies are used to ensure the proper functioning of the website (e.g., to remember your browsing session), to improve performance by analyzing how visitors use the site, to personalize the experience based on your preferences (e.g., language and settings), and to support security and protect against fraudulent activity.",
+          "By continuing to browse the website, you consent to our use of cookies in accordance with this policy.",
+          "You can control cookies through your browser settings.",
+          "We may update this policy from time to time to reflect changes in law, technology, or our operations.",
+          "Any updates will be posted on this page with a new Last Updated date.",
+          "We encourage you to review this policy periodically."
+        ]
+      },
+      {
+        "title": "Contact Us",
+        "content": [
+          "For inquiries or questions about our cookie policy, please contact us:",
+          "Empowerment Support",
+          "Email: support@helpempowerment.com",
+          "Website: www.helpempowerment.com"
+        ]
+      }
     ]
   },
   "support": {
@@ -1728,14 +1838,14 @@
     "error": "Failed to send reset link. Please try again."
   },
   "otp": {
-      "required": "This field is required",
+    "required": "This field is required",
     "title": "Verify Code",
     "description": "Enter the code sent to your email",
     "label": "OTP Code",
     "verify": "Verify",
     "invalid": "Invalid or expired code",
-      "sentSuccessfully": "A verification code has been sent to your email.",
-      "sendFailed": "Failed to send the verification code. Please try again."
+    "sentSuccessfully": "A verification code has been sent to your email.",
+    "sendFailed": "Failed to send the verification code. Please try again."
   },
   "resetPassword": {
     "title": "Reset Password",
@@ -1813,65 +1923,64 @@
   "upcomingLive": {
     "noSessions": "While there are no live courses scheduled at the moment, stay tuned our next event will be announced soon, and it’s worth the wait",
     "noWebinars": "While there are no Webinar scheduled at the moment, stay tuned our next event will be announced soon, and it’s worth the wait"
-  }
-  ,
-    "invoicePage": {
-      "paymentSuccessful": "Payment Successful",
-      "thankYou": "Thank you for your purchase. A copy of your invoice has been sent to",
-      "downloadInvoice": "Download Invoice",
-      "printInvoice": "Print Invoice",
-      "printTip": "Disable browser headers and footers for the best print result.",
-      "purchaseInformation": "Purchase Information",
-      "accessActivated": "Access has been activated successfully.",
-      "receiptSent": "A receipt has been sent to your email.",
-      "keepInvoice": "Keep this invoice for your records.",
-      "needHelp": "Need help?",
-      "whatsNext": "What's Next?",
-      "profileMessage": "You can now access your purchased courses from your profile.",
-      "goToProfile": "Go To Profile"
-    },
-      "invoice": {
-        "invoiceNumber": "Invoice #",
-        "date": "Date",
-        "billTo": "Bill To",
-        "description": "Description",
-        "quantity": "Qty",
-        "price": "Price",
-        "total": "Total",
-        "paid": "PAID"
-      },
-      "HELP EMPOWERMENT":"HELP EMPOWERMENT",
-  "AED":"AED",
-  "Name":"Name",
-  "Enter your name":"Enter your name",
-  "Account Details":"Account Details",
-  "Done":"Done",
-  "Failed":"Failed",
-  "Passed":"Passed",
-  "forget-password":"Forget Password?",
-  "Maximum number of devices (2) reached. Please logout from another device.":"Maximum number of devices (2) reached. Please logout from another device.",
-"Attachment upload failed":"Attachment upload failed",
-  "Attachment deleted successfully":"Attachment deleted successfully",
-  "Invalid email format":"Invalid email format",
-  "Your application has been submitted successfully. Uploading attachment...":"Your application has been submitted successfully. Uploading attachment..."
-,"Subtotal":"Subtotal",
-"Discount":"Discount",
-"Total":"Total",
-"Order Summary":"Order Summary",
-"Enter coupon code":"Enter coupon code",
-"Apply":"Apply",
-"Coupon Applied:":"Coupon Applied:",
-"Remove":"Remove",
-"Billing Information":"Billing Information",
-"Full Name":"Full Name",
-"Email Addres":"Email Addres",
-"Phone Number":"Phone Number",
-"Address":"Address",
-"City":"City",
-"Payment Method":"Payment Method",
-"Complete Order":"Complete Order",
-"Processing...":"Processing...",
-"Proceed to Checkout":"Proceed to Checkout",
+  },
+  "invoicePage": {
+    "paymentSuccessful": "Payment Successful",
+    "thankYou": "Thank you for your purchase. A copy of your invoice has been sent to",
+    "downloadInvoice": "Download Invoice",
+    "printInvoice": "Print Invoice",
+    "printTip": "Disable browser headers and footers for the best print result.",
+    "purchaseInformation": "Purchase Information",
+    "accessActivated": "Access has been activated successfully.",
+    "receiptSent": "A receipt has been sent to your email.",
+    "keepInvoice": "Keep this invoice for your records.",
+    "needHelp": "Need help?",
+    "whatsNext": "What's Next?",
+    "profileMessage": "You can now access your purchased courses from your profile.",
+    "goToProfile": "Go To Profile"
+  },
+  "invoice": {
+    "invoiceNumber": "Invoice #",
+    "date": "Date",
+    "billTo": "Bill To",
+    "description": "Description",
+    "quantity": "Qty",
+    "price": "Price",
+    "total": "Total",
+    "paid": "PAID"
+  },
+  "HELP EMPOWERMENT": "HELP EMPOWERMENT",
+  "AED": "AED",
+  "Name": "Name",
+  "Enter your name": "Enter your name",
+  "Account Details": "Account Details",
+  "Done": "Done",
+  "Failed": "Failed",
+  "Passed": "Passed",
+  "forget-password": "Forget Password?",
+  "Maximum number of devices (2) reached. Please logout from another device.": "Maximum number of devices (2) reached. Please logout from another device.",
+  "Attachment upload failed": "Attachment upload failed",
+  "Attachment deleted successfully": "Attachment deleted successfully",
+  "Invalid email format": "Invalid email format",
+  "Your application has been submitted successfully. Uploading attachment...": "Your application has been submitted successfully. Uploading attachment...",
+  "Subtotal": "Subtotal",
+  "Discount": "Discount",
+  "Total": "Total",
+  "Order Summary": "Order Summary",
+  "Enter coupon code": "Enter coupon code",
+  "Apply": "Apply",
+  "Coupon Applied:": "Coupon Applied:",
+  "Remove": "Remove",
+  "Billing Information": "Billing Information",
+  "Full Name": "Full Name",
+  "Email Addres": "Email Addres",
+  "Phone Number": "Phone Number",
+  "Address": "Address",
+  "City": "City",
+  "Payment Method": "Payment Method",
+  "Complete Order": "Complete Order",
+  "Processing...": "Processing...",
+  "Proceed to Checkout": "Proceed to Checkout",
   "Exam Simulation": "Exam Simulation",
   "Recorded Course": "Recorded Course",
   "Live Course": "Live Course"

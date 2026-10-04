@@ -2,6 +2,14 @@
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h4 class="mb-0">Messages</h4>
     <div class="d-flex gap-1 align-items-center">
+      <button
+        type="button"
+        class="btn btn-success btn-sm text-nowrap"
+        [disabled]="loading() || filteredContacts().length === 0"
+        (click)="exportToExcel()"
+      >
+        <i class="bi bi-file-earmark-excel"></i> Export Excel
+      </button>
       <mat-form-field
         class="small-field"
         subscriptSizing="dynamic"

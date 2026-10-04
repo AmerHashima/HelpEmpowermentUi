@@ -10,6 +10,7 @@ import { switchMap, startWith, catchError, of, Subject, map } from 'rxjs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ToastingMessagesService } from '../../../shared/Services/ToastingMessages/toasting-messages.service';
+import * as XLSX from 'xlsx';
 @Component({
   selector: 'app-admin-contact-us',
   standalone: true,
@@ -231,6 +232,58 @@ export class AdminContactUsComponent {
     this.attachmentUrl.set(null);
     this.hasAttachment.set(false);
     this.respondText.set('');
+  }
+
+  exportToExcel(): void {
+    const contacts = this.filteredContacts();
+    if (!contacts.length) return;
+
+    const rows = contacts.map(contact => ({
+      'Ticket Number': contact.ticketNumber ?? '',
+      'Contact Type': contact.contactTypeName ?? '',
+      'Name': contact.fullName ?? '',
+      'Arabic Name': contact.fullNameAr ?? '',
+      'Email': contact.email ?? '',
+      'Phone': contact.phone || contact.mobile || '',
+      'Subject': contact.subject ?? '',
+      'Arabic Subject': contact.subjectAr ?? '',
+      'Message': contact.message ?? '',
+      'Arabic Message': contact.messageAr ?? '',
+      'Priority': contact.priorityName ?? '',
+      'Status': contact.statusName || 'Open',
+      'Read': contact.isRead ? 'Yes' : 'No',
+      'Created At': this.formatExportDate(contact.createdAt),
+      'Read At': this.formatExportDate(contact.readAt),
+      'Response': contact.response ?? '',
+      'Responded At': this.formatExportDate(contact.respondedAt)
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(rows);
+    worksheet['!cols'] = [
+      { wch: 18 }, { wch: 20 }, { wch: 24 }, { wch: 24 },
+      { wch: 28 }, { wch: 18 }, { wch: 32 }, { wch: 32 },
+      { wch: 55 }, { wch: 55 }, { wch: 14 }, { wch: 14 },
+      { wch: 10 }, { wch: 22 }, { wch: 22 }, { wch: 45 }, { wch: 22 }
+    ];
+    if (worksheet['!ref']) {
+      worksheet['!autofilter'] = { ref: worksheet['!ref'] };
+    }
+
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Messages');
+
+    const activeType = this.activeContactType() === 'all'
+      ? 'All'
+      : this.activeContactType().replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '');
+    const date = new Date().toISOString().slice(0, 10);
+    XLSX.writeFile(workbook, `Messages_${activeType || 'Filtered'}_${date}.xlsx`);
+    this.toasting.showToast('Messages exported successfully', 'success');
+  }
+
+  private formatExportDate(value: string | null | undefined): string {
+    if (!value) return '';
+    const date = new Date(value);
+    return Number.isNaN(date.getTime()) ? value : date.toLocaleString('en-GB');
   }
 
   async deleteAttachment(id: string) {

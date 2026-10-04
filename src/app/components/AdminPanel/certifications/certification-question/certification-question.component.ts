@@ -115,6 +115,9 @@ export class CertificationQuestionComponent {
   questionImages = signal<QuestionImageView[]>([]);
   imagePreview = signal<{ url: string; name: string } | null>(null);
   imageUploading = signal(false);
+  selectedExplanationImageFiles = signal<File[]>([]);
+  selectedExplanationImagePreviews = signal<string[]>([]);
+  explanationImages = signal<QuestionImageView[]>([]);
 
   // Options
   questionTypes: any[] = [];
@@ -242,6 +245,11 @@ export class CertificationQuestionComponent {
           : q.questionImage
             ? [{ oid: null, fileName: q.questionImage, url: this.certificationService.getQuestionImageUrl(questionId) }]
             : []);
+        this.explanationImages.set((q.explanationImages ?? []).map((image: any) => ({
+          oid: image.oid,
+          fileName: image.fileName,
+          url: this.certificationService.getQuestionExplanationImageUrl(questionId, image.oid)
+        })));
       }
       this.editMode = true;
       this.choiceAnswerOrderCounter = 0;
@@ -424,6 +432,7 @@ export class CertificationQuestionComponent {
   }
 
   onAnswerInputClick(index: number): void {
+    if (this.editMode) return;
     if (index !== this.answersArray.length - 1) return;
     const control = this.answersArray.at(index)?.get('answerText');
     const value = String(control?.value ?? '').trim();
@@ -534,7 +543,7 @@ export class CertificationQuestionComponent {
       correctAnswer: question.correctAnswer,
       question: question.question,
       correctChoiceOid: null,
-      createdBy: question.createdBy,
+      createdBy: question.createdBy ?? DEFAULT_USER_ID,
     });
 
     this.lastAutoTranslatedAr = question.questionText_Ar ?? '';
@@ -642,8 +651,14 @@ export class CertificationQuestionComponent {
 
 
     if (this.form.invalid) {
-      // this.logAllInvalidControls();
       this.form.markAllAsTouched();
+      const invalidFields = this.getInvalidFieldNames();
+      this.toast.showToast(
+        invalidFields.length
+          ? `Please complete the required fields: ${invalidFields.join(', ')}`
+          : 'Please complete all required fields before saving',
+        'error'
+      );
       return;
     }
 
@@ -686,6 +701,9 @@ export class CertificationQuestionComponent {
     this.selectedImageFiles.set([]);
     this.selectedImagePreviews.set([]);
     this.questionImages.set([]);
+    this.selectedExplanationImageFiles.set([]);
+    this.selectedExplanationImagePreviews.set([]);
+    this.explanationImages.set([]);
 
     // Clear arrays
     this.resetFormArrays();
@@ -873,6 +891,51 @@ export class CertificationQuestionComponent {
     if (this.selectedImageFiles().length === 0) imageInput.value = '';
   }
 
+  onExplanationImageSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const selectedFiles = Array.from(input.files ?? []);
+    const existingFiles = this.selectedExplanationImageFiles();
+    const files = selectedFiles.filter(file =>
+      !existingFiles.some(existing =>
+        existing.name === file.name &&
+        existing.size === file.size &&
+        existing.lastModified === file.lastModified
+      )
+    );
+    if (!files.length) {
+      input.value = '';
+      return;
+    }
+
+    Promise.all(files.map(file => this.readFileAsDataUrl(file))).then(previews => {
+      this.selectedExplanationImageFiles.update(current => [...current, ...files]);
+      this.selectedExplanationImagePreviews.update(current => [...current, ...previews]);
+      input.value = '';
+    });
+  }
+
+  removePendingExplanationImage(index: number, imageInput: HTMLInputElement): void {
+    this.selectedExplanationImagePreviews.update(previews => previews.filter((_, i) => i !== index));
+    this.selectedExplanationImageFiles.update(files => files.filter((_, i) => i !== index));
+    if (this.selectedExplanationImageFiles().length === 0) imageInput.value = '';
+  }
+
+  async onDeleteExplanationImage(image: QuestionImageView): Promise<void> {
+    if (!image.oid || !(await confirmDelete('Are you sure you want to delete this explanation image?'))) return;
+    this.imageUploading.set(true);
+    this.certificationService.deleteQuestionExplanationImage(this.questionId, image.oid).subscribe({
+      next: () => {
+        this.imageUploading.set(false);
+        this.explanationImages.update(images => images.filter(item => item !== image));
+        this.toast.showToast('Explanation image deleted successfully', 'success');
+      },
+      error: () => {
+        this.imageUploading.set(false);
+        this.toast.showToast('Failed to delete explanation image', 'error');
+      }
+    });
+  }
+
   openImagePreview(url: string, name: string): void {
     this.imagePreview.set({ url, name });
   }
@@ -921,25 +984,70 @@ export class CertificationQuestionComponent {
     })));
   }
 
+  private setExplanationImagesFromResponse(questionId: string, question: any): void {
+    this.selectedExplanationImageFiles.set([]);
+    this.selectedExplanationImagePreviews.set([]);
+    this.explanationImages.set((question?.explanationImages ?? []).map((image: any) => ({
+      oid: image.oid,
+      fileName: image.fileName,
+      url: this.certificationService.getQuestionExplanationImageUrl(questionId, image.oid) + '?t=' + Date.now()
+    })));
+  }
+
+  private uploadPendingImages(questionId: string): Observable<unknown[]> {
+    const uploads: Observable<unknown>[] = [];
+    const questionImages = this.selectedImageFiles();
+    const explanationImages = this.selectedExplanationImageFiles();
+
+    if (questionImages.length) {
+      uploads.push(this.certificationService.uploadQuestionImages(questionId, questionImages).pipe(
+        tap(updated => this.setQuestionImagesFromResponse(questionId, updated)),
+        catchError(() => {
+          this.toast.showToast('question.image.upload.error', 'error');
+          return of(null);
+        })
+      ));
+    }
+    if (explanationImages.length) {
+      uploads.push(this.certificationService.uploadQuestionExplanationImages(questionId, explanationImages).pipe(
+        tap(updated => this.setExplanationImagesFromResponse(questionId, updated)),
+        catchError(() => {
+          this.toast.showToast('Failed to upload explanation images', 'error');
+          return of(null);
+        })
+      ));
+    }
+
+    return uploads.length ? forkJoin(uploads) : of([]);
+  }
+
+  private getInvalidFieldNames(): string[] {
+    const labels: Record<string, string> = {
+      certification: 'Certification',
+      coursesMasterExamOid: 'Exam',
+      questionTypeLookupId: 'Question Type',
+      questionText: 'Question Text',
+      orderNo: 'Question Order',
+      createdBy: 'Created By',
+      answers: 'Answers',
+      dragQuestions: 'Matching Questions',
+      dragAnswers: 'Matching Answers'
+    };
+
+    return Object.entries(this.form.controls)
+      .filter(([, control]) => control.invalid)
+      .map(([name]) => labels[name] ?? name);
+  }
+
   private createNewQuestion(payload: any): void {
     this.certificationService.createQuestion(payload).subscribe({
       next: (created: any) => {
         this.questionId = created.oid;
-        const imageFiles = this.selectedImageFiles();
-        if (imageFiles.length && created.oid) {
-          this.certificationService.uploadQuestionImages(created.oid, imageFiles).subscribe({
-            next: (updated) => {
-              this.setQuestionImagesFromResponse(created.oid, updated);
-              this.handleAfterQuestionSaved();
-            },
-            error: () => {
-              this.toast.showToast('question.image.upload.error', 'error');
-              this.handleAfterQuestionSaved();
-            }
-          });
-        } else {
+        this.imageUploading.set(true);
+        this.uploadPendingImages(created.oid).subscribe(() => {
+          this.imageUploading.set(false);
           this.handleAfterQuestionSaved();
-        }
+        });
       },
       error: (err) => {
         this.toast.showToast('question.add.error', 'error');
@@ -1002,29 +1110,20 @@ export class CertificationQuestionComponent {
 
     this.certificationService.updateCourseQuestion(payload).subscribe({
       next: () => {
-        const imageFiles = this.selectedImageFiles();
         const afterUpload = () => {
           this.toast.showToast('question.update.success', 'success');
           this.questionStore.setSelectedQuestion(null);
           this.location.back();
         };
-        if (imageFiles.length && this.questionId) {
-          this.imageUploading.set(true);
-          this.certificationService.uploadQuestionImages(this.questionId, imageFiles).subscribe({
-            next: (updated) => {
-              this.setQuestionImagesFromResponse(this.questionId, updated);
-              this.imageUploading.set(false);
-              afterUpload();
-            },
-            error: () => {
-              this.imageUploading.set(false);
-              this.toast.showToast('question.image.upload.error', 'error');
-              afterUpload();
-            }
-          });
-        } else {
+        if (!this.questionId) {
           afterUpload();
+          return;
         }
+        this.imageUploading.set(true);
+        this.uploadPendingImages(this.questionId).subscribe(() => {
+          this.imageUploading.set(false);
+          afterUpload();
+        });
       },
       error: (err) => {
         console.error('Update failed', err);

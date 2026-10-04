@@ -64,6 +64,7 @@ export class ClientExamQuestionComponent {
   isBlurred = signal(false);
   violationsCount = signal(0);
   questionImageUrls = signal<string[]>([]);
+  explanationImageUrls = signal<string[]>([]);
 
   showResultState = signal(false);
   ngOnInit() {
@@ -146,6 +147,11 @@ export class ClientExamQuestionComponent {
         : q?.questionImage?.trim() && questionId
           ? [this.certificationService.getQuestionImageUrl(questionId)]
           : []);
+      const explanationImages = q?.explanationImages ?? [];
+      this.explanationImageUrls.set(explanationImages.length && questionId
+        ? explanationImages.map((image: any) =>
+            this.certificationService.getQuestionExplanationImageUrl(questionId, image.oid))
+        : []);
     }
     if (changes['question'] && this.isMatchingQuestion) {
 
@@ -185,6 +191,11 @@ export class ClientExamQuestionComponent {
   get isFirstQuestion(): boolean {
     const q = this.question();
     return !q || q.orderNo === 1;
+  }
+
+  get questionScore(): number {
+    const value = Number(this.question()?.questionScore ?? 0);
+    return Number.isFinite(value) ? value : 0;
   }
 
   get isLastQuestion(): boolean {
