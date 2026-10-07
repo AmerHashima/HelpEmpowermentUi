@@ -30,13 +30,14 @@ import { CourseVideosService } from '../../../../Services/course-videos.service'
 import { CertificationService } from '../../../../Services/certification.service';
 import { Router } from '@angular/router';
 import { CourseTabContentService } from '../../../../Services/course-tab-content.service';
+import { EnrollmentSocialProofComponent } from '../../../../shared/clientSide/enrollment-social-proof/enrollment-social-proof.component';
 
 @Component({
   selector: 'app-live-course',
   imports: [PageBannerComponent, SiteButtonComponent,FormsModule,InputComponent,PhoneInputComponent,
     CoureseContentComponent, CoureseFeaturesComponent, CoureseOutlineComponent, InstructorInfoComponent,
     TargetAudienceComponent, StarRatingComponent, TranslatePipe, NgIf, UpcomingSessionsComponent, GenericModelComponent,
-    NgClass
+    NgClass, EnrollmentSocialProofComponent
   ],
   templateUrl: './live-course.component.html',
   styleUrl: './live-course.component.scss'
@@ -61,7 +62,6 @@ export class LiveCourseComponent {
   isEnrolled = this.studentService.isLiveCourseEnrolled;
   showConfirm: boolean = false;
   showRegisterConfirm: boolean = false;
-  enrollImage = 'assets/images/navBar/user.jpg';
   courseImage = "assets/images/liveCourse/liveCourse.jpeg";
   tabContent = toSignal(this.tabService.getTab(this.shared.currentCertificate(), 'live-course').pipe(catchError(() => of(null))), { initialValue: null });
   tabBanner = computed(() => this.tabContent()?.content.banner[this.isRTL() ? 'ar' : 'en']);

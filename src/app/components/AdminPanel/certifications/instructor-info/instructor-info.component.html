@@ -3,8 +3,21 @@
   <app-accordion [title]="sectionTitle()">
     @if (sectionDescription()) { <p class="mb-3">{{ sectionDescription() }}</p> }
     <div class="instructor-content d-flex flex-column gap-4">
+      <div class="instructor-profile">
+        <img
+          class="instructor-image"
+          [src]="instructor().imageUrl"
+          [alt]="instructor().name | translate"
+          (error)="useDefaultImage($event)"
+        />
+        <div class="instructor-profile-copy">
+          <span class="instructor-label">{{ 'instructor.nameLabel' | translate }}</span>
+          <h3 class="instructor-name">{{ instructor().name | translate }}</h3>
+        </div>
+      </div>
+
       <!-- Introduction paragraph -->
-      <p>{{ instructor().introParagragh | translate}}</p>
+      <p class="instructor-introduction">{{ instructor().introParagragh | translate}}</p>
 
       <!-- Skills / Services grid -->
       <div class="row gy-2">

@@ -21,12 +21,13 @@ import { CertificationService } from '../../../../Services/certification.service
 import { CourseTabContentService } from '../../../../Services/course-tab-content.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { catchError, of } from 'rxjs';
+import { EnrollmentSocialProofComponent } from '../../../../shared/clientSide/enrollment-social-proof/enrollment-social-proof.component';
 
 @Component({
   selector: 'app-exam-simulator',
   imports: [IconCardComponent, SiteButtonComponent, TranslateModule, TranslatePipe, FeatureComponent,
     StarRatingComponent, PageBannerComponent, NgIf, SimulatorExamsComponent,
-    GenericModelComponent
+    GenericModelComponent, EnrollmentSocialProofComponent
   ],
   templateUrl: './exam-simulator.component.html',
   styleUrl: './exam-simulator.component.scss',
@@ -221,7 +222,6 @@ export class ExamSimulatorComponent {
     (this.shared.currentCertificate() === 'pmp' ? 'examSimulator.masterPmpQuestions' : ''));
 
   simulatorVideo = 'assets/videos/SimulatorVideo.mp4';
-  enrollImage = 'assets/images/enroll.png';
   showConfirm: boolean = false;
   allExams = this.examsStore.exams
   freeExams = computed(() => {

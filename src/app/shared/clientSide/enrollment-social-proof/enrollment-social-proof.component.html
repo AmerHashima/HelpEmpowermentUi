@@ -1,0 +1,12 @@
+<div class="enrollment-proof" role="group" [attr.aria-label]="count() + ' ' + ('common.enrolled' | translate)">
+  <div class="learner-avatars" aria-hidden="true">
+    @for (learner of learners; track learner.image) {
+      <img [src]="learner.image" [alt]="learner.alt" (error)="useFallback($event)" />
+    }
+    <span class="learner-count">{{ count() }}</span>
+  </div>
+  <div class="proof-copy">
+    <strong>{{ count() }} {{ 'common.enrolled' | translate }}</strong>
+    <small>{{ 'common.learnerCommunity' | translate }}</small>
+  </div>
+</div>

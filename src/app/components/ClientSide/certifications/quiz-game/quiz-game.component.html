@@ -41,11 +41,15 @@
 
       <div class="d-flex align-content-center gap-3">
         <app-site-button
-          [title]="quizGameContent().play"
-          [icon]="'bi bi-arrow'"
+          [title]="isComingSoon() ? 'quizGame.comingSoon' : quizGameContent().play"
+          [icon]="isComingSoon() ? 'bi bi-clock-history' : 'bi bi-arrow'"
           type="main"
+          [disabled]="isComingSoon()"
           (click)="playNow()"
         ></app-site-button>
+        @if (isComingSoon()) {
+          <span class="coming-soon-note">{{ 'quizGame.comingSoonDescription' | translate }}</span>
+        }
       </div>
     </div>
   </div>

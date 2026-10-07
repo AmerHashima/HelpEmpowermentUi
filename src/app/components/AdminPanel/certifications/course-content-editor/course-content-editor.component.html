@@ -12,7 +12,7 @@
       <button class="btn btn-outline-primary" type="button" [disabled]="loading() || loadingTemplate() || saving()" (click)="loadTemplate()">
         {{ loadingTemplate() ? 'Loading template…' : 'Load Template' }}
       </button>
-      <button class="btn btn-primary" [disabled]="saving() || loading() || translatingCount() > 0 || !activeTab()" (click)="save()">{{ saving() ? 'Saving…' : 'Save changes' }}</button>
+      <button class="btn btn-primary" [disabled]="saving() || loading() || translatingCount() > 0 || instructorImageUploading() || !activeTab()" (click)="save()">{{ saving() ? 'Saving…' : 'Save changes' }}</button>
     </div>
   </div>
 
@@ -34,6 +34,26 @@
             <div class="col-md-4"><label class="form-label">Order</label><input class="form-control" type="number" [(ngModel)]="tab.orderNo"></div>
             <div class="col-md-4 d-flex align-items-end"><label class="form-check"><input class="form-check-input" type="checkbox" [(ngModel)]="tab.isEnabled"> <span class="form-check-label">Show this tab</span></label></div>
           </div>
+
+          @if (tab.tabKey === 'quiz-game') {
+            <div class="quiz-availability card border-0 mb-4">
+              <div class="card-body">
+                <div class="row align-items-center g-3">
+                  <div class="col-md-7">
+                    <h5 class="mb-1">Quiz Game availability</h5>
+                    <p class="text-muted mb-0">Choose whether visitors can open the game or see a Coming Soon button.</p>
+                  </div>
+                  <div class="col-md-5">
+                    <label class="form-label">Website button status</label>
+                    <select class="form-select" [ngModel]="quizAvailability(tab)" (ngModelChange)="setQuizAvailability(tab, $event)">
+                      <option value="play-now">Play Now</option>
+                      <option value="coming-soon">Coming Soon</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
 
           <h5>Banner</h5>
           <div class="row g-3">
@@ -74,8 +94,29 @@
                       </div>
                     </div>
                     <div class="row g-3">
-                      <div class="col-md-6"><label class="form-label">{{ section.type === 'faq' ? 'Question' : 'Title' }} (English)</label><input class="form-control" [ngModel]="localized(item.title, 'en')" (ngModelChange)="setItemEnglish(item, 'title', $event)"></div>
-                      <div class="col-md-6"><label class="form-label">{{ section.type === 'faq' ? 'Question' : 'Title' }} (Arabic)</label><input class="form-control text-end" dir="rtl" [ngModel]="localized(item.title, 'ar')" (ngModelChange)="setItemText(item, 'title', 'ar', $event)"></div>
+                      @if (section.type === 'instructorIntro') {
+                        <div class="col-md-6"><label class="form-label">Instructor name (English)</label><input class="form-control" [ngModel]="localized(item.name, 'en')" (ngModelChange)="setInstructorNameEnglish(item, $event)"></div>
+                        <div class="col-md-6"><label class="form-label">Instructor name (Arabic)</label><input class="form-control text-end" dir="rtl" [ngModel]="localized(item.name, 'ar')" (ngModelChange)="setInstructorName(item, 'ar', $event)"></div>
+                        <div class="col-12">
+                          <label class="form-label">Instructor image</label>
+                          <div class="instructor-image-editor">
+                            <img [src]="instructorImagePreview(item.imageUrl)" alt="Instructor image preview" class="instructor-image-preview">
+                            <div class="d-flex flex-column align-items-start gap-2 flex-grow-1">
+                              <input #instructorImageInput type="file" class="d-none" accept="image/jpeg,image/png,image/gif,image/webp" (change)="onInstructorImageSelected($event, item)">
+                              <button type="button" class="btn btn-dark" [disabled]="instructorImageUploading()" (click)="instructorImageInput.click()">
+                                <i class="bi bi-image me-2"></i>{{ instructorImageUploading() ? 'Uploading…' : 'Browse Instructor Image' }}
+                              </button>
+                              <small class="text-muted">JPG, PNG, GIF or WEBP — maximum 10 MB.</small>
+                              @if (item.imageUrl) { <small class="text-break">Stored path: {{ item.imageUrl }}</small> }
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6"><label class="form-label">Introduction (English)</label><textarea class="form-control" rows="4" [ngModel]="localized(item.title, 'en')" (ngModelChange)="setItemEnglish(item, 'title', $event)"></textarea></div>
+                        <div class="col-md-6"><label class="form-label">Introduction (Arabic)</label><textarea class="form-control text-end" dir="rtl" rows="4" [ngModel]="localized(item.title, 'ar')" (ngModelChange)="setItemText(item, 'title', 'ar', $event)"></textarea></div>
+                      } @else {
+                        <div class="col-md-6"><label class="form-label">{{ section.type === 'faq' ? 'Question' : 'Title' }} (English)</label><input class="form-control" [ngModel]="localized(item.title, 'en')" (ngModelChange)="setItemEnglish(item, 'title', $event)"></div>
+                        <div class="col-md-6"><label class="form-label">{{ section.type === 'faq' ? 'Question' : 'Title' }} (Arabic)</label><input class="form-control text-end" dir="rtl" [ngModel]="localized(item.title, 'ar')" (ngModelChange)="setItemText(item, 'title', 'ar', $event)"></div>
+                      }
                       @if (hasItemDescription(section)) {
                         <div class="col-md-6"><label class="form-label">{{ section.type === 'faq' ? 'Answer' : 'Description' }} (English)</label><textarea class="form-control" rows="3" [ngModel]="localized(item.description, 'en')" (ngModelChange)="setItemEnglish(item, 'description', $event)"></textarea></div>
                         <div class="col-md-6"><label class="form-label">{{ section.type === 'faq' ? 'Answer' : 'Description' }} (Arabic)</label><textarea class="form-control text-end" dir="rtl" rows="3" [ngModel]="localized(item.description, 'ar')" (ngModelChange)="setItemText(item, 'description', 'ar', $event)"></textarea></div>

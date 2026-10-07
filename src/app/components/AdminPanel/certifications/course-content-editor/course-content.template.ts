@@ -64,7 +64,11 @@ function courseSections(): CourseTabSection[] {
     section('outline', 'Course Outline', 'محتوى الدورة',
       outlineEn.map((title, index) => ({ title: text(title, outlineAr[index] ?? '') }))),
     section('instructorIntro', en.instructor.info, ar.instructor.info,
-      [{ title: text(en.instructor.introParagragh, ar.instructor.introParagragh) }]),
+      [{
+        name: text(en.about.footer.name, ar.about.footer.name),
+        title: text(en.instructor.introParagragh, ar.instructor.introParagragh),
+        imageUrl: 'assets/images/profile/person.png'
+      }]),
     section('instructorSkills', 'Instructor Expertise', 'خبرات المدرب',
       skillsEn.map((skill, index) => item(skill, skillsAr[index], [
         'bi bi-person-badge', 'bi bi-briefcase', 'bi bi-building', 'bi bi-bar-chart'
@@ -132,7 +136,11 @@ const capmTemplate: CourseTabContent[] = [
   },
   {
     oid: '', courseCode: 'CAPM', tabKey: 'quiz-game', isEnabled: true, orderNo: 5, status: 'Published',
-    content: { banner: banner(en.quizGame.capm, ar.quizGame.capm, 'assets/images/quizGame/quizGame.jpeg'), sections: [] }
+    content: {
+      quizGame: { availability: 'play-now' },
+      banner: banner(en.quizGame.capm, ar.quizGame.capm, 'assets/images/quizGame/quizGame.jpeg'),
+      sections: []
+    }
   },
   {
     oid: '', courseCode: 'CAPM', tabKey: 'faq', isEnabled: true, orderNo: 6, status: 'Published',

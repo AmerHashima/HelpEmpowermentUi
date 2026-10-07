@@ -7,4 +7,8 @@ textarea.font-monospace { font-size: .82rem; }
 .built-in-section summary { cursor: pointer; list-style: none; }
 .built-in-section summary::-webkit-details-marker { display: none; }
 .section-item { background: #f7f9fc; border: 1px solid #edf0f4; }
+.quiz-availability { background: linear-gradient(135deg, rgba(173, 19, 87, .08), rgba(173, 19, 87, .02)); border-inline-start: 4px solid #ad1357 !important; }
+.instructor-image-editor { display: flex; align-items: center; gap: 1rem; padding: 1rem; border: 1px dashed #cbd3dc; border-radius: .75rem; background: #fff; }
+.instructor-image-preview { width: 112px; height: 112px; flex: 0 0 112px; object-fit: cover; object-position: top center; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 4px 14px rgba(31, 41, 55, .15); }
+@media (max-width: 575px) { .instructor-image-editor { align-items: flex-start; flex-direction: column; } }
 @media (max-width: 767px) { .editor-layout { grid-template-columns: 1fr; } .list-group { position: static; } }

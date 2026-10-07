@@ -27,6 +27,7 @@ export class QuizGameComponent {
   showMustLogin=false;
   tabContent = toSignal(this.tabService.getTab(this.shared.currentCertificate(), 'quiz-game').pipe(catchError(() => of(null))), { initialValue: null });
   tabBanner = computed(() => this.tabContent()?.content.banner[this.isRTL() ? 'ar' : 'en']);
+  isComingSoon = computed(() => this.tabContent()?.content.quizGame?.availability === 'coming-soon');
   quizGameContent = computed(() => {
     const cert = this.shared.currentCertificate();
     const key = cert === 'capm' ? 'capm' : cert === 'pmp' ? 'pmp' : null;
@@ -46,6 +47,7 @@ export class QuizGameComponent {
     };
   });
   playNow(){
+    if (this.isComingSoon()) return;
     if(!this.auth.studentToken()){
       this.showMustLogin=true;
       return;

@@ -51,6 +51,19 @@ export class CourseTabContentService {
     );
   }
 
+  uploadInstructorImage(courseCode: string, image: File): Observable<{ fileName: string }> {
+    return this.api.uploadFile<{ fileName: string }>(
+      `course-tab-contents/${encodeURIComponent(courseCode.trim())}/instructor-image`,
+      image,
+      'image',
+      'Instructor image uploaded successfully.'
+    );
+  }
+
+  getInstructorImageUrl(fileName: string): string {
+    return this.api.getFileUrl(`course-tab-contents/instructor-images/${encodeURIComponent(fileName)}`);
+  }
+
   invalidate(courseCode: string): void {
     const prefix = `${courseCode.trim().toUpperCase()}:`;
     [...this.cache.keys()].filter(key => key.startsWith(prefix)).forEach(key => this.cache.delete(key));

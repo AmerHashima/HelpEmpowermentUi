@@ -614,6 +614,7 @@
     "startNow": "Start Now",
     "learnMore": "Learn More",
     "enrolled": "enrolled",
+    "learnerCommunity": "Join our growing learner community",
     "freeAccess": "Free Access",
     "questions": "Questions",
     "duration": "Duration",
@@ -703,6 +704,8 @@
   },
   "quizGame": {
     "mustLogin": "You must have an account to access and play.",
+    "comingSoon": "Coming Soon",
+    "comingSoonDescription": "The Quiz Game is being prepared and will be available soon.",
     "pmp": {
       "master": "Level Up Your PMP Knowledge",
       "title": "Master the Essentials Through Play",
@@ -976,6 +979,7 @@
   "Upcoming Live Sessions": "Upcoming Live Sessions",
   "instructor": {
     "info": "Instructor Info",
+    "nameLabel": "Instructor",
     "introParagragh": "Expert in translating the organizational strategy into tangible results with 20 years of hands-on experience, I build the frameworks for lasting success. My expertise covers the full spectrum of strategic delivery:",
     "skills": [
       {

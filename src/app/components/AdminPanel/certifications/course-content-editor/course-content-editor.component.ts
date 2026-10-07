@@ -38,6 +38,7 @@ export class CourseContentEditorComponent implements OnDestroy {
   readonly showAdvanced = signal(false);
   readonly rawSections = signal('[]');
   readonly translatingCount = signal(0);
+  readonly instructorImageUploading = signal(false);
   readonly activeTab = computed(() => this.tabs().find(x => x.tabKey === this.activeKey()));
   readonly customSections = computed(() =>
     (this.activeTab()?.content.sections ?? [])
@@ -138,6 +139,50 @@ export class CourseContentEditorComponent implements OnDestroy {
       () => this.localized(item[field], 'ar'), translated => this.setItemText(item, field, 'ar', translated));
   }
 
+  setInstructorNameEnglish(item: CourseTabSectionItem, value: string): void {
+    this.setInstructorName(item, 'en', value);
+    this.autoTranslate(`instructor-name:${this.objectKey(item)}`, value,
+      () => this.localized(item.name, 'ar'),
+      translated => this.setInstructorName(item, 'ar', translated));
+  }
+
+  setInstructorName(item: CourseTabSectionItem, lang: 'en' | 'ar', value: string): void {
+    item.name = {
+      en: this.localized(item.name, 'en'),
+      ar: this.localized(item.name, 'ar'),
+      [lang]: value
+    };
+  }
+
+  onInstructorImageSelected(event: Event, item: CourseTabSectionItem): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    input.value = '';
+    if (!file || this.instructorImageUploading()) return;
+    if (!file.type.startsWith('image/')) {
+      this.error.set('Please select a valid instructor image.');
+      return;
+    }
+    this.error.set('');
+    this.instructorImageUploading.set(true);
+    this.contentService.uploadInstructorImage(this.currentCourseCode(), file).subscribe({
+      next: response => {
+        item.imageUrl = response.fileName;
+        this.tabs.update(tabs => [...tabs]);
+        this.instructorImageUploading.set(false);
+      },
+      error: () => {
+        this.error.set('Could not upload the instructor image. Please try again.');
+        this.instructorImageUploading.set(false);
+      }
+    });
+  }
+
+  instructorImagePreview(imageUrl?: string): string {
+    if (!imageUrl) return 'assets/images/profile/person.png';
+    return imageUrl.includes('/') ? imageUrl : this.contentService.getInstructorImageUrl(imageUrl);
+  }
+
   setCustomEnglish(section: CourseCustomSection, field: 'header' | 'description', value: string): void {
     section[field].en = value;
     this.autoTranslate(`custom:${this.objectKey(section)}:${field}`, value,
@@ -227,6 +272,7 @@ export class CourseContentEditorComponent implements OnDestroy {
       orderNo: index + 1,
       status: 'Draft',
       content: {
+        ...(tabKey === 'quiz-game' ? { quizGame: { availability: 'play-now' as const } } : {}),
         banner: {
           en: { titlePart1: '', titlePart2: '', description: '' },
           ar: { titlePart1: '', titlePart2: '', description: '' },
@@ -266,6 +312,15 @@ export class CourseContentEditorComponent implements OnDestroy {
   select(key: CourseTabKey): void {
     this.activeKey.set(key);
     this.showAdvanced.set(false);
+  }
+
+  quizAvailability(tab: CourseTabContent): 'play-now' | 'coming-soon' {
+    return tab.content.quizGame?.availability ?? 'play-now';
+  }
+
+  setQuizAvailability(tab: CourseTabContent, value: 'play-now' | 'coming-soon'): void {
+    tab.content.quizGame = { availability: value };
+    this.tabs.update(tabs => [...tabs]);
   }
 
   addSection(): void {

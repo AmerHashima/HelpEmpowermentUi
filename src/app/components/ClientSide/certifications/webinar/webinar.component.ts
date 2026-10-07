@@ -17,11 +17,13 @@ import { webinarContactLookup } from '../../../../data/lookUPS';
 import { ContactUsService } from '../../../../Services/contact-us.service';
 import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
 import { CourseTabContentService } from '../../../../Services/course-tab-content.service';
+import { InstructorInfoComponent } from '../../../AdminPanel/certifications/instructor-info/instructor-info.component';
 
 @Component({
   selector: 'app-webinar',
   imports: [PageBannerComponent,TranslatePipe,UpcomingSessionsComponent,CoureseFeaturesComponent,
-    SiteButtonComponent,GenericModelComponent,FormsModule,InputComponent,PhoneInputComponent
+    SiteButtonComponent,GenericModelComponent,FormsModule,InputComponent,PhoneInputComponent,
+    InstructorInfoComponent
   ],
   templateUrl: './webinar.component.html',
   styleUrl: './webinar.component.scss'

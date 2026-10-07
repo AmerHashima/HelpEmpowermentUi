@@ -28,13 +28,14 @@ import { CertificationService } from '../../../../Services/certification.service
 import { Router } from '@angular/router';
 import { CourseTabContentService } from '../../../../Services/course-tab-content.service';
 import { LocalizedDatePipe } from '../../../../shared/pipes/localized-date.pipe';
+import { EnrollmentSocialProofComponent } from '../../../../shared/clientSide/enrollment-social-proof/enrollment-social-proof.component';
 
 @Component({
   selector: 'app-recorded-course',
   imports: [PageBannerComponent, SiteButtonComponent, StarRatingComponent, TranslateModule, NgIf,
     TranslatePipe, NgIf, CoureseOutlineComponent, CoureseFeaturesComponent, CouresePlayerComponent,
     CoureseContentComponent, ResourcesComponent, InstructorInfoComponent, TargetAudienceComponent, GenericModelComponent,
-    DownloadCertificateComponent, LocalizedDatePipe
+    DownloadCertificateComponent, LocalizedDatePipe, EnrollmentSocialProofComponent
   ],
   templateUrl: './recorded-course.component.html',
   styleUrl: './recorded-course.component.scss'
@@ -55,7 +56,6 @@ export class RecordedCourseComponent {
   hasRecordedCourseAccess = computed(
     () => this.isEnrolled() && this.studentService.showExamSimulator === true
   );
-  enrollImage = 'assets/images/reviewers/person.png';
   recoedImage = "assets/images/recordedCourse.jpeg";
   price = this.certificationService.recordedCoursePrice;
   tabContent = toSignal(this.tabService.getTab(this.shared.currentCertificate(), 'recorded-course').pipe(catchError(() => of(null))), { initialValue: null });

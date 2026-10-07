@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, input } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { AccordionComponent } from '../../../../shared/accordion/accordion.component';
 import { ServiceCardComponent } from '../../../ClientSide/services/service-card/service-card.component';
@@ -7,11 +7,6 @@ import { Shared } from '../../../../shared/Services/shared/shared';
 import { CourseTabContentService } from '../../../../Services/course-tab-content.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { catchError, of } from 'rxjs';
-interface InstructorData {
-  introParagragh: string;
-  skills: any[];
-  certifcations: string[];
-}
 @Component({
   selector: 'app-instructor-info',
   imports: [
@@ -24,16 +19,19 @@ interface InstructorData {
   styleUrl: './instructor-info.component.scss'
 })
 export class InstructorInfoComponent {
+  readonly defaultInstructorImage = 'assets/images/profile/person.png';
   private shared = inject(Shared);
-  tabKey = input<'recorded-course' | 'live-course'>('recorded-course');
   private tabService = inject(CourseTabContentService);
   private tabContents = toSignal(this.tabService.getCourse(this.shared.currentCertificate()).pipe(catchError(() => of([]))), {initialValue: []});
-  readonly introSection = computed(() => this.tabContents().find(tab => tab.tabKey === this.tabKey())?.content.sections.find(s => s.type === 'instructorIntro'));
+  private readonly recordedCourse = computed(() => this.tabContents().find(tab => tab.tabKey === 'recorded-course'));
+  readonly introSection = computed(() => this.recordedCourse()?.content.sections.find(s => s.type === 'instructorIntro'));
   readonly sectionTitle = computed(() => this.introSection()?.header?.[this.shared.isRtl() ? 'ar' : 'en'] || 'instructor.info');
   readonly sectionDescription = computed(() => this.introSection()?.description?.[this.shared.isRtl() ? 'ar' : 'en'] || '');
   certification = this.shared.currentCertificate;
 
   private fallbackInstructor = {
+    name: 'about.footer.name',
+    imageUrl: this.defaultInstructorImage,
     introParagragh: 'instructor.introParagragh',
 
     skills: [
@@ -78,7 +76,7 @@ export class InstructorInfoComponent {
     ]
   };
   instructor = computed(() => {
-    const sections = this.tabContents().find(tab => tab.tabKey === this.tabKey())?.content.sections ?? [];
+    const sections = this.recordedCourse()?.content.sections ?? [];
     const intro = sections.find(s => s.type === 'instructorIntro' && s.isEnabled !== false)?.items[0];
     const skills = sections.find(s => s.type === 'instructorSkills' && s.isEnabled !== false)?.items;
     const certs = sections.find(s => s.type === 'instructorCertifications' && s.isEnabled !== false)?.items;
@@ -87,10 +85,20 @@ export class InstructorInfoComponent {
     const localize = (value: string | {en: string; ar: string} | undefined) =>
       typeof value === 'string' ? value : value?.[lang] ?? '';
     return {
+      name: localize(intro?.name) || this.fallbackInstructor.name,
+      imageUrl: this.resolveInstructorImage(intro?.imageUrl),
       introParagragh: localize(intro?.title),
       skills: (skills ?? []).map(item => ({icon: item.icon || 'bi bi-award', header: localize(item.title), text: localize(item.description)})),
       certifcations: (certs ?? []).map(item => localize(item.title))
     };
   });
+  useDefaultImage(event: Event): void {
+    (event.target as HTMLImageElement).src = this.defaultInstructorImage;
+  }
+  private resolveInstructorImage(imageUrl?: string): string {
+    const value = imageUrl?.trim();
+    if (!value) return this.defaultInstructorImage;
+    return value.includes('/') ? value : this.tabService.getInstructorImageUrl(value);
+  }
   readonly accordionTitle = 'instructor.info'
 }

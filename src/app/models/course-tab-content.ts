@@ -9,6 +9,7 @@ export interface LocalizedTabText {
 }
 
 export interface CourseTabSectionItem {
+  name?: string | { en: string; ar: string };
   title?: string | { en: string; ar: string };
   description?: string | { en: string; ar: string };
   icon?: string;
@@ -37,6 +38,9 @@ export interface CourseCustomSection extends CourseTabSection {
 }
 
 export interface CourseTabDocument {
+  quizGame?: {
+    availability: 'play-now' | 'coming-soon';
+  };
   banner: {
     en: LocalizedTabText;
     ar: LocalizedTabText;

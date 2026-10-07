@@ -5,3 +5,57 @@ h4{
   font-size: 1.3rem;
 
 }
+
+.instructor-profile {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid rgba(173, 19, 87, 0.16);
+  border-radius: 1rem;
+  background: linear-gradient(135deg, rgba(173, 19, 87, 0.07), rgba(255, 255, 255, 0.95));
+}
+
+.instructor-image {
+  width: 104px;
+  height: 104px;
+  flex: 0 0 104px;
+  object-fit: cover;
+  object-position: top center;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 6px 18px rgba(31, 41, 55, 0.16);
+}
+
+.instructor-label {
+  display: block;
+  margin-bottom: .25rem;
+  color: #6c757d;
+  font-size: .82rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.instructor-name {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.instructor-introduction {
+  margin: 0;
+  line-height: 1.8;
+}
+
+@media (max-width: 575px) {
+  .instructor-profile {
+    align-items: flex-start;
+  }
+
+  .instructor-image {
+    width: 78px;
+    height: 78px;
+    flex-basis: 78px;
+  }
+}
