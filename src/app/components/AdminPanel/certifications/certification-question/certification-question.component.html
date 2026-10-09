@@ -195,6 +195,21 @@
           <small class="text-muted">Auto-calculated as max order + 1 for this exam</small>
         </div>
 
+        @if (activeSection() === 'MULTI_IMAGE') {
+          <div class="col-12 col-md-4">
+            <label class="form-label fw-semibold">Total Question Score</label>
+            <input
+              formControlName="questionScore"
+              type="number"
+              min="0.25"
+              step="0.25"
+              class="form-control"
+              placeholder="Enter the total score"
+            />
+            <small class="text-muted">Automatically divided equally between all sub-questions.</small>
+          </div>
+        }
+
         <!-- <div class="col-12 col-md-4">
           <spk-ng-select
             formControlName="questionScore"
@@ -233,6 +248,137 @@
       </div>
     </div>
   </div>
+
+  @if (activeSection() === 'MULTI_IMAGE') {
+    <section class="card shadow-sm multi-question-builder">
+      <div class="card-header multi-question-header">
+        <div>
+          <div class="d-flex align-items-center gap-2 mb-1">
+            <h5 class="mb-0">Multiple Sub-Questions</h5>
+          </div>
+          <small>The text and images in Question Details above are the shared question header.</small>
+        </div>
+        <div class="total-score-card">
+          <div>
+            <span>Total score</span>
+            <small>{{ scorePerMultiQuestion().toFixed(2) }} per sub-question</small>
+          </div>
+          <strong>{{ totalMultiQuestionScore() }}</strong>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div formArrayName="multiQuestions" class="multi-question-list">
+          @for (subQuestion of multiQuestionsArray.controls; track $index; let questionIndex = $index) {
+            <article class="sub-question-card" [formGroupName]="questionIndex">
+              <div class="sub-question-toolbar">
+                <div class="sub-question-summary">
+                  <i class="bi bi-grip-vertical"></i>
+                  <span>{{ subQuestion.get('prompt')?.value || subQuestion.get('promptAr')?.value || 'Untitled question' }}</span>
+                </div>
+                <div class="sub-question-toolbar-actions">
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-outline-secondary"
+                    [disabled]="questionIndex === 0"
+                    (click)="moveMultiQuestion(questionIndex, -1)"
+                    title="Move up"
+                  >
+                    <i class="bi bi-arrow-up"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-outline-secondary"
+                    [disabled]="questionIndex === multiQuestionsArray.length - 1"
+                    (click)="moveMultiQuestion(questionIndex, 1)"
+                    title="Move down"
+                  >
+                    <i class="bi bi-arrow-down"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-outline-primary"
+                    (click)="toggleMultiQuestion(questionIndex)"
+                    [title]="isMultiQuestionCollapsed(questionIndex) ? 'Expand' : 'Collapse'"
+                  >
+                    <i class="bi" [class.bi-chevron-down]="isMultiQuestionCollapsed(questionIndex)" [class.bi-chevron-up]="!isMultiQuestionCollapsed(questionIndex)"></i>
+                  </button>
+                </div>
+              </div>
+
+              @if (!isMultiQuestionCollapsed(questionIndex)) {
+              <div class="row g-3 mt-1">
+                <div class="col-lg-6">
+                  <label class="form-label fw-semibold">Sub-question</label>
+                  <input formControlName="prompt" class="form-control" placeholder="What does point {{ questionIndex + 1 }} represent?" />
+                </div>
+                <div class="col-lg-6">
+                  <label class="form-label fw-semibold">السؤال بالعربية</label>
+                  <input formControlName="promptAr" class="form-control" dir="rtl" placeholder="ماذا تمثل النقطة {{ questionIndex + 1 }}؟" />
+                </div>
+              </div>
+
+              <div formArrayName="choices" class="choice-grid mt-3">
+                @for (choice of multiChoices(questionIndex).controls; track $index; let choiceIndex = $index) {
+                  <div class="choice-card" [formGroupName]="choiceIndex">
+                    <label class="correct-choice-selector">
+                      <input
+                        type="radio"
+                        [value]="choiceIndex"
+                        [name]="'multi-correct-' + questionIndex"
+                        [checked]="subQuestion.get('correctChoiceIndex')?.value === choiceIndex"
+                        (change)="subQuestion.get('correctChoiceIndex')?.setValue(choiceIndex)"
+                      />
+                      <span>Correct</span>
+                    </label>
+                    <div class="choice-fields">
+                      <input formControlName="text" class="form-control" placeholder="Choice {{ choiceIndex + 1 }}" />
+                      <input formControlName="textAr" class="form-control" dir="rtl" placeholder="الاختيار {{ choiceIndex + 1 }}" />
+                    </div>
+                    @if (multiChoices(questionIndex).length > 2) {
+                      <button
+                        type="button"
+                        class="btn btn-sm btn-link text-danger"
+                        (click)="removeMultiChoice(questionIndex, choiceIndex)"
+                        title="Remove choice"
+                      >
+                        <i class="bi bi-x-lg"></i>
+                      </button>
+                    }
+                  </div>
+                }
+              </div>
+
+              <div class="d-flex justify-content-between gap-2 mt-3">
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-secondary"
+                  (click)="addMultiChoice(questionIndex)"
+                >
+                  <i class="bi bi-plus-circle me-1"></i> Add Choice
+                </button>
+                @if (multiQuestionsArray.length > 1) {
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-outline-danger"
+                    (click)="removeMultiQuestion(questionIndex)"
+                    title="Remove sub-question"
+                  >
+                    <i class="bi bi-trash me-1"></i> Remove
+                  </button>
+                }
+              </div>
+              }
+            </article>
+          }
+        </div>
+
+        <button type="button" class="btn btn-primary mt-4" (click)="addMultiQuestion()">
+          <i class="bi bi-plus-lg me-1"></i> Add New Question
+        </button>
+      </div>
+    </section>
+  }
 
 
   <ng-container

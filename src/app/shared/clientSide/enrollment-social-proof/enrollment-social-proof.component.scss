@@ -11,8 +11,7 @@
   padding-inline-start: 2px;
 }
 
-.learner-avatars img,
-.learner-count {
+.learner-avatars img {
   width: 34px;
   height: 34px;
   margin-inline-start: -9px;
@@ -29,15 +28,6 @@
   object-fit: cover;
   object-position: top center;
   background: #f3f4f6;
-}
-
-.learner-count {
-  display: grid;
-  place-items: center;
-  background: #ad1357;
-  color: #fff;
-  font-size: .62rem;
-  font-weight: 800;
 }
 
 .proof-copy {

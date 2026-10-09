@@ -22,7 +22,7 @@ import { QuestionsStore } from '../../../../AdminPanelStores/QuestionStores/ques
 import { TranslateService } from '../../../../Services/translate.service';
 import { BreadcrumbService } from '../../../../Services/breadcrumb.service';
 
-type QuestionType = 'MCQ' | 'MATCHING' | null;
+type QuestionType = 'MCQ' | 'MATCHING' | 'MULTI_IMAGE' | null;
 type SectionType = QuestionType | 'Multiple Choice Question' | 'Matching';
 
 interface AnswerGroup {
@@ -43,6 +43,7 @@ interface QuestionImageView {
 }
 
 const DEFAULT_USER_ID = '3fa85f64-5717-4562-b3fc-2c963f66afa6';
+const MULTI_IMAGE_TYPE_ID = '33333333-3333-3333-3333-333333333307';
 
 @Component({
   selector: 'app-certification-question',
@@ -140,7 +141,7 @@ export class CertificationQuestionComponent {
     questionText_Ar: [''],
     questionExplination: [''],
     orderNo: ['', Validators.required],
-    questionScore: [1],
+    questionScore: [1, [Validators.required, Validators.min(0.25)]],
     isActive: [true, Validators.required],
     correctAnswer: [true],
     question: [true],
@@ -149,12 +150,14 @@ export class CertificationQuestionComponent {
     answers: this.fb.array([]),
     dragQuestions: this.fb.array([]),
     dragAnswers: this.fb.array([]),
+    multiQuestions: this.fb.array([]),
     files: [[] as File[]],
   });
 
   get answersArray(): FormArray { return this.form.get('answers') as FormArray; }
   get dragQuestionsArray(): FormArray { return this.form.get('dragQuestions') as FormArray; }
   get dragAnswersArray(): FormArray { return this.form.get('dragAnswers') as FormArray; }
+  get multiQuestionsArray(): FormArray { return this.form.get('multiQuestions') as FormArray; }
 
   // Lifecycle & Effects
   constructor() {
@@ -165,7 +168,14 @@ export class CertificationQuestionComponent {
 
   private loadQuestionTypes(): void {
     this.certificationService.getQuestionTypes().subscribe(types => {
-      this.questionTypes = types;
+      const apiTypes = types ?? [];
+      this.questionTypes = apiTypes.some((type: any) => type.oid === MULTI_IMAGE_TYPE_ID)
+        ? apiTypes
+        : [...apiTypes, {
+            oid: MULTI_IMAGE_TYPE_ID,
+            lookupNameEn: 'Multiple Sub-Questions',
+            lookupValue: 'MULTI_IMAGE'
+          }];
       const pending = this.pendingQuestionType();
       if (pending) {
         this.applyQuestionType(pending);
@@ -192,7 +202,10 @@ export class CertificationQuestionComponent {
 
     effect(() => {
       const qid = this.route.snapshot.paramMap.get('questionId');
-      if (qid && !this.question()) {
+      const currentQuestion = this.question();
+      const needsMultiDetails = currentQuestion?.questionTypeLookupId === MULTI_IMAGE_TYPE_ID &&
+        !currentQuestion?.subQuestions?.length;
+      if (qid && (!currentQuestion || currentQuestion.oid !== qid || needsMultiDetails)) {
         this.questionStore.getQuestion(qid);
         this.questionId = qid;
       }
@@ -256,8 +269,13 @@ export class CertificationQuestionComponent {
 
       this.patchBasicQuestionFields(q);
       this.populateAnswersOrDragItems(q);
-      this.selectedType.set(this.resolveSelectedType(q.questionTypeName));
-      this.activeSection.set(q.questionTypeName as SectionType);
+      const resolvedType = this.resolveSelectedType(q.questionTypeName, q.questionTypeLookupId);
+      this.selectedType.set(resolvedType);
+      this.activeSection.set(resolvedType ?? q.questionTypeName as SectionType);
+      if (resolvedType === 'MULTI_IMAGE') {
+        this.form.get('questionText')?.clearValidators();
+        this.form.get('questionText')?.updateValueAndValidity({ emitEvent: false });
+      }
     });
 
     effect(() => {
@@ -349,6 +367,8 @@ export class CertificationQuestionComponent {
       } else if (type === 'MATCHING') {
         this.dragQuestionsArray.push(this.createDragQuestionGroup());
         this.dragAnswersArray.push(this.createDragAnswerGroup());
+      } else if (type === 'MULTI_IMAGE') {
+        this.addMultiQuestion();
       }
     });
   }
@@ -357,6 +377,7 @@ export class CertificationQuestionComponent {
     this.answersArray.clear();
     this.dragQuestionsArray.clear();
     this.dragAnswersArray.clear();
+    this.multiQuestionsArray.clear();
     this.apiQuestions = [];
     this.apiAnswers.set([]);
     this.linkDragAnswerAndQuestionFlag.set(false);
@@ -426,6 +447,57 @@ export class CertificationQuestionComponent {
     return this.createAnswerGroup(false, existing);
   }
 
+  private createMultiChoiceGroup(existing?: any): FormGroup {
+    const group = this.fb.group({
+      oid: [existing?.oid ?? null],
+      text: [existing?.choiceText ?? existing?.text ?? '', Validators.required],
+      textAr: [existing?.choiceTextAr ?? existing?.textAr ?? '']
+    });
+    this.bindAutoTranslation(group.get('text'), group.get('textAr'));
+    return group;
+  }
+
+  private createMultiQuestionGroup(existing?: any): FormGroup {
+    const group = this.fb.group({
+      oid: [existing?.oid ?? null],
+      prompt: [existing?.questionText ?? existing?.prompt ?? '', Validators.required],
+      promptAr: [existing?.questionTextAr ?? existing?.promptAr ?? ''],
+      correctChoiceIndex: [Math.max(0, (existing?.choices ?? []).findIndex((choice: any) => choice.isCorrect)), Validators.required],
+      collapsed: [false],
+      choices: this.fb.array(existing?.choices?.length
+        ? existing.choices.map((choice: any) => this.createMultiChoiceGroup(choice))
+        : Array.from({ length: 4 }, () => this.createMultiChoiceGroup()))
+    });
+    this.bindAutoTranslation(group.get('prompt'), group.get('promptAr'));
+    return group;
+  }
+
+  private bindAutoTranslation(sourceControl: AbstractControl | null, arabicControl: AbstractControl | null): void {
+    if (!sourceControl || !arabicControl) return;
+    let lastAutoTranslatedAr = String(arabicControl.value ?? '').trim();
+
+    sourceControl.valueChanges
+      .pipe(
+        debounceTime(400),
+        map(value => String(value ?? '').trim()),
+        distinctUntilChanged(),
+        switchMap(text => {
+          const currentAr = String(arabicControl.value ?? '').trim();
+          if (!text) return of('');
+          if (currentAr && currentAr !== lastAutoTranslatedAr) return of(null);
+          return this.translateService.translateEnToAr(text).pipe(catchError(() => of('')));
+        }),
+        filter(translated => translated !== null),
+        tap(translated => {
+          if (!translated) return;
+          lastAutoTranslatedAr = translated;
+          arabicControl.setValue(translated, { emitEvent: false });
+        }),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe();
+  }
+
   // Form Actions
   addAnswer(): void {
     this.answersArray.push(this.createAnswerGroup(false));
@@ -447,6 +519,60 @@ export class CertificationQuestionComponent {
   addDragAnswer(): void {
     this.dragAnswersArray.push(this.createDragAnswerGroup());
   }
+
+  addMultiQuestion(): void {
+    this.multiQuestionsArray.push(this.createMultiQuestionGroup());
+  }
+
+  removeMultiQuestion(index: number): void {
+    this.multiQuestionsArray.removeAt(index);
+  }
+
+  toggleMultiQuestion(index: number): void {
+    const control = this.multiQuestionsArray.at(index).get('collapsed');
+    control?.setValue(!control.value);
+  }
+
+  isMultiQuestionCollapsed(index: number): boolean {
+    return this.multiQuestionsArray.at(index).get('collapsed')?.value === true;
+  }
+
+  moveMultiQuestion(index: number, direction: -1 | 1): void {
+    const targetIndex = index + direction;
+    if (targetIndex < 0 || targetIndex >= this.multiQuestionsArray.length) return;
+    const control = this.multiQuestionsArray.at(index);
+    this.multiQuestionsArray.removeAt(index, { emitEvent: false });
+    this.multiQuestionsArray.insert(targetIndex, control);
+    this.multiQuestionsArray.markAsDirty();
+  }
+
+  multiChoices(questionIndex: number): FormArray {
+    return this.multiQuestionsArray.at(questionIndex).get('choices') as FormArray;
+  }
+
+  addMultiChoice(questionIndex: number): void {
+    this.multiChoices(questionIndex).push(this.createMultiChoiceGroup());
+  }
+
+  removeMultiChoice(questionIndex: number, choiceIndex: number): void {
+    const choices = this.multiChoices(questionIndex);
+    if (choices.length <= 2) return;
+    choices.removeAt(choiceIndex);
+    const question = this.multiQuestionsArray.at(questionIndex);
+    if (Number(question.get('correctChoiceIndex')?.value) >= choices.length) {
+      question.get('correctChoiceIndex')?.setValue(0);
+    }
+  }
+
+  totalMultiQuestionScore(): number {
+    return Number(this.form.get('questionScore')?.value) || 0;
+  }
+
+  scorePerMultiQuestion(): number {
+    if (!this.multiQuestionsArray.length) return 0;
+    return this.totalMultiQuestionScore() / this.multiQuestionsArray.length;
+  }
+
 
   async removeAnswer(index: number, control: AbstractControl): Promise<void> {
     if (!(await confirmDelete('Are you sure you want to delete this answer?'))) return;
@@ -526,6 +652,13 @@ export class CertificationQuestionComponent {
 
     this.selectedType.set(type.lookupValue);
     this.activeSection.set(type.lookupValue);
+    const questionText = this.form.get('questionText');
+    if (type.lookupValue === 'MULTI_IMAGE') {
+      questionText?.clearValidators();
+    } else {
+      questionText?.setValidators([Validators.required]);
+    }
+    questionText?.updateValueAndValidity({ emitEvent: false });
   }
 
   // Edit Mode – Populate Form
@@ -581,7 +714,14 @@ export class CertificationQuestionComponent {
   }
 
   private populateAnswersOrDragItems(question: any): void {
-    if (question.questionTypeName === 'True/False' || question.questionTypeName === 'Multiple Choice Question') {
+    if (this.resolveSelectedType(question.questionTypeName, question.questionTypeLookupId) === 'MULTI_IMAGE') {
+      const subQuestions = (question.subQuestions ?? [])
+        .slice()
+        .sort((a: any, b: any) => (a.orderNo ?? 0) - (b.orderNo ?? 0));
+      this.form.setControl('multiQuestions', this.fb.array(
+        subQuestions.map((subQuestion: any) => this.createMultiQuestionGroup(subQuestion))
+      ));
+    } else if (question.questionTypeName === 'True/False' || question.questionTypeName === 'Multiple Choice Question') {
       const answerControls = question.answers?.map((a: any) => this.createAnswerGroup(false, a)) ?? [];
       this.form.setControl('answers', this.fb.array(answerControls));
     } else {
@@ -634,6 +774,18 @@ export class CertificationQuestionComponent {
 
     if (this.selectedType()?.toLowerCase() === 'matching' && !this.editMode) {
       this.answersArray.clear();
+    }
+
+    if (this.selectedType() === 'MULTI_IMAGE') {
+      const hasHeaderText = Boolean(
+        String(this.form.get('questionText')?.value ?? '').trim() ||
+        String(this.form.get('questionText_Ar')?.value ?? '').trim()
+      );
+      const hasHeaderImage = this.questionImages().length > 0 || this.selectedImageFiles().length > 0;
+      if (!hasHeaderText && !hasHeaderImage) {
+        this.toast.showToast('Add question text, an image, or both in Question Details.', 'error');
+        return;
+      }
     }
 
     // Validate MCQ type has at least one correct answer
@@ -732,6 +884,8 @@ export class CertificationQuestionComponent {
     } else if (type === 'MATCHING') {
       this.dragQuestionsArray.push(this.createDragQuestionGroup());
       this.dragAnswersArray.push(this.createDragAnswerGroup());
+    } else if (type === 'MULTI_IMAGE') {
+      this.addMultiQuestion();
     }
 
     // Re-trigger orderNo calculation
@@ -845,6 +999,27 @@ export class CertificationQuestionComponent {
 
     if (this.isMatchingSection()) {
       return this.getDragQuestionPayload();
+    }
+
+    if (this.selectedType() === 'MULTI_IMAGE') {
+      return {
+        oid: this.questionId || undefined,
+        ...this.buildBasePayload(raw),
+        answers: [],
+        subQuestions: (raw.multiQuestions ?? []).map((subQuestion: any, subIndex: number) => ({
+          ...(subQuestion.oid && { oid: subQuestion.oid }),
+          questionText: subQuestion.prompt,
+          questionTextAr: subQuestion.promptAr,
+          orderNo: subIndex + 1,
+          choices: (subQuestion.choices ?? []).map((choice: any, choiceIndex: number) => ({
+            ...(choice.oid && { oid: choice.oid }),
+            choiceText: choice.text,
+            choiceTextAr: choice.textAr,
+            isCorrect: choiceIndex === Number(subQuestion.correctChoiceIndex),
+            orderNo: choiceIndex + 1
+          }))
+        }))
+      };
     }
 
     return {
@@ -1071,8 +1246,10 @@ export class CertificationQuestionComponent {
     }
   }
 
-  private resolveSelectedType(typeName?: string | null): QuestionType {
+  private resolveSelectedType(typeName?: string | null, typeId?: string | null): QuestionType {
+    if (String(typeId ?? '').toLowerCase() === MULTI_IMAGE_TYPE_ID) return 'MULTI_IMAGE';
     const name = String(typeName ?? '').toLowerCase();
+    if (name.includes('multiple sub-question')) return 'MULTI_IMAGE';
     if (name.includes('match')) return 'MATCHING';
     if (name.includes('multiple choice') || name.includes('true/false')) return 'MCQ';
     return null;

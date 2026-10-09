@@ -15,6 +15,10 @@ export function mapApiQuestionToCourseQuestion(api: any, studentQuestion: boolea
     questionImage: api.questionImage ?? '',
     questionImages: api.questionImages ?? [],
     explanationImages: api.explanationImages ?? [],
+    subQuestions: (api.subQuestions ?? []).map((subQuestion: any) => ({
+      ...subQuestion,
+      choices: subQuestion.choices ?? []
+    })),
     questionText_Ar: api.questionText_Ar,
     questionTypeLookupId: api.questionTypeLookupId,
     questionScore: api.questionScore,
@@ -47,7 +51,7 @@ export function mapApiAnswerToCourseAnswer(api: APIAnswer): courseAnswer {
 }
 
 // Multiple answers mapper
-export const mapApiAnswersToAnswers = (answers: APIAnswer[]): courseAnswer[] =>
+export const mapApiAnswersToAnswers = (answers: APIAnswer[] = []): courseAnswer[] =>
   answers.map(mapApiAnswerToCourseAnswer);
 // Multiple questions mapper
 // export const mapApiQuestionsToCourseQuestions = (questions: APICourseQuestion[]): courseQuestion[] =>

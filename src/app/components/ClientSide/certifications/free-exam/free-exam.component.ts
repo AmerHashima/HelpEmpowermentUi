@@ -344,7 +344,7 @@ export class FreeExamComponent {
 
     const obtainedScore = correct;
 
-    const passPercent = 60;
+    const passPercent = this.shared.currentExam()?.passPercent ?? 60;
 
     const percentage = totalScore > 0
       ? (obtainedScore / totalScore) * 100

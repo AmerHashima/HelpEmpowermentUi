@@ -102,7 +102,27 @@
         </div>
       }
 
-      @if (!isMatchingQuestion) {
+      @if (isMultiSubQuestion) {
+        <div class="sub-questions">
+          @for (subQuestion of question().subQuestions; track subQuestion.oid; let subIndex = $index) {
+            <section class="sub-question-card">
+              <h3><span>{{ subIndex + 1 }}.</span> {{ subQuestion.questionText }}</h3>
+              <div class="options">
+                @for (choice of subQuestion.choices; track choice.oid; let choiceIndex = $index) {
+                  <label class="option"
+                    [class.selected]="isSubQuestionChoiceSelected(subQuestion, choice)"
+                    [class.correct]="isSubChoiceCorrect(choice)"
+                    [class.wrong]="isSubChoiceWrong(subQuestion, choice)"
+                    (click)="selectSubQuestionChoice(subQuestion, choice)">
+                    <span class="letter">({{ choice.orderNo || choiceIndex + 1 }})</span>
+                    <span class="text">{{ choice.choiceText }}</span>
+                  </label>
+                }
+              </div>
+            </section>
+          }
+        </div>
+      } @else if (!isMatchingQuestion) {
         <div class="options">
           @for (opt of question().answers; track opt.letter) {
             <label
@@ -150,7 +170,23 @@
               {{ question().questionText_Ar }}
             </h2>
 
-            @if (!isMatchingQuestion) {
+            @if (isMultiSubQuestion) {
+              <div class="sub-questions arabic-text">
+                @for (subQuestion of question().subQuestions; track subQuestion.oid; let subIndex = $index) {
+                  <section class="sub-question-card">
+                    <h3><span>{{ subIndex + 1 }}.</span> {{ subQuestion.questionTextAr || subQuestion.questionText }}</h3>
+                    <div class="options">
+                      @for (choice of subQuestion.choices; track choice.oid; let choiceIndex = $index) {
+                        <label class="option translatedOption rtl-option">
+                          <span class="letter order-1">({{ choice.orderNo || choiceIndex + 1 }})</span>
+                          <span class="text me-2">{{ choice.choiceTextAr || choice.choiceText }}</span>
+                        </label>
+                      }
+                    </div>
+                  </section>
+                }
+              </div>
+            } @else if (!isMatchingQuestion) {
               <div class="options">
                 @for (opt of question().answers; track opt.letter) {
                   <label class="option translatedOption rtl-option">
@@ -256,7 +292,16 @@
         <div class="d-flex flex-column">
           <h3 class="mainTextColor">Correct Answer</h3>
           <div class="d-flex flex-column gap-1">
-            @if (
+            @if (isMultiSubQuestion) {
+              @for (subQuestion of question().subQuestions; track subQuestion.oid) {
+                <div class="sub-answer-summary">
+                  <strong>{{ subQuestion.questionText }}</strong>
+                  @for (choice of subQuestion.choices; track choice.oid) {
+                    @if (choice.isCorrect) { <span class="darkText">{{ choice.choiceText }}</span> }
+                  }
+                </div>
+              }
+            } @else if (
               this.question().questionTypeName == "Multiple Choice Question"
             ) {
               @for (answer of question().answers; track answer) {

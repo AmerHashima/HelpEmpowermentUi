@@ -53,6 +53,7 @@ export interface courseExam {
   courseCategoryLookupId: string | null,
   questionCount?: number,
   durationMinutes?: number,
+  passPercent?: number,
   orderNo?: number,
   isActive: boolean,
   createdBy: string,
@@ -72,6 +73,7 @@ export interface APIExam {
   isActive: boolean,
   questionCount: number,
   durationMinutes: number,
+  passPercent: number,
   orderNo: number,
   createdAt: string,
   createdBy: string,
@@ -89,6 +91,7 @@ export interface courseQuestion {
   questionImage?: string,
   questionImages?: CourseQuestionImage[],
   explanationImages?: CourseQuestionImage[],
+  subQuestions?: CourseQuestionSubQuestion[],
   questionScore: number,
   questionTypeName?: any,
   orderNo: number,
@@ -98,6 +101,20 @@ export interface courseQuestion {
   correctChoiceOid: string,
   createdBy: string,
   answers: courseAnswer[]
+}
+export interface CourseQuestionSubQuestion {
+  oid?: string,
+  questionText: string,
+  questionTextAr: string,
+  orderNo: number,
+  choices: CourseQuestionSubQuestionChoice[]
+}
+export interface CourseQuestionSubQuestionChoice {
+  oid?: string,
+  choiceText: string,
+  choiceTextAr: string,
+  isCorrect: boolean,
+  orderNo: number
 }
 export interface CourseQuestionImage {
   oid: string,
@@ -239,9 +256,20 @@ export interface APICourseQuestion {
   question: boolean,
   correctChoiceOid: string,
   answers: APIAnswer[],
+  subQuestions?: CourseQuestionSubQuestion[],
   createdAt: string
   createdBy: string,
   updatedAt: string
+  updatedBy: string
+}
+
+export interface subQuestionExamSubmit {
+  studentExamOid: string,
+  questionOid: string,
+  answers: Array<{
+    subQuestionOid: string,
+    selectedChoiceOid: string
+  }>,
   updatedBy: string
 }
 

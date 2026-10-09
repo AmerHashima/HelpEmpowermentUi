@@ -42,6 +42,7 @@ export class ExamComponent {
   showQuestionBoard: boolean = false;
   examChoiceAnswers: any[] = [];
   examMatchingAnswers: any[] = [];
+  examSubQuestionAnswers: any[] = [];
   currentExamId = signal<string>('');
   saveForLater: boolean = false;
   currentQuestionIndex = signal<number>(0);
@@ -160,6 +161,7 @@ export class ExamComponent {
             this.currentQuestionIndex.set(parsed.currentQuestionIndex ?? 0);
             this.examChoiceAnswers = parsed.examChoiceAnswers ?? [];
             this.examMatchingAnswers = parsed.examMatchingAnswers ?? []
+            this.examSubQuestionAnswers = parsed.examSubQuestionAnswers ?? [];
             if (parsed.markedQuestions) {
               this.markedQuestions.set(new Set(parsed.markedQuestions));
             }
@@ -340,6 +342,7 @@ export class ExamComponent {
     this.currentQuestionIndex.set(0);
     this.examChoiceAnswers = [];
     this.examMatchingAnswers = [];
+    this.examSubQuestionAnswers = [];
     this.markedQuestions.set(new Set([]));
     this.answeredQuestions.set(new Set([]));
   }
@@ -365,6 +368,9 @@ export class ExamComponent {
     const savedMatching = this.examMatchingAnswers.find(
       x => x.questionOid === q.oid
     );
+    const savedSubQuestions = this.examSubQuestionAnswers.find(
+      x => x.questionOid === q.oid
+    );
 
     return {
       ...q,
@@ -376,9 +382,15 @@ export class ExamComponent {
           : false
       })),
       savedMatchingAnswers: savedMatching?.answers ?? [],
+      subQuestions: (q.subQuestions ?? []).map((subQuestion: any) => ({
+        ...subQuestion,
+        selectedChoiceOid: savedSubQuestions?.answers?.find(
+          (answer: any) => answer.subQuestionOid === subQuestion.oid
+        )?.selectedChoiceOid ?? subQuestion.selectedChoiceOid ?? null
+      })),
       progress: Math.round(((q.orderNo!) / Math.max(1, this.questions().length)) * 100),
       totalQuestions: this.questions().length,
-      maxChoices: q.answers.filter((o: any) => o.isCorrect).length || 1
+      maxChoices: (q.answers ?? []).filter((o: any) => o.isCorrect).length || 1
     };
   }
 
@@ -467,6 +479,30 @@ export class ExamComponent {
             this.updateIndex(newAnswer.last);
           }
         });
+    }
+    else if (newAnswer.type === 'Multiple Sub-Questions') {
+      const payload = {
+        studentExamOid: this.shared.studentExamId(),
+        questionOid: newAnswer.answers.questionOid,
+        answers: newAnswer.answers.answers,
+        updatedBy: createdUpdatedOID
+      };
+      const existing = this.examSubQuestionAnswers.find(x => x.questionOid === payload.questionOid);
+      if (existing && JSON.stringify(existing.answers) === JSON.stringify(payload.answers)) {
+        this.updateIndex(newAnswer.last);
+        return;
+      }
+
+      this.studentExamService.submitSubQuestionAnswers(payload).subscribe({
+        next: () => {
+          const index = this.examSubQuestionAnswers.findIndex(x => x.questionOid === payload.questionOid);
+          if (index >= 0) this.examSubQuestionAnswers[index] = payload;
+          else this.examSubQuestionAnswers.push(payload);
+          this.answeredQuestions.update(set => new Set(set).add(payload.questionOid));
+          this.saveExamProgress();
+          this.updateIndex(newAnswer.last);
+        }
+      });
     }
   }
 
@@ -652,6 +688,7 @@ export class ExamComponent {
         currentQuestionIndex: this.currentQuestionIndex(),
         examChoiceAnswers: this.examChoiceAnswers,
         examMatchingAnswers: this.examMatchingAnswers,
+        examSubQuestionAnswers: this.examSubQuestionAnswers,
         // revealedQuestions: Array.from(this.revealedQuestions()),
         // answeredBeforeReveal: Array.from(this.answeredBeforeReveal()),
         markedQuestions: Array.from(this.markedQuestions()),

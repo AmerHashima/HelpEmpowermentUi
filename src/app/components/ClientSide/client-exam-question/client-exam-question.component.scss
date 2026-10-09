@@ -323,3 +323,9 @@ color:$headerColor !important;
   font-size: 24px;
   transform: rotate(-30deg);
 }
+
+.sub-questions { display: grid; gap: 1rem; }
+.sub-question-card { border: 1px solid #e2e8f0; border-radius: 12px; padding: 1rem; background: #fff; }
+.sub-question-card h3 { font-size: 1rem; margin: 0 0 .8rem; color: $headerColor; }
+.sub-question-card h3 span { color: $primaryColor; }
+.sub-answer-summary { display: flex; flex-direction: column; gap: .25rem; padding: .5rem 0; }

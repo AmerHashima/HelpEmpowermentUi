@@ -350,6 +350,20 @@ export class StudentExamService {
         );
     }
 
+    submitSubQuestionAnswers(body: any): Observable<any> {
+      return this.apiService
+        .put<ApiResponse<any>>('StudentExamQuestions/sub-question-answers', '', body, '')
+        .pipe(
+          map((response: ApiResponse<any>) => {
+            if (!response.success) {
+              const msg = response.errors?.join(', ') || response.message || 'Failed to save answers';
+              throw new Error(msg);
+            }
+            return response.data;
+          })
+        );
+    }
+
     getExamPayload(report: APIExamSummary) {
       const payload = {
         oid: report.studentExamOid,

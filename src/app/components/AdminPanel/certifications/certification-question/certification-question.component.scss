@@ -142,7 +142,146 @@ h5 {
   background: rgba($primaryColor, 0.035);
 }
 
+.multi-question-builder {
+  overflow: hidden;
+  border-color: rgba($primaryColor, 0.2);
+}
+
+.multi-question-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: linear-gradient(135deg, rgba($primaryColor, 0.08), #fff);
+}
+
+.total-score-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.85rem;
+  border: 1px solid rgba($primaryColor, 0.2);
+  border-radius: 0.75rem;
+  background: #fff;
+  color: #475569;
+
+  > div {
+    display: flex;
+    flex-direction: column;
+  }
+
+  small {
+    color: #64748b;
+    font-size: 0.7rem;
+  }
+
+  strong {
+    display: grid;
+    width: 2.25rem;
+    height: 2.25rem;
+    place-items: center;
+    border-radius: 50%;
+    background: $primaryColor;
+    color: #fff;
+  }
+}
+
+.multi-question-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.sub-question-card {
+  position: relative;
+  padding: 1.1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  background: #fff;
+  box-shadow: 0 0.25rem 1rem rgba(15, 23, 42, 0.05);
+}
+
+.sub-question-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.sub-question-summary {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.4rem;
+  color: #475569;
+  font-weight: 600;
+
+  i {
+    color: #94a3b8;
+    font-size: 1.15rem;
+  }
+
+  span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.sub-question-toolbar-actions {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 0.4rem;
+}
+
+.choice-grid {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.choice-card {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.75rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  background: #f8fafc;
+}
+
+.correct-choice-selector {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #475569;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.choice-fields {
+  display: grid;
+  flex: 1;
+  gap: 0.5rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 @media (max-width: 575.98px) {
+  .multi-question-header,
+  .choice-card {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .choice-grid,
+  .choice-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .sub-question-toolbar {
+    align-items: flex-start;
+  }
+
   .explanation-image-upload {
     align-items: stretch;
     flex-direction: column;

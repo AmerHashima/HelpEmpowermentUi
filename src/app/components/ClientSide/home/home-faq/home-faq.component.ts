@@ -24,14 +24,14 @@ import { catchError, of, switchMap } from 'rxjs';
 export class HomeFAQComponent {
   protected readonly shared = inject(Shared);
   private currentCertification = this.shared.currentCertificate;
-  private router=inject(Router);
-  private route=inject(ActivatedRoute);
-  private tabService=inject(CourseTabContentService);
-  private faqContent=toSignal(toObservable(this.currentCertification).pipe(
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+  private tabService = inject(CourseTabContentService);
+  private faqContent = toSignal(toObservable(this.currentCertification).pipe(
     switchMap(code => code === 'pmp' || code === 'capm'
       ? this.tabService.getTab(code, 'faq').pipe(catchError(() => of(null)))
       : of(null))
-  ), {initialValue: null});
+  ), { initialValue: null });
   // You need to provide this array – can come from service, input, or static
   questions = [
     {
@@ -106,11 +106,11 @@ export class HomeFAQComponent {
   ];
 
   displayedQuestions = computed(() => {
-    const section=this.faqSection();
+    const section = this.faqSection();
     if (section?.isEnabled === false) return [];
-    const items=section?.items;
+    const items = section?.items;
     if (items) {
-      const lang=this.shared.isRtl() ? 'ar' : 'en';
+      const lang = this.shared.isRtl() ? 'ar' : 'en';
       return items.map(item => ({
         question: typeof item.title === 'string' ? item.title : item.title?.[lang] ?? '',
         answer: typeof item.description === 'string' ? item.description : item.description?.[lang] ?? ''
@@ -129,9 +129,9 @@ export class HomeFAQComponent {
 
   onContactSupport() {
     // window.location.href = 'mailto:Support@helpempowerment.com';
-      this.router.navigate(['../', 'contact'], {
-        relativeTo: this.route,
-      });
+    this.router.navigate([`en/contact`], {
+      // relativeTo: this.route,
+    });
   }
 }
 

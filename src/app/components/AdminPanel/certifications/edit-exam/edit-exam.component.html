@@ -55,7 +55,7 @@
         }"
       />
     </div>
-       <div class="col-lg-4">
+    <div class="col-lg-4">
       <app-input
         formControlName="questionCount"
         label="Question Count"
@@ -64,6 +64,20 @@
         icon=""
         [errorMessages]="{
           required: 'Question Count is required',
+        }"
+      />
+    </div>
+    <div class="col-lg-4">
+      <app-input
+        formControlName="passPercent"
+        label="Pass Percentage (%)"
+        type="number"
+        placeholder="Enter a value from 0 to 100"
+        icon=""
+        [errorMessages]="{
+          required: 'Pass Percentage is required',
+          min: 'Pass Percentage cannot be less than 0',
+          max: 'Pass Percentage cannot be greater than 100',
         }"
       />
     </div>

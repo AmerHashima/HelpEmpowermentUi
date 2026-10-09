@@ -229,6 +229,14 @@ export class ClientExamQuestionComponent {
       opt.isSelected = true;
     }
   }
+
+  selectSubQuestionChoice(subQuestion: any, choice: any) {
+    subQuestion.selectedChoiceOid = choice.oid;
+  }
+
+  isSubQuestionChoiceSelected(subQuestion: any, choice: any): boolean {
+    return subQuestion.selectedChoiceOid === choice.oid;
+  }
   onOpenCalculator() {
     this.showCalculator = true;
   }
@@ -289,8 +297,28 @@ export class ClientExamQuestionComponent {
 
     if (!q) return;
 
+    if (this.isMultiSubQuestion) {
+      const answers = (q.subQuestions ?? [])
+        .filter((subQuestion: any) => !!subQuestion.selectedChoiceOid)
+        .map((subQuestion: any) => ({
+          subQuestionOid: subQuestion.oid,
+          selectedChoiceOid: subQuestion.selectedChoiceOid
+        }));
+
+      if (!answers.length) {
+        this.next.emit({ type: 'empty', last });
+        return;
+      }
+
+      if (this.mode() !== 'Exam') this.showResultState.set(true);
+      this.next.emit({
+        type: 'Multiple Sub-Questions',
+        answers: { questionOid: q.oid, answers },
+        last
+      });
+    }
     // Multiple Choice Question
-    if (q.questionTypeName === 'Multiple Choice Question') {
+    else if (q.questionTypeName === 'Multiple Choice Question') {
       const payload = this.mapToAnswerPayload(q);
 
       if (!payload?.selectedAnswerOids?.length) {
@@ -355,7 +383,27 @@ export class ClientExamQuestionComponent {
     this.showTranslateFlag = false;
   }
   get isMatchingQuestion(): boolean {
-    return this.question()?.questionTypeName.toLowerCase() === 'matching';
+    return this.question()?.questionTypeName?.toLowerCase() === 'matching';
+  }
+
+  get isMultiSubQuestion(): boolean {
+    const question = this.question();
+    const typeName = String(question?.questionTypeName ?? '').trim().toLowerCase();
+    const typeValue = String(question?.questionTypeValue ?? question?.lookupValue ?? '').trim().toUpperCase();
+    return question?.questionTypeLookupId === '33333333-3333-3333-3333-333333333307' ||
+      typeValue === 'MULTI_IMAGE' ||
+      typeName === 'multiple sub-questions';
+  }
+
+  isSubChoiceCorrect(choice: any): boolean {
+    if (this.mode() === 'Exam') return false;
+    return (this.showCorrectAnswerFlag || this.showResultState()) && choice.isCorrect;
+  }
+
+  isSubChoiceWrong(subQuestion: any, choice: any): boolean {
+    if (this.mode() === 'Exam') return false;
+    return (this.showCorrectAnswerFlag || this.showResultState()) &&
+      this.isSubQuestionChoiceSelected(subQuestion, choice) && !choice.isCorrect;
   }
 
   get left(): APIAnswer[] {
