@@ -93,11 +93,23 @@
           tabindex="0"
         >
           @for (imageUrl of questionImageUrls(); track imageUrl; let imageIndex = $index) {
-            <img
-              [src]="imageUrl"
-              [alt]="'Question image ' + (imageIndex + 1)"
-              class="img-fluid rounded"
-            />
+            <div class="exam-image-item">
+              <img
+                #questionImage
+                [src]="imageUrl"
+                [alt]="'Question image ' + (imageIndex + 1)"
+                class="img-fluid rounded"
+              />
+              <button
+                type="button"
+                class="image-fullscreen-button"
+                [attr.aria-label]="'Show question image ' + (imageIndex + 1) + ' in full screen'"
+                title="Full screen"
+                (click)="showImageFullscreen(questionImage, $event)"
+              >
+                <i class="bi bi-arrows-fullscreen"></i>
+              </button>
+            </div>
           }
         </div>
       }
@@ -264,7 +276,7 @@
           [title]="'Previous' | translate"
           type="secondary"
           [disabled]="isFirstQuestion"
-          (click)="previousQuestion()"
+          (onClick)="previousQuestion()"
         />
 
         <app-site-button
@@ -280,10 +292,16 @@
             title="Next"
             [disabled]="isLastQuestion"
             type="main"
-            (click)="nextQuestion()"
+            (onClick)="nextQuestion()"
           />
         } @else {
-          <app-site-button title="Submit" type="main" (click)="submit()" />
+          <button
+            type="button"
+            class="btn btn-primary exam-submit-button"
+            (click)="submit()"
+          >
+            {{ "Submit" | translate }}
+          </button>
         }
       </div>
     </footer>
@@ -329,11 +347,23 @@
               tabindex="0"
             >
               @for (imageUrl of explanationImageUrls(); track imageUrl; let imageIndex = $index) {
-                <img
-                  [src]="imageUrl"
-                  [alt]="'Explanation image ' + (imageIndex + 1)"
-                  class="rounded"
-                />
+                <div class="exam-image-item">
+                  <img
+                    #explanationImage
+                    [src]="imageUrl"
+                    [alt]="'Explanation image ' + (imageIndex + 1)"
+                    class="rounded"
+                  />
+                  <button
+                    type="button"
+                    class="image-fullscreen-button"
+                    [attr.aria-label]="'Show explanation image ' + (imageIndex + 1) + ' in full screen'"
+                    title="Full screen"
+                    (click)="showImageFullscreen(explanationImage, $event)"
+                  >
+                    <i class="bi bi-arrows-fullscreen"></i>
+                  </button>
+                </div>
               }
             </div>
           }

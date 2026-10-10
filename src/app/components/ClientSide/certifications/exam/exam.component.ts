@@ -489,7 +489,7 @@ export class ExamComponent {
       };
       const existing = this.examSubQuestionAnswers.find(x => x.questionOid === payload.questionOid);
       if (existing && JSON.stringify(existing.answers) === JSON.stringify(payload.answers)) {
-        this.updateIndex(newAnswer.last);
+        this.continueOrSubmitExam(newAnswer.last === true);
         return;
       }
 
@@ -499,11 +499,25 @@ export class ExamComponent {
           if (index >= 0) this.examSubQuestionAnswers[index] = payload;
           else this.examSubQuestionAnswers.push(payload);
           this.answeredQuestions.update(set => new Set(set).add(payload.questionOid));
-          this.saveExamProgress();
-          this.updateIndex(newAnswer.last);
+          try {
+            this.saveExamProgress();
+          } finally {
+            // The final question must save its answers first, then submit the
+            // whole exam through POST /StudentExams/submit.
+            this.continueOrSubmitExam(newAnswer.last === true);
+          }
         }
       });
     }
+  }
+
+  private continueOrSubmitExam(isLastQuestion: boolean): void {
+    if (isLastQuestion) {
+      this.finishExam(true);
+      return;
+    }
+
+    this.updateIndex(false);
   }
 
   updateIndex(last:boolean=false) {

@@ -283,6 +283,22 @@ export class ClientExamQuestionComponent {
     this.showCorrectAnswerFlag = false;
   }
 
+  showImageFullscreen(image: HTMLImageElement, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    if (image.requestFullscreen) {
+      image.requestFullscreen().catch(() => {
+        this.toast.showToast('Unable to open the image in full screen.', 'error');
+      });
+      return;
+    }
+
+    window.open(image.src, '_blank', 'noopener,noreferrer');
+  }
+
 
   nextQuestion() {
     if (this.isLastQuestion) return;
@@ -313,12 +329,12 @@ export class ClientExamQuestionComponent {
       if (this.mode() !== 'Exam') this.showResultState.set(true);
       this.next.emit({
         type: 'Multiple Sub-Questions',
-        answers: { questionOid: q.oid, answers },
+        answers: { questionOid: q.oid ?? q.questionOid, answers },
         last
       });
     }
     // Multiple Choice Question
-    else if (q.questionTypeName === 'Multiple Choice Question') {
+    else if (this.isMultipleChoiceQuestion(q)) {
       const payload = this.mapToAnswerPayload(q);
 
       if (!payload?.selectedAnswerOids?.length) {
@@ -338,7 +354,7 @@ export class ClientExamQuestionComponent {
       });
     }
     // Matching Question
-    else if (q.questionTypeName === 'Matching') {
+    else if (this.isMatchingQuestion) {
       const payload = this.buildMatchingAnswers(this.left, this.middle);
       if (!payload?.length) {
         this.next.emit({ type: 'empty', last });
@@ -354,8 +370,11 @@ export class ClientExamQuestionComponent {
         answers: payload, last
       });
     }
-
-
+    else {
+      // Never leave the navigation/submit button silent when legacy API data
+      // contains an unexpected question type name.
+      this.toast.showToast('Unsupported question type. Please refresh the exam.', 'error');
+    }
   }
 
   submit() {
@@ -363,8 +382,8 @@ export class ClientExamQuestionComponent {
   }
   mapToAnswerPayload(question: any) {
     return {
-      questionOid: question.oid,
-      selectedAnswerOids: question.answers
+      questionOid: question.oid ?? question.questionOid,
+      selectedAnswerOids: (question.answers ?? [])
         .filter((a: any) => a.isSelected)
         .map((a: any) => a.oid)
     };
@@ -383,16 +402,27 @@ export class ClientExamQuestionComponent {
     this.showTranslateFlag = false;
   }
   get isMatchingQuestion(): boolean {
-    return this.question()?.questionTypeName?.toLowerCase() === 'matching';
+    const question = this.question();
+    const typeName = String(question?.questionTypeName ?? '').trim().toLowerCase();
+    const typeValue = String(question?.questionTypeValue ?? question?.lookupValue ?? '').trim().toUpperCase();
+    return typeName.includes('matching') || typeValue === 'MATCHING';
+  }
+
+  private isMultipleChoiceQuestion(question: any): boolean {
+    const typeName = String(question?.questionTypeName ?? '').trim().toLowerCase();
+    const typeValue = String(question?.questionTypeValue ?? question?.lookupValue ?? '').trim().toUpperCase();
+    return typeName.includes('multiple choice') || typeValue === 'MULTIPLE_CHOICE';
   }
 
   get isMultiSubQuestion(): boolean {
     const question = this.question();
     const typeName = String(question?.questionTypeName ?? '').trim().toLowerCase();
     const typeValue = String(question?.questionTypeValue ?? question?.lookupValue ?? '').trim().toUpperCase();
-    return question?.questionTypeLookupId === '33333333-3333-3333-3333-333333333307' ||
+    const normalizedTypeName = typeName.replace(/[\s_-]+/g, ' ');
+    return String(question?.questionTypeLookupId ?? '').toLowerCase() === '33333333-3333-3333-3333-333333333307' ||
       typeValue === 'MULTI_IMAGE' ||
-      typeName === 'multiple sub-questions';
+      normalizedTypeName.includes('multiple sub question') ||
+      (Array.isArray(question?.subQuestions) && question.subQuestions.length > 0);
   }
 
   isSubChoiceCorrect(choice: any): boolean {

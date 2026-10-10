@@ -61,6 +61,7 @@ export class CourseVideoFormComponent {
         orderNo: [0],
         videoTypeLookupId: [''],
         isPreview: [false],
+        isFree: [false],
         isActive: [true],
     });
 
@@ -156,6 +157,7 @@ export class CourseVideoFormComponent {
             orderNo: Number(value.orderNo ?? 0),
             videoTypeLookupId: value.videoTypeLookupId || null,
             isPreview: !!value.isPreview,
+            isFree: !!value.isFree,
             isActive: !!value.isActive,
         };
 
@@ -200,6 +202,7 @@ export class CourseVideoFormComponent {
             orderNo: normalizedVideo.orderNo ?? 0,
             videoTypeLookupId: normalizedVideo.videoTypeLookupId ?? '',
             isPreview: normalizedVideo.isPreview,
+            isFree: normalizedVideo.isFree,
             isActive: normalizedVideo.isActive,
         });
     }
@@ -235,6 +238,7 @@ export class CourseVideoFormComponent {
             orderNo: Number(value.orderNo ?? 0),
             videoTypeLookupId: value.videoTypeLookupId || null,
             isPreview: !!value.isPreview,
+            isFree: !!value.isFree,
             isActive: !!value.isActive,
         };
 

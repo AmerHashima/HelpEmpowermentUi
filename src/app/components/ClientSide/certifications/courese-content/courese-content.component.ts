@@ -117,6 +117,20 @@ export class CoureseContentComponent {
   courseCon = computed(() => {
     const section = this.section();
     if (section?.isEnabled === false) return [];
+
+    const apiVideos = (this.videos() ?? [])
+      .filter(video => video.isActive)
+      .slice()
+      .sort((a, b) => (a.orderNo ?? 0) - (b.orderNo ?? 0));
+
+    if (apiVideos.length) {
+      return apiVideos.map((video, index) => ({
+        title: this.getDisplayName(video),
+        duration: this.formatDuration(video.durationSeconds),
+        order: video.orderNo ?? index + 1
+      }));
+    }
+
     if (section) {
       const lang = this.isRTL() ? 'ar' : 'en';
       return section.items.map((item, index) => ({
@@ -145,6 +159,19 @@ export class CoureseContentComponent {
     }));
 
   });
+
+  getDisplayName(video: CourseVideo): string {
+    return this.isRTL()
+      ? (video.nameAr || video.nameEn || '')
+      : (video.nameEn || video.nameAr || '');
+  }
+
+  formatDuration(seconds: number | null): string {
+    if (!seconds || seconds <= 0) return '';
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+  }
   // courseCon = computed(() => {
   //   return (this.videos() ?? [])
   //     .sort((a, b) => (a.orderNo ?? 0) - (b.orderNo ?? 0))

@@ -644,6 +644,7 @@ export class LessonLearnedQUestiosPracticeModeComponent {
 
   examChoiceAnswers: any[] = [];
   examMatchingAnswers: any[] = [];
+  examSubQuestionAnswers: any[] = [];
 
   saveForLater: boolean = false;
 
@@ -884,6 +885,7 @@ export class LessonLearnedQUestiosPracticeModeComponent {
 
             this.examChoiceAnswers = parsed.examChoiceAnswers ?? [];
             this.examMatchingAnswers = parsed.examMatchingAnswers ?? [];
+            this.examSubQuestionAnswers = parsed.examSubQuestionAnswers ?? [];
 
             if (parsed.markedQuestions) {
               this.markedQuestions.set(new Set(parsed.markedQuestions));
@@ -1007,6 +1009,9 @@ export class LessonLearnedQUestiosPracticeModeComponent {
     const savedMatching = this.examMatchingAnswers.find(
       x => x.questionOid === q.oid
     );
+    const savedSubQuestions = this.examSubQuestionAnswers.find(
+      x => x.questionOid === q.oid
+    );
 
     const total = this.filteredExamQuestions().length;
 
@@ -1022,6 +1027,12 @@ export class LessonLearnedQUestiosPracticeModeComponent {
       })),
 
       savedMatchingAnswers: savedMatching?.answers ?? [],
+      subQuestions: (q.subQuestions ?? []).map((subQuestion: any) => ({
+        ...subQuestion,
+        selectedChoiceOid: savedSubQuestions?.answers?.find(
+          (answer: any) => answer.subQuestionOid === subQuestion.oid
+        )?.selectedChoiceOid ?? null
+      })),
 
       orderNo: index + 1,
       progress: Math.round(((index + 1) / Math.max(1, total)) * 100),
@@ -1063,6 +1074,7 @@ export class LessonLearnedQUestiosPracticeModeComponent {
     this.currentQuestionIndex.set(0);
     this.examChoiceAnswers = [];
     this.examMatchingAnswers = [];
+    this.examSubQuestionAnswers = [];
     this.answeredQuestions.set(new Set([]));
 
     if (this.isBrowser) {
@@ -1169,6 +1181,18 @@ export class LessonLearnedQUestiosPracticeModeComponent {
         this.updateIndex(newAnswer.last);
       }, 300);
     }
+    else if (newAnswer.type === 'Multiple Sub-Questions') {
+      const answer = newAnswer.answers;
+      const index = this.examSubQuestionAnswers.findIndex(
+        item => item.questionOid === answer.questionOid
+      );
+      if (index >= 0) this.examSubQuestionAnswers[index] = answer;
+      else this.examSubQuestionAnswers.push(answer);
+
+      this.answeredQuestions.update(set => new Set(set).add(q.oid));
+      this.saveExamProgress();
+      this.updateIndex(newAnswer.last === true);
+    }
   }
 
   goToPrevious() {
@@ -1241,6 +1265,7 @@ export class LessonLearnedQUestiosPracticeModeComponent {
 
         examChoiceAnswers: this.examChoiceAnswers,
         examMatchingAnswers: this.examMatchingAnswers,
+        examSubQuestionAnswers: this.examSubQuestionAnswers,
 
         markedQuestions: Array.from(this.markedQuestions()),
         answeredQuestions: Array.from(this.answeredQuestions())

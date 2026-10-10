@@ -12,6 +12,7 @@ export interface CourseVideo {
   videoTypeLookupId: string | null;
   videoTypeName: string | null;
   isPreview: boolean;
+  isFree: boolean;
   isActive: boolean;
   createdAt: string | null;
   attachments: any[];
@@ -28,6 +29,7 @@ export interface CreateCourseVideoDto {
   orderNo: number | null;
   videoTypeLookupId: string | null;
   isPreview: boolean;
+  isFree: boolean;
   isActive: boolean;
 }
 

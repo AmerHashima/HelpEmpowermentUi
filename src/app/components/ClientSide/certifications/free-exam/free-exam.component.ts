@@ -37,6 +37,7 @@ export class FreeExamComponent {
   showQuestionBoard: boolean = false;
   examChoiceAnswers: any[] = [];
   examMatchingAnswers: any[] = [];
+  examSubQuestionAnswers: any[] = [];
   currentExamId = signal<string>('');
   saveForLater: boolean = false;
   currentQuestionIndex = signal<number>(0);
@@ -165,6 +166,7 @@ export class FreeExamComponent {
             this.currentQuestionIndex.set(parsed.currentQuestionIndex ?? 0);
             this.examChoiceAnswers = parsed.examChoiceAnswers ?? [];
             this.examMatchingAnswers = parsed.examMatchingAnswers ?? []
+            this.examSubQuestionAnswers = parsed.examSubQuestionAnswers ?? [];
             if (parsed.markedQuestions) {
               this.markedQuestions.set(new Set(parsed.markedQuestions));
             }
@@ -380,6 +382,7 @@ questionAnswersOids: {
     this.currentQuestionIndex.set(0);
     this.examChoiceAnswers = [];
     this.examMatchingAnswers = [];
+    this.examSubQuestionAnswers = [];
     this.markedQuestions.set(new Set([]));
     this.answeredQuestions.set(new Set([]));
   }
@@ -405,6 +408,9 @@ questionAnswersOids: {
     const savedMatching = this.examMatchingAnswers.find(
       x => x.questionOid === q.oid
     );
+    const savedSubQuestions = this.examSubQuestionAnswers.find(
+      x => x.questionOid === q.oid
+    );
 
     return {
       ...q,
@@ -416,6 +422,12 @@ questionAnswersOids: {
           : false
       })),
       savedMatchingAnswers: savedMatching?.answers ?? [],
+      subQuestions: (q.subQuestions ?? []).map((subQuestion: any) => ({
+        ...subQuestion,
+        selectedChoiceOid: savedSubQuestions?.answers?.find(
+          (answer: any) => answer.subQuestionOid === subQuestion.oid
+        )?.selectedChoiceOid ?? null
+      })),
       progress: Math.round(((q.orderNo!) / Math.max(1, this.questions().length)) * 100),
       totalQuestions: this.questions().length,
       maxChoices: q.answers.filter((o: any) => o.isCorrect).length || 1
@@ -615,6 +627,41 @@ questionAnswersOids: {
         this.updateIndex(newAnswer.last);
       }, 800);
     }
+    else if (newAnswer.type === 'Multiple Sub-Questions') {
+      const answer = newAnswer.answers;
+      const previous = this.examSubQuestionAnswers.find(
+        item => item.questionOid === answer.questionOid
+      );
+      const previousCorrect = previous
+        ? this.checkSubQuestionAnswer(q, previous.answers)
+        : null;
+      const isCorrect = this.checkSubQuestionAnswer(q, answer.answers);
+
+      this.updateResult(q, isCorrect, previousCorrect);
+      const index = this.examSubQuestionAnswers.findIndex(
+        item => item.questionOid === answer.questionOid
+      );
+      if (index >= 0) this.examSubQuestionAnswers[index] = answer;
+      else this.examSubQuestionAnswers.push(answer);
+
+      this.answeredQuestions.update(set => new Set(set).add(q.oid));
+      this.saveExamProgress();
+      this.updateIndex(newAnswer.last === true);
+    }
+  }
+
+  private checkSubQuestionAnswer(question: any, submittedAnswers: any[]): boolean {
+    const subQuestions = question?.subQuestions ?? [];
+    if (!subQuestions.length || submittedAnswers?.length !== subQuestions.length) return false;
+
+    return subQuestions.every((subQuestion: any) => {
+      const submitted = submittedAnswers.find(
+        answer => answer.subQuestionOid === subQuestion.oid
+      );
+      return !!subQuestion.choices?.find(
+        (choice: any) => choice.oid === submitted?.selectedChoiceOid && choice.isCorrect
+      );
+    });
   }
 
 
@@ -714,6 +761,7 @@ questionAnswersOids: {
         currentQuestionIndex: this.currentQuestionIndex(),
         examChoiceAnswers: this.examChoiceAnswers,
         examMatchingAnswers: this.examMatchingAnswers,
+        examSubQuestionAnswers: this.examSubQuestionAnswers,
         markedQuestions: Array.from(this.markedQuestions()),
         answeredQuestions: Array.from(this.answeredQuestions()),
         answerResult: Array.from(this.answerResult().entries())

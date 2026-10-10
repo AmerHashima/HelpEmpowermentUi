@@ -165,21 +165,62 @@
     border-radius: 999px;
   }
 
-  img {
+  .exam-image-item {
     flex: 0 0 min(85%, 720px);
     width: min(85%, 720px);
+    position: relative;
+    scroll-snap-align: start;
+  }
+
+  img {
+    width: 100%;
     height: 300px;
     object-fit: contain;
-    scroll-snap-align: start;
     background: $inputBg;
     border: 1px solid rgba(0, 0, 0, 0.1);
   }
 }
 
+.image-fullscreen-button {
+  position: absolute;
+  top: .75rem;
+  right: .75rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: .5rem;
+  background: rgba(15, 23, 42, .88);
+  color: #fff;
+  cursor: pointer;
+  z-index: 2;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, .2);
+
+  &:hover,
+  &:focus-visible {
+    background: $primaryColor;
+  }
+}
+
+img:fullscreen {
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: none !important;
+  max-height: none !important;
+  object-fit: contain !important;
+  background: #0f172a !important;
+  padding: 1rem;
+}
+
 @media (max-width: 576px) {
-  .question-images-wrapper img {
+  .question-images-wrapper .exam-image-item {
     flex-basis: 92%;
     width: 92%;
+  }
+
+  .question-images-wrapper img {
     height: 220px;
   }
 }
@@ -329,3 +370,9 @@ color:$headerColor !important;
 .sub-question-card h3 { font-size: 1rem; margin: 0 0 .8rem; color: $headerColor; }
 .sub-question-card h3 span { color: $primaryColor; }
 .sub-answer-summary { display: flex; flex-direction: column; gap: .25rem; padding: .5rem 0; }
+
+.exam-submit-button {
+  min-width: 90px;
+  position: relative;
+  z-index: 1;
+}

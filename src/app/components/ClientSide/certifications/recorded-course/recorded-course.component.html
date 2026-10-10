@@ -85,7 +85,7 @@
       />
     </app-page-banner>
   </ng-container>
-  <ng-container *ngIf="hasRecordedCourseAccess()">
+  <ng-container *ngIf="hasRecordedCourseAccess() || hasFreeVideos()">
     <app-course-player />
   </ng-container>
 

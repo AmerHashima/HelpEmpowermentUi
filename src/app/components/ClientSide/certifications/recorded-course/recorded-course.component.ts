@@ -126,6 +126,7 @@ export class RecordedCourseComponent {
   );
 
   videos = computed(() => this.videosState().data);
+  hasFreeVideos = computed(() => this.videos().some(video => video.isActive && video.isFree));
 
   isCourseFinished = computed(() => {
     const completedLessons = this.studentService.completedLessonsInCourse() ?? 0;

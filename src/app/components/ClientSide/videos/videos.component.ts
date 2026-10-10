@@ -85,7 +85,13 @@ export class VideosComponent {
     }
   );
 
-  videos = computed(() => this.videosState().data);
+  private hasFullCourseAccess = computed(
+    () => this.studentService.isRecordedCoursesEnrolled() && this.studentService.showExamSimulator === true
+  );
+  videos = computed(() => {
+    const videos = this.videosState().data.filter(video => video.isActive);
+    return this.hasFullCourseAccess() ? videos : videos.filter(video => video.isFree);
+  });
   loading = computed(() => this.videosState().loading);
   error = computed(() => this.videosState().error);
 
@@ -162,6 +168,10 @@ export class VideosComponent {
     }
   }
   selectVideo(video: CourseVideo): void {
+    if (video.isFree) {
+      this.selectedVideo.set(video);
+      return;
+    }
     const completed = this.lessonsWatched() ?? 0;
     const order = video.orderNo ?? 0;
 
@@ -190,6 +200,7 @@ export class VideosComponent {
   onVideoPlay() {
     const video = this.selectedVideo();
     if (!video) return;
+    if (video.isFree && !this.hasFullCourseAccess()) return;
 
     const order = video.orderNo ?? 0;
     const completed = this.lessonsWatched() ?? 0;
@@ -229,6 +240,7 @@ export class VideosComponent {
   });
 
   isLocked(video: CourseVideo): boolean {
+    if (video.isFree) return false;
     const completed = this.lessonsWatched() ?? 0;
     const order = video.orderNo ?? 0;
 
