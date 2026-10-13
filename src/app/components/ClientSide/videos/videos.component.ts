@@ -19,6 +19,7 @@ import { CourseVideosService } from '../../../Services/course-videos.service';
 import { Shared } from '../../../shared/Services/shared/shared';
 import { CourseVideo } from '../../../models/course-video';
 import { ToastingMessagesService } from '../../../shared/Services/ToastingMessages/toasting-messages.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-videos',
@@ -35,6 +36,8 @@ export class VideosComponent {
   private studentService = inject(StudentService);
   private shared = inject(Shared);
   private platformId = inject(PLATFORM_ID);
+  private route = inject(ActivatedRoute);
+  private requestedVideoId = toSignal(this.route.queryParamMap.pipe(map(params => params.get('video'))), { initialValue: null });
 
   lessonsWatched = this.studentService.completedLessonsInCourse;
   totalLessons = this.studentService.totalLessonsInCourse;
@@ -103,11 +106,21 @@ export class VideosComponent {
       const vids = this.videos();
       const completed = this.lessonsWatched() ?? 0;
 
-      if (!vids.length || this.initialized) return;
+      if (!vids.length) return;
+
+      const requested = this.requestedVideoId();
+      const requestedVideo = requested ? vids.find(video => video.oid === requested) : null;
+      if (requestedVideo) {
+        this.selectedVideo.set(requestedVideo);
+        this.initialized = true;
+        return;
+      }
+
+      if (this.initialized) return;
 
       const nextVideo =
         vids.find(v => (v.orderNo ?? 0) === completed + 1)
-        ?? vids[vids.length - 1];
+        ?? vids[0];
 
       this.selectedVideo.set(nextVideo);
       this.initialized = true;

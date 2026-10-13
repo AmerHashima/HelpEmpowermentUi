@@ -39,6 +39,7 @@ export class CourseContentEditorComponent implements OnDestroy {
   readonly rawSections = signal('[]');
   readonly translatingCount = signal(0);
   readonly instructorImageUploading = signal(false);
+  readonly socialProofImageUploading = signal<number | null>(null);
   readonly activeTab = computed(() => this.tabs().find(x => x.tabKey === this.activeKey()));
   readonly customSections = computed(() =>
     (this.activeTab()?.content.sections ?? [])
@@ -183,6 +184,46 @@ export class CourseContentEditorComponent implements OnDestroy {
     return imageUrl.includes('/') ? imageUrl : this.contentService.getInstructorImageUrl(imageUrl);
   }
 
+  supportsSocialProof(tab: CourseTabContent): boolean {
+    return ['exam-simulator', 'recorded-course', 'live-course'].includes(tab.tabKey);
+  }
+
+  socialProof(tab: CourseTabContent): { count: string; images: string[] } {
+    tab.content.socialProof ??= { count: '500+', images: [] };
+    while (tab.content.socialProof.images.length < 4) tab.content.socialProof.images.push('');
+    return tab.content.socialProof;
+  }
+
+  onSocialProofImageSelected(event: Event, tab: CourseTabContent, index: number): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    input.value = '';
+    if (!file || this.socialProofImageUploading() !== null) return;
+    if (!file.type.startsWith('image/')) {
+      this.error.set('Please select a valid learner image.');
+      return;
+    }
+
+    this.error.set('');
+    this.socialProofImageUploading.set(index);
+    this.contentService.uploadSocialProofImage(this.currentCourseCode(), file).subscribe({
+      next: response => {
+        this.socialProof(tab).images[index] = response.fileName;
+        this.tabs.update(tabs => [...tabs]);
+        this.socialProofImageUploading.set(null);
+      },
+      error: () => {
+        this.error.set('Could not upload the learner image. Please try again.');
+        this.socialProofImageUploading.set(null);
+      }
+    });
+  }
+
+  socialProofImagePreview(imageUrl?: string): string {
+    if (!imageUrl) return 'assets/images/profile/person.png';
+    return imageUrl.includes('/') ? imageUrl : this.contentService.getSocialProofImageUrl(imageUrl);
+  }
+
   setCustomEnglish(section: CourseCustomSection, field: 'header' | 'description', value: string): void {
     section[field].en = value;
     this.autoTranslate(`custom:${this.objectKey(section)}:${field}`, value,
@@ -242,7 +283,8 @@ export class CourseContentEditorComponent implements OnDestroy {
 
       this.contentService.getCourse(courseCode, true).subscribe({
         next: tabs => {
-          const editableTabs = tabs.length ? tabs : this.createEmptyTabs(courseCode);
+          const websiteTabs = tabs.filter(tab => tab.tabKey !== 'certificate-settings');
+          const editableTabs = websiteTabs.length ? websiteTabs : this.createEmptyTabs(courseCode);
           this.tabs.set(editableTabs.sort((a, b) => a.orderNo - b.orderNo));
           this.select(this.activeKey());
           this.loading.set(false);
@@ -273,6 +315,9 @@ export class CourseContentEditorComponent implements OnDestroy {
       status: 'Draft',
       content: {
         ...(tabKey === 'quiz-game' ? { quizGame: { availability: 'play-now' as const } } : {}),
+        ...(['exam-simulator', 'recorded-course', 'live-course'].includes(tabKey)
+          ? { socialProof: { count: '500+', images: ['', '', '', ''] } }
+          : {}),
         banner: {
           en: { titlePart1: '', titlePart2: '', description: '' },
           ar: { titlePart1: '', titlePart2: '', description: '' },

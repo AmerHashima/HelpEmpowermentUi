@@ -7,18 +7,18 @@
   <div class="header">
 
     <div class="left">
-      <img src="/assets/images/finishCourse/logo.png" alt="logo">
-<div class="pmp-badge text-center" [innerHTML]="badge()"></div>
+      <img [src]="certificateImage(effectiveSettings().certificate.logoImage)" alt="logo">
+<div class="pmp-badge text-center" [innerHTML]="effectiveSettings().certificate.badgeHtml || badge()"></div>
 
 
     </div>
 
     <div class="right">
-      <img src="/assets/images/finishCourse/anotherLogo.png" alt="PMI logo">
+      <img [src]="certificateImage(effectiveSettings().certificate.partnerLogoImage)" alt="Partner logo">
 
   <div class="vertical-code">
   <div class="inner">
-    <span>5090</span>
+    <span>{{ effectiveSettings().certificate.providerCode }}</span>
     <span>{{codeNumber()}}</span>
   </div>
 </div>
@@ -31,39 +31,39 @@
   </div>
 
   <!-- Title -->
-  <div class="main-title">Certificate of Attendance</div>
+  <div class="main-title">{{ effectiveSettings().certificate.title }}</div>
 
   <!-- Content -->
   <div class="content">
-    <p class="awarded">Awarded to:</p>
+    <p class="awarded">{{ effectiveSettings().certificate.awardedToLabel }}</p>
 
-    <h1 class="name">{{ userName() }}</h1>
+    <h1 class="name">{{ displayedUserName() }}</h1>
 
     <p class="description">
-      For successfully completing training in:
+      {{ effectiveSettings().certificate.completionText }}
       <span>{{ courseName() }}</span>
     </p>
 
     <p class="date">
-      Date: {{ date() }} ({{ hours() }} hours)
+      {{ effectiveSettings().certificate.dateLabel }} {{ date() }} ({{ effectiveSettings().certificate.hours || hours() }} hours)
     </p>
   </div>
 
   <!-- Footer -->
   <div class="footer">
     <div class="instructor">
-      <div class="instructor-name">Mahmoud Elhelbawi</div>
-      <div class="role">Course Instructor</div>
+      <div class="instructor-name">{{ effectiveSettings().certificate.instructorName }}</div>
+      <div class="role">{{ effectiveSettings().certificate.instructorRole }}</div>
 
       <div class="signature">
-        <img src="/assets/images/finishCourse/signature.png" alt="signature">
+        <img [src]="certificateImage(effectiveSettings().certificate.signatureImage)" alt="signature">
       </div>
     </div>
 
-    <div class="website">www.HelpEmpowerment.com</div>
+    <div class="website">{{ effectiveSettings().certificate.website }}</div>
 
     <div>
-      <img src="/assets/images/finishCourse/checker.png" class="checker-img" />
+      <img [src]="certificateImage(effectiveSettings().certificate.checkerImage)" class="checker-img" />
     </div>
     <!-- <div class="checker"></div> -->
   </div>
@@ -71,6 +71,7 @@
 </div>
   </div>
 
+@if (!previewMode()) {
 <div class="download-btn">
   <app-site-button
     title="Download Certificate"
@@ -78,5 +79,6 @@
     (click)="downloadPDF()"
   />
 </div>
+}
 
 </div>

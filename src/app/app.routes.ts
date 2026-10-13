@@ -347,6 +347,11 @@ export const routes: Routes = [
             data: { breadcrumb: 'Website Content' },
           },
           {
+            path: ':id/certificate-settings',
+            loadComponent: () => import('./components/AdminPanel/certifications/certificate-settings-editor/certificate-settings-editor.component').then(m => m.CertificateSettingsEditorComponent),
+            data: { breadcrumb: 'Certificate & Exam Result' },
+          },
+          {
             path: ':id',
             loadComponent: () => import('./components/AdminPanel/certifications/certification/certification.component').then(m => m.CertificationComponent),
             data: { breadcrumb: 'Certification Details' },

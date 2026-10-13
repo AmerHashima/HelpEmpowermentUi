@@ -1,6 +1,6 @@
 // src\app\components\ClientSide\home\home-faq\home-faq.component.ts
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 
 import { Shared } from '../../../../shared/Services/shared/shared';
@@ -22,116 +22,57 @@ import { catchError, of, switchMap } from 'rxjs';
   styleUrl: './home-faq.component.scss'
 })
 export class HomeFAQComponent {
+  courseSpecific = input(false);
   protected readonly shared = inject(Shared);
   private currentCertification = this.shared.currentCertificate;
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private tabService = inject(CourseTabContentService);
-  private faqContent = toSignal(toObservable(this.currentCertification).pipe(
-    switchMap(code => code === 'pmp' || code === 'capm'
+  private courseFaqCode = computed(() =>
+    this.courseSpecific() ? this.currentCertification() : ''
+  );
+  private faqContent = toSignal(toObservable(this.courseFaqCode).pipe(
+    switchMap(code => code
       ? this.tabService.getTab(code, 'faq').pipe(catchError(() => of(null)))
       : of(null))
   ), { initialValue: null });
-  // You need to provide this array – can come from service, input, or static
-  questions = [
-    {
-      question: 'faq.question1',
-      answer: 'faq.answer1'
-    },
-    {
-      question: 'faq.question2',
-      answer: 'faq.answer2'
-    },
-    {
-      question: 'faq.question3',
-      answer: 'faq.answer3'
-    },
-    {
-      question: 'faq.question4',
-      answer: 'faq.answer4'
-    },
-    {
-      question: 'faq.question5',
-      answer: 'faq.answer5'
-    },
 
+  private readonly systemQuestions = [
+    { question: 'faq.question1', answer: 'faq.answer1' },
+    { question: 'faq.question2', answer: 'faq.answer2' },
+    { question: 'faq.question3', answer: 'faq.answer3' },
+    { question: 'faq.question4', answer: 'faq.answer4' },
+    { question: 'faq.question5', answer: 'faq.answer5' }
   ];
-
-  pmpQuestions = [
-    {
-      question: 'pmpFaq.question1',
-      answer: 'pmpFaq.answer1'
-    },
-    {
-      question: 'pmpFaq.question2',
-      answer: 'pmpFaq.answer2'
-    },
-    {
-      question: 'pmpFaq.question3',
-      answer: 'pmpFaq.answer3'
-    },
-    {
-      question: 'pmpFaq.question4',
-      answer: 'pmpFaq.answer4'
-    },
-    {
-      question: 'pmpFaq.question5',
-      answer: 'pmpFaq.answer5'
-    },
-
-  ];
-
-  campQuestions = [
-    {
-      question: 'campFaq.question1',
-      answer: 'campFaq.answer1'
-    },
-    {
-      question: 'campFaq.question2',
-      answer: 'campFaq.answer2'
-    },
-    {
-      question: 'campFaq.question3',
-      answer: 'campFaq.answer3'
-    },
-    {
-      question: 'campFaq.question4',
-      answer: 'campFaq.answer4'
-    },
-    {
-      question: 'campFaq.question5',
-      answer: 'campFaq.answer5'
-    },
-
-  ];
-
   displayedQuestions = computed(() => {
+    if (!this.courseSpecific()) return this.systemQuestions;
+
     const section = this.faqSection();
-    if (section?.isEnabled === false) return [];
-    const items = section?.items;
-    if (items) {
-      const lang = this.shared.isRtl() ? 'ar' : 'en';
-      return items.map(item => ({
+    if (!section || section.isEnabled === false) return [];
+
+    const lang = this.shared.isRtl() ? 'ar' : 'en';
+    return (section.items ?? [])
+      .map(item => ({
         question: typeof item.title === 'string' ? item.title : item.title?.[lang] ?? '',
         answer: typeof item.description === 'string' ? item.description : item.description?.[lang] ?? ''
-      }));
-    }
-    if (this.currentCertification() == 'pmp')
-      return this.pmpQuestions;
-    else if (this.currentCertification() == 'capm')
-      return this.campQuestions;
-    else return this.questions;
+      }))
+      .filter(item => item.question.trim() || item.answer.trim());
   })
 
   readonly faqSection = computed(() => this.faqContent()?.content.sections.find(s => s.type === 'faq'));
-  readonly faqTitle = computed(() => this.faqSection()?.header?.[this.shared.isRtl() ? 'ar' : 'en'] || 'home.faq.title');
-  readonly faqDescription = computed(() => this.faqSection()?.description?.[this.shared.isRtl() ? 'ar' : 'en'] || 'home.faq.description');
+  readonly faqTitle = computed(() =>
+    this.courseSpecific()
+      ? this.faqSection()?.header?.[this.shared.isRtl() ? 'ar' : 'en'] ?? ''
+      : 'home.faq.title'
+  );
+  readonly faqDescription = computed(() =>
+    this.courseSpecific()
+      ? this.faqSection()?.description?.[this.shared.isRtl() ? 'ar' : 'en'] ?? ''
+      : 'home.faq.description'
+  );
 
   onContactSupport() {
-    // window.location.href = 'mailto:Support@helpempowerment.com';
-    this.router.navigate([`en/contact`], {
-      // relativeTo: this.route,
-    });
+    this.router.navigate([this.shared.isRtl() ? 'ar/contact' : 'en/contact']);
   }
 }
 

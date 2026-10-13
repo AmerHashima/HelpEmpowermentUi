@@ -21,6 +21,13 @@
             </div>
           </div>
         </div>
+        @if (displaySettings().examResult.showPassPercentage) {
+        <div class="col-12"><div class="row"><div class="col-6 p-3 text-center performanceLevel"><span>Pass Percentage</span></div><div class="col-6 border-start p-3 text-center level"><span>{{ passPercentage() | number:'1.0-2' }}%</span></div></div></div>
+        }
+        @if (displaySettings().examResult.showScorePercentage) {
+        <div class="col-12"><div class="row"><div class="col-6 p-3 text-center performanceLevel"><span>Your Score Percentage</span></div><div class="col-6 border-start p-3 text-center level"><span>{{ scorePercentage() | number:'1.0-2' }}%</span></div></div></div>
+        }
+        @if (displaySettings().examResult.showPerformanceLevel) {
         <div class="col-12">
           <div class="row">
             <div class="col-6 p-3 text-center performanceLevel">
@@ -36,13 +43,17 @@
             </div>
           </div>
         </div>
+        }
       </div>
     </div>
-        @if(cert() == 'capm'){
-   <app-capm-performace-table/>
-    }
-    @else{
-    <app-performance-indicators-table />
+    @if (displaySettings().examResult.displayMode === 'levels') {
+      @if (performanceLevelsImageUrl()) {
+        <div class="text-center mb-3">
+          <img class="img-fluid rounded performance-report-image" [src]="performanceLevelsImageUrl()" alt="Performance levels report">
+        </div>
+      } @else if(cert().toLowerCase() == 'capm'){
+          <app-capm-performace-table [levels]="displaySettings().examResult.levels"/>
+      } @else { <app-performance-indicators-table [levels]="displaySettings().examResult.levels" /> }
     }
     <!-- <app-performance-indicators-table /> -->
     <div class="d-flex justify-content-end">

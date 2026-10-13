@@ -44,7 +44,11 @@
           </p>
 
           <div class="d-flex justify-content-between rating">
-            <app-enrollment-social-proof [variant]="3" />
+            <app-enrollment-social-proof
+              [variant]="3"
+              [count]="tabContent()?.content?.socialProof?.count || count().toString()"
+              [images]="tabContent()?.content?.socialProof?.images || []"
+            />
 
             <div class="d-flex align-items-center gap-1">
               <app-star-rating [value]="4.9"></app-star-rating>

@@ -6,6 +6,11 @@
       <!-- @for (item of courseCon(); let i = $index; track item) {
         <div
           class="d-flex align-items-center justify-content-between gap-1 course-item"
+          [class.video-link]="item.oid"
+          role="link"
+          [attr.tabindex]="item.oid ? 0 : null"
+          (click)="openVideo(item)"
+          (keydown.enter)="openVideo(item)"
         >
           <div class="d-flex align-items-center gap-1">
             <app-simple-checkbox
@@ -19,6 +24,11 @@
           </div>
 
           <div class="d-flex align-items-center gap-2 courseDuration">
+            @if (item.oid) {
+              <span class="badge" [class.text-bg-success]="item.isFree" [class.text-bg-secondary]="!item.isFree">
+                {{ item.isFree ? 'Free' : 'Login' }}
+              </span>
+            }
             <i class="bi bi-camera-video"></i>
             <span>{{ item.duration | translate}}</span>
           </div>

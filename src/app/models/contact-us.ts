@@ -9,7 +9,7 @@ export interface ContactUs {
   message: string,
   messageAr: string,
   contactTypeLookupId: string,
-  studentId: string
+  studentId: string | null
 }
 
 

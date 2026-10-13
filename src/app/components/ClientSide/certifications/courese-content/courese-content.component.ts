@@ -8,6 +8,9 @@ import { StudentService } from '../../../../Services/student-service.service';
 import { CourseTabContentService } from '../../../../Services/course-tab-content.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { catchError, of } from 'rxjs';
+import { Router } from '@angular/router';
+import { AuthService } from '../../../../Services/auth.service';
+import { ToastingMessagesService } from '../../../../shared/Services/ToastingMessages/toasting-messages.service';
 
 interface CourseItem {
   title: string;
@@ -32,6 +35,9 @@ export class CoureseContentComponent {
   readonly sectionTitle = computed(() => this.section()?.header?.[this.shared.isRtl() ? 'ar' : 'en'] || 'Course Content');
   readonly sectionDescription = computed(() => this.section()?.description?.[this.shared.isRtl() ? 'ar' : 'en'] || '');
   private studentService=inject(StudentService);
+  private router = inject(Router);
+  private auth = inject(AuthService);
+  private toasting = inject(ToastingMessagesService);
   lessonsWatched=this.studentService.completedLessonsInCourse;
   isRTL=this.shared.isRtl;
   videos=input<CourseVideo[]>([]);
@@ -127,7 +133,9 @@ export class CoureseContentComponent {
       return apiVideos.map((video, index) => ({
         title: this.getDisplayName(video),
         duration: this.formatDuration(video.durationSeconds),
-        order: video.orderNo ?? index + 1
+        order: video.orderNo ?? index + 1,
+        oid: video.oid,
+        isFree: video.isFree
       }));
     }
 
@@ -229,4 +237,27 @@ export class CoureseContentComponent {
     return false;
   }
   readonly accordionTitle = 'Course Content';
+
+  openVideo(item: { oid?: string; isFree?: boolean }): void {
+    if (!item.oid) return;
+    const target = `/${this.shared.lang()}/certifications/${this.certification()}/recorded-course`;
+
+    if (!item.isFree && !this.auth.studentToken()) {
+      this.toasting.showToast('Please login to watch this video.', 'info');
+      this.router.navigate([`/${this.shared.lang()}/auth/login`], {
+        queryParams: { returnUrl: `${target}?video=${encodeURIComponent(item.oid)}` }
+      });
+      return;
+    }
+
+    if (!item.isFree && !this.studentService.isRecordedCoursesEnrolled()) {
+      this.toasting.showToast('Please enroll in the recorded course to watch this video.', 'warning');
+      this.router.navigateByUrl(target);
+      return;
+    }
+
+    this.router.navigate([target], { queryParams: { video: item.oid } }).then(() => {
+      globalThis.document?.querySelector('app-course-player')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
 }

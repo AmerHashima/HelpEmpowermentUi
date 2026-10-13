@@ -1,7 +1,7 @@
 // src\app\components\ClientSide\auth\login\login.component.ts
 import { Component, inject, ViewChild, signal, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser, NgClass, NgIf } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormItemComponent } from '../../../../shared/form-item/form-item.component';
 import { InputComponent } from '../../../../shared/input/input.component';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
@@ -33,6 +33,7 @@ export class LoginComponent {
   private platformId = inject(PLATFORM_ID);
   private auth=inject(AuthService);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
   private toasting=inject(ToastingMessagesService);
   isRTL = this.shared.isRtl;
   lang=this.shared.lang;
@@ -59,8 +60,8 @@ export class LoginComponent {
     // this.auth.loginStudent(this.credentials).subscribe({
     this.auth.loginStudent(payload).subscribe({
       next: () => {
-        // this.toasting.showToast('User has logged suffccessfully', 'success');
-        this.router.navigateByUrl(`/${this.lang()}/home`);
+        const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
+        this.router.navigateByUrl(returnUrl?.startsWith('/') ? returnUrl : `/${this.lang()}/home`);
       },
       error: (err) => {
 

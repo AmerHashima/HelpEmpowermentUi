@@ -201,6 +201,10 @@ export class CertificationComponent {
     const certId = this.certification()?.oid;
     if (certId) this.router.navigate(['/admin/certifications', certId, 'content']);
   }
+  onEditCertificateSettings() {
+    const certId = this.certification()?.oid;
+    if (certId) this.router.navigate(['/admin/certifications', certId, 'certificate-settings']);
+  }
   async onDeleteCertification() {
     if (!(await confirmDelete('Are you sure you want to delete this certification?'))) return;
     const cert = this.certification();

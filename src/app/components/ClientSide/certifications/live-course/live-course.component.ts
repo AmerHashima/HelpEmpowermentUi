@@ -293,7 +293,6 @@ export class LiveCourseComponent {
 
 
   onLiveCourseRegister(form: NgForm) {
-    if (this.student() && this.student()?.userId) {
     if (form.invalid) {
       Object.values(form.controls).forEach(control => {
         control.markAsTouched();
@@ -302,49 +301,43 @@ export class LiveCourseComponent {
       return;
     }
 
+    const payload = {
+      fullName: this.liveCourse.fullname,
+      fullNameAr: this.liveCourse.fullname,
+      email: this.liveCourse.email,
+      phone: '',
+      mobile: this.liveCourse.phone,
+      subject: '',
+      subjectAr: '',
+      message: this.geEnrollMessage(),
+      messageAr: this.shared.currentCertificate(),
+      contactTypeLookupId: LiveCourseContactLookUp,
+      studentId: this.student()?.userId ?? null
+    };
 
-      const payload = {
-        fullName: this.liveCourse.fullname,
-        fullNameAr: this.liveCourse.fullname,
-        email: this.liveCourse.email,
-        phone: '',
-        mobile: this.liveCourse.phone,
-        subject: '',
-        subjectAr: '',
-        message: this.geEnrollMessage(),
-        messageAr: this.shared.currentCertificate(),
-        contactTypeLookupId: LiveCourseContactLookUp,
-        studentId: this.student()?.userId!
-      };
+    this.contactService.createContactMessage(payload).subscribe({
+      next: () => {
+        form.resetForm({
+          fullname: this.student()?.nameEn || '',
+          email: this.student()?.email || '',
+          phone: this.student()?.mobile || '',
+          message: ''
+        });
+        this.phoneCmps?.forEach(c => c.resetState());
+        this.showRegisterConfirm = false;
+        this.RegisterSession = null;
+      },
+      error: (err) => {
+        this.showRegisterConfirm = false;
+        this.RegisterSession = null;
+        const apiMessage =
+          err?.error?.message ||
+          err?.error?.errors?.[0] ||
+          'Something went wrong while sending your request';
 
-      this.contactService.createContactMessage(payload).subscribe({
-        next: () => {
-          form.resetForm({
-            fullname: this.student()?.nameEn || '',
-            email: this.student()?.email || '',
-            phone: this.student()?.mobile || '',
-            message: ''
-          });
-          this.phoneCmps?.forEach(c => c.resetState());
-          this.showRegisterConfirm = false;
-          this.RegisterSession=null
-        },
-        error: (err) => {
-          this.showRegisterConfirm = false;
-          this.RegisterSession = null
-          const apiMessage =
-            err?.error?.message ||
-            err?.error?.errors?.[0] ||
-            'Something went wrong while sending your request';
-
-          this.toasting.showToast(apiMessage, 'error');
-        }
-      });
-
-    }
-    else {
-      this.showConfirm=true
-    }
+        this.toasting.showToast(apiMessage, 'error');
+      }
+    });
   }
   register(session:any){
 

@@ -94,10 +94,22 @@ const faqItems = [1, 2, 3, 4, 5].map(index => ({
   description: text(en.campFaq[`answer${index}`], ar.campFaq[`answer${index}`])
 }));
 
+const socialProof = (variant = 0) => {
+  const images = [
+    'assets/images/navBar/user.jpg',
+    'assets/images/profile/person.png',
+    'assets/images/profile/person1.jpg',
+    'assets/images/reviewers/person.png'
+  ];
+  const offset = Math.abs(variant) % images.length;
+  return { count: '500+', images: [...images.slice(offset), ...images.slice(0, offset)] };
+};
+
 const capmTemplate: CourseTabContent[] = [
   {
     oid: '', courseCode: 'CAPM', tabKey: 'exam-simulator', isEnabled: true, orderNo: 1, status: 'Published',
     content: {
+      socialProof: socialProof(0),
       banner: banner(
         en.examSimulator.capm,
         ar.examSimulator.capm,
@@ -114,11 +126,11 @@ const capmTemplate: CourseTabContent[] = [
   },
   {
     oid: '', courseCode: 'CAPM', tabKey: 'recorded-course', isEnabled: true, orderNo: 2, status: 'Published',
-    content: { banner: banner(en.recordedCourse.capm, ar.recordedCourse.capm, 'assets/images/recordedCourse.jpeg'), sections: courseSections() }
+    content: { socialProof: socialProof(2), banner: banner(en.recordedCourse.capm, ar.recordedCourse.capm, 'assets/images/recordedCourse.jpeg'), sections: courseSections() }
   },
   {
     oid: '', courseCode: 'CAPM', tabKey: 'live-course', isEnabled: true, orderNo: 3, status: 'Published',
-    content: { banner: banner(en.liveCourse.capm, ar.liveCourse.capm, 'assets/images/liveCourse/liveCourse.jpeg'), sections: courseSections() }
+    content: { socialProof: socialProof(1), banner: banner(en.liveCourse.capm, ar.liveCourse.capm, 'assets/images/liveCourse/liveCourse.jpeg'), sections: courseSections() }
   },
   {
     oid: '', courseCode: 'CAPM', tabKey: 'webinar', isEnabled: true, orderNo: 4, status: 'Published',

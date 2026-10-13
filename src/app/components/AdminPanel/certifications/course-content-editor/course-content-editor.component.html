@@ -12,7 +12,7 @@
       <button class="btn btn-outline-primary" type="button" [disabled]="loading() || loadingTemplate() || saving()" (click)="loadTemplate()">
         {{ loadingTemplate() ? 'Loading template…' : 'Load Template' }}
       </button>
-      <button class="btn btn-primary" [disabled]="saving() || loading() || translatingCount() > 0 || instructorImageUploading() || !activeTab()" (click)="save()">{{ saving() ? 'Saving…' : 'Save changes' }}</button>
+      <button class="btn btn-primary" [disabled]="saving() || loading() || translatingCount() > 0 || instructorImageUploading() || socialProofImageUploading() !== null || !activeTab()" (click)="save()">{{ saving() ? 'Saving…' : 'Save changes' }}</button>
     </div>
   </div>
 
@@ -66,6 +66,37 @@
             <div class="col-md-8"><label class="form-label">Image/video URL</label><input class="form-control" [(ngModel)]="tab.content.banner.mediaUrl"></div>
             <div class="col-md-4"><label class="form-label">Media type</label><select class="form-select" [(ngModel)]="tab.content.banner.mediaType"><option value="image">Image</option><option value="video">Video</option></select></div>
           </div>
+
+          @if (supportsSocialProof(tab)) {
+            <div class="card border-0 bg-light mt-4">
+              <div class="card-body">
+                <h5 class="mb-1">Enrollment social proof</h5>
+                <p class="small text-muted">Set the displayed enrollment number and exactly four learner images for this tab.</p>
+                <div class="row g-3">
+                  <div class="col-12 col-md-4">
+                    <label class="form-label">Displayed enrollment number</label>
+                    <input class="form-control" [(ngModel)]="socialProof(tab).count" placeholder="Example: 500+">
+                  </div>
+                  <div class="col-12">
+                    <div class="row g-3">
+                      @for (image of socialProof(tab).images.slice(0, 4); track $index; let imageIndex = $index) {
+                        <div class="col-6 col-lg-3">
+                          <div class="card h-100"><div class="card-body">
+                            <img [src]="socialProofImagePreview(image)" [alt]="'Learner ' + (imageIndex + 1)" class="rounded-circle d-block mb-2" width="64" height="64" style="object-fit: cover">
+                            <input class="form-control form-control-sm mb-2" [(ngModel)]="socialProof(tab).images[imageIndex]" [placeholder]="'Image ' + (imageIndex + 1) + ' URL/path'">
+                            <input #learnerImageInput type="file" class="d-none" accept="image/jpeg,image/png,image/gif,image/webp" (change)="onSocialProofImageSelected($event, tab, imageIndex)">
+                            <button type="button" class="btn btn-sm btn-outline-dark w-100" [disabled]="socialProofImageUploading() !== null" (click)="learnerImageInput.click()">
+                              {{ socialProofImageUploading() === imageIndex ? 'Uploading…' : 'Browse' }}
+                            </button>
+                          </div></div>
+                        </div>
+                      }
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
 
           <h5 class="mt-4 mb-3">Existing sections</h5>
           @for (section of builtInSections(); track section.type) {

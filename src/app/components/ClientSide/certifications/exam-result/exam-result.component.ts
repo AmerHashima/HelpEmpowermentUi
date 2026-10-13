@@ -1,4 +1,4 @@
-import { isPlatformBrowser, NgClass } from '@angular/common';
+import { DecimalPipe, isPlatformBrowser, NgClass } from '@angular/common';
 import { Component, computed, inject, PLATFORM_ID, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -6,10 +6,12 @@ import { Shared } from '../../../../shared/Services/shared/shared';
 import { PerformanceIndicatorsTableComponent } from '../../../../../components/ClientSide/performance-indicators-table/performance-indicators-table.component';
 import { SiteButtonComponent } from '../../../../shared/clientSide/site-button/site-button.component';
 import { CapmPerformaceTableComponent } from '../../capm-performace-table/capm-performace-table.component';
+import { CourseTabContentService } from '../../../../Services/course-tab-content.service';
+import { defaultCertificationDisplaySettings } from '../../../../models/certification-display-settings';
 
 @Component({
   selector: 'app-exam-result',
-  imports: [TranslatePipe, NgClass, PerformanceIndicatorsTableComponent,SiteButtonComponent,CapmPerformaceTableComponent],
+  imports: [TranslatePipe, NgClass, DecimalPipe, PerformanceIndicatorsTableComponent,SiteButtonComponent,CapmPerformaceTableComponent],
   templateUrl: './exam-result.component.html',
   styleUrl: './exam-result.component.scss',
 })
@@ -18,20 +20,34 @@ export class ExamResultComponent {
   private router=inject(Router);
   private route=inject(ActivatedRoute);
   private platformId = inject(PLATFORM_ID);
+  private tabContentService = inject(CourseTabContentService);
   cert=this.shared.currentCertificate;
   isRTL=this.shared.isRtl;
   examResult=signal<any>(null);
+  displaySettings = signal(defaultCertificationDisplaySettings());
 
   storageKey: string='';
 
   score = computed(() => this.examResult()?.obtainedScore ?? 0);
   totalScore = computed(() => this.examResult()?.totalScore ?? 0);
 
-  scoreCategory = computed(() => this.shared.getScoreCategory(this.score(), this.totalScore())
-
-  );
-
-  scoreLabel = computed(() => this.shared.getScoreLabel(this.score(), this.totalScore()));
+  scorePercentage = computed(() => this.totalScore() > 0 ? (this.score() / this.totalScore()) * 100 : 0);
+  passPercentage = computed(() => this.examResult()?.passPercent ?? this.shared.currentExam()?.passPercent ?? 0);
+  scoreLevel = computed(() => [...this.displaySettings().examResult.levels]
+    .sort((a, b) => b.minimumPercentage - a.minimumPercentage)
+    .find(level => this.scorePercentage() >= level.minimumPercentage)
+    ?? this.displaySettings().examResult.levels.at(-1));
+  scoreCategory = computed(() => this.scoreLevel()?.key ?? 'improvement');
+  scoreLabel = computed(() => {
+    const level = this.scoreLevel();
+    return this.shared.lang() === 'ar' ? level?.nameAr : level?.nameEn;
+  });
+  performanceLevelsImageUrl = computed(() => {
+    const image = this.displaySettings().examResult.performanceLevelsImage?.trim();
+    if (!image) return '';
+    return !image.includes('/') && !image.includes('\\')
+      ? this.tabContentService.getCertificateAssetUrl(image) : image;
+  });
 
 
   getResultKey(): string {
@@ -57,6 +73,13 @@ export class ExamResultComponent {
     const isFree = this.isFreeExam();
 
     this.examResult.set(stored ? JSON.parse(stored) : null);
+    const code = this.cert();
+    this.displaySettings.set(defaultCertificationDisplaySettings(code));
+    if (code) this.tabContentService.getTab(code, 'certificate-settings').subscribe({
+      next: row => {
+        if (row?.content.certificationSettings) this.displaySettings.set(row.content.certificationSettings);
+      }
+    });
 
     if (stored) {
       localStorage.removeItem(key);

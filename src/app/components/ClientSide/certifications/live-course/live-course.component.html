@@ -20,7 +20,11 @@
           </p>
 
           <div class="d-flex justify-content-between rating">
-            <app-enrollment-social-proof [variant]="1" />
+            <app-enrollment-social-proof
+              [variant]="1"
+              [count]="tabContent()?.content?.socialProof?.count || count().toString()"
+              [images]="tabContent()?.content?.socialProof?.images || []"
+            />
 
             <div class="d-flex align-items-center gap-1">
               <app-star-rating [value]="4.9"></app-star-rating>
@@ -92,7 +96,7 @@
     <div class="d-flex flex-column align-items-center justify-content-center gap-2 w-100">
       <i class="bi bi-info-circle-fill infoColor"></i>
       <p class="text-center darkText w-75 mx-auto">
-        {{ "You Must be logged to be able to contact us." | translate }}
+        {{ "You Must be logged in to purchase this course." | translate }}
       </p>
     </div>
   </section>

@@ -1,4 +1,4 @@
-@if (faqSection()?.isEnabled !== false) {
+@if (!courseSpecific() || (faqSection() && faqSection()?.isEnabled !== false)) {
 <div class="faqHomeSection gap-5 py-5" [class.rtl]="shared.isRtl()">
   <div class="row g-5">
     <div class="col-xl-4 col-md-6">

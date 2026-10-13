@@ -60,8 +60,34 @@ export class CourseTabContentService {
     );
   }
 
+  uploadSocialProofImage(courseCode: string, image: File): Observable<{ fileName: string }> {
+    return this.api.uploadFile<{ fileName: string }>(
+      `course-tab-contents/${encodeURIComponent(courseCode.trim())}/social-proof-image`,
+      image,
+      'image',
+      'Learner image uploaded successfully.'
+    );
+  }
+
+  getSocialProofImageUrl(fileName: string): string {
+    return this.api.getFileUrl(`course-tab-contents/social-proof-images/${encodeURIComponent(fileName)}`);
+  }
+
   getInstructorImageUrl(fileName: string): string {
     return this.api.getFileUrl(`course-tab-contents/instructor-images/${encodeURIComponent(fileName)}`);
+  }
+
+  uploadCertificateAsset(courseCode: string, image: File): Observable<{ fileName: string }> {
+    return this.api.uploadFile<{ fileName: string }>(
+      `course-tab-contents/${encodeURIComponent(courseCode.trim())}/certificate-asset`,
+      image,
+      'image',
+      'Certificate image uploaded successfully.'
+    );
+  }
+
+  getCertificateAssetUrl(fileName: string): string {
+    return this.api.getFileUrl(`course-tab-contents/certificate-assets/${encodeURIComponent(fileName)}`);
   }
 
   invalidate(courseCode: string): void {

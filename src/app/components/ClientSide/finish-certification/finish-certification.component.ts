@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, inject, computed, effect, signal, PLATFORM_ID } from '@angular/core';
+import { Component, ElementRef, ViewChild, inject, computed, effect, signal, PLATFORM_ID, input } from '@angular/core';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { AuthService } from '../../../Services/auth.service';
@@ -7,6 +7,9 @@ import { ActivatedRoute } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
 import { SiteButtonComponent } from '../../../shared/clientSide/site-button/site-button.component';
 import { StudentService } from '../../../Services/student-service.service';
+import { CourseTabContentService } from '../../../Services/course-tab-content.service';
+import { defaultCertificationDisplaySettings } from '../../../models/certification-display-settings';
+import { CertificationDisplaySettings } from '../../../models/course-tab-content';
 
 @Component({
   selector: 'app-finish-certification',
@@ -15,11 +18,19 @@ import { StudentService } from '../../../Services/student-service.service';
   styleUrl: './finish-certification.component.scss'
 })
 export class FinishCertificationComponent {
+  previewMode = input(false);
+  previewSettings = input<CertificationDisplaySettings | null>(null);
+  previewCourseCode = input('');
+  previewStudentName = input('Student Name');
   private auth = inject(AuthService);
   private shared = inject(Shared);
   private studentService = inject(StudentService);
+  private tabContentService = inject(CourseTabContentService);
+  readonly displaySettings = signal(defaultCertificationDisplaySettings());
   @ViewChild('certificate', { static: false }) certificate!: ElementRef;
   userName = computed(() => this.auth.loggedStudent()?.nameEn);
+  displayedUserName = computed(() => this.previewMode() ? this.previewStudentName() : this.userName());
+  effectiveSettings = computed(() => this.previewSettings() ?? this.displaySettings());
 
   finalCert = computed(() => {
     const cert = this.shared.currentCertificationObject();
@@ -42,6 +53,7 @@ export class FinishCertificationComponent {
 
 
   courseName = computed(() => {
+    if (this.previewMode()) return `${this.previewCourseCode()} Certification`;
     const cert = this.finalCert();
     if (!cert) return '';
 
@@ -73,6 +85,9 @@ export class FinishCertificationComponent {
   });
 
   date = computed(() => {
+    if (this.previewMode()) return new Intl.DateTimeFormat('en-GB', {
+      day: '2-digit', month: 'long', year: 'numeric'
+    }).format(new Date());
     const issuedDate = this.studentService.currentCourse()?.certificateIssuedDate;
     if (!issuedDate) return '';
 
@@ -104,6 +119,18 @@ export class FinishCertificationComponent {
     if (saved) {
       this.localCert.set(JSON.parse(saved));
     }
+    const code = this.shared.currentCertificate() || this.finalCert()?.courseCode || '';
+    this.displaySettings.set(defaultCertificationDisplaySettings(code));
+    if (code) this.tabContentService.getTab(code, 'certificate-settings').subscribe({
+      next: row => {
+        if (row?.content.certificationSettings) this.displaySettings.set(row.content.certificationSettings);
+      }
+    });
+  }
+
+  certificateImage(value: string): string {
+    return value && !value.includes('/') && !value.includes('\\')
+      ? this.tabContentService.getCertificateAssetUrl(value) : value;
   }
   // downloadPDF() {
   //   const element = this.certificate.nativeElement;

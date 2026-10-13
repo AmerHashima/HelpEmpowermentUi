@@ -1,6 +1,38 @@
 export type CourseTabKey =
   | 'exam-simulator' | 'recorded-course' | 'live-course' | 'webinar'
-  | 'quiz-game' | 'faq' | 'reviews';
+  | 'quiz-game' | 'faq' | 'reviews' | 'certificate-settings';
+
+export interface CertificationDisplaySettings {
+  certificate: {
+    title: string;
+    awardedToLabel: string;
+    completionText: string;
+    dateLabel: string;
+    instructorName: string;
+    instructorRole: string;
+    hours: number;
+    badgeHtml: string;
+    providerCode: string;
+    website: string;
+    logoImage: string;
+    partnerLogoImage: string;
+    signatureImage: string;
+    checkerImage: string;
+  };
+  examResult: {
+    displayMode: 'levels' | 'pass-fail';
+    performanceLevelsImage: string;
+    showPerformanceLevel: boolean;
+    showPassPercentage: boolean;
+    showScorePercentage: boolean;
+    levels: Array<{
+      key: 'aboveTarget' | 'target' | 'belowTarget' | 'improvement';
+      nameEn: string;
+      nameAr: string;
+      minimumPercentage: number;
+    }>;
+  };
+}
 
 export interface LocalizedTabText {
   titlePart1: string;
@@ -38,6 +70,11 @@ export interface CourseCustomSection extends CourseTabSection {
 }
 
 export interface CourseTabDocument {
+  certificationSettings?: CertificationDisplaySettings;
+  socialProof?: {
+    count: string;
+    images: string[];
+  };
   quizGame?: {
     availability: 'play-now' | 'coming-soon';
   };

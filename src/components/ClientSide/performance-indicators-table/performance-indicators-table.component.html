@@ -12,7 +12,7 @@
     <tbody>
       <!-- Above Target -->
       <tr>
-        <td class="aboveTarget">{{ 'performance.aboveTarget' | translate }}</td>
+        <td class="aboveTarget">{{ levelName(0, ('performance.aboveTarget' | translate)) }}</td>
         <td>{{ 'performance.rows.above.people' | translate }}</td>
         <td>{{ 'performance.rows.above.process' | translate }}</td>
         <td>{{ 'performance.rows.above.business' | translate }}</td>
@@ -20,7 +20,7 @@
 
       <!-- Target -->
       <tr>
-        <td class="target">{{ 'performance.target' | translate }}</td>
+        <td class="target">{{ levelName(1, ('performance.target' | translate)) }}</td>
         <td>{{ 'performance.rows.target.people' | translate }}</td>
         <td>{{ 'performance.rows.target.process' | translate }}</td>
         <td>{{ 'performance.rows.target.business' | translate }}</td>
@@ -28,7 +28,7 @@
 
       <!-- Below Target -->
       <tr>
-        <td class="belowTarget">{{ 'performance.belowTarget' | translate }}</td>
+        <td class="belowTarget">{{ levelName(2, ('performance.belowTarget' | translate)) }}</td>
         <td>{{ 'performance.rows.below.people' | translate }}</td>
         <td>{{ 'performance.rows.below.process' | translate }}</td>
         <td>{{ 'performance.rows.below.business' | translate }}</td>
@@ -36,7 +36,7 @@
 
       <!-- Needs Improvement -->
       <tr>
-        <td class="improvement">{{ 'performance.needsImprovement' | translate }}</td>
+        <td class="improvement">{{ levelName(3, ('performance.needsImprovement' | translate)) }}</td>
         <td>{{ 'performance.rows.improvement.people' | translate }}</td>
         <td>{{ 'performance.rows.improvement.process' | translate }}</td>
         <td>{{ 'performance.rows.improvement.business' | translate }}</td>

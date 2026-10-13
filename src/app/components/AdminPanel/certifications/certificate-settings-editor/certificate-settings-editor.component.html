@@ -1,0 +1,93 @@
+<div class="container-fluid py-3">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div><h4 class="mb-1">Certificate & Exam Result</h4><small class="text-muted">Settings apply to all exams in {{ courseCode() }}.</small></div>
+    <div class="d-flex gap-2">
+      <button class="btn btn-outline-dark" [disabled]="loading()" (click)="openPreview()"><i class="bi bi-eye me-1"></i>Preview Certificate</button>
+      <button class="btn btn-primary" [disabled]="loading() || saving() || uploading()" (click)="save()">{{ saving() ? 'Saving…' : 'Save changes' }}</button>
+    </div>
+  </div>
+  @if (error()) { <div class="alert alert-danger">{{ error() }}</div> }
+  @if (loading()) { <div class="text-center py-5"><span class="spinner-border"></span></div> }
+  @else {
+    <section class="card border-0 shadow-sm p-3 mb-3">
+      <h5>Attendance Certificate</h5>
+      <div class="row g-3">
+        <div class="col-md-6"><label>Certificate title</label><input class="form-control" [(ngModel)]="settings().certificate.title"></div>
+        <div class="col-md-6"><label>Awarded to label</label><input class="form-control" [(ngModel)]="settings().certificate.awardedToLabel"></div>
+        <div class="col-md-6"><label>Completion text</label><input class="form-control" [(ngModel)]="settings().certificate.completionText"></div>
+        <div class="col-md-3"><label>Date label</label><input class="form-control" [(ngModel)]="settings().certificate.dateLabel"></div>
+        <div class="col-md-3"><label>Training hours</label><input type="number" min="0" class="form-control" [(ngModel)]="settings().certificate.hours"></div>
+        <div class="col-md-6"><label>Instructor name</label><input class="form-control" [(ngModel)]="settings().certificate.instructorName"></div>
+        <div class="col-md-6"><label>Instructor role</label><input class="form-control" [(ngModel)]="settings().certificate.instructorRole"></div>
+        <div class="col-md-6"><label>Accreditation badge (HTML supported)</label><input class="form-control" [(ngModel)]="settings().certificate.badgeHtml"></div>
+        <div class="col-md-3"><label>Provider code</label><input class="form-control" [(ngModel)]="settings().certificate.providerCode"></div>
+        <div class="col-md-3"><label>Website</label><input class="form-control" [(ngModel)]="settings().certificate.website"></div>
+      </div>
+      <div class="row g-3 mt-1">
+        @for (asset of certificateAssets; track asset.key) {
+          <div class="col-sm-6 col-xl-3 asset-box">
+            <label>{{ asset.label }}</label>
+            <img [src]="imageUrl(assetValue(asset.key))" [alt]="asset.label">
+            <input class="form-control form-control-sm mb-2" [ngModel]="assetValue(asset.key)" (ngModelChange)="setAssetValue(asset.key, $event)">
+            <input #fileInput hidden type="file" accept="image/*" (change)="upload($event, asset.key)">
+            <button class="btn btn-outline-dark btn-sm w-100" [disabled]="uploading()" (click)="fileInput.click()">{{ uploading() === asset.key ? 'Uploading…' : 'Browse' }}</button>
+          </div>
+        }
+      </div>
+    </section>
+
+    <section class="card border-0 shadow-sm p-3">
+      <h5>Exam Result Report</h5>
+      <div class="row g-3 align-items-end">
+        <div class="col-md-4"><label>Result display type</label><select class="form-select" [(ngModel)]="settings().examResult.displayMode"><option value="levels">Performance Levels</option><option value="pass-fail">Pass / Fail</option></select></div>
+        <div class="col-md-8 d-flex flex-wrap gap-4 pb-2">
+          <label><input type="checkbox" [(ngModel)]="settings().examResult.showPassPercentage"> Show Pass Percentage</label>
+          <label><input type="checkbox" [(ngModel)]="settings().examResult.showScorePercentage"> Show Your Score Percentage</label>
+          <label><input type="checkbox" [(ngModel)]="settings().examResult.showPerformanceLevel"> Show Performance Level</label>
+        </div>
+      </div>
+      @if (settings().examResult.displayMode === 'levels') {
+        <div class="result-image-box mt-4">
+          <label>Performance Levels report image</label>
+          <p class="small text-muted">This image will appear on the exam result screen. If no image is uploaded, the current performance table will be displayed.</p>
+          @if (settings().examResult.performanceLevelsImage) {
+            <img [src]="imageUrl(settings().examResult.performanceLevelsImage)" alt="Performance levels report">
+          }
+          <div class="d-flex gap-2">
+            <input class="form-control" [(ngModel)]="settings().examResult.performanceLevelsImage" placeholder="Image path or URL">
+            <input #performanceImageInput hidden type="file" accept="image/*" (change)="uploadPerformanceLevelsImage($event)">
+            <button type="button" class="btn btn-outline-dark text-nowrap" [disabled]="uploading()" (click)="performanceImageInput.click()">
+              {{ uploading() === 'performanceLevelsImage' ? 'Uploading…' : 'Browse image' }}
+            </button>
+            @if (settings().examResult.performanceLevelsImage) {
+              <button type="button" class="btn btn-outline-danger" (click)="settings().examResult.performanceLevelsImage = ''">Remove</button>
+            }
+          </div>
+        </div>
+        <h6 class="mt-4">Performance categories</h6>
+        <div class="table-responsive"><table class="table align-middle"><thead><tr><th>English name</th><th>Arabic name</th><th>Minimum %</th></tr></thead><tbody>
+          @for (level of settings().examResult.levels; track level.key) { <tr><td><input class="form-control" [(ngModel)]="level.nameEn"></td><td><input class="form-control" dir="rtl" [(ngModel)]="level.nameAr"></td><td><input type="number" min="0" max="100" class="form-control" [(ngModel)]="level.minimumPercentage"></td></tr> }
+        </tbody></table></div>
+      }
+    </section>
+  }
+</div>
+
+@if (previewOpen()) {
+  <div class="preview-backdrop" (click)="closePreview()">
+    <div class="preview-dialog" role="dialog" aria-modal="true" aria-label="Certificate preview" (click)="$event.stopPropagation()">
+      <div class="preview-toolbar">
+        <strong>Certificate Preview</strong>
+        <button type="button" class="btn-close" aria-label="Close" (click)="closePreview()"></button>
+      </div>
+      <div class="preview-scroll">
+        <app-finish-certification
+          [previewMode]="true"
+          [previewSettings]="settings()"
+          [previewCourseCode]="courseCode()"
+          previewStudentName="Student Name"
+        />
+      </div>
+    </div>
+  </div>
+}
