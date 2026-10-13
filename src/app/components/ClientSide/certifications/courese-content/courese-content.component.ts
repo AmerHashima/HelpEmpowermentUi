@@ -242,7 +242,7 @@ export class CoureseContentComponent {
     if (!item.oid) return;
     const target = `/${this.shared.lang()}/certifications/${this.certification()}/recorded-course`;
 
-    if (!item.isFree && !this.auth.studentToken()) {
+    if (!this.auth.studentToken()) {
       this.toasting.showToast('Please login to watch this video.', 'info');
       this.router.navigate([`/${this.shared.lang()}/auth/login`], {
         queryParams: { returnUrl: `${target}?video=${encodeURIComponent(item.oid)}` }

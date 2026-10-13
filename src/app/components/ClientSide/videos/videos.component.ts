@@ -20,6 +20,7 @@ import { Shared } from '../../../shared/Services/shared/shared';
 import { CourseVideo } from '../../../models/course-video';
 import { ToastingMessagesService } from '../../../shared/Services/ToastingMessages/toasting-messages.service';
 import { ActivatedRoute } from '@angular/router';
+import { AuthService } from '../../../Services/auth.service';
 
 @Component({
   selector: 'app-videos',
@@ -37,6 +38,7 @@ export class VideosComponent {
   private shared = inject(Shared);
   private platformId = inject(PLATFORM_ID);
   private route = inject(ActivatedRoute);
+  private auth = inject(AuthService);
   private requestedVideoId = toSignal(this.route.queryParamMap.pipe(map(params => params.get('video'))), { initialValue: null });
 
   lessonsWatched = this.studentService.completedLessonsInCourse;
@@ -92,6 +94,7 @@ export class VideosComponent {
     () => this.studentService.isRecordedCoursesEnrolled() && this.studentService.showExamSimulator === true
   );
   videos = computed(() => {
+    if (!this.auth.studentToken()) return [];
     const videos = this.videosState().data.filter(video => video.isActive);
     return this.hasFullCourseAccess() ? videos : videos.filter(video => video.isFree);
   });
