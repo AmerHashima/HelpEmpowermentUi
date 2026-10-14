@@ -19,7 +19,7 @@ import { CourseVideosService } from '../../../Services/course-videos.service';
 import { Shared } from '../../../shared/Services/shared/shared';
 import { CourseVideo } from '../../../models/course-video';
 import { ToastingMessagesService } from '../../../shared/Services/ToastingMessages/toasting-messages.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../Services/auth.service';
 
 @Component({
@@ -38,6 +38,7 @@ export class VideosComponent {
   private shared = inject(Shared);
   private platformId = inject(PLATFORM_ID);
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
   private auth = inject(AuthService);
   private requestedVideoId = toSignal(this.route.queryParamMap.pipe(map(params => params.get('video'))), { initialValue: null });
 
@@ -94,10 +95,10 @@ export class VideosComponent {
     () => this.studentService.isRecordedCoursesEnrolled() && this.studentService.showExamSimulator === true
   );
   videos = computed(() => {
-    if (!this.auth.studentToken()) return [];
     const videos = this.videosState().data.filter(video => video.isActive);
     return this.hasFullCourseAccess() ? videos : videos.filter(video => video.isFree);
   });
+  isLoggedIn = computed(() => !!this.auth.studentToken());
   loading = computed(() => this.videosState().loading);
   error = computed(() => this.videosState().error);
 
@@ -148,7 +149,7 @@ export class VideosComponent {
 
   selectedVideoUrl = computed(() => {
     const video = this.selectedVideo();
-    return video
+    return video && this.isLoggedIn()
       ? this.courseVideosService.getStreamUrl(video.videoUrl)
       : null;
   });
@@ -184,6 +185,10 @@ export class VideosComponent {
     }
   }
   selectVideo(video: CourseVideo): void {
+    if (!this.isLoggedIn()) {
+      this.requireLogin(video);
+      return;
+    }
     if (video.isFree) {
       this.selectedVideo.set(video);
       return;
@@ -198,6 +203,13 @@ export class VideosComponent {
     } else {
       this.showLockedMessage();
     }
+  }
+
+  requireLogin(video = this.selectedVideo()): void {
+    if (!video) return;
+    this.toasting.showToast('Please login to watch this video.', 'info');
+    const returnUrl = `/${this.shared.lang()}/certifications/${this.shared.currentCertificate()}/recorded-course?video=${encodeURIComponent(video.oid)}`;
+    this.router.navigate([`/${this.shared.lang()}/auth/login`], { queryParams: { returnUrl } });
   }
 
   onVideoEnded(): void {

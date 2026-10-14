@@ -192,10 +192,16 @@
 
       <ng-template #noVideo>
         <div class="no-video-placeholder">
-          <i class="bi bi-camera-video-off"></i>
-          <p class="w-100 text-center">
-            Select a session from the list to start watching.
-          </p>
+          @if (selectedVideo() && !isLoggedIn()) {
+            <i class="bi bi-lock-fill"></i>
+            <p class="w-100 text-center mb-2">Login to watch this free video.</p>
+            <button type="button" class="btn btn-primary" (click)="requireLogin()">
+              <i class="bi bi-box-arrow-in-right me-1"></i> Login to watch
+            </button>
+          } @else {
+            <i class="bi bi-camera-video-off"></i>
+            <p class="w-100 text-center">Select a session from the list to start watching.</p>
+          }
         </div>
       </ng-template>
 
