@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   //baseUrl: 'http://127.0.0.1:5208/api',
-  baseUrl: 'http://144.91.127.150:8080/api',
+  baseUrl: 'https://localhost:7037/api',
 
   telrAllowedHosts: ['secure.telr.com'],
   mailTemolateId: "template_dhwmgqo",

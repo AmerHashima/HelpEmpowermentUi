@@ -340,11 +340,36 @@ export class FreeExamComponent {
   }
 
   calculcateExamModeResult() {
-    const totalScore = this.questions().length;
-    // const { correct } = this.resultState();
-    const { correct, wrong, answered } = this.resultState();
+    // Keep the free/legacy route consistent with the persisted exam flow.
+    // A multi-sub-question's score is divided equally between its sub-questions,
+    // rather than treating the whole master question as simply right or wrong.
+    const questionScores = this.questions().map(question => {
+      const total = Number(question.questionScore ?? 1) || 1;
+      const subQuestions = question.subQuestions ?? [];
+      const submitted = this.examSubQuestionAnswers.find(answer => answer.questionOid === question.oid);
 
-    const obtainedScore = correct;
+      if (subQuestions.length) {
+        const correctCount = subQuestions.filter((subQuestion: any) => {
+          const selected = submitted?.answers?.find((answer: any) =>
+            answer.subQuestionOid === subQuestion.oid
+          );
+          return !!subQuestion.choices?.some((choice: any) =>
+            choice.oid === selected?.selectedChoiceOid && choice.isCorrect
+          );
+        }).length;
+
+        return { total, obtained: total * (correctCount / subQuestions.length) };
+      }
+
+      return {
+        total,
+        obtained: question.oid && this.correctQuestions().has(question.oid) ? total : 0
+      };
+    });
+
+    const totalScore = questionScores.reduce((sum, item) => sum + item.total, 0);
+    const { correct, wrong, answered } = this.resultState();
+    const obtainedScore = questionScores.reduce((sum, item) => sum + item.obtained, 0);
 
     const passPercent = this.shared.currentExam()?.passPercent ?? 60;
 

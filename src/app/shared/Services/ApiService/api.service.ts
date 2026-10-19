@@ -72,9 +72,8 @@ export default class ApiService {
 
 
   private shouldBlockRequest(url: string): boolean {
-    if (this.apiStatus.isServerDown()) {
-      return true;
-    }
+    // A previous 5xx/network failure is status information only. It must not
+    // suppress later calls: users need to be able to retry an exam submission.
     return false;
   }
 

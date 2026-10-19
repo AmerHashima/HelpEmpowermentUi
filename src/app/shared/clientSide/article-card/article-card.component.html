@@ -5,8 +5,8 @@
 >
 @if(showIcons()){
   <div  class="card-actions d-flex gap-2">
-    <i class="bi bi-pencil-square edit-icon" (click)="onEdit($event)"></i>
-    <i class="bi bi-trash delete-icon" (click)="onDelete($event)"></i>
+    <i class="bi bi-pencil-square edit-icon" (click)="handleEdit($event)"></i>
+    <i class="bi bi-trash delete-icon" (click)="handleDelete($event)"></i>
   </div>
 }
 

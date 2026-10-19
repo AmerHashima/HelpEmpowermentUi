@@ -243,7 +243,16 @@ export class ChooseExamComponent {
 
     const parsed = JSON.parse(savedExam);
 
-    if (mode == 'Exam' && !freeExam) {
+    if (mode == 'Exam') {
+      // Older free-exam attempts were stored only in the browser and have no
+      // StudentExam record. Do not open them in Exam Mode: start a persisted
+      // attempt so answers and the final score are calculated by the API.
+      if (!parsed.studentExamId) {
+        localStorage.removeItem(this.getStorageKey(this.shared.currentExamId(), mode, freeExam));
+        this.handleStartNewExam(mode, freeExam);
+        return;
+      }
+
       this.shared.studentExamId.set(parsed.studentExamId);
       localStorage.setItem('studentExamId', parsed.studentExamId);
     }
@@ -255,7 +264,9 @@ export class ChooseExamComponent {
 
   private handleStartNewExam(mode: 'Practice' | 'Exam', freeExam: boolean) {
 
-    if (!freeExam && mode == 'Exam') {
+    // A free exam is free to access, but Exam Mode still needs a server-side
+    // StudentExam so its answers, score and pass/fail result are persisted.
+    if (mode == 'Exam') {
       this.loading.start();
       this.studentExamService.startExam(this.getStartExamPayload(mode))
         .subscribe({
@@ -288,7 +299,9 @@ export class ChooseExamComponent {
 
   navigateToExam(mode: 'Practice' | 'Exam', freeExam: boolean = false) {
 
-    const baseRoute = !freeExam && mode == 'Exam' ? '../exams/' : '../free-exam/';
+    // Practice is local. All Exam Mode attempts use the persisted exam flow,
+    // including free exams for authenticated students.
+    const baseRoute = mode == 'Exam' ? '../exams/' : '../free-exam/';
 
 
     this.router.navigate([baseRoute, this.shared.currentExamId()], {

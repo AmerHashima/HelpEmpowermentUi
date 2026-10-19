@@ -20,7 +20,7 @@ import { AuthService } from '../../../Services/auth.service';
 import { Router } from '@angular/router';
 import { ToastingMessagesService } from '../../Services/ToastingMessages/toasting-messages.service';
 import { RoleService } from '../../../Services/role.service';
-import { forkJoin, of, switchMap } from 'rxjs';
+import { forkJoin, map, of, switchMap } from 'rxjs';
 
 
 @Component({
@@ -47,7 +47,8 @@ export class SideNav {
   previousIndex: number = -1;
   smallScreen = signal(false);
   isAdmin = computed(() => this.auth.loggedAdmin()?.roles.some(role => role.toLowerCase() === 'admin') ?? false);
-  contactUsAllowed = signal(false);
+  /** Normalized admin paths a non-admin role is allowed to read. */
+  visibleAdminPaths = signal<Set<string>>(new Set());
 
   sectionOneNavItems: Navitem[] = [
     {
@@ -136,40 +137,53 @@ export class SideNav {
       this.shared.setIsCollapsed();
       this.smallScreen.set(window.innerWidth < 768);
     }
-    this.loadContactUsPermission();
+    this.loadRolePermissions();
   }
 
   canShow(navItem: Navitem): boolean {
-    if (navItem.route !== 'contact-us') return true;
-    return this.isAdmin() || this.contactUsAllowed();
+    // Admin remains unrestricted. Every other role must have an active
+    // RoleLink with CanRead for the matching admin route.
+    return this.isAdmin() || this.visibleAdminPaths().has(this.normalizeAdminPath(navItem.route));
   }
 
-  private loadContactUsPermission(): void {
+  private loadRolePermissions(): void {
     if (this.isAdmin()) {
-      this.contactUsAllowed.set(true);
+      this.visibleAdminPaths.set(new Set(this.sectionOneNavItems.map(item => this.normalizeAdminPath(item.route))));
       return;
     }
 
     const assignedRoleNames = new Set(
       (this.auth.loggedAdmin()?.roles ?? []).map(role => role.trim().toLowerCase())
     );
-    if (!assignedRoleNames.size) return;
+    if (!assignedRoleNames.size) {
+      this.visibleAdminPaths.set(new Set());
+      return;
+    }
 
     forkJoin({ roles: this.rolesService.search(), links: this.rolesService.links() }).pipe(
       switchMap(({ roles, links }) => {
-        const contactLink = links.find(link => this.normalizeAdminPath(link.path) === '/admin/contact-us');
         const matchingRoles = (roles.data ?? []).filter(role => assignedRoleNames.has(role.name.trim().toLowerCase()));
-        if (!contactLink || !matchingRoles.length) return of(false);
+        if (!matchingRoles.length) return of(new Set<string>());
 
         return forkJoin(matchingRoles.map(role => this.rolesService.roleLinks(role.oid))).pipe(
-          switchMap(assignments => of(assignments.some(items => items.some(item =>
-            item.linkId === contactLink.oid && item.isActive && item.canRead
-          ))))
+          map(assignments => {
+            const readableLinkIds = new Set(
+              assignments.flat()
+                .filter(item => item.isActive && item.canRead)
+                .map(item => item.linkId)
+            );
+
+            return new Set(
+              links
+                .filter(link => link.isActive && readableLinkIds.has(link.oid))
+                .map(link => this.normalizeAdminPath(link.path))
+            );
+          })
         );
       })
     ).subscribe({
-      next: allowed => this.contactUsAllowed.set(allowed),
-      error: () => this.contactUsAllowed.set(false)
+      next: paths => this.visibleAdminPaths.set(paths),
+      error: () => this.visibleAdminPaths.set(new Set())
     });
   }
 

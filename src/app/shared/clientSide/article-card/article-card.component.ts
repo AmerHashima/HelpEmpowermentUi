@@ -20,17 +20,17 @@ export class ArticleCardComponent {
   description = input.required<string>();
   showIcons = input<boolean>(false);
 
-  edit = output<void>({ alias: 'onEdit' });
-  delete = output<void>({ alias: 'onDelete' });
+  editRequested = output<void>({ alias: 'onEdit' });
+  deleteRequested = output<void>({ alias: 'onDelete' });
 
-  onEdit(event: Event) {
+  handleEdit(event: Event) {
     event.stopPropagation();
-    this.edit.emit();
+    this.editRequested.emit();
   }
 
-  onDelete(event: Event) {
+  handleDelete(event: Event) {
     event.stopPropagation();
-    this.delete.emit();
+    this.deleteRequested.emit();
   }
   onClick = output<void>();
 
