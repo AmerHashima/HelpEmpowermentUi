@@ -65,14 +65,12 @@
             <div class="col-12 col-md-6 col-xl-4">
               <app-article-card
               [showIcons]="true"
-                [imgSrc]="article.imgSrc"
-                [imgAlt]="article.imgAlt"
-                [date]="article.createdAt"
-                [publishTime]="article.publishTime"
-                [title]="isRTL() ? article.title.ar : article.title.en"
-                [description]="
-                  isRTL() ? article.description.ar : article.description.en
-                "
+                [imgSrc]="articleService.imageUrl(article.coverImagePath)"
+                [imgAlt]="isRTL() ? (article.coverImageAltAr || article.titleAr) : (article.coverImageAltEn || article.titleEn)"
+                [date]="article.publishedAt || article.createdAt || ''"
+                [publishTime]="article.readingTimeMinutes + ' min'"
+                [title]="isRTL() ? article.titleAr : article.titleEn"
+                [description]="isRTL() ? (article.summaryAr || '') : (article.summaryEn || '')"
                 (onEdit)="openEditPopup(article)"
                 (onDelete)="removeArticle(article.oid)"
               />
@@ -101,7 +99,7 @@
             Page {{ displayPageNumber() }} of {{ totalPages() }} ({{
               totalCount()
             }}
-            students)
+            articles)
           </div>
 
           <div class="d-flex gap-2">

@@ -11,6 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CourseTabContentService } from '../../../../Services/course-tab-content.service';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { catchError, of, switchMap } from 'rxjs';
+import { CourseTabContent } from '../../../../models/course-tab-content';
 
 @Component({
   selector: 'app-home-faq',
@@ -23,13 +24,15 @@ import { catchError, of, switchMap } from 'rxjs';
 })
 export class HomeFAQComponent {
   courseSpecific = input(false);
+  tabContent = input<CourseTabContent | null>(null);
+  fetchContent = input(true);
   protected readonly shared = inject(Shared);
   private currentCertification = this.shared.currentCertificate;
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private tabService = inject(CourseTabContentService);
   private courseFaqCode = computed(() =>
-    this.courseSpecific() ? this.currentCertification() : ''
+    this.courseSpecific() && this.fetchContent() ? this.currentCertification() : ''
   );
   private faqContent = toSignal(toObservable(this.courseFaqCode).pipe(
     switchMap(code => code
@@ -48,7 +51,7 @@ export class HomeFAQComponent {
     if (!this.courseSpecific()) return this.systemQuestions;
 
     const section = this.faqSection();
-    if (!section || section.isEnabled === false) return [];
+    if (!section) return [];
 
     const lang = this.shared.isRtl() ? 'ar' : 'en';
     return (section.items ?? [])
@@ -59,15 +62,22 @@ export class HomeFAQComponent {
       .filter(item => item.question.trim() || item.answer.trim());
   })
 
-  readonly faqSection = computed(() => this.faqContent()?.content.sections.find(s => s.type === 'faq'));
+  private readonly resolvedFaqContent = computed(() => this.tabContent() ?? this.faqContent());
+  readonly faqSection = computed(() => this.resolvedFaqContent()?.content.sections.find(s => s.type === 'faq'));
   readonly faqTitle = computed(() =>
     this.courseSpecific()
-      ? this.faqSection()?.header?.[this.shared.isRtl() ? 'ar' : 'en'] ?? ''
+      ? this.faqSection()?.header?.[this.shared.isRtl() ? 'ar' : 'en']?.trim()
+        || (this.shared.isRtl()
+          ? `الأسئلة الشائعة عن ${this.currentCertification()?.toUpperCase() ?? ''}`
+          : `${this.currentCertification()?.toUpperCase() ?? ''} Frequently Asked Questions`)
       : 'home.faq.title'
   );
   readonly faqDescription = computed(() =>
     this.courseSpecific()
-      ? this.faqSection()?.description?.[this.shared.isRtl() ? 'ar' : 'en'] ?? ''
+      ? this.faqSection()?.description?.[this.shared.isRtl() ? 'ar' : 'en']?.trim()
+        || (this.shared.isRtl()
+          ? `إجابات واضحة عن أكثر الأسئلة شيوعًا حول ${this.currentCertification()?.toUpperCase() ?? ''}.`
+          : `Clear answers to the most common ${this.currentCertification()?.toUpperCase() ?? ''} questions.`)
       : 'home.faq.description'
   );
 

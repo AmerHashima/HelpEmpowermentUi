@@ -98,9 +98,9 @@
             </div>
           }
 
-          <h5 class="mt-4 mb-3">Existing sections</h5>
+          <h5 class="mt-4 mb-3">{{ tab.tabKey === 'faq' ? 'FAQ Questions & Answers' : 'Existing sections' }}</h5>
           @for (section of builtInSections(); track section.type) {
-            <details class="built-in-section card mb-3">
+            <details class="built-in-section card mb-3" [open]="tab.tabKey === 'faq' && section.type === 'faq'">
               <summary class="card-header d-flex align-items-center justify-content-between">
                 <span><strong>{{ sectionLabel(section) }}</strong> <small class="text-muted">({{ section.items.length }} items)</small></span>
                 <span class="text-muted">Edit</span>
@@ -111,7 +111,11 @@
                   <div class="col-md-6"><label class="form-label">Section header (Arabic)</label><input class="form-control text-end" dir="rtl" [ngModel]="localized(section.header, 'ar')" (ngModelChange)="setSectionText(section, 'header', 'ar', $event)"></div>
                   <div class="col-md-6"><label class="form-label">Section description (English)</label><textarea class="form-control" rows="2" [ngModel]="localized(section.description, 'en')" (ngModelChange)="setSectionEnglish(section, 'description', $event)"></textarea></div>
                   <div class="col-md-6"><label class="form-label">Section description (Arabic)</label><textarea class="form-control text-end" dir="rtl" rows="2" [ngModel]="localized(section.description, 'ar')" (ngModelChange)="setSectionText(section, 'description', 'ar', $event)"></textarea></div>
-                  <div class="col-12"><label class="form-check"><input class="form-check-input" type="checkbox" [ngModel]="section.isEnabled !== false" (ngModelChange)="section.isEnabled = $event"> <span class="form-check-label">Show section on website</span></label></div>
+                  @if (section.type !== 'faq') {
+                    <div class="col-12"><label class="form-check"><input class="form-check-input" type="checkbox" [ngModel]="section.isEnabled !== false" (ngModelChange)="section.isEnabled = $event"> <span class="form-check-label">Show section on website</span></label></div>
+                  } @else {
+                    <div class="col-12"><div class="alert alert-light border mb-0">Questions below are displayed automatically whenever the FAQ tab is enabled and published.</div></div>
+                  }
                 </div>
 
                 @for (item of section.items; track $index; let index = $index; let first = $first; let last = $last) {
@@ -155,7 +159,7 @@
                     </div>
                   </div>
                 }
-                <button type="button" class="btn btn-sm btn-outline-primary mt-2" (click)="addItem(section)">+ Add item</button>
+                <button type="button" class="btn btn-sm btn-outline-primary mt-2" (click)="addItem(section)">+ {{ section.type === 'faq' ? 'Add question' : 'Add item' }}</button>
               </div>
             </details>
           } @empty {

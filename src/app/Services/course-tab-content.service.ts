@@ -8,9 +8,10 @@ export class CourseTabContentService {
   private readonly api = inject(ApiService);
   private readonly cache = new Map<string, Observable<CourseTabContent[]>>();
 
-  getCourse(courseCode: string, includeDrafts = false): Observable<CourseTabContent[]> {
+  getCourse(courseCode: string, includeDrafts = false, forceRefresh = false): Observable<CourseTabContent[]> {
     const code = courseCode.trim().toUpperCase();
     const cacheKey = `${code}:${includeDrafts}`;
+    if (forceRefresh) this.cache.delete(cacheKey);
     const cached = this.cache.get(cacheKey);
     if (cached) return cached;
 
@@ -28,8 +29,8 @@ export class CourseTabContentService {
     return request;
   }
 
-  getTab(courseCode: string, tabKey: CourseTabKey): Observable<CourseTabContent | null> {
-    return this.getCourse(courseCode).pipe(
+  getTab(courseCode: string, tabKey: CourseTabKey, forceRefresh = false): Observable<CourseTabContent | null> {
+    return this.getCourse(courseCode, false, forceRefresh).pipe(
       map(tabs => tabs.find(tab => tab.tabKey === tabKey && tab.isEnabled) ?? null)
     );
   }

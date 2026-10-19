@@ -7,7 +7,7 @@ import { ClientNavbarComponent } from '../clientSide/navbar/navbar.component';
 import { FooterComponent } from '../footer/footer.component';
 import { ClientMainLayoutComponent } from '../client-main-layout/client-main-layout.component';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 import { filter, map, startWith, switchMap } from 'rxjs/operators';
 import { Shared } from '../Services/shared/shared';
 import { AnnouncementBannerComponent } from '../../components/ClientSide/announcement-banner/announcement-banner.component';
@@ -35,7 +35,6 @@ export interface Announcement {
     ClientNavbarComponent,
     FooterComponent,
     ClientMainLayoutComponent,
-    TranslatePipe,
     AnnouncementBannerComponent
   ],
   templateUrl: './client-side-layout.component.html',
@@ -130,8 +129,17 @@ export class ClientSideLayoutComponent {
       return 'search.search';
 
     }
-    return this.pageKey;
+    return decodeURIComponent(this.pageKey);
 
+  }
+  get translatedPageLabel(): string {
+    const page = this.translatedPageKey;
+    const key = `pages.${page}`;
+    const translated = this.translate.instant(key);
+    if (translated !== key) return translated;
+
+    const course = this.shared.currentCertificationObject();
+    return course?.courseName || course?.courseCode || page;
   }
   /**
    * Checks if current path should have NO layout (navbar/footer/etc.)

@@ -19,7 +19,7 @@ import { ToastingMessagesService } from '../../../shared/Services/ToastingMessag
   styleUrl: './articles.component.scss'
 })
 export class ArticlesComponent {
-  private articleService = inject(ArticleService);
+  articleService = inject(ArticleService);
   private breadcrumbService = inject(BreadcrumbService);
   private toasting = inject(ToastingMessagesService);
   private shared = inject(Shared);
@@ -186,10 +186,10 @@ export class ArticlesComponent {
       ],
       pagination: {
         getAll: false,
-        pageNumber: this.pageIndex(),
+        pageNumber: this.pageIndex() + 1,
         pageSize: this.pageSize()
       },
-      columns: ['oid', 'nameEn', 'nameAr', 'email', 'mobile', 'username', 'isActive', 'courses']
+      columns: []
     };
   }
 }

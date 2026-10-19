@@ -19,6 +19,8 @@ import { Shared } from '../../Services/shared/shared';
 import { AuthService } from '../../../Services/auth.service';
 import { Router } from '@angular/router';
 import { ToastingMessagesService } from '../../Services/ToastingMessages/toasting-messages.service';
+import { RoleService } from '../../../Services/role.service';
+import { forkJoin, of, switchMap } from 'rxjs';
 
 
 @Component({
@@ -39,11 +41,13 @@ export class SideNav {
   private auth = inject(AuthService);
   private router=inject(Router);
   private toasting=inject(ToastingMessagesService);
+  private rolesService = inject(RoleService);
   lang = this.shared.lang;
   isCollapse = this.shared.isCollapse;
   previousIndex: number = -1;
   smallScreen = signal(false);
   isAdmin = computed(() => this.auth.loggedAdmin()?.roles.some(role => role.toLowerCase() === 'admin') ?? false);
+  contactUsAllowed = signal(false);
 
   sectionOneNavItems: Navitem[] = [
     {
@@ -117,12 +121,12 @@ export class SideNav {
       icon: 'bi bi-shield-lock',
       route: 'roles'
     },
-    // {
-    //   name: 'Articles',
-    //   nameAr: 'المقالات',
-    //   icon: 'bi bi-people-fill',
-    //   route: 'articles'
-    // },
+    {
+      name: 'Articles',
+      nameAr: 'المقالات',
+      icon: 'bi bi-file-earmark-text',
+      route: 'articles'
+    },
 
 
   ];
@@ -132,6 +136,46 @@ export class SideNav {
       this.shared.setIsCollapsed();
       this.smallScreen.set(window.innerWidth < 768);
     }
+    this.loadContactUsPermission();
+  }
+
+  canShow(navItem: Navitem): boolean {
+    if (navItem.route !== 'contact-us') return true;
+    return this.isAdmin() || this.contactUsAllowed();
+  }
+
+  private loadContactUsPermission(): void {
+    if (this.isAdmin()) {
+      this.contactUsAllowed.set(true);
+      return;
+    }
+
+    const assignedRoleNames = new Set(
+      (this.auth.loggedAdmin()?.roles ?? []).map(role => role.trim().toLowerCase())
+    );
+    if (!assignedRoleNames.size) return;
+
+    forkJoin({ roles: this.rolesService.search(), links: this.rolesService.links() }).pipe(
+      switchMap(({ roles, links }) => {
+        const contactLink = links.find(link => this.normalizeAdminPath(link.path) === '/admin/contact-us');
+        const matchingRoles = (roles.data ?? []).filter(role => assignedRoleNames.has(role.name.trim().toLowerCase()));
+        if (!contactLink || !matchingRoles.length) return of(false);
+
+        return forkJoin(matchingRoles.map(role => this.rolesService.roleLinks(role.oid))).pipe(
+          switchMap(assignments => of(assignments.some(items => items.some(item =>
+            item.linkId === contactLink.oid && item.isActive && item.canRead
+          ))))
+        );
+      })
+    ).subscribe({
+      next: allowed => this.contactUsAllowed.set(allowed),
+      error: () => this.contactUsAllowed.set(false)
+    });
+  }
+
+  private normalizeAdminPath(path: string): string {
+    const normalized = `/${(path ?? '').trim().replace(/^\/+|\/+$/g, '')}`.toLowerCase();
+    return normalized.startsWith('/admin/') ? normalized : `/admin${normalized}`;
   }
 
   @HostListener('window:resize')

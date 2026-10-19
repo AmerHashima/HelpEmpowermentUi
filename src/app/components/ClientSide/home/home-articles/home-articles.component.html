@@ -37,13 +37,13 @@
         @for (article of visibleArticles(); track article.slug) {
           <div class="col-12 col-md-6 col-lg-4">
             <app-article-card
-              [imgSrc]="article.imgSrc"
-              [imgAlt]="article.imgAlt"
-              [date]="article.date"
-              [publishTime]="article.publishTime"
-              [title]="article.title"
-              [description]="article.description"
-              (onClick)="onArticleClick(article, $index)"
+              [imgSrc]="image(article)"
+              [imgAlt]="alt(article)"
+              [date]="date(article)"
+              [publishTime]="article.readingTimeMinutes + ' min'"
+              [title]="title(article)"
+              [description]="summary(article)"
+              (onClick)="onArticleClick(article)"
             />
           </div>
         }
@@ -61,13 +61,13 @@
       @for (article of articlesData(); track $index) {
         <div class="col-12 col-md-6 col-lg-4">
           <app-article-card
-            [imgSrc]="article.imgSrc"
-            [imgAlt]="article.imgAlt"
-            [date]="article.date"
-            [publishTime]="article.publishTime"
-            [title]="article.title"
-            [description]="article.description"
-            (onClick)="onArticleClick(article, $index)"
+            [imgSrc]="image(article)"
+            [imgAlt]="alt(article)"
+            [date]="date(article)"
+            [publishTime]="article.readingTimeMinutes + ' min'"
+            [title]="title(article)"
+            [description]="summary(article)"
+            (onClick)="onArticleClick(article)"
           />
         </div>
       } @empty {

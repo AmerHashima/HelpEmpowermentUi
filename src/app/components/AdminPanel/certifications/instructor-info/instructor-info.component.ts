@@ -5,8 +5,8 @@ import { AccordionComponent } from '../../../../shared/accordion/accordion.compo
 import { ServiceCardComponent } from '../../../ClientSide/services/service-card/service-card.component';
 import { Shared } from '../../../../shared/Services/shared/shared';
 import { CourseTabContentService } from '../../../../Services/course-tab-content.service';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { catchError, of } from 'rxjs';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { catchError, distinctUntilChanged, of, switchMap } from 'rxjs';
 @Component({
   selector: 'app-instructor-info',
   imports: [
@@ -22,7 +22,15 @@ export class InstructorInfoComponent {
   readonly defaultInstructorImage = 'assets/images/profile/person.png';
   private shared = inject(Shared);
   private tabService = inject(CourseTabContentService);
-  private tabContents = toSignal(this.tabService.getCourse(this.shared.currentCertificate()).pipe(catchError(() => of([]))), {initialValue: []});
+  private tabContents = toSignal(
+    toObservable(this.shared.currentCertificate).pipe(
+      distinctUntilChanged(),
+      switchMap(courseCode => courseCode
+        ? this.tabService.getCourse(courseCode).pipe(catchError(() => of([])))
+        : of([]))
+    ),
+    { initialValue: [] }
+  );
   private readonly recordedCourse = computed(() => this.tabContents().find(tab => tab.tabKey === 'recorded-course'));
   readonly introSection = computed(() => this.recordedCourse()?.content.sections.find(s => s.type === 'instructorIntro'));
   readonly sectionTitle = computed(() => this.introSection()?.header?.[this.shared.isRtl() ? 'ar' : 'en'] || 'instructor.info');

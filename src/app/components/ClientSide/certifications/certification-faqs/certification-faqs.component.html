@@ -1,26 +1,7 @@
-@if (banner(); as bannerContent) {
-  <app-page-banner [isRTL]="shared.isRtl()" [media]="!!bannerMediaUrl()">
-    <div content class="d-flex flex-column gap-3 pe-xl-5">
-      <h1 class="CertificationHeader mb-0">
-        <span class="darkText">{{ bannerContent.titlePart1 }}</span>
-        @if (bannerContent.titlePart2) {
-          <span class="mainTextColor"> {{ bannerContent.titlePart2 }}</span>
-        }
-      </h1>
-      <p class="mb-0">{{ bannerContent.description }}</p>
-    </div>
-
-    @if (bannerMediaUrl()) {
-      <img
-        media
-        [src]="bannerMediaUrl()"
-        alt="Frequently asked questions"
-        class="Homebanner-video shadow w-100 h-100"
-      />
-    }
-  </app-page-banner>
-}
-
 <div class="faq">
-  <app-home-faq [courseSpecific]="true" />
+  <app-home-faq
+    [courseSpecific]="true"
+    [tabContent]="tabContent()"
+    [fetchContent]="false"
+  />
 </div>

@@ -356,6 +356,25 @@ export class CourseContentEditorComponent implements OnDestroy {
 
   select(key: CourseTabKey): void {
     this.activeKey.set(key);
+    if (key === 'faq') {
+      const tab = this.tabs().find(item => item.tabKey === 'faq');
+      if (tab) {
+        let section = tab.content.sections.find(item => item.type === 'faq');
+        if (!section) {
+          section = {
+            type: 'faq',
+            header: { en: 'Frequently Asked Questions', ar: 'الأسئلة الشائعة' },
+            description: { en: '', ar: '' },
+            isEnabled: true,
+            items: []
+          };
+          tab.content.sections.push(section);
+        } else {
+          section.isEnabled = true;
+        }
+        this.tabs.update(items => [...items]);
+      }
+    }
     this.showAdvanced.set(false);
   }
 

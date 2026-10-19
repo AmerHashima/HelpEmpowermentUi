@@ -20,8 +20,8 @@ export class ArticleCardComponent {
   description = input.required<string>();
   showIcons = input<boolean>(false);
 
-  edit = output<void>();
-  delete = output<void>();
+  edit = output<void>({ alias: 'onEdit' });
+  delete = output<void>({ alias: 'onDelete' });
 
   onEdit(event: Event) {
     event.stopPropagation();
