@@ -10,8 +10,10 @@ export type ApiArticle = Required<Pick<Article, 'oid'>> & Article & { createdAt?
 @Injectable({ providedIn: 'root' }) export class ArticleService {
   constructor(private api: ApiService) {}
   searchArticles(body: RequestBody): Observable<{ articles: ApiArticle[]; total: number }> { return this.api.query<ApiSearchResponse<ApiArticle>>('Articles/search', body).pipe(map(response => { if (!response.success) throw new Error(response.message || 'Failed to load articles'); return { articles: response.data ?? [], total: response.totalCount ?? 0 }; })); }
-  getArticle(id: string): Observable<ApiArticle> { return this.api.getSingle<ApiResponse<ApiArticle>>('Articles', id).pipe(map(this.unwrap)); }
-  getPublicArticle(category: string, slug: string): Observable<ApiArticle> { return this.api.get<ApiResponse<ApiArticle>>(`Articles/by-slug/${encodeURIComponent(category)}/${encodeURIComponent(slug)}`).pipe(map(this.unwrap)); }
+  // Always request the current saved article. Browser memory caches otherwise make
+  // the edit form reopen with the version that existed before a successful PUT.
+  getArticle(id: string): Observable<ApiArticle> { return this.api.getSingle<ApiResponse<ApiArticle>>('Articles', `${id}?_=${Date.now()}`).pipe(map(this.unwrap)); }
+  getPublicArticle(category: string, slug: string): Observable<ApiArticle> { return this.api.get<ApiResponse<ApiArticle>>(`Articles/by-slug/${encodeURIComponent(category)}/${encodeURIComponent(slug)}?_=${Date.now()}`).pipe(map(this.unwrap)); }
   createArticle(body: Article): Observable<ApiArticle> { return this.api.post<ApiResponse<ApiArticle>>('Articles', body, 'Article created successfully').pipe(map(this.unwrap)); }
   updateArticle(id: string, body: Article): Observable<ApiArticle> { return this.api.put<ApiResponse<ApiArticle>>('Articles', id, { ...body, oid: id }, 'Article updated successfully').pipe(map(this.unwrap)); }
   deleteArticle(id: string): Observable<boolean> { return this.api.delete<ApiResponse<boolean>>('Articles', id, 'Article deleted successfully').pipe(map(this.unwrap)); }
