@@ -20,17 +20,20 @@ export class ArticleCardComponent {
   description = input.required<string>();
   showIcons = input<boolean>(false);
 
-  editRequested = output<void>({ alias: 'onEdit' });
-  deleteRequested = output<void>({ alias: 'onDelete' });
+  // Keep the public event names identical to the dashboard bindings. Using
+  // direct outputs avoids alias/method-name collisions that left these actions
+  // silent in previous builds.
+  onEdit = output<void>();
+  onDelete = output<void>();
 
   handleEdit(event: Event) {
     event.stopPropagation();
-    this.editRequested.emit();
+    this.onEdit.emit();
   }
 
   handleDelete(event: Event) {
     event.stopPropagation();
-    this.deleteRequested.emit();
+    this.onDelete.emit();
   }
   onClick = output<void>();
 

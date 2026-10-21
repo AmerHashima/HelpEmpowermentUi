@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { Observable, catchError, map, shareReplay, throwError } from 'rxjs';
 import { CourseTabContent, CourseTabKey } from '../models/course-tab-content';
 import ApiService from '../shared/Services/ApiService/api.service';
@@ -7,6 +7,8 @@ import ApiService from '../shared/Services/ApiService/api.service';
 export class CourseTabContentService {
   private readonly api = inject(ApiService);
   private readonly cache = new Map<string, Observable<CourseTabContent[]>>();
+  /** Increments after saved course content so mounted public sections can reload it. */
+  readonly contentRevision = signal(0);
 
   getCourse(courseCode: string, includeDrafts = false, forceRefresh = false): Observable<CourseTabContent[]> {
     const code = courseCode.trim().toUpperCase();
@@ -94,5 +96,6 @@ export class CourseTabContentService {
   invalidate(courseCode: string): void {
     const prefix = `${courseCode.trim().toUpperCase()}:`;
     [...this.cache.keys()].filter(key => key.startsWith(prefix)).forEach(key => this.cache.delete(key));
+    this.contentRevision.update(revision => revision + 1);
   }
 }

@@ -6,7 +6,7 @@ import { ServiceCardComponent } from '../../../ClientSide/services/service-card/
 import { Shared } from '../../../../shared/Services/shared/shared';
 import { CourseTabContentService } from '../../../../Services/course-tab-content.service';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { catchError, distinctUntilChanged, of, switchMap } from 'rxjs';
+import { catchError, of, switchMap } from 'rxjs';
 @Component({
   selector: 'app-instructor-info',
   imports: [
@@ -23,10 +23,12 @@ export class InstructorInfoComponent {
   private shared = inject(Shared);
   private tabService = inject(CourseTabContentService);
   private tabContents = toSignal(
-    toObservable(this.shared.currentCertificate).pipe(
-      distinctUntilChanged(),
-      switchMap(courseCode => courseCode
-        ? this.tabService.getCourse(courseCode).pipe(catchError(() => of([])))
+    toObservable(computed(() => ({
+      courseCode: this.shared.currentCertificate(),
+      revision: this.tabService.contentRevision()
+    }))).pipe(
+      switchMap(({ courseCode }) => courseCode
+        ? this.tabService.getCourse(courseCode, false, true).pipe(catchError(() => of([])))
         : of([]))
     ),
     { initialValue: [] }

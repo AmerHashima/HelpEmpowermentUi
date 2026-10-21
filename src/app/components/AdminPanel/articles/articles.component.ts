@@ -122,8 +122,6 @@ export class ArticlesComponent {
       error: (error: unknown) => {
         const message = error instanceof Error ? error.message : 'Failed to delete article';
         this.errorMessage.set(message);
-        this.articles.set([]);
-
         this.loading.set(false);
       }
     });
@@ -142,8 +140,6 @@ export class ArticlesComponent {
       error: (error: unknown) => {
         const message = error instanceof Error ? error.message : 'Failed to load articles';
         this.errorMessage.set(message);
-        this.articles.set([]);
-        this.totalCount.set(0);
         this.loading.set(false);
       }
     });
