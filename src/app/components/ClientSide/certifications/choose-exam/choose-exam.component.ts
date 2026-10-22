@@ -35,6 +35,14 @@ export class ChooseExamComponent {
   showClearLessonLearned = false;
   showMustLogin = false;
   examName = computed(() => this.shared.currentExam()?.examName);
+  private hasPersistedExamResult = computed(() => {
+    const examId = this.shared.currentExamId();
+    return !!examId && this.studentExamService.reports().some(report =>
+      report.coursesMasterExamOid === examId &&
+      !!report.finishedAt &&
+      report.examModeLookupId === examModeOid
+    );
+  });
   // previousExamMode = computed(() => {
   //   const examId = this.shared.currentExamId();
   //   const isFree = this.shared.currentExam()?.freeExam ?? false;
@@ -95,7 +103,7 @@ export class ChooseExamComponent {
     const examId = this.shared.currentExamId();
     const isFree = this.shared.currentExam()?.freeExam ?? false;
 
-    if (isFree) {
+    if (isFree && !this.hasPersistedExamResult()) {
 
       // ✅ only needed for free exam localStorage refresh
       this.shared.freeExamRefresh$();
@@ -136,7 +144,7 @@ export class ChooseExamComponent {
 
     const isFree = this.shared.currentExam()?.freeExam ?? false;
 
-    if (isFree) {
+    if (isFree && !this.hasPersistedExamResult()) {
       this.shared.freeExamRefresh$();
 
       return this.shared.getLatestFreeExamReport(
@@ -366,7 +374,7 @@ export class ChooseExamComponent {
 
   clearLessonLearned() {
     const isFree = this.shared.currentExam()?.freeExam ?? false;
-    if (isFree) {
+    if (isFree && !this.hasPersistedExamResult()) {
       this.shared.clearFreeExamLesson(
         this.auth.loggedStudent()?.userId ?? null,
       );

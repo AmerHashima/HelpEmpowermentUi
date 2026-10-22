@@ -105,7 +105,7 @@ import { Shared } from '../../../shared/Services/shared/shared';
 import { APIExamSummary, ExamSummary } from '../../../models/certification';
 import { AuthService } from '../../../Services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { clearedExamStatusOid } from '../../../data/lookUPS';
+import { clearedExamStatusOid, examModeOid } from '../../../data/lookUPS';
 
 export interface LessonReportVM {
   totalQuestions: number;
@@ -144,11 +144,19 @@ export class ExamLessonLearnedQuestionsComponent {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   isFreeExam = computed(() => this.shared.currentExam()?.freeExam);
+  private usesPersistedExamReport = computed(() => {
+    const examId = this.shared.currentExamId();
+    return !!examId && this.studentExamService.reports().some(report =>
+      report.coursesMasterExamOid === examId &&
+      !!report.finishedAt &&
+      report.examModeLookupId === examModeOid
+    );
+  });
   // latestReport = this.studentExamService.latestReport;
 
   latestReport = computed<LessonReportVM | null>(() => {
     this.shared.freeExamRefresh$();
-    if (this.isFreeExam()) {
+    if (this.isFreeExam() && !this.usesPersistedExamReport()) {
       return this.shared.getLatestFreeExamReport(this.auth.loggedStudent()?.userId ?? null);
     }
 
@@ -247,7 +255,7 @@ export class ExamLessonLearnedQuestionsComponent {
 
 
   clearLesson() {
-    if (this.isFreeExam()) {
+    if (this.isFreeExam() && !this.usesPersistedExamReport()) {
       this.shared.clearFreeExamLesson(this.auth.loggedStudent()?.userId ?? null);
       return;
     }

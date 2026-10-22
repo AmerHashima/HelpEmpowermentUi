@@ -5,6 +5,7 @@ import { StudentExamService } from '../../../Services/student-exam.service';
 import { AuthService } from '../../../Services/auth.service';
 import { APIStudentExamResponse } from '../../../models/certification';
 import { Shared } from '../../../shared/Services/shared/shared';
+import { examModeOid } from '../../../data/lookUPS';
 
 @Component({
   selector: 'app-exam-reports',
@@ -19,6 +20,16 @@ export class ExamReportsComponent {
   currentExamId = this.shared.currentExamId
   currentExam = this.shared.currentExam
   isFreeExam = computed(() => this.currentExam()?.freeExam)
+  // Free access does not mean a browser-only result. Free exams taken in
+  // Exam Mode have a persisted StudentExam and must use API reports.
+  usesPersistedExamReport = computed(() => {
+    const examId = this.currentExamId();
+    return !!examId && this.studentService.reports().some(report =>
+      report.coursesMasterExamOid === examId &&
+      !!report.finishedAt &&
+      report.examModeLookupId === examModeOid
+    );
+  });
   studentId = computed(() => this.auth.loggedStudent()?.userId);
   averageScore = computed(() => {
     const reports = this.reports();
@@ -40,7 +51,7 @@ export class ExamReportsComponent {
     if (!examId || !exam) return [];
 
     // ✅ CASE 1: Free Exam → from localStorage
-    if (exam.freeExam) {
+    if (exam.freeExam && !this.usesPersistedExamReport()) {
       const localResults = this.getLocalResults();
 
       return [...localResults
