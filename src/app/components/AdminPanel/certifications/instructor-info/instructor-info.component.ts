@@ -5,7 +5,6 @@ import { AccordionComponent } from '../../../../shared/accordion/accordion.compo
 import { ServiceCardComponent } from '../../../ClientSide/services/service-card/service-card.component';
 import { Shared } from '../../../../shared/Services/shared/shared';
 import { CourseTabContentService } from '../../../../Services/course-tab-content.service';
-import { CourseTabKey } from '../../../../models/course-tab-content';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { catchError, of, switchMap } from 'rxjs';
 @Component({
@@ -21,7 +20,6 @@ import { catchError, of, switchMap } from 'rxjs';
 })
 export class InstructorInfoComponent {
   readonly defaultInstructorImage = 'assets/images/profile/person.png';
-  readonly tabKey = input<CourseTabKey>('recorded-course');
   private shared = inject(Shared);
   private tabService = inject(CourseTabContentService);
   private tabContents = toSignal(
@@ -35,7 +33,7 @@ export class InstructorInfoComponent {
     ),
     { initialValue: [] }
   );
-  private readonly currentTab = computed(() => this.tabContents().find(tab => tab.tabKey === this.tabKey()));
+  private readonly currentTab = computed(() => this.tabContents().find(tab => tab.tabKey === 'recorded-course'));
   readonly introSection = computed(() => this.currentTab()?.content.sections.find(s => s.type === 'instructorIntro'));
   readonly hasVisibleInstructorContent = computed(() => {
     const instructorSections = (this.currentTab()?.content.sections ?? [])
