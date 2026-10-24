@@ -35,6 +35,11 @@ export class InstructorInfoComponent {
   );
   private readonly recordedCourse = computed(() => this.tabContents().find(tab => tab.tabKey === 'recorded-course'));
   readonly introSection = computed(() => this.recordedCourse()?.content.sections.find(s => s.type === 'instructorIntro'));
+  readonly hasVisibleInstructorContent = computed(() =>
+    (this.recordedCourse()?.content.sections ?? [])
+      .filter(section => ['instructorIntro', 'instructorSkills', 'instructorCertifications'].includes(section.type))
+      .some(section => section.isEnabled !== false && section.items.length > 0)
+  );
   readonly sectionTitle = computed(() => this.introSection()?.header?.[this.shared.isRtl() ? 'ar' : 'en'] || 'instructor.info');
   readonly sectionDescription = computed(() => this.introSection()?.description?.[this.shared.isRtl() ? 'ar' : 'en'] || '');
   certification = this.shared.currentCertificate;
