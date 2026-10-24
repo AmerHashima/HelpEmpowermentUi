@@ -653,6 +653,9 @@ export class LessonLearnedQUestiosPracticeModeComponent {
   studentExamId = signal<string>('');
 
   isFreeExam = computed(() => this.shared.currentExam()?.freeExam);
+  // A free exam taken in Exam Mode has a StudentExam ID and must use its
+  // server-side result. Only the browser-only free practice uses local data.
+  isLocalFreePractice = computed(() => this.isFreeExam() && !this.studentExamId());
 
   hasQuestions = computed(() => this.filteredExamQuestions().length > 0);
 
@@ -705,7 +708,7 @@ export class LessonLearnedQUestiosPracticeModeComponent {
 
     if (qs.length === 0) return [];
 
-    if (this.isFreeExam()) {
+    if (this.isLocalFreePractice()) {
       const userId = this.auth.loggedStudent()?.userId ?? null;
       const report = this.shared.getLatestFreeExamReport(userId);
 
@@ -723,7 +726,8 @@ export class LessonLearnedQUestiosPracticeModeComponent {
         selectedIds = oids.notAnswered ?? [];
       }
 
-      if (!selectedIds.length) return qs;
+      // The selected result category is empty: show no questions, never all.
+      if (!selectedIds.length) return [];
 
       const set = new Set(selectedIds);
 
@@ -941,7 +945,7 @@ export class LessonLearnedQUestiosPracticeModeComponent {
     // ============================
     effect(() => {
       if (!this.isBrowser) return;
-      if (this.isFreeExam()) return; // ❗ free exam uses local report
+      if (this.isLocalFreePractice()) return; // browser-only free practice uses local report
 
       const practiceType = this.currentType();
       const studentExamId = this.studentExamId();
@@ -1095,7 +1099,7 @@ export class LessonLearnedQUestiosPracticeModeComponent {
     const type = this.currentType();
 
     // ✅ FREE EXAM
-    if (this.isFreeExam()) {
+    if (this.isLocalFreePractice()) {
       return `free-exam-lessonLearned-progress-${type}-student_${userId}`;
     }
 

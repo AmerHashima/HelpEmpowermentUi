@@ -160,6 +160,10 @@ export class ClientExamQuestionComponent {
       const left = q?.answers.filter((a: APIAnswer) => a.question_Ask) ?? [];
       const right = q?.answers.filter((a: APIAnswer) => !a.question_Ask) ?? [];
 
+      // The component instance remains mounted while moving between questions.
+      // Clear the previous matching question before restoring this question's
+      // own saved answers, otherwise its selections leak into the next one.
+      this.savedMiddle = [];
       this.middle = new Array(left.length).fill(null);
       this._rightItems = [...right];
 
@@ -182,8 +186,9 @@ export class ClientExamQuestionComponent {
           }
 
         });
-        this.savedMiddle = [...this.middle]
       }
+      // Always pass a new array, including an empty one, to reset DragComponent.
+      this.savedMiddle = [...this.middle];
     }
 
   }

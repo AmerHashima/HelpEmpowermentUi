@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { AccordionComponent } from '../../../../shared/accordion/accordion.component';
 import { ServiceCardComponent } from '../../../ClientSide/services/service-card/service-card.component';
 import { Shared } from '../../../../shared/Services/shared/shared';
 import { CourseTabContentService } from '../../../../Services/course-tab-content.service';
+import { CourseTabKey } from '../../../../models/course-tab-content';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { catchError, of, switchMap } from 'rxjs';
 @Component({
@@ -20,6 +21,7 @@ import { catchError, of, switchMap } from 'rxjs';
 })
 export class InstructorInfoComponent {
   readonly defaultInstructorImage = 'assets/images/profile/person.png';
+  readonly tabKey = input<CourseTabKey>('recorded-course');
   private shared = inject(Shared);
   private tabService = inject(CourseTabContentService);
   private tabContents = toSignal(
@@ -33,13 +35,14 @@ export class InstructorInfoComponent {
     ),
     { initialValue: [] }
   );
-  private readonly recordedCourse = computed(() => this.tabContents().find(tab => tab.tabKey === 'recorded-course'));
-  readonly introSection = computed(() => this.recordedCourse()?.content.sections.find(s => s.type === 'instructorIntro'));
-  readonly hasVisibleInstructorContent = computed(() =>
-    (this.recordedCourse()?.content.sections ?? [])
-      .filter(section => ['instructorIntro', 'instructorSkills', 'instructorCertifications'].includes(section.type))
-      .some(section => section.isEnabled !== false && section.items.length > 0)
-  );
+  private readonly currentTab = computed(() => this.tabContents().find(tab => tab.tabKey === this.tabKey()));
+  readonly introSection = computed(() => this.currentTab()?.content.sections.find(s => s.type === 'instructorIntro'));
+  readonly hasVisibleInstructorContent = computed(() => {
+    const instructorSections = (this.currentTab()?.content.sections ?? [])
+      .filter(section => ['instructorIntro', 'instructorSkills', 'instructorCertifications'].includes(section.type));
+    return !instructorSections.length ||
+      instructorSections.some(section => section.isEnabled !== false && (section.items?.length ?? 0) > 0);
+  });
   readonly sectionTitle = computed(() => this.introSection()?.header?.[this.shared.isRtl() ? 'ar' : 'en'] || 'instructor.info');
   readonly sectionDescription = computed(() => this.introSection()?.description?.[this.shared.isRtl() ? 'ar' : 'en'] || '');
   certification = this.shared.currentCertificate;
@@ -91,7 +94,7 @@ export class InstructorInfoComponent {
     ]
   };
   instructor = computed(() => {
-    const sections = this.recordedCourse()?.content.sections ?? [];
+    const sections = this.currentTab()?.content.sections ?? [];
     const intro = sections.find(s => s.type === 'instructorIntro' && s.isEnabled !== false)?.items[0];
     const skills = sections.find(s => s.type === 'instructorSkills' && s.isEnabled !== false)?.items;
     const certs = sections.find(s => s.type === 'instructorCertifications' && s.isEnabled !== false)?.items;

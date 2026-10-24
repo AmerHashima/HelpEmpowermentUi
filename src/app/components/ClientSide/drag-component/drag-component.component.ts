@@ -32,16 +32,16 @@ export class DragComponentComponent implements OnChanges {
     // Initialize slots based on leftItems or totalSlots
     if (changes['leftItems'] || changes['totalSlots']) {
       const slotCount = this.totalSlots || this.leftItems?.length || 0;
-      if (this.middleItems.length !== slotCount) {
-        this.middleItems = Array(slotCount).fill(null);
-      }
+      // A different matching question may have exactly the same number of
+      // slots. Reset regardless of length so answers cannot carry over.
+      this.middleItems = Array(slotCount).fill(null);
     }
 
     // Restore saved middle items
-    if (changes['savedMiddle'] && this.savedMiddle?.length) {
+    if (changes['savedMiddle']) {
       // Reset first to avoid leftover items
       this.middleItems = Array(this.middleItems.length).fill(null);
-      this.savedMiddle.forEach((item, i) => {
+      (this.savedMiddle ?? []).forEach((item, i) => {
         if (i < this.middleItems.length) {
           this.middleItems[i] = item;
         }
