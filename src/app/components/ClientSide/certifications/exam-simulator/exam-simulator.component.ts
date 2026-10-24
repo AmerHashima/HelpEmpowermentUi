@@ -52,7 +52,7 @@ export class ExamSimulatorComponent {
   isLoggedIn = computed(() => !!this.auth.studentToken());
   hydrated = signal(false);
   price = this.certificationService.examSimulationPrice;
-  tabContent = toSignal(this.tabService.getTab(this.shared.currentCertificate(), 'exam-simulator').pipe(catchError(() => of(null))), { initialValue: null });
+  tabContent = toSignal(this.tabService.watchTab(this.shared.currentCertificate(), 'exam-simulator').pipe(catchError(() => of(null))), { initialValue: null });
   tabBanner = computed(() => this.tabContent()?.content.banner[this.isRTL() ? 'ar' : 'en']);
   certification = this.shared.currentCertificationObject;
   examsStore = inject(ExamsStore);

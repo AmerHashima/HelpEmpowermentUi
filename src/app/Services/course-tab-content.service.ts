@@ -1,5 +1,5 @@
 import { Injectable, inject, signal } from '@angular/core';
-import { Observable, catchError, map, shareReplay, throwError } from 'rxjs';
+import { Observable, Subject, catchError, filter, map, shareReplay, startWith, switchMap, throwError } from 'rxjs';
 import { CourseTabContent, CourseTabKey } from '../models/course-tab-content';
 import ApiService from '../shared/Services/ApiService/api.service';
 
@@ -7,6 +7,7 @@ import ApiService from '../shared/Services/ApiService/api.service';
 export class CourseTabContentService {
   private readonly api = inject(ApiService);
   private readonly cache = new Map<string, Observable<CourseTabContent[]>>();
+  private readonly invalidated = new Subject<string>();
   /** Increments after saved course content so mounted public sections can reload it. */
   readonly contentRevision = signal(0);
 
@@ -34,6 +35,20 @@ export class CourseTabContentService {
   getTab(courseCode: string, tabKey: CourseTabKey, forceRefresh = false): Observable<CourseTabContent | null> {
     return this.getCourse(courseCode, false, forceRefresh).pipe(
       map(tabs => tabs.find(tab => tab.tabKey === tabKey && tab.isEnabled) ?? null)
+    );
+  }
+
+  /**
+   * Use in public pages that stay mounted while an administrator saves content.
+   * A normal getTab is intentionally one-shot and cached; this stream reloads
+   * only when the same course's content is invalidated after a successful save.
+   */
+  watchTab(courseCode: string, tabKey: CourseTabKey): Observable<CourseTabContent | null> {
+    const code = courseCode.trim().toUpperCase();
+    return this.invalidated.pipe(
+      filter(changedCode => changedCode === code),
+      startWith(code),
+      switchMap(() => this.getTab(code, tabKey, true))
     );
   }
 
@@ -94,8 +109,10 @@ export class CourseTabContentService {
   }
 
   invalidate(courseCode: string): void {
-    const prefix = `${courseCode.trim().toUpperCase()}:`;
+    const code = courseCode.trim().toUpperCase();
+    const prefix = `${code}:`;
     [...this.cache.keys()].filter(key => key.startsWith(prefix)).forEach(key => this.cache.delete(key));
     this.contentRevision.update(revision => revision + 1);
+    this.invalidated.next(code);
   }
 }
