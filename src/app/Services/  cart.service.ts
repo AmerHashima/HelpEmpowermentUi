@@ -85,7 +85,7 @@ export class CartService {
   // );
   subtotal = computed(() => {
     const override = this.subTotalOverride();
-    if (override) return override;
+    if (override != null) return override;
     const sub = this.expandedCartItems().reduce((total, item) => {
       const price = this.getFeaturePrice(item);
       return total + price;
@@ -129,10 +129,7 @@ export class CartService {
 
       this.getStudentBasketItems().subscribe({
         next: (data) => {
-          this.cartItems.set(data.items ?? []);
-          this.subTotalOverride.set(null);
-          this.totalOverride.set(null);
-          this.discountAmount.set(0);
+          this.applyBasketSummary(data);
           this.appliedCoupon.set(null);
         },
         error: (err) => {
@@ -146,10 +143,6 @@ export class CartService {
 
 
   getFeaturePrice(item: any): number {
-    const course = this.shared.certifications().find(
-      (c: any) => c.oid === item.courseId
-    );
-
     const map: any = {
       recordedCourseReserv: 'recordedCourseReservPrice',
       examSimulationReserv: 'examSimulationReservPrice',
@@ -162,36 +155,17 @@ export class CartService {
       (item.recordedCourseReserv && 'recordedCourseReserv') ||
       (item.liveCourseReserv && 'liveCourseReserv');
 
-    const apiValue = course?.[map[feature]];
+    // The price must always be the value configured for this course service
+    // and returned by StudentBaskets. Never use a client-side CAPM/PMP default.
+    const apiValue = item?.[map[feature]];
+    return apiValue == null ? 0 : Number(apiValue);
+  }
 
-    const defaults: any = {
-      capm: {
-        examSimulationReserv: 199,
-        recordedCourseReserv: 199,
-        liveCourseReserv: 579
-      },
-      pmp: {
-        examSimulationReserv: 199,
-        recordedCourseReserv: 299,
-        liveCourseReserv: 579
-      },
-      default: {
-        examSimulationReserv: 150,
-        recordedCourseReserv: 120,
-        liveCourseReserv: 300
-      }
-    };
-
-    const courseKey = item.courseName?.toLowerCase();
-
-    const fallback =
-      defaults[courseKey]?.[feature] ??
-      defaults.default?.[feature] ??
-      0;
-
-    return apiValue != null && apiValue !== 0
-      ? Number(apiValue)
-      : fallback;
+  applyBasketSummary(data: APICartResponse): void {
+    this.cartItems.set(data.items ?? []);
+    this.subTotalOverride.set(data.subTotal ?? null);
+    this.totalOverride.set(data.total ?? null);
+    this.discountAmount.set(data.totalDiscount ?? 0);
   }
   getStudentBasketItems(): Observable<APICartResponse> {
     return this.apiService
@@ -373,6 +347,13 @@ export class CartService {
           ? { ...cartItem }
           : i
       );
+    });
+
+    // A basket item response contains service prices, but the basket summary
+    // is the source of truth for totals and any server-side price changes.
+    this.getStudentBasketItems().subscribe({
+      next: data => this.applyBasketSummary(data),
+      error: () => { /* Preserve the successful item update until next refresh. */ }
     });
   }
 

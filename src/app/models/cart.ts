@@ -5,6 +5,10 @@ export interface CartItem {
   examSimulationReserv: boolean,
   recordedCourseReserv: boolean,
   liveCourseReserv: boolean,
+  /** Prices returned by StudentBaskets from the configured CourseServices. */
+  recordedCourseReservPrice?: number | null,
+  examSimulationReservPrice?: number | null,
+  liveCourseReservPrice?: number | null,
 }
 
 export interface APICartItem {
@@ -75,4 +79,8 @@ export interface APICouponData {
 
 export interface APICartResponse {
   items: APICartItem[];
+  subTotal?: number;
+  totalDiscount?: number;
+  total?: number;
+  itemCount?: number;
 }

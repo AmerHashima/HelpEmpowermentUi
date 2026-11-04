@@ -64,9 +64,10 @@ export class CartComponent {
   private deleteWholeItem(oid: string): void {
     this.cartService.deleteCartItem(oid).subscribe({
       next: () => {
-        this.cartService.cartItems.update(items =>
-          items.filter(i => i.oid !== oid)
-        );
+        this.cartService.getStudentBasketItems().subscribe({
+          next: data => this.cartService.applyBasketSummary(data),
+          error: () => this.cartService.cartItems.update(items => items.filter(i => i.oid !== oid))
+        });
       }
     });
   }
@@ -127,7 +128,7 @@ export class CartComponent {
   removeCoupon() {
     this.cartService.clearCouponState();
     this.cartService.getStudentBasketItems().subscribe({
-      next: (data) => this.cartService.cartItems.set(data.items ?? []),
+      next: (data) => this.cartService.applyBasketSummary(data),
       error: () => this.cartService.cartItems.set([])
     });
   }
