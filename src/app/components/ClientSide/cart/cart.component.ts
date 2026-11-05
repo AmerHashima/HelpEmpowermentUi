@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { StudentService } from '../../../Services/student-service.service';
 import { ToastingMessagesService } from '../../../shared/Services/ToastingMessages/toasting-messages.service';
 import { TranslatePipe } from '@ngx-translate/core';
+import { CertificationService } from '../../../Services/certification.service';
 
 // type ReservationType =
 //   | 'examSimulationReserv'
@@ -28,6 +29,7 @@ export class CartComponent {
   private cartService = inject(CartService);
   private studentService=inject(StudentService);
   private toasting=inject(ToastingMessagesService);
+  private certificationService = inject(CertificationService);
   student = this.studentService.innerStudent;
   private router = inject(Router);
   appliedCoupon = this.cartService.appliedCoupon;
@@ -154,11 +156,22 @@ export class CartComponent {
   }
 
   getCourseImage(item: any) {
-    switch (item.courseName.toLowerCase()) {
-      case 'pmp': return '/assets/images/certifications/certfication_1.jpeg'
-      case 'capm': return '/assets/images/certifications/certfication_2.jpeg'
-      default: return ''
-    }
+    const path = item?.courseImage?.trim();
+    if (path?.startsWith('assets/') || /^https?:/i.test(path)) return path;
+
+    // Course images are protected behind the Courses/{id}/image endpoint;
+    // the filename itself is not a browser URL.
+    return item?.courseId
+      ? this.certificationService.getCertificationImageUrl(item.courseId)
+      : this.defaultCourseImage;
+  }
+
+  readonly defaultCourseImage = 'assets/images/certifications/certfication_1.jpeg';
+
+  useDefaultCourseImage(event: Event): void {
+    const image = event.target as HTMLImageElement;
+    if (image.src.endsWith(this.defaultCourseImage)) return;
+    image.src = this.defaultCourseImage;
   }
 }
 

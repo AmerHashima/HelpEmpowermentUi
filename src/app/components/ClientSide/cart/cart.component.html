@@ -39,6 +39,7 @@
               <div class="cart-card">
                 <img
                  [src]="getCourseImage(item)"
+                 (error)="useDefaultCourseImage($event)"
                   class="course-image"
                   alt="course image"
                 />
