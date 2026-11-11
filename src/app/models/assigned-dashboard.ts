@@ -9,6 +9,8 @@ export interface AssignedDashboard {
   paidRevenue: number;
   upcomingLiveSessions: number;
   courses: CourseDashboardStatistics[];
+  allStudentsCount: number;
+  studentsBoughtCoursesCount: number;
 }
 
 export interface CourseDashboardStatistics {
