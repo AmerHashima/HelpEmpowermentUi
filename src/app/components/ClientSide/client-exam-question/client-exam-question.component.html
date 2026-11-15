@@ -162,6 +162,7 @@
           (middleChange)="onMiddleChange($event)"
         ></app-drag-component> -->
         <app-drag-component
+          [questionId]="question().oid ?? question().questionOid ?? ''"
           [leftItems]="left"
           [rightItems]="right"
           [locked]="showCorrectAnswerFlag"
@@ -209,6 +210,7 @@
               </div>
             } @else {
               <app-drag-component
+                [questionId]="question().oid ?? question().questionOid ?? ''"
                 [leftItems]="left"
                 [rightItems]="right"
                 [translatedFlag]="true"
@@ -329,6 +331,7 @@
               }
             } @else {
               <app-drag-component
+                [questionId]="question().oid ?? question().questionOid ?? ''"
                 [leftItems]="left"
                 [savedMiddle]="correctMiddle"
                 [answersFlag]="true"

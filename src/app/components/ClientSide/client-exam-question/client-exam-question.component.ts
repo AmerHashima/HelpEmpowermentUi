@@ -471,14 +471,16 @@ export class ClientExamQuestionComponent {
     this._rightItems = value;
   }
 
-  middle: APIAnswer[] = [];
+  middle: (APIAnswer | null)[] = [];
 
-  onMiddleChange(updated: APIAnswer[] | null) {
-    if (updated)
-      this.middle = updated;
+  onMiddleChange(updated: (APIAnswer | null)[] | null) {
+    if (updated) {
+      // Keep a per-question snapshot instead of the child component's array.
+      this.middle = [...updated];
+    }
   }
 
-  buildMatchingAnswers(left: APIAnswer[], middle: APIAnswer[]) {
+  buildMatchingAnswers(left: APIAnswer[], middle: (APIAnswer | null)[]) {
 
     const allNull = middle.every(v => v === null);
     if (allNull) {

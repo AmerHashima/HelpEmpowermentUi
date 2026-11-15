@@ -17,10 +17,10 @@
   <div class="column middle" [class.order-1]="translatedFlag">
     <div
       cdkDropList
-      id="middleList"
+      [id]="middleListId"
       [cdkDropListData]="middleItems"
-      [cdkDropListConnectedTo]="['rightList']"
-      class="list"
+      [cdkDropListConnectedTo]="[rightListId]"
+      class="list middle-list"
       [cdkDropListDisabled]="answersFlag || translatedFlag || locked()"
       (cdkDropListDropped)="drop($event)"
     >
@@ -47,7 +47,7 @@
         [class.placeholder]="item === null"
         [cdkDragData]="item"
       >
-        {{ item?.answerText || "Drop Here" }}
+        {{ (translatedFlag ? item?.answerText_Ar : item?.answerText) || "Drop Here" }}
       </div>
     </div>
   </div>
@@ -58,10 +58,10 @@
     <div class="column right">
       <div
         cdkDropList
-        id="rightList"
+        [id]="rightListId"
         cdkDropListGroup
         [cdkDropListData]="rightItems"
-        [cdkDropListConnectedTo]="['middleList']"
+        [cdkDropListConnectedTo]="[middleListId]"
         class="list"
         [cdkDropListDisabled]="translatedFlag || locked()"
         (cdkDropListDropped)="drop($event)"

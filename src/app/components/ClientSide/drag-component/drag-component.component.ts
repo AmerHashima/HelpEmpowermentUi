@@ -14,9 +14,12 @@ import { NgFor } from '@angular/common';
   styleUrl: './drag-component.component.scss'
 })
 export class DragComponentComponent implements OnChanges {
+  private static nextListInstanceId = 0;
+
   @Input() leftItems: any[] = [];
   @Input() rightItems: any[] = [];
   @Input() savedMiddle: any[] = [];
+  @Input() questionId = '';
   @Input() totalSlots = 0;
   @Input() answersFlag = false;
   @Input() translatedFlag=false;
@@ -27,18 +30,25 @@ export class DragComponentComponent implements OnChanges {
   @Output() rightItemsChange = new EventEmitter<any[]>();
 
   middleItems: (any | null)[] = [];
+  readonly middleListId = `matching-middle-${DragComponentComponent.nextListInstanceId}`;
+  readonly rightListId = `matching-right-${DragComponentComponent.nextListInstanceId++}`;
 
   ngOnChanges(changes: SimpleChanges): void {
-    // Initialize slots based on leftItems or totalSlots
-    if (changes['leftItems'] || changes['totalSlots']) {
+    // Parent change detection recreates the leftItems array while the learner
+    // drags. Reset only when the actual question changes, not on every array
+    // reference change, otherwise dropped values disappear immediately.
+    const questionChanged = !!changes['questionId'] &&
+      changes['questionId'].currentValue !== changes['questionId'].previousValue;
+
+    if (questionChanged || (!this.middleItems.length && (changes['leftItems'] || changes['totalSlots']))) {
       const slotCount = this.totalSlots || this.leftItems?.length || 0;
-      // A different matching question may have exactly the same number of
-      // slots. Reset regardless of length so answers cannot carry over.
       this.middleItems = Array(slotCount).fill(null);
     }
 
-    // Restore saved middle items
-    if (changes['savedMiddle']) {
+    // Restore only on question navigation/initial load. savedMiddle may be a
+    // new array during ordinary change detection, but it must not overwrite
+    // selections made moments ago.
+    if (changes['savedMiddle'] && (questionChanged || !changes['savedMiddle'].previousValue)) {
       // Reset first to avoid leftover items
       this.middleItems = Array(this.middleItems.length).fill(null);
       (this.savedMiddle ?? []).forEach((item, i) => {
@@ -70,7 +80,7 @@ export class DragComponentComponent implements OnChanges {
     const draggedItem = event.previousContainer.data[event.previousIndex];
 
     // From middle → right
-    if (event.previousContainer.id === 'middleList') {
+    if (event.previousContainer.id === this.middleListId) {
       // Clear the slot in middle
       newMiddle[event.previousIndex] = null;
 
@@ -81,7 +91,7 @@ export class DragComponentComponent implements OnChanges {
       // newRight.splice(event.currentIndex, 0, draggedItem);
     }
     // From right → middle
-    else if (event.previousContainer.id === 'rightList') {
+    else if (event.previousContainer.id === this.rightListId) {
       // Remove from right
       newRight = newRight.filter((_, i) => i !== event.previousIndex);
 

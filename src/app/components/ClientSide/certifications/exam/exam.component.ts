@@ -361,6 +361,10 @@ export class ExamComponent {
 
   private mapToClientQuestion(q: any, index: number): any {
 
+    // StudentExam.Answers contains the student's saved rows. Matching and
+    // multiple-choice rendering needs the original answer bank instead.
+    const questionAnswers = q.questionAnswers ?? q.answers ?? [];
+
     const savedChoice = this.examChoiceAnswers.find(
       x => x.questionOid === q.oid
     );
@@ -374,7 +378,7 @@ export class ExamComponent {
 
     return {
       ...q,
-      answers: (q.answers || []).map((opt: any, i: number) => ({
+      answers: questionAnswers.map((opt: any, i: number) => ({
         ...opt,
         letter: String.fromCharCode(65 + i),
         isSelected: savedChoice
@@ -390,7 +394,7 @@ export class ExamComponent {
       })),
       progress: Math.round(((q.orderNo!) / Math.max(1, this.questions().length)) * 100),
       totalQuestions: this.questions().length,
-      maxChoices: (q.answers ?? []).filter((o: any) => o.isCorrect).length || 1
+      maxChoices: questionAnswers.filter((o: any) => o.isCorrect).length || 1
     };
   }
 

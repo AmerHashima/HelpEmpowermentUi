@@ -256,6 +256,7 @@ export interface APICourseQuestion {
   question: boolean,
   correctChoiceOid: string,
   answers: APIAnswer[],
+  questionAnswers?: APIAnswer[],
   subQuestions?: CourseQuestionSubQuestion[],
   createdAt: string
   createdBy: string,
