@@ -13,6 +13,7 @@ export interface SessionModel {
   date: string;
   time: string;
   title: string;
+  courseOid?: string;
   courseName: string;
   whatsAppLink: string;
 
@@ -40,18 +41,20 @@ export class UpcomingSessionsComponent {
   isEnrolled = this.studentService.isLiveCourseEnrolled;
   isWebinar=computed(()=> this.type() === 'webinar');
   sessions = computed<SessionModel[]>(() => {
+    const currentCourseOid = this.shared.currentCertificationObject()?.oid;
+    const currentCourseCode = this.currentCertification().trim().toLowerCase();
+    const belongsToCurrentCourse = (session: SessionModel) =>
+      (!!currentCourseOid && session.courseOid === currentCourseOid) ||
+      session.courseName?.trim().toLowerCase() === currentCourseCode;
+
     if (this.type() === 'webinar') {
       return this.webinarService
         .mapWebinarsToSessions()
-        .filter(session =>
-          session.courseName?.toLowerCase() === this.currentCertification().toLowerCase()
-        );
+        .filter(belongsToCurrentCourse);
     } else {
       return this.liveCourseService
         .mapCoursesToSessions()
-        .filter(session =>
-          session.courseName?.toLowerCase() === this.currentCertification().toLowerCase()
-        );
+        .filter(belongsToCurrentCourse);
     }
   });
   // sessions = computed(() => {

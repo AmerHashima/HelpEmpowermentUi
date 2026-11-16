@@ -47,6 +47,7 @@ export class WebinarService {
           date: this.formatDate(w.webinarDate),
           time: this.formatTime(start),
           title: w.webinarName,
+          courseOid: w.courseOid,
           courseName: w.courseName,
           // whatsAppLink: w.whatsAppLink,
           whatsAppLink: "https://wa.me/966564943997",
