@@ -37,6 +37,7 @@ export class LiveCourseService {
         date: this.formatDate(c.startDate),
         time: this.formatTime(c.startTime),
         title: c.courseName,
+        courseOid: c.courseOid,
         courseName: c.courseRefName,
         // whatsAppLink: c.whatsAppLink,
         whatsAppLink: "https://wa.me/966564943997",
