@@ -6,14 +6,14 @@ import { PageBannerComponent } from '../../../shared/clientSide/page-banner/page
 import { CalendarCardComponent } from './calendar-card/calendar-card.component';
 import { WebinarService } from '../../../Services/webinar.service';
 import { LiveCourseService } from '../../../Services/live-course.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 export interface CalendarItem {
   title: string;
   icon: string;
   startDate: string;
   endDate?: string;
-  route?: string;
+  courseCode: string;
   type: 'webinar' | 'liveCourse';
 }
 
@@ -29,8 +29,14 @@ export class CalendarComponent {
   private webinarService=inject(WebinarService);
   private liveCourseService=inject(LiveCourseService);
   private router=inject(Router);
-  private route=inject(ActivatedRoute)
   isRTL = this.shared.isRtl;
+
+  private getCourseCode(courseOid: string): string {
+    const course = (this.shared.certifications() ?? []).find(
+      (item: any) => item.oid === courseOid
+    );
+    return String(course?.courseCode ?? '').trim().toLowerCase();
+  }
 
   calendarData = computed(() => {
 
@@ -45,9 +51,8 @@ export class CalendarComponent {
           icon: 'bi bi-camera-video',
           startDate: this.formatDate(start),
           endDate: this.formatDate(end),
-          courseName: w.courseName,
+          courseCode: this.getCourseCode(w.courseOid),
           type: 'webinar',
-          route: '',
           sortTimestamp: start.getTime()
         };
       });
@@ -56,7 +61,7 @@ export class CalendarComponent {
       .filter(c => c.isActive)
       .map(c => ({
         title: c.courseName,
-        courseName: c.courseName,
+        courseCode: this.getCourseCode(c.courseOid),
         icon: 'bi bi-mortarboard',
         startDate: this.formatDate(new Date(c.startDate)),
         // endDate: this.calculateEndDate(
@@ -64,7 +69,6 @@ export class CalendarComponent {
         //   c.numberOfSessions
         // ),
         type: 'liveCourse',
-        route: '',
         sortTimestamp: new Date(c.startDate).getTime()
       }));
 
@@ -103,12 +107,11 @@ export class CalendarComponent {
   // ];
 
 
-  onCardClick(item:any){
-    const baseRoute="../certifications";
-    const path=item.type == 'webinar' ? 'webinar' : "live-course"
-    this.router.navigate([baseRoute, item.courseName.toLowerCase(),path], {
-      relativeTo: this.route,
-    });
+  onCardClick(item: CalendarItem) {
+    if (!item.courseCode) return;
+
+    const path = item.type === 'webinar' ? 'webinar' : 'live-course';
+    this.router.navigate(['/', this.shared.lang(), 'certifications', item.courseCode, path]);
   }
 
   //Helpers
