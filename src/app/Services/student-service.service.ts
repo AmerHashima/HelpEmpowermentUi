@@ -367,7 +367,7 @@ export class StudentService {
   }
 
   getEnrollmentCount(
-    courseName: string,
+    courseKey: string,
     type: 'exam' | 'recorded' | 'live'
   ): Observable<number> {
 
@@ -385,10 +385,16 @@ export class StudentService {
     return this.searchStudentCourses(body).pipe(
       map(res => {
         const courses = res.courses ?? [];
+        const normalize = (value: string | null | undefined) =>
+          (value ?? '').trim().toLowerCase().replace(/[\s_]+/g, '-');
+        const currentCourseId = this.shared.currentCertificationObject()?.oid;
+        const normalizedCourseKey = normalize(courseKey);
 
         return courses.filter(c => {
           const matchesCourse =
-            c.courseName?.toLowerCase() === courseName.toLowerCase();
+            (!!currentCourseId && c.courseId === currentCourseId) ||
+            normalize(c.courseCode) === normalizedCourseKey ||
+            normalize(c.courseName) === normalizedCourseKey;
 
           if (!matchesCourse) return false;
 
