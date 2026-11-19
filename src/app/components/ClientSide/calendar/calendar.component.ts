@@ -17,6 +17,10 @@ export interface CalendarItem {
   type: 'webinar' | 'liveCourse';
 }
 
+interface CalendarEvent extends CalendarItem {
+  sortTimestamp: number;
+}
+
 @Component({
   selector: 'app-calendar',
   imports: [TranslateModule,TranslatePipe,PageBannerComponent,
@@ -40,7 +44,7 @@ export class CalendarComponent {
 
   calendarData = computed(() => {
 
-    const webinars = this.webinarService.webinars()
+    const webinars: CalendarEvent[] = this.webinarService.webinars()
       .filter(w => w.isActive)
       .map(w => {
         const start = new Date(`${w.webinarDate.split('T')[0]}T${w.webinarStartTime}`);
@@ -52,12 +56,12 @@ export class CalendarComponent {
           startDate: this.formatDate(start),
           endDate: this.formatDate(end),
           courseCode: this.getCourseCode(w.courseOid),
-          type: 'webinar',
+          type: 'webinar' as const,
           sortTimestamp: start.getTime()
         };
       });
 
-    const liveCourses = this.liveCourseService.liveCourses()
+    const liveCourses: CalendarEvent[] = this.liveCourseService.liveCourses()
       .filter(c => c.isActive)
       .map(c => ({
         title: c.courseName,
@@ -68,7 +72,7 @@ export class CalendarComponent {
         //   c.startDate,
         //   c.numberOfSessions
         // ),
-        type: 'liveCourse',
+        type: 'liveCourse' as const,
         sortTimestamp: new Date(c.startDate).getTime()
       }));
 
