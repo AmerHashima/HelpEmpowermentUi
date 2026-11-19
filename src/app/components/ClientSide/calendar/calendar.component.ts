@@ -111,7 +111,7 @@ export class CalendarComponent {
   // ];
 
 
-  onCardClick(item: CalendarItem) {
+  onCardClick(item: Pick<CalendarItem, 'courseCode'> & { type: string }) {
     if (!item.courseCode) return;
 
     const path = item.type === 'webinar' ? 'webinar' : 'live-course';

@@ -12,7 +12,7 @@
     @if (this.currentLevelIndex() == 0) {
       <app-first-question
         [options]="currentLevel().options ?? ['Executing', 'Planning', 'Initiation', 'Monitoring & Control', 'Closing']"
-        [correctOrder]="currentLevel().correctAnswers['order'] ?? ['Initiation', 'Planning', 'Executing', 'Closing', 'Monitoring & Control']"
+        [correctOrder]="currentLevel().correctAnswers['order']"
         [next]="next()"
         [reset]="resetTrigger()"
         (isCorrect)="onGetQuestionResult($event)"
